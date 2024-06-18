@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/f6e686fe9d3b983d48650980c1ecfdde320bc62f/packages/@react-aria/focus/src/FocusScope.tsx
  */
 
-import { Accessor } from "solid-js";
+import type { Accessor } from "solid-js";
 
 import { focusWithoutScrolling } from "./focus-without-scrolling";
 import {

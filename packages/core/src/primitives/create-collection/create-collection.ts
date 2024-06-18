@@ -7,9 +7,15 @@
  */
 
 import { access } from "@kobalte/utils";
-import { Accessor, createEffect, createMemo, createSignal, on } from "solid-js";
+import {
+	type Accessor,
+	createEffect,
+	createMemo,
+	createSignal,
+	on,
+} from "solid-js";
 
-import { Collection, CollectionBase, CollectionNode } from "./types";
+import type { Collection, CollectionBase, CollectionNode } from "./types";
 import { buildNodes } from "./utils";
 
 type CollectionFactory<C extends Collection<CollectionNode>> = (

@@ -13,9 +13,9 @@
  */
 
 import {
-	CalendarDate,
-	DateDuration,
-	DateFormatter,
+	type CalendarDate,
+	type DateDuration,
+	type DateFormatter,
 	endOfMonth,
 	endOfWeek,
 	isSameDay,
@@ -26,11 +26,11 @@ import {
 	startOfYear,
 	toCalendarDate,
 } from "@internationalized/date";
-import { RangeValue } from "@kobalte/utils";
+import type { RangeValue } from "@kobalte/utils";
 
 import { createDateFormatter } from "../i18n";
-import { CalendarIntlTranslations } from "./calendar.intl";
-import { CalendarSelectionMode, DateAlignment, DateValue } from "./types";
+import type { CalendarIntlTranslations } from "./calendar.intl";
+import type { CalendarSelectionMode, DateAlignment, DateValue } from "./types";
 
 /* -----------------------------------------------------------------------------
  * Constrain a date to a range

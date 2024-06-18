@@ -4,13 +4,14 @@ import {
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import {
-	ComponentProps,
-	JSX,
+	type ComponentProps,
+	type JSX,
 	createEffect,
 	createSignal,
 	splitProps,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
@@ -20,8 +21,7 @@ import { useSliderContext } from "./slider-context";
 import { useThumbContext } from "./slider-thumb";
 
 export interface SliderInputProps extends ComponentProps<"input"> {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 /**
@@ -56,7 +56,7 @@ export function SliderInput(props: SliderInputProps) {
 
 		const target = e.target as HTMLInputElement;
 
-		context.state.setThumbValue(thumb.index(), parseFloat(target.value));
+		context.state.setThumbValue(thumb.index(), Number.parseFloat(target.value));
 
 		// Unlike in React, inputs `value` can be out of sync with our value state.
 		// even if an input is controlled (ex: `<input value="foo" />`,
@@ -87,7 +87,7 @@ export function SliderInput(props: SliderInputProps) {
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={{ ...visuallyHiddenStyles, ...local.style }}
+			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
 			aria-orientation={context.state.orientation()}
 			aria-valuetext={valueText()}
 			aria-label={fieldProps.ariaLabel()}

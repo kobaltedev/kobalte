@@ -9,7 +9,7 @@
 import { CalendarDate, toCalendar } from "@internationalized/date";
 import { NumberParser } from "@internationalized/number";
 import {
-	OverrideComponentProps,
+	type OverrideComponentProps,
 	callHandler,
 	getActiveElement,
 	getScrollParent,
@@ -20,8 +20,8 @@ import {
 	scrollIntoViewport,
 } from "@kobalte/utils";
 import {
-	ComponentProps,
-	JSX,
+	type ComponentProps,
+	type JSX,
 	Show,
 	children,
 	createEffect,
@@ -34,11 +34,11 @@ import {
 
 import { useFormControlContext } from "../form-control";
 import { createDateFormatter, createFilter } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { type AsChildProp, Polymorphic } from "../polymorphic";
 import * as SpinButton from "../spin-button";
 import { useDatePickerContext } from "./date-picker-context";
 import { useDatePickerInputContext } from "./date-picker-input-context";
-import { DateSegment } from "./types";
+import type { DateSegment } from "./types";
 
 export interface DatePickerSegmentOptions extends AsChildProp {
 	segment: DateSegment;
@@ -83,7 +83,7 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
 						"aria-valuemin": undefined,
 						"aria-valuetext": undefined,
 						"aria-valuenow": undefined,
-				  }
+					}
 				: {}
 		) as ComponentProps<"div">;
 	});

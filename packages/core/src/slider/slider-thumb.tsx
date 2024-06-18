@@ -13,15 +13,15 @@
  */
 
 import {
-	Orientation,
+	type Orientation,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
-	ValidComponent,
+	type Accessor,
+	type JSX,
+	type ValidComponent,
 	createContext,
 	createUniqueId,
 	onMount,
@@ -29,22 +29,26 @@ import {
 	useContext,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
 } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CollectionItemWithRef } from "../primitives";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { SliderDataSet, useSliderContext } from "./slider-context";
+import { type SliderDataSet, useSliderContext } from "./slider-context";
 
 export interface SliderThumbOptions {}
 
 export interface SliderThumbCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 	ref: T | ((el: T) => void);
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -218,14 +222,16 @@ export function SliderThumb<T extends ValidComponent = "span">(
 				role="slider"
 				id={fieldProps.id()}
 				tabIndex={context.state.isDisabled() ? undefined : 0}
-				style={{
-					display: value() === undefined ? "none" : undefined,
-					position: "absolute",
-					[context.startEdge()]: `calc(${position() * 100}%)`,
-					transform: transform(),
-					"touch-action": "none",
-					...local.style,
-				}}
+				style={combineStyle(
+					{
+						display: value() === undefined ? "none" : undefined,
+						position: "absolute",
+						[context.startEdge()]: `calc(${position() * 100}%)`,
+						transform: transform(),
+						"touch-action": "none",
+					},
+					local.style,
+				)}
 				aria-valuetext={context.state.getThumbValueLabel(index())}
 				aria-valuemin={context.minValue()}
 				aria-valuenow={value()}

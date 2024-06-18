@@ -14,8 +14,8 @@ import {
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	ParentProps,
+	type Accessor,
+	type ParentProps,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -26,13 +26,13 @@ import {
 import { isServer } from "solid-js/web";
 
 import createPresence from "solid-presence";
-import { Popper, PopperRootOptions } from "../popper";
-import { Placement } from "../popper/utils";
+import { Popper, type PopperRootOptions } from "../popper";
+import type { Placement } from "../popper/utils";
 import { createDisclosureState } from "../primitives";
 import {
 	HoverCardContext,
-	HoverCardContextValue,
-	HoverCardDataSet,
+	type HoverCardContextValue,
+	type HoverCardDataSet,
 } from "./hover-card-context";
 import { getHoverCardSafeArea } from "./utils";
 

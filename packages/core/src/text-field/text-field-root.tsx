@@ -1,25 +1,37 @@
 import {
 	OverrideComponentProps,
-	ValidationState,
+	type ValidationState,
 	access,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, ValidComponent, createUniqueId, splitProps } from "solid-js";
+import {
+	type JSX,
+	type ValidComponent,
+	createUniqueId,
+	splitProps,
+} from "solid-js";
 
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
-	FormControlDataSet,
+	type FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import {
 	createControllableSignal,
 	createFormResetListener,
 } from "../primitives";
-import { TextFieldContext, TextFieldContextValue } from "./text-field-context";
+import {
+	TextFieldContext,
+	type TextFieldContextValue,
+} from "./text-field-context";
 
 export interface TextFieldRootOptions {
 	/** The controlled value of the text field. */

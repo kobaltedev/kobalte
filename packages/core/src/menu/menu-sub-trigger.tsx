@@ -13,7 +13,7 @@
  */
 
 import {
-	Orientation,
+	type Orientation,
 	callHandler,
 	composeEventHandlers,
 	focusWithoutScrolling,
@@ -21,8 +21,8 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createUniqueId,
 	on,
@@ -31,12 +31,16 @@ import {
 } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { Direction, useLocale } from "../i18n";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import { type Direction, useLocale } from "../i18n";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createSelectableItem } from "../selection";
-import { MenuDataSet, useMenuContext } from "./menu-context";
+import { type MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { Side, getPointerGraceArea } from "./utils";
+import { type Side, getPointerGraceArea } from "./utils";
 
 export interface MenuSubTriggerOptions {
 	/**

@@ -8,13 +8,17 @@
 
 import {
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	onCleanup,
 } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useImageContext } from "./image-context";
 
 export interface ImageFallbackOptions {}

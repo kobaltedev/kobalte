@@ -1,8 +1,12 @@
 import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { Show, ValidComponent, splitProps } from "solid-js";
+import { Show, type ValidComponent, splitProps } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { MenuItemDataSet, useMenuItemContext } from "./menu-item.context";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type MenuItemDataSet, useMenuItemContext } from "./menu-item.context";
 
 export interface MenuItemIndicatorOptions {
 	/**

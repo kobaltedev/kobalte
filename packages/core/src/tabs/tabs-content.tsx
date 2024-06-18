@@ -6,10 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabPanel.ts
  */
 
-import { Orientation, getFocusableTreeWalker, mergeRefs } from "@kobalte/utils";
+import {
+	type Orientation,
+	getFocusableTreeWalker,
+	mergeRefs,
+} from "@kobalte/utils";
 import {
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -18,7 +22,11 @@ import {
 } from "solid-js";
 
 import createPresence from "solid-presence";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useTabsContext } from "./tabs-context";
 
 export interface TabsContentOptions {

@@ -8,7 +8,7 @@
  */
 
 import {
-	ValidationState,
+	type ValidationState,
 	access,
 	createGenerateId,
 	focusWithoutScrolling,
@@ -17,10 +17,10 @@ import {
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	Component,
-	JSX,
-	ValidComponent,
+	type Accessor,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -33,16 +33,20 @@ import createPresence from "solid-presence";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
-	FormControlDataSet,
+	type FormControlDataSet,
 	createFormControl,
 } from "../form-control";
 import { createFilter } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
 import { announce } from "../live-announcer";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { Popper, PopperRootOptions } from "../popper";
 import {
-	CollectionNode,
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { Popper, type PopperRootOptions } from "../popper";
+import {
+	type CollectionNode,
 	createControllableSignal,
 	createDisclosureState,
 	createFormResetListener,
@@ -50,23 +54,23 @@ import {
 	getItemCount,
 } from "../primitives";
 import {
-	FocusStrategy,
-	KeyboardDelegate,
+	type FocusStrategy,
+	type KeyboardDelegate,
 	Selection,
-	SelectionBehavior,
-	SelectionMode,
+	type SelectionBehavior,
+	type SelectionMode,
 	createSelectableCollection,
 } from "../selection";
 import {
 	ComboboxContext,
-	ComboboxContextValue,
-	ComboboxDataSet,
+	type ComboboxContextValue,
+	type ComboboxDataSet,
 } from "./combobox-context";
 import {
 	COMBOBOX_INTL_TRANSLATIONS,
-	ComboboxIntlTranslations,
+	type ComboboxIntlTranslations,
 } from "./combobox.intl";
-import { ComboboxTriggerMode } from "./types";
+import type { ComboboxTriggerMode } from "./types";
 
 export interface ComboboxBaseItemComponentProps<Option> {
 	/** The item to render. */

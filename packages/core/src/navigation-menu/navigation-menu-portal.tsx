@@ -1,6 +1,6 @@
 import { mergeRefs } from "@kobalte/utils";
 import { Show, splitProps } from "solid-js";
-import { MenuPortal, MenuPortalProps, useMenuContext } from "../menu";
+import { MenuPortal, type MenuPortalProps, useMenuContext } from "../menu";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuPortalProps extends MenuPortalProps {}

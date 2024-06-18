@@ -1,19 +1,19 @@
 import {
-	Orientation,
+	type Orientation,
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
-	ValidComponent,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { CollectionItemWithRef } from "../primitives";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import * as ToggleButton from "../toggle-button";

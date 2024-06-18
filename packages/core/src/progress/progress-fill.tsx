@@ -1,13 +1,17 @@
-import { JSX, ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, splitProps } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { ProgressDataSet, useProgressContext } from "./progress-context";
+import { combineStyle } from "@solid-primitives/props";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type ProgressDataSet, useProgressContext } from "./progress-context";
 
 export interface ProgressFillOptions {}
 
 export interface ProgressFillCommonProps<T extends HTMLElement = HTMLElement> {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface ProgressFillRenderProps
@@ -32,10 +36,12 @@ export function ProgressFill<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<ProgressFillRenderProps>
 			as="div"
-			style={{
-				"--kb-progress-fill-width": context.progressFillWidth(),
-				...local.style,
-			}}
+			style={combineStyle(
+				{
+					"--kb-progress-fill-width": context.progressFillWidth(),
+				},
+				local.style,
+			)}
 			{...context.dataset()}
 			{...others}
 		/>

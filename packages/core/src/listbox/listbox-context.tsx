@@ -1,6 +1,6 @@
-import { Accessor, createContext, useContext } from "solid-js";
+import { type Accessor, createContext, useContext } from "solid-js";
 
-import { ListState } from "../list";
+import type { ListState } from "../list";
 
 export interface ListboxContextValue {
 	listState: Accessor<ListState>;

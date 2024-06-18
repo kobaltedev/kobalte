@@ -14,16 +14,26 @@ import {
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { ComponentProps, JSX, ValidComponent, splitProps } from "solid-js";
+import {
+	ComponentProps,
+	type JSX,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
-	FormControlDataSet,
+	type FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { SwitchDataSet, useSwitchContext } from "./switch-context";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context";
 
 export interface SwitchInputOptions {}
 
@@ -32,8 +42,7 @@ export interface SwitchInputCommonProps<
 > {
 	id: string;
 	ref: T | ((el: T) => void);
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 	onChange: JSX.EventHandlerUnion<T, Event>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -128,7 +137,7 @@ export function SwitchInput<T extends ValidComponent = "input">(
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={{ ...visuallyHiddenStyles, ...local.style }}
+			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
 			aria-checked={context.checked()}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}

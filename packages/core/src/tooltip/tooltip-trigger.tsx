@@ -19,10 +19,14 @@
  */
 
 import { callHandler, getDocument, mergeRefs } from "@kobalte/utils";
-import { JSX, ValidComponent, onCleanup, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useTooltipContext } from "./tooltip-context";
 
 export interface TooltipTriggerOptions {}

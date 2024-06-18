@@ -7,7 +7,7 @@ import {
 	LATEST_CORE_CHANGELOG_URL,
 	LATEST_CORE_VERSION_NAME,
 } from "../VERSIONS";
-import { NavSection } from "../model/navigation";
+import type { NavSection } from "../model/navigation";
 import { GitHubIcon } from "./icons";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeSelector } from "./theme-selector";

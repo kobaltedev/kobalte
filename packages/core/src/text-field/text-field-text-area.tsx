@@ -13,20 +13,20 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
-	ValidComponent,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	on,
 	splitProps,
 } from "solid-js";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import { useTextFieldContext } from "./text-field-context";
 import {
 	TextFieldInputBase,
-	TextFieldInputCommonProps,
-	TextFieldInputRenderProps,
+	type TextFieldInputCommonProps,
+	type TextFieldInputRenderProps,
 } from "./text-field-input";
 
 export interface TextFieldTextAreaOptions {

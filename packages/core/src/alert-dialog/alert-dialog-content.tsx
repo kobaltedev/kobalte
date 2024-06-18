@@ -1,11 +1,11 @@
-import { Component, ValidComponent } from "solid-js";
+import type { Component, ValidComponent } from "solid-js";
 import {
 	DialogContent,
-	DialogContentCommonProps,
-	DialogContentOptions,
-	DialogContentRenderProps,
+	type DialogContentCommonProps,
+	type DialogContentOptions,
+	type DialogContentRenderProps,
 } from "../dialog/dialog-content";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
 export interface AlertDialogContentOptions extends DialogContentOptions {}
 

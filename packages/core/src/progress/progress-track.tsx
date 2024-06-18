@@ -1,6 +1,10 @@
-import { ValidComponent } from "solid-js";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { ProgressDataSet, useProgressContext } from "./progress-context";
+import type { ValidComponent } from "solid-js";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type ProgressDataSet, useProgressContext } from "./progress-context";
 
 export interface ProgressTrackOptions {}
 

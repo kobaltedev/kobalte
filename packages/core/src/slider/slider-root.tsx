@@ -7,7 +7,7 @@
  */
 
 import {
-	ValidationState,
+	type ValidationState,
 	access,
 	clamp,
 	createGenerateId,
@@ -15,8 +15,8 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	ValidComponent,
+	type Accessor,
+	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -29,14 +29,21 @@ import {
 	createFormControl,
 } from "../form-control";
 import { createNumberFormatter, useLocale } from "../i18n";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CollectionItemWithRef, createFormResetListener } from "../primitives";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import {
+	type CollectionItemWithRef,
+	createFormResetListener,
+} from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "./create-slider-state";
 import {
 	SliderContext,
-	SliderContextValue,
-	SliderDataSet,
+	type SliderContextValue,
+	type SliderDataSet,
 } from "./slider-context";
 import {
 	getNextSortedValues,

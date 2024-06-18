@@ -6,8 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/703ab7b4559ecd4fc611e7f2c0e758867990fe01/packages/@react-spectrum/tabs/src/Tabs.tsx
  */
 import {
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -15,16 +15,20 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { Orientation } from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
+import { combineStyle } from "@solid-primitives/props";
 import { useLocale } from "../i18n";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { useTabsContext } from "./tabs-context";
 
 export interface TabsIndicatorOptions {}
 
 export interface TabsIndicatorCommonProps<T extends HTMLElement = HTMLElement> {
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface TabsIndicatorRenderProps extends TabsIndicatorCommonProps {
@@ -72,7 +76,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		const offset =
 			direction() === "rtl"
 				? -1 *
-				  ((selectedTab.offsetParent as HTMLElement)?.offsetWidth -
+					((selectedTab.offsetParent as HTMLElement)?.offsetWidth -
 						selectedTab.offsetWidth -
 						selectedTab.offsetLeft)
 				: selectedTab.offsetLeft;
@@ -114,7 +118,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		<Polymorphic<TabsIndicatorRenderProps>
 			as="div"
 			role="presentation"
-			style={{ ...style(), ...local.style }}
+			style={combineStyle(style(), local.style)}
 			data-orientation={context.orientation()}
 			{...others}
 		/>

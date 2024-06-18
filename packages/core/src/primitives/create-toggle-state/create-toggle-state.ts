@@ -6,8 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/a13802d8be6f83af1450e56f7a88527b10d9cadf/packages/@react-stately/toggle/src/useToggleState.ts
  */
 
-import { MaybeAccessor, access } from "@kobalte/utils";
-import { Accessor } from "solid-js";
+import { type MaybeAccessor, access } from "@kobalte/utils";
+import type { Accessor } from "solid-js";
 
 import { createControllableBooleanSignal } from "../create-controllable-signal";
 

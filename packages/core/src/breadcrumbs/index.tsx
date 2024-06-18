@@ -1,21 +1,21 @@
 import {
-	BreadcrumbsLink as Link,
 	type BreadcrumbsLinkCommonProps,
 	type BreadcrumbsLinkOptions,
 	type BreadcrumbsLinkProps,
 	type BreadcrumbsLinkRenderProps,
+	BreadcrumbsLink as Link,
 } from "./breadcrumbs-link";
 import {
-	BreadcrumbsRoot as Root,
 	type BreadcrumbsRootOptions,
 	type BreadcrumbsRootProps,
+	BreadcrumbsRoot as Root,
 } from "./breadcrumbs-root";
 import {
-	BreadcrumbsSeparator as Separator,
 	type BreadcrumbsSeparatorCommonProps,
 	type BreadcrumbsSeparatorOptions,
 	type BreadcrumbsSeparatorProps,
 	type BreadcrumbsSeparatorRenderProps,
+	BreadcrumbsSeparator as Separator,
 } from "./breadcrumbs-separator";
 
 export type {

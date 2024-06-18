@@ -1,58 +1,55 @@
 {
-  "name": "@kobalte/tailwindcss",
-  "version": "0.9.0",
-  "private": false,
-  "description": "A TailwindCSS plugin for styling Kobalte components with data-* attributes by using modifiers like ui-expanded:*",
-  "keywords": [
-    "solid",
-    "solidjs",
-    "ui",
-    "library",
-    "design-system",
-    "components"
-  ],
-  "homepage": "https://github.com/kobaltedev/kobalte/tree/main/packages/tailwindcss#readme",
-  "bugs": {
-    "url": "https://github.com/kobaltedev/kobalte/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kobaltedev/kobalte.git"
-  },
-  "license": "MIT",
-  "author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": "./dist/index.cjs"
-    },
-    "./src/*": "./src/*"
-  },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "source": "src/index.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "scripts": {
-    "build": "tsup",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
-  },
-  "devDependencies": {
-    "tailwindcss": "3.3.3"
-  },
-  "peerDependencies": {
-    "tailwindcss": "^3.3.3"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+	"name": "@kobalte/tailwindcss",
+	"version": "0.9.0",
+	"private": false,
+	"description": "A TailwindCSS plugin for styling Kobalte components with data-* attributes by using modifiers like ui-expanded:*",
+	"keywords": [
+		"solid",
+		"solidjs",
+		"ui",
+		"library",
+		"design-system",
+		"components"
+	],
+	"homepage": "https://github.com/kobaltedev/kobalte/tree/main/packages/tailwindcss#readme",
+	"bugs": {
+		"url": "https://github.com/kobaltedev/kobalte/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kobaltedev/kobalte.git"
+	},
+	"license": "MIT",
+	"author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": "./dist/index.cjs"
+		},
+		"./src/*": "./src/*"
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"source": "src/index.ts",
+	"files": ["dist", "src"],
+	"scripts": {
+		"build": "tsup",
+		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+	},
+	"devDependencies": {
+		"tailwindcss": "3.3.3"
+	},
+	"peerDependencies": {
+		"tailwindcss": "^3.3.3"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
 }

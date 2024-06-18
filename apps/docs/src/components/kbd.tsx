@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { ComponentProps, splitProps } from "solid-js";
+import { type ComponentProps, splitProps } from "solid-js";
 
 export function Kbd(props: ComponentProps<"kbd">) {
 	const [local, others] = splitProps(props, ["class"]);

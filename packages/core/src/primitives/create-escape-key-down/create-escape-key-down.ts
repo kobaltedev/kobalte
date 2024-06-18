@@ -1,5 +1,10 @@
-import { EventKey, MaybeAccessor, access, getDocument } from "@kobalte/utils";
-import { Accessor, createEffect, onCleanup } from "solid-js";
+import {
+	EventKey,
+	type MaybeAccessor,
+	access,
+	getDocument,
+} from "@kobalte/utils";
+import { type Accessor, createEffect, onCleanup } from "solid-js";
 import { isServer } from "solid-js/web";
 
 export interface CreateEscapeKeyDownProps {

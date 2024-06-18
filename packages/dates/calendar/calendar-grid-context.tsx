@@ -1,6 +1,6 @@
-import { Accessor, createContext, useContext } from "solid-js";
+import { type Accessor, createContext, useContext } from "solid-js";
 
-import { DateValue } from "./types";
+import type { DateValue } from "./types";
 
 export interface CalendarGridContextValue {
 	startDate: Accessor<DateValue>;

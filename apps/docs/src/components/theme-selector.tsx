@@ -1,10 +1,10 @@
 import {
-	ConfigColorMode,
-	MaybeConfigColorMode,
+	type ConfigColorMode,
+	type MaybeConfigColorMode,
 	useColorMode,
 } from "@kobalte/core/color-mode";
 import { Select } from "@kobalte/core/select";
-import { JSX, createSignal, onMount } from "solid-js";
+import { type JSX, createSignal, onMount } from "solid-js";
 
 import { DesktopIcon, MoonIcon, SunIcon } from "./icons";
 

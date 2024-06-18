@@ -1,13 +1,13 @@
 import {
-	ValidationState,
+	type ValidationState,
 	access,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	batch,
 	createEffect,
 	createMemo,
@@ -21,19 +21,23 @@ import { NumberFormatter, NumberParser } from "@internationalized/number";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
-	FormControlDataSet,
+	type FormControlDataSet,
 	createFormControl,
 } from "../form-control";
 import { useLocale } from "../i18n";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import {
 	createControllableSignal,
 	createFormResetListener,
 } from "../primitives";
-import { SpinButtonRootOptions } from "../spin-button";
+import type { SpinButtonRootOptions } from "../spin-button";
 import {
 	NumberFieldContext,
-	NumberFieldContextValue,
+	type NumberFieldContextValue,
 } from "./number-field-context";
 
 export interface NumberFieldRootOptions
@@ -190,7 +194,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 					value ?? "",
 					mergedProps.minValue,
 					mergedProps.maxValue,
-			  )
+				)
 			: !Number.isNaN(Number(value));
 
 	const [value, setValue] = createControllableSignal({

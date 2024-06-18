@@ -1,9 +1,16 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { ValidComponent } from "solid-js";
+import type { ValidComponent } from "solid-js";
 
-import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { SwitchDataSet, useSwitchContext } from "./switch-context";
+import {
+	type FormControlDataSet,
+	useFormControlContext,
+} from "../form-control";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context";
 
 export interface SwitchThumbOptions {}
 

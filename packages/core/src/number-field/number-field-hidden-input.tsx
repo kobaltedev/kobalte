@@ -1,5 +1,5 @@
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
-import { ComponentProps, batch, splitProps } from "solid-js";
+import { type ComponentProps, batch, splitProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useNumberFieldContext } from "./number-field-context";

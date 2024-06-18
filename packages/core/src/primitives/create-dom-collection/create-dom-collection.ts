@@ -8,15 +8,15 @@
  * https://github.com/ariakit/ariakit/blob/da142672eddefa99365773ced72171facc06fdcb/packages/ariakit/src/collection/collection-item.ts
  */
 
-import { MaybeAccessor, access, addItemToArray } from "@kobalte/utils";
-import { FlowComponent, createComponent } from "solid-js";
+import { type MaybeAccessor, access, addItemToArray } from "@kobalte/utils";
+import { type FlowComponent, createComponent } from "solid-js";
 
 import { createControllableArraySignal } from "../index";
 import {
 	DomCollectionContext,
-	DomCollectionContextValue,
+	type DomCollectionContextValue,
 } from "./dom-collection-context";
-import { DomCollectionItem } from "./types";
+import type { DomCollectionItem } from "./types";
 import { createSortBasedOnDOMPosition, findDOMIndex } from "./utils";
 
 export interface CreateDomCollectionProps<

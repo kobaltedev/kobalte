@@ -55,13 +55,13 @@ import {
 	type ToastTitleRenderProps,
 } from "./toast-title";
 import { toaster } from "./toaster";
-import {
-	type ToastComponent,
-	type ToastComponentProps,
-	type ToastPromiseComponent,
-	type ToastPromiseComponentProps,
-	type ToastPromiseState,
-	type ToastSwipeDirection,
+import type {
+	ToastComponent,
+	ToastComponentProps,
+	ToastPromiseComponent,
+	ToastPromiseComponentProps,
+	ToastPromiseState,
+	ToastSwipeDirection,
 } from "./types";
 
 export type {

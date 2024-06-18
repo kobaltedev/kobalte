@@ -8,28 +8,32 @@
  */
 
 import {
-	Orientation,
-	ValidationState,
+	type Orientation,
+	type ValidationState,
 	access,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { ValidComponent, createUniqueId, splitProps } from "solid-js";
+import { type ValidComponent, createUniqueId, splitProps } from "solid-js";
 
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
-	FormControlDataSet,
+	type FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import {
 	createControllableSignal,
 	createFormResetListener,
 } from "../primitives";
 import {
 	RadioGroupContext,
-	RadioGroupContextValue,
+	type RadioGroupContextValue,
 } from "./radio-group-context";
 
 export interface RadioGroupRootOptions {

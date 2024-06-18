@@ -7,17 +7,17 @@
  */
 
 import {
-	Calendar,
+	type Calendar,
 	Time,
 	now,
 	toCalendar,
 	toCalendarDate,
 	toCalendarDateTime,
 } from "@internationalized/date";
-import { Accessor, createEffect, createMemo } from "solid-js";
+import { type Accessor, createEffect, createMemo } from "solid-js";
 
-import { DateValue, TimeValue } from "../calendar/types";
-import {
+import type { DateValue, TimeValue } from "../calendar/types";
+import type {
 	DateFieldGranularity,
 	DateFieldHourCycle,
 	DateFieldMaxGranularity,

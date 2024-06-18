@@ -13,12 +13,17 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { Component, JSX, ValidComponent, splitProps } from "solid-js";
+import {
+	type Component,
+	type JSX,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
 
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { ComboboxDataSet, useComboboxContext } from "./combobox-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
 
 export interface ComboboxTriggerOptions {}
 

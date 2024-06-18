@@ -7,9 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import { Orientation, mergeDefaultProps } from "@kobalte/utils";
+import { type Orientation, mergeDefaultProps } from "@kobalte/utils";
 import {
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	createUniqueId,
@@ -18,11 +18,15 @@ import {
 } from "solid-js";
 
 import { createSingleSelectListState } from "../list";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CollectionItemWithRef } from "../primitives";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
-import { TabsContext, TabsContextValue } from "./tabs-context";
-import { TabsActivationMode } from "./types";
+import { TabsContext, type TabsContextValue } from "./tabs-context";
+import type { TabsActivationMode } from "./types";
 
 export interface TabsRootOptions {
 	/** The controlled value of the tab to activate. */

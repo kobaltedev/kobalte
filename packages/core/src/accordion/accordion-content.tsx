@@ -8,15 +8,15 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	Component,
-	ValidComponent,
+	type Component,
+	type ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
 import * as Collapsible from "../collapsible";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useAccordionItemContext } from "./accordion-item-context";
 
 export interface AccordionContentOptions {}

@@ -1,4 +1,4 @@
-import { ComponentProps, ValidComponent, mergeProps } from "solid-js";
+import { type ComponentProps, type ValidComponent, mergeProps } from "solid-js";
 
 /**
  * Allows for extending a set of props (`Source`) by an overriding set of props (`Override`),

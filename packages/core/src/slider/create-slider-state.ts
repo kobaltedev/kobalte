@@ -7,7 +7,7 @@
  */
 
 import { clamp, mergeDefaultProps, snapValueToStep } from "@kobalte/utils";
-import { Accessor, createMemo, createSignal } from "solid-js";
+import { type Accessor, createMemo, createSignal } from "solid-js";
 
 import { createControllableArraySignal } from "../primitives";
 import { getNextSortedValues, hasMinStepsBetweenValues } from "./utils";

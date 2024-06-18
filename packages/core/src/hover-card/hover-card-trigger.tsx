@@ -8,16 +8,19 @@
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
-	ValidComponent,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 
 import * as Link from "../link";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { HoverCardDataSet, useHoverCardContext } from "./hover-card-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import {
+	type HoverCardDataSet,
+	useHoverCardContext,
+} from "./hover-card-context";
 
 export interface HoverCardTriggerOptions {}
 

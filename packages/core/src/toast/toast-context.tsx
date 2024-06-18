@@ -1,6 +1,6 @@
-import { Accessor, createContext, useContext } from "solid-js";
+import { type Accessor, createContext, useContext } from "solid-js";
 
-import { ToastIntlTranslations } from "./toast.intl";
+import type { ToastIntlTranslations } from "./toast.intl";
 
 export interface ToastContextValue {
 	translations: Accessor<ToastIntlTranslations>;

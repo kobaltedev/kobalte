@@ -7,7 +7,7 @@
  */
 
 import {
-	Middleware,
+	type Middleware,
 	arrow,
 	autoUpdate,
 	computePosition,
@@ -20,19 +20,19 @@ import {
 } from "@floating-ui/dom";
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	Accessor,
-	ParentProps,
+	type Accessor,
+	type ParentProps,
 	createEffect,
 	createSignal,
 	onCleanup,
 } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { PopperContext, PopperContextValue } from "./popper-context";
+import { PopperContext, type PopperContextValue } from "./popper-context";
 import {
-	AnchorRect,
-	BasePlacement,
-	Placement,
+	type AnchorRect,
+	type BasePlacement,
+	type Placement,
 	getAnchorElement,
 	getTransformOrigin,
 	isValidPlacement,

@@ -1,6 +1,6 @@
 import { ToggleGroup } from "@kobalte/core/toggle-group";
 
-import { JSXElement, createSignal } from "solid-js";
+import { type JSXElement, createSignal } from "solid-js";
 import style from "./toggle-group.module.css";
 
 export function BasicExample() {

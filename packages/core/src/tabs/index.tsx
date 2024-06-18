@@ -27,11 +27,11 @@ import {
 	type TabsRootRenderProps,
 } from "./tabs-root";
 import {
-	TabsTrigger as Trigger,
 	type TabsTriggerCommonProps,
 	type TabsTriggerOptions,
 	type TabsTriggerProps,
 	type TabsTriggerRenderProps,
+	TabsTrigger as Trigger,
 } from "./tabs-trigger";
 
 export type {

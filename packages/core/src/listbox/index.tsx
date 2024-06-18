@@ -27,18 +27,18 @@ import {
 	type ListboxItemLabelRenderProps,
 } from "./listbox-item-label";
 import {
-	ListboxRoot as Root,
 	type ListboxRootCommonProps,
 	type ListboxRootOptions,
 	type ListboxRootProps,
 	type ListboxRootRenderProps,
+	ListboxRoot as Root,
 } from "./listbox-root";
 import {
-	ListboxSection as Section,
 	type ListboxSectionCommonProps,
 	type ListboxSectionOptions,
 	type ListboxSectionProps,
 	type ListboxSectionRenderProps,
+	ListboxSection as Section,
 } from "./listbox-section";
 
 export type {

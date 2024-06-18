@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/HiddenSelect.tsx
  */
 
-import { ComponentProps } from "solid-js";
+import type { ComponentProps } from "solid-js";
 
 import { HiddenSelectBase } from "./hidden-select-base";
 import { useSelectContext } from "./select-context";

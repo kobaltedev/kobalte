@@ -6,7 +6,7 @@
  * https://github.com/chakra-ui/chakra-ui/blob/main/packages/color-mode/src/color-mode-types.ts
  */
 
-import { Accessor, ParentProps } from "solid-js";
+import type { Accessor, ParentProps } from "solid-js";
 
 export type ColorMode = "light" | "dark";
 

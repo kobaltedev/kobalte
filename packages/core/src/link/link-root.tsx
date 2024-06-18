@@ -7,9 +7,13 @@
  */
 
 import { mergeRefs } from "@kobalte/utils";
-import { ValidComponent, splitProps } from "solid-js";
+import { type ValidComponent, splitProps } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createTagName } from "../primitives";
 
 export interface LinkRootOptions {

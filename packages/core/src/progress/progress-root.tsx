@@ -8,8 +8,8 @@
 
 import { clamp, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
-	Accessor,
-	ValidComponent,
+	type Accessor,
+	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -17,12 +17,16 @@ import {
 } from "solid-js";
 
 import { createNumberFormatter } from "../i18n";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import {
 	ProgressContext,
-	ProgressContextValue,
-	ProgressDataSet,
+	type ProgressContextValue,
+	type ProgressDataSet,
 } from "./progress-context";
 
 interface GetValueLabelParams {

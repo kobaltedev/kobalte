@@ -18,16 +18,16 @@ import {
 	isFunction,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	Component,
-	JSX,
-	ValidComponent,
+	type Accessor,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	children,
 	splitProps,
 } from "solid-js";
 
 import * as Button from "../button";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createToggleState } from "../primitives";
 
 export interface ToggleButtonRootState {
@@ -113,10 +113,9 @@ export function ToggleButtonRoot<T extends ValidComponent = "button">(
 			onClick={onClick}
 			{...others}
 		>
-			<ToggleButtonRootChild
-				state={{ pressed: state.isSelected }}
-				children={local.children}
-			/>
+			<ToggleButtonRootChild state={{ pressed: state.isSelected }}>
+				{local.children}
+			</ToggleButtonRootChild>
 		</Button.Root>
 	);
 }

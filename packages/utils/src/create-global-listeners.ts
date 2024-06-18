@@ -54,7 +54,7 @@ export function createGlobalListeners(): GlobalListeners {
 			? (...args: any) => {
 					globalListeners.delete(listener);
 					listener(...args);
-			  }
+				}
 			: listener;
 		globalListeners.set(listener, { type, eventTarget, fn, options });
 		eventTarget.addEventListener(type, listener, options);

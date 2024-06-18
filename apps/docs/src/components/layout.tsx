@@ -1,7 +1,7 @@
 import { useLocation } from "@solidjs/router";
-import { ParentProps, Show } from "solid-js";
+import { type ParentProps, Show } from "solid-js";
 
-import { NavSection } from "../model/navigation";
+import type { NavSection } from "../model/navigation";
 import { Footer } from "./footer";
 import { Header } from "./header";
 import { Navigation } from "./navigation";

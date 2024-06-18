@@ -1,14 +1,19 @@
 import { callHandler } from "@kobalte/utils";
-import { Component, JSX, ValidComponent, splitProps } from "solid-js";
-
 import {
+	type Component,
+	type JSX,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
+
+import type {
 	MenuTriggerCommonProps,
 	MenuTriggerOptions,
 	MenuTriggerRenderProps,
 } from "../menu";
 import { useOptionalMenuContext } from "../menu/menu-context";
 import { MenubarTrigger } from "../menubar/menubar-trigger";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuTriggerOptions extends MenuTriggerOptions {}

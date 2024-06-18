@@ -1,4 +1,4 @@
-import { Setter, createContext, useContext } from "solid-js";
+import { type Setter, createContext, useContext } from "solid-js";
 
 export interface ContextMenuContextValue {
 	setAnchorRect: Setter<{ x: number; y: number }>;

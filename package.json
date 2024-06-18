@@ -10,10 +10,7 @@
 	"license": "MIT",
 	"author": "jer3m01 <jer3m01@jer3m01.com>",
 	"contributors": ["Fabien Marie-Louise <fabienml.dev@gmail.com>"],
-	"workspaces": [
-		"apps/*",
-		"packages/*"
-	],
+	"workspaces": ["apps/*", "packages/*"],
 	"scripts": {
 		"build": "turbo run build",
 		"build:libs": "pnpm -F \\!docs -F \\!playground build && pnpm i",
@@ -24,9 +21,8 @@
 		"commit": "git-cz",
 		"dev:core": "pnpm -F @kobalte/core dev",
 		"dev:docs": "pnpm -F @kobalte/docs dev",
-		"format": "biome format . --write && prettier . --write",
-		"lint": "pnpm check --apply",
-		"check": "biome check .",
+		"format": "biome check --write && prettier . --write",
+		"check": "biome check",
 		"test": "turbo run test",
 		"typecheck": "turbo run typecheck"
 	},
@@ -38,7 +34,7 @@
 	"devDependencies": {
 		"@babel/core": "7.22.10",
 		"@babel/preset-env": "7.22.10",
-		"@biomejs/biome": "1.5.2",
+		"@biomejs/biome": "1.8.1",
 		"@changesets/cli": "2.26.2",
 		"@commitlint/cli": "17.7.1",
 		"@commitlint/config-conventional": "17.7.0",

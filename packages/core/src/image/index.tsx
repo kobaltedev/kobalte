@@ -6,18 +6,18 @@ import {
 	type ImageFallbackRenderProps,
 } from "./image-fallback";
 import {
-	ImageImg as Img,
 	type ImageImgCommonProps,
 	type ImageImgOptions,
 	type ImageImgProps,
 	type ImageImgRenderProps,
+	ImageImg as Img,
 } from "./image-img";
 import {
-	ImageRoot as Root,
 	type ImageRootCommonProps,
 	type ImageRootOptions,
 	type ImageRootProps,
 	type ImageRootRenderProps,
+	ImageRoot as Root,
 } from "./image-root";
 
 export type {

@@ -1,10 +1,10 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	Accessor,
-	Component,
+	type Accessor,
+	type Component,
 	JSX,
-	Setter,
-	ValidComponent,
+	type Setter,
+	type ValidComponent,
 	batch,
 	createEffect,
 	createMemo,
@@ -12,20 +12,20 @@ import {
 	splitProps,
 } from "solid-js";
 import createPresence from "solid-presence";
-import {
+import type {
 	MenubarRootCommonProps,
 	MenubarRootOptions,
 	MenubarRootRenderProps,
 } from "../menubar";
 import { MenubarRoot } from "../menubar/menubar-root";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper, PopperRootOptions } from "../popper";
-import { Placement } from "../popper/utils";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { Popper, type PopperRootOptions } from "../popper";
+import type { Placement } from "../popper/utils";
 import { createControllableSignal } from "../primitives/create-controllable-signal";
 import {
 	NavigationMenuContext,
-	NavigationMenuContextValue,
-	NavigationMenuDataSet,
+	type NavigationMenuContextValue,
+	type NavigationMenuDataSet,
 } from "./navigation-menu-context";
 
 export interface NavigationMenuRootOptions

@@ -14,7 +14,7 @@
  */
 
 import {
-	MaybeAccessor,
+	type MaybeAccessor,
 	access,
 	contains,
 	focusWithoutScrolling,
@@ -25,7 +25,7 @@ import {
 	removeItemFromArray,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { Accessor, createEffect, createSignal, onCleanup } from "solid-js";
+import { type Accessor, createEffect, createSignal, onCleanup } from "solid-js";
 import { isServer } from "solid-js/web";
 
 import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";

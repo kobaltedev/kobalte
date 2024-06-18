@@ -12,20 +12,24 @@ import {
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	ValidComponent,
+	type Accessor,
+	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createDisclosureState, createRegisterId } from "../primitives";
 import {
 	CollapsibleContext,
-	CollapsibleContextValue,
-	CollapsibleDataSet,
+	type CollapsibleContextValue,
+	type CollapsibleDataSet,
 } from "./collapsible-context";
 
 export interface CollapsibleRootOptions {

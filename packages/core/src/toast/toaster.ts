@@ -1,7 +1,7 @@
 import { isFunction } from "@kobalte/utils";
 
 import { toastStore } from "./toast-store";
-import {
+import type {
 	ShowToastOptions,
 	ToastComponent,
 	ToastPromiseComponent,

@@ -13,9 +13,9 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Component,
+	type Component,
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
@@ -24,14 +24,14 @@ import {
 import createPreventScroll from "solid-prevent-scroll";
 import {
 	DismissableLayer,
-	DismissableLayerCommonProps,
-	DismissableLayerRenderProps,
+	type DismissableLayerCommonProps,
+	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
-	FocusOutsideEvent,
-	InteractOutsideEvent,
-	PointerDownOutsideEvent,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
 } from "../primitives";

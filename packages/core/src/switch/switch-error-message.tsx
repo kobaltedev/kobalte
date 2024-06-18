@@ -1,12 +1,12 @@
-import { Component, ValidComponent } from "solid-js";
+import type { Component, ValidComponent } from "solid-js";
 import {
 	FormControlErrorMessage,
-	FormControlErrorMessageCommonProps,
-	FormControlErrorMessageOptions,
-	FormControlErrorMessageRenderProps,
+	type FormControlErrorMessageCommonProps,
+	type FormControlErrorMessageOptions,
+	type FormControlErrorMessageRenderProps,
 } from "../form-control";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { SwitchDataSet, useSwitchContext } from "./switch-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context";
 
 export interface SwitchErrorMessageOptions
 	extends FormControlErrorMessageOptions {}

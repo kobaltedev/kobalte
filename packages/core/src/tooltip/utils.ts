@@ -7,9 +7,9 @@
  * https://github.com/ariakit/ariakit/blob/f2a96973de523d67e41eec983263936c489ef3e2/packages/ariakit/src/hovercard/__utils/debug-polygon.ts
  */
 
-import { Polygon } from "@kobalte/utils";
+import type { Polygon } from "@kobalte/utils";
 
-import { BasePlacement, Placement } from "../popper/utils";
+import type { BasePlacement, Placement } from "../popper/utils";
 
 /**
  * Construct a polygon based on the floating element placement relative to the anchor.

@@ -1,6 +1,6 @@
-import { MaybeAccessor } from "@kobalte/utils";
+import type { MaybeAccessor } from "@kobalte/utils";
 
-import { DomCollectionItem } from "../create-dom-collection";
+import type { DomCollectionItem } from "../create-dom-collection";
 
 export interface CollectionItem {
 	/** The type of the item. */

@@ -1,8 +1,8 @@
-import { ValidComponent, createUniqueId } from "solid-js";
+import { type ValidComponent, createUniqueId } from "solid-js";
 
-import { MenuTrigger, MenuTriggerProps } from "../menu";
+import { MenuTrigger, type MenuTriggerProps } from "../menu";
 import { useOptionalMenuContext } from "../menu/menu-context";
-import { PolymorphicProps } from "../polymorphic";
+import type { PolymorphicProps } from "../polymorphic";
 import { useMenubarContext } from "./menubar-context";
 import { MenubarMenu } from "./menubar-menu";
 

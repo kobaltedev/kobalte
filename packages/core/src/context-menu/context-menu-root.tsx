@@ -8,18 +8,18 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	ParentProps,
+	type ParentProps,
 	createSignal,
 	createUniqueId,
 	splitProps,
 } from "solid-js";
 
 import { useLocale } from "../i18n";
-import { MenuRoot, MenuRootOptions } from "../menu";
+import { MenuRoot, type MenuRootOptions } from "../menu";
 import { createDisclosureState } from "../primitives";
 import {
 	ContextMenuContext,
-	ContextMenuContextValue,
+	type ContextMenuContextValue,
 } from "./context-menu-context";
 
 export interface ContextMenuRootOptions

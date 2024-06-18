@@ -1,8 +1,8 @@
-import { MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
+import { type MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
 
 import { useDomCollectionContext } from "./dom-collection-context";
-import { DomCollectionItem } from "./types";
+import type { DomCollectionItem } from "./types";
 
 export interface CreateDomCollectionItemProps<
 	T extends DomCollectionItem = DomCollectionItem,

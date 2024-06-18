@@ -7,22 +7,27 @@
  */
 
 import {
-	Orientation,
+	type Orientation,
 	OverrideComponentProps,
 	callHandler,
 	contains,
 	focusWithoutScrolling,
 } from "@kobalte/utils";
-import { Component, JSX, ValidComponent, splitProps } from "solid-js";
+import {
+	type Component,
+	type JSX,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
 
-import { Direction, useLocale } from "../i18n";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { FocusOutsideEvent } from "../primitives";
+import { type Direction, useLocale } from "../i18n";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { FocusOutsideEvent } from "../primitives";
 import {
 	MenuContentBase,
-	MenuContentBaseCommonProps,
-	MenuContentBaseOptions,
-	MenuContentBaseRenderProps,
+	type MenuContentBaseCommonProps,
+	type MenuContentBaseOptions,
+	type MenuContentBaseRenderProps,
 } from "./menu-content-base";
 import { useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";

@@ -41,11 +41,11 @@ import {
 	type SwitchRootRenderProps,
 } from "./switch-root";
 import {
-	SwitchThumb as Thumb,
 	type SwitchThumbCommonProps,
 	type SwitchThumbOptions,
 	type SwitchThumbProps,
 	type SwitchThumbRenderProps,
+	SwitchThumb as Thumb,
 } from "./switch-thumb";
 
 export type {

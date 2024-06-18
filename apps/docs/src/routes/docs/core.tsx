@@ -1,7 +1,7 @@
-import { RouteProps } from "@solidjs/router";
+import type { RouteProps } from "@solidjs/router";
 
 import { Layout } from "../../components";
-import { NavSection } from "../../model/navigation";
+import type { NavSection } from "../../model/navigation";
 
 const CORE_NAV_SECTIONS: NavSection[] = [
 	{

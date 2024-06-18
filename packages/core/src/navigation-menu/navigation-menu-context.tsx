@@ -1,5 +1,10 @@
-import { Accessor, Setter, createContext, useContext } from "solid-js";
-import { Placement } from "../popper/utils";
+import {
+	type Accessor,
+	type Setter,
+	createContext,
+	useContext,
+} from "solid-js";
+import type { Placement } from "../popper/utils";
 
 export interface NavigationMenuDataSet {
 	"data-expanded": string | undefined;

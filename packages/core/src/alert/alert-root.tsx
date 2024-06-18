@@ -1,6 +1,10 @@
-import { ValidComponent } from "solid-js";
+import type { ValidComponent } from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 
 export interface AlertRootOptions {}
 

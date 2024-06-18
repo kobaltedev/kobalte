@@ -1,4 +1,4 @@
-import { MaybeAccessor, access, mergeDefaultProps } from "@kobalte/utils";
+import { type MaybeAccessor, access, mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, onCleanup } from "solid-js";
 
 import { useFormControlContext } from "./form-control-context";

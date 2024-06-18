@@ -13,9 +13,9 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
-	ValidComponent,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	onCleanup,
 	splitProps,
@@ -23,8 +23,8 @@ import {
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { CollectionItemWithRef } from "../primitives";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useAccordionContext } from "./accordion-context";

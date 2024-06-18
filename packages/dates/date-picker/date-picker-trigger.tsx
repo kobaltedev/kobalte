@@ -1,10 +1,16 @@
 import {
-	OverrideComponentProps,
+	type OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, createEffect, createMemo, onCleanup, splitProps } from "solid-js";
+import {
+	type JSX,
+	createEffect,
+	createMemo,
+	onCleanup,
+	splitProps,
+} from "solid-js";
 
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
@@ -41,13 +47,15 @@ export function DatePickerTrigger(props: DatePickerTriggerProps) {
 		);
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> =
-		(e) => {
-			callHandler(e, local.onPointerDown);
+	const onPointerDown: JSX.EventHandlerUnion<
+		HTMLButtonElement,
+		PointerEvent
+	> = (e) => {
+		callHandler(e, local.onPointerDown);
 
-			// Prevent pointer events from reaching `DatePicker.Control`.
-			e.stopPropagation();
-		};
+		// Prevent pointer events from reaching `DatePicker.Control`.
+		e.stopPropagation();
+	};
 
 	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);

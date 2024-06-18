@@ -1,12 +1,12 @@
-import { Component, ValidComponent } from "solid-js";
+import type { Component, ValidComponent } from "solid-js";
 import {
 	FormControlErrorMessage,
-	FormControlErrorMessageCommonProps,
-	FormControlErrorMessageProps,
-	FormControlErrorMessageRenderProps,
+	type FormControlErrorMessageCommonProps,
+	type FormControlErrorMessageProps,
+	type FormControlErrorMessageRenderProps,
 } from "../form-control";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxErrorMessageOptions
 	extends FormControlErrorMessageProps {}

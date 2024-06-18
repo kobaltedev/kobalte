@@ -22,15 +22,19 @@ import {
 } from "@kobalte/utils";
 import {
 	For,
-	JSX,
-	ValidComponent,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	on,
 	onCleanup,
 	splitProps,
 } from "solid-js";
 import { isServer } from "solid-js/web";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 
 import { useToastRegionContext } from "./toast-region-context";
 

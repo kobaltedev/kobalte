@@ -1,16 +1,23 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	splitProps,
 } from "solid-js";
 
 import createPresence from "solid-presence";
-import { FormControlDataSet, useFormControlContext } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
+import {
+	type FormControlDataSet,
+	useFormControlContext,
+} from "../form-control";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
 
 export interface CheckboxIndicatorOptions {
 	/**

@@ -20,34 +20,34 @@ import {
 	type DialogDescriptionRenderProps,
 } from "./dialog-description";
 import {
-	DialogOverlay as Overlay,
 	type DialogOverlayCommonProps,
 	type DialogOverlayOptions,
 	type DialogOverlayProps,
 	type DialogOverlayRenderProps,
+	DialogOverlay as Overlay,
 } from "./dialog-overlay";
 import {
-	DialogPortal as Portal,
 	type DialogPortalProps,
+	DialogPortal as Portal,
 } from "./dialog-portal";
 import {
-	DialogRoot as Root,
 	type DialogRootOptions,
 	type DialogRootProps,
+	DialogRoot as Root,
 } from "./dialog-root";
 import {
-	DialogTitle as Title,
 	type DialogTitleCommonProps,
 	type DialogTitleOptions,
 	type DialogTitleProps,
 	type DialogTitleRenderProps,
+	DialogTitle as Title,
 } from "./dialog-title";
 import {
-	DialogTrigger as Trigger,
 	type DialogTriggerCommonProps,
 	type DialogTriggerOptions,
 	type DialogTriggerProps,
 	type DialogTriggerRenderProps,
+	DialogTrigger as Trigger,
 } from "./dialog-trigger";
 
 export type {

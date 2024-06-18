@@ -6,8 +6,18 @@
  * https://github.com/mantinedev/mantine/blob/master/src/mantine-core/src/components/Skeleton/Skeleton.tsx
  */
 import { mergeDefaultProps } from "@kobalte/utils";
-import { JSX, ValidComponent, createUniqueId, splitProps } from "solid-js";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import { combineStyle } from "@solid-primitives/props";
+import {
+	type JSX,
+	type ValidComponent,
+	createUniqueId,
+	splitProps,
+} from "solid-js";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 
 export interface SkeletonRootOptions {
 	/** Whether the skeleton is visible. Sets data attribute. */
@@ -31,8 +41,7 @@ export interface SkeletonRootOptions {
 
 export interface SkeletonRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	/** The HTML styles attribute (object form only). */
-	style: JSX.CSSProperties;
+	style: JSX.CSSProperties | string;
 }
 
 export interface SkeletonRootRenderProps extends SkeletonRootCommonProps {
@@ -75,20 +84,22 @@ export function Skeleton<T extends ValidComponent = "div">(
 			role="group"
 			data-animate={local.animate}
 			data-visible={local.visible}
-			style={{
-				"border-radius": local.circle
-					? "9999px"
-					: local.radius
-					  ? `${local.radius}px`
-					  : undefined,
-				width: local.circle
-					? `${local.height}px`
-					: local.width
-					  ? `${local.width}px`
-					  : "100%",
-				height: local.height ? `${local.height}px` : "auto",
-				...local.style,
-			}}
+			style={combineStyle(
+				{
+					"border-radius": local.circle
+						? "9999px"
+						: local.radius
+							? `${local.radius}px`
+							: undefined,
+					width: local.circle
+						? `${local.height}px`
+						: local.width
+							? `${local.width}px`
+							: "100%",
+					height: local.height ? `${local.height}px` : "auto",
+				},
+				local.style,
+			)}
 			{...others}
 		/>
 	);

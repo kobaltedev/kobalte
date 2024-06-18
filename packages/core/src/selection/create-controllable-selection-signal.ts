@@ -1,7 +1,7 @@
-import { Accessor } from "solid-js";
+import type { Accessor } from "solid-js";
 
 import {
-	CreateControllableSignalProps,
+	type CreateControllableSignalProps,
 	createControllableSignal,
 } from "../primitives";
 import { Selection } from "./types";

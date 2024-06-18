@@ -7,7 +7,7 @@
  */
 
 import {
-	Orientation,
+	type Orientation,
 	callHandler,
 	composeEventHandlers,
 	contains,
@@ -15,10 +15,10 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
+	type Component,
+	type JSX,
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	createUniqueId,
 	onCleanup,
@@ -26,23 +26,28 @@ import {
 	splitProps,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import {
 	DismissableLayer,
-	DismissableLayerRenderProps,
+	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import { useLocale } from "../i18n/i18n-provider";
 import { createSelectableList } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { Popper } from "../popper";
 import {
-	FocusOutsideEvent,
-	InteractOutsideEvent,
-	PointerDownOutsideEvent,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
 	createFocusScope,
 } from "../primitives";
-import { MenuDataSet, useMenuContext } from "./menu-context";
+import { type MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { MENUBAR_KEYS } from "./menu-trigger";
 
@@ -95,8 +100,7 @@ export interface MenuContentBaseCommonProps<
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
 	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
-	/** The HTML styles attribute (object form only). */
-	style?: JSX.CSSProperties;
+	style?: JSX.CSSProperties | string;
 }
 
 export interface MenuContentBaseRenderProps
@@ -356,12 +360,14 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 						}
 						excludedElements={[context.triggerRef]}
 						bypassTopMostLayerCheck
-						style={{
-							"--kb-menu-content-transform-origin":
-								"var(--kb-popper-content-transform-origin)",
-							position: "relative",
-							...local.style,
-						}}
+						style={combineStyle(
+							{
+								"--kb-menu-content-transform-origin":
+									"var(--kb-popper-content-transform-origin)",
+								position: "relative",
+							},
+							local.style,
+						)}
 						onEscapeKeyDown={onEscapeKeyDown}
 						onFocusOutside={onFocusOutside}
 						onDismiss={context.close}

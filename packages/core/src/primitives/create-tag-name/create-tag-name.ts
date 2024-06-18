@@ -7,7 +7,12 @@
  */
 
 import { isString } from "@kobalte/utils";
-import { Accessor, Component, createEffect, createSignal } from "solid-js";
+import {
+	type Accessor,
+	type Component,
+	createEffect,
+	createSignal,
+} from "solid-js";
 
 /**
  * Returns the tag name by parsing an element ref.

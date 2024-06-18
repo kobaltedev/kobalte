@@ -4,7 +4,12 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { Component, JSX, ValidComponent, splitProps } from "solid-js";
+import {
+	type Component,
+	type JSX,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -12,10 +17,10 @@ import {
 	useFormControlContext,
 } from "../form-control";
 import {
-	ElementOf,
+	type ElementOf,
 	Polymorphic,
 	PolymorphicCallbackProps,
-	PolymorphicProps,
+	type PolymorphicProps,
 } from "../polymorphic";
 import * as SpinButton from "../spin-button";
 import { useNumberFieldContext } from "./number-field-context";

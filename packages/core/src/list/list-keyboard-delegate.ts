@@ -6,10 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/ListKeyboardDelegate.ts
  */
 
-import { Accessor } from "solid-js";
+import type { Accessor } from "solid-js";
 
-import { Collection, CollectionNode } from "../primitives";
-import { KeyboardDelegate } from "../selection";
+import type { Collection, CollectionNode } from "../primitives";
+import type { KeyboardDelegate } from "../selection";
 
 export class ListKeyboardDelegate implements KeyboardDelegate {
 	private collection: Accessor<Collection<CollectionNode>>;

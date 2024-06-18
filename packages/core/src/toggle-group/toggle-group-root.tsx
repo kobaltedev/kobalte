@@ -1,9 +1,14 @@
-import { Component, ValidComponent, createMemo, splitProps } from "solid-js";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
+import {
+	type Component,
+	type ValidComponent,
+	createMemo,
+	splitProps,
+} from "solid-js";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	ToggleGroupBase,
-	ToggleGroupBaseOptions,
-	ToggleGroupBaseRenderProps,
+	type ToggleGroupBaseOptions,
+	type ToggleGroupBaseRenderProps,
 } from "./toggle-group-base";
 
 export interface ToggleGroupSingleOptions {

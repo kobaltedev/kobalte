@@ -1,15 +1,15 @@
 import {
 	FormControlDescription as Description,
+	FormControlErrorMessage as ErrorMessage,
+	FormControlLabel as Label,
 	type FormControlDescriptionCommonProps as NumberFieldDescriptionCommonProps,
 	type FormControlDescriptionOptions as NumberFieldDescriptionOptions,
 	type FormControlDescriptionProps as NumberFieldDescriptionProps,
 	type FormControlDescriptionRenderProps as NumberFieldDescriptionRenderProps,
-	FormControlErrorMessage as ErrorMessage,
 	type FormControlErrorMessageCommonProps as NumberFieldErrorMessageCommonProps,
 	type FormControlErrorMessageOptions as NumberFieldErrorMessageOptions,
 	type FormControlErrorMessageProps as NumberFieldErrorMessageProps,
 	type FormControlErrorMessageRenderProps as NumberFieldErrorMessageRenderProps,
-	FormControlLabel as Label,
 	type FormControlLabelCommonProps as NumberFieldLabelCommonProps,
 	type FormControlLabelOptions as NumberFieldLabelOptions,
 	type FormControlLabelProps as NumberFieldLabelProps,
@@ -41,11 +41,11 @@ import {
 	type NumberFieldInputRenderProps,
 } from "./number-field-input";
 import {
-	NumberFieldRoot as Root,
 	type NumberFieldRootCommonProps,
 	type NumberFieldRootOptions,
 	type NumberFieldRootProps,
 	type NumberFieldRootRenderProps,
+	NumberFieldRoot as Root,
 } from "./number-field-root";
 
 export type {

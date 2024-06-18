@@ -1,8 +1,17 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
-import { JSX, ValidComponent, createSignal, splitProps } from "solid-js";
+import {
+	type JSX,
+	type ValidComponent,
+	createSignal,
+	splitProps,
+} from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { SliderDataSet, useSliderContext } from "./slider-context";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { type SliderDataSet, useSliderContext } from "./slider-context";
 import { getClosestValueIndex, linearScale } from "./utils";
 
 export interface SliderTrackOptions {}

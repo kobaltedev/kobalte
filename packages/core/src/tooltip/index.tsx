@@ -22,11 +22,11 @@ import {
 	type TooltipRootProps,
 } from "./tooltip-root";
 import {
-	TooltipTrigger as Trigger,
 	type TooltipTriggerCommonProps,
 	type TooltipTriggerOptions,
 	type TooltipTriggerProps,
 	type TooltipTriggerRenderProps,
+	TooltipTrigger as Trigger,
 } from "./tooltip-trigger";
 
 export type {

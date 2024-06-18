@@ -1,7 +1,7 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	Component,
-	ValidComponent,
+	type Component,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -9,8 +9,8 @@ import {
 } from "solid-js";
 
 import { useMenubarContext } from "../menubar/menubar-context";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import {
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type {
 	PopperArrowCommonProps,
 	PopperArrowOptions,
 	PopperArrowRenderProps,

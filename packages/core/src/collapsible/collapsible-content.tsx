@@ -8,9 +8,9 @@
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
-	JSX,
+	type JSX,
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	on,
@@ -19,10 +19,15 @@ import {
 	splitProps,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import createPresence from "solid-presence";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 import {
-	CollapsibleDataSet,
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import {
+	type CollapsibleDataSet,
 	useCollapsibleContext,
 } from "./collapsible-context";
 
@@ -33,7 +38,7 @@ export interface CollapsibleContentCommonProps<
 > {
 	id: string;
 	ref: T | ((el: T) => void);
-	style: JSX.CSSProperties;
+	style: JSX.CSSProperties | string;
 }
 
 export interface CollapsibleContentRenderProps
@@ -131,15 +136,17 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 				as="div"
 				ref={mergeRefs(setRef, local.ref)}
 				id={local.id}
-				style={{
-					"--kb-collapsible-content-height": height()
-						? `${height()}px`
-						: undefined,
-					"--kb-collapsible-content-width": width()
-						? `${width()}px`
-						: undefined,
-					...local.style,
-				}}
+				style={combineStyle(
+					{
+						"--kb-collapsible-content-height": height()
+							? `${height()}px`
+							: undefined,
+						"--kb-collapsible-content-width": width()
+							? `${width()}px`
+							: undefined,
+					},
+					local.style,
+				)}
 				{...context.dataset()}
 				{...others}
 			/>

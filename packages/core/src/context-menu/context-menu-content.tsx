@@ -6,17 +6,17 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/context-menu/src/ContextMenu.tsx
  */
 
-import { Component, ValidComponent, splitProps } from "solid-js";
+import { type Component, type ValidComponent, splitProps } from "solid-js";
 
 import {
 	MenuContent,
-	MenuContentCommonProps,
-	MenuContentOptions,
-	MenuContentRenderProps,
+	type MenuContentCommonProps,
+	type MenuContentOptions,
+	type MenuContentRenderProps,
 } from "../menu";
 import { useMenuRootContext } from "../menu/menu-root-context";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { InteractOutsideEvent } from "../primitives";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { InteractOutsideEvent } from "../primitives";
 
 export interface ContextMenuContentOptions extends MenuContentOptions {}
 

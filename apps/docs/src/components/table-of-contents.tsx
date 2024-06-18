@@ -1,9 +1,9 @@
 import { useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
 import {
-	Accessor,
+	type Accessor,
 	For,
-	Setter,
+	type Setter,
 	Suspense,
 	createEffect,
 	createSignal,
@@ -28,7 +28,7 @@ function getHeadingsFromToc(tableOfContents: TocItem[]) {
 		}
 
 		const style = window.getComputedStyle(el);
-		const scrollMt = parseFloat(style.scrollMarginTop) + 1;
+		const scrollMt = Number.parseFloat(style.scrollMarginTop) + 1;
 
 		const top = window.scrollY + el.getBoundingClientRect().top - scrollMt;
 

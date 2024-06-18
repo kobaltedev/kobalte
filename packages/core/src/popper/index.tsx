@@ -11,16 +11,16 @@ import {
 	usePopperContext,
 } from "./popper-context";
 import {
-	PopperPositioner as Positioner,
 	type PopperPositionerCommonProps,
 	type PopperPositionerOptions,
 	type PopperPositionerProps,
 	type PopperPositionerRenderProps,
+	PopperPositioner as Positioner,
 } from "./popper-positioner";
 import {
-	PopperRoot as Root,
 	type PopperRootOptions,
 	type PopperRootProps,
+	PopperRoot as Root,
 } from "./popper-root";
 
 export type {

@@ -9,16 +9,20 @@
 import {
 	ComponentProps,
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	on,
 	onCleanup,
 } from "solid-js";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 
 import { useImageContext } from "./image-context";
-import { ImageLoadingStatus } from "./types";
+import type { ImageLoadingStatus } from "./types";
 
 export interface ImageImgOptions {}
 

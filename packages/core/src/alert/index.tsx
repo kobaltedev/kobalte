@@ -1,9 +1,9 @@
 import {
-	AlertRoot as Root,
 	type AlertRootCommonProps,
 	type AlertRootOptions,
 	type AlertRootProps,
 	type AlertRootRenderProps,
+	AlertRoot as Root,
 } from "./alert-root";
 
 export type {

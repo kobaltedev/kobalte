@@ -8,16 +8,16 @@
 
 import { isSameDay, isSameMonth, isWeekend } from "@internationalized/date";
 import {
-	OverrideComponentProps,
+	type OverrideComponentProps,
 	callHandler,
 	focusWithoutScrolling,
 	getWindow,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, createEffect, createMemo, splitProps } from "solid-js";
+import { type JSX, createEffect, createMemo, splitProps } from "solid-js";
 
 import { createDateFormatter } from "../i18n";
-import { AsChildProp, Polymorphic } from "../polymorphic";
+import { type AsChildProp, Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";
 import { useCalendarGriBodyCellContext } from "./calendar-grid-body-cell-context";
 import { useCalendarGridContext } from "./calendar-grid-context";

@@ -8,7 +8,7 @@
 
 import {
 	OverrideComponentProps,
-	ValidationState,
+	type ValidationState,
 	access,
 	createGenerateId,
 	focusWithoutScrolling,
@@ -16,10 +16,10 @@ import {
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	Component,
-	JSX,
-	ValidComponent,
+	type Accessor,
+	type Component,
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -32,30 +32,34 @@ import createPresence from "solid-presence";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
-	FormControlDataSet,
+	type FormControlDataSet,
 	createFormControl,
 } from "../form-control";
 import { createCollator } from "../i18n";
 import { ListKeyboardDelegate, createListState } from "../list";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { Popper, PopperRootOptions } from "../popper";
 import {
-	CollectionNode,
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import { Popper, type PopperRootOptions } from "../popper";
+import {
+	type CollectionNode,
 	createDisclosureState,
 	createFormResetListener,
 	createRegisterId,
 } from "../primitives";
 import {
-	FocusStrategy,
-	KeyboardDelegate,
+	type FocusStrategy,
+	type KeyboardDelegate,
 	Selection,
-	SelectionBehavior,
-	SelectionMode,
+	type SelectionBehavior,
+	type SelectionMode,
 } from "../selection";
 import {
 	SelectContext,
-	SelectContextValue,
-	SelectDataSet,
+	type SelectContextValue,
+	type SelectDataSet,
 } from "./select-context";
 
 export interface SelectBaseItemComponentProps<T> {

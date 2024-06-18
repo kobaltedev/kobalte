@@ -8,7 +8,7 @@
 
 import {
 	OverrideComponentProps,
-	ValidationState,
+	type ValidationState,
 	access,
 	callHandler,
 	createGenerateId,
@@ -17,9 +17,9 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	Accessor,
-	JSX,
-	ValidComponent,
+	type Accessor,
+	type JSX,
+	type ValidComponent,
 	children,
 	createMemo,
 	createSignal,
@@ -30,15 +30,19 @@ import {
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
-	FormControlDataSet,
+	type FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import { createFormResetListener, createToggleState } from "../primitives";
 import {
 	CheckboxContext,
-	CheckboxContextValue,
-	CheckboxDataSet,
+	type CheckboxContextValue,
+	type CheckboxDataSet,
 } from "./checkbox-context";
 
 interface CheckboxRootState {

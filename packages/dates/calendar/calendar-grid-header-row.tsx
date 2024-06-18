@@ -7,8 +7,8 @@
  * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/react-aria-components/src/Calendar.tsx
  */
 
-import { OverrideComponentProps } from "@kobalte/utils";
-import { Accessor, Index, JSX, splitProps } from "solid-js";
+import type { OverrideComponentProps } from "@kobalte/utils";
+import { type Accessor, Index, type JSX, splitProps } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
 import { useCalendarGridContext } from "./calendar-grid-context";

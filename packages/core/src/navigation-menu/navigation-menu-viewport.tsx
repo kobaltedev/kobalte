@@ -1,9 +1,14 @@
-import { Orientation, composeEventHandlers, mergeRefs } from "@kobalte/utils";
 import {
-	Component,
-	JSX,
+	type Orientation,
+	composeEventHandlers,
+	mergeRefs,
+} from "@kobalte/utils";
+import { combineStyle } from "@solid-primitives/props";
+import {
+	type Component,
+	type JSX,
 	Show,
-	ValidComponent,
+	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -12,12 +17,15 @@ import {
 } from "solid-js";
 import {
 	DismissableLayer,
-	DismissableLayerRenderProps,
+	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
-import { MenubarDataSet, useMenubarContext } from "../menubar/menubar-context";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
 import {
+	type MenubarDataSet,
+	useMenubarContext,
+} from "../menubar/menubar-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { Popper } from "../popper";
+import type {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
 	PointerDownOutsideEvent,
@@ -55,8 +63,7 @@ export interface NavigationMenuViewportCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	ref: T | ((el: T) => void);
-	/** The HTML styles attribute (object form only). */
-	style: JSX.CSSProperties;
+	style: JSX.CSSProperties | string;
 }
 
 export interface NavigationMenuViewportRenderProps
@@ -133,18 +140,20 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 					ref={mergeRefs(context.setViewportRef, local.ref)}
 					excludedElements={[context.rootRef]}
 					bypassTopMostLayerCheck
-					style={{
-						"--kb-menu-content-transform-origin":
-							"var(--kb-popper-content-transform-origin)",
-						"--kb-navigation-menu-viewport-height": height()
-							? `${height()}px`
-							: undefined,
-						"--kb-navigation-menu-viewport-width": width()
-							? `${width()}px`
-							: undefined,
-						position: "relative",
-						...local.style,
-					}}
+					style={combineStyle(
+						{
+							"--kb-menu-content-transform-origin":
+								"var(--kb-popper-content-transform-origin)",
+							"--kb-navigation-menu-viewport-height": height()
+								? `${height()}px`
+								: undefined,
+							"--kb-navigation-menu-viewport-width": width()
+								? `${width()}px`
+								: undefined,
+							position: "relative",
+						},
+						local.style,
+					)}
 					onEscapeKeyDown={composeEventHandlers([
 						local.onEscapeKeyDown,
 						onEscapeKeyDown,

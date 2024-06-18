@@ -1,9 +1,9 @@
-import { Accessor, JSX, createContext, useContext } from "solid-js";
+import { type Accessor, type JSX, createContext, useContext } from "solid-js";
 
-import { ListState } from "../list";
-import { CollectionNode } from "../primitives";
-import { FocusStrategy, KeyboardDelegate } from "../selection";
-import { ComboboxTriggerMode } from "./types";
+import type { ListState } from "../list";
+import type { CollectionNode } from "../primitives";
+import type { FocusStrategy, KeyboardDelegate } from "../selection";
+import type { ComboboxTriggerMode } from "./types";
 
 export interface ComboboxDataSet {
 	"data-expanded": string | undefined;

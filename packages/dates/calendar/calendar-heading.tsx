@@ -7,7 +7,7 @@
  * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-aria/calendar/src/useCalendarBase.ts
  */
 
-import { ComponentProps, createMemo } from "solid-js";
+import { type ComponentProps, createMemo } from "solid-js";
 
 import { Polymorphic } from "../polymorphic";
 import { useCalendarContext } from "./calendar-context";

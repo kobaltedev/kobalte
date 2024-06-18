@@ -7,17 +7,27 @@
  */
 
 import {
-	Orientation,
+	type Orientation,
 	composeEventHandlers,
 	focusWithoutScrolling,
 	isWebKit,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { JSX, ValidComponent, createEffect, on, splitProps } from "solid-js";
+import {
+	type JSX,
+	type ValidComponent,
+	createEffect,
+	on,
+	splitProps,
+} from "solid-js";
 
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
-import { CollectionItemWithRef } from "../primitives";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
+import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
 import { useTabsContext } from "./tabs-context";

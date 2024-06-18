@@ -1,9 +1,14 @@
 import { callHandler } from "@kobalte/utils";
-import { Component, JSX, ValidComponent, splitProps } from "solid-js";
+import {
+	type Component,
+	type JSX,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
 
 import * as Button from "../button";
-import { ElementOf, PolymorphicProps } from "../polymorphic";
-import { PopoverDataSet, usePopoverContext } from "./popover-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { type PopoverDataSet, usePopoverContext } from "./popover-context";
 
 export interface PopoverCloseButtonOptions {}
 
