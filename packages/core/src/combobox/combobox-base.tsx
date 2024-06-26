@@ -432,6 +432,22 @@ export function ComboboxBase<
 		);
 	};
 
+	const getOptionTextValue = (option: Option) => {
+		const optionTextValue = local.optionTextValue;
+
+		if (optionTextValue == null) {
+			// If no `optionTextValue`, the option itself is the label (ex: string[] of options).
+			return String(option);
+		}
+
+		// Get the label from the option object as a string.
+		return String(
+			isFunction(optionTextValue)
+				? optionTextValue(option as any)
+				: (option as any)[optionTextValue],
+		);
+	};
+
 	// All options flattened without option groups.
 	const allOptions = createMemo(() => {
 		const optionGroupChildren = local.optionGroupChildren;
@@ -454,7 +470,7 @@ export function ComboboxBase<
 			return local.defaultFilter?.(option as any, inputVal);
 		}
 
-		const textVal = getOptionLabel(option);
+		const textVal = getOptionTextValue(option);
 
 		switch (local.defaultFilter) {
 			case "startsWith":
