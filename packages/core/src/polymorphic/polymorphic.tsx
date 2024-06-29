@@ -65,6 +65,6 @@ export function Polymorphic<RenderProps>(
 
 	return (
 		// @ts-ignore: Props are valid but not worth calculating
-		<Dynamic component={local.as} {...others} />
+		<Dynamic {...others} component={local.as} />
 	);
 }
