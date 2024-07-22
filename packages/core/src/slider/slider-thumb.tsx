@@ -140,11 +140,11 @@ export function SliderThumb<T extends ValidComponent = "span">(
     return isVertical ? `translate(-50%, ${value}%)` : `translate(${value}%, -50%)`;
      */
 
-		if (context.state.orientation() === 'vertical') {
-			return context.inverted() ? 'translateY(-50%)' :'translateY(50%)';
+		if (context.state.orientation() === "vertical") {
+			return context.inverted() ? "translateY(-50%)" : "translateY(50%)";
 		}
 
-		return context.inverted() ? 'translateX(50%)' : 'translateX(-50%)';
+		return context.inverted() ? "translateX(50%)" : "translateX(-50%)";
 	};
 
 	let startPosition = 0;
