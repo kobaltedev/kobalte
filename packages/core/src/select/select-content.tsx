@@ -111,7 +111,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 
 	createPreventScroll({
 		element: () => ref ?? null,
-		enabled: () => context.isOpen() && context.preventScroll(),
+		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
 	createFocusScope(

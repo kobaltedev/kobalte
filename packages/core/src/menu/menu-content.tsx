@@ -37,7 +37,7 @@ export function MenuContent<T extends ValidComponent = "div">(
 
 	createPreventScroll({
 		element: () => ref ?? null,
-		enabled: () => context.isOpen() && rootContext.preventScroll(),
+		enabled: () => context.contentPresent() && rootContext.preventScroll(),
 	});
 
 	return (
