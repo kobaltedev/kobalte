@@ -212,7 +212,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		},
 	});
 
-	local.onRawValueChange?.(parseRawValue(value()));
+	if (value()) local.onRawValueChange?.(parseRawValue(value()));
 
 	function isAllowedInput(char: string): boolean {
 		if (local.allowedInput !== undefined) return local.allowedInput.test(char);
