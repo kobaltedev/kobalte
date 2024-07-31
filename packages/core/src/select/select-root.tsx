@@ -15,7 +15,7 @@ import {
 
 export interface SelectSingleSelectionOptions<T> {
 	/** The controlled value of the select. */
-	value?: T;
+	value?: T | null;
 
 	/**
 	 * The value of the select when initially rendered.
@@ -24,7 +24,7 @@ export interface SelectSingleSelectionOptions<T> {
 	defaultValue?: T;
 
 	/** Event handler called when the value changes. */
-	onChange?: (value: T) => void;
+	onChange?: (value: T | null) => void;
 
 	/** Whether the select allow multiple selection. */
 	multiple?: false;
@@ -101,10 +101,10 @@ export function SelectRoot<
 
 	const onChange = (value: Option[]) => {
 		if (local.multiple) {
-			local.onChange?.(value as any);
+			local.onChange?.((value ?? []) as any);
 		} else {
 			// use `null` as "no value" because `undefined` mean the component is "uncontrolled".
-			local.onChange?.((value[0] ?? null) as any);
+			local.onChange?.((value[0] ?? null) as any); // TODO: maybe return undefined? breaking change!
 		}
 	};
 

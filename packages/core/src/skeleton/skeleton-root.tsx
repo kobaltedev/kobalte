@@ -46,8 +46,8 @@ export interface SkeletonRootCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface SkeletonRootRenderProps extends SkeletonRootCommonProps {
 	role: "group";
-	"data-animate": boolean;
-	"data-visible": boolean;
+	"data-animate": boolean | undefined;
+	"data-visible": boolean | undefined;
 }
 
 export type SkeletonRootProps<
@@ -82,8 +82,8 @@ export function Skeleton<T extends ValidComponent = "div">(
 		<Polymorphic<SkeletonRootRenderProps>
 			as="div"
 			role="group"
-			data-animate={local.animate}
-			data-visible={local.visible}
+			data-animate={local.animate || undefined}
+			data-visible={local.visible || undefined}
 			style={combineStyle(
 				{
 					"border-radius": local.circle

@@ -37,6 +37,7 @@ export interface ComboboxInputCommonProps<
 	ref: T | ((el: T) => void);
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 	onTouchEnd: JSX.EventHandlerUnion<T, TouchEvent>;
@@ -93,6 +94,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		[
 			"ref",
 			"disabled",
+			"onClick",
 			"onInput",
 			"onKeyDown",
 			"onFocus",
@@ -112,6 +114,14 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	};
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
+
+	const onClick: JSX.EventHandlerUnion<HTMLInputElement, MouseEvent> = (e) => {
+		callHandler(e, local.onClick);
+
+		if (context.triggerMode() === "focus" && !context.isOpen()) {
+			context.open(false, "focus");
+		}
+	};
 
 	const onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
 		callHandler(e, local.onInput);
@@ -315,6 +325,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 			aria-required={formControlContext.isRequired() || undefined}
 			aria-disabled={formControlContext.isDisabled() || undefined}
 			aria-readonly={formControlContext.isReadOnly() || undefined}
+			onClick={onClick}
 			onInput={onInput}
 			onKeyDown={onKeyDown}
 			onFocus={onFocus}
