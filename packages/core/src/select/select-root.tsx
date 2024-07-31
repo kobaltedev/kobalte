@@ -15,7 +15,7 @@ import {
 
 export interface SelectSingleSelectionOptions<T> {
 	/** The controlled value of the select. */
-	value?: T;
+	value?: T | null;
 
 	/**
 	 * The value of the select when initially rendered.
@@ -104,7 +104,7 @@ export function SelectRoot<
 			local.onChange?.((value ?? []) as any);
 		} else {
 			// use `null` as "no value" because `undefined` mean the component is "uncontrolled".
-			local.onChange?.((value[0] ?? null) as any); // TODO: return undefined, breaking change!
+			local.onChange?.((value[0] ?? null) as any); // TODO: maybe return undefined? breaking change!
 		}
 	};
 
