@@ -112,7 +112,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 	const initialValue = local.value;
 
 	const [value, setValue] = createControllableSignal({
-		value: () => initialValue === undefined ? undefined : local.value ?? "",
+		value: () => (initialValue === undefined ? undefined : local.value ?? ""),
 		defaultValue: () => local.defaultValue,
 		onChange: (value) => local.onChange?.(value),
 	});
