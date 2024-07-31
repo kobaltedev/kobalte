@@ -82,11 +82,14 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 		"onFocusOutside",
 	]);
 
-	const close = () => {
+	const dismiss = () => {
 		context.resetInputValue(
 			context.listState().selectionManager().selectedKeys(),
 		);
 		context.close();
+		setTimeout(() => {
+			context.close();
+		});
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
@@ -165,7 +168,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 						local.style,
 					)}
 					onFocusOutside={onFocusOutside}
-					onDismiss={close}
+					onDismiss={dismiss}
 					{...context.dataset()}
 					{...others}
 				/>
