@@ -111,6 +111,10 @@ export default defineConfig({
 		experimental: {
 			asyncContext: true,
 		},
+		prerender: {
+			routes: ["/docs/core/overview/introduction"],
+			crawlLinks: true
+		}
 	},
 
 	extensions: ["mdx", "md"],
