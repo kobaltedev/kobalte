@@ -24,9 +24,7 @@
 	},
 	"license": "MIT",
 	"author": "jer3m01 <jer3m01@jer3m01.com>",
-	"contributors": [
-		"Fabien Marie-Louise <fabienml.dev@gmail.com>"
-	],
+	"contributors": ["Fabien Marie-Louise <fabienml.dev@gmail.com>"],
 	"sideEffects": false,
 	"type": "module",
 	"exports": {
@@ -47,18 +45,11 @@
 	"types": "dist/index.d.ts",
 	"typesVersions": {
 		"*": {
-			"*": [
-				"./dist/*/index.d.ts",
-				"./dist/index.d.ts"
-			]
+			"*": ["./dist/*/index.d.ts", "./dist/index.d.ts"]
 		}
 	},
 	"source": "src/index.tsx",
-	"files": [
-		"dist",
-		"src",
-		"NOTICE.txt"
-	],
+	"files": ["dist", "src", "NOTICE.txt"],
 	"scripts": {
 		"build": "pnpm build:cp && pnpm build:tsup",
 		"build:cp": "cp ../../NOTICE.txt .",
@@ -75,11 +66,12 @@
 		"@internationalized/number": "^3.2.1",
 		"@kobalte/utils": "^0.9.0",
 		"@solid-primitives/props": "^3.1.8",
+		"@solid-primitives/resize-observer": "^2.0.26",
 		"solid-presence": "^0.1.6",
 		"solid-prevent-scroll": "^0.1.4"
 	},
 	"devDependencies": {
-		"@kobalte/tests": "^0.6.0",
+		"@kobalte/tests": "workspace:*",
 		"esbuild-plugin-solid": "^0.5.0",
 		"tsup": "7.2.0"
 	},
