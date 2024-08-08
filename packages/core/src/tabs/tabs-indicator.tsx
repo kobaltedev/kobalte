@@ -17,6 +17,7 @@ import {
 
 import type { Orientation } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import { createResizeObserver } from "@solid-primitives/resize-observer";
 import { useLocale } from "../i18n";
 import {
 	type ElementOf,
@@ -113,6 +114,8 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 			{ defer: true },
 		),
 	);
+
+	createResizeObserver(context.selectedTab, computeStyle);
 
 	return (
 		<Polymorphic<TabsIndicatorRenderProps>
