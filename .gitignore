@@ -27,6 +27,7 @@ lerna-debug.log
 .output
 
 # kobalte dev
+packages/core/dev
 packages/core/dev/App.tsx
 packages/core/dev/index.css
 packages/core/NOTICE.txt
