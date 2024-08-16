@@ -21,7 +21,9 @@ export function PaginationItems(props: PaginationItemsProps) {
 		const { count, siblingCount, page, fixedItems } = context;
 		// render directly if count is so small that it does not make sense to render an ellipsis
 		// this is the case for if count is even -> 8, count is odd -> 7, each plus 2x siblingsCount
-		const renderItemsDirectly = count() < 2 * siblingCount() + (count() % 2 === 0 ? 6 : 5);
+		const renderItemsDirectly = context.fixedItems()
+			? count() < 2 * siblingCount() + 6
+			: count() < 2 * siblingCount() + 4; //(count() % 2 === 0 ? 6 : 5);
 
 		//skip the rest of the computation if we can render directly
 		if (renderItemsDirectly)
