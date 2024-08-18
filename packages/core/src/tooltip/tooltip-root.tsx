@@ -120,6 +120,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 			id: defaultId,
 			openDelay: 700,
 			closeDelay: 300,
+			skipDelayDuration: 300,
 		},
 		props,
 	);
