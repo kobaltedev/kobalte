@@ -21,11 +21,13 @@ export function PaginationItems(props: PaginationItemsProps) {
 				renderItemsDirectly,
 			};
 
-		let showFirst = context.showFirst() && page() - 1 > siblingCount();
-		let showLast = context.showLast() && count() - page() > siblingCount();
+		const showFirst = context.showFirst() && page() - 1 > siblingCount();
+		const showLast = context.showLast() && count() - page() > siblingCount();
 
-		let showFirstEllipsis = page() - (context.showFirst() ? 2 : 1) > siblingCount();
-		let showLastEllipsis = count() - page() - (context.showLast() ? 1 : 0) > siblingCount();
+		const showFirstEllipsis =
+			page() - (context.showFirst() ? 2 : 1) > siblingCount();
+		const showLastEllipsis =
+			count() - page() - (context.showLast() ? 1 : 0) > siblingCount();
 
 		let previousSiblingCount = Math.min(page() - 1, siblingCount());
 		let nextSiblingCount = Math.min(count() - page(), siblingCount());
@@ -37,8 +39,11 @@ export function PaginationItems(props: PaginationItemsProps) {
 
 			// Add back the difference between the opposite side and the sibling count
 			previousSiblingCount =
-				previousSiblingCount + Math.max(siblingCount() - nextSiblingCountRef, 0);
-			nextSiblingCount = nextSiblingCount + Math.max(siblingCount() - previousSiblingCountRef, 0);
+				previousSiblingCount +
+				Math.max(siblingCount() - nextSiblingCountRef, 0);
+			nextSiblingCount =
+				nextSiblingCount +
+				Math.max(siblingCount() - previousSiblingCountRef, 0);
 
 			if (!showFirst) nextSiblingCount++;
 			if (!showLast) previousSiblingCount++;
@@ -65,33 +70,44 @@ export function PaginationItems(props: PaginationItemsProps) {
 		<>
 			<Show
 				when={items().renderItemsDirectly}
-				children={
-					<For each={[...Array(context.count()).keys()]}>
-						{page => <>{context.renderItem(page + 1)}</>}
-					</For>
-				}
 				fallback={
 					<>
 						<Show when={items().showFirst}>{context.renderItem(1)}</Show>
 
-						<Show when={items().showFirstEllipsis}>{context.renderEllipsis()}</Show>
+						<Show when={items().showFirstEllipsis}>
+							{context.renderEllipsis()}
+						</Show>
 
-						<For each={[...Array(items().previousSiblingCount).keys()].reverse()}>
-							{offset => <>{context.renderItem(context.page() - (offset + 1))}</>}
+						<For
+							each={[...Array(items().previousSiblingCount).keys()].reverse()}
+						>
+							{(offset) => (
+								<>{context.renderItem(context.page() - (offset + 1))}</>
+							)}
 						</For>
 
 						{context.renderItem(context.page())}
 
 						<For each={[...Array(items().nextSiblingCount).keys()]}>
-							{offset => <>{context.renderItem(context.page() + (offset + 1))}</>}
+							{(offset) => (
+								<>{context.renderItem(context.page() + (offset + 1))}</>
+							)}
 						</For>
 
-						<Show when={items().showLastEllipsis}>{context.renderEllipsis()}</Show>
+						<Show when={items().showLastEllipsis}>
+							{context.renderEllipsis()}
+						</Show>
 
-						<Show when={items().showLast}>{context.renderItem(context.count())}</Show>
+						<Show when={items().showLast}>
+							{context.renderItem(context.count())}
+						</Show>
 					</>
 				}
-			/>
+			>
+				<For each={[...Array(context.count()).keys()]}>
+					{(page) => <>{context.renderItem(page + 1)}</>}
+				</For>
+			</Show>
 		</>
 	);
 }
