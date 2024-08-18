@@ -598,7 +598,7 @@ export function ComboboxBase<
 	) => {
 
 		// If set to only open manually, ignore other triggers
-		if(local.triggerMode === 'manual' && triggerMode !== 'manual'){
+		if (local.triggerMode === 'manual' && triggerMode !== 'manual') {
 			return;
 		}
 
