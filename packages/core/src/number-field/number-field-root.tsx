@@ -308,19 +308,39 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			batch(() => {
 				let newValue = rawValue;
 
-				newValue += offset;
+				// If either number contains decimals, we need to handle it specially
+				if (
+					Number.isFinite(newValue) &&
+					Number.isFinite(offset) &&
+					(offset % 1 !== 0 || newValue % 1 !== 0)
+				) {
+					const precision1 = getPrecision(Math.abs(offset));
+					let precision2 = getPrecision(newValue);
 
-				// If the offset is a floating point number, we get the precision
-				// of the offset and make sure the new value is the same precision
-				if (Number.isFinite(offset) && offset % 1 !== 0) {
-					let e = 1;
-					let precision = 0;
-					while (Math.round(offset * e) / e !== offset) {
-						e *= 10;
-						precision++;
+					// If the value has more decimals than the offset value,
+					// truncate the extra decimals to match the precision of
+					// the offset
+					if (precision2 > precision1) {
+						newValue -= newValue % offset;
+						precision2 = getPrecision(newValue);
 					}
 
-					newValue = Number.parseFloat(newValue.toFixed(precision));
+					const max = Math.max(precision1, precision2);
+
+					const multiplier = 10 ** max;
+
+					const multipliedOffset = Math.round(Math.abs(offset) * multiplier);
+					const multipliedValue = Math.round(newValue * multiplier);
+
+					const next =
+						offset > 0
+							? multipliedValue + multipliedOffset
+							: multipliedValue - multipliedOffset;
+
+					// Undo multiplier to get the new value
+					newValue = next / multiplier;
+				} else {
+					newValue += offset;
 				}
 
 				context.setValue(newValue);
@@ -360,3 +380,14 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		</FormControlContext.Provider>
 	);
 }
+
+const getPrecision = (n: number) => {
+	let e = 1;
+	let precision = 0;
+	while (Math.round(n * e) / e !== n) {
+		e *= 10;
+		precision++;
+	}
+
+	return precision;
+};
