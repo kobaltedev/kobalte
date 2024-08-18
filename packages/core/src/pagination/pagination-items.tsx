@@ -8,12 +8,12 @@ export function PaginationItems(props: PaginationItemsProps) {
 	const context = usePaginationContext();
 
 	const items = createMemo(() => {
-		const { count, siblingCount, page, fixedItems } = context;
+		const { count, siblingCount, page, fixedItems, showFirst, showLast } =
+			context;
 		// render directly if count is so small that it does not make sense to render an ellipsis
-		// this is the case for if count is even -> 8, count is odd -> 7, each plus 2x siblingsCount
-		const renderItemsDirectly = context.fixedItems()
-			? count() < 2 * siblingCount() + 6
-			: count() < 2 * siblingCount() + 4; //(count() % 2 === 0 ? 6 : 5);
+		// this is the case for if count is lower than 2x siblings + 6 for fixedItems and +4 if not fixed items
+		const renderItemsDirectly =
+			count() < 2 * siblingCount() + (fixedItems() ? 6 : 4);
 
 		//skip the rest of the computation if we can render directly
 		if (renderItemsDirectly)
@@ -21,43 +21,48 @@ export function PaginationItems(props: PaginationItemsProps) {
 				renderItemsDirectly,
 			};
 
-		const showFirst = context.showFirst() && page() - 1 > siblingCount();
-		const showLast = context.showLast() && count() - page() > siblingCount();
+		const _showFirst = showFirst() && page() - 1 > siblingCount();
+		const _showLast = showLast() && count() - page() > siblingCount();
 
-		const showFirstEllipsis =
-			page() - (context.showFirst() ? 2 : 1) > siblingCount();
-		const showLastEllipsis =
-			count() - page() - (context.showLast() ? 1 : 0) > siblingCount();
+		let showFirstEllipsis = page() - (showFirst() ? 2 : 1) > siblingCount();
+		let showLastEllipsis =
+			count() - page() - (showLast() ? 1 : 0) > siblingCount();
 
 		let previousSiblingCount = Math.min(page() - 1, siblingCount());
 		let nextSiblingCount = Math.min(count() - page(), siblingCount());
 
-		if (fixedItems() !== false && !renderItemsDirectly) {
+		if (fixedItems() !== false) {
 			// ref to avoid wrong corretions
-			const nextSiblingCountRef = nextSiblingCount;
 			const previousSiblingCountRef = previousSiblingCount;
+			const nextSiblingCountRef = nextSiblingCount;
 
 			// Add back the difference between the opposite side and the sibling count
-			previousSiblingCount =
-				previousSiblingCount +
-				Math.max(siblingCount() - nextSiblingCountRef, 0);
-			nextSiblingCount =
-				nextSiblingCount +
-				Math.max(siblingCount() - previousSiblingCountRef, 0);
+			previousSiblingCount += Math.max(siblingCount() - nextSiblingCountRef, 0);
+			nextSiblingCount += Math.max(siblingCount() - previousSiblingCountRef, 0);
 
-			if (!showFirst) nextSiblingCount++;
-			if (!showLast) previousSiblingCount++;
+			if (!_showFirst) nextSiblingCount++;
+			if (!_showLast) previousSiblingCount++;
 
 			// Check specifically if true and not "no-ellipsis"
 			if (fixedItems() === true) {
 				if (!showFirstEllipsis) nextSiblingCount++;
 				if (!showLastEllipsis) previousSiblingCount++;
 			}
+
+			//replace ellipsis if it would replace only one item
+			if (page() - previousSiblingCount - (showFirst() ? 2 : 1) === 1) {
+				showFirstEllipsis = false;
+				previousSiblingCount++;
+			}
+			if (count() - page() - nextSiblingCount - (showLast() ? 1 : 0) === 1) {
+				showLastEllipsis = false;
+				nextSiblingCount++;
+			}
 		}
 
 		return {
-			showFirst,
-			showLast,
+			showFirst: _showFirst,
+			showLast: _showLast,
 			showFirstEllipsis,
 			showLastEllipsis,
 			previousSiblingCount,
