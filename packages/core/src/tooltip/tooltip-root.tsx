@@ -49,6 +49,7 @@ let tooltipsCounter = 0;
 let globalWarmedUp = false;
 let globalWarmUpTimeout: number | undefined;
 let globalCoolDownTimeout: number | undefined;
+let globalSkipDelayTimeout: number | undefined;
 
 export interface TooltipRootOptions
 	extends Omit<
@@ -81,6 +82,9 @@ export interface TooltipRootOptions
 
 	/** The duration from when the mouse leaves the trigger or content until the tooltip closes. */
 	closeDelay?: number;
+
+	/** The duration from when the mouse leaves the trigger or content and moves to another tooltip trigger or content */
+	skipDelayDuration?: number;
 
 	/** Whether to close the tooltip even if the user cursor is inside the safe area between the trigger and tooltip. */
 	ignoreSafeArea?: boolean;
@@ -129,6 +133,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 		"triggerOnFocusOnly",
 		"openDelay",
 		"closeDelay",
+		"skipDelayDuration",
 		"ignoreSafeArea",
 		"forceMount",
 	]);
@@ -186,6 +191,13 @@ export function TooltipRoot(props: TooltipRootProps) {
 		window.clearTimeout(globalWarmUpTimeout);
 		globalWarmUpTimeout = undefined;
 
+		if(local.skipDelayDuration && local.skipDelayDuration >= 0){
+			globalSkipDelayTimeout = window.setTimeout(() => {
+				window.clearTimeout(globalSkipDelayTimeout)
+				globalSkipDelayTimeout = undefined
+			}, local.skipDelayDuration)
+		}
+
 		if (globalWarmedUp) {
 			window.clearTimeout(globalCoolDownTimeout);
 
@@ -214,6 +226,9 @@ export function TooltipRoot(props: TooltipRootProps) {
 
 		window.clearTimeout(globalCoolDownTimeout);
 		globalCoolDownTimeout = undefined;
+
+		window.clearTimeout(globalSkipDelayTimeout);
+		globalSkipDelayTimeout = undefined;
 	};
 
 	const warmupTooltip = () => {
@@ -244,7 +259,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 			!immediate &&
 			local.openDelay &&
 			local.openDelay > 0 &&
-			!closeTimeoutId
+			!closeTimeoutId && !globalSkipDelayTimeout
 		) {
 			warmupTooltip();
 		} else {
