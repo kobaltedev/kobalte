@@ -308,11 +308,19 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			batch(() => {
 				let newValue = rawValue;
 
-				if (rawValue % 1 === 0) {
-					newValue += offset;
-				} else {
-					if (offset > 0) newValue = Math.ceil(newValue);
-					else newValue = Math.floor(newValue);
+				newValue += offset;
+
+				// If the offset is a floating point number, we get the precision
+				// of the offset and make sure the new value is the same precision
+				if (Number.isFinite(offset) && offset % 1 !== 0) {
+					let e = 1;
+					let precision = 0;
+					while (Math.round(offset * e) / e !== offset) {
+						e *= 10;
+						precision++;
+					}
+
+					newValue = Number.parseFloat(newValue.toFixed(precision));
 				}
 
 				context.setValue(newValue);
