@@ -191,11 +191,11 @@ export function TooltipRoot(props: TooltipRootProps) {
 		window.clearTimeout(globalWarmUpTimeout);
 		globalWarmUpTimeout = undefined;
 
-		if(local.skipDelayDuration && local.skipDelayDuration >= 0){
+		if (local.skipDelayDuration && local.skipDelayDuration >= 0) {
 			globalSkipDelayTimeout = window.setTimeout(() => {
-				window.clearTimeout(globalSkipDelayTimeout)
-				globalSkipDelayTimeout = undefined
-			}, local.skipDelayDuration)
+				window.clearTimeout(globalSkipDelayTimeout);
+				globalSkipDelayTimeout = undefined;
+			}, local.skipDelayDuration);
 		}
 
 		if (globalWarmedUp) {
@@ -259,7 +259,8 @@ export function TooltipRoot(props: TooltipRootProps) {
 			!immediate &&
 			local.openDelay &&
 			local.openDelay > 0 &&
-			!closeTimeoutId && !globalSkipDelayTimeout
+			!closeTimeoutId &&
+			!globalSkipDelayTimeout
 		) {
 			warmupTooltip();
 		} else {
