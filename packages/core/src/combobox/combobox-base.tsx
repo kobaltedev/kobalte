@@ -596,6 +596,12 @@ export function ComboboxBase<
 		focusStrategy: FocusStrategy | boolean,
 		triggerMode?: ComboboxTriggerMode,
 	) => {
+
+		// If set to only open manually, ignore other triggers
+		if(local.triggerMode === 'manual' && triggerMode !== 'manual'){
+			return;
+		}
+
 		// Show all option if menu is manually opened.
 		const showAllOptions = setShowAllOptions(triggerMode === "manual");
 
