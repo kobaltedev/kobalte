@@ -17,6 +17,7 @@ import {
 
 import type { Orientation } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import { createResizeObserver } from "@solid-primitives/resize-observer";
 import { useLocale } from "../i18n";
 import {
 	type ElementOf,
@@ -114,12 +115,36 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		),
 	);
 
+	const [resizing, setResizing] = createSignal(false);
+
+	let timeout: NodeJS.Timeout | null = null;
+	let prevTarget: any = null;
+	createResizeObserver(context.selectedTab, (_, t) => {
+		if (prevTarget !== t) {
+			prevTarget = t;
+			return;
+		}
+
+		setResizing(true);
+
+		if (timeout) clearTimeout(timeout);
+
+		// gives the browser a chance to skip any animations that are disabled while resizing
+		timeout = setTimeout(() => {
+			timeout = null;
+			setResizing(false);
+		}, 1);
+
+		computeStyle();
+	});
+
 	return (
 		<Polymorphic<TabsIndicatorRenderProps>
 			as="div"
 			role="presentation"
 			style={combineStyle(style(), local.style)}
 			data-orientation={context.orientation()}
+			data-resizing={resizing()}
 			{...others}
 		/>
 	);
