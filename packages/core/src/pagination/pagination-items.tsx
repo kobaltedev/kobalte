@@ -1,11 +1,4 @@
-import {
-	For,
-	Show,
-	batch,
-	createEffect,
-	createSignal,
-	untrack,
-} from "solid-js";
+import { For, Show, createMemo } from "solid-js";
 
 import { usePaginationContext } from "./pagination-context";
 
@@ -14,86 +7,112 @@ export interface PaginationItemsProps {}
 export function PaginationItems(props: PaginationItemsProps) {
 	const context = usePaginationContext();
 
-	const [showFirst, setShowFirst] = createSignal(false);
-	const [showLast, setShowLast] = createSignal(false);
+	const items = createMemo(() => {
+		const { count, siblingCount, page, fixedItems, showFirst, showLast } =
+			context;
+		// render directly if count is so small that it does not make sense to render an ellipsis
+		// this is the case for if count is lower than 2x siblings + 6 for fixedItems and +4 if not fixed items
+		const renderItemsDirectly =
+			count() < 2 * siblingCount() + (fixedItems() ? 6 : 4);
 
-	const [showFirstEllipsis, setShowFirstEllipsis] = createSignal(false);
-	const [showLastEllipsis, setShowLastEllipsis] = createSignal(false);
+		//skip the rest of the computation if we can render directly
+		if (renderItemsDirectly)
+			return {
+				renderItemsDirectly,
+			};
 
-	const [previousSiblingCount, setPreviousSiblingCount] = createSignal(0);
-	const [nextSiblingCount, setNextSiblingCount] = createSignal(0);
+		const _showFirst = showFirst() && page() - 1 > siblingCount();
+		const _showLast = showLast() && count() - page() > siblingCount();
 
-	createEffect(() => {
-		batch(() => {
-			setShowFirst(
-				context.showFirst() && context.page() - 1 > context.siblingCount(),
-			);
-			setShowLast(
-				context.showLast() &&
-					context.count() - context.page() > context.siblingCount(),
-			);
+		let showFirstEllipsis = page() - (showFirst() ? 2 : 1) > siblingCount();
+		let showLastEllipsis =
+			count() - page() - (showLast() ? 1 : 0) > siblingCount();
 
-			setShowFirstEllipsis(
-				context.page() - (context.showFirst() ? 2 : 1) > context.siblingCount(),
-			);
-			setShowLastEllipsis(
-				context.count() - context.page() - (context.showLast() ? 1 : 0) >
-					context.siblingCount(),
-			);
+		let previousSiblingCount = Math.min(page() - 1, siblingCount());
+		let nextSiblingCount = Math.min(count() - page(), siblingCount());
 
-			setPreviousSiblingCount(
-				Math.min(context.page() - 1, context.siblingCount()),
-			);
-			setNextSiblingCount(
-				Math.min(context.count() - context.page(), context.siblingCount()),
-			);
+		if (fixedItems() !== false) {
+			// ref to avoid wrong corretions
+			const previousSiblingCountRef = previousSiblingCount;
+			const nextSiblingCountRef = nextSiblingCount;
 
-			if (context.fixedItems() !== false) {
-				// Untrack to avoid recursion
-				untrack(() => {
-					// Add back the difference between the opposite side and the sibling count
-					setPreviousSiblingCount(
-						(prev) =>
-							prev + Math.max(context.siblingCount() - nextSiblingCount(), 0),
-					);
-					setNextSiblingCount(
-						(prev) =>
-							prev +
-							Math.max(context.siblingCount() - previousSiblingCount(), 0),
-					);
-				});
+			// Add back the difference between the opposite side and the sibling count
+			previousSiblingCount += Math.max(siblingCount() - nextSiblingCountRef, 0);
+			nextSiblingCount += Math.max(siblingCount() - previousSiblingCountRef, 0);
 
-				if (!showFirst()) setNextSiblingCount((prev) => prev + 1);
-				if (!showLast()) setPreviousSiblingCount((prev) => prev + 1);
+			if (!_showFirst) nextSiblingCount++;
+			if (!_showLast) previousSiblingCount++;
 
-				// Check specifically if true and not "no-ellipsis"
-				if (context.fixedItems() === true) {
-					if (!showFirstEllipsis()) setNextSiblingCount((prev) => prev + 1);
-					if (!showLastEllipsis()) setPreviousSiblingCount((prev) => prev + 1);
-				}
+			// Check specifically if true and not "no-ellipsis"
+			if (fixedItems() === true) {
+				if (!showFirstEllipsis) nextSiblingCount++;
+				if (!showLastEllipsis) previousSiblingCount++;
 			}
-		});
+
+			//replace ellipsis if it would replace only one item
+			if (page() - previousSiblingCount - (showFirst() ? 2 : 1) === 1) {
+				showFirstEllipsis = false;
+				previousSiblingCount++;
+			}
+			if (count() - page() - nextSiblingCount - (showLast() ? 1 : 0) === 1) {
+				showLastEllipsis = false;
+				nextSiblingCount++;
+			}
+		}
+
+		return {
+			showFirst: _showFirst,
+			showLast: _showLast,
+			showFirstEllipsis,
+			showLastEllipsis,
+			previousSiblingCount,
+			nextSiblingCount,
+			renderItemsDirectly,
+		};
 	});
 
 	return (
 		<>
-			<Show when={showFirst()}>{context.renderItem(1)}</Show>
+			<Show
+				when={items().renderItemsDirectly}
+				fallback={
+					<>
+						<Show when={items().showFirst}>{context.renderItem(1)}</Show>
 
-			<Show when={showFirstEllipsis()}>{context.renderEllipsis()}</Show>
+						<Show when={items().showFirstEllipsis}>
+							{context.renderEllipsis()}
+						</Show>
 
-			<For each={[...Array(previousSiblingCount()).keys()].reverse()}>
-				{(offset) => <>{context.renderItem(context.page() - (offset + 1))}</>}
-			</For>
+						<For
+							each={[...Array(items().previousSiblingCount).keys()].reverse()}
+						>
+							{(offset) => (
+								<>{context.renderItem(context.page() - (offset + 1))}</>
+							)}
+						</For>
 
-			{context.renderItem(context.page())}
+						{context.renderItem(context.page())}
 
-			<For each={[...Array(nextSiblingCount()).keys()]}>
-				{(offset) => <>{context.renderItem(context.page() + (offset + 1))}</>}
-			</For>
+						<For each={[...Array(items().nextSiblingCount).keys()]}>
+							{(offset) => (
+								<>{context.renderItem(context.page() + (offset + 1))}</>
+							)}
+						</For>
 
-			<Show when={showLastEllipsis()}>{context.renderEllipsis()}</Show>
+						<Show when={items().showLastEllipsis}>
+							{context.renderEllipsis()}
+						</Show>
 
-			<Show when={showLast()}>{context.renderItem(context.count())}</Show>
+						<Show when={items().showLast}>
+							{context.renderItem(context.count())}
+						</Show>
+					</>
+				}
+			>
+				<For each={[...Array(context.count()).keys()]}>
+					{(page) => <>{context.renderItem(page + 1)}</>}
+				</For>
+			</Show>
 		</>
 	);
 }

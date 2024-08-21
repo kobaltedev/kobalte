@@ -121,7 +121,7 @@ export function PaginationRoot<T extends ValidComponent = "nav">(
 		isDisabled: () => local.disabled ?? false,
 		renderItem: (page) => local.itemComponent({ page }),
 		renderEllipsis: local.ellipsisComponent,
-		page: state[0] as Accessor<number>,
+		page: () => Math.min(state[0]() ?? 1, local.count),
 		setPage: state[1] as Setter<number>,
 	};
 
