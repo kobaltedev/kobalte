@@ -314,18 +314,25 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 					Number.isFinite(offset) &&
 					(offset % 1 !== 0 || newValue % 1 !== 0)
 				) {
-					const precision1 = getPrecision(Math.abs(offset));
-					let precision2 = getPrecision(newValue);
+					const offsetPrecision = getPrecision(Math.abs(offset));
+					let valuePrecision = getPrecision(newValue);
+
+					if(offsetPrecision === 0 && valuePrecision !== 0){
+						newValue -= newValue % offset;
+						context.setValue(newValue)
+						context.format()
+						return
+					}
 
 					// If the value has more decimals than the offset value,
 					// truncate the extra decimals to match the precision of
 					// the offset
-					if (precision2 > precision1) {
+					if (valuePrecision > offsetPrecision) {
 						newValue -= newValue % offset;
-						precision2 = getPrecision(newValue);
+						valuePrecision = getPrecision(newValue);
 					}
 
-					const max = Math.max(precision1, precision2);
+					const max = Math.max(offsetPrecision, valuePrecision);
 
 					const multiplier = 10 ** max;
 
