@@ -326,8 +326,10 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 				// If the value didn't change in the direction we wanted to,
 				// then add the step and snap that value
 				if (
-					!((operation === "+" && newValue > rawValue) ||
-					(operation === "-" && newValue < rawValue))
+					!(
+						(operation === "+" && newValue > rawValue) ||
+						(operation === "-" && newValue < rawValue)
+					)
 				) {
 					newValue = snapValueToStep(
 						handleDecimalOperation(operation, rawValue, localStep),
