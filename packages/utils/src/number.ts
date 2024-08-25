@@ -51,3 +51,14 @@ export function snapValueToStep(
 
 	return snappedValue;
 }
+
+export const getPrecision = (n: number) => {
+	let e = 1;
+	let precision = 0;
+	while (Math.round(n * e) / e !== n) {
+		e *= 10;
+		precision++;
+	}
+
+	return precision;
+};
