@@ -248,6 +248,7 @@ We expose a CSS custom property `--kb-tooltip-content-transform-origin` which ca
 | onOpenChange       | `(open: boolean) => void` <br/> Event handler called when the open state of the tooltip changes.                                                                              |
 | triggerOnFocusOnly | `boolean` <br/> Whether to open the tooltip only when the trigger is focused. By default, opens for both focus and hover.                                                     |
 | openDelay          | `number` <br/> The duration from when the mouse enters the trigger until the tooltip opens.                                                                                   |
+| skipDelayDuration  | `number` <br/> The duration from when the mouse leaves the trigger or content and moves to another tooltip trigger or content without incurring another openDelay             |
 | closeDelay         | `number` <br/> The duration from when the mouse leaves the trigger or content until the tooltip closes.                                                                       |
 | ignoreSafeArea     | `boolean` <br/> Whether to close the tooltip even if the user cursor is inside the safe area between the trigger and tooltip.                                                 |
 | id                 | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used. |
