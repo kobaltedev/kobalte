@@ -25,7 +25,7 @@ export interface MenuContextValue {
 	triggerId: Accessor<string | undefined>;
 	contentId: Accessor<string | undefined>;
 	setTriggerRef: (el: HTMLElement) => void;
-	setContentRef: (el: HTMLElement) => void;
+	setContentRef: (el: HTMLElement | undefined) => void;
 	open: (focusStrategy: FocusStrategy | boolean) => void;
 	close: (recursively?: boolean) => void;
 	toggle: (focusStrategy: FocusStrategy | boolean) => void;

@@ -69,8 +69,10 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 		if (context.dataset()["data-expanded"] === "") return;
 
 		timeoutId = window.setTimeout(() => {
-			context.setAutoFocusMenu(true);
 			menuContext?.triggerRef()?.focus();
+			setTimeout(() => {
+				context.setAutoFocusMenu(true);
+			});
 		}, context.delayDuration());
 	};
 

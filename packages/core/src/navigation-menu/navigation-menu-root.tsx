@@ -168,6 +168,12 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 		element: () => viewportRef() ?? null,
 	});
 
+	createEffect(() => {
+		if (!viewportPresent()) {
+			context.setPreviousMenu(undefined);
+		}
+	});
+
 	const context: NavigationMenuContextValue = {
 		dataset,
 		delayDuration: () => local.delayDuration!,
