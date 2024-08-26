@@ -211,7 +211,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		},
 	});
 
-	if (value()) local.onRawValueChange?.(parseRawValue(value()));
+	if (value() !== undefined) local.onRawValueChange?.(parseRawValue(value()));
 
 	function isAllowedInput(char: string): boolean {
 		if (local.allowedInput !== undefined) return local.allowedInput.test(char);
