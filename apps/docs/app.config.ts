@@ -113,8 +113,8 @@ export default defineConfig({
 		},
 		prerender: {
 			routes: ["/docs/core/overview/introduction"],
-			crawlLinks: true
-		}
+			crawlLinks: true,
+		},
 	},
 
 	extensions: ["mdx", "md"],

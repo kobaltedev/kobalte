@@ -117,10 +117,12 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 	);
 
 	const height = createMemo((prev) => {
+		if (ref() === undefined || !context.viewportPresent()) return undefined;
 		if (size.height() === 0) return prev;
 		return size.height();
 	});
 	const width = createMemo((prev) => {
+		if (ref() === undefined || !context.viewportPresent()) return undefined;
 		if (size.width() === 0) return prev;
 		return size.width();
 	});

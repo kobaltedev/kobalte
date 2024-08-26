@@ -169,7 +169,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 				>
 					as={local.as || "input"}
 					value={
-						Number.isNaN(context.rawValue())
+						Number.isNaN(context.rawValue()) || context.value() === undefined
 							? ""
 							: context.formatNumber(context.rawValue())
 					}

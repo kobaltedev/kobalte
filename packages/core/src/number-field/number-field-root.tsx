@@ -185,6 +185,9 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		return new NumberFormatter(locale(), local.formatOptions);
 	});
 
+	const formatNumber = (number: number) =>
+		local.format ? numberFormatter().format(number) : number.toString();
+
 	const parseRawValue = (value: string | number | undefined) =>
 		local.format && typeof value !== "number"
 			? numberParser().parse(value ?? "")
@@ -203,14 +206,12 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		value: () => local.value,
 		defaultValue: () => local.defaultValue ?? local.rawValue,
 		onChange: (value) => {
-			local.onChange?.(
-				typeof value === "number" ? numberFormatter().format(value) : value,
-			);
+			local.onChange?.(typeof value === "number" ? formatNumber(value) : value);
 			local.onRawValueChange?.(parseRawValue(value));
 		},
 	});
 
-	local.onRawValueChange?.(parseRawValue(value()));
+	if (value() !== undefined) local.onRawValueChange?.(parseRawValue(value()));
 
 	function isAllowedInput(char: string): boolean {
 		if (local.allowedInput !== undefined) return local.allowedInput.test(char);
@@ -267,7 +268,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		setValue,
 		rawValue: () => parseRawValue(value()),
 		generateId: createGenerateId(() => access(formControlProps.id)!),
-		formatNumber: (number: number) => numberFormatter().format(number),
+		formatNumber,
 		format: () => {
 			if (!local.format) return;
 			let rawValue = context.rawValue();

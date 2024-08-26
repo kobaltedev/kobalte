@@ -1,5 +1,4 @@
 import {
-	OverrideComponentProps,
 	type ValidationState,
 	access,
 	createGenerateId,
@@ -108,8 +107,12 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 		FORM_CONTROL_PROP_NAMES,
 	);
 
+	// Disable reactivity to only track controllability on first run
+	// Our current implementation breaks with undefined (stops tracking controlled value)
+	const initialValue = local.value;
+
 	const [value, setValue] = createControllableSignal({
-		value: () => local.value,
+		value: () => (initialValue === undefined ? undefined : local.value ?? ""),
 		defaultValue: () => local.defaultValue,
 		onChange: (value) => local.onChange?.(value),
 	});

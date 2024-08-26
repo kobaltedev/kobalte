@@ -290,6 +290,8 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	createEffect(() => onCleanup(context.registerContentId(local.id!)));
 
+	onCleanup(() => context.setContentRef(undefined));
+
 	const commonAttributes: Omit<MenuContentBaseRenderProps, keyof MenuDataSet> =
 		{
 			ref: mergeRefs((el) => {
