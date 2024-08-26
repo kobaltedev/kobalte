@@ -596,9 +596,8 @@ export function ComboboxBase<
 		focusStrategy: FocusStrategy | boolean,
 		triggerMode?: ComboboxTriggerMode,
 	) => {
-
 		// If set to only open manually, ignore other triggers
-		if (local.triggerMode === 'manual' && triggerMode !== 'manual') {
+		if (local.triggerMode === "manual" && triggerMode !== "manual") {
 			return;
 		}
 
