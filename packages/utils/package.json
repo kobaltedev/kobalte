@@ -1,6 +1,6 @@
 {
 	"name": "@kobalte/utils",
-	"version": "0.9.0",
+	"version": "0.9.1",
 	"private": false,
 	"description": "Common utilities and types for Kobalte.",
 	"keywords": [
@@ -42,7 +42,10 @@
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"source": "src/index.ts",
-	"files": ["dist", "src"],
+	"files": [
+		"dist",
+		"src"
+	],
 	"scripts": {
 		"build": "tsup",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
