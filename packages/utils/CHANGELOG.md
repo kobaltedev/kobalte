@@ -1,5 +1,13 @@
 # @kobalte/utils
 
+## 0.9.1
+
+### Patch Changes
+
+**Bug fixes**
+
+- Update missing export from `@kobalte/utils` ([#477](https://github.com/kobaltedev/kobalte/pull/477))
+
 ## 0.9.0
 
 ### Minor Changes
