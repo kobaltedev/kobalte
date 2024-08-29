@@ -13,7 +13,7 @@ import {
 
 export interface ToggleGroupSingleOptions {
 	/** The controlled value of the toggle group. */
-	value?: string;
+	value?: string | null;
 
 	/**
 	 * The value of the select when initially rendered.
