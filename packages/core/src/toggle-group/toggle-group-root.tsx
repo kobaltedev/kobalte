@@ -22,7 +22,7 @@ export interface ToggleGroupSingleOptions {
 	defaultValue?: string;
 
 	/** Event handler called when the value changes. */
-	onChange?: (value: string) => void;
+	onChange?: (value: string | null) => void;
 
 	/** Whether the toggle group allow multiple selection. */
 	multiple?: false;
