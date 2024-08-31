@@ -414,11 +414,12 @@ export function createSelectableCollection<
 				// Restore the scroll position to what it was before.
 				scrollEl.scrollTop = scrollPos.top;
 				scrollEl.scrollLeft = scrollPos.left;
+				const focusedKey = manager.focusedKey();
 
 				// Refocus and scroll the focused item into view if it exists within the scrollable region.
-				const element = scrollEl.querySelector(
-					`[data-key="${manager.focusedKey()}"]`,
-				);
+				const element = focusedKey ? scrollEl.querySelector(
+					`[data-key="${CSS.escape(focusedKey)}"]`,
+				) : undefined;
 
 				if (element) {
 					// This prevents a flash of focus on the first/last element in the collection
@@ -512,7 +513,7 @@ export function createSelectableCollection<
 				} else {
 					if (focusedKey && scrollEl) {
 						const element = scrollEl.querySelector(
-							`[data-key="${focusedKey}"]`,
+							`[data-key="${CSS.escape(focusedKey)}"]`,
 						);
 
 						if (element) {

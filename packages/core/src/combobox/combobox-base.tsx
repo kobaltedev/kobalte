@@ -701,7 +701,7 @@ export function ComboboxBase<
 		const focusedKey = listState.selectionManager().focusedKey();
 
 		if (focusedKey) {
-			return listboxRef()?.querySelector(`[data-key="${focusedKey}"]`)?.id;
+			return listboxRef()?.querySelector(`[data-key="${CSS.escape(focusedKey)}"]`)?.id;
 		}
 
 		return undefined;
