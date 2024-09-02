@@ -417,9 +417,9 @@ export function createSelectableCollection<
 				const focusedKey = manager.focusedKey();
 
 				// Refocus and scroll the focused item into view if it exists within the scrollable region.
-				const element = focusedKey ? scrollEl.querySelector(
-					`[data-key="${CSS.escape(focusedKey)}"]`,
-				) : undefined;
+				const element = focusedKey
+					? scrollEl.querySelector(`[data-key="${CSS.escape(focusedKey)}"]`)
+					: undefined;
 
 				if (element) {
 					// This prevents a flash of focus on the first/last element in the collection

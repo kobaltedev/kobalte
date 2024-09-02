@@ -83,7 +83,9 @@ export class ListKeyboardDelegate implements KeyboardDelegate {
 	}
 
 	private getItem(key: string): HTMLElement | null {
-		return this.ref?.()?.querySelector(`[data-key="${CSS.escape(key)}"]`) ?? null;
+		return (
+			this.ref?.()?.querySelector(`[data-key="${CSS.escape(key)}"]`) ?? null
+		);
 	}
 
 	// TODO: not working correctly
