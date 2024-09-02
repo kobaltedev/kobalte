@@ -589,7 +589,7 @@ export function ComboboxBase<
 
 	const { present: contentPresent } = createPresence({
 		show: () => local.forceMount || disclosureState.isOpen(),
-		element: contentRef,
+		element: () => contentRef() ?? null,
 	});
 
 	const open = (
