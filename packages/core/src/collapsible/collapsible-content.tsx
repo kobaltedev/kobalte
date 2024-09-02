@@ -121,13 +121,18 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 		),
 	);
 
-	createEffect(on(context.isOpen,
-		(open) => {
-			if (!open && ref()) {
-				ref()!.style.transitionDuration = "";
-				ref()!.style.animationName = "";
-			}
-	}, {defer: true}));
+	createEffect(
+		on(
+			context.isOpen,
+			(open) => {
+				if (!open && ref()) {
+					ref()!.style.transitionDuration = "";
+					ref()!.style.animationName = "";
+				}
+			},
+			{ defer: true },
+		),
+	);
 
 	createEffect(() => onCleanup(context.registerContentId(local.id)));
 
