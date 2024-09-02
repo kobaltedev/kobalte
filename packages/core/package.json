@@ -76,7 +76,7 @@
 		"@kobalte/utils": "^0.9.1",
 		"@solid-primitives/props": "^3.1.8",
 		"@solid-primitives/resize-observer": "^2.0.26",
-		"solid-presence": "^0.1.6",
+		"solid-presence": "^0.1.8",
 		"solid-prevent-scroll": "^0.1.4"
 	},
 	"devDependencies": {

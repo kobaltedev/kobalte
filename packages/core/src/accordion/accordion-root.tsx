@@ -61,7 +61,7 @@ export interface AccordionRootCommonProps<T extends HTMLElement = HTMLElement> {
 	ref: T | ((el: T) => void);
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
-	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
+	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>; // TODO: remove next breaking
 	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
@@ -102,7 +102,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 		"shouldFocusWrap",
 		"onKeyDown",
 		"onMouseDown",
-		"onFocusIn",
+		"onFocusIn", // TODO: remove next breaking
 		"onFocusOut",
 	]);
 
@@ -121,6 +121,8 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 		selectionMode: () => (local.multiple ? "multiple" : "single"),
 		dataSource: items,
 	});
+
+	listState.selectionManager().setFocusedKey("item-1");
 
 	const selectableList = createSelectableList(
 		{
@@ -156,8 +158,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 						selectableList.onMouseDown,
 					])}
 					onFocusIn={composeEventHandlers([
-						local.onFocusIn,
-						selectableList.onFocusIn,
+						local.onFocusIn, // TODO: remove next breaking
 					])}
 					onFocusOut={composeEventHandlers([
 						local.onFocusOut,

@@ -78,9 +78,7 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 	// When opening we want it to immediately open to retrieve dimensions.
 	// When closing we delay `present` to retrieve dimensions before closing.
 	const isOpen = () => context.isOpen() || present();
-
 	let isMountAnimationPrevented = isOpen();
-	let originalStyles: Record<string, string> | undefined;
 
 	onMount(() => {
 		const raf = requestAnimationFrame(() => {
@@ -105,11 +103,6 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 					return;
 				}
 
-				originalStyles = originalStyles || {
-					transitionDuration: ref()!.style.transitionDuration,
-					animationName: ref()!.style.animationName,
-				};
-
 				// block any animations/transitions so the element renders at its full dimensions
 				ref()!.style.transitionDuration = "0s";
 				ref()!.style.animationName = "none";
@@ -121,10 +114,23 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 
 				// kick off any animations/transitions that were originally set up if it isn't the initial mount
 				if (!isMountAnimationPrevented) {
-					ref()!.style.transitionDuration = originalStyles.transitionDuration;
-					ref()!.style.animationName = originalStyles.animationName;
+					ref()!.style.transitionDuration = "";
+					ref()!.style.animationName = "";
 				}
 			},
+		),
+	);
+
+	createEffect(
+		on(
+			context.isOpen,
+			(open) => {
+				if (!open && ref()) {
+					ref()!.style.transitionDuration = "";
+					ref()!.style.animationName = "";
+				}
+			},
+			{ defer: true },
 		),
 	);
 
