@@ -223,8 +223,8 @@ importers:
         specifier: ^1.8.15
         version: 1.8.15
       solid-presence:
-        specifier: ^0.1.6
-        version: 0.1.6(solid-js@1.8.15)
+        specifier: ^0.1.8
+        version: 0.1.8(solid-js@1.8.15)
       solid-prevent-scroll:
         specifier: ^0.1.4
         version: 0.1.7(solid-js@1.8.15)
@@ -2287,6 +2287,15 @@ packages:
       solid-js: 1.8.15
     dev: false
 
+  /@corvu/utils@0.4.1(solid-js@1.8.15):
+    resolution: {integrity: sha512-swd/2DUJiXTo9PM5GVbBv3jNlEOwmKWvVOJG2l8Cwu1cokoXknKrDkBSZRz+yf0rFXdbhWhRQMWDPMPwuBnWNg==}
+    peerDependencies:
+      solid-js: ^1.8
+    dependencies:
+      '@floating-ui/dom': 1.6.10
+      solid-js: 1.8.15
+    dev: false
+
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -3353,6 +3362,13 @@ packages:
       '@floating-ui/utils': 0.2.2
     dev: false
 
+  /@floating-ui/dom@1.6.10:
+    resolution: {integrity: sha512-fskgCFv8J8OamCmyun8MfjB1Olfn+uZKjOKZ0vhYF3gRmEUXcGOjxWL8bBr7i4kIuPZ2KD2S3EUIOxnjC8kl2A==}
+    dependencies:
+      '@floating-ui/core': 1.6.2
+      '@floating-ui/utils': 0.2.7
+    dev: false
+
   /@floating-ui/dom@1.6.5:
     resolution: {integrity: sha512-Nsdud2X65Dz+1RHjAIP0t8z5e2ff/IRbei6BqFrl1urT8sDVzM1HMQ+R0XcU5ceRfyO3I6ayeqIfh+6Wb8LGTw==}
     dependencies:
@@ -3362,6 +3378,10 @@ packages:
 
   /@floating-ui/utils@0.2.2:
     resolution: {integrity: sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==}
+    dev: false
+
+  /@floating-ui/utils@0.2.7:
+    resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
     dev: false
 
   /@iarna/toml@2.2.5:
@@ -11213,12 +11233,12 @@ packages:
       vite: 5.1.4(@types/node@20.5.4)
     dev: true
 
-  /solid-presence@0.1.6(solid-js@1.8.15):
-    resolution: {integrity: sha512-J0SLoXIkqJ9q1reaCJfcaUFz3XmKxhcKp7iUi8QvrWHHeWbVVy/IIAEd/yaZHRzWs0x61SPUdP5YrparwqmWeA==}
+  /solid-presence@0.1.8(solid-js@1.8.15):
+    resolution: {integrity: sha512-pWGtXUFWYYUZNbg5YpG5vkQJyOtzn2KXhxYaMx/4I+lylTLYkITOLevaCwMRN+liCVk0pqB6EayLWojNqBFECA==}
     peerDependencies:
       solid-js: ^1.8
     dependencies:
-      '@corvu/utils': 0.2.0(solid-js@1.8.15)
+      '@corvu/utils': 0.4.1(solid-js@1.8.15)
       solid-js: 1.8.15
     dev: false
 
