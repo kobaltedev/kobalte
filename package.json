@@ -9,8 +9,13 @@
 	},
 	"license": "MIT",
 	"author": "jer3m01 <jer3m01@jer3m01.com>",
-	"contributors": ["Fabien Marie-Louise <fabienml.dev@gmail.com>"],
-	"workspaces": ["apps/*", "packages/*"],
+	"contributors": [
+		"Fabien Marie-Louise <fabienml.dev@gmail.com>"
+	],
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
 	"scripts": {
 		"build": "turbo run build",
 		"build:libs": "pnpm -F \\!docs -F \\!playground build && pnpm i",
@@ -39,15 +44,20 @@
 		"@commitlint/cli": "17.7.1",
 		"@commitlint/config-conventional": "17.7.0",
 		"@commitlint/cz-commitlint": "17.7.1",
+		"@nx/rollup": "19.7.2",
+		"@nx/vite": "19.7.2",
+		"@nx/web": "19.7.2",
 		"@solidjs/testing-library": "0.8.6",
 		"@testing-library/dom": "9.3.4",
 		"@testing-library/jest-dom": "6.4.2",
 		"@testing-library/user-event": "14.5.2",
 		"@types/node": "20.5.4",
+		"@vitest/ui": "^1.5.2",
 		"babel-preset-solid": "1.7.7",
 		"commitizen": "4.3.0",
 		"inquirer": "8.2.5",
 		"jsdom": "19.0.0",
+		"nx": "19.7.2",
 		"prettier": "4.0.0-alpha.8",
 		"prettier-plugin-tailwindcss": "0.5.3",
 		"rollup": "3.28.1",
@@ -61,8 +71,8 @@
 		"typescript": "4.9.5",
 		"vite": "5.0.11",
 		"vite-plugin-solid": "2.9.1",
-		"vitest": "1.3.1",
-		"@vitest/ui": "^1.5.2"
+		"vitest": "1.3.1"
 	},
-	"packageManager": "pnpm@8.14.0"
+	"packageManager": "pnpm@8.14.0",
+	"dependencies": {}
 }
