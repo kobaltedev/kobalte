@@ -24,7 +24,7 @@ describe("Toast", () => {
 		rootProps: Partial<Toast.ToastRootProps> = {},
 		options?: ShowToastOptions,
 	) => {
-		toaster.show(
+		return toaster.show(
 			(props) => (
 				<Toast.Root {...rootProps} toastId={props.toastId}>
 					<Toast.Title data-testid="title">Title</Toast.Title>
@@ -505,6 +505,51 @@ describe("Toast", () => {
 			const toasts = getAllByRole("status");
 
 			expect(toasts.length).toBe(limit);
+		});
+
+		it("should not render dismissed toasts", async () => {
+			const limit = 3;
+
+			let closeId: number;
+
+			const { getAllByRole, getByTestId } = render(() => (
+				<>
+					<button
+						type="button"
+						data-testid="dismiss-toast"
+						onClick={() => {
+							toaster.dismiss(closeId);
+						}}
+					>
+						Close a toast
+					</button>
+					<button
+						type="button"
+						data-testid="trigger"
+						onClick={() => {
+							showToast();
+							closeId = showToast();
+						}}
+					>
+						Show more than limit
+					</button>
+					<Toast.Region limit={limit}>
+						<Toast.List />
+					</Toast.Region>
+				</>
+			));
+
+			fireEvent.click(getByTestId("trigger"));
+
+			let toasts = getAllByRole("status");
+
+			expect(toasts.length).toBe(2);
+
+			fireEvent.click(getByTestId("dismiss-toast"));
+
+			toasts = getAllByRole("status");
+
+			expect(toasts.length).toBe(1);
 		});
 
 		it("should render multiple regions simultaneously", async () => {
