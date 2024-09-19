@@ -507,8 +507,8 @@ describe("Toast", () => {
 			expect(toasts.length).toBe(limit);
 		});
 
-		it("should not render dismissed toasts", async () => {
-			const limit = 3;
+		it("should not use dismissed toasts for list", async () => {
+			const limit = 1;
 
 			let closeId: number;
 
@@ -527,27 +527,28 @@ describe("Toast", () => {
 						type="button"
 						data-testid="trigger"
 						onClick={() => {
-							showToast();
 							closeId = showToast();
 						}}
 					>
-						Show more than limit
+						Show Toast
 					</button>
 					<Toast.Region limit={limit}>
-						<Toast.List />
+						<Toast.List data-testid="custom-region" />
 					</Toast.Region>
 				</>
 			));
 
 			fireEvent.click(getByTestId("trigger"));
 
-			let toasts = getAllByRole("status");
-
-			expect(toasts.length).toBe(2);
-
 			fireEvent.click(getByTestId("dismiss-toast"));
 
-			toasts = getAllByRole("status");
+			let toasts =
+				getByTestId("custom-region").querySelectorAll('[role="status"]');
+			expect(toasts.length).toBe(0);
+
+			fireEvent.click(getByTestId("trigger"));
+
+			toasts = getByTestId("custom-region").querySelectorAll('[role="status"]');
 
 			expect(toasts.length).toBe(1);
 		});
