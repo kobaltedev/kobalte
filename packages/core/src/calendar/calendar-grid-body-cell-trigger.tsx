@@ -46,6 +46,22 @@ export interface CalendarGridBodyCellRenderProps
 		tabIndex: number | undefined;
 		disabled: boolean;
 		children: JSX.Element;
+		"aria-disabled": boolean | undefined;
+		"aria-invalid": boolean | undefined;
+		"aria-label": string;
+		"data-disabled": boolean | undefined;
+		"data-invalid": boolean | undefined;
+		"data-selected": boolean | undefined;
+		"data-value": string;
+		"data-type": "day";
+		"data-today": boolean | undefined;
+		"data-weekend": boolean | undefined;
+		"data-highlighted": boolean | undefined;
+		"data-unavailable": boolean | undefined;
+		"data-selection-start": boolean | undefined;
+		"data-selection-end": boolean | undefined;
+		"data-outside-visible-range": boolean | undefined;
+		"data-outside-month": boolean | undefined;
 }
 
 export type CalendarGridBodyCellProps<
