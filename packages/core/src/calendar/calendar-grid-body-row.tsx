@@ -1,4 +1,3 @@
-import type { OverrideComponentProps } from "@kobalte/utils";
 import {
 	type Accessor,
 	Index,
