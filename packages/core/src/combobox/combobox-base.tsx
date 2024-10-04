@@ -20,6 +20,7 @@ import {
 	type Accessor,
 	type Component,
 	type JSX,
+	type Setter,
 	type ValidComponent,
 	createEffect,
 	createMemo,
@@ -157,6 +158,9 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 
 	/** Property name that refers to the children options of an option group. */
 	optionGroupChildren?: keyof Exclude<OptGroup, null>;
+
+	/** Whether the combobox allows a non-item matching input value to be set. */
+	allowsCustomValue?: boolean;
 
 	/** An optional keyboard delegate to override the default. */
 	keyboardDelegate?: KeyboardDelegate;
@@ -301,6 +305,7 @@ export function ComboboxBase<
 	const [local, popperProps, formControlProps, others] = splitProps(
 		mergedProps,
 		[
+			"allowsCustomValue",
 			"translations",
 			"itemComponent",
 			"sectionComponent",
@@ -368,6 +373,7 @@ export function ComboboxBase<
 
 	const [showAllOptions, setShowAllOptions] = createSignal(false);
 
+	const [options, setOptions] = createSignal(local.options!);
 	const [lastDisplayedOptions, setLastDisplayedOptions] = createSignal(
 		local.options!,
 	);
@@ -454,10 +460,10 @@ export function ComboboxBase<
 
 		// The combobox doesn't contains option groups.
 		if (optionGroupChildren == null) {
-			return local.options as Option[];
+			return options() as Option[];
 		}
 
-		return local.options!.flatMap(
+		return options().flatMap(
 			(item) =>
 				((item as any)[optionGroupChildren] as Option[]) ?? (item as Option),
 		);
@@ -488,11 +494,11 @@ export function ComboboxBase<
 
 		// The combobox doesn't contains option groups.
 		if (optionGroupChildren == null) {
-			return (local.options as Option[]).filter(filterFn);
+			return (options() as Option[]).filter(filterFn);
 		}
 
 		const filteredGroups: OptGroup[] = [];
-		for (const optGroup of local.options as OptGroup[]) {
+		for (const optGroup of options() as OptGroup[]) {
 			// Filter options of the group
 			const filteredChildrenOptions = (
 				(optGroup as any)[optionGroupChildren] as Option[]
@@ -513,7 +519,7 @@ export function ComboboxBase<
 	const displayedOptions = createMemo(() => {
 		if (disclosureState.isOpen()) {
 			if (showAllOptions()) {
-				return local.options!;
+				return options();
 			}
 			return filteredOptions();
 		}
@@ -605,7 +611,7 @@ export function ComboboxBase<
 		const showAllOptions = setShowAllOptions(triggerMode === "manual");
 
 		const hasOptions = showAllOptions
-			? local.options!.length > 0
+			? options().length > 0
 			: filteredOptions().length > 0;
 
 		// Don't open if there is no option.
@@ -738,15 +744,13 @@ export function ComboboxBase<
 				const prevShowAllOptions = prevInput[1];
 
 				setLastDisplayedOptions(
-					prevShowAllOptions ? local.options! : prevFilteredOptions,
+					prevShowAllOptions ? options() : prevFilteredOptions,
 				);
 			} else {
 				const filteredOptions = input[0];
 				const showAllOptions = input[1];
 
-				setLastDisplayedOptions(
-					showAllOptions ? local.options! : filteredOptions,
-				);
+				setLastDisplayedOptions(showAllOptions ? options() : filteredOptions);
 			}
 		}),
 	);
@@ -857,6 +861,8 @@ export function ComboboxBase<
 
 	const context: ComboboxContextValue = {
 		dataset,
+		allowsCustomValue: local.allowsCustomValue ?? false,
+		setOptions: setOptions as Setter<unknown[]>,
 		isOpen: disclosureState.isOpen,
 		isDisabled: () => formControlContext.isDisabled() ?? false,
 		isMultiple: () => access(local.selectionMode) === "multiple",

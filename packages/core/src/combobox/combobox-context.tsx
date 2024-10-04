@@ -1,4 +1,10 @@
-import { type Accessor, type JSX, createContext, useContext } from "solid-js";
+import {
+	type Accessor,
+	type JSX,
+	type Setter,
+	createContext,
+	useContext,
+} from "solid-js";
 
 import type { ListState } from "../list";
 import type { CollectionNode } from "../primitives";
@@ -28,6 +34,8 @@ export interface ComboboxContextValue {
 	activeDescendant: Accessor<string | undefined>;
 	inputValue: Accessor<string | undefined>;
 	triggerMode: Accessor<ComboboxTriggerMode>;
+	setOptions: Setter<unknown[]>;
+	allowsCustomValue: boolean;
 	controlRef: Accessor<HTMLElement | undefined>;
 	inputRef: Accessor<HTMLInputElement | undefined>;
 	triggerRef: Accessor<HTMLElement | undefined>;
