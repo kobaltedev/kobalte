@@ -4,10 +4,12 @@ import {
 	COLOR_PICKER_INTL_TRANSLATIONS,
 	type ColorPickerIntlTranslations,
 } from "./color-picker.intl";
-import { ParentProps, splitProps } from "solid-js";
+import { createSignal, ParentProps, splitProps } from "solid-js";
 
 import { createControllableSignal } from "../primitives/create-controllable-signal";
 import { ColorPickerContextValue, ColorPickerContext } from "./color-picker-context";
+import { ColorPickerAreaContextProvider } from "./color-picker-view-context";
+import { coreColorToHex, HSVColor } from "./utils/convert";
 
 export interface ColorPickerRootOptions {
 	/** The value of the menu that should be open when initially rendered. Use when you do not need to control the value state. */
@@ -45,12 +47,24 @@ export function ColorPickerRoot (props: ColorPickerRootProps) {
 		onChange: local.onValueChange,
 	});
 
+	const [alpha, setAlpha] = createSignal(1)
+
 	const context: ColorPickerContextValue = {
 		translations: () => local.translations,
 		value,
+		alpha,
+		setAlpha,
 	}
 
+	const HSVPicker = new HSVColor();
+
 	return (<ColorPickerContext.Provider value={context}>
-		{others.children}
+		<ColorPickerAreaContextProvider provider={HSVPicker} onChange={(value) => {
+			// @ts-ignore
+			const newColor = HSVPicker.fromCoreColor(value);
+			setValue(coreColorToHex(newColor, props.withAlpha ? alpha() : undefined));
+		}}>
+			{others.children}
+		</ColorPickerAreaContextProvider>
 	</ColorPickerContext.Provider>);
 }

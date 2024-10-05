@@ -12,7 +12,7 @@ export abstract class Color {
 	 */
 	abstract toCoreColor(color: number[]): CoreColor;
 	abstract fromCoreColor(color: CoreColor): any[];
-	abstract readonly channels: Record<string, ColorChannel>;
+	abstract readonly channels: ColorChannel[];
 }
 
 export class RGBColor extends Color {
@@ -24,11 +24,7 @@ export class RGBColor extends Color {
 		return color;
 	}
 
-	channels = {
-		"r": "red",
-		"g": "green",
-		"b": "blue"
-	}
+	channels = ["red", "green", "blue"];
 }
 
 export class HSVColor extends Color {
@@ -49,11 +45,7 @@ export class HSVColor extends Color {
 		return [60 * (h < 0 ? h + 6 : h), v && c / v, v];
 	}
 
-	channels = {
-		"h": "hue",
-		"s": "saturation",
-		"v": "brightness"
-	}
+	channels = ["hue", "saturation", "brightness"];
 }
 
 export class HSLColor extends Color {
@@ -75,15 +67,14 @@ export class HSLColor extends Color {
 		return [60 * (h < 0 ? h + 6 : h), f ? c / f : 0, (v + v - c) / 2];
 	}
 
-	channels = {
-		"h": "hue",
-		"s": "saturation",
-		"l": "lightness"
-	}
+	channels = ["hue", "saturation", "lightness"];
 }
 
 export function coreColorToHex([r, g, b]: CoreColor, a?: number): string {
 	return "#" + [r, g, b]
-		.map(c => c.toString(16).padStart(2, "0")).join("") +
+		.map(c => {
+			const value = c <= 1 ? Math.round(c * 255) : c;
+			return value.toString(16).padStart(2, "0");
+		}).join("") +
 		(a !== undefined ? Math.round(a * 255).toString(16).padStart(2, "0") : "");
 }

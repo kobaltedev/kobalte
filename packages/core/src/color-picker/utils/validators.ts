@@ -1,8 +1,8 @@
-import { useColorPickerAreaContext } from "../color-picker-area-context";
+import { useColorPickerViewContext } from "../color-picker-view-context";
 import { ColorChannel } from "./convert";
 
 export function colorScopeHasChannels(channels: ColorChannel[]) {
-	const scope = useColorPickerAreaContext()
+	const scope = useColorPickerViewContext()
 	if (!scope) {
 		throw new Error("[kobalte]: color picker area not found")
 	}

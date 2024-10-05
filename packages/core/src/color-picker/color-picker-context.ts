@@ -5,18 +5,14 @@ import { CoreColor } from "./utils/convert";
 export interface ColorPickerContextValue {
 	translations: Accessor<ColorPickerIntlTranslations>;
 	value: Accessor<string | null | undefined>;
-}
-
-export interface ColorPickerColor {
-	core: CoreColor;
-	alpha: number;
+	alpha: Accessor<number>;
+	setAlpha: (value: number) => void;
 }
 
 export const ColorPickerContext = createContext<ColorPickerContextValue>();
 
 export function useColorPickerContext() {
 	const context = useContext(ColorPickerContext);
-
 	if (context === undefined) {
 		throw new Error(
 			"[kobalte]: `useColorPickerContext` must be used within a `ColorPicker` component",
