@@ -8,7 +8,7 @@ import { createSignal, ParentProps, splitProps } from "solid-js";
 
 import { createControllableSignal } from "../primitives/create-controllable-signal";
 import { ColorPickerContextValue, ColorPickerContext } from "./color-picker-context";
-import { ColorPickerAreaContextProvider } from "./color-picker-view-context";
+import { ColorPickerViewContextProvider } from "./color-picker-view-context";
 import { coreColorToHex, HSVColor } from "./utils/convert";
 
 export interface ColorPickerRootOptions {
@@ -59,12 +59,12 @@ export function ColorPickerRoot (props: ColorPickerRootProps) {
 	const HSVPicker = new HSVColor();
 
 	return (<ColorPickerContext.Provider value={context}>
-		<ColorPickerAreaContextProvider provider={HSVPicker} onChange={(value) => {
-			// @ts-ignore
+		<ColorPickerViewContextProvider provider={HSVPicker} onChange={(value) => {
+			// @ts-ignore we know number[] has a length of 3
 			const newColor = HSVPicker.fromCoreColor(value);
 			setValue(coreColorToHex(newColor, props.withAlpha ? alpha() : undefined));
 		}}>
 			{others.children}
-		</ColorPickerAreaContextProvider>
+		</ColorPickerViewContextProvider>
 	</ColorPickerContext.Provider>);
 }
