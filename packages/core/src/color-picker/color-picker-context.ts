@@ -1,5 +1,6 @@
 import { type Accessor, createContext, useContext } from "solid-js";
 import type { ColorPickerIntlTranslations } from "./color-picker.intl";
+import { CoreColor } from "./utils/convert";
 
 export interface ColorPickerContextValue {
 	translations: Accessor<ColorPickerIntlTranslations>;
@@ -7,9 +8,8 @@ export interface ColorPickerContextValue {
 }
 
 export interface ColorPickerColor {
-	rgb: [number, number, number];
-	hsv: [number, number, number];
-	alpha?: number;
+	core: CoreColor;
+	alpha: number;
 }
 
 export const ColorPickerContext = createContext<ColorPickerContextValue>();
