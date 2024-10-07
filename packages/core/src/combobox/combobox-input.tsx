@@ -177,6 +177,11 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 						selectionManager().select(focusedKey);
 					}
 				}
+				if (context.allowsCustomValue) {
+					const val = e.currentTarget.value;
+					context.setOptions((x) => [val, ...x]);
+					selectionManager().select(val);
+				}
 
 				break;
 			case "Tab":
