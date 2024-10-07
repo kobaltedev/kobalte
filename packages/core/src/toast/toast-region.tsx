@@ -157,7 +157,9 @@ export function ToastRegion<T extends ValidComponent = "div">(
 	const toasts = createMemo(() =>
 		toastStore
 			.toasts()
-			.filter((toast) => toast.region === local.regionId)
+			.filter(
+				(toast) => toast.region === local.regionId && toast.dismiss === false,
+			)
 			.slice(0, local.limit!),
 	);
 

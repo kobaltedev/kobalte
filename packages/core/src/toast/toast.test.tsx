@@ -24,7 +24,7 @@ describe("Toast", () => {
 		rootProps: Partial<Toast.ToastRootProps> = {},
 		options?: ShowToastOptions,
 	) => {
-		toaster.show(
+		return toaster.show(
 			(props) => (
 				<Toast.Root {...rootProps} toastId={props.toastId}>
 					<Toast.Title data-testid="title">Title</Toast.Title>
@@ -505,6 +505,52 @@ describe("Toast", () => {
 			const toasts = getAllByRole("status");
 
 			expect(toasts.length).toBe(limit);
+		});
+
+		it("should not use dismissed toasts for list", async () => {
+			const limit = 1;
+
+			let closeId: number;
+
+			const { getAllByRole, getByTestId } = render(() => (
+				<>
+					<button
+						type="button"
+						data-testid="dismiss-toast"
+						onClick={() => {
+							toaster.dismiss(closeId);
+						}}
+					>
+						Close a toast
+					</button>
+					<button
+						type="button"
+						data-testid="trigger"
+						onClick={() => {
+							closeId = showToast();
+						}}
+					>
+						Show Toast
+					</button>
+					<Toast.Region limit={limit}>
+						<Toast.List data-testid="custom-region" />
+					</Toast.Region>
+				</>
+			));
+
+			fireEvent.click(getByTestId("trigger"));
+
+			fireEvent.click(getByTestId("dismiss-toast"));
+
+			let toasts =
+				getByTestId("custom-region").querySelectorAll('[role="status"]');
+			expect(toasts.length).toBe(0);
+
+			fireEvent.click(getByTestId("trigger"));
+
+			toasts = getByTestId("custom-region").querySelectorAll('[role="status"]');
+
+			expect(toasts.length).toBe(1);
 		});
 
 		it("should render multiple regions simultaneously", async () => {
