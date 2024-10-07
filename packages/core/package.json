@@ -64,9 +64,8 @@
 		"build:cp": "cp ../../NOTICE.txt .",
 		"build:tsup": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsup",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
-		"dev": "vite serve dev --host",
-		"test-old": "jest --passWithNoTests",
-		"test": "nx vite:test run",
+		"dev": "vite serve --host",
+		"test": "vitest",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {

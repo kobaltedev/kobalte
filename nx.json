@@ -1,41 +1,67 @@
 {
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "targetDefaults": {
-    "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "{projectRoot}/dist"
-      ],
-      "cache": true
-    },
-    "test": {
-      "cache": true
-    },
-    "typecheck": {
-      "cache": true
-    }
-  },
-  "defaultBase": "main",
-  "plugins": [
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "build",
-        "testTargetName": "vite:test",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "vite:typecheck"
-      }
-    },
-    {
-      "plugin": "@nx/rollup/plugin",
-      "options": {
-        "buildTargetName": "build"
-      }
-    }
-  ],
-  "nxCloudId": "66e205f466950c5d4d7ba61d"
+	"$schema": "./node_modules/nx/schemas/nx-schema.json",
+	"targetDefaults": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["{projectRoot}/dist"],
+			"cache": true
+		},
+		"test": {
+			"cache": true
+		},
+		"typecheck": {
+			"cache": true
+		},
+		"clean": {
+			"cache": false
+		}
+	},
+	"release": {
+		"projects": ["@kobalte/core", "@kobalte/utils", "@kobalte/tailwindcss", "@kobalte/vanilla-extract"],
+		"projectsRelationship": "independent",
+		"git": {
+			"commitMessage": "chore: release {version}"
+		},
+		"version": {
+			"conventionalCommits": true,
+			"generatorOptions": {
+				"updateDependents": true
+			},
+			"preVersionCommand": "#pnpm build:libs"
+		},
+		"changelog": {
+			"projectChangelogs": {
+				"renderOptions": {
+					"authors": true,
+					"mapAuthorsToGitHubUsernames": true,
+					"commitReferences": true,
+					"versionTitleDate": true
+				}
+			}
+		},
+		"conventionalCommits": {
+			"types": {
+				"-- remove bump after v1": false,
+				"feat" : {
+					"semverBump": "patch",
+					"changelog": {
+						"title": "Features"
+					}
+				},
+				"fix" : {
+					"semverBump": "patch",
+					"changelog": {
+						"title": "Fixes"
+					}
+				},
+				"perf" : {
+					"semverBump": "patch",
+					"changelog": {
+						"title": "Performance"
+					}
+				}
+			}
+		}
+	},
+	"defaultBase": "main"
 }

@@ -1,0 +1,13 @@
+diff --git a/src/command-line/release/utils/semver.js b/src/command-line/release/utils/semver.js
+index 0ffde87036a90e8928b38e238dd1dfa9655d9584..468758a1c412ec77a49f4475dcfd436a0d2ec396 100644
+--- a/src/command-line/release/utils/semver.js
++++ b/src/command-line/release/utils/semver.js
+@@ -33,7 +33,7 @@ function determineSemverChange(commits, config) {
+             // do not report a change
+         }
+     }
+-    return hasMajor ? 'major' : hasMinor ? 'minor' : hasPatch ? 'patch' : null;
++    return hasMajor ? 'minor' : hasMinor ? 'minor' : hasPatch ? 'patch' : null;
+ }
+ function deriveNewSemverVersion(currentSemverVersion, semverSpecifier, preid) {
+     if (!(0, semver_1.valid)(currentSemverVersion)) {
