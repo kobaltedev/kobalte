@@ -98,6 +98,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/menubar",
 			},
 			{
+				title: "Meter",
+				href: "/docs/core/components/meter",
+			},
+			{
 				title: "Navigation Menu",
 				href: "/docs/core/components/navigation-menu",
 				status: "new",

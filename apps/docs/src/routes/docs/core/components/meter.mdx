@@ -1,0 +1,197 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import {
+	BasicExample,
+	CustomValueLabelExample,
+	CustomValueScaleExample,
+} from "../../../../examples/meter";
+
+# Meter
+
+Displays numeric value that varies within a defined range
+
+## Import
+
+```ts
+import { Meter } from "@kobalte/core/meter";
+// or
+import { Root, Label, ... } from "@kobalte/core/meter";
+// or (deprecated)
+import { Meter } from "@kobalte/core";
+```
+
+## Features
+
+- Exposed to assistive technology as a meter via ARIA.
+- Labeling support for accessibility.
+- Internationalized number formatting as a percentage or value.
+
+## Anatomy
+
+The meter consists of:
+
+- **Meter:** The root container for a meter.
+- **Meter.Label:** An accessible label that gives the user information on the meter.
+- **Meter.ValueLabel:** The accessible label text representing the current value in a human-readable format.
+- **Meter.Track:** The component that visually represents the meter track.
+- **Meter.Fill:** The component that visually represents the meter value.
+
+```tsx
+<Meter>
+	<Meter.Label />
+	<Meter.ValueLabel />
+	<Meter.Track>
+		<Meter.Fill />
+	</Meter.Track>
+</Meter>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+		import { Meter } from "@kobalte/core/meter";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Meter value={80} class="meter">
+          <div class="meter__label-container">
+            <Meter.Label class="meter__label">Battery Level:</Meter.Label>
+            <Meter.ValueLabel class="meter__value-label" />
+          </div>
+          <Meter.Track class="meter__track">
+            <Meter.Fill class="meter__fill" />
+          </Meter.Track>
+        </Meter>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .meter {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      width: 300px;
+    }
+
+    .meter__label-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .meter__label,
+    .meter__value-label {
+      color: hsl(240 4% 16%);
+      font-size: 14px;
+    }
+
+    .meter__track {
+      height: 10px;
+      background-color: hsl(240 6% 90%);
+    }
+
+    .meter__fill {
+      background-color: hsl(200 98% 39%);
+      height: 100%;
+      width: var(--kb-meter-fill-width);
+      transition: width 250ms linear;
+    }
+
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### Custom value scale
+
+By default, the `value` prop represents the current value of meter, as the minimum and maximum values default to 0 and 100, respectively. Alternatively, a different scale can be used by setting the `minValue` and `maxValue` props.
+
+<Preview>
+	<CustomValueScaleExample />
+</Preview>
+
+```tsx {0}
+<Meter value={100} minValue={0} maxValue={250} class="meter">
+	<div class="meter__label-container">
+		<Meter.Label class="meter__label">Disk Space Usage:</Meter.Label>
+		<Meter.ValueLabel class="meter__value-label" />
+	</div>
+	<Meter.Track class="meter__track">
+		<Meter.Fill class="meter__fill" />
+	</Meter.Track>
+</Meter>
+```
+
+### Custom value label
+
+The `getValueLabel` prop allows the formatted value used in `Meter.ValueLabel` and ARIA to be replaced with a custom string. It receives the current value, min and max values as parameters.
+
+<Preview>
+	<CustomValueLabelExample />
+</Preview>
+
+```tsx {4}
+<Meter
+	value={3}
+	minValue={0}
+	maxValue={10}
+	getValueLabel={({ value, max }) => `${value} of ${max} tasks completed`}
+	class="meter"
+>
+	<div class="meter__label-container">
+		<Meter.Label class="meter__label">Processing...</Meter.Label>
+		<Meter.ValueLabel class="meter__value-label" />
+	</div>
+	<Meter.Track class="meter__track">
+		<Meter.Fill class="meter__fill" />
+	</Meter.Track>
+</Meter>
+```
+
+### Meter fill width
+
+We expose a CSS custom property `--kb-meter-fill-width` which corresponds to the percentage of meterion (ex: 80%). If you are building a linear meter, you can use it to set the width of the `Meter.Fill` component in CSS.
+
+## API Reference
+
+### Meter
+
+`Meter` is equivalent to the `Root` import from `@kobalte/core/meter` (and deprecated `Meter.Root`).
+
+| Prop          | Description                                                                                                                                                                                                                                                    |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value         | `number` <br/> The meter value.                                                                                                                                                                                                                                |
+| minValue      | `number` <br/> The minimum meter value.                                                                                                                                                                                                                        |
+| maxValue      | `number` <br/> The maximum meter value.                                                                                                                                                                                                                        |
+| getValueLabel | `(params: { value: number; min: number; max: number }) => string` <br/> A function to get the accessible label text representing the current value in a human-readable format. If not provided, the value label will be read as a percentage of the max value. |
+
+| Data attribute | Description |
+| :------------- | :---------- |
+
+`Meter.Label`, `Meter.ValueLabel`, `Meter.Track` and `Meter.Fill` shares the same data-attributes.
+
+## Rendered elements
+
+| Component          | Default rendered element |
+| :----------------- | :----------------------- |
+| `Meter`            | `div`                    |
+| `Meter.Label`      | `span`                   |
+| `Meter.ValueLabel` | `div`                    |
+| `Meter.Track`      | `div`                    |
+| `Meter.Fill`       | `div`                    |
