@@ -17,6 +17,11 @@ import {
 } from "solid-js";
 
 import { createNumberFormatter } from "../i18n";
+import type {
+	MeterRootCommonProps,
+	MeterRootOptions,
+	MeterRootRenderProps,
+} from "../meter";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -29,54 +34,19 @@ import {
 	type ProgressDataSet,
 } from "./progress-context";
 
-interface GetValueLabelParams {
-	value: number;
-	min: number;
-	max: number;
-}
-
-export interface ProgressRootOptions {
-	/**
-	 * The progress value.
-	 * @default 0
-	 */
-	value?: number;
-
-	/**
-	 * The minimum progress value.
-	 * @default 0
-	 */
-	minValue?: number;
-
-	/**
-	 * The maximum progress value.
-	 * @default 100
-	 */
-	maxValue?: number;
-
+export interface ProgressRootOptions extends MeterRootOptions {
 	/** Whether the progress is in an indeterminate state. */
 	indeterminate?: boolean;
-
-	/**
-	 * A function to get the accessible label text representing the current value in a human-readable format.
-	 * If not provided, the value label will be read as a percentage of the max value.
-	 */
-	getValueLabel?: (params: GetValueLabelParams) => string;
 }
 
-export interface ProgressRootCommonProps<T extends HTMLElement = HTMLElement> {
-	id: string;
-}
+export interface ProgressRootCommonProps<T extends HTMLElement = HTMLElement>
+	extends MeterRootCommonProps {}
 
 export interface ProgressRootRenderProps
 	extends ProgressRootCommonProps,
-		ProgressDataSet {
+		ProgressDataSet,
+		Omit<MeterRootRenderProps, "role"> {
 	role: "progressbar";
-	"aria-valuenow": number | undefined;
-	"aria-valuemin": number;
-	"aria-valuemax": number;
-	"aria-valuetext": string | undefined;
-	"aria-labelledby": string | undefined;
 }
 
 export type ProgressRootProps<

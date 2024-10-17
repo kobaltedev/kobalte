@@ -1,5 +1,10 @@
 import type { JSX, ValidComponent } from "solid-js";
 
+import type {
+	MeterValueLabelCommonProps,
+	MeterValueLabelOptions,
+	MeterValueLabelRenderProps,
+} from "../meter";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -7,17 +12,16 @@ import {
 } from "../polymorphic";
 import { type ProgressDataSet, useProgressContext } from "./progress-context";
 
-export interface ProgressValueLabelOptions {}
+export interface ProgressValueLabelOptions extends MeterValueLabelOptions {}
 
 export interface ProgressValueLabelCommonProps<
 	T extends HTMLElement = HTMLElement,
-> {}
+> extends MeterValueLabelCommonProps {}
 
 export interface ProgressValueLabelRenderProps
-	extends ProgressValueLabelCommonProps,
-		ProgressDataSet {
-	children: JSX.Element;
-}
+	extends MeterValueLabelRenderProps,
+		ProgressValueLabelCommonProps,
+		ProgressDataSet {}
 
 export type ProgressValueLabelProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,

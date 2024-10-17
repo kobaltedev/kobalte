@@ -6,6 +6,11 @@ import {
 	splitProps,
 } from "solid-js";
 
+import type {
+	MeterLabelCommonProps,
+	MeterLabelOptions,
+	MeterLabelRenderProps,
+} from "../meter";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -13,14 +18,14 @@ import {
 } from "../polymorphic";
 import { type ProgressDataSet, useProgressContext } from "./progress-context";
 
-export interface ProgressLabelOptions {}
+export interface ProgressLabelOptions extends MeterLabelOptions {}
 
-export interface ProgressLabelCommonProps<T extends HTMLElement = HTMLElement> {
-	id: string;
-}
+export interface ProgressLabelCommonProps<T extends HTMLElement = HTMLElement>
+	extends MeterLabelCommonProps {}
 
 export interface ProgressLabelRenderProps
-	extends ProgressLabelCommonProps,
+	extends MeterLabelRenderProps,
+		ProgressLabelCommonProps,
 		ProgressDataSet {}
 
 export type ProgressLabelProps<

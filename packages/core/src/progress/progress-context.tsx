@@ -1,19 +1,15 @@
 import { type Accessor, createContext, useContext } from "solid-js";
+import type { MeterContextValue, MeterDataSet } from "../meter/meter-context";
 
-export interface ProgressDataSet {
+export interface ProgressDataSet extends MeterDataSet {
 	"data-progress": "loading" | "complete" | undefined;
 	"data-indeterminate": string | undefined;
 }
 
-export interface ProgressContextValue {
+export interface ProgressContextValue
+	extends Omit<MeterContextValue, "dataset" | "meterFillWidth"> {
 	dataset: Accessor<ProgressDataSet>;
-	value: Accessor<number>;
-	valuePercent: Accessor<number>;
-	valueLabel: Accessor<string | undefined>;
 	progressFillWidth: Accessor<string | undefined>;
-	labelId: Accessor<string | undefined>;
-	generateId: (part: string) => string;
-	registerLabelId: (id: string) => () => void;
 }
 
 export const ProgressContext = createContext<ProgressContextValue>();

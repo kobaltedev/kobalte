@@ -23,15 +23,42 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { createRegisterId } from "../primitives";
-import type { ProgressRootOptions } from "../progress";
 import {
 	MeterContext,
 	type MeterContextValue,
 	type MeterDataSet,
 } from "./meter-context";
 
-export interface MeterRootOptions
-	extends Omit<ProgressRootOptions, "indeterminate"> {}
+interface GetValueLabelParams {
+	value: number;
+	min: number;
+	max: number;
+}
+export interface MeterRootOptions {
+	/**
+	 * The meter value.
+	 * @default 0
+	 */
+	value?: number;
+
+	/**
+	 * The minimum meter value.
+	 * @default 0
+	 */
+	minValue?: number;
+
+	/**
+	 * The maximum meter value.
+	 * @default 100
+	 */
+	maxValue?: number;
+
+	/**
+	 * A function to get the accessible label text representing the current value in a human-readable format.
+	 * If not provided, the value label will be read as a percentage of the max value.
+	 */
+	getValueLabel?: (params: GetValueLabelParams) => string;
+}
 
 export interface MeterRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;

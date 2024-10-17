@@ -1,6 +1,11 @@
 import { type JSX, type ValidComponent, splitProps } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
+import type {
+	MeterFillCommonProps,
+	MeterFillOptions,
+	MeterFillRenderProps,
+} from "../meter";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -8,15 +13,15 @@ import {
 } from "../polymorphic";
 import { type ProgressDataSet, useProgressContext } from "./progress-context";
 
-export interface ProgressFillOptions {}
+export interface ProgressFillOptions extends MeterFillOptions {}
 
-export interface ProgressFillCommonProps<T extends HTMLElement = HTMLElement> {
-	style?: JSX.CSSProperties | string;
-}
+export interface ProgressFillCommonProps<T extends HTMLElement = HTMLElement>
+	extends MeterFillCommonProps {}
 
 export interface ProgressFillRenderProps
 	extends ProgressFillCommonProps,
-		ProgressDataSet {}
+		ProgressDataSet,
+		MeterFillRenderProps {}
 
 export type ProgressFillProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
