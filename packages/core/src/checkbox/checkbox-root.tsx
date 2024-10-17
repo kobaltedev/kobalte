@@ -45,7 +45,7 @@ import {
 	type CheckboxDataSet,
 } from "./checkbox-context";
 
-interface CheckboxRootState {
+export interface CheckboxRootState {
 	/** Whether the checkbox is checked or not. */
 	checked: Accessor<boolean>;
 

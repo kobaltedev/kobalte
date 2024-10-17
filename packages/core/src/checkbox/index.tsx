@@ -45,6 +45,7 @@ import {
 	type CheckboxRootOptions,
 	type CheckboxRootProps,
 	type CheckboxRootRenderProps,
+	type CheckboxRootState,
 	CheckboxRoot as Root,
 } from "./checkbox-root";
 
@@ -75,6 +76,9 @@ export type {
 	CheckboxLabelProps,
 	CheckboxRootOptions,
 	CheckboxRootProps,
+	CheckboxRootState,
+	CheckboxRootCommonProps,
+	CheckboxRootRenderProps,
 };
 export { Control, Description, ErrorMessage, Indicator, Input, Label, Root };
 
