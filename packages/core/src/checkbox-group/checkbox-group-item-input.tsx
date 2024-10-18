@@ -18,6 +18,7 @@ import {
 	createEffect,
 	createSignal,
 	on,
+	onCleanup,
 	splitProps,
 } from "solid-js";
 
@@ -78,13 +79,16 @@ export function CheckboxGroupItemInput<T extends ValidComponent = "input">(
 		props as CheckboxGroupItemInputProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
+	const [local, others] = splitProps(
 		mergedProps,
-		["ref", "style", "onChange", "onFocus", "onBlur"],
+		["ref", "style", "onChange", "onFocus", "onBlur",
+			"aria-labelledby",
+			"aria-describedby",
+			"aria-label"
+		],
 		FORM_CONTROL_FIELD_PROP_NAMES,
 	);
 
-	const { fieldProps } = createFormControlField(formControlFieldProps);
 
 	const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
 
@@ -159,6 +163,45 @@ export function CheckboxGroupItemInput<T extends ValidComponent = "input">(
 		),
 	);
 
+	const ariaLabel = () => {
+		return (
+			[
+				local["aria-label"],
+				context.labelId(),
+			]
+				.filter(Boolean)
+				.join(" ") || undefined
+		);
+	}
+	const ariaLabelledBy = () => {
+		return (
+			[
+				local["aria-labelledby"],
+				context.labelId(),
+				// If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
+				local["aria-labelledby"] != null && others["aria-label"] != null
+					? others.id
+					: undefined,
+			]
+				.filter(Boolean)
+				.join(" ") || undefined
+		);
+	};
+
+	const ariaDescribedBy = () => {
+		return (
+			[
+				local["aria-describedby"],
+				context.descriptionId(),
+				checkboxGroupContext.ariaDescribedBy(),
+			]
+				.filter(Boolean)
+				.join(" ") || undefined
+		);
+	};
+
+	createEffect(() => onCleanup(context.registerInput(others.id!)));
+
 	return (
 		<Polymorphic<CheckboxGroupItemInputRenderProps>
 			as="input"
@@ -167,22 +210,21 @@ export function CheckboxGroupItemInput<T extends ValidComponent = "input">(
 				ref = el;
 			}, local.ref)}
 			type="checkbox"
-			id={fieldProps.id()}
 			name={formControlContext.name()}
 			value={context.value()}
 			checked={context.checked()}
 			required={formControlContext.isRequired()}
-			disabled={formControlContext.isDisabled()}
+			disabled={context.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
 			style={combineStyle(visuallyHiddenStyles, local.style)}
-			aria-label={fieldProps.ariaLabel()}
-			aria-labelledby={fieldProps.ariaLabelledBy()}
-			aria-describedby={fieldProps.ariaDescribedBy()}
+			aria-label={ariaLabel()}
+			aria-labelledby={ariaLabelledBy()}
+			aria-describedby={ariaDescribedBy()}
 			aria-invalid={
 				formControlContext.validationState() === "invalid" || undefined
 			}
 			aria-required={formControlContext.isRequired()}
-			aria-disabled={formControlContext.isDisabled()}
+			aria-disabled={context.isDisabled()}
 			aria-readonly={formControlContext.isReadOnly()}
 			onChange={onChange}
 			onFocus={onFocus}

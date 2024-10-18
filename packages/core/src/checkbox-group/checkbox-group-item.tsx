@@ -35,13 +35,14 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	createFormControl,
+	useFormControlContext,
 } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener, createToggleState } from "../primitives";
+import { createFormResetListener, createRegisterId, createToggleState } from "../primitives";
 import { useCheckboxGroupContext } from "./checkbox-group-context";
 import {
 	CheckboxGroupItemContext,
@@ -75,8 +76,13 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 ) {
 	let ref: HTMLElement | undefined;
 
-	const defaultId = `item-${createUniqueId()}`;
 	const checkboxGroupContext = useCheckboxGroupContext();
+	const formControlContext = useFormControlContext();
+
+	const defaultId = `${formControlContext.generateId(
+		"item",
+	)}-${createUniqueId()}`;
+
 
 	const mergedProps = mergeDefaultProps(
 		{
@@ -96,28 +102,16 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 			"indeterminate",
 			"onChange",
 			"onPointerDown",
+			"disabled"
 		],
 		FORM_CONTROL_PROP_NAMES,
 	);
 
+	const [inputId, setInputId] = createSignal<string>();
+	const [labelId, setLabelId] = createSignal<string>();
+	const [descriptionId, setDescriptionId] = createSignal<string>();
 	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
 	const [isFocused, setIsFocused] = createSignal(false);
-
-	const { formControlContext } = createFormControl(formControlProps);
-
-	const state = createToggleState({
-		isSelected: () =>
-			checkboxGroupContext.isSelectedValue(local.value ?? "") ||
-			local.checked ||
-			false,
-		defaultIsSelected: () =>
-			checkboxGroupContext.isSelectedValue(local.value ?? "") ||
-			local.defaultChecked ||
-			false,
-		onSelectedChange: (selected) => local.onChange?.(selected),
-		isDisabled: () => formControlContext.isDisabled(),
-		isReadOnly: () => formControlContext.isReadOnly(),
-	});
 
 	createFormResetListener(
 		() => ref,
@@ -140,9 +134,28 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 		}
 	};
 
+	const isDisabled = createMemo(() => {
+		return local.disabled || formControlContext.isDisabled() || false;
+	});
+
+	const state = createToggleState({
+		isSelected: () =>
+			checkboxGroupContext.isSelectedValue(local.value ?? "") ||
+			local.checked ||
+			false,
+		defaultIsSelected: () =>
+			checkboxGroupContext.isSelectedValue(local.value ?? "") ||
+			local.defaultChecked ||
+			false,
+		onSelectedChange: (selected) => local.onChange?.(selected),
+		isDisabled,
+		isReadOnly: () => formControlContext.isReadOnly(),
+	});
+
 	const dataset: Accessor<CheckboxGroupItemDataSet> = createMemo(() => ({
 		"data-checked": state.isSelected() ? "" : undefined,
 		"data-indeterminate": local.indeterminate ? "" : undefined,
+		"data-disabled": isDisabled() ? "": undefined
 	}));
 
 	const context: CheckboxGroupItemContextValue = {
@@ -159,6 +172,13 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 		setIsChecked: (isChecked) => state.setIsSelected(isChecked),
 		setIsFocused,
 		setInputRef,
+		isDisabled,
+		inputId,
+		labelId,
+		descriptionId,
+		registerInput: createRegisterId(setInputId),
+		registerLabel: createRegisterId(setLabelId),
+		registerDescription: createRegisterId(setDescriptionId),
 	};
 
 	return (

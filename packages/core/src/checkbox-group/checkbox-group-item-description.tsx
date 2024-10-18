@@ -1,4 +1,4 @@
-import type { Component, ValidComponent } from "solid-js";
+import { createEffect, onCleanup, type Component, type ValidComponent } from "solid-js";
 
 import type {
 	CheckboxDescriptionCommonProps,
@@ -14,6 +14,7 @@ import {
 	type CheckboxGroupItemDataSet,
 	useCheckboxGroupItemContext,
 } from "./checkbox-group-item-context";
+import { mergeDefaultProps } from "@kobalte/utils";
 
 export interface CheckboxGroupItemDescriptionOptions
 	extends CheckboxDescriptionOptions {}
@@ -40,6 +41,15 @@ export function CheckboxGroupItemDescription<T extends ValidComponent = "div">(
 ) {
 	const context = useCheckboxGroupItemContext();
 
+	const mergedProps = mergeDefaultProps(
+		{
+			id: context.generateId("description"),
+		},
+		props as CheckboxGroupItemDescriptionProps,
+	);
+
+	createEffect(() => onCleanup(context.registerDescription(mergedProps.id)));
+
 	return (
 		<FormControlDescription<
 			Component<
@@ -50,7 +60,7 @@ export function CheckboxGroupItemDescription<T extends ValidComponent = "div">(
 			>
 		>
 			{...context.dataset()}
-			{...(props as CheckboxGroupItemDescriptionProps)}
+			{...mergedProps}
 		/>
 	);
 }

@@ -19,6 +19,7 @@ import {
 	type CheckboxGroupItemDataSet,
 	useCheckboxGroupItemContext,
 } from "./checkbox-group-item-context";
+import { mergeDefaultProps } from "@kobalte/utils";
 
 export interface CheckboxGroupItemLabelOptions extends CheckboxLabelOptions {}
 
@@ -44,6 +45,15 @@ export function CheckboxGroupItemLabel<T extends ValidComponent = "label">(
 ) {
 	const context = useCheckboxGroupItemContext();
 
+	const mergedProps = mergeDefaultProps(
+		{
+			id: context.generateId("label"),
+		},
+		props as CheckboxGroupItemLabelProps,
+	);
+
+	createEffect(() => onCleanup(context.registerLabel(mergedProps.id!)));
+
 	return (
 		<FormControlLabel<
 			Component<
@@ -54,7 +64,7 @@ export function CheckboxGroupItemLabel<T extends ValidComponent = "label">(
 			>
 		>
 			{...context.dataset()}
-			{...(props as CheckboxGroupItemLabelProps)}
+			{...mergedProps}
 		/>
 	);
 }
