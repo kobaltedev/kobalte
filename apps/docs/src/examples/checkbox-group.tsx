@@ -33,10 +33,7 @@ export function BasicExample() {
 
 export function DefaultValueExample() {
 	return (
-		<CheckboxGroup
-			class={style["checkbox-group"]}
-			defaultValues={[{ id: "News", value: "News" }]}
-		>
+		<CheckboxGroup class={style["checkbox-group"]} defaultValues={["News"]}>
 			<CheckboxGroup.Label class={style["checkbox-group__label"]}>
 				Subscribe to topics
 			</CheckboxGroup.Label>
@@ -62,7 +59,7 @@ export function DefaultValueExample() {
 }
 
 export function ControlledExample() {
-	const [value, setValue] = createSignal([{ id: "News", value: "News" }]);
+	const [value, setValue] = createSignal(["News"]);
 
 	return (
 		<>
@@ -131,18 +128,14 @@ export function DescriptionExample() {
 }
 
 export function ErrorMessageExample() {
-	const [value, setValue] = createSignal([{ id: "News", value: "News" }]);
+	const [value, setValue] = createSignal(["News"]);
 
 	return (
 		<CheckboxGroup
 			class={style["checkbox-group"]}
 			values={value()}
 			onChange={setValue}
-			validationState={
-				!value().some((val) => val.id === "News" && val.value === "News")
-					? "invalid"
-					: "valid"
-			}
+			validationState={!value().includes("News") ? "invalid" : "valid"}
 		>
 			<CheckboxGroup.Label class={style["checkbox-group__label"]}>
 				What would you like to subscribe to?

@@ -3,7 +3,7 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
+ * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/checkbox/src/useCheckboxGroup.ts
  */
 
 import {
@@ -60,9 +60,7 @@ export interface CheckboxGroupItemCommonProps<
 export interface CheckboxGroupItemRenderProps
 	extends Omit<CheckboxRootRenderProps, "role">,
 		CheckboxGroupItemCommonProps,
-		CheckboxGroupItemDataSet {
-	role: "checkbox";
-}
+		CheckboxGroupItemDataSet {}
 
 export type CheckboxGroupItemProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -77,7 +75,7 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 ) {
 	let ref: HTMLElement | undefined;
 
-	const defaultId = `checkbox-${createUniqueId()}`;
+	const defaultId = `item-${createUniqueId()}`;
 	const checkboxGroupContext = useCheckboxGroupContext();
 
 	const mergedProps = mergeDefaultProps(
@@ -108,18 +106,14 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 	const { formControlContext } = createFormControl(formControlProps);
 
 	const state = createToggleState({
-		//FIXME: id is not valid
-		// FIXME: default values are not clearing
 		isSelected: () =>
-			checkboxGroupContext.isSelectedValue({
-				id: formControlProps.id,
-				value: local.value,
-			}) || local.checked,
+			checkboxGroupContext.isSelectedValue(local.value ?? "") ||
+			local.checked ||
+			false,
 		defaultIsSelected: () =>
-			checkboxGroupContext.isSelectedValue({
-				id: formControlProps.id,
-				value: local.value,
-			}) || local.defaultChecked,
+			checkboxGroupContext.isSelectedValue(local.value ?? "") ||
+			local.defaultChecked ||
+			false,
 		onSelectedChange: (selected) => local.onChange?.(selected),
 		isDisabled: () => formControlContext.isDisabled(),
 		isReadOnly: () => formControlContext.isReadOnly(),
@@ -127,7 +121,12 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 
 	createFormResetListener(
 		() => ref,
-		() => state.setIsSelected(local.defaultChecked ?? false),
+		() =>
+			state.setIsSelected(
+				checkboxGroupContext.isSelectedValue(local.value ?? "") ||
+					local.defaultChecked ||
+					false,
+			),
 	);
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
@@ -153,7 +152,10 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 		indeterminate: () => local.indeterminate ?? false,
 		inputRef,
 		generateId: createGenerateId(() => access(formControlProps.id)!),
-		toggle: () => state.toggle(),
+		toggle: () => {
+			state.toggle();
+			if (local.value) checkboxGroupContext.setSelectedValue(local.value);
+		},
 		setIsChecked: (isChecked) => state.setIsSelected(isChecked),
 		setIsFocused,
 		setInputRef,
@@ -165,7 +167,6 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 				<Polymorphic<CheckboxGroupItemRenderProps>
 					as="div"
 					ref={mergeRefs((el) => (ref = el), local.ref)}
-					role="checkbox"
 					id={access(formControlProps.id)}
 					onPointerDown={onPointerDown}
 					{...formControlContext.dataset()}

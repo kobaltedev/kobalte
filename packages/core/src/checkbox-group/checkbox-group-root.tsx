@@ -3,8 +3,8 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadioGroup.ts
- * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
+ * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/checkbox/src/useCheckboxGroup.ts
+ * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-stately/checkbox/src/useCheckboxGroupState.ts
  */
 
 import {
@@ -36,23 +36,18 @@ import {
 	type CheckboxGroupContextValue,
 } from "./checkbox-group-context";
 
-export interface CheckboxGroupItemValue {
-	id: string;
-	value?: string;
-}
-
 export interface CheckboxGroupRootOptions {
 	/** The controlled values of the checkboxes to check. */
-	values?: CheckboxGroupItemValue[];
+	values?: string[];
 
 	/**
 	 * The value of the checkboxes that should be checked when initially rendered.
 	 * Useful when you do not need to control the state of the Checkboxes.
 	 */
-	defaultValues?: CheckboxGroupItemValue[];
+	defaultValues?: string[];
 
 	/** Event handler called when the value changes. */
-	onChange?: (value: CheckboxGroupItemValue[]) => void;
+	onChange?: (value: string[]) => void;
 
 	/** The axis the checkbox group items should align with. */
 	orientation?: Orientation;
@@ -141,9 +136,7 @@ export function CheckboxGroupRoot<T extends ValidComponent = "div">(
 		FORM_CONTROL_PROP_NAMES,
 	);
 
-	const [selected, setSelected] = createControllableSignal<
-		CheckboxGroupItemValue[]
-	>({
+	const [selected, setSelected] = createControllableSignal<string[]>({
 		value: () => local.values,
 		defaultValue: () => local.defaultValues,
 		onChange: (value) => local.onChange?.(value),
@@ -168,18 +161,8 @@ export function CheckboxGroupRoot<T extends ValidComponent = "div">(
 		return formControlContext.getAriaDescribedBy(local["aria-describedby"]);
 	};
 
-	const checkValues = (
-		value: CheckboxGroupItemValue,
-		values?: CheckboxGroupItemValue[],
-	) => {
-		return (
-			values?.some((val) => val.id === value.id && val.value === value.value) ||
-			false
-		);
-	};
-
-	const isSelectedValue = (value: CheckboxGroupItemValue) => {
-		return checkValues(value, selected());
+	const isSelectedValue = (value: string) => {
+		return selected()?.includes(value) || false;
 	};
 
 	const context: CheckboxGroupContextValue = {
@@ -190,19 +173,17 @@ export function CheckboxGroupRoot<T extends ValidComponent = "div">(
 				return;
 			}
 
-			const selectedValues = local.values || [];
-
-			setSelected([...selectedValues, value]);
+			const selectedValues = selected() || [];
+			if (isSelectedValue(value)) {
+				setSelected(selectedValues.filter((val) => val !== value));
+			} else setSelected([...selectedValues, value]);
 
 			// Sync all checkbox inputs' checked state in the group with the selected values.
 			// This ensures the checked state is in sync (e.g., when using a controlled checkbox group).
 			if (ref) {
 				for (const el of ref.querySelectorAll("[type='checkbox']")) {
 					const checkbox = el as HTMLInputElement;
-					checkbox.checked = checkValues(
-						{ id: checkbox.id, value: checkbox.value },
-						selectedValues,
-					);
+					checkbox.checked = selectedValues.includes(checkbox.value);
 				}
 			}
 		},

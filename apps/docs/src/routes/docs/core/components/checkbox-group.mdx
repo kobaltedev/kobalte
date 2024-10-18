@@ -202,11 +202,21 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 </Preview>
 
 ```tsx {0,4}
-<CheckboxGroup defaultValue="Orange">
-	<CheckboxGroup.Label>Favorite fruit</CheckboxGroup.Label>
+<CheckboxGroup defaultValues={["News"]}>
+	<CheckboxGroup.Label>Subscribe to topics</CheckboxGroup.Label>
 	<div role="presentation">
-		<For each={["Apple", "Orange", "Watermelon"]}>
-			{fruit => <CheckboxGroup.Item value={fruit}>...</CheckboxGroup.Item>}
+		<For each={["News", "Updates", "Offers"]}>
+			{topic => (
+				<CheckboxGroup.Item id={topic} value={topic}>
+					<CheckboxGroup.ItemInput />
+					<CheckboxGroup.ItemControl>
+						<CheckboxGroup.ItemIndicator>
+							<CheckIcon />
+						</CheckboxGroup.ItemIndicator>
+					</CheckboxGroup.ItemControl>
+					<CheckboxGroup.ItemLabel>{topic}</CheckboxGroup.ItemLabel>
+				</CheckboxGroup.Item>
+			)}
 		</For>
 	</div>
 </CheckboxGroup>
@@ -226,20 +236,27 @@ The `value` prop, which accepts a value corresponding with the `value` prop of e
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
-	const [value, setValue] = createSignal("Orange");
+	const [value, setValue] = createSignal(["News"]);
 
 	return (
-		<>
-			<CheckboxGroup value={value()} onChange={setValue}>
-				<CheckboxGroup.Label>Favorite fruit</CheckboxGroup.Label>
+			<CheckboxGroup values={value()} onChange={setValue}>
+				<CheckboxGroup.Label>What would you like to subscribe to?</CheckboxGroup.Label>
 				<div role="presentation">
-					<For each={["Apple", "Orange", "Watermelon"]}>
-						{fruit => <CheckboxGroup.Item value={fruit}>...</CheckboxGroup.Item>}
+					<For each={["News", "Updates", "Offers"]}>
+						{option => (
+							<CheckboxGroup.Item id={option} value={option}>
+								<CheckboxGroup.ItemInput />
+								<CheckboxGroup.ItemControl>
+									<CheckboxGroup.ItemIndicator>
+										<CheckIcon />
+									</CheckboxGroup.ItemIndicator>
+								</CheckboxGroup.ItemControl>
+								<CheckboxGroup.ItemLabel>{option}</CheckboxGroup.ItemLabel>
+							</CheckboxGroup.Item>
+						)}
 					</For>
 				</div>
 			</CheckboxGroup>
-			<p>Your favorite fruit is: {value()}.</p>
-		</>
 	);
 }
 ```
@@ -254,13 +271,25 @@ The `CheckboxGroup.Description` component can be used to associate additional he
 
 ```tsx {7}
 <CheckboxGroup>
-	<CheckboxGroup.Label>Favorite fruit</CheckboxGroup.Label>
+	<CheckboxGroup.Label>What would you like to subscribe to?</CheckboxGroup.Label>
 	<div role="presentation">
-		<For each={["Apple", "Orange", "Watermelon"]}>
-			{fruit => <CheckboxGroup.Item value={fruit}>...</CheckboxGroup.Item>}
+		<For each={["News", "Updates", "Offers"]}>
+			{option => (
+				<CheckboxGroup.Item value={option}>
+					<CheckboxGroup.ItemInput />
+					<CheckboxGroup.ItemControl>
+						<CheckboxGroup.ItemIndicator>
+							<CheckIcon />
+						</CheckboxGroup.ItemIndicator>
+					</CheckboxGroup.ItemControl>
+					<CheckboxGroup.ItemLabel>{option}</CheckboxGroup.ItemLabel>
+				</CheckboxGroup.Item>
+			)}
 		</For>
 	</div>
-	<CheckboxGroup.Description>Choose the fruit you like the most.</CheckboxGroup.Description>
+	<CheckboxGroup.Description>
+		Select the types of updates you'd like to receive.
+	</CheckboxGroup.Description>
 </CheckboxGroup>
 ```
 
@@ -278,21 +307,31 @@ By default, it will render only when the `validationState` prop is set to `inval
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
-	const [value, setValue] = createSignal("Orange");
+	const [value, setValue] = createSignal(["News"]);
 
 	return (
 		<CheckboxGroup
-			value={value()}
+			values={value()}
 			onChange={setValue}
-			validationState={value() !== "Apple" ? "invalid" : "valid"}
+			validationState={!value().includes("News") ? "invalid" : "valid"}
 		>
-			<CheckboxGroup.Label>Favorite fruit</CheckboxGroup.Label>
+			<CheckboxGroup.Label>What would you like to subscribe to?</CheckboxGroup.Label>
 			<div role="presentation">
-				<For each={["Apple", "Orange", "Watermelon"]}>
-					{fruit => <CheckboxGroup.Item value={fruit}>...</CheckboxGroup.Item>}
+				<For each={["News", "Updates", "Offers"]}>
+					{option => (
+						<CheckboxGroup.Item id={option} value={option}>
+							<CheckboxGroup.ItemInput />
+							<CheckboxGroup.ItemControl>
+								<CheckboxGroup.ItemIndicator>
+									<CheckIcon />
+								</CheckboxGroup.ItemIndicator>
+							</CheckboxGroup.ItemControl>
+							<CheckboxGroup.ItemLabel>{option}</CheckboxGroup.ItemLabel>
+						</CheckboxGroup.Item>
+					)}
 				</For>
 			</div>
-			<CheckboxGroup.ErrorMessage>Hmm, I prefer apples.</CheckboxGroup.ErrorMessage>
+			<CheckboxGroup.ErrorMessage>Please select News to stay informed.</CheckboxGroup.ErrorMessage>
 		</CheckboxGroup>
 	);
 }
@@ -308,17 +347,32 @@ The checkbox group `name` prop, paired with the checkbox `value` prop, can be us
 
 ```tsx {7,11}
 function HTMLFormExample() {
+	let formRef: HTMLFormElement | undefined;
+
 	const onSubmit = (e: SubmitEvent) => {
-		// handle form submission.
+		e.preventDefault();
+		e.stopPropagation();
+		const formData = new FormData(formRef);
+		alert(JSON.stringify(Object.fromEntries(formData), null, 2));
 	};
 
 	return (
-		<form onSubmit={onSubmit}>
-			<CheckboxGroup name="favorite-fruit">
-				<CheckboxGroup.Label>Favorite fruit</CheckboxGroup.Label>
+		<form ref={formRef} onSubmit={onSubmit}>
+			<CheckboxGroup name="subscriptions">
+				<CheckboxGroup.Label>What would you like to subscribe to?</CheckboxGroup.Label>
 				<div role="presentation">
-					<For each={["Apple", "Orange", "Watermelon"]}>
-						{fruit => <CheckboxGroup.Item value={fruit}>...</CheckboxGroup.Item>}
+					<For each={["News", "Updates", "Offers"]}>
+						{option => (
+							<CheckboxGroup.Item id={option} value={option}>
+								<CheckboxGroup.ItemInput />
+								<CheckboxGroup.ItemControl>
+									<CheckboxGroup.ItemIndicator>
+										<CheckIcon />
+									</CheckboxGroup.ItemIndicator>
+								</CheckboxGroup.ItemControl>
+								<CheckboxGroup.ItemLabel>{option}</CheckboxGroup.ItemLabel>
+							</CheckboxGroup.Item>
+						)}
 					</For>
 				</div>
 			</CheckboxGroup>
@@ -337,17 +391,17 @@ function HTMLFormExample() {
 
 `CheckboxGroup` is equivalent to the `Root` import from `@kobalte/core/checkbox-group` (and deprecated `CheckboxGroup.Root`).
 
-| Prop            | Description                                                                                                                                                                           |
-| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| values          | `[{id: string, value: string}]` <br/> The controlled values of the checkboxes to check.                                                                                               |
-| defaultValues   | `[{id: string, value: string}]` <br/> The value of the checkboxes that should be checked when initially rendered. Useful when you do not need to control the state of the checkboxes. |
-| onChange        | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                                          |
-| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the checkbox group items should align with.                                                                                               |
-| name            | `string` <br/> The name of the checkbox group. Submitted with its owning form as part of a name/value pair.                                                                           |
-| validationState | `'valid' \| 'invalid'` <br/> Whether the checkbox group should display its "valid" or "invalid" visual styling.                                                                       |
-| required        | `boolean` <br/> Whether the user must check a checkbox group item before the owning form can be submitted.                                                                            |
-| disabled        | `boolean` <br/> Whether the checkbox group is disabled.                                                                                                                               |
-| readOnly        | `boolean` <br/> Whether the checkbox group items can be selected but not changed by the user.                                                                                         |
+| Prop            | Description                                                                                                                                                      |
+| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| values          | `string[]` <br/> The controlled values of the checkboxes to check.                                                                                               |
+| defaultValues   | `string[]` <br/> The value of the checkboxes that should be checked when initially rendered. Useful when you do not need to control the state of the checkboxes. |
+| onChange        | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                     |
+| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the checkbox group items should align with.                                                                          |
+| name            | `string` <br/> The name of the checkbox group. Submitted with its owning form as part of a name/value pair.                                                      |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the checkbox group should display its "valid" or "invalid" visual styling.                                                  |
+| required        | `boolean` <br/> Whether the user must check a checkbox group item before the owning form can be submitted.                                                       |
+| disabled        | `boolean` <br/> Whether the checkbox group is disabled.                                                                                                          |
+| readOnly        | `boolean` <br/> Whether the checkbox group items can be selected but not changed by the user.                                                                    |
 
 | Data attribute | Description                                                                                     |
 | :------------- | :---------------------------------------------------------------------------------------------- |

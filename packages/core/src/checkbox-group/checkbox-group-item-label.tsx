@@ -1,15 +1,10 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Component,
 	type ValidComponent,
 	createEffect,
 	onCleanup,
 } from "solid-js";
-import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import type {
 	CheckboxLabelCommonProps,

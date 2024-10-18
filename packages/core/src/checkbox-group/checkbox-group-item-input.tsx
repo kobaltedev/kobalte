@@ -3,7 +3,7 @@
  * Apache License Version 2.0, Copyright 2020 Adobe.
  *
  * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
+ * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/checkbox/src/useCheckboxGroup.ts
  */
 
 import {
@@ -18,7 +18,6 @@ import {
 	createEffect,
 	createSignal,
 	on,
-	onCleanup,
 	splitProps,
 } from "solid-js";
 
@@ -96,9 +95,7 @@ export function CheckboxGroupItemInput<T extends ValidComponent = "input">(
 
 		if (!isInternalChangeEvent()) {
 			const target = e.target as HTMLInputElement;
-			// FIXME: set the values in context
-			// checkboxGroupContext.setSelectedValue(context.value());
-
+			checkboxGroupContext.setSelectedValue(context.value());
 			context.setIsChecked(target.checked);
 
 			// Unlike in React, inputs `checked` state can be out of sync with our toggle state.
