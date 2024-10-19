@@ -22,7 +22,7 @@ describe("Badge", () => {
 		expect(badge).toHaveAttribute("aria-label", "User is online");
 	});
 
-	it("badge with default aria-labe as textValue", () => {
+	it("badge with default aria-label as textValue", () => {
 		const { getByRole } = render(() => (
 			<Badge.Root textValue="Online">Online</Badge.Root>
 		));
