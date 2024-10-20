@@ -1,14 +1,18 @@
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import {
+	type Component,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
-import type {
-	MeterFillCommonProps,
-	MeterFillOptions,
-	MeterFillRenderProps,
+import {
+	Meter,
+	type MeterFillCommonProps,
+	type MeterFillOptions,
+	type MeterFillRenderProps,
 } from "../meter";
 import {
 	type ElementOf,
-	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
 import { type ProgressDataSet, useProgressContext } from "./progress-context";
@@ -39,8 +43,9 @@ export function ProgressFill<T extends ValidComponent = "div">(
 	const [local, others] = splitProps(props as ProgressFillProps, ["style"]);
 
 	return (
-		<Polymorphic<ProgressFillRenderProps>
-			as="div"
+		<Meter.Fill<
+			Component<Omit<ProgressFillRenderProps, keyof MeterFillRenderProps>>
+		>
 			style={combineStyle(
 				{
 					"--kb-progress-fill-width": context.progressFillWidth(),

@@ -62,18 +62,17 @@ export interface MeterRootOptions {
 
 export interface MeterRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-}
-
-export interface MeterRootRenderProps
-	extends MeterRootCommonProps,
-		MeterDataSet {
-	role: "meter";
+	role: string;
 	"aria-valuenow": number | undefined;
 	"aria-valuemin": number;
 	"aria-valuemax": number;
 	"aria-valuetext": string | undefined;
 	"aria-labelledby": string | undefined;
 }
+
+export interface MeterRootRenderProps
+	extends MeterRootCommonProps,
+		MeterDataSet {}
 
 export type MeterRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -93,6 +92,8 @@ export function MeterRoot<T extends ValidComponent = "div">(
 			value: 0,
 			minValue: 0,
 			maxValue: 100,
+			role: "meter",
+			indeterminate: false,
 		},
 		props as MeterRootProps,
 	);
@@ -102,6 +103,13 @@ export function MeterRoot<T extends ValidComponent = "div">(
 		"minValue",
 		"maxValue",
 		"getValueLabel",
+		"role",
+		"aria-valuetext",
+		"aria-labelledby",
+		"aria-valuemax",
+		"aria-valuemin",
+		"aria-valuenow",
+		"indeterminate",
 	]);
 
 	const [labelId, setLabelId] = createSignal<string>();
@@ -117,6 +125,9 @@ export function MeterRoot<T extends ValidComponent = "div">(
 	};
 
 	const valueLabel = () => {
+		if (local.indeterminate) {
+			return undefined;
+		}
 		if (local.getValueLabel) {
 			return local.getValueLabel({
 				value: value(),
@@ -150,12 +161,13 @@ export function MeterRoot<T extends ValidComponent = "div">(
 		<MeterContext.Provider value={context}>
 			<Polymorphic<MeterRootRenderProps>
 				as="div"
-				role="meter"
-				aria-valuenow={value()}
+				role={local.role || "meter"}
+				aria-valuenow={local.indeterminate ? undefined : value()}
 				aria-valuemin={local.minValue}
 				aria-valuemax={local.maxValue}
 				aria-valuetext={valueLabel()}
 				aria-labelledby={labelId()}
+				{...dataset()}
 				{...others}
 			/>
 		</MeterContext.Provider>

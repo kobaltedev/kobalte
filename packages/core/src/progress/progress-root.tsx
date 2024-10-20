@@ -9,6 +9,7 @@
 import { clamp, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Accessor,
+	type Component,
 	type ValidComponent,
 	createMemo,
 	createSignal,
@@ -17,14 +18,14 @@ import {
 } from "solid-js";
 
 import { createNumberFormatter } from "../i18n";
-import type {
-	MeterRootCommonProps,
-	MeterRootOptions,
-	MeterRootRenderProps,
+import {
+	Meter,
+	type MeterRootCommonProps,
+	type MeterRootOptions,
+	type MeterRootRenderProps,
 } from "../meter";
 import {
 	type ElementOf,
-	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
 import { createRegisterId } from "../primitives";
@@ -34,7 +35,8 @@ import {
 	type ProgressDataSet,
 } from "./progress-context";
 
-export interface ProgressRootOptions extends MeterRootOptions {
+export interface ProgressRootOptions
+	extends Omit<MeterRootOptions, "indeterminate"> {
 	/** Whether the progress is in an indeterminate state. */
 	indeterminate?: boolean;
 }
@@ -43,12 +45,11 @@ export interface ProgressRootCommonProps<T extends HTMLElement = HTMLElement>
 	extends MeterRootCommonProps {}
 
 export interface ProgressRootRenderProps
-	extends ProgressRootCommonProps,
-		ProgressDataSet,
-		Omit<MeterRootRenderProps, "role"> {
+	extends Omit<MeterRootRenderProps, "role">,
+		ProgressRootCommonProps,
+		ProgressDataSet {
 	role: "progressbar";
 }
-
 export type ProgressRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
 > = ProgressRootOptions & Partial<ProgressRootCommonProps<ElementOf<T>>>;
@@ -139,16 +140,13 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 
 	return (
 		<ProgressContext.Provider value={context}>
-			<Polymorphic<ProgressRootRenderProps>
-				as="div"
+			<Meter<
+				Component<Omit<ProgressRootRenderProps, keyof MeterRootRenderProps>>
+			>
 				role="progressbar"
-				aria-valuenow={local.indeterminate ? undefined : value()}
-				aria-valuemin={local.minValue}
-				aria-valuemax={local.maxValue}
-				aria-valuetext={valueLabel()}
-				aria-labelledby={labelId()}
+				indeterminate={local.indeterminate || false}
 				{...dataset()}
-				{...others}
+				{...mergedProps}
 			/>
 		</ProgressContext.Provider>
 	);

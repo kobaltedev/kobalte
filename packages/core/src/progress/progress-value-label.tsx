@@ -1,13 +1,13 @@
-import type { JSX, ValidComponent } from "solid-js";
+import type { Component, ValidComponent } from "solid-js";
 
-import type {
-	MeterValueLabelCommonProps,
-	MeterValueLabelOptions,
-	MeterValueLabelRenderProps,
+import {
+	Meter,
+	type MeterValueLabelCommonProps,
+	type MeterValueLabelOptions,
+	type MeterValueLabelRenderProps,
 } from "../meter";
 import {
 	type ElementOf,
-	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
 import { type ProgressDataSet, useProgressContext } from "./progress-context";
@@ -37,12 +37,13 @@ export function ProgressValueLabel<T extends ValidComponent = "div">(
 	const context = useProgressContext();
 
 	return (
-		<Polymorphic<ProgressValueLabelRenderProps>
-			as="div"
+		<Meter.ValueLabel<
+			Component<
+				Omit<ProgressValueLabelRenderProps, keyof MeterValueLabelRenderProps>
+			>
+		>
 			{...context.dataset()}
 			{...(props as ProgressValueLabelProps)}
-		>
-			{context.valueLabel()}
-		</Polymorphic>
+		/>
 	);
 }
