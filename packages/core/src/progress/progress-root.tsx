@@ -24,10 +24,7 @@ import {
 	type MeterRootOptions,
 	type MeterRootRenderProps,
 } from "../meter";
-import {
-	type ElementOf,
-	type PolymorphicProps,
-} from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import {
 	ProgressContext,

@@ -1,8 +1,4 @@
-import {
-	type Component,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
+import { type Component, type ValidComponent, splitProps } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
 import {
@@ -11,10 +7,7 @@ import {
 	type MeterFillOptions,
 	type MeterFillRenderProps,
 } from "../meter";
-import {
-	type ElementOf,
-	type PolymorphicProps,
-} from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { type ProgressDataSet, useProgressContext } from "./progress-context";
 
 export interface ProgressFillOptions extends MeterFillOptions {}

@@ -6,10 +6,7 @@ import {
 	type MeterValueLabelOptions,
 	type MeterValueLabelRenderProps,
 } from "../meter";
-import {
-	type ElementOf,
-	type PolymorphicProps,
-} from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { type ProgressDataSet, useProgressContext } from "./progress-context";
 
 export interface ProgressValueLabelOptions extends MeterValueLabelOptions {}
