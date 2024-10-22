@@ -50,8 +50,8 @@ The badge consists of:
     function App() {
       return (
         <Badge class="badge" textValue="Unread messages: 5">
-			5 messages
-		</Badge>
+          5 messages
+        </Badge>
       );
     }
     ```
@@ -72,23 +72,22 @@ The badge consists of:
   {/* <!-- prettier-ignore-end -->*/}
 </TabsSnippets>
 
-
 ## API Reference
 
 ### Badge
 
 `Badge` is equivalent to the `Root` import from `@kobalte/core/badge` (and deprecated `Badge.Root`).
 
-| Prop         | Description                                                                                                                                                    |
-| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| textValue    | `string \| undefined` <br/> The textValue prop is essential for accessibility. It auto-populates the aria-label attribute, allowing screen readers to interpret the badge’s content.           |
+| Prop      | Description                                                                                                                                                                          |
+| :-------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| textValue | `string \| undefined` <br/> The textValue prop is essential for accessibility. It auto-populates the aria-label attribute, allowing screen readers to interpret the badge’s content. |
 
-| Data attribute | Description                                                   |
-| :------------- | :------------------------------------------------------------ |
+| Data attribute | Description                                                         |
+| :------------- | :------------------------------------------------------------------ |
 | data-label     | Present when textValue is passed or aria-label is passed as a prop. |
 
 ## Rendered elements
 
-| Component         | Default rendered element  |
-| :---------------- | :------------------------ |
-| `Badge`           | `span`                    |
+| Component | Default rendered element |
+| :-------- | :----------------------- |
+| `Badge`   | `span`                   |
