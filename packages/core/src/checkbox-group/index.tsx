@@ -1,4 +1,32 @@
 import {
+	type CheckboxControlCommonProps as CheckboxGroupItemControlCommonProps,
+	type CheckboxControlOptions as CheckboxGroupItemControlOptions,
+	type CheckboxControlProps as CheckboxGroupItemControlProps,
+	type CheckboxControlRenderProps as CheckboxGroupItemControlRenderProps,
+	CheckboxControl as ItemControl,
+} from "../checkbox/checkbox-control";
+import {
+	type CheckboxDescriptionCommonProps as CheckboxGroupItemDescriptionCommonProps,
+	type CheckboxDescriptionOptions as CheckboxGroupItemDescriptionOptions,
+	type CheckboxDescriptionProps as CheckboxGroupItemDescriptionProps,
+	type CheckboxDescriptionRenderProps as CheckboxGroupItemDescriptionRenderProps,
+	CheckboxDescription as ItemDescription,
+} from "../checkbox/checkbox-description";
+import {
+	type CheckboxIndicatorCommonProps as CheckboxGroupItemIndicatorCommonProps,
+	type CheckboxIndicatorOptions as CheckboxGroupItemIndicatorOptions,
+	type CheckboxIndicatorProps as CheckboxGroupItemIndicatorProps,
+	type CheckboxIndicatorRenderProps as CheckboxGroupItemIndicatorRenderProps,
+	CheckboxIndicator as ItemIndicator,
+} from "../checkbox/checkbox-indicator";
+import {
+	type CheckboxLabelCommonProps as CheckboxGroupItemLabelCommonProps,
+	type CheckboxLabelOptions as CheckboxGroupItemLabelOptions,
+	type CheckboxLabelProps as CheckboxGroupItemLabelProps,
+	type CheckboxLabelRenderProps as CheckboxGroupItemLabelRenderProps,
+	CheckboxLabel as ItemLabel,
+} from "../checkbox/checkbox-label";
+import {
 	type FormControlDescriptionCommonProps as CheckboxGroupDescriptionCommonProps,
 	type FormControlDescriptionOptions as CheckboxGroupDescriptionOptions,
 	type FormControlDescriptionProps as CheckboxGroupDescriptionProps,
@@ -18,40 +46,13 @@ import {
 	CheckboxGroupItem as Item,
 } from "./checkbox-group-item";
 import {
-	type CheckboxGroupItemControlCommonProps,
-	type CheckboxGroupItemControlOptions,
-	type CheckboxGroupItemControlProps,
-	type CheckboxGroupItemControlRenderProps,
-	CheckboxGroupItemControl as ItemControl,
-} from "./checkbox-group-item-control";
-import {
-	type CheckboxGroupItemDescriptionCommonProps,
-	type CheckboxGroupItemDescriptionOptions,
-	type CheckboxGroupItemDescriptionProps,
-	type CheckboxGroupItemDescriptionRenderProps,
-	CheckboxGroupItemDescription as ItemDescription,
-} from "./checkbox-group-item-description";
-import {
-	type CheckboxGroupItemIndicatorCommonProps,
-	type CheckboxGroupItemIndicatorOptions,
-	type CheckboxGroupItemIndicatorProps,
-	type CheckboxGroupItemIndicatorRenderProps,
-	CheckboxGroupItemIndicator as ItemIndicator,
-} from "./checkbox-group-item-indicator";
-import {
 	type CheckboxGroupItemInputCommonProps,
 	type CheckboxGroupItemInputOptions,
 	type CheckboxGroupItemInputProps,
 	type CheckboxGroupItemInputRenderProps,
 	CheckboxGroupItemInput as ItemInput,
 } from "./checkbox-group-item-input";
-import {
-	type CheckboxGroupItemLabelCommonProps,
-	type CheckboxGroupItemLabelOptions,
-	type CheckboxGroupItemLabelProps,
-	type CheckboxGroupItemLabelRenderProps,
-	CheckboxGroupItemLabel as ItemLabel,
-} from "./checkbox-group-item-label";
+
 import {
 	type CheckboxGroupLabelCommonProps,
 	type CheckboxGroupLabelOptions,

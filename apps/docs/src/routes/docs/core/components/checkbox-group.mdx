@@ -239,24 +239,24 @@ function ControlledExample() {
 	const [value, setValue] = createSignal(["News"]);
 
 	return (
-			<CheckboxGroup values={value()} onChange={setValue}>
-				<CheckboxGroup.Label>What would you like to subscribe to?</CheckboxGroup.Label>
-				<div role="presentation">
-					<For each={["News", "Updates", "Offers"]}>
-						{option => (
-							<CheckboxGroup.Item id={option} value={option}>
-								<CheckboxGroup.ItemInput />
-								<CheckboxGroup.ItemControl>
-									<CheckboxGroup.ItemIndicator>
-										<CheckIcon />
-									</CheckboxGroup.ItemIndicator>
-								</CheckboxGroup.ItemControl>
-								<CheckboxGroup.ItemLabel>{option}</CheckboxGroup.ItemLabel>
-							</CheckboxGroup.Item>
-						)}
-					</For>
-				</div>
-			</CheckboxGroup>
+		<CheckboxGroup values={value()} onChange={setValue}>
+			<CheckboxGroup.Label>What would you like to subscribe to?</CheckboxGroup.Label>
+			<div role="presentation">
+				<For each={["News", "Updates", "Offers"]}>
+					{option => (
+						<CheckboxGroup.Item id={option} value={option}>
+							<CheckboxGroup.ItemInput />
+							<CheckboxGroup.ItemControl>
+								<CheckboxGroup.ItemIndicator>
+									<CheckIcon />
+								</CheckboxGroup.ItemIndicator>
+							</CheckboxGroup.ItemControl>
+							<CheckboxGroup.ItemLabel>{option}</CheckboxGroup.ItemLabel>
+						</CheckboxGroup.Item>
+					)}
+				</For>
+			</div>
+		</CheckboxGroup>
 	);
 }
 ```

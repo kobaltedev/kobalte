@@ -102,12 +102,15 @@ export interface CheckboxRootOptions {
 	 * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
 	 */
 	children?: JSX.Element | ((state: CheckboxRootState) => JSX.Element);
+
+	noRole?: boolean;
 }
 
 export interface CheckboxRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 	ref: T | ((el: T) => void);
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+	role: string | undefined;
 }
 
 export interface CheckboxRootRenderProps
@@ -115,7 +118,6 @@ export interface CheckboxRootRenderProps
 		FormControlDataSet,
 		CheckboxDataSet {
 	children: JSX.Element;
-	role: "group";
 }
 
 export type CheckboxRootProps<
@@ -136,6 +138,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		{
 			value: "on",
 			id: defaultId,
+			noRole: false,
 		},
 		props as CheckboxRootProps,
 	);
@@ -151,6 +154,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 			"indeterminate",
 			"onChange",
 			"onPointerDown",
+			"noRole",
 		],
 		FORM_CONTROL_PROP_NAMES,
 	);
@@ -208,7 +212,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 				<Polymorphic<CheckboxRootRenderProps>
 					as="div"
 					ref={mergeRefs((el) => (ref = el), local.ref)}
-					role="group"
+					role={local.noRole ? undefined : "group"}
 					id={access(formControlProps.id)}
 					onPointerDown={onPointerDown}
 					{...formControlContext.dataset()}

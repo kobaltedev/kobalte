@@ -2,8 +2,9 @@ import { type Accessor, createContext, useContext } from "solid-js";
 
 export interface CheckboxGroupContextValue {
 	ariaDescribedBy: Accessor<string | undefined>;
-	isSelectedValue: (value: string) => boolean;
-	setSelectedValue: (value: string) => void;
+	isValueSelected: (value: string) => boolean;
+	handleValue: (value: string) => void;
+	generateId: (part: string) => string;
 }
 
 export const CheckboxGroupContext = createContext<CheckboxGroupContextValue>();

@@ -1,5 +1,5 @@
 import { CheckboxGroup } from "@kobalte/core/checkbox-group";
-import { For, createEffect, createSignal } from "solid-js";
+import { For, createSignal } from "solid-js";
 
 import { CheckIcon } from "../components";
 import style from "./checkbox-group.module.css";
@@ -178,7 +178,6 @@ export function HTMLFormExample() {
 		e.stopPropagation();
 
 		const formData = new FormData(formRef);
-
 		alert(JSON.stringify(Object.fromEntries(formData), null, 2));
 	};
 

@@ -11,6 +11,7 @@ import {
 	type Orientation,
 	type ValidationState,
 	access,
+	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
@@ -47,7 +48,7 @@ export interface CheckboxGroupRootOptions {
 	defaultValues?: string[];
 
 	/** Event handler called when the value changes. */
-	onChange?: (value: string[]) => void;
+	onChange?: (values: string[]) => void;
 
 	/** The axis the checkbox group items should align with. */
 	orientation?: Orientation;
@@ -136,17 +137,21 @@ export function CheckboxGroupRoot<T extends ValidComponent = "div">(
 		FORM_CONTROL_PROP_NAMES,
 	);
 
-	const [selected, setSelected] = createControllableSignal<string[]>({
+	const [selectedValues, setSelectedValues] = createControllableSignal<
+		string[]
+	>({
 		value: () => local.values,
 		defaultValue: () => local.defaultValues,
-		onChange: (value) => local.onChange?.(value),
+		onChange: (value) => {
+			local.onChange?.(value);
+		},
 	});
 
 	const { formControlContext } = createFormControl(formControlProps);
 
 	createFormResetListener(
 		() => ref,
-		() => setSelected(local.defaultValues ?? []),
+		() => setSelectedValues(local.defaultValues ?? []),
 	);
 
 	const ariaLabelledBy = () => {
@@ -161,29 +166,33 @@ export function CheckboxGroupRoot<T extends ValidComponent = "div">(
 		return formControlContext.getAriaDescribedBy(local["aria-describedby"]);
 	};
 
-	const isSelectedValue = (value: string) => {
-		return selected()?.includes(value) || false;
+	const isValueSelected = (value: string) => {
+		return selectedValues()?.includes(value) || false;
 	};
 
 	const context: CheckboxGroupContextValue = {
 		ariaDescribedBy,
-		isSelectedValue,
-		setSelectedValue: (value) => {
+		isValueSelected,
+		generateId: createGenerateId(() => access(formControlProps.id)!),
+		handleValue: (value) => {
 			if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
 				return;
 			}
 
-			const selectedValues = selected() || [];
-			if (isSelectedValue(value)) {
-				setSelected(selectedValues.filter((val) => val !== value));
-			} else setSelected([...selectedValues, value]);
+			const selectedCheckboxesValues = selectedValues() || [];
 
-			// Sync all checkbox inputs' checked state in the group with the selected values.
+			if (isValueSelected(value)) {
+				setSelectedValues(
+					selectedCheckboxesValues.filter((val) => val !== value),
+				);
+			} else setSelectedValues([...selectedCheckboxesValues, value]);
+
+			// Sync all checkbox inputs' checked state in the group with the selectedValues values.
 			// This ensures the checked state is in sync (e.g., when using a controlled checkbox group).
 			if (ref) {
 				for (const el of ref.querySelectorAll("[type='checkbox']")) {
 					const checkbox = el as HTMLInputElement;
-					checkbox.checked = selectedValues.includes(checkbox.value);
+					checkbox.checked = selectedCheckboxesValues.includes(checkbox.value);
 				}
 			}
 		},
