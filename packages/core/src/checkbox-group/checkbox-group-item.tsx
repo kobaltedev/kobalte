@@ -90,10 +90,7 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 		>
 			noRole
 			ref={mergeRefs((el) => (ref = el), local.ref)}
-			onChange={(s) => {
-				console.log("checkboxgroup-item-onchange", s);
-				checkboxGroupContext.handleValue(local.value!);
-			}}
+			onChange={(s) => checkboxGroupContext.handleValue(local.value!)}
 			checked={isChecked()}
 			defaultChecked={isChecked()}
 			value={value()}
