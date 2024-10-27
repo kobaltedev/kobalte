@@ -178,7 +178,14 @@ export function HTMLFormExample() {
 		e.stopPropagation();
 
 		const formData = new FormData(formRef);
-		alert(JSON.stringify(Object.fromEntries(formData), null, 2));
+		const subscriptions = Array.from(formData.getAll('subscriptions'));
+
+		const result = {
+			...Object.fromEntries(formData),
+			subscriptions,
+		};
+	
+		alert(JSON.stringify(result, null, 2));
 	};
 
 	return (
