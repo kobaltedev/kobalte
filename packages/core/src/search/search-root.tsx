@@ -14,12 +14,16 @@ import type {
 	ComboboxSingleSelectionOptions as SearchSingleSelectionOptions,
 } from "../combobox/combobox-root";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { DebouncerTimeout } from "./utils";
 
 export type { SearchSingleSelectionOptions, SearchMultipleSelectionOptions };
 
 // SearchBase wraps Combobox without `defaultFilter` as filtering is handled externally - eg: on database
 export interface SearchBaseOptions<Option, OptGroup = never>
-	extends Omit<ComboboxBaseOptions<Option, OptGroup>, "defaultFilter"> {}
+	extends Omit<ComboboxBaseOptions<Option, OptGroup>, "defaultFilter"> {
+	/** Debounces input before making suggestions */
+	debounceOptionsMillisecond?: number;
+}
 
 export type SearchRootOptions<Option, OptGroup = never> = (
 	| SearchSingleSelectionOptions<Option>
@@ -60,10 +64,24 @@ export function SearchRoot<
 			"onChange",
 			"multiple",
 			"onInputChange",
+			"debounceOptionsMillisecond",
 		],
 		// @ts-expect-error filter is handled externally, so it's omitted
 		["defaultFilter"],
 	);
+
+	const inputChangeDebouncer = DebouncerTimeout();
+	createEffect(() =>
+		inputChangeDebouncer.setDebounceMillisecond(
+			local.debounceOptionsMillisecond,
+		),
+	);
+	const onInputChange = (value: string) => {
+		inputChangeDebouncer.debounce(() => {
+			if (local.onInputChange === undefined) return;
+			local.onInputChange(value);
+		});
+	};
 
 	const value = createMemo(() => {
 		if (local.value != null) {
@@ -95,6 +113,7 @@ export function SearchRoot<
 			options={local.options}
 			value={value() as any}
 			defaultValue={defaultValue() as any}
+			onInputChange={onInputChange}
 			defaultFilter={() => true}
 			onChange={onChange}
 			selectionMode={local.multiple ? "multiple" : "single"}
