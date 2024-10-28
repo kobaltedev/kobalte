@@ -1,23 +1,19 @@
 import {
-	type Component,
 	type ValidComponent,
+	createEffect,
 	createMemo,
 	splitProps,
 } from "solid-js";
+import {
+	ComboboxBase,
+	type ComboboxBaseOptions,
+	type ComboboxBaseRenderProps as SearchBaseRenderProps,
+} from "../combobox/combobox-base";
 import type {
-	ComboboxRootProps,
-	ComboboxRootRenderProps,
 	ComboboxMultipleSelectionOptions as SearchMultipleSelectionOptions,
 	ComboboxSingleSelectionOptions as SearchSingleSelectionOptions,
 } from "../combobox/combobox-root";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-
-import {
-	ComboboxBase,
-	type ComboboxBaseOptions,
-	type ComboboxBaseRenderProps,
-	type ComboboxBaseRenderProps as SearchBaseRenderProps,
-} from "../combobox/combobox-base";
 
 export type { SearchSingleSelectionOptions, SearchMultipleSelectionOptions };
 
@@ -48,7 +44,7 @@ export type SearchRootProps<
 	Partial<SearchRootCommonProps<ElementOf<T>>>;
 
 /**
- * A combo box combines a text input with a listbox, allowing users to filter a list of options to items matching a query.
+ * A search is a combobox where the filter is external.
  */
 export function SearchRoot<
 	Option,
@@ -56,9 +52,17 @@ export function SearchRoot<
 	T extends ValidComponent = "div",
 >(props: PolymorphicProps<T, SearchRootProps<Option, OptGroup, T>>) {
 	const [local, omit, others] = splitProps(
-		props as ComboboxRootProps<Option, OptGroup>,
-		["value", "defaultValue", "onChange", "multiple"],
-		["defaultFilter"], // Filter is handled externally, so it's omitted
+		props as SearchRootProps<Option, OptGroup>,
+		[
+			"options",
+			"value",
+			"defaultValue",
+			"onChange",
+			"multiple",
+			"onInputChange",
+		],
+		// @ts-expect-error filter is handled externally, so it's omitted
+		["defaultFilter"],
 	);
 
 	const value = createMemo(() => {
@@ -87,11 +91,8 @@ export function SearchRoot<
 	};
 
 	return (
-		<ComboboxBase<
-			Option,
-			OptGroup,
-			Component<Omit<ComboboxRootRenderProps, keyof ComboboxBaseRenderProps>>
-		>
+		<ComboboxBase
+			options={local.options}
 			value={value() as any}
 			defaultValue={defaultValue() as any}
 			defaultFilter={() => true}
