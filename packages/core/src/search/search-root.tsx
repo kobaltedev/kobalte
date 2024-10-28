@@ -14,6 +14,7 @@ import type {
 	ComboboxSingleSelectionOptions as SearchSingleSelectionOptions,
 } from "../combobox/combobox-root";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { SearchContext, type SearchContextValue } from "./search-context";
 import { DebouncerTimeout } from "./utils";
 
 export type { SearchSingleSelectionOptions, SearchMultipleSelectionOptions };
@@ -108,16 +109,24 @@ export function SearchRoot<
 		}
 	};
 
+	const noResult = () => local.options.length === 0;
+
+	const context: SearchContextValue = {
+		noResult,
+	};
+
 	return (
-		<ComboboxBase
-			options={local.options}
-			value={value() as any}
-			defaultValue={defaultValue() as any}
-			onInputChange={onInputChange}
-			defaultFilter={() => true}
-			onChange={onChange}
-			selectionMode={local.multiple ? "multiple" : "single"}
-			{...others}
-		/>
+		<SearchContext.Provider value={context}>
+			<ComboboxBase
+				options={local.options}
+				value={value() as any}
+				defaultValue={defaultValue() as any}
+				onInputChange={onInputChange}
+				defaultFilter={() => true}
+				onChange={onChange}
+				selectionMode={local.multiple ? "multiple" : "single"}
+				{...others}
+			/>
+		</SearchContext.Provider>
 	);
 }

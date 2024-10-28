@@ -85,6 +85,12 @@ import {
 } from "../combobox/combobox-portal";
 import type { ComboboxTriggerMode as SearchTriggerMode } from "../combobox/types";
 
+import {
+	SearchNoResult as NoResult,
+	type SearchNoResultCommonProps,
+	type SearchNoResultOptions,
+	type SearchNoResultProps,
+} from "./search-no-result";
 // Wrappers over Combobox need to redefine prop types
 import {
 	SearchRoot as Root,
@@ -151,6 +157,9 @@ export type {
 	SearchSectionProps,
 	SearchSingleSelectionOptions,
 	SearchTriggerMode,
+	SearchNoResultOptions,
+	SearchNoResultCommonProps,
+	SearchNoResultProps,
 };
 
 export {
@@ -169,6 +178,7 @@ export {
 	Portal,
 	Root,
 	Section,
+	NoResult,
 };
 
 export const Search = Object.assign(Root, {
@@ -186,4 +196,5 @@ export const Search = Object.assign(Root, {
 	Listbox,
 	Portal,
 	Section,
+	NoResult,
 });
