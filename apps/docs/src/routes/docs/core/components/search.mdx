@@ -43,26 +43,20 @@ The search consists of:
 ```tsx
 <Search>
 	<Search.Label />
+
 	<Search.Control>
 		<Search.Indicator>
 			<Search.Icon />
 		</Search.Indicator>
 		<Search.Input />
 	</Search.Control>
+
 	<Search.Description />
 
 	<Search.Portal>
 		<Search.Content>
-			<Search.Item>
-				<Search.ItemLabel />
-				<Search.ItemDescription />
-			</Search.Item>
-
-			<Search.Group>
-				<Search.GroupLabel />
-				<Search.Item />
-			</Search.Group>
-
+			<Search.Arrow />
+			<Search.Listbox />
 			<Search.NoResult>
 		</Search.Content>
 	</Search.Portal>
