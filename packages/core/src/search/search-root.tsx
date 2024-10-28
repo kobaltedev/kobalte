@@ -124,12 +124,12 @@ export function SearchRoot<
 	return (
 		<SearchContext.Provider value={context}>
 			<ComboboxBase
-				options={local.options}
+				options={local.options as any}
 				value={value() as any}
 				defaultValue={defaultValue() as any}
 				onInputChange={onInputChange}
 				defaultFilter={() => true}
-				onChange={onChange}
+				onChange={onChange as any}
 				selectionMode={local.multiple ? "multiple" : "single"}
 				{...others}
 			/>

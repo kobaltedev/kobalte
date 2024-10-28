@@ -28,7 +28,7 @@ export function SearchNoResult<T extends ValidComponent = "span">(
 
 	return (
 		<Show when={context.noResult()}>
-			<Polymorphic<SearchNoResultRenderProps> as="div" {...props} />
+			<Polymorphic as="div" {...props} />
 		</Show>
 	);
 }
