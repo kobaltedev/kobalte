@@ -1,0 +1,239 @@
+import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
+
+# Search
+
+Search a searchbox text input with a menu.
+Handle the case where dataset filtering needs to occur outside the combobox component.
+
+## Import
+
+```ts
+import { Search } from "@kobalte/core/search";
+// or
+import { Root, Label, ... } from "@kobalte/core/search";
+```
+
+## Features
+
+- Inherits all the features of [combobox](/docs/core/components/combobox), except result filtering which should be managed externally.
+- Debouncing text input to rate limit search suggestions calls.
+- Optional indicator to show when suggestions are loading.
+
+## Anatomy
+
+The search consists of:
+
+- **Search:** The root container for a search component.
+- **Search.Label:** The label that gives the user information on the search component.
+- **Search.Description:** The description that gives the user more information on the component.
+- **Search.Control:** Contains the search input and indicator.
+- **Search.Indicator:** Wrapper for icon to indicate loading status.
+- **Search.Icon:** A small icon often displayed next to the input as a visual affordance for the fact it can be open.
+- **Search.Input:** The input used to search and reflects the selected suggestion values.
+- **Search.Portal:** Portals its children into the `body` when the search is open.
+- **Search.Content:** Contains the content to be rendered when the search is open.
+- **Search.Arrow:** An optional arrow element to render alongside the search content.
+- **Search.Listbox:** Contains a list of items and allows a user to search one or more of them.
+- **Search.Section:** Used to render the label of an option group. It won't be focusable using arrow keys.
+- **Search.Item:** An item of the search suggestion.
+- **Search.ItemLabel:** An accessible label to be announced for the item.
+- **Search.ItemDescription:** An optional accessible description to be announced for the item.
+- **Search.NoResult:** Displayed when no suggestion options are given.
+
+```tsx
+<Search>
+	<Search.Label />
+	<Search.Control>
+		<Search.Indicator>
+			<Search.Icon />
+		</Search.Indicator>
+		<Search.Input />
+	</Search.Control>
+	<Search.Description />
+
+	<Search.Portal>
+		<Search.Content>
+			<Search.Item>
+				<Search.ItemLabel />
+				<Search.ItemDescription />
+			</Search.Item>
+
+			<Search.Group>
+				<Search.GroupLabel />
+				<Search.Item />
+			</Search.Group>
+
+			<Search.NoResult>
+		</Search.Content>
+	</Search.Portal>
+</Search>
+```
+
+## API Reference
+
+### Search
+
+`Search` is equivalent to the `Root` import from `@kobalte/core/search`.
+
+| Prop                          | Description                                                                                                                                                                                                                                                                                                                                                                               |
+| :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| options                       | `Array<T \| U>` <br/> An array of options to display as the available options.                                                                                                                                                                                                                                                                                                            |
+| optionValue                   | `keyof T \| ((option: T) => string \| number)` <br/> Property name or getter function to use as the value of an option. This is the value that will be submitted when the combobox is part of a `<form>`.                                                                                                                                                                                 |
+| optionTextValue               | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the text value of an option for typeahead purpose.                                                                                                                                                                                                                                                  |
+| optionLabel                   | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the label of an option. This is the string representation of the option to display in the `Combobox.Input`.                                                                                                                                                                                         |
+| optionDisabled                | `keyof T \| ((option: T) => boolean)` <br/> Property name or getter function to use as the disabled flag of an option.                                                                                                                                                                                                                                                                    |
+| optionGroupChildren           | `keyof U` <br/> Property name that refers to the children options of an option group.                                                                                                                                                                                                                                                                                                     |
+| itemComponent                 | `Component<ComboboxItemComponentProps<T>>` <br/> When NOT virtualized, the component to render as an item in the `Combobox.Listbox`.                                                                                                                                                                                                                                                      |
+| sectionComponent              | `Component<ComboboxSectionComponentProps<U>>` <br/> When NOT virtualized, the component to render as a section in the `Combobox.Listbox`.                                                                                                                                                                                                                                                 |
+| multiple                      | `boolean` <br/> Whether the combobox allows multi-selection.                                                                                                                                                                                                                                                                                                                              |
+| placeholder                   | `JSX.Element` <br/> The content that will be rendered when no value or defaultValue is set.                                                                                                                                                                                                                                                                                               |
+| value                         | `T \| Array<T>` <br/> The controlled value of the combobox.                                                                                                                                                                                                                                                                                                                               |
+| defaultValue                  | `T \| Array<T>` <br/> The value of the combobox when initially rendered. Useful when you do not need to control the value.                                                                                                                                                                                                                                                                |
+| onChange                      | `(value: T \| Array<T>) => void` <br/> Event handler called when the value changes.                                                                                                                                                                                                                                                                                                       |
+| open                          | `boolean` <br/> The controlled open state of the combobox.                                                                                                                                                                                                                                                                                                                                |
+| defaultOpen                   | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                                                                                                                                                                                                                                    |
+| onOpenChange                  | `(open: boolean, triggerMode?: ComboboxTriggerMode) => void` <br/> Event handler called when the open state of the combobox changes. Returns the new open state and the action that caused the opening of the menu.                                                                                                                                                                       |
+| onInputChange                 | `(value: string) => void` <br/> Handler that is called when the combobox input value changes.                                                                                                                                                                                                                                                                                             |
+| triggerMode                   | `ComboboxTriggerMode` <br/> The interaction required to display the combobox menu, it can be one of the following: <br/> - **input**: open the combobox menu when the user is typing. <br/> - **focus**: open the combobox menu when the input is focused. <br/> - **manual**: open the combobox menu when pressing arrow down/up while focus is on the input or clicking on the trigger. |
+| removeOnBackspace             | `boolean` <br/> When `multiple` is true, whether the last selected option should be removed when the user press the Backspace key and the input is empty.                                                                                                                                                                                                                                 |
+| allowDuplicateSelectionEvents | `boolean` <br/> Whether `onChange` should fire even if the new value is the same as the last.                                                                                                                                                                                                                                                                                             |
+| disallowEmptySelection        | `boolean` <br/> Whether the combobox allows empty selection or not.                                                                                                                                                                                                                                                                                                                       |
+| allowsEmptyCollection         | `boolean` <br/> Whether the combobox allows the menu to be open when the collection is empty.                                                                                                                                                                                                                                                                                             |
+| closeOnSelection              | `boolean` <br/> Whether the combobox closes after selection.                                                                                                                                                                                                                                                                                                                              |
+| selectionBehavior             | `'toggle' \| 'replace'` <br/> How selection should behave in the combobox.                                                                                                                                                                                                                                                                                                                |
+| virtualized                   | `boolean` <br/> Whether the combobox uses virtual scrolling.                                                                                                                                                                                                                                                                                                                              |
+| modal                         | `boolean` <br/> Whether the combobox should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the combobox content. <br/> - elements outside the combobox content will not be visible for screen readers.                                |
+| preventScroll                 | `boolean` <br/> Whether the scroll should be locked even if the combobox is not modal.                                                                                                                                                                                                                                                                                                    |
+| forceMount                    | `boolean` <br/> Used to force mounting the combobox (portal, positioner and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                                                     |
+| name                          | `string` <br/> The name of the combobox. Submitted with its owning form as part of a name/value pair.                                                                                                                                                                                                                                                                                     |
+| validationState               | `'valid' \| 'invalid'` <br/> Whether the combobox should display its "valid" or "invalid" visual styling.                                                                                                                                                                                                                                                                                 |
+| required                      | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                                                                                                                                                                                                                                                                             |
+| disabled                      | `boolean` <br/> Whether the combobox is disabled.                                                                                                                                                                                                                                                                                                                                         |
+| readOnly                      | `boolean` <br/> Whether the combobox items can be selected but not changed by the user.                                                                                                                                                                                                                                                                                                   |
+| autoComplete                  | `string` <br/> Describes the type of autocomplete functionality the input should provide if any. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete)                                                                                                                                                                                       |
+| translations                  | [`ComboboxIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/combobox/combobox.intl.ts) <br/> Localization strings.                                                                                                                                                                                                                                     |
+
+`Search` also accepts the following props to customize the placement of the `Search.Content`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                                                                                                                   |
+| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| placement        | `Placement` <br/> The placement of the combobox content.                                                                                                                                                                                                                                                                                                                      |
+| gutter           | `number` <br/> The distance between the combobox content and the trigger element.                                                                                                                                                                                                                                                                                             |
+| shift            | `number` <br/> The skidding of the combobox content along the trigger element.                                                                                                                                                                                                                                                                                                |
+| flip             | `boolean \| string` <br/> Controls the behavior of the combobox content when it overflows the viewport: <br/> - If a `boolean`, specifies whether the combobox content should flip to the opposite side when it overflows.<br/> - If a `string`, indicates the preferred fallback placements when it overflows.<br/>The placements must be spaced-delimited, e.g. "top left". |
+| slide            | `boolean` <br/> Whether the combobox content should slide when it overflows.                                                                                                                                                                                                                                                                                                  |
+| overlap          | `boolean` <br/> Whether the combobox content can overlap the trigger element when it overflows.                                                                                                                                                                                                                                                                               |
+| sameWidth        | `boolean` <br/> Whether the combobox content should have the same width as the trigger element. This will be exposed to CSS as `--kb-popper-anchor-width`.                                                                                                                                                                                                                    |
+| fitViewport      | `boolean` <br/> Whether the combobox content should fit the viewport. If this is set to true, the combobox content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.                                                                                            |
+| hideWhenDetached | `boolean` <br/> Whether to hide the combobox content when the trigger element becomes occluded.                                                                                                                                                                                                                                                                               |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                                         |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the combobox content corner.                                                                                                                                                                                                                                                                                         |
+| overflowPadding  | `number` <br/> The minimum padding between the combobox content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                         |
+
+| Data attribute | Description                                                                        |
+| :------------- | :--------------------------------------------------------------------------------- |
+| data-valid     | Present when the combobox is valid according to the validation rules.              |
+| data-invalid   | Present when the combobox is invalid according to the validation rules.            |
+| data-required  | Present when the user must select an item before the owning form can be submitted. |
+| data-disabled  | Present when the combobox is disabled.                                             |
+| data-readonly  | Present when the combobox is read only.                                            |
+
+`Search.Label`, `Search.Control`, `Search.Input`, `Search.Trigger`, `Search.Description` and `Search.ErrorMesssage` shares the same data-attributes.
+
+### Search.Control
+
+| Render Prop     | Description                                                                    |
+| :-------------- | :----------------------------------------------------------------------------- |
+| selectedOptions | `Accessor<T[]>` <br/> An array of selected options.                            |
+| remove          | `(option: T) => void` <br/> A function to remove an option from the selection. |
+| clear           | `() => void` <br/> A function to clear the selection.                          |
+
+### Search.Indicator
+
+| Prop             | Description                                                                                    |
+| :--------------- | :--------------------------------------------------------------------------------------------- |
+| loadingComponent | `JSX.Element` <br/> The component that is displayed when suggestion options are being fetched. |
+
+### Search.Icon
+
+| Data attribute | Description                         |
+| :------------- | :---------------------------------- |
+| data-expanded  | Present when the combobox is open.  |
+| data-closed    | Present when the combobox is close. |
+
+### Search.Content
+
+| Data attribute | Description                         |
+| :------------- | :---------------------------------- |
+| data-expanded  | Present when the combobox is open.  |
+| data-closed    | Present when the combobox is close. |
+
+### Search.Arrow
+
+| Prop | Description                           |
+| :--- | :------------------------------------ |
+| size | `number` <br/> The size of the arrow. |
+
+### Search.Listbox
+
+| Prop         | Description                                                                                                                                                                         |
+| :----------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| scrollRef    | `Accessor<HTMLElement \| undefined>` <br/> The ref attached to the scrollable element, used to provide automatic scrolling on item focus. If not provided, defaults to the listbox. |
+| scrollToItem | `(key: string) => void` <br/> When virtualized, the Virtualizer function used to scroll to the item of the given key.                                                               |
+| children     | `(items: Accessor<Collection<CollectionNode<T \| U>>>) => JSX.Element` <br/> When virtualized, a map function that receives an _items_ signal representing all items and sections.  |
+
+### Search.Item
+
+| Prop | Description                                           |
+| :--- | :---------------------------------------------------- |
+| item | `CollectionNode` <br/> The collection node to render. |
+
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-selected    | Present when the item is selected.    |
+| data-highlighted | Present when the item is highlighted. |
+
+`Search.ItemLabel`, `Search.ItemDescription` and `Search.ItemIndicator` shares the same data-attributes.
+
+### Search.ItemIndicator
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                  | Default rendered element |
+| :------------------------- | :----------------------- |
+| `Combobox`                 | `div`                    |
+| `Combobox.Label`           | `span`                   |
+| `Combobox.Description`     | `div`                    |
+| `Combobox.Control`         | `div`                    |
+| `Combobox.Indicator`       | `div`                    |
+| `Combobox.Icon`            | `span`                   |
+| `Combobox.Input`           | `input`                  |
+| `Combobox.Portal`          | `Portal`                 |
+| `Combobox.Content`         | `div`                    |
+| `Combobox.Arrow`           | `div`                    |
+| `Combobox.Listbox`         | `ul`                     |
+| `Combobox.Section`         | `li`                     |
+| `Combobox.Item`            | `li`                     |
+| `Combobox.ItemLabel`       | `div`                    |
+| `Combobox.ItemDescription` | `div`                    |
+| `Combobox.NoResult`        | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                                   | Description                                                                                                                                                                               |
+| :------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <Kbd>Enter</Kbd>                      | When focus is virtualy on an item, selects the focused item.                                                                                                                              |
+| <Kbd>ArrowDown</Kbd>                  | When focus is on the input, opens the search suggestion and virtual focuses the first or selected item. <br/> When focus is virtualy on an item, moves virtual focus to the next item.    |
+| <Kbd>ArrowUp</Kbd>                    | When focus is on the input, opens the search suggestion and virtual focuses the last or selected item. <br/> When focus is virtualy on an item, moves virtual focus to the previous item. |
+| <Kbd>Alt</Kbd> + <Kbd>ArrowDown</Kbd> | When focus is on the input, opens the search suggestion.                                                                                                                                  |
+| <Kbd>Alt</Kbd> + <Kbd>ArrowUp</Kbd>   | When focus is on the input, closes the search suggestion.                                                                                                                                 |
+| <Kbd>Home</Kbd>                       | When focus is on the input, moves virtual focus to first item.                                                                                                                            |
+| <Kbd>End</Kbd>                        | When focus is on the input, moves virtual focus to last item.                                                                                                                             |
+| <Kbd>Esc</Kbd>                        | When the combobox is open, closes the combobox. <br/> When the combobox is closed, clear the input and selection.                                                                         |
