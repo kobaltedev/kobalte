@@ -1,29 +1,7 @@
 import {
-	type ComboboxContentCommonProps as SearchContentCommonProps,
-	type ComboboxContentOptions as SearchContentOptions,
-	type ComboboxContentProps as SearchContentProps,
-	type ComboboxContentRenderProps as SearchContentRenderProps,
-	ComboboxContent as Content,
-} from "../combobox/combobox-content";
-import {
-	type ComboboxInputCommonProps as SearchInputCommonProps,
-	type ComboboxInputOptions as SearchInputOptions,
-	type ComboboxInputProps as SearchInputProps,
-	type ComboboxInputRenderProps as SearchInputRenderProps,
-	ComboboxInput as Input,
-} from "../combobox/combobox-input";
-import {
-	type ComboboxListboxCommonProps as SearchListboxCommonProps,
-	type ComboboxListboxOptions as SearchListboxOptions,
-	type ComboboxListboxProps as SearchListboxProps,
-	type ComboboxListboxRenderProps as SearchListboxRenderProps,
-	ComboboxListbox as Listbox,
-} from "../combobox/combobox-listbox";
-import {
-	type ComboboxPortalProps as SearchPortalProps,
-	ComboboxPortal as Portal,
-} from "../combobox/combobox-portal";
-import {
+	FormControlDescription as Description,
+	FormControlErrorMessage as ErrorMessage,
+	FormControlLabel as Label,
 	type FormControlDescriptionCommonProps as SearchDescriptionCommonProps,
 	type FormControlDescriptionOptions as SearchDescriptionOptions,
 	type FormControlDescriptionProps as SearchDescriptionProps,
@@ -36,11 +14,12 @@ import {
 	type FormControlLabelOptions as SearchLabelOptions,
 	type FormControlLabelProps as SearchLabelProps,
 	type FormControlLabelRenderProps as SearchLabelRenderProps,
-	FormControlDescription as Description,
-	FormControlErrorMessage as ErrorMessage,
-	FormControlLabel as Label,
 } from "../form-control";
 import {
+	Item,
+	ItemDescription,
+	ItemIndicator,
+	ItemLabel,
 	type ListboxItemCommonProps as SearchItemCommonProps,
 	type ListboxItemDescriptionCommonProps as SearchItemDescriptionCommonProps,
 	type ListboxItemDescriptionOptions as SearchItemDescriptionOptions,
@@ -61,10 +40,6 @@ import {
 	type ListboxSectionOptions as SearchSectionOptions,
 	type ListboxSectionProps as SearchSectionProps,
 	type ListboxSectionRenderProps as SearchSectionRenderProps,
-	Item,
-	ItemDescription,
-	ItemIndicator,
-	ItemLabel,
 	Section,
 } from "../listbox";
 import {
@@ -72,31 +47,52 @@ import {
 	type PopperArrowOptions as SearchArrowOptions,
 	type PopperArrowProps as SearchArrowProps,
 } from "../popper";
+
 import type {
 	ComboboxBaseItemComponentProps as SearchRootItemComponentProps,
 	ComboboxBaseSectionComponentProps as SearchRootSectionComponentProps,
 } from "../combobox/combobox-base";
+// Search implements combobox without filter, hence the import alias
 import {
+	ComboboxContent as Content,
+	type ComboboxContentCommonProps as SearchContentCommonProps,
+	type ComboboxContentOptions as SearchContentOptions,
+	type ComboboxContentProps as SearchContentProps,
+	type ComboboxContentRenderProps as SearchContentRenderProps,
+} from "../combobox/combobox-content";
+import {
+	ComboboxControl as Control,
 	type ComboboxControlCommonProps as SearchControlCommonProps,
 	type ComboboxControlOptions as SearchControlOptions,
 	type ComboboxControlProps as SearchControlProps,
 	type ComboboxControlRenderProps as SearchControlRenderProps,
-	ComboboxControl as Control,
 } from "../combobox/combobox-control";
 import {
-	type ComboboxHiddenSelectProps as SearchHiddenSelectProps,
 	ComboboxHiddenSelect as HiddenSelect,
+	type ComboboxHiddenSelectProps as SearchHiddenSelectProps,
 } from "../combobox/combobox-hidden-select";
-import { type ComboboxIconProps as SearchIconProps, ComboboxIcon as Icon } from "../combobox/combobox-icon";
 import {
-	type ComboboxMultipleSelectionOptions as SearchMultipleSelectionOptions,
-	type ComboboxRootCommonProps as SearchRootCommonProps,
-	type ComboboxRootOptions as SearchRootOptions,
-	type ComboboxRootProps as SearchRootProps,
-	type ComboboxRootRenderProps as SearchRootRenderProps,
-	type ComboboxSingleSelectionOptions as SearchSingleSelectionOptions,
-	ComboboxRoot as Root,
-} from "../combobox/combobox-root";
+	ComboboxIcon as Icon,
+	type ComboboxIconProps as SearchIconProps,
+} from "../combobox/combobox-icon";
+import {
+	ComboboxInput as Input,
+	type ComboboxInputCommonProps as SearchInputCommonProps,
+	type ComboboxInputOptions as SearchInputOptions,
+	type ComboboxInputProps as SearchInputProps,
+	type ComboboxInputRenderProps as SearchInputRenderProps,
+} from "../combobox/combobox-input";
+import {
+	ComboboxListbox as Listbox,
+	type ComboboxListboxCommonProps as SearchListboxCommonProps,
+	type ComboboxListboxOptions as SearchListboxOptions,
+	type ComboboxListboxProps as SearchListboxProps,
+	type ComboboxListboxRenderProps as SearchListboxRenderProps,
+} from "../combobox/combobox-listbox";
+import {
+	ComboboxPortal as Portal,
+	type ComboboxPortalProps as SearchPortalProps,
+} from "../combobox/combobox-portal";
 import {
 	type ComboboxTriggerCommonProps as SearchTriggerCommonProps,
 	type ComboboxTriggerOptions as SearchTriggerOptions,
@@ -105,6 +101,17 @@ import {
 	ComboboxTrigger as Trigger,
 } from "../combobox/combobox-trigger";
 import type { ComboboxTriggerMode as SearchTriggerMode } from "../combobox/types";
+
+// Wrappers over Combobox need to redefine prop types
+import {
+	SearchRoot as Root,
+	type SearchMultipleSelectionOptions,
+	type SearchRootCommonProps,
+	type SearchRootOptions,
+	type SearchRootProps,
+	type SearchRootRenderProps,
+	type SearchSingleSelectionOptions,
+} from "./search-root";
 
 export type {
 	SearchArrowOptions,
