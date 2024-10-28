@@ -73,6 +73,8 @@ export function SearchRoot<
 	);
 
 	const [isLoadingSuggestions, setIsLoadingSuggestions] = createSignal(false);
+	const [suggestionTimeout, setSuggestionTimeout] =
+		createSignal<NodeJS.Timeout>();
 
 	const inputChangeDebouncer = DebouncerTimeout();
 	createEffect(() =>
@@ -81,12 +83,13 @@ export function SearchRoot<
 		),
 	);
 	const onInputChange = (value: string) => {
+		if (local.onInputChange === undefined) return;
 		setIsLoadingSuggestions(true);
-		inputChangeDebouncer.debounce(() => {
-			if (local.onInputChange === undefined) return;
-			local.onInputChange(value);
+		const timeout = inputChangeDebouncer.debounce(async () => {
+			await local.onInputChange!(value);
 			setIsLoadingSuggestions(false);
 		});
+		setSuggestionTimeout(timeout);
 	};
 
 	const value = createMemo(() => {
@@ -106,6 +109,8 @@ export function SearchRoot<
 	});
 
 	const onChange = (value: Option[]) => {
+		clearTimeout(suggestionTimeout());
+		setIsLoadingSuggestions(false);
 		if (local.multiple) {
 			local.onChange?.((value ?? []) as any);
 		} else {

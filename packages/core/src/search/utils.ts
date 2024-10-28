@@ -12,6 +12,7 @@ export const DebouncerTimeout = () => {
 				clearTimeout(timeout);
 			timeout = setTimeout(callback, _debounceMillisecond);
 			lastCallbackTime = Date.now();
+			return timeout;
 		},
 		setDebounceMillisecond: (debounceMillisecond = 0) => {
 			_debounceMillisecond = debounceMillisecond;
