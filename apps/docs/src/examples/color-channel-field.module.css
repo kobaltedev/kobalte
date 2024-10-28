@@ -1,0 +1,184 @@
+.color-channel-field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.color-channel-field__label {
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
+}
+
+.color-channel-field__input {
+	display: inline-flex;
+	width: 200px;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 16px;
+	outline: none;
+	background-color: white;
+	border: 1px solid hsl(240 6% 90%);
+	color: hsl(240 4% 16%);
+	transition:
+		border-color 250ms,
+		color 250ms;
+}
+
+.color-channel-field__group {
+	position: relative;
+	border-radius: 6px;
+}
+
+.color-channel-field__increment {
+	top: 0.25rem;
+	border-top-left-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
+}
+
+.color-channel-field__decrement {
+	bottom: 0.25rem;
+	border-bottom-left-radius: 0.25rem;
+	border-bottom-right-radius: 0.25rem;
+}
+
+.color-channel-field__increment,
+.color-channel-field__decrement {
+	right: 0.25rem;
+	position: absolute;
+	height: 1rem;
+	width: 1rem;
+	background: rgba(0, 0, 0, 0.1);
+	cursor: default;
+}
+
+.color-channel-field__increment:hover,
+.color-channel-field__decrement:hover {
+	background: rgba(0, 0, 0, 0.2);
+}
+
+[data-kb-theme="dark"] .color-channel-field__increment,
+[data-kb-theme="dark"] .color-channel-field__decrement {
+	background: rgba(0, 0, 0, 0.5);
+}
+
+[data-kb-theme="dark"] .color-channel-field__increment:hover,
+[data-kb-theme="dark"] .color-channel-field__decrement:hover {
+	background: rgba(0, 0, 0, 0.25);
+}
+
+.color-channel-field__decrement svg,
+.color-channel-field__increment svg {
+	height: 150%;
+	left: -25%;
+	position: relative;
+	top: -25%;
+}
+
+.color-channel-field__custom-trigger-decrement,
+.color-channel-field__custom-trigger-increment {
+	appearance: none;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: auto;
+	outline: none;
+	border-radius: 6px;
+	padding: 0 16px;
+	background-color: hsl(200 98% 39%);
+	color: white;
+	font-size: 16px;
+	line-height: 0;
+	transition: 250ms background-color;
+	border: 1px solid hsl(240 6% 90%);
+	box-sizing: content-box;
+}
+
+.color-channel-field__custom-trigger-decrement:hover,
+.color-channel-field__custom-trigger-increment:hover {
+	background-color: hsl(201 96% 32%);
+}
+
+.color-channel-field__custom-trigger-decrement {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	border-right-style: none;
+}
+
+.color-channel-field__custom-trigger-increment {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-left-style: none;
+}
+
+.color-channel-field__custom-trigger-decrement + input {
+	border-radius: 0;
+}
+
+[data-kb-theme="dark"] .color-channel-field__custom-trigger-decrement,
+[data-kb-theme="dark"] .color-channel-field__custom-trigger-increment {
+	border-color: hsl(240 5% 34%);
+}
+
+.color-channel-field__input:hover {
+	border-color: hsl(240 5% 65%);
+}
+
+.color-channel-field__input:focus-visible {
+	outline: none;
+}
+
+.color-channel-field__group:focus-within {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
+
+.color-channel-field__input[data-invalid] {
+	border-color: hsl(0 72% 51%);
+	color: hsl(0 72% 51%);
+}
+
+.color-channel-field__input::placeholder {
+	color: hsl(240 4% 46%);
+}
+
+.color-channel-field__description {
+	color: hsl(240 5% 26%);
+	font-size: 12px;
+	user-select: none;
+}
+
+.color-channel-field__error-message {
+	color: hsl(0 72% 51%);
+	font-size: 12px;
+	user-select: none;
+}
+
+[data-kb-theme="dark"] .color-channel-field__input {
+	background-color: hsl(240 4% 16%);
+	border: 1px solid hsl(240 5% 34%);
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .color-channel-field__input:hover {
+	border-color: hsl(240 4% 46%);
+}
+
+[data-kb-theme="dark"] .color-channel-field__input[data-invalid] {
+	border-color: hsl(0 72% 51%);
+	color: hsl(0 72% 51%);
+}
+
+[data-kb-theme="dark"] .color-channel-field__input::placeholder {
+	color: hsl(0 100% 100% / 0.5);
+}
+
+[data-kb-theme="dark"] .color-channel-field__label {
+	color: hsl(240 5% 84%);
+}
+
+[data-kb-theme="dark"] .color-channel-field__description {
+	color: hsl(240 5% 65%);
+}
