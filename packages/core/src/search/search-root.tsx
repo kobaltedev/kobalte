@@ -2,6 +2,7 @@ import {
 	type ValidComponent,
 	createEffect,
 	createMemo,
+	createSignal,
 	splitProps,
 } from "solid-js";
 import {
@@ -71,6 +72,8 @@ export function SearchRoot<
 		["defaultFilter"],
 	);
 
+	const [isLoadingSuggestions, setIsLoadingSuggestions] = createSignal(false);
+
 	const inputChangeDebouncer = DebouncerTimeout();
 	createEffect(() =>
 		inputChangeDebouncer.setDebounceMillisecond(
@@ -78,9 +81,11 @@ export function SearchRoot<
 		),
 	);
 	const onInputChange = (value: string) => {
+		setIsLoadingSuggestions(true);
 		inputChangeDebouncer.debounce(() => {
 			if (local.onInputChange === undefined) return;
 			local.onInputChange(value);
+			setIsLoadingSuggestions(false);
 		});
 	};
 
@@ -113,6 +118,7 @@ export function SearchRoot<
 
 	const context: SearchContextValue = {
 		noResult,
+		isLoadingSuggestions,
 	};
 
 	return (

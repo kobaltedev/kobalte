@@ -3,6 +3,9 @@ import { type Accessor, createContext, useContext } from "solid-js";
 export interface SearchContextValue {
 	/** No results found */
 	noResult: Accessor<boolean>;
+
+	/** Are we currently loading suggestions? */
+	isLoadingSuggestions: Accessor<boolean>;
 }
 
 export const SearchContext = createContext<SearchContextValue>();

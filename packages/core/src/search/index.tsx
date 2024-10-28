@@ -86,11 +86,18 @@ import {
 import type { ComboboxTriggerMode as SearchTriggerMode } from "../combobox/types";
 
 import {
+	SearchIndicator as Indicator,
+	type SearchIndicatorCommonProps,
+	type SearchIndicatorOptions,
+	type SearchIndicatorProps,
+} from "./search-indicator";
+import {
 	SearchNoResult as NoResult,
 	type SearchNoResultCommonProps,
 	type SearchNoResultOptions,
 	type SearchNoResultProps,
 } from "./search-no-result";
+
 // Wrappers over Combobox need to redefine prop types
 import {
 	SearchRoot as Root,
@@ -160,6 +167,9 @@ export type {
 	SearchNoResultOptions,
 	SearchNoResultCommonProps,
 	SearchNoResultProps,
+	SearchIndicatorCommonProps,
+	SearchIndicatorOptions,
+	SearchIndicatorProps,
 };
 
 export {
@@ -179,6 +189,7 @@ export {
 	Root,
 	Section,
 	NoResult,
+	Indicator,
 };
 
 export const Search = Object.assign(Root, {
@@ -197,4 +208,5 @@ export const Search = Object.assign(Root, {
 	Portal,
 	Section,
 	NoResult,
+	Indicator,
 });
