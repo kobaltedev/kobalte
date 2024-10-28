@@ -1,4 +1,5 @@
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
+import { BasicExample } from "../../../../examples/search";
 
 # Search
 
@@ -62,6 +63,267 @@ The search consists of:
 	</Search.Portal>
 </Search>
 ```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+	import { Search } from "@kobalte/core/search";
+	import { MagnifyingGlassIcon, ReloadIcon } from "some-icon-library";
+	import { createSignal } from "solid-js";
+	import "./style.css";
+
+	import { queryEmojiData } from "your-search-query";
+
+	function App() {
+		const [options, setOptions] = createSignal([]);
+		const [emoji, setEmoji] = createSignal();
+		return (
+			<>
+				<Search
+					options={options()}
+					onInputChange={query => setOptions(queryEmojiData(query))}
+					onChange={result => setEmoji(result)}
+					debounceOptionsMillisecond={300}
+					optionValue="name"
+					optionTextValue="name"
+					optionLabel="emoji"
+					placeholder="Search an emoji…"
+					itemComponent={props => (
+						<Search.Item item={props.item} class="search__item">
+							<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
+						</Search.Item>
+					)}
+				>
+					<Search.Control class="search__control" aria-label="Emoji">
+						<Search.Indicator
+							class="search__indicator"
+							loadingComponent={
+								<Search.Icon class="load__icon">
+									<ReloadIcon class="spin__icon" />
+								</Search.Icon>
+							}
+						>
+							<Search.Icon class="search__icon">
+								<MagnifyingGlassIcon class="center__icon" />
+							</Search.Icon>
+						</Search.Indicator>
+						<Search.Input class="search__input" />
+					</Search.Control>
+					<Search.Portal>
+						<Search.Content class="search__content">
+							<Search.Listbox class="search__listbox" />
+							<Search.NoResult class="search__no_result">
+								😬 No emoji found
+							</Search.NoResult>
+						</Search.Content>
+					</Search.Portal>
+				</Search>
+				<div class="result__content">
+					Emoji selected: {emoji()?.emoji} {emoji()?.name}
+				</div>
+			</>
+		)
+	}
+```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+	.search__control {
+		display: inline-flex;
+		justify-content: space-between;
+		width: 240px;
+		border-radius: 6px;
+		font-size: 16px;
+		line-height: 1;
+		outline: none;
+		background-color: white;
+		border: 1px solid hsl(240 6% 90%);
+		color: hsl(240 4% 16%);
+		transition:
+			border-color 250ms,
+			color 250ms;
+	}
+	.search__control[data-invalid] {
+		border-color: hsl(0 72% 51%);
+		color: hsl(0 72% 51%);
+	}
+	.search__control_multi {
+		width: 100%;
+		min-width: 240px;
+		max-width: 300px;
+	}
+	.search__input {
+		appearance: none;
+		display: inline-flex;
+		min-width: 0;
+		min-height: 40px;
+		padding-left: 16px;
+		font-size: 16px;
+		background: transparent;
+		border-top-left-radius: 6px;
+		border-bottom-left-radius: 6px;
+		outline: none;
+	}
+	.search__input::placeholder {
+		color: hsl(240 4% 46%);
+	}
+	.search__indicator {
+		appearance: none;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		width: auto;
+		outline: none;
+		border-top-left-radius: 6px;
+		border-bottom-left-radius: 6px;
+		padding: 0 10px;
+		background-color: hsl(240 5% 96%);
+		border-right: 1px solid hsl(240 6% 90%);
+		color: hsl(240 4% 16%);
+		font-size: 16px;
+		line-height: 0;
+		transition: 250ms background-color;
+	}
+	.search__icon {
+		height: 20px;
+		width: 20px;
+		flex: 0 0 16px;
+		display: grid;
+		justify-items: center;
+	}
+	.load__icon {
+		height: 20px;
+		width: 20px;
+		display: grid;
+		justify-items: center;
+		flex: 0 0 14px;
+	}
+	.center__icon {
+		margin: auto;
+	}
+	.spin__icon {
+		animation: spin 600ms linear;
+		animation-iteration-count: infinite;
+		margin: auto;
+	}
+	.search__description {
+		margin-top: 8px;
+		color: hsl(240 5% 26%);
+		font-size: 12px;
+		user-select: none;
+	}
+	.search__content {
+		background-color: white;
+		border-radius: 6px;
+		border: 1px solid hsl(240 6% 90%);
+		box-shadow:
+			0 4px 6px -1px rgb(0 0 0 / 0.1),
+			0 2px 4px -2px rgb(0 0 0 / 0.1);
+		transform-origin: var(--kb-search-content-transform-origin);
+		animation: contentHide 250ms ease-in forwards;
+	}
+	.search__content[data-expanded] {
+		animation: contentShow 250ms ease-out;
+	}
+	.search__listbox {
+		overflow-y: auto;
+		max-height: 360px;
+		padding: 8px;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+		row-gap: 6px;
+		column-gap: 6px;
+		line-height: 1;
+	}
+	.search__listbox:focus {
+		outline: none;
+	}
+	.search__item {
+		font-size: 24px;
+		line-height: 1;
+		color: hsl(240 4% 16%);
+		border-radius: 16px;
+		padding: 8px;
+		position: relative;
+		user-select: none;
+		outline: none;
+		display: grid;
+		justify-items: center;
+	}
+	.search__item[data-disabled] {
+		color: hsl(240 5% 65%);
+		opacity: 0.5;
+		pointer-events: none;
+	}
+	.search__item[data-highlighted] {
+		outline: none;
+		box-sizing: border-box;
+		background-color: hsl(240 5% 96%);
+		box-shadow: inset 0 0 0 2px hsl(200 98% 39%);
+	}
+	.search__section {
+		padding: 8px 0 0 8px;
+		font-size: 14px;
+		line-height: 32px;
+		color: hsl(240 4% 46%);
+	}
+	.search__no_result {
+		text-align: center;
+		padding: 8px;
+		padding-bottom: 24px;
+		margin: auto;
+		color: hsl(240 4% 46%);
+	}
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+	@keyframes contentShow {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	@keyframes contentHide {
+		from {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		to {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+	}
+	.result__content {
+		margin-top: 16px;
+		font-size: 16px;
+		line-height: 1;
+	}
+	```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
 
 ## API Reference
 
