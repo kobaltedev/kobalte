@@ -82,8 +82,8 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 		setRect(rect);
 
 		return [
-			xValue(pointerPosition.x - rect.top),
-			yValue(pointerPosition.y - rect.left),
+			xValue(pointerPosition.x - rect.left),
+			yValue(pointerPosition.y - rect.top),
 		];
 	};
 
