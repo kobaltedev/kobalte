@@ -120,15 +120,18 @@ export function SearchRoot<
 	};
 
 	const noResult = () => local.options.length === 0;
+	const [noResultExists, setNoResultExists] = createSignal(false);
 
 	const context: SearchContextValue = {
 		noResult,
 		isLoadingSuggestions,
+		setNoResultExists,
 	};
 
 	return (
 		<SearchContext.Provider value={context}>
 			<ComboboxBase
+				allowsEmptyCollection={noResultExists()}
 				options={local.options as any}
 				value={value() as any}
 				defaultValue={defaultValue() as any}
