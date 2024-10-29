@@ -52,8 +52,8 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 
 	const ariaLabel = () => {
 		return [fieldProps.ariaLabel(), context.translations().colorPicker]
-		  .filter(Boolean)
-		  .join(", ");
+			.filter(Boolean)
+			.join(", ");
 	};
 
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
