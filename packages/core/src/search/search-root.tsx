@@ -131,6 +131,9 @@ export function SearchRoot<
 	return (
 		<SearchContext.Provider value={context}>
 			<ComboboxBase
+				closeOnSelection
+				shouldFocusWrap
+				noResetInputOnBlur
 				allowsEmptyCollection={noResultExists()}
 				options={local.options as any}
 				value={value() as any}
