@@ -51,7 +51,9 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 	const isVertical = () => local.orientation === "vertical";
 
 	const ariaLabel = () => {
-		return [fieldProps.ariaLabel(), context.translations().colorPicker].filter(Boolean).join(", ");
+		return [fieldProps.ariaLabel(), context.translations().colorPicker]
+		  .filter(Boolean)
+		  .join(", ");
 	};
 
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
