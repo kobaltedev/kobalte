@@ -50,6 +50,10 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 
 	const isVertical = () => local.orientation === "vertical";
 
+	const ariaLabel = () => {
+		return [fieldProps.ariaLabel(), context.translations().colorPicker].filter(Boolean).join(", ");
+	};
+
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
@@ -97,7 +101,7 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 			aria-roledescription={context.translations().twoDimensionalSlider}
 			aria-valuetext={valueText()}
 			aria-orientation={local.orientation}
-			aria-label={fieldProps.ariaLabel()}
+			aria-label={ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
 			aria-invalid={
