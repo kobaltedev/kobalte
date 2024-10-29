@@ -13,7 +13,10 @@ import * as Slider from "../../slider";
 import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../intl";
 import type { Color, ColorChannel, ColorSpace } from "../types";
 import { parseColor } from "../utils";
-import { ColorSliderContext, type ColorSliderContextValue } from "./color-slider-context";
+import {
+	ColorSliderContext,
+	type ColorSliderContextValue,
+} from "./color-slider-context";
 
 export interface ColorSliderRootOptions {
 	/** The controlled values of the slider. */
@@ -75,7 +78,9 @@ export interface ColorSliderRootOptions {
 	translations?: ColorIntlTranslations;
 }
 
-export interface ColorSliderRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorSliderRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -83,8 +88,9 @@ export interface ColorSliderRootRenderProps
 	extends ColorSliderRootCommonProps,
 		Slider.SliderRootRenderProps {}
 
-export type ColorSliderRootProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorSliderRootOptions & Partial<ColorSliderRootCommonProps<ElementOf<T>>>;
+export type ColorSliderRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorSliderRootOptions & Partial<ColorSliderRootCommonProps<ElementOf<T>>>;
 
 export function ColorSliderRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorSliderRootProps<T>>,
@@ -114,7 +120,7 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 	const [value, setValue] = createControllableSignal<Color>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
-		onChange: value => local.onChange?.(value),
+		onChange: (value) => local.onChange?.(value),
 	});
 
 	const color = createMemo(() => {
@@ -165,7 +171,11 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 
 	return (
 		<ColorSliderContext.Provider value={context}>
-			<Slider.Root<Component<Omit<ColorSliderRootRenderProps, keyof Slider.SliderRootRenderProps>>>
+			<Slider.Root<
+				Component<
+					Omit<ColorSliderRootRenderProps, keyof Slider.SliderRootRenderProps>
+				>
+			>
 				value={[color()!.getChannelValue(local.channel)]}
 				onChange={onChange}
 				onChangeEnd={onChangeEnd}

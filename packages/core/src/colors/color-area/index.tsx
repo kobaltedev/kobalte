@@ -74,7 +74,16 @@ export type {
 	ColorAreaHiddenInputXProps,
 	ColorAreaHiddenInputYProps,
 };
-export { Description, ErrorMessage, Label, Root, Background, Thumb, HiddenInputX, HiddenInputY };
+export {
+	Description,
+	ErrorMessage,
+	Label,
+	Root,
+	Background,
+	Thumb,
+	HiddenInputX,
+	HiddenInputY,
+};
 
 export const ColorArea = Object.assign(Root, {
 	Description,

@@ -21,7 +21,8 @@ import type {
 
 /** Parses a color from a string value. Throws an error if the string could not be parsed. */
 export function parseColor(value: string): IColor {
-	const res = RGBColor.parse(value) || HSBColor.parse(value) || HSLColor.parse(value);
+	const res =
+		RGBColor.parse(value) || HSBColor.parse(value) || HSLColor.parse(value);
 	if (res) {
 		return res;
 	}
@@ -85,8 +86,13 @@ abstract class Color implements IColor {
 	abstract toString(format: ColorFormat | "css"): string;
 	abstract clone(): IColor;
 	abstract getChannelRange(channel: ColorChannel): ColorChannelRange;
-	abstract getChannelFormatOptions(channel: ColorChannel): Intl.NumberFormatOptions;
-	abstract formatChannelValue(channel: ColorChannel, translations: ColorIntlTranslations): string;
+	abstract getChannelFormatOptions(
+		channel: ColorChannel,
+	): Intl.NumberFormatOptions;
+	abstract formatChannelValue(
+		channel: ColorChannel,
+		translations: ColorIntlTranslations,
+	): string;
 
 	toHexInt(): number {
 		return this.toFormat("rgb").toHexInt();
@@ -118,11 +124,15 @@ abstract class Color implements IColor {
 
 	abstract getColorSpace(): ColorSpace;
 
-	getColorSpaceAxes(xyChannels: { xChannel?: ColorChannel; yChannel?: ColorChannel }): ColorAxes {
+	getColorSpaceAxes(xyChannels: {
+		xChannel?: ColorChannel;
+		yChannel?: ColorChannel;
+	}): ColorAxes {
 		const { xChannel, yChannel } = xyChannels;
-		const xCh = xChannel || this.getColorChannels().find(c => c !== yChannel)!;
-		const yCh = yChannel || this.getColorChannels().find(c => c !== xCh)!;
-		const zCh = this.getColorChannels().find(c => c !== xCh && c !== yCh)!;
+		const xCh =
+			xChannel || this.getColorChannels().find((c) => c !== yChannel)!;
+		const yCh = yChannel || this.getColorChannels().find((c) => c !== xCh)!;
+		const zCh = this.getColorChannels().find((c) => c !== xCh && c !== yCh)!;
 
 		return { xChannel: xCh, yChannel: yCh, zChannel: zCh };
 	}
@@ -188,7 +198,10 @@ abstract class Color implements IColor {
 				.replace(/\s+/g, " ")
 				.trim();
 		}
-		return translations.colorName(lightness, chroma, hue).replace(/\s+/g, " ").trim();
+		return translations
+			.colorName(lightness, chroma, hue)
+			.replace(/\s+/g, " ")
+			.trim();
 	}
 
 	private getOklchHue(
@@ -219,7 +232,10 @@ abstract class Color implements IColor {
 				// If the hue is at least halfway to the next hue, add the next hue name as well.
 				if (h > hue + (nextHue - hue) / 2 && hueName !== nextHueName) {
 					hueName = `${hueName} ${nextHueName}`;
-				} else if (hueName === "yellow" && l < YELLOW_GREEN_LIGHTNESS_THRESHOLD) {
+				} else if (
+					hueName === "yellow" &&
+					l < YELLOW_GREEN_LIGHTNESS_THRESHOLD
+				) {
 					// Yellow shifts toward green at lower lightnesses.
 					hueName = "yellow green";
 				}
@@ -253,7 +269,9 @@ class RGBColor extends Color {
 		let colors: Array<number | undefined> = [];
 		// matching #rgb, #rgba, #rrggbb, #rrggbbaa
 		if (/^#[\da-f]+$/i.test(value) && [4, 5, 7, 9].includes(value.length)) {
-			const values = (value.length < 6 ? value.replace(/[^#]/gi, "$&$&") : value)
+			const values = (
+				value.length < 6 ? value.replace(/[^#]/gi, "$&$&") : value
+			)
 				.slice(1)
 				.split("");
 			while (values.length > 0) {
@@ -265,12 +283,16 @@ class RGBColor extends Color {
 		// matching rgb(rrr, ggg, bbb), rgba(rrr, ggg, bbb, 0.a)
 		const match = value.match(/^rgba?\((.*)\)$/);
 		if (match?.[1]) {
-			colors = match[1].split(",").map(value => Number(value.trim()));
+			colors = match[1].split(",").map((value) => Number(value.trim()));
 			colors = colors.map((num, i) => {
 				return clamp(num ?? 0, 0, i < 3 ? 255 : 1);
 			});
 		}
-		if (colors[0] === undefined || colors[1] === undefined || colors[2] === undefined) {
+		if (
+			colors[0] === undefined ||
+			colors[1] === undefined ||
+			colors[2] === undefined
+		) {
 			return undefined;
 		}
 
@@ -451,7 +473,11 @@ class RGBColor extends Color {
 		return "rgb";
 	}
 
-	static colorChannels: [ColorChannel, ColorChannel, ColorChannel] = ["red", "green", "blue"];
+	static colorChannels: [ColorChannel, ColorChannel, ColorChannel] = [
+		"red",
+		"green",
+		"blue",
+	];
 	getColorChannels(): [ColorChannel, ColorChannel, ColorChannel] {
 		return RGBColor.colorChannels;
 	}
@@ -477,8 +503,15 @@ class HSBColor extends Color {
 	static parse(value: string): HSBColor | undefined {
 		let m: RegExpMatchArray | null;
 		if ((m = value.match(HSB_REGEX))) {
-			const [h, s, b, a] = (m[1] ?? m[2]).split(",").map(n => Number(n.trim().replace("%", "")));
-			return new HSBColor(normalizeHue(h), clamp(s, 0, 100), clamp(b, 0, 100), clamp(a ?? 1, 0, 1));
+			const [h, s, b, a] = (m[1] ?? m[2])
+				.split(",")
+				.map((n) => Number(n.trim().replace("%", "")));
+			return new HSBColor(
+				normalizeHue(h),
+				clamp(s, 0, 100),
+				clamp(b, 0, 100),
+				clamp(a ?? 1, 0, 1),
+			);
 		}
 	}
 
@@ -630,8 +663,15 @@ class HSLColor extends Color {
 	static parse(value: string): HSLColor | undefined {
 		let m: RegExpMatchArray | null;
 		if ((m = value.match(HSL_REGEX))) {
-			const [h, s, l, a] = (m[1] ?? m[2]).split(",").map(n => Number(n.trim().replace("%", "")));
-			return new HSLColor(normalizeHue(h), clamp(s, 0, 100), clamp(l, 0, 100), clamp(a ?? 1, 0, 1));
+			const [h, s, l, a] = (m[1] ?? m[2])
+				.split(",")
+				.map((n) => Number(n.trim().replace("%", "")));
+			return new HSLColor(
+				normalizeHue(h),
+				clamp(s, 0, 100),
+				clamp(l, 0, 100),
+				clamp(a ?? 1, 0, 1),
+			);
 		}
 	}
 
@@ -674,7 +714,8 @@ class HSLColor extends Color {
 	private toHSB(): IColor {
 		let saturation = this.saturation / 100;
 		const lightness = this.lightness / 100;
-		const brightness = lightness + saturation * Math.min(lightness, 1 - lightness);
+		const brightness =
+			lightness + saturation * Math.min(lightness, 1 - lightness);
 		saturation = brightness === 0 ? 0 : 2 * (1 - lightness / brightness);
 		return new HSBColor(
 			toFixedNumber(this.hue, 2),
@@ -770,7 +811,11 @@ function toOKLCH(color: Color) {
 	return OKLab_to_OKLCH(l, a, b);
 }
 
-function OKLab_to_OKLCH(l: number, a: number, b: number): [number, number, number] {
+function OKLab_to_OKLCH(
+	l: number,
+	a: number,
+	b: number,
+): [number, number, number] {
 	const hue = (Math.atan2(b, a) * 180) / Math.PI;
 	return [
 		l,
@@ -821,21 +866,26 @@ function lin_sRGB_to_XYZ(r: number, g: number, b: number) {
 function XYZ_to_OKLab(x: number, y: number, z: number) {
 	// Given XYZ relative to D65, convert to OKLab
 	const XYZtoLMS = [
-		0.819022437996703, 0.3619062600528904, -0.1288737815209879, 0.0329836539323885,
-		0.9292868615863434, 0.0361446663506424, 0.0481771893596242, 0.2642395317527308,
-		0.6335478284694309,
+		0.819022437996703, 0.3619062600528904, -0.1288737815209879,
+		0.0329836539323885, 0.9292868615863434, 0.0361446663506424,
+		0.0481771893596242, 0.2642395317527308, 0.6335478284694309,
 	];
 	const LMStoOKLab = [
-		0.210454268309314, 0.7936177747023054, -0.0040720430116193, 1.9779985324311684,
-		-2.4285922420485799, 0.450593709617411, 0.0259040424655478, 0.7827717124575296,
-		-0.8086757549230774,
+		0.210454268309314, 0.7936177747023054, -0.0040720430116193,
+		1.9779985324311684, -2.4285922420485799, 0.450593709617411,
+		0.0259040424655478, 0.7827717124575296, -0.8086757549230774,
 	];
 
 	const [a, b, c] = multiplyMatrix(XYZtoLMS, x, y, z);
 	return multiplyMatrix(LMStoOKLab, Math.cbrt(a), Math.cbrt(b), Math.cbrt(c));
 }
 
-function multiplyMatrix(m: number[], x: number, y: number, z: number): [number, number, number] {
+function multiplyMatrix(
+	m: number[],
+	x: number,
+	y: number,
+	z: number,
+): [number, number, number] {
 	const a = m[0] * x + m[1] * y + m[2] * z;
 	const b = m[3] * x + m[4] * y + m[5] * z;
 	const c = m[6] * x + m[7] * y + m[8] * z;

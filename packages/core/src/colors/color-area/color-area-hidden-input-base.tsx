@@ -1,6 +1,15 @@
-import { callHandler, mergeDefaultProps, visuallyHiddenStyles } from "@kobalte/utils";
+import {
+	callHandler,
+	mergeDefaultProps,
+	visuallyHiddenStyles,
+} from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type ComponentProps, type JSX, createMemo, splitProps } from "solid-js";
+import {
+	type ComponentProps,
+	type JSX,
+	createMemo,
+	splitProps,
+} from "solid-js";
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
@@ -41,7 +50,9 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 
 	const isVertical = () => local.orientation === "vertical";
 
-	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
+	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
+		e,
+	) => {
 		callHandler(e, local.onChange);
 		const target = e.target as HTMLInputElement;
 
@@ -54,7 +65,9 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 		// typing on the input will change its internal `value`.
 		//
 		// To prevent this, we need to force the input `value` to be in sync with the slider value state.
-		target.value = String(isVertical() ? context.state.yValue() : context.state.xValue()) ?? "";
+		target.value =
+			String(isVertical() ? context.state.yValue() : context.state.xValue()) ??
+			"";
 	};
 
 	const valueText = createMemo(() => {
@@ -68,7 +81,10 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 		<input
 			type="range"
 			id={fieldProps.id()}
-			name={(isVertical() ? context.yName() : context.xName()) || formControlContext.name()}
+			name={
+				(isVertical() ? context.yName() : context.xName()) ||
+				formControlContext.name()
+			}
 			tabIndex={context.state.isDisabled() ? undefined : -1}
 			min={isVertical() ? context.state.yMinValue() : context.state.xMinValue()}
 			max={isVertical() ? context.state.yMaxValue() : context.state.xMaxValue()}
@@ -84,7 +100,9 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
-			aria-invalid={formControlContext.validationState() === "invalid" || undefined}
+			aria-invalid={
+				formControlContext.validationState() === "invalid" || undefined
+			}
 			aria-required={formControlContext.isRequired() || undefined}
 			aria-disabled={formControlContext.isDisabled() || undefined}
 			aria-readonly={formControlContext.isReadOnly() || undefined}

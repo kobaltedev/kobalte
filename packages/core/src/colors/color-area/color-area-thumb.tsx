@@ -2,12 +2,18 @@ import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import { type JSX, type ValidComponent, splitProps } from "solid-js";
 import { useFormControlContext } from "../../form-control";
-import { type ElementOf, Polymorphic, type PolymorphicProps } from "../../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../../polymorphic";
 import { useColorAreaContext } from "./color-area-context";
 
 export interface ColorAreaThumbOptions {}
 
-export interface ColorAreaThumbCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorAreaThumbCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	style?: JSX.CSSProperties | string;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -19,8 +25,9 @@ export interface ColorAreaThumbRenderProps extends ColorAreaThumbCommonProps {
 	role: "presentation";
 }
 
-export type ColorAreaThumbProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorAreaThumbOptions & Partial<ColorAreaThumbCommonProps<ElementOf<T>>>;
+export type ColorAreaThumbProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorAreaThumbOptions & Partial<ColorAreaThumbCommonProps<ElementOf<T>>>;
 
 export function ColorAreaThumb<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, ColorAreaThumbProps<T>>,
@@ -36,14 +43,16 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 		"onPointerUp",
 	]);
 
-	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 		context.onStepKeyDown(e);
 	};
 
 	let startPosition = { x: 0, y: 0 };
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		const target = e.currentTarget as HTMLElement;
@@ -60,7 +69,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 		]);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		e.stopPropagation();
 		callHandler(e, local.onPointerMove);
 
@@ -77,7 +86,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+	const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		e.stopPropagation();
 		callHandler(e, local.onPointerUp);
 

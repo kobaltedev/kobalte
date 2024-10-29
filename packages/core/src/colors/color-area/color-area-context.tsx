@@ -26,7 +26,9 @@ export function useColorAreaContext() {
 	const context = useContext(ColorAreaContext);
 
 	if (context === undefined) {
-		throw new Error("[kobalte]: `useColorAreaContext` must be used within a `ColorArea` component");
+		throw new Error(
+			"[kobalte]: `useColorAreaContext` must be used within a `ColorArea` component",
+		);
 	}
 
 	return context;

@@ -39,7 +39,9 @@ export interface ColorChannelFieldRootOptions
 	colorSpace?: ColorSpace;
 }
 
-export interface ColorChannelFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorChannelFieldRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -47,15 +49,20 @@ export interface ColorChannelFieldRootRenderProps
 	extends ColorChannelFieldRootCommonProps,
 		NumberField.NumberFieldRootRenderProps {}
 
-export type ColorChannelFieldRootProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorChannelFieldRootOptions & Partial<ColorChannelFieldRootCommonProps<ElementOf<T>>>;
+export type ColorChannelFieldRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorChannelFieldRootOptions &
+	Partial<ColorChannelFieldRootCommonProps<ElementOf<T>>>;
 
 export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorChannelFieldRootProps<T>>,
 ) {
 	const defaultId = `colorchannelfield-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps({ id: defaultId }, props as ColorChannelFieldRootProps);
+	const mergedProps = mergeDefaultProps(
+		{ id: defaultId },
+		props as ColorChannelFieldRootProps,
+	);
 
 	const [local, others] = splitProps(mergedProps, [
 		"value",
@@ -72,7 +79,7 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 	const [value, setValue] = createControllableSignal<Color>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
-		onChange: value => local.onChange?.(value),
+		onChange: (value) => local.onChange?.(value),
 	});
 
 	const color = createMemo(() =>
@@ -81,7 +88,9 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 
 	const range = createMemo(() => color()!.getChannelRange(local.channel));
 
-	const formatOptions = createMemo(() => color()!.getChannelFormatOptions(local.channel));
+	const formatOptions = createMemo(() =>
+		color()!.getChannelFormatOptions(local.channel),
+	);
 
 	const multiplier = createMemo(() =>
 		formatOptions().style === "percent" && range().maxValue === 100 ? 100 : 1,
@@ -99,7 +108,10 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 	return (
 		<NumberField.Root<
 			Component<
-				Omit<ColorChannelFieldRootRenderProps, keyof NumberField.NumberFieldRootRenderProps>
+				Omit<
+					ColorChannelFieldRootRenderProps,
+					keyof NumberField.NumberFieldRootRenderProps
+				>
 			>
 		>
 			value={

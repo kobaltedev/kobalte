@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
-import { parseColor } from "../../../../packages/core/src/colors/utils";
 import { ColorSlider } from "../../../../packages/core/src/colors/color-slider";
+import { parseColor } from "../../../../packages/core/src/colors/utils";
 import style from "./color-slider.module.css";
 
 export function BasicExample() {
@@ -46,7 +46,12 @@ export function DefaultValueExample() {
 export function ControlledValueExample() {
 	const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
 	return (
-		<ColorSlider class={style.ColorSliderRoot} value={value()} onChange={setValue} channel="hue">
+		<ColorSlider
+			class={style.ColorSliderRoot}
+			value={value()}
+			onChange={setValue}
+			channel="hue"
+		>
 			<div class={style.ColorSliderLabel}>
 				<ColorSlider.Label>Hue</ColorSlider.Label>
 				<ColorSlider.ValueLabel />
@@ -87,7 +92,7 @@ export function CustomValueExample() {
 			class={style.ColorSliderRoot}
 			defaultValue={parseColor("#ff00ff")}
 			channel="green"
-			getValueLabel={param => `${param.toFormat("rgb")}`}
+			getValueLabel={(param) => `${param.toFormat("rgb")}`}
 		>
 			<div class={style.ColorSliderLabel}>
 				<ColorSlider.ValueLabel />

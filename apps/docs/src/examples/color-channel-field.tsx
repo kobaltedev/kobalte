@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
-import { parseColor } from "../../../../packages/core/src/colors/utils";
 import { ColorChannelField } from "../../../../packages/core/src/colors/color-channel-field";
+import { parseColor } from "../../../../packages/core/src/colors/utils";
 import { ArrowIcon } from "../components";
 import style from "./color-channel-field.module.css";
 
@@ -77,7 +77,9 @@ export function ControlledExample() {
 					Lightness
 				</ColorChannelField.Label>
 				<div class={style["color-channel-field__group"]}>
-					<ColorChannelField.Input class={style["color-channel-field__input"]} />
+					<ColorChannelField.Input
+						class={style["color-channel-field__input"]}
+					/>
 					<ColorChannelField.IncrementTrigger
 						aria-label="Increment"
 						class={style["color-channel-field__increment"]}
@@ -93,7 +95,9 @@ export function ControlledExample() {
 				</div>
 			</ColorChannelField>
 
-			<p class="not-prose text-sm mt-4">Lightness: {value().getChannelValue("lightness")}%</p>
+			<p class="not-prose text-sm mt-4">
+				Lightness: {value().getChannelValue("lightness")}%
+			</p>
 		</>
 	);
 }
@@ -123,7 +127,9 @@ export function DescriptionExample() {
 					<ArrowIcon style="transform: rotate(180deg);" />
 				</ColorChannelField.DecrementTrigger>
 			</div>
-			<ColorChannelField.Description class={style["color-channel-field__description"]}>
+			<ColorChannelField.Description
+				class={style["color-channel-field__description"]}
+			>
 				Enter your favorite hue.
 			</ColorChannelField.Description>
 		</ColorChannelField>
@@ -139,7 +145,9 @@ export function ErrorMessageExample() {
 			value={value()}
 			channel="saturation"
 			onChange={setValue}
-			validationState={value().getChannelValue("saturation") !== 40 ? "invalid" : "valid"}
+			validationState={
+				value().getChannelValue("saturation") !== 40 ? "invalid" : "valid"
+			}
 		>
 			<ColorChannelField.Label class={style["color-channel-field__label"]}>
 				Saturation
@@ -159,7 +167,9 @@ export function ErrorMessageExample() {
 					<ArrowIcon style="transform: rotate(180deg);" />
 				</ColorChannelField.DecrementTrigger>
 			</div>
-			<ColorChannelField.ErrorMessage class={style["color-channel-field__error-message"]}>
+			<ColorChannelField.ErrorMessage
+				class={style["color-channel-field__error-message"]}
+			>
 				Hmm, I prefer 40% saturation.
 			</ColorChannelField.ErrorMessage>
 		</ColorChannelField>
@@ -179,7 +189,11 @@ export function HTMLFormExample() {
 	};
 
 	return (
-		<form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
+		<form
+			ref={formRef}
+			onSubmit={onSubmit}
+			class="flex flex-col items-center space-y-6"
+		>
 			<ColorChannelField
 				class={style["color-channel-field"]}
 				name="hue"
@@ -191,7 +205,9 @@ export function HTMLFormExample() {
 				</ColorChannelField.Label>
 				<ColorChannelField.HiddenInput />
 				<div class={style["color-channel-field__group"]}>
-					<ColorChannelField.Input class={style["color-channel-field__input"]} />
+					<ColorChannelField.Input
+						class={style["color-channel-field__input"]}
+					/>
 					<ColorChannelField.IncrementTrigger
 						aria-label="Increment"
 						class={style["color-channel-field__increment"]}

@@ -63,11 +63,13 @@ export function createColorAreaState(props: StateOpts): ColorAreaState {
 	const [value, setValue] = createControllableSignal<Color>({
 		value: mergedProps.value,
 		defaultValue: mergedProps.defaultValue,
-		onChange: value => mergedProps.onChange?.(value),
+		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
 	const color = createMemo(() => {
-		return mergedProps.colorSpace?.() ? value()!.toFormat(mergedProps.colorSpace()!) : value()!;
+		return mergedProps.colorSpace?.()
+			? value()!.toFormat(mergedProps.colorSpace()!)
+			: value()!;
 	});
 
 	const channels = createMemo(() => {
@@ -116,7 +118,12 @@ export function createColorAreaState(props: StateOpts): ColorAreaState {
 		setXValue(
 			xValue() + stepSize > xMaxValue()
 				? xMaxValue()
-				: snapValueToStep(xValue() + stepSize, xMinValue(), xMaxValue(), xStep()),
+				: snapValueToStep(
+						xValue() + stepSize,
+						xMinValue(),
+						xMaxValue(),
+						xStep(),
+					),
 		);
 	};
 
@@ -124,21 +131,31 @@ export function createColorAreaState(props: StateOpts): ColorAreaState {
 		setYValue(
 			yValue() + stepSize > yMaxValue()
 				? yMaxValue()
-				: snapValueToStep(yValue() + stepSize, yMinValue(), yMaxValue(), yStep()),
+				: snapValueToStep(
+						yValue() + stepSize,
+						yMinValue(),
+						yMaxValue(),
+						yStep(),
+					),
 		);
 	};
 
 	const decrementX = (stepSize = 1) => {
-		setXValue(snapValueToStep(xValue() - stepSize, xMinValue(), xMaxValue(), xStep()));
+		setXValue(
+			snapValueToStep(xValue() - stepSize, xMinValue(), xMaxValue(), xStep()),
+		);
 	};
 
 	const decrementY = (stepSize = 1) => {
-		setYValue(snapValueToStep(yValue() - stepSize, yMinValue(), yMaxValue(), yStep()));
+		setYValue(
+			snapValueToStep(yValue() - stepSize, yMinValue(), yMaxValue(), yStep()),
+		);
 	};
 
 	const getThumbPosition = () => {
 		const x = (xValue() - xMinValue()) / (xMaxValue() - xMinValue());
-		const y = (yMaxValue() - (yValue() - yMinValue())) / (yMaxValue() - yMinValue());
+		const y =
+			(yMaxValue() - (yValue() - yMinValue())) / (yMaxValue() - yMinValue());
 		return { x, y };
 	};
 
@@ -150,8 +167,18 @@ export function createColorAreaState(props: StateOpts): ColorAreaState {
 
 	const updateValue = (value: { x: number; y: number }) => {
 		if (mergedProps.isDisabled!()) return;
-		const xSnappedValue = snapValueToStep(value.x, xMinValue(), xMaxValue(), xStep());
-		const ySnappedValue = snapValueToStep(value.y, yMinValue(), yMaxValue(), yStep());
+		const xSnappedValue = snapValueToStep(
+			value.x,
+			xMinValue(),
+			xMaxValue(),
+			xStep(),
+		);
+		const ySnappedValue = snapValueToStep(
+			value.y,
+			yMinValue(),
+			yMaxValue(),
+			yStep(),
+		);
 
 		batch(() => {
 			setXValue(xSnappedValue);
@@ -164,8 +191,10 @@ export function createColorAreaState(props: StateOpts): ColorAreaState {
 	};
 
 	const getRoundedValues = (value: { x: number; y: number }) => {
-		const x = Math.round((value.x - xMinValue()) / xStep()) * xStep() + xMinValue();
-		const y = Math.round((value.y - yMinValue()) / yStep()) * yStep() + yMinValue();
+		const x =
+			Math.round((value.x - xMinValue()) / xStep()) * xStep() + xMinValue();
+		const y =
+			Math.round((value.y - yMinValue()) / yStep()) * yStep() + yMinValue();
 		return { x, y };
 	};
 

@@ -10,7 +10,15 @@
 import type { ColorIntlTranslations } from "./intl";
 
 /** A list of supported color formats. */
-export type ColorFormat = "hex" | "hexa" | "rgb" | "rgba" | "hsl" | "hsla" | "hsb" | "hsba";
+export type ColorFormat =
+	| "hex"
+	| "hexa"
+	| "rgb"
+	| "rgba"
+	| "hsl"
+	| "hsla"
+	| "hsb"
+	| "hsba";
 
 export type ColorSpace = "rgb" | "hsl" | "hsb";
 
@@ -70,7 +78,10 @@ export interface Color {
 	 * Returns a localized color channel name for a given channel and locale,
 	 * for use in visual or accessibility labels.
 	 */
-	getChannelName(channel: ColorChannel, translations: ColorIntlTranslations): string;
+	getChannelName(
+		channel: ColorChannel,
+		translations: ColorIntlTranslations,
+	): string;
 	/**
 	 * Returns the number formatting options for the given channel.
 	 */
@@ -78,7 +89,10 @@ export interface Color {
 	/**
 	 * Formats the numeric value for a given channel for display according to the provided locale.
 	 */
-	formatChannelValue(channel: ColorChannel, translations: ColorIntlTranslations): string;
+	formatChannelValue(
+		channel: ColorChannel,
+		translations: ColorIntlTranslations,
+	): string;
 	/**
 	 * Returns the color space, 'rgb', 'hsb' or 'hsl', for the current color.
 	 */
@@ -86,7 +100,10 @@ export interface Color {
 	/**
 	 * Returns the color space axes, xChannel, yChannel, zChannel.
 	 */
-	getColorSpaceAxes(xyChannels: { xChannel?: ColorChannel; yChannel?: ColorChannel }): ColorAxes;
+	getColorSpaceAxes(xyChannels: {
+		xChannel?: ColorChannel;
+		yChannel?: ColorChannel;
+	}): ColorAxes;
 	/**
 	 * Returns an array of the color channels within the current color space space.
 	 */

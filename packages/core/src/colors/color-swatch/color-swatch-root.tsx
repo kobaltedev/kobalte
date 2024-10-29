@@ -1,7 +1,16 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent, createUniqueId, splitProps } from "solid-js";
-import { type ElementOf, Polymorphic, type PolymorphicProps } from "../../polymorphic";
+import {
+	type JSX,
+	type ValidComponent,
+	createUniqueId,
+	splitProps,
+} from "solid-js";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../../polymorphic";
 import { COLOR_INTL_TRANSLATIONS } from "../intl";
 import type { Color } from "../types";
 import {
@@ -25,7 +34,9 @@ export interface ColorSwatchRootOptions {
 	translations?: ColorSwatchIntlTranslations;
 }
 
-export interface ColorSwatchRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorSwatchRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 	style?: JSX.CSSProperties | string;
 	"aria-label"?: string;
@@ -35,8 +46,9 @@ export interface ColorSwatchRootRenderProps extends ColorSwatchRootCommonProps {
 	role: "img";
 }
 
-export type ColorSwatchRootProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorSwatchRootOptions & Partial<ColorSwatchRootCommonProps<ElementOf<T>>>;
+export type ColorSwatchRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorSwatchRootOptions & Partial<ColorSwatchRootCommonProps<ElementOf<T>>>;
 
 export function ColorSwatchRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorSwatchRootProps<T>>,

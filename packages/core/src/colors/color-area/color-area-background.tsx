@@ -1,17 +1,32 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent, createMemo, createSignal, splitProps } from "solid-js";
+import {
+	type JSX,
+	type ValidComponent,
+	createMemo,
+	createSignal,
+	splitProps,
+} from "solid-js";
+import {
+	type FormControlDataSet,
+	useFormControlContext,
+} from "../../form-control";
+import { useLocale } from "../../i18n";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../../polymorphic";
+import { linearScale } from "../../slider/utils";
 import type { Color, ColorChannel } from "../types";
 import { parseColor } from "../utils";
-import { type FormControlDataSet, useFormControlContext } from "../../form-control";
-import { useLocale } from "../../i18n";
-import { type ElementOf, Polymorphic, type PolymorphicProps } from "../../polymorphic";
-import { linearScale } from "../../slider/utils";
 import { useColorAreaContext } from "./color-area-context";
 
 export interface ColorAreaBackgroundOptions {}
 
-export interface ColorAreaBackgroundCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorAreaBackgroundCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	style?: JSX.CSSProperties | string;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -22,8 +37,10 @@ export interface ColorAreaBackgroundRenderProps
 	extends ColorAreaBackgroundCommonProps,
 		FormControlDataSet {}
 
-export type ColorAreaBackgroundProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorAreaBackgroundOptions & Partial<ColorAreaBackgroundCommonProps<ElementOf<T>>>;
+export type ColorAreaBackgroundProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorAreaBackgroundOptions &
+	Partial<ColorAreaBackgroundCommonProps<ElementOf<T>>>;
 
 export function ColorAreaBackground<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorAreaBackgroundProps<T>>,
@@ -47,23 +64,34 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 
 		const xInput: [number, number] = [0, rect.width];
 
-		const xOutput: [number, number] = [context.state.xMinValue(), context.state.xMaxValue()];
+		const xOutput: [number, number] = [
+			context.state.xMinValue(),
+			context.state.xMaxValue(),
+		];
 
 		const yInput: [number, number] = [0, rect.height];
 
-		const yOutput: [number, number] = [context.state.yMinValue(), context.state.yMaxValue()];
+		const yOutput: [number, number] = [
+			context.state.yMinValue(),
+			context.state.yMaxValue(),
+		];
 
 		const xValue = linearScale(xInput, xOutput);
 		const yValue = linearScale(yInput, yOutput);
 
 		setRect(rect);
 
-		return [xValue(pointerPosition.x - rect.top), yValue(pointerPosition.y - rect.left)];
+		return [
+			xValue(pointerPosition.x - rect.top),
+			yValue(pointerPosition.y - rect.left),
+		];
 	};
 
 	let startPosition = { x: 0, y: 0 };
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		const target = e.target as HTMLElement;
@@ -75,7 +103,9 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 		context.onDragStart?.(value);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		const target = e.target as HTMLElement;
@@ -89,7 +119,7 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		const target = e.target as HTMLElement;
@@ -103,7 +133,9 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 
 	const backgroundStyles = createMemo(() => {
 		const end = direction() === "ltr" ? "right" : "left";
-		const zValue = context.state.value().getChannelValue(context.state.channels().zChannel);
+		const zValue = context.state
+			.value()
+			.getChannelValue(context.state.channels().zChannel);
 		switch (context.state.value().getColorSpace()) {
 			case "rgb": {
 				const rgb = parseColor("rgb(0, 0, 0)");
@@ -124,9 +156,9 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 				const bg = context.state
 					.value()
 					.getColorChannels()
-					.filter(c => c !== context.state.channels().zChannel)
+					.filter((c) => c !== context.state.channels().zChannel)
 					.map(
-						c =>
+						(c) =>
 							`linear-gradient(to ${c === context.state.channels().xChannel ? end : "top"}, ${hslChannels[c as Exclude<ColorChannel, "brightness" | "red" | "green" | "blue" | "alpha">](value)})`,
 					)
 					.reverse();
@@ -147,9 +179,9 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 				const bg = context.state
 					.value()
 					.getColorChannels()
-					.filter(c => c !== context.state.channels().zChannel)
+					.filter((c) => c !== context.state.channels().zChannel)
 					.map(
-						c =>
+						(c) =>
 							`linear-gradient(to ${c === context.state.channels().xChannel ? end : "top"}, ${hsbChannels[c as Exclude<ColorChannel, "lightness" | "red" | "green" | "blue" | "alpha">](value)})`,
 					)
 					.reverse();
@@ -187,9 +219,10 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 
 const hue = (color: Color) =>
 	[0, 60, 120, 180, 240, 300, 360]
-		.map(hue => color.withChannelValue("hue", hue).toString("css"))
+		.map((hue) => color.withChannelValue("hue", hue).toString("css"))
 		.join(", ");
-const saturation = (color: Color) => `${color.withChannelValue("saturation", 0)}, transparent`;
+const saturation = (color: Color) =>
+	`${color.withChannelValue("saturation", 0)}, transparent`;
 
 const hslChannels = {
 	hue,

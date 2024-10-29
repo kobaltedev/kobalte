@@ -7,7 +7,8 @@ export const COLOR_INTL_TRANSLATIONS = {
 	green: "Green",
 	blue: "Blue",
 	alpha: "Alpha",
-	colorName: (lightness: string, chroma: string, hue: string) => `${lightness} ${chroma} ${hue}`,
+	colorName: (lightness: string, chroma: string, hue: string) =>
+		`${lightness} ${chroma} ${hue}`,
 	transparentColorName: (
 		lightness: string,
 		chroma: string,

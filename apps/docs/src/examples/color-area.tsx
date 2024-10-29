@@ -1,11 +1,14 @@
 import { createSignal } from "solid-js";
-import { parseColor } from "../../../../packages/core/src/colors/utils";
 import { ColorArea } from "../../../../packages/core/src/colors/color-area";
+import { parseColor } from "../../../../packages/core/src/colors/utils";
 import style from "./color-area.module.css";
 
 export function BasicExample() {
 	return (
-		<ColorArea class={style.ColorAreaRoot} defaultValue={parseColor("rgb(2, 132, 197)")}>
+		<ColorArea
+			class={style.ColorAreaRoot}
+			defaultValue={parseColor("rgb(2, 132, 197)")}
+		>
 			<ColorArea.Background class={style.ColorAreaBackground}>
 				<ColorArea.Thumb class={style.ColorAreaThumb}>
 					<ColorArea.HiddenInputX />
@@ -18,7 +21,10 @@ export function BasicExample() {
 
 export function DefaultValueExample() {
 	return (
-		<ColorArea class={style.ColorAreaRoot} defaultValue={parseColor("hsb(219, 58%, 93%)")}>
+		<ColorArea
+			class={style.ColorAreaRoot}
+			defaultValue={parseColor("hsb(219, 58%, 93%)")}
+		>
 			<ColorArea.Background class={style.ColorAreaBackground}>
 				<ColorArea.Thumb class={style.ColorAreaThumb}>
 					<ColorArea.HiddenInputX />
@@ -33,7 +39,11 @@ export function ControlledValueExample() {
 	const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
 	return (
 		<>
-			<ColorArea class={style.ColorAreaRoot} value={value()} onChange={setValue}>
+			<ColorArea
+				class={style.ColorAreaRoot}
+				value={value()}
+				onChange={setValue}
+			>
 				<ColorArea.Background class={style.ColorAreaBackground}>
 					<ColorArea.Thumb class={style.ColorAreaThumb}>
 						<ColorArea.HiddenInputX />
@@ -41,7 +51,9 @@ export function ControlledValueExample() {
 					</ColorArea.Thumb>
 				</ColorArea.Background>
 			</ColorArea>
-			<p class="not-prose text-sm mt-4">Current color value: {value().toString("hsl")}</p>
+			<p class="not-prose text-sm mt-4">
+				Current color value: {value().toString("hsl")}
+			</p>
 		</>
 	);
 }
@@ -80,7 +92,11 @@ export function HTMLFormExample() {
 	};
 
 	return (
-		<form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
+		<form
+			ref={formRef}
+			onSubmit={onSubmit}
+			class="flex flex-col items-center space-y-6"
+		>
 			<ColorArea
 				class={style.ColorAreaRoot}
 				defaultValue={parseColor("rgb(100, 149, 237)")}

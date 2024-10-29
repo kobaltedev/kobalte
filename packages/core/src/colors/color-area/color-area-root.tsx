@@ -6,7 +6,12 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { type ValidComponent, createSignal, createUniqueId, splitProps } from "solid-js";
+import {
+	type ValidComponent,
+	createSignal,
+	createUniqueId,
+	splitProps,
+} from "solid-js";
 
 import {
 	FORM_CONTROL_PROP_NAMES,
@@ -15,11 +20,21 @@ import {
 	createFormControl,
 } from "../../form-control";
 import { useLocale } from "../../i18n";
-import { type ElementOf, Polymorphic, type PolymorphicProps } from "../../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../../polymorphic";
 import { createFormResetListener } from "../../primitives";
 import type { Color, ColorChannel, ColorSpace } from "../types";
-import { ColorAreaContext, type ColorAreaContextValue } from "./color-area-context";
-import { COLOR_AREA_INTL_TRANSLATIONS, type ColorAreaIntlTranslations } from "./color-area.intl";
+import {
+	ColorAreaContext,
+	type ColorAreaContextValue,
+} from "./color-area-context";
+import {
+	COLOR_AREA_INTL_TRANSLATIONS,
+	type ColorAreaIntlTranslations,
+} from "./color-area.intl";
 import { createColorAreaState } from "./create-color-area-state";
 
 export interface ColorAreaRootOptions {
@@ -90,12 +105,15 @@ export interface ColorAreaRootCommonProps<T extends HTMLElement = HTMLElement> {
 	ref: T | ((el: T) => void);
 }
 
-export interface ColorAreaRootRenderProps extends ColorAreaRootCommonProps, FormControlDataSet {
+export interface ColorAreaRootRenderProps
+	extends ColorAreaRootCommonProps,
+		FormControlDataSet {
 	role: "group";
 }
 
-export type ColorAreaRootProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorAreaRootOptions & Partial<ColorAreaRootCommonProps<ElementOf<T>>>;
+export type ColorAreaRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorAreaRootOptions & Partial<ColorAreaRootCommonProps<ElementOf<T>>>;
 
 export function ColorAreaRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorAreaRootProps<T>>,
@@ -223,9 +241,13 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 					event.preventDefault();
 					event.stopPropagation();
 					if (!isLTR()) {
-						state.incrementX(event.shiftKey ? state.xPageSize() : state.xStep());
+						state.incrementX(
+							event.shiftKey ? state.xPageSize() : state.xStep(),
+						);
 					} else {
-						state.decrementX(event.shiftKey ? state.xPageSize() : state.xStep());
+						state.decrementX(
+							event.shiftKey ? state.xPageSize() : state.xStep(),
+						);
 					}
 					break;
 				case "Down":
@@ -245,9 +267,13 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 					event.preventDefault();
 					event.stopPropagation();
 					if (!isLTR()) {
-						state.decrementX(event.shiftKey ? state.xPageSize() : state.xStep());
+						state.decrementX(
+							event.shiftKey ? state.xPageSize() : state.xStep(),
+						);
 					} else {
-						state.incrementX(event.shiftKey ? state.xPageSize() : state.xStep());
+						state.incrementX(
+							event.shiftKey ? state.xPageSize() : state.xStep(),
+						);
 					}
 					break;
 				case "Home":
@@ -292,7 +318,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 			<ColorAreaContext.Provider value={context}>
 				<Polymorphic<ColorAreaRootRenderProps>
 					as="div"
-					ref={mergeRefs(el => (ref = el), local.ref)}
+					ref={mergeRefs((el) => (ref = el), local.ref)}
 					role="group"
 					id={access(formControlProps.id)!}
 					{...formControlContext.dataset()}

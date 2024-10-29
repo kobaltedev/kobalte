@@ -1,5 +1,11 @@
 import { combineStyle } from "@solid-primitives/props";
-import { type Component, type JSX, type ValidComponent, createMemo, splitProps } from "solid-js";
+import {
+	type Component,
+	type JSX,
+	type ValidComponent,
+	createMemo,
+	splitProps,
+} from "solid-js";
 import { useLocale } from "../../i18n";
 import type { ElementOf, PolymorphicProps } from "../../polymorphic";
 import * as Slider from "../../slider";
@@ -8,7 +14,9 @@ import { useColorSliderContext } from "./color-slider-context";
 
 export interface ColorSliderTrackOptions extends Slider.SliderTrackOptions {}
 
-export interface ColorSliderTrackCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorSliderTrackCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	style?: JSX.CSSProperties | string;
 }
 
@@ -16,8 +24,10 @@ export interface ColorSliderTrackRenderProps
 	extends ColorSliderTrackCommonProps,
 		Slider.SliderTrackRenderProps {}
 
-export type ColorSliderTrackProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorSliderTrackOptions & Partial<ColorSliderTrackCommonProps<ElementOf<T>>>;
+export type ColorSliderTrackProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorSliderTrackOptions &
+	Partial<ColorSliderTrackCommonProps<ElementOf<T>>>;
 
 export function ColorSliderTrack<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorSliderTrackProps<T>>,
@@ -41,7 +51,12 @@ export function ColorSliderTrack<T extends ValidComponent = "div">(
 		switch (context.channel()) {
 			case "hue": {
 				const stops = [0, 60, 120, 180, 240, 300, 360]
-					.map(hue => context.getDisplayColor().withChannelValue("hue", hue).toString("css"))
+					.map((hue) =>
+						context
+							.getDisplayColor()
+							.withChannelValue("hue", hue)
+							.toString("css"),
+					)
 					.join(", ");
 				return `linear-gradient(to ${to}, ${stops})`;
 			}
@@ -70,11 +85,17 @@ export function ColorSliderTrack<T extends ValidComponent = "div">(
 			case "alpha": {
 				const start = context
 					.getDisplayColor()
-					.withChannelValue(context.channel(), sliderContext.state.getThumbMinValue(0))
+					.withChannelValue(
+						context.channel(),
+						sliderContext.state.getThumbMinValue(0),
+					)
 					.toString("css");
 				const end = context
 					.getDisplayColor()
-					.withChannelValue(context.channel(), sliderContext.state.getThumbMaxValue(0))
+					.withChannelValue(
+						context.channel(),
+						sliderContext.state.getThumbMaxValue(0),
+					)
 					.toString("css");
 				return `linear-gradient(to ${to}, ${start}, ${end})`;
 			}
@@ -83,7 +104,11 @@ export function ColorSliderTrack<T extends ValidComponent = "div">(
 		}
 	});
 	return (
-		<Slider.Track<Component<Omit<ColorSliderTrackRenderProps, keyof Slider.SliderTrackRenderProps>>>
+		<Slider.Track<
+			Component<
+				Omit<ColorSliderTrackRenderProps, keyof Slider.SliderTrackRenderProps>
+			>
+		>
 			style={combineStyle(
 				{
 					"forced-color-adjust": "none",

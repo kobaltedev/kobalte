@@ -78,7 +78,16 @@ export type {
 	ColorSliderValueLabelRenderProps,
 	ColorSliderValueLabelProps,
 };
-export { Description, ErrorMessage, Input, Label, Root, Thumb, Track, ValueLabel };
+export {
+	Description,
+	ErrorMessage,
+	Input,
+	Label,
+	Root,
+	Thumb,
+	Track,
+	ValueLabel,
+};
 
 export const ColorSlider = Object.assign(Root, {
 	Description,

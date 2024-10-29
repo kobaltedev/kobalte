@@ -1,12 +1,20 @@
 import { combineStyle } from "@solid-primitives/props";
-import { type Component, type JSX, type ValidComponent, createMemo, splitProps } from "solid-js";
+import {
+	type Component,
+	type JSX,
+	type ValidComponent,
+	createMemo,
+	splitProps,
+} from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../../polymorphic";
 import * as Slider from "../../slider";
 import { useColorSliderContext } from "./color-slider-context";
 
 export interface ColorSliderThumbOptions extends Slider.SliderThumbOptions {}
 
-export interface ColorSliderThumbCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorSliderThumbCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	style?: JSX.CSSProperties | string;
 }
 
@@ -14,8 +22,10 @@ export interface ColorSliderThumbRenderProps
 	extends ColorSliderThumbCommonProps,
 		Slider.SliderThumbRenderProps {}
 
-export type ColorSliderThumbProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorSliderThumbOptions & Partial<ColorSliderThumbCommonProps<ElementOf<T>>>;
+export type ColorSliderThumbProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorSliderThumbOptions &
+	Partial<ColorSliderThumbCommonProps<ElementOf<T>>>;
 
 export function ColorSliderThumb<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, ColorSliderThumbProps<T>>,
@@ -39,7 +49,11 @@ export function ColorSliderThumb<T extends ValidComponent = "span">(
 	});
 
 	return (
-		<Slider.Thumb<Component<Omit<ColorSliderThumbRenderProps, keyof Slider.SliderThumbRenderProps>>>
+		<Slider.Thumb<
+			Component<
+				Omit<ColorSliderThumbRenderProps, keyof Slider.SliderThumbRenderProps>
+			>
+		>
 			style={combineStyle({ "forced-color-adjust": "none" }, local.style)}
 			aria-valuetext={valueText()}
 			{...others}
