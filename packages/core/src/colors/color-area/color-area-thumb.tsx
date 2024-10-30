@@ -8,6 +8,7 @@ import {
 	type PolymorphicProps,
 } from "../../polymorphic";
 import { useColorAreaContext } from "./color-area-context";
+import { COLOR_INTL_TRANSLATIONS } from "../intl";
 
 export interface ColorAreaThumbOptions {}
 
@@ -19,6 +20,7 @@ export interface ColorAreaThumbCommonProps<
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	"aria-label"?: string;
 }
 
 export interface ColorAreaThumbRenderProps extends ColorAreaThumbCommonProps {
@@ -37,11 +39,25 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 
 	const [local, others] = splitProps(props, [
 		"style",
+		"aria-label",
 		"onKeyDown",
 		"onPointerDown",
 		"onPointerMove",
 		"onPointerUp",
 	]);
+
+	const ariaLabel = () => {
+		const xChannel = context.state.channels().xChannel;
+		const yChannel = context.state.channels().yChannel;
+		const xChannelName = `${context.state.value().getChannelName(xChannel, COLOR_INTL_TRANSLATIONS)} ${context.state.value().formatChannelValue(xChannel, COLOR_INTL_TRANSLATIONS)}`;
+		const yChannelName = `${context.state.value().getChannelName(yChannel, COLOR_INTL_TRANSLATIONS)} ${context.state.value().formatChannelValue(yChannel, COLOR_INTL_TRANSLATIONS)}`;
+		const colorName = context.state
+			.value()
+			.getColorName(COLOR_INTL_TRANSLATIONS);
+		return (
+			local["aria-label"] ?? [xChannelName, yChannelName, colorName].join(", ")
+		);
+	};
 
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
@@ -115,6 +131,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 				},
 				local.style,
 			)}
+			aria-label={ariaLabel()}
 			onKeyDown={onKeyDown}
 			onPointerDown={onPointerDown}
 			onPointerMove={onPointerMove}
