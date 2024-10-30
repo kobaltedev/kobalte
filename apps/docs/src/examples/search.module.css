@@ -1,7 +1,7 @@
 .search__control {
 	display: inline-flex;
 	justify-content: space-between;
-	width: 240px;
+	width: 250px;
 	border-radius: 6px;
 	font-size: 16px;
 	line-height: 1;
@@ -21,7 +21,7 @@
 
 .search__control_multi {
 	width: 100%;
-	min-width: 240px;
+	min-width: 250px;
 	max-width: 300px;
 }
 
@@ -242,4 +242,16 @@
 	margin-top: 16px;
 	font-size: 16px;
 	line-height: 1;
+}
+
+.search__root_cmdk {
+	min-height: 250px;
+	min-width: 250px;
+}
+
+.search__content_cmdk {
+	height: 200px;
+	background-color: white;
+	border-radius: 6px;
+	border: 1px solid hsl(240 6% 90%);
 }

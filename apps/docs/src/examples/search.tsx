@@ -1,15 +1,13 @@
-import { Search } from "@kobalte/core/search";
 import MiniSearch from "minisearch";
-
 import { createSignal } from "solid-js";
+import { Search } from "../../../../packages/core/src/search";
 import { MagnifyingGlassIcon, ReloadIcon } from "../components";
 import style from "./search.module.css";
 
 type EmojiDatum = {
 	emoji: string;
 	name: string;
-	levenshteinDistance?: number;
-	id: number;
+	id?: number;
 };
 
 const RAW_EMOJI_DATA: EmojiDatum[] = ([] as any)
@@ -545,7 +543,8 @@ const RAW_EMOJI_DATA: EmojiDatum[] = ([] as any)
 const minisearch = new MiniSearch({
 	fields: ["name"],
 	storeFields: ["name", "emoji"],
-	tokenize: (string, _fieldName) => string.split(" "),
+	tokenize: (string: string, _fieldName: string | undefined) =>
+		string.split(" "),
 });
 minisearch.addAll(RAW_EMOJI_DATA);
 
@@ -557,7 +556,7 @@ const queryEmojiData = (query: string, numSuggestions = 20) => {
 
 export function BasicExample() {
 	const [options, setOptions] = createSignal<EmojiDatum[]>([]);
-	const [emoji, setEmoji] = createSignal<EmojiDatum>();
+	const [emoji, setEmoji] = createSignal<EmojiDatum | null>();
 	return (
 		<>
 			<Search
@@ -565,11 +564,56 @@ export function BasicExample() {
 				onInputChange={(query: string) => {
 					setOptions(queryEmojiData(query));
 				}}
-				onChange={(result: EmojiDatum) => setEmoji(result)}
+				onChange={(result: EmojiDatum | null) => setEmoji(result)}
+				optionValue="name"
+				optionLabel="name"
+				placeholder="Search an emoji…"
+				itemComponent={(props: any) => (
+					<Search.Item item={props.item} class={style.search__item}>
+						<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
+					</Search.Item>
+				)}
+			>
+				<Search.Control class={style.search__control} aria-label="Emoji">
+					<Search.Indicator class={style.search__indicator}>
+						<Search.Icon class={style.search__icon}>
+							<MagnifyingGlassIcon class={style.center__icon} />
+						</Search.Icon>
+					</Search.Indicator>
+					<Search.Input class={style.search__input} />
+				</Search.Control>
+
+				<Search.Portal>
+					<Search.Content class={style.search__content}>
+						<Search.Listbox class={style.search__listbox} />
+						<Search.NoResult class={style.search__no_result}>
+							😬 No emoji found
+						</Search.NoResult>
+					</Search.Content>
+				</Search.Portal>
+			</Search>
+
+			<div class={style.result__content}>
+				Emoji selected: {emoji()?.emoji} {emoji()?.name}
+			</div>
+		</>
+	);
+}
+
+export function DebounceExample() {
+	const [options, setOptions] = createSignal<EmojiDatum[]>([]);
+	const [emoji, setEmoji] = createSignal<EmojiDatum | null>();
+	return (
+		<>
+			<Search
+				options={options()}
+				onInputChange={(query: string) => {
+					setOptions(queryEmojiData(query));
+				}}
+				onChange={(result: EmojiDatum | null) => setEmoji(result)}
 				debounceOptionsMillisecond={300}
 				optionValue="name"
-				optionTextValue="name"
-				optionLabel="emoji"
+				optionLabel="name"
 				placeholder="Search an emoji…"
 				itemComponent={(props: any) => (
 					<Search.Item item={props.item} class={style.search__item}>
@@ -603,6 +647,56 @@ export function BasicExample() {
 						</Search.NoResult>
 					</Search.Content>
 				</Search.Portal>
+			</Search>
+
+			<div class={style.result__content}>
+				Emoji selected: {emoji()?.emoji} {emoji()?.name}
+			</div>
+		</>
+	);
+}
+
+export function CmdkExample() {
+	const [options, setOptions] = createSignal<EmojiDatum[]>([]);
+	const [emoji, setEmoji] = createSignal<EmojiDatum | null>();
+	return (
+		<>
+			<Search
+				options={options()}
+				onInputChange={(query: string) => {
+					setOptions(queryEmojiData(query));
+				}}
+				onChange={(result: EmojiDatum | null) => setEmoji(result)}
+				optionValue="name"
+				optionLabel="name"
+				placeholder="Search an emoji…"
+				itemComponent={(props: any) => (
+					<Search.Item item={props.item} class={style.search__item}>
+						<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
+					</Search.Item>
+				)}
+				class={style.search__root_cmdk}
+			>
+				<div>
+					<Search.Control class={style.search__control} aria-label="Emoji">
+						<Search.Indicator class={style.search__indicator}>
+							<Search.Icon class={style.search__icon}>
+								<MagnifyingGlassIcon class={style.center__icon} />
+							</Search.Icon>
+						</Search.Indicator>
+
+						<Search.Input class={style.search__input} />
+					</Search.Control>
+				</div>
+
+				<div>
+					<Search.Content class={style.search__content_cmdk}>
+						<Search.Listbox class={style.search__listbox} />
+						<Search.NoResult class={style.search__no_result}>
+							😬 No emoji found
+						</Search.NoResult>
+					</Search.Content>
+				</div>
 			</Search>
 
 			<div class={style.result__content}>
