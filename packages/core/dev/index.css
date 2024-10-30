@@ -1,0 +1,18 @@
+.file-upload__root {
+  display: flex;
+	flex-direction: column;
+	row-gap: 5px;
+	width: 400px;
+}
+
+.file-upload__dropzone {
+  width: 200px;
+  height: 200px;
+  border: 1px dashed red;
+
+	display: flex;
+	flex-direction: column;
+	row-gap: 5px;
+	align-items: center;
+	justify-content: center;
+}
