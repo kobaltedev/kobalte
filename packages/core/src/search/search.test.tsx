@@ -11,6 +11,7 @@ import { fireEvent, render, within } from "@solidjs/testing-library";
 import { vi } from "vitest";
 
 import * as Search from ".";
+import { DebouncerTimeout } from "./utils";
 
 interface DataSourceItem {
 	key: string;
@@ -41,6 +42,29 @@ describe("Search", () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 		vi.clearAllTimers();
+	});
+
+	it("debounce", () => {
+		const callbackSpy = vi.fn();
+		const debouncer = DebouncerTimeout();
+		debouncer.setDebounceMillisecond(1000);
+
+		debouncer.debounce(callbackSpy);
+		expect(callbackSpy).not.toHaveBeenCalled();
+
+		vi.advanceTimersByTime(500);
+		debouncer.debounce(callbackSpy);
+		expect(callbackSpy).not.toHaveBeenCalled();
+
+		vi.advanceTimersByTime(1000);
+		debouncer.debounce(callbackSpy);
+		expect(callbackSpy).toHaveBeenCalledOnce();
+
+		vi.advanceTimersByTime(500);
+		expect(callbackSpy).toHaveBeenCalledOnce();
+
+		vi.advanceTimersByTime(1000);
+		expect(callbackSpy).toHaveBeenCalledTimes(2);
 	});
 
 	it("renders correctly", () => {
