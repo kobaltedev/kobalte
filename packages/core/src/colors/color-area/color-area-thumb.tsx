@@ -7,8 +7,8 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../../polymorphic";
-import { useColorAreaContext } from "./color-area-context";
 import { COLOR_INTL_TRANSLATIONS } from "../intl";
+import { useColorAreaContext } from "./color-area-context";
 
 export interface ColorAreaThumbOptions {}
 
