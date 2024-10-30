@@ -1,4 +1,4 @@
-import { Show, type ValidComponent, onCleanup } from "solid-js";
+import { Show, type ValidComponent } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -25,8 +25,6 @@ export function SearchNoResult<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, SearchNoResultProps<T>>,
 ) {
 	const context = useSearchContext();
-	context.setNoResultExists(true);
-	onCleanup(() => context.setNoResultExists(false));
 
 	return (
 		<Show when={context.noResult()}>

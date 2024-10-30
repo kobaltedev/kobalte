@@ -120,12 +120,10 @@ export function SearchRoot<
 	};
 
 	const noResult = () => local.options.length === 0;
-	const [noResultExists, setNoResultExists] = createSignal(false);
 
 	const context: SearchContextValue = {
 		noResult,
 		isLoadingSuggestions,
-		setNoResultExists,
 	};
 
 	return (
@@ -134,7 +132,7 @@ export function SearchRoot<
 				closeOnSelection
 				shouldFocusWrap
 				noResetInputOnBlur
-				allowsEmptyCollection={noResultExists()}
+				allowsEmptyCollection={true}
 				options={local.options as any}
 				value={value() as any}
 				defaultValue={defaultValue() as any}

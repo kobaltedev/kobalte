@@ -6,9 +6,6 @@ export interface SearchContextValue {
 
 	/** Are we currently loading suggestions? */
 	isLoadingSuggestions: Accessor<boolean>;
-
-	/** NoResult component exists */
-	setNoResultExists: (status: boolean) => void;
 }
 
 export const SearchContext = createContext<SearchContextValue>();
