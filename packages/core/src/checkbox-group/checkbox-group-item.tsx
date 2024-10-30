@@ -31,8 +31,7 @@ import { useCheckboxGroupContext } from "./checkbox-group-context";
 
 interface CheckboxGroupItemState extends CheckboxRootState {}
 
-export interface CheckboxGroupItemOptions
-	extends CheckboxRootOptions {}
+export interface CheckboxGroupItemOptions extends CheckboxRootOptions {}
 
 export interface CheckboxGroupItemCommonProps<
 	T extends HTMLElement = HTMLElement,
@@ -74,7 +73,7 @@ export function CheckboxGroupItem<T extends ValidComponent = "div">(
 		"name",
 		"required",
 		"readOnly",
-		"ref"
+		"ref",
 	]);
 
 	const isChecked = () => {

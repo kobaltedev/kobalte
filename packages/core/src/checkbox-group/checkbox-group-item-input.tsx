@@ -8,6 +8,7 @@
 
 import { type Component, type ValidComponent, splitProps } from "solid-js";
 
+import { mergeRefs } from "@kobalte/utils";
 import {
 	Checkbox,
 	type CheckboxInputCommonProps,
@@ -17,19 +18,21 @@ import {
 import { useFormControlContext } from "../form-control";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useCheckboxGroupContext } from "./checkbox-group-context";
-import { mergeRefs } from "@kobalte/utils";
 
 export interface CheckboxGroupItemInputOptions extends CheckboxInputOptions {}
 
-export interface CheckboxGroupItemInputCommonProps<T extends HTMLElement = HTMLInputElement>
-	extends CheckboxInputCommonProps {}
+export interface CheckboxGroupItemInputCommonProps<
+	T extends HTMLElement = HTMLInputElement,
+> extends CheckboxInputCommonProps {}
 
 export interface CheckboxGroupItemInputRenderProps
 	extends CheckboxInputRenderProps,
 		CheckboxGroupItemInputCommonProps {}
 
-export type CheckboxGroupItemInputProps<T extends ValidComponent | HTMLElement = HTMLInputElement> =
-	CheckboxGroupItemInputOptions & Partial<CheckboxGroupItemInputCommonProps<ElementOf<T>>>;
+export type CheckboxGroupItemInputProps<
+	T extends ValidComponent | HTMLElement = HTMLInputElement,
+> = CheckboxGroupItemInputOptions &
+	Partial<CheckboxGroupItemInputCommonProps<ElementOf<T>>>;
 
 /**
  * The native html input that is visually hidden in the checkbox.
@@ -54,9 +57,11 @@ export function CheckboxGroupItemInput<T extends ValidComponent = "input">(
 
 	return (
 		<Checkbox.Input<
-			Component<Omit<CheckboxGroupItemInputRenderProps, keyof CheckboxInputRenderProps>>
+			Component<
+				Omit<CheckboxGroupItemInputRenderProps, keyof CheckboxInputRenderProps>
+			>
 		>
-			ref={mergeRefs(el => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), local.ref)}
 			as="input"
 			aria-describedby={ariaDescribedBy() || undefined}
 			{...formControlContext.dataset()}
