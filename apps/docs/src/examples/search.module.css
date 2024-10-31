@@ -1,4 +1,5 @@
 .search__control {
+	overflow: hidden;
 	display: inline-flex;
 	justify-content: space-between;
 	width: 250px;
@@ -12,11 +13,6 @@
 	transition:
 		border-color 250ms,
 		color 250ms;
-}
-
-.search__control[data-invalid] {
-	border-color: hsl(0 72% 51%);
-	color: hsl(0 72% 51%);
 }
 
 .search__control_multi {
@@ -49,8 +45,6 @@
 	align-items: center;
 	width: auto;
 	outline: none;
-	border-top-left-radius: 6px;
-	border-bottom-left-radius: 6px;
 	padding: 0 10px;
 	background-color: hsl(240 5% 96%);
 	border-right: 1px solid hsl(240 6% 90%);
@@ -145,7 +139,6 @@
 .search__item[data-highlighted] {
 	outline: none;
 	box-sizing: border-box;
-	background-color: hsl(240 5% 96%);
 	box-shadow: inset 0 0 0 2px hsl(200 98% 39%);
 }
 
@@ -205,11 +198,6 @@
 	border-color: hsl(240 4% 46%);
 }
 
-[data-kb-theme="dark"] .search__control[data-invalid] {
-	border-color: hsl(0 72% 51%);
-	color: hsl(0 72% 51%);
-}
-
 [data-kb-theme="dark"] .search__input::placeholder {
 	color: hsl(0 100% 100% / 0.5);
 }
@@ -245,13 +233,53 @@
 }
 
 .search__root_cmdk {
-	min-height: 250px;
+	min-height: 240px;
 	min-width: 250px;
+	display: flex;
+	flex-direction: column;
+}
+
+.search__control_cmdk {
+	overflow: hidden;
+	display: inline-flex;
+	justify-content: space-between;
+	border-radius: 12px 12px 0 0;
+	font-size: 16px;
+	line-height: 1;
+	outline: none;
+	background-color: white;
+	border: 1px solid hsl(240 6% 90%);
+	color: hsl(240 4% 16%);
+	transition:
+		border-color 250ms,
+		color 250ms;
 }
 
 .search__content_cmdk {
-	height: 200px;
+	height: 100%;
+	flex-grow: 1;
 	background-color: white;
-	border-radius: 6px;
+	border-radius: 0 0 12px 12px;
 	border: 1px solid hsl(240 6% 90%);
+	border-top: none;
+	display: flex;
+	flex-direction: column;
+}
+
+.search__no_result_cmdk {
+	text-align: center;
+	margin: auto;
+	padding-bottom: 24px;
+	color: hsl(240 4% 46%);
+}
+
+[data-kb-theme="dark"] .search__control_cmdk {
+	background-color: hsl(240 4% 16%);
+	border: 1px solid hsl(240 5% 34%);
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .search__content_cmdk {
+	background-color: hsl(240 4% 16%);
+	border: 1px solid hsl(240 5% 34%);
 }

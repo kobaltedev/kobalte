@@ -1,5 +1,5 @@
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
-import { BasicExample, DebounceExample, CmdkExample } from "../../../../examples/search";
+import { BasicExample, DebounceExample, CmdkStyleExample } from "../../../../examples/search";
 
 # Search
 
@@ -344,7 +344,7 @@ Show a debouncing icon by adding a `loadingComponent` to `Search.Indicator`.
     		optionValue="name"
     		optionLabel="name"
     		placeholder="Search an emoji…"
-    		itemComponent={(props: any) => (
+    			itemComponent={(props: any) => (
     			<Search.Item item={props.item}>
     				<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
     			</Search.Item>
@@ -372,6 +372,47 @@ Show a debouncing icon by adding a `loadingComponent` to `Search.Indicator`.
     				</Search.NoResult>
     			</Search.Content>
     		</Search.Portal>
+    	</Search>
+    ```
+
+### Cmdk style
+
+To achieve the command menu look, add the `open` prop to permanently open dropdown. Replace `Search.Portal` and `Search.Content` with a `div` to directly mount your content below the search input.
+
+<Preview>
+	<CmdkStyleExample />
+</Preview>
+
+    	```tsx
+    	<Search
+    		open
+    		options={options()}
+    		onInputChange={query => setOptions(queryEmojiData(query))}
+    		onChange={result => setEmoji(result)}
+    		debounceOptionsMillisecond={300}
+    		optionValue="name"
+    		optionLabel="name"
+    		placeholder="Search an emoji…"
+    		itemComponent={(props: any) => (
+    			<Search.Item item={props.item}>
+    				<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
+    			</Search.Item>
+    		)}
+    	>
+    		<Search.Control aria-label="Emoji">
+    			<Search.Indicator>
+    				<Search.Icon>
+    					<MagnifyingGlassIcon />
+    				</Search.Icon>
+    			</Search.Indicator>
+    			<Search.Input />
+    		</Search.Control>
+    		<div>
+    				<Search.Listbox />
+    				<Search.NoResult>
+    					😬 No emoji found
+    				</Search.NoResult>
+    		</div>
     	</Search>
     ```
 

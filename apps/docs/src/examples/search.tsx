@@ -329,10 +329,6 @@ const RAW_EMOJI_DATA: EmojiDatum[] = ([] as any)
 					name: "slightly frowning face",
 				},
 				{
-					emoji: "☹",
-					name: "frowning face",
-				},
-				{
 					emoji: "😮",
 					name: "face with open mouth",
 				},
@@ -656,12 +652,13 @@ export function DebounceExample() {
 	);
 }
 
-export function CmdkExample() {
+export function CmdkStyleExample() {
 	const [options, setOptions] = createSignal<EmojiDatum[]>([]);
 	const [emoji, setEmoji] = createSignal<EmojiDatum | null>();
 	return (
 		<>
 			<Search
+				open
 				options={options()}
 				onInputChange={(query: string) => {
 					setOptions(queryEmojiData(query));
@@ -671,31 +668,26 @@ export function CmdkExample() {
 				optionLabel="name"
 				placeholder="Search an emoji…"
 				itemComponent={(props: any) => (
-					<Search.Item item={props.item} class={style.search__item}>
+					<Search.Item as="button" item={props.item} class={style.search__item}>
 						<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
 					</Search.Item>
 				)}
 				class={style.search__root_cmdk}
 			>
-				<div>
-					<Search.Control class={style.search__control} aria-label="Emoji">
-						<Search.Indicator class={style.search__indicator}>
-							<Search.Icon class={style.search__icon}>
-								<MagnifyingGlassIcon class={style.center__icon} />
-							</Search.Icon>
-						</Search.Indicator>
+				<Search.Control class={style.search__control_cmdk} aria-label="Emoji">
+					<Search.Indicator class={style.search__indicator}>
+						<Search.Icon class={style.search__icon}>
+							<MagnifyingGlassIcon class={style.center__icon} />
+						</Search.Icon>
+					</Search.Indicator>
 
-						<Search.Input class={style.search__input} />
-					</Search.Control>
-				</div>
-
-				<div>
-					<Search.Content class={style.search__content_cmdk}>
-						<Search.Listbox class={style.search__listbox} />
-						<Search.NoResult class={style.search__no_result}>
-							😬 No emoji found
-						</Search.NoResult>
-					</Search.Content>
+					<Search.Input class={style.search__input} />
+				</Search.Control>
+				<div class={style.search__content_cmdk}>
+					<Search.Listbox class={style.search__listbox} />
+					<Search.NoResult class={style.search__no_result_cmdk}>
+						😬 No emoji found
+					</Search.NoResult>
 				</div>
 			</Search>
 
