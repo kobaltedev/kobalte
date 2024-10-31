@@ -1,0 +1,302 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import {
+	ControlledExample,
+	DefaultValueExample,
+	HTMLFormExample,
+	BasicExample,
+	DescriptionExample,
+	ErrorMessageExample,
+} from "../../../../examples/color-field";
+
+# Color Field
+
+Allows users to enter and adjust a hex color value.
+
+## Import
+
+```ts
+import { ColorField } from "@kobalte/core/color-field";
+// or
+import { Root, Label, ... } from "@kobalte/core/color-field";
+// or (deprecated)
+import { ColorField } from "@kobalte/core";
+```
+
+## Features
+
+- Support for parsing and formatting a hex color value.
+- Validates keyboard entry as the user types so that only valid hex characters are accepted.
+- Visual and ARIA labeling support.
+- Required and invalid states exposed to assistive technology via ARIA.
+- Support for description and error message help text linked to the input via ARIA.
+- Syncs with form reset events.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The color field consists of:
+
+- **ColorField**: The root container for the color field.
+- **ColorField.Label**: The label that gives the user information on the color field.
+- **ColorField.Input**: The native HTML input of the color field.
+- **ColorField.Description**: The description that gives the user more information on the color field.
+- **ColorField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the color field.
+
+```tsx
+<ColorField>
+	<ColorField.Label />
+	<ColorField.Input />
+	<ColorField.Description />
+	<ColorField.ErrorMessage />
+</ColorField>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+		import { ColorField } from "@kobalte/core/color-field";
+    import "./style.css";
+
+    function App() {
+      return (
+        <ColorField class="color-field">
+    		<ColorField.Label class="color-field__label">Favorite color</ColorField.Label>
+    		<ColorField.Input class="color-field__input" />
+    	</ColorField>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .color-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .color-field__label {
+      color: hsl(240 6% 10%);
+      font-size: 14px;
+      font-weight: 500;
+      user-select: none;
+    }
+
+    .color-field__input {
+      display: inline-flex;
+      width: 200px;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 16px;
+      outline: none;
+      background-color: white;
+      border: 1px solid hsl(240 6% 90%);
+      color: hsl(240 4% 16%);
+      transition: border-color 250ms, color 250ms;
+    }
+
+    .color-field__input:hover {
+      border-color: hsl(240 5% 65%);
+    }
+
+    .color-field__input:focus-visible {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
+
+    .color-field__input[data-invalid] {
+      border-color: hsl(0 72% 51%);
+      color: hsl(0 72% 51%);
+    }
+
+    .color-field__input::placeholder {
+      color: hsl(240 4% 46%);
+    }
+
+    .color-field__description {
+      color: hsl(240 5% 26%);
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .color-field__error-message {
+      color: hsl(0 72% 51%);
+      font-size: 12px;
+      user-select: none;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Default value
+
+An initial, uncontrolled value can be provided using the `defaultValue` prop.
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+```tsx {0}
+<ColorField class="color-field" defaultValue="#7f007f">
+	<ColorField.Label class="color-field__label">Favorite color</ColorField.Label>
+	<ColorField.Input class="color-field__input" />
+</ColorField>
+```
+
+### Controlled value
+
+The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user type into the input and receive the new value.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {3,7}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal("#7f007f");
+
+	return (
+		<>
+			<ColorField class="color-field" value={value()} onChange={setValue}>
+				<ColorField.Label class="color-field__label">Favorite color</ColorField.Label>
+				<ColorField.Input class="color-field__input" />
+			</ColorField>
+			<p>Your favorite color is: {value()}</p>
+		</>
+	);
+}
+```
+
+### Description
+
+The `ColorField.Description` component can be used to associate additional help text with a color field.
+
+<Preview>
+	<DescriptionExample />
+</Preview>
+
+```tsx {3}
+<ColorField class="color-field">
+	<ColorField.Label class="color-field__label">Favorite color</ColorField.Label>
+	<ColorField.Input class="color-field__input" />
+	<ColorField.Description class="color-field__description">
+		Choose the color you like the most.
+	</ColorField.Description>
+</ColorField>
+```
+
+### Error message
+
+The `ColorField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the color field as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+	<ErrorMessageExample />
+</Preview>
+
+```tsx {9,14}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [value, setValue] = createSignal("#7f007f");
+
+	return (
+		<ColorField
+			value={value()}
+			onChange={setValue}
+			validationState={value() !== "#000000" ? "invalid" : "valid"}
+		>
+			<ColorField.Label>Favorite color</ColorField.Label>
+			<ColorField.Input />
+			<ColorField.ErrorMessage>Hmm, I prefer black.</ColorField.ErrorMessage>
+		</ColorField>
+	);
+}
+```
+
+### HTML forms
+
+The color field `name` prop can be used for integration with HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx {7}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<ColorField name="favorite-color">
+				<ColorField.Label>Favorite color</ColorField.Label>
+				<ColorField.Input />
+			</ColorField>
+		</form>
+	);
+}
+```
+
+## API Reference
+
+### ColorField
+
+`ColorField` is equivalent to the `Root` import from `@kobalte/core/color-field` (and deprecated `ColorField.Root`).
+
+| Prop            | Description                                                                                                                                                                |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `string` <br/> The controlled value of the color field to check.                                                                                                           |
+| defaultValue    | `string` <br/> The default value when initially rendered. Useful when you do not need to control the value.                                                                |
+| onChange        | `(value: string) => void` <br/> Event handler called when the value of the color field changes.                                                                            |
+| name            | `string` <br/> The name of the color field, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname). |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the color field should display its "valid" or "invalid" visual styling.                                                               |
+| required        | `boolean` <br/> Whether the user must fill the color field before the owning form can be submitted.                                                                        |
+| disabled        | `boolean` <br/> Whether the color field is disabled.                                                                                                                       |
+| readOnly        | `boolean` <br/> Whether the color field items can be selected but not changed by the user.                                                                                 |
+
+| Data attribute | Description                                                                              |
+| :------------- | :--------------------------------------------------------------------------------------- |
+| data-valid     | Present when the color field is valid according to the validation rules.                 |
+| data-invalid   | Present when the color field is invalid according to the validation rules.               |
+| data-required  | Present when the user must fill the color field before the owning form can be submitted. |
+| data-disabled  | Present when the color field is disabled.                                                |
+| data-readonly  | Present when the color field is read only.                                               |
+
+`ColorField.Label`, `ColorField.Input`, `ColorField.Description` and `ColorField.ErrorMesssage` share the same data-attributes.
+
+### ColorField.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                 | Default rendered element |
+| :------------------------ | :----------------------- |
+| `ColorField`              | `div`                    |
+| `ColorField.Label`        | `label`                  |
+| `ColorField.Input`        | `input`                  |
+| `ColorField.Description`  | `div`                    |
+| `ColorField.ErrorMessage` | `div`                    |

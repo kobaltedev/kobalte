@@ -1,5 +1,8 @@
 // utils
 export * from "./color-mode";
+export * from "./colors/intl";
+export * from "./colors/types";
+export * from "./colors/utils";
 export * from "./form-control";
 export * from "./i18n";
 export * from "./list";
@@ -18,6 +21,8 @@ export * as Button from "./button";
 //export * as Calendar from "./calendar";
 export * as Checkbox from "./checkbox";
 export * as Collapsible from "./collapsible";
+export * as ColorField from "./colors/color-field";
+export * as ColorWheel from "./colors/color-wheel";
 export * as Combobox from "./combobox";
 export * as ContextMenu from "./context-menu";
 //export * as DatePicker from "./date-picker";

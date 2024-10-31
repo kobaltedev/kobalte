@@ -1,0 +1,84 @@
+.color-field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.color-field__label {
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
+}
+
+.color-field__input {
+	display: inline-flex;
+	width: 200px;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 16px;
+	outline: none;
+	background-color: white;
+	border: 1px solid hsl(240 6% 90%);
+	color: hsl(240 4% 16%);
+	transition:
+		border-color 250ms,
+		color 250ms;
+}
+
+.color-field__input:hover {
+	border-color: hsl(240 5% 65%);
+}
+
+.color-field__input:focus-visible {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
+
+.color-field__input[data-invalid] {
+	border-color: hsl(0 72% 51%);
+	color: hsl(0 72% 51%);
+}
+
+.color-field__input::placeholder {
+	color: hsl(240 4% 46%);
+}
+
+.color-field__description {
+	color: hsl(240 5% 26%);
+	font-size: 12px;
+	user-select: none;
+}
+
+.color-field__error-message {
+	color: hsl(0 72% 51%);
+	font-size: 12px;
+	user-select: none;
+}
+
+[data-kb-theme="dark"] .color-field__input {
+	background-color: hsl(240 4% 16%);
+	border: 1px solid hsl(240 5% 34%);
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .color-field__input:hover {
+	border-color: hsl(240 4% 46%);
+}
+
+[data-kb-theme="dark"] .color-field__input[data-invalid] {
+	border-color: hsl(0 72% 51%);
+	color: hsl(0 72% 51%);
+}
+
+[data-kb-theme="dark"] .color-field__input::placeholder {
+	color: hsl(0 100% 100% / 0.5);
+}
+
+[data-kb-theme="dark"] .color-field__label {
+	color: hsl(240 5% 84%);
+}
+
+[data-kb-theme="dark"] .color-field__description {
+	color: hsl(240 5% 65%);
+}
