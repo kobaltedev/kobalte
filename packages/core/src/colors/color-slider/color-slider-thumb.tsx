@@ -37,7 +37,7 @@ export function ColorSliderThumb<T extends ValidComponent = "span">(
 	const valueText = createMemo(() => {
 		const formattedValue = context
 			.value()
-			?.formatChannelValue(context.channel(), context.translations());
+			?.formatChannelValue(context.channel());
 		if (context.channel() === "hue") {
 			return `${formattedValue}, ${context.getDisplayColor().getHueName(context.translations())}`;
 		}

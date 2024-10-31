@@ -89,10 +89,7 @@ abstract class Color implements IColor {
 	abstract getChannelFormatOptions(
 		channel: ColorChannel,
 	): Intl.NumberFormatOptions;
-	abstract formatChannelValue(
-		channel: ColorChannel,
-		translations: ColorIntlTranslations,
-	): string;
+	abstract formatChannelValue(channel: ColorChannel): string;
 
 	toHexInt(): number {
 		return this.toFormat("rgb").toHexInt();

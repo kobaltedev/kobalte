@@ -80,7 +80,7 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 		const channel = isVertical()
 			? context.state.channels().yChannel
 			: context.state.channels().xChannel;
-		return `${context.state.value().getChannelName(channel, COLOR_INTL_TRANSLATIONS)} ${context.state.value().formatChannelValue(channel, COLOR_INTL_TRANSLATIONS)}, ${context.state.value().getColorName(COLOR_INTL_TRANSLATIONS)}`;
+		return `${context.state.value().getChannelName(channel, COLOR_INTL_TRANSLATIONS)} ${context.state.value().formatChannelValue(channel)}, ${context.state.value().getColorName(COLOR_INTL_TRANSLATIONS)}`;
 	});
 
 	return (

@@ -49,8 +49,8 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 	const ariaLabel = () => {
 		const xChannel = context.state.channels().xChannel;
 		const yChannel = context.state.channels().yChannel;
-		const xChannelName = `${context.state.value().getChannelName(xChannel, COLOR_INTL_TRANSLATIONS)} ${context.state.value().formatChannelValue(xChannel, COLOR_INTL_TRANSLATIONS)}`;
-		const yChannelName = `${context.state.value().getChannelName(yChannel, COLOR_INTL_TRANSLATIONS)} ${context.state.value().formatChannelValue(yChannel, COLOR_INTL_TRANSLATIONS)}`;
+		const xChannelName = `${context.state.value().getChannelName(xChannel, COLOR_INTL_TRANSLATIONS)} ${context.state.value().formatChannelValue(xChannel)}`;
+		const yChannelName = `${context.state.value().getChannelName(yChannel, COLOR_INTL_TRANSLATIONS)} ${context.state.value().formatChannelValue(yChannel)}`;
 		const colorName = context.state
 			.value()
 			.getColorName(COLOR_INTL_TRANSLATIONS);

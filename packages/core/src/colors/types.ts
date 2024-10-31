@@ -89,10 +89,7 @@ export interface Color {
 	/**
 	 * Formats the numeric value for a given channel for display according to the provided locale.
 	 */
-	formatChannelValue(
-		channel: ColorChannel,
-		translations: ColorIntlTranslations,
-	): string;
+	formatChannelValue(channel: ColorChannel): string;
 	/**
 	 * Returns the color space, 'rgb', 'hsb' or 'hsl', for the current color.
 	 */

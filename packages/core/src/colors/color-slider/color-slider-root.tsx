@@ -140,7 +140,7 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 			return local.getValueLabel(color()!);
 		}
 
-		return color()!.formatChannelValue(local.channel, local.translations);
+		return color()!.formatChannelValue(local.channel);
 	});
 
 	const getDisplayColor = createMemo(() => {
