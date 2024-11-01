@@ -1,0 +1,201 @@
+import { Preview, Kbd, TabsSnippets } from "../../../../components";
+
+import {
+	BasicExample,
+	AcceptedFileTypesExample,
+	MultipleFilesExample,
+	DirectorySelectionExample,
+	MediaCaptureExample,
+} from "../../../../examples/file-trigger";
+
+# File Trigger
+
+Allows a user to access the file system.
+
+## Import
+
+```ts
+import { FileTrigger } from "@kobalte/core/file-trigger";
+// or
+import { Root, Button, ... } from "@kobalte/core/file-trigger";
+// or (deprecated)
+import { FileTrigger } from "@kobalte/core";
+```
+
+## Features
+
+- Accessible file input that can be styled as needed.
+
+## Anatomy
+
+The file trigger consists of:
+
+- **FileTrigger:** The root container for the file trigger.
+- **FileTrigger.Button:** The button that triggers file input.
+- **FileTrigger.Input:** The hidden input element that allows the user to select files from their device.
+
+```tsx
+<FileTrigger>
+	<FileTrigger.Button />
+	<FileTrigger.Input />
+</FileTrigger>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { FileTrigger } from "@kobalte/core/file-trigger";
+    import "./style.css";
+
+    function App() {
+      return (
+    	<FileTrigger>
+    		<FileTrigger.Button class="file-trigger__button">Upload</FileTrigger.Button>
+    		<FileTrigger.Input />
+    	</FileTrigger>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .button {
+      appearance: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: auto;
+      outline: none;
+      border-radius: 6px;
+      padding: 0 16px;
+      background-color: hsl(200 98% 39%);
+      color: white;
+      font-size: 16px;
+      line-height: 0;
+      transition: 250ms background-color;
+    }
+
+    .button:hover {
+      background-color: hsl(201 96% 32%);
+    }
+
+    .button:focus-visible {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
+
+    .button:active {
+      background-color: hsl(201 90% 27%);
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### Accepted File Types
+
+By default, the file trigger will accept any file type. To support only certain file types, pass an array of the [mime type](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types) of files via the `acceptedFileTypes` prop.
+
+<Preview>
+	<AcceptedFileTypesExample />
+</Preview>
+
+```tsx {2}
+<FileTrigger>
+	<FileTrigger.Button>Select files</FileTrigger.Button>
+	<FileTrigger.Input acceptedFileTypes={["image/png"]} />
+</FileTrigger>
+```
+
+### Multiple Files
+
+A file trigger can accept multiple files by passsing the `allowsMultiple` property.
+
+<Preview>
+	<MultipleFilesExample />
+</Preview>
+
+```tsx {2}
+<FileTrigger>
+	<FileTrigger.Button>Upload your files</FileTrigger.Button>
+	<FileTrigger.Input allowsMultiple />
+</FileTrigger>
+```
+
+### Directory Selection
+
+To enable selecting directories instead of files, use the `acceptDirectory` property. This reflects the [webkitdirectory](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/webkitdirectory) HTML attribute and allows users to select directories and their contents.
+
+<Preview>
+	<DirectorySelectionExample />
+</Preview>
+
+```tsx {2}
+<FileTrigger>
+	<FileTrigger.Button>Upload</FileTrigger.Button>
+	<FileTrigger.Input acceptDirectory />
+</FileTrigger>
+```
+
+### Media Capture
+
+To specify the media capture mechanism to capture media on the spot, pass `user` for the user-facing camera or `environment` for the outward-facing camera via the `defaultCamera` prop.
+This behavior only works on mobile devices. On desktop devices, it will open the file system like normal.
+
+<Preview>
+	<MediaCaptureExample />
+</Preview>
+
+```tsx {2}
+<FileTrigger>
+	<FileTrigger.Button>Open Camera</FileTrigger.Button>
+	<FileTrigger.Input defaultCamera="environment" />
+</FileTrigger>
+```
+
+## API Reference
+
+### FileTrigger
+
+`FileTrigger` is equivalent to the `Root` import from `@kobalte/core/file-trigger` (and deprecated `FileTrigger.Root`).
+
+| Prop     | Description                                                                   |
+| :------- | :---------------------------------------------------------------------------- |
+| onSelect | `(files: FileList \| null) => void` <br/> Handler when a user selects a file. |
+
+### FileTrigger.Button
+
+`FileTrigger.Button` consists of [Button](/docs/core/components/button).
+
+### FileTrigger.Input
+
+| Prop              | Description                                                                                                      |
+| :---------------- | :--------------------------------------------------------------------------------------------------------------- |
+| acceptedFileTypes | `string[]` <br/> Specifies what mime type of files are allowed.                                                  |
+| allowsMultiple    | `boolean` <br/> Whether multiple files can be selected.                                                          |
+| defaultCamera     | `"user" \| "environment"` <br/> Specifies the use of a media capture mechanism to capture the media on the spot. |
+| acceptDirectory   | `boolean` <br/> Enables the selection of directories instead of individual files.                                |
+
+## Rendered elements
+
+| Component            | Default rendered element |
+| :------------------- | :----------------------- |
+| `FileTrigger`        | `div`                    |
+| `FileTrigger.Button` | `button`                 |
+| `FileTrigger.Input`  | `input`                  |
