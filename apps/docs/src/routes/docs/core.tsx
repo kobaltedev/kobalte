@@ -82,6 +82,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/dropdown-menu",
 			},
 			{
+				title: "File Upload",
+				href: "/docs/core/components/file-upload",
+			},
+			{
 				title: "Hover Card",
 				href: "/docs/core/components/hover-card",
 			},

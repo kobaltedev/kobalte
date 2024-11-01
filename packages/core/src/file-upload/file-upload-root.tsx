@@ -10,6 +10,8 @@ import { FileUploadProvider } from "./file-upload-root-provider";
 
 import type { FileUploadRootOptions } from "./types";
 
+export type { FileUploadRootOptions };
+
 export interface FileUploadCommonProps<T extends HTMLElement = HTMLElement> {
 	id?: string;
 	style?: JSX.CSSProperties | string;
@@ -24,7 +26,7 @@ export function FileUpload<T extends ValidComponent = "div">(
 ) {
 	return (
 		<FileUploadProvider {...props}>
-			<Polymorphic as="div" class="file-upload__root">
+			<Polymorphic as="div" class="file-upload__root" {...props}>
 				{props.children}
 			</Polymorphic>
 		</FileUploadProvider>

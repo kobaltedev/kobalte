@@ -6,12 +6,12 @@ import {
 } from "../polymorphic";
 import { useFileUploadContext } from "./file-upload-root-provider";
 
-export interface FileUploadHiddenInputCommonProps<
+export type FileUploadHiddenInputCommonProps<
 	T extends HTMLElement = HTMLElement,
-> {
+> = {
 	id?: string;
 	style?: JSX.CSSProperties | string;
-}
+};
 
 export type FileUploadHiddenInputRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -43,6 +43,7 @@ export function FileUploadHiddenInput<T extends ValidComponent = "input">(
 			ref={(el: HTMLInputElement) => (context.fileInputRef = el)}
 			style={{ display: "none" }}
 			onChange={onInput}
+			{...props}
 		>
 			{props.children}
 		</Polymorphic>

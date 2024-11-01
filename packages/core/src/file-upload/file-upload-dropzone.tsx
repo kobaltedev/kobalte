@@ -9,12 +9,11 @@ import {
 import { useFileUploadContext } from "./file-upload-root-provider";
 import { isDragEventWithFiles } from "./util";
 
-export interface FileUploadDropZoneCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {
-	id?: string;
-	style?: JSX.CSSProperties | string;
-}
+export type FileUploadDropZoneCommonProps<T extends HTMLElement = HTMLElement> =
+	{
+		id?: string;
+		style?: JSX.CSSProperties | string;
+	};
 
 export type FileUploadDropZoneRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -91,6 +90,7 @@ export function FileUploadDropZone<T extends ValidComponent = "div">(
 				const fileList = Array.from(files ?? []);
 				context.processFiles(fileList);
 			}}
+			{...props}
 		>
 			{props.children}
 		</Polymorphic>

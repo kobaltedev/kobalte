@@ -1,8 +1,11 @@
 import { createContext, createUniqueId, type JSX, useContext } from "solid-js";
+import { createStore } from "solid-js/store";
+
+import { mergeDefaultProps } from "@kobalte/utils";
+
+import { getFiles, parseAcceptedTypes } from "./util";
 
 import type { FileRejection, FileUploadRootOptions } from "./types";
-import { createStore } from "solid-js/store";
-import { getFiles } from "./util";
 
 type FileUploadContextProviderProps = FileUploadRootOptions & {
 	children: JSX.Element;
@@ -17,8 +20,9 @@ export type FileUploadContextValue = {
 	accept?: string;
 	allowDragAndDrop?: boolean;
 	processFiles: (files: File[]) => void;
-	acceptedFiles: File[],
-	rejectedFiles: FileRejection[],
+	acceptedFiles: File[];
+	rejectedFiles: FileRejection[];
+	removeFile: (file: File) => void;
 };
 
 export const FileUploadContext = createContext<FileUploadContextValue>();
@@ -33,16 +37,32 @@ export const FileUploadProvider = (props: FileUploadContextProviderProps) => {
 		FileRejection[]
 	>([]);
 
+	const mergedProps = mergeDefaultProps(
+		{
+			accept: parseAcceptedTypes(props.accept),
+			allowDragAndDrop: true,
+			disabled: false,
+			multiple: false,
+			maxFiles: 1,
+			maxFileSize: Number.POSITIVE_INFINITY,
+			minFileSize: 0,
+			validate: undefined,
+		},
+		props,
+	);
+
 	const processFiles = (files: File[]) => {
 		const { acceptedFiles, rejectedFiles } = getFiles(
 			files,
-			props.accept,
-			props.multiple ?? false,
-			props.maxFiles ?? 1,
-			props.validate,
+			mergedProps.accept,
+			mergedProps.multiple ?? false,
+			mergedProps.maxFiles ?? 1,
+			mergedProps.minFileSize,
+			mergedProps.maxFileSize,
+			mergedProps.validate,
 		);
 
-		if (props.multiple) {
+		if (mergedProps.multiple) {
 			setAcceptedFilesState((prevAcceptedFiles) => [
 				...prevAcceptedFiles,
 				...acceptedFiles,
@@ -58,33 +78,45 @@ export const FileUploadProvider = (props: FileUploadContextProviderProps) => {
 		}
 
 		// trigger on file accept
-		props.onFileAccept?.(acceptedFiles);
+		mergedProps.onFileAccept?.(acceptedFiles);
 
 		// trigger on file reject
 		if (rejectedFiles.length > 0) {
-			props.onFileReject?.(rejectedFiles);
+			mergedProps.onFileReject?.(rejectedFiles);
 		}
 
 		// trigger on change
-		props.onFileChange?.({ acceptedFiles, rejectedFiles });
+		mergedProps.onFileChange?.({ acceptedFiles, rejectedFiles });
+	};
+
+	const removeFile = (file: File) => {
+		setAcceptedFilesState((prevAcceptedFiles) =>
+			prevAcceptedFiles.filter((f) => f !== file),
+		);
+		// trigger on change
+		mergedProps.onFileChange?.({
+			acceptedFiles: acceptedFilesState.map((f) => f),
+			rejectedFiles: rejectedFilesState.map((f) => f),
+		});
 	};
 
 	const value = {
 		inputId: inputId,
 		fileInputRef: fileInputRef,
 		dropzoneRef: dropzoneRef,
-		disabled: props.disabled ?? false,
-		multiple: props.multiple ?? false,
-		accept: props.accept,
-		allowDragAndDrop: props.allowDragAndDrop ?? true,
+		disabled: mergedProps.disabled,
+		multiple: mergedProps.multiple,
+		accept: mergedProps.accept,
+		allowDragAndDrop: mergedProps.allowDragAndDrop,
 		processFiles,
 		acceptedFiles: acceptedFilesState,
 		rejectedFiles: rejectedFilesState,
+		removeFile,
 	};
 
 	return (
 		<FileUploadContext.Provider value={value}>
-			{props.children}
+			{mergedProps.children}
 		</FileUploadContext.Provider>
 	);
 };

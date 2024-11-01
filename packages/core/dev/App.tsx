@@ -10,17 +10,26 @@ export default function App() {
 					<FileUpload.Trigger>Choose files!</FileUpload.Trigger>
 				</FileUpload.DropZone>
 				<FileUpload.HiddenInput />
-				<FileUpload.Context>
-					{(context) => {
-						return (
-							<For each={context.acceptedFiles}>
-								{(file) => (
-									<div>{JSON.stringify(file.name)}</div>
-								)}
-							</For>
-						)
-					}}
-				</FileUpload.Context>
+				<FileUpload.ItemGroup>
+					<FileUpload.Context>
+						{(context) => {
+							return (
+								<For each={context.acceptedFiles}>
+									{(file) => (
+										<FileUpload.Item file={file}>
+											<FileUpload.ItemPreview type="image/*">
+												<FileUpload.ItemPreviewImage />
+											</FileUpload.ItemPreview>
+											<FileUpload.ItemSize />
+											<FileUpload.ItemName />
+											<FileUpload.ItemDeleteTrigger />
+										</FileUpload.Item>
+									)}
+								</For>
+							)
+						}}
+					</FileUpload.Context>
+				</FileUpload.ItemGroup>
 			</FileUpload>
 		</section>
 	);

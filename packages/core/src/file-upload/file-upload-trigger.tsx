@@ -6,12 +6,11 @@ import {
 } from "../polymorphic";
 import { useFileUploadContext } from "./file-upload-root-provider";
 
-export interface FileUploadTriggerCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {
-	id?: string;
-	style?: JSX.CSSProperties | string;
-}
+export type FileUploadTriggerCommonProps<T extends HTMLElement = HTMLElement> =
+	{
+		id?: string;
+		style?: JSX.CSSProperties | string;
+	};
 
 export type FileUploadTriggerRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -37,6 +36,7 @@ export function FileUploadTrigger<T extends ValidComponent = "input">(
 				// open the hidden input
 				context.fileInputRef?.click();
 			}}
+			{...props}
 		>
 			{props.children}
 		</Polymorphic>

@@ -1,4 +1,4 @@
-import type { FileError, FileRejection } from "./types";
+import type { Accept, FileError, FileRejection } from "./types";
 
 const isFileAccepted = (file: File | null, accept: string | undefined) => {
 	if (file && accept) {
@@ -23,6 +23,29 @@ const isFileAccepted = (file: File | null, accept: string | undefined) => {
 		});
 	}
 	return true;
+};
+
+const isValidFileSize = (
+	file: File,
+	minSize: number,
+	maxSize: number,
+): [boolean, FileError | null] => {
+	console.log({ fileSize: file.size, minSize, maxSize });
+	if (file.size) {
+		if (minSize && maxSize) {
+			if (file.size > maxSize) {
+				return [false, "FILE_TOO_LARGE"];
+			}
+			if (file.size < minSize) {
+				return [false, "FILE_TOO_SMALL"];
+			}
+		} else if (minSize && file.size < minSize) {
+			return [false, "FILE_TOO_SMALL"];
+		} else if (maxSize && file.size > maxSize) {
+			return [false, "FILE_TOO_LARGE"];
+		}
+	}
+	return [true, null];
 };
 
 const isValidFileType = (
@@ -53,6 +76,8 @@ export const getFiles = (
 	accept: string | undefined,
 	multiple: boolean,
 	maxFiles: number,
+	minFileSize: number,
+	maxFileSize: number,
 	validate?: (file: File) => FileError[] | null,
 ) => {
 	const acceptedFiles: File[] = [];
@@ -60,14 +85,23 @@ export const getFiles = (
 
 	for (const file of files) {
 		const [accepted, acceptError] = isValidFileType(file, accept);
+		const [isValidSize, invalidSizeErro] = isValidFileSize(
+			file,
+			minFileSize,
+			maxFileSize,
+		);
+
+		// custom validation
 		const validateErrors = validate?.(file);
 		const valid = validateErrors ? validateErrors.length === 0 : true;
 
-		if (accepted && valid) {
+		if (accepted && isValidSize && valid) {
 			acceptedFiles.push(file);
 		} else {
-			const errors = [acceptError];
-			if (!valid) errors.push(...(validateErrors ?? []));
+			const errors = [acceptError, invalidSizeErro];
+			if (!valid) {
+				errors.push(...(validateErrors ?? []));
+			}
 			rejectedFiles.push({
 				file,
 				errors: errors.filter(Boolean) as FileError[],
@@ -96,4 +130,18 @@ export const isDragEventWithFiles = (event: DragEvent) => {
 	return event.dataTransfer.types.some((type) => {
 		return type === "Files" || type === "application/x-moz-file";
 	});
+};
+
+export const parseAcceptedTypes = (accept: Accept): string | undefined => {
+	if (!accept) {
+		return;
+	}
+
+	if (typeof accept === "string") {
+		return accept;
+	}
+
+	if (Array.isArray(accept)) {
+		return accept.join(",");
+	}
 };
