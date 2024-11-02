@@ -1,13 +1,13 @@
 import {
+	type JSX,
+	type ValidComponent,
 	createEffect,
 	createSignal,
 	onCleanup,
-	type JSX,
-	type ValidComponent,
 } from "solid-js";
 import {
-	Polymorphic,
 	type ElementOf,
+	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
 import { useFileUploadItemContext } from "./file-upload-item-provider";

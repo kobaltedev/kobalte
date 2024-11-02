@@ -1,8 +1,8 @@
-import { createSignal, type JSX, type ValidComponent } from "solid-js";
+import { type JSX, type ValidComponent, createSignal } from "solid-js";
 
 import {
-	Polymorphic,
 	type ElementOf,
+	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
 

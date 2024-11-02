@@ -1,5 +1,5 @@
-import { For } from "solid-js";
 import { FileUpload } from "@kobalte/core/file-upload";
+import { For } from "solid-js";
 
 import style from "./file-upload.module.css";
 

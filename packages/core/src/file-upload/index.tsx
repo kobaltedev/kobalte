@@ -1,78 +1,73 @@
 import {
-	FileUploadLabel as Label,
-	type FileUploadLabelCommonProps,
-	type FileUploadLabelRootProps,
-} from "./file-upload-label";
-import {
-	FileUploadHiddenInput as HiddenInput,
-	type FileUploadHiddenInputCommonProps,
-	type FileUploadHiddenInputRootProps,
-} from "./file-upload-hidden-input";
+	FileUploadContext as Context,
+	type FileUploadContextProps,
+} from "./file-upload-context";
 import {
 	FileUploadDropZone as DropZone,
 	type FileUploadDropZoneCommonProps,
 	type FileUploadDropZoneRootProps,
 } from "./file-upload-dropzone";
 import {
-	FileUploadTrigger as Trigger,
-	type FileUploadTriggerCommonProps,
-	type FileUploadTriggerRootProps,
-} from "./file-upload-trigger";
+	type FileUploadHiddenInputCommonProps,
+	type FileUploadHiddenInputRootProps,
+	FileUploadHiddenInput as HiddenInput,
+} from "./file-upload-hidden-input";
 import {
-	FileUploadContext as Context,
-	type FileUploadContextProps,
-} from "./file-upload-context";
-import {
-	FileUploadItemGroup as ItemGroup,
-	type FileUploadItemGroupCommonProps,
-	type FileUploadItemGroupRootProps,
-} from "./file-upload-item-group";
-import {
-	FileUploadItem as Item,
-	type FileUploadItemOptions,
 	type FileUploadItemCommonProps,
+	type FileUploadItemOptions,
 	type FileUploadItemRootProps,
+	FileUploadItem as Item,
 } from "./file-upload-item";
 import {
-	FileUploadItemPreview as ItemPreview,
-	type FileUploadItemPreviewOptions,
-	type FileUploadItemPreviewCommonProps,
-	type FileUploadItemPreviewRootProps,
-} from "./file-upload-item-preview";
-import {
-	FileUploadItemPreviewImage as ItemPreviewImage,
-	type FileUploadItemPreviewImageProps,
-	type FileUploadItemPreviewImageRootProps,
-} from "./file-upload-item-preview-image";
-import {
-	FileUploadItemSize as ItemSize,
-	type FileUploadItemSizeOptions,
-	type FileUploadItemSizeCommonProps,
-	type FileUploadItemSizeRootProps,
-} from "./file-upload-item-size";
-import {
-	FileUploadItemDeleteTrigger as ItemDeleteTrigger,
 	type FileUploadItemDeleteTriggerCommonProps,
 	type FileUploadItemDeleteTriggerRootProps,
+	FileUploadItemDeleteTrigger as ItemDeleteTrigger,
 } from "./file-upload-item-delete-trigger";
 import {
-	FileUploadItemName as ItemName,
+	type FileUploadItemGroupCommonProps,
+	type FileUploadItemGroupRootProps,
+	FileUploadItemGroup as ItemGroup,
+} from "./file-upload-item-group";
+import {
 	type FileUploadItemNameCommonProps,
 	type FileUploadItemNameRootProps,
+	FileUploadItemName as ItemName,
 } from "./file-upload-item-name";
 import {
-	FileUpload as Root,
-	type FileUploadRootOptions,
+	type FileUploadItemPreviewCommonProps,
+	type FileUploadItemPreviewOptions,
+	type FileUploadItemPreviewRootProps,
+	FileUploadItemPreview as ItemPreview,
+} from "./file-upload-item-preview";
+import {
+	type FileUploadItemPreviewImageProps,
+	type FileUploadItemPreviewImageRootProps,
+	FileUploadItemPreviewImage as ItemPreviewImage,
+} from "./file-upload-item-preview-image";
+import {
+	type FileUploadItemSizeCommonProps,
+	type FileUploadItemSizeOptions,
+	type FileUploadItemSizeRootProps,
+	FileUploadItemSize as ItemSize,
+} from "./file-upload-item-size";
+import {
+	type FileUploadLabelCommonProps,
+	type FileUploadLabelRootProps,
+	FileUploadLabel as Label,
+} from "./file-upload-label";
+import {
 	type FileUploadCommonProps,
+	type FileUploadRootOptions,
 	type FileUploadRootProps,
+	FileUpload as Root,
 } from "./file-upload-root";
+import {
+	type FileUploadTriggerCommonProps,
+	type FileUploadTriggerRootProps,
+	FileUploadTrigger as Trigger,
+} from "./file-upload-trigger";
 
-import type {
-	Accept,
-	Details,
-	FileRejection,
-	FileError
-} from './types'
+import type { Accept, Details, FileError, FileRejection } from "./types";
 
 export type {
 	Accept,

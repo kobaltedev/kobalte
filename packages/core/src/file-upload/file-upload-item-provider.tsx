@@ -1,4 +1,4 @@
-import { createContext, type JSX, useContext } from "solid-js";
+import { type JSX, createContext, useContext } from "solid-js";
 
 type FileUploadItemContextProviderProps = {
 	children: JSX.Element;

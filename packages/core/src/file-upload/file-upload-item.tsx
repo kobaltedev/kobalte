@@ -1,8 +1,8 @@
 import type { JSX, ValidComponent } from "solid-js";
 
 import {
-	Polymorphic,
 	type ElementOf,
+	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
 

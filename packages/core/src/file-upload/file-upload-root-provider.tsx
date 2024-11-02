@@ -1,4 +1,4 @@
-import { createContext, createUniqueId, type JSX, useContext } from "solid-js";
+import { type JSX, createContext, createUniqueId, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 
 import { mergeDefaultProps } from "@kobalte/utils";
