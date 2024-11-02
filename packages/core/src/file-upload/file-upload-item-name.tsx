@@ -22,7 +22,7 @@ export function FileUploadItemName<T extends ValidComponent = "div">(
 	const { file } = useFileUploadItemContext();
 
 	return (
-		<Polymorphic as="div" class="file-upload__item-name" {...props}>
+		<Polymorphic as="div" {...props}>
 			{props.children || file.name}
 		</Polymorphic>
 	);

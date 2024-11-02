@@ -47,12 +47,5 @@ export function FileUploadItemPreviewImage<T extends ValidComponent = "img">(
 		onCleanup(cleanup);
 	});
 
-	return (
-		<Polymorphic
-			as="img"
-			class="file-upload__item-preview-image"
-			src={url()}
-			{...props}
-		/>
-	);
+	return <Polymorphic as="img" src={url()} {...props} />;
 }

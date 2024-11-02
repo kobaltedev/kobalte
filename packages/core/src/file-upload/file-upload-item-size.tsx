@@ -37,7 +37,7 @@ export function FileUploadItemSize<T extends ValidComponent = "div">(
 	const { file } = useFileUploadItemContext();
 
 	return (
-		<Polymorphic as="div" class="file-upload__item-size" {...props}>
+		<Polymorphic as="div" {...props}>
 			{formatBytes(file.size, props.precision)}
 		</Polymorphic>
 	);

@@ -20,7 +20,7 @@ export function FileUploadItemGroup<T extends ValidComponent = "ul">(
 	props: PolymorphicProps<T, FileUploadItemGroupRootProps<T>>,
 ) {
 	return (
-		<Polymorphic as="ul" class="file-upload__item-group" {...props}>
+		<Polymorphic as="ul" {...props}>
 			{props.children}
 		</Polymorphic>
 	);

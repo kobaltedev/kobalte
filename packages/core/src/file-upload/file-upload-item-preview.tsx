@@ -29,7 +29,7 @@ export function FileUploadItemPreview<T extends ValidComponent = "div">(
 
 	return (
 		<Show when={file.type.match(props.type ?? ".*")} fallback={null}>
-			<Polymorphic as="div" class="file-upload__item-preview" {...props}>
+			<Polymorphic as="div" {...props}>
 				{props.children}
 			</Polymorphic>
 		</Show>
