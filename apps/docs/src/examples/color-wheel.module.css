@@ -1,0 +1,33 @@
+.ColorWheelRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+}
+
+.ColorWheelTrack {
+	position: relative;
+	height: 160px;
+	width: 160px;
+}
+
+.ColorWheelThumb {
+	display: block;
+	width: 16px;
+	height: 16px;
+	border-radius: 9999px;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 1px #0000006b;
+}
+
+.ColorWheelThumb:focus {
+	outline: none;
+}
+
+.ColorWheelLabel {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}

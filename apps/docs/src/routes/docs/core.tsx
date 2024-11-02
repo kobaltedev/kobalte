@@ -81,6 +81,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				status: "new",
 			},
 			{
+				title: "Color Field",
+				href: "/docs/core/components/color-field",
+				status: "new",
+			},
+			{
 				title: "Color Slider",
 				href: "/docs/core/components/color-slider",
 				status: "new",
@@ -88,6 +93,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Color Swatch",
 				href: "/docs/core/components/color-swatch",
+				status: "new",
+			},
+			{
+				title: "Color Wheel",
+				href: "/docs/core/components/color-wheel",
 				status: "new",
 			},
 			{
