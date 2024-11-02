@@ -1,0 +1,38 @@
+.meter {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	width: 300px;
+}
+
+.meter__label-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.meter__label,
+.meter__value-label {
+	color: hsl(240 4% 16%);
+	font-size: 14px;
+}
+
+.meter__track {
+	height: 10px;
+	background-color: hsl(240 6% 90%);
+}
+
+.meter__fill {
+	background-color: hsl(200 98% 39%);
+	height: 100%;
+	width: var(--kb-meter-fill-width);
+	transition: width 250ms linear;
+}
+
+[data-kb-theme="dark"] .meter__label,
+[data-kb-theme="dark"] .meter__value-label {
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .meter__track {
+	background-color: hsl(240 5% 26%);
+}

@@ -1,5 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
+	type Component,
 	type ValidComponent,
 	createEffect,
 	onCleanup,
@@ -7,20 +8,22 @@ import {
 } from "solid-js";
 
 import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+	Meter,
+	type MeterLabelCommonProps,
+	type MeterLabelOptions,
+	type MeterLabelRenderProps,
+} from "../meter";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { type ProgressDataSet, useProgressContext } from "./progress-context";
 
-export interface ProgressLabelOptions {}
+export interface ProgressLabelOptions extends MeterLabelOptions {}
 
-export interface ProgressLabelCommonProps<T extends HTMLElement = HTMLElement> {
-	id: string;
-}
+export interface ProgressLabelCommonProps<T extends HTMLElement = HTMLElement>
+	extends MeterLabelCommonProps {}
 
 export interface ProgressLabelRenderProps
-	extends ProgressLabelCommonProps,
+	extends MeterLabelRenderProps,
+		ProgressLabelCommonProps,
 		ProgressDataSet {}
 
 export type ProgressLabelProps<
@@ -41,14 +44,14 @@ export function ProgressLabel<T extends ValidComponent = "span">(
 		},
 		props as ProgressLabelProps,
 	);
-
 	const [local, others] = splitProps(mergedProps, ["id"]);
 
 	createEffect(() => onCleanup(context.registerLabelId(local.id)));
 
 	return (
-		<Polymorphic<ProgressLabelRenderProps>
-			as="span"
+		<Meter.Label<
+			Component<Omit<ProgressLabelRenderProps, keyof MeterLabelRenderProps>>
+		>
 			id={local.id}
 			{...context.dataset()}
 			{...others}
