@@ -28,7 +28,6 @@ export function FileUploadDropZone<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic
 			as="div"
-			class="file-upload__dropzone"
 			aria-label="dropzone"
 			role="button"
 			tabindex="0"

@@ -1,3 +1,4 @@
+import { visuallyHiddenStyles } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "solid-js";
 import {
 	type ElementOf,
@@ -28,8 +29,6 @@ export function FileUploadHiddenInput<T extends ValidComponent = "input">(
 		}
 
 		const { files } = event.currentTarget;
-		console.log("files", files);
-		const t = Array.from(files ?? []);
 		context.processFiles(Array.from(files ?? []));
 	};
 
@@ -41,7 +40,7 @@ export function FileUploadHiddenInput<T extends ValidComponent = "input">(
 			accept={context.accept}
 			multiple={context.multiple}
 			ref={(el: HTMLInputElement) => (context.fileInputRef = el)}
-			style={{ display: "none" }}
+			style={{ ...visuallyHiddenStyles }}
 			onChange={onInput}
 			{...props}
 		>

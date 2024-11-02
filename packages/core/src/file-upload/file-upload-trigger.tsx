@@ -1,44 +1,64 @@
-import type { JSX, ValidComponent } from "solid-js";
 import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+	type Component,
+	type JSX,
+	type ValidComponent,
+	splitProps,
+} from "solid-js";
+import * as Button from "../button";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useFileUploadContext } from "./file-upload-root-provider";
 
-export type FileUploadTriggerCommonProps<T extends HTMLElement = HTMLElement> =
-	{
-		id?: string;
-		style?: JSX.CSSProperties | string;
-	};
+export interface FileUploadTriggerOptions {
+	children?: JSX.Element;
+}
+
+export interface FileUploadTriggerCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
+	id?: string;
+	style?: JSX.CSSProperties | string;
+	"aria-label"?: string;
+	onClick?: JSX.EventHandlerUnion<T, MouseEvent>;
+}
+
+export interface FileUploadTriggerRenderProps
+	extends FileUploadTriggerCommonProps,
+		Button.ButtonRootRenderProps {}
 
 export type FileUploadTriggerRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = Partial<FileUploadTriggerCommonProps<ElementOf<T>>>;
+> = FileUploadTriggerOptions &
+	Partial<FileUploadTriggerCommonProps<ElementOf<T>>>;
 
-export function FileUploadTrigger<T extends ValidComponent = "input">(
+export function FileUploadTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, FileUploadTriggerRootProps<T>>,
 ) {
 	const context = useFileUploadContext();
 
+	const [local, others] = splitProps(props as FileUploadTriggerRootProps, [
+		"aria-label",
+	]);
+
+	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (event) => {
+		// if button is within dropzone ref, avoid trigger of file dialog for button
+		if (context.dropzoneRef?.contains(event.target as HTMLElement)) {
+			event.stopPropagation();
+		}
+		// open the hidden input
+		context.fileInputRef?.click();
+	};
+
 	return (
-		<Polymorphic
-			disabled={!!context.disabled}
-			as="button"
-			type="button"
-			class="file-upload__trigger"
-			id={context.inputId}
-			onClick={(event: MouseEvent) => {
-				// if button is within dropzone ref, avoid trigger of file dialog for button
-				if (context.dropzoneRef?.contains(event.target as HTMLElement)) {
-					event.stopPropagation();
-				}
-				// open the hidden input
-				context.fileInputRef?.click();
-			}}
-			{...props}
+		<Button.Root<
+			Component<
+				Omit<FileUploadTriggerRenderProps, keyof Button.ButtonRootRenderProps>
+			>
 		>
-			{props.children}
-		</Polymorphic>
+			aria-label={local["aria-label"]}
+			disabled={!!context.disabled}
+			id={context.inputId}
+			onClick={onClick}
+			{...(props as FileUploadTriggerRootProps)}
+		/>
 	);
 }

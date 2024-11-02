@@ -21,12 +21,7 @@ export function FileUploadLabel<T extends ValidComponent = "label">(
 	const context = useFileUploadContext();
 
 	return (
-		<Polymorphic
-			as="label"
-			class="file-upload__label"
-			htmlFor={context.inputId}
-			{...props}
-		>
+		<Polymorphic as="label" htmlFor={context.inputId} {...props}>
 			{props.children}
 		</Polymorphic>
 	);

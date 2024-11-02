@@ -26,7 +26,7 @@ export function FileUploadItem<T extends ValidComponent = "li">(
 ) {
 	return (
 		<FileUploadItemProvider file={props.file}>
-			<Polymorphic as="li" class="file-upload__item" {...props}>
+			<Polymorphic as="li" {...props}>
 				{props.children}
 			</Polymorphic>
 		</FileUploadItemProvider>

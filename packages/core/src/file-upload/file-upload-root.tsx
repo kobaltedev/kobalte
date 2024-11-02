@@ -26,7 +26,7 @@ export function FileUpload<T extends ValidComponent = "div">(
 ) {
 	return (
 		<FileUploadProvider {...props}>
-			<Polymorphic as="div" class="file-upload__root" {...props}>
+			<Polymorphic as="div" {...props}>
 				{props.children}
 			</Polymorphic>
 		</FileUploadProvider>

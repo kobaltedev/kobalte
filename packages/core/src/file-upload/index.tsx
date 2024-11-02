@@ -63,6 +63,8 @@ import {
 } from "./file-upload-root";
 import {
 	type FileUploadTriggerCommonProps,
+	type FileUploadTriggerOptions,
+	type FileUploadTriggerRenderProps,
 	type FileUploadTriggerRootProps,
 	FileUploadTrigger as Trigger,
 } from "./file-upload-trigger";
@@ -103,6 +105,8 @@ export type {
 	FileUploadRootOptions,
 	FileUploadCommonProps,
 	FileUploadRootProps,
+	FileUploadTriggerOptions,
+	FileUploadTriggerRenderProps,
 };
 
 export {

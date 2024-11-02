@@ -36,7 +36,6 @@ export function FileUploadItemDeleteTrigger<
 	return (
 		<Polymorphic
 			as="button"
-			class="file-upload__item-delete-trigger"
 			onClick={handleDelete}
 			disabled={context.disabled}
 			{...props}
