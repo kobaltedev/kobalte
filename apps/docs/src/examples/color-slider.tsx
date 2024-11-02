@@ -1,6 +1,6 @@
+import { ColorSlider } from "@kobalte/core/color-slider";
+import { parseColor } from "@kobalte/core/colors";
 import { createSignal } from "solid-js";
-import { ColorSlider } from "../../../../packages/core/src/colors/color-slider";
-import { parseColor } from "../../../../packages/core/src/colors/utils";
 import style from "./color-slider.module.css";
 
 export function BasicExample() {

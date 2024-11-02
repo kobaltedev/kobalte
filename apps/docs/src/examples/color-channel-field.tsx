@@ -1,6 +1,6 @@
+import { ColorChannelField } from "@kobalte/core/color-channel-field";
+import { parseColor } from "@kobalte/core/colors";
 import { createSignal } from "solid-js";
-import { ColorChannelField } from "../../../../packages/core/src/colors/color-channel-field";
-import { parseColor } from "../../../../packages/core/src/colors/utils";
 import { ArrowIcon } from "../components";
 import style from "./color-channel-field.module.css";
 

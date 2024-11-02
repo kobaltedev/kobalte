@@ -1,6 +1,6 @@
+import { ColorWheel } from "@kobalte/core/color-wheel";
+import { parseColor } from "@kobalte/core/colors";
 import { createSignal } from "solid-js";
-import { ColorWheel } from "../../../../packages/core/src/colors/color-wheel";
-import { parseColor } from "../../../../packages/core/src/colors/utils";
 import style from "./color-wheel.module.css";
 
 export function BasicExample() {
