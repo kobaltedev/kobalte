@@ -24,7 +24,7 @@
 .search__input {
 	appearance: none;
 	display: inline-flex;
-	min-width: 0;
+	width: 100%;
 	min-height: 40px;
 	padding-left: 16px;
 	font-size: 16px;
