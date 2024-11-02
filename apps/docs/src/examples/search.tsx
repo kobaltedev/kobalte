@@ -556,6 +556,7 @@ export function BasicExample() {
 	return (
 		<>
 			<Search
+				triggerMode="focus"
 				options={options()}
 				onInputChange={(query: string) => {
 					setOptions(queryEmojiData(query));
@@ -580,7 +581,10 @@ export function BasicExample() {
 				</Search.Control>
 
 				<Search.Portal>
-					<Search.Content class={style.search__content}>
+					<Search.Content
+						class={style.search__content}
+						onCloseAutoFocus={(e) => e.preventDefault()}
+					>
 						<Search.Listbox class={style.search__listbox} />
 						<Search.NoResult class={style.search__no_result}>
 							😬 No emoji found
@@ -602,6 +606,7 @@ export function DebounceExample() {
 	return (
 		<>
 			<Search
+				triggerMode="focus"
 				options={options()}
 				onInputChange={(query: string) => {
 					setOptions(queryEmojiData(query));
@@ -635,7 +640,10 @@ export function DebounceExample() {
 				</Search.Control>
 
 				<Search.Portal>
-					<Search.Content class={style.search__content}>
+					<Search.Content
+						class={style.search__content}
+						onCloseAutoFocus={(e) => e.preventDefault()}
+					>
 						<Search.Listbox class={style.search__listbox} />
 
 						<Search.NoResult class={style.search__no_result}>

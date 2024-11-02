@@ -91,12 +91,13 @@ The search consists of:
     	return (
     		<>
     			<Search
+    				triggerMode="focus"
     				options={options()}
     				onInputChange={query => setOptions(queryEmojiData(query))}
     				onChange={result => setEmoji(result)}
-    					optionValue="name"
-    					optionLabel="name"
-    					placeholder="Search an emoji…"
+    				optionValue="name"
+    				optionLabel="name"
+    				placeholder="Search an emoji…"
     				itemComponent={props => (
     					<Search.Item item={props.item} class="search__item">
     						<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
@@ -119,7 +120,7 @@ The search consists of:
     					<Search.Input class="search__input" />
     				</Search.Control>
     				<Search.Portal>
-    					<Search.Content class="search__content">
+    					<Search.Content class="search__content" onCloseAutoFocus={(e) => e.preventDefault()}>
     						<Search.Listbox class="search__listbox" />
     						<Search.NoResult class="search__no_result">
     							😬 No emoji found
