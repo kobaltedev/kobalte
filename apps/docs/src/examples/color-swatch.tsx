@@ -1,5 +1,5 @@
-import { ColorSwatch } from "../../../../packages/core/src/colors/color-swatch";
-import { parseColor } from "../../../../packages/core/src/colors/utils";
+import { ColorSwatch } from "@kobalte/core/color-swatch";
+import { parseColor } from "@kobalte/core/colors";
 import style from "./color-swatch.module.css";
 
 export function BasicExample() {

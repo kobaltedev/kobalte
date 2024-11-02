@@ -26,7 +26,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Polymorphism",
 				href: "/docs/core/overview/polymorphism",
-				status: "updated",
 			},
 			{
 				title: "Server side rendering",
@@ -140,7 +139,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Navigation Menu",
 				href: "/docs/core/components/navigation-menu",
-				status: "new",
 			},
 			{
 				title: "Number Field",
