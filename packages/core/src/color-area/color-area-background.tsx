@@ -7,6 +7,8 @@ import {
 	createSignal,
 	splitProps,
 } from "solid-js";
+import type { Color, ColorChannel } from "../colors";
+import { parseColor } from "../colors";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -18,8 +20,6 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { linearScale } from "../slider/utils";
-import type { Color, ColorChannel } from "../colors";
-import { parseColor } from "../colors";
 import { useColorAreaContext } from "./color-area-context";
 
 export interface ColorAreaBackgroundOptions {}

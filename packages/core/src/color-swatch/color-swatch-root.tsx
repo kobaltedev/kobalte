@@ -6,13 +6,13 @@ import {
 	createUniqueId,
 	splitProps,
 } from "solid-js";
+import { COLOR_INTL_TRANSLATIONS } from "../colors";
+import type { Color } from "../colors";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { COLOR_INTL_TRANSLATIONS } from "../colors";
-import type { Color } from "../colors";
 import {
 	COLOR_SWATCH_INTL_TRANSLATIONS,
 	type ColorSwatchIntlTranslations,

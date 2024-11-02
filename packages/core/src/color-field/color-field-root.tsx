@@ -9,10 +9,10 @@ import {
 	createUniqueId,
 	splitProps,
 } from "solid-js";
+import { parseColor } from "../colors";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import * as TextField from "../text-field";
-import { parseColor } from "../colors";
 import {
 	ColorFieldContext,
 	type ColorFieldContextValue,

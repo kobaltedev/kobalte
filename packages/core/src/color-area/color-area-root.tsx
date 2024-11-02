@@ -13,6 +13,7 @@ import {
 	splitProps,
 } from "solid-js";
 
+import type { Color, ColorChannel, ColorSpace } from "../colors/types";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
@@ -26,7 +27,6 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { createFormResetListener } from "../primitives";
-import type { Color, ColorChannel, ColorSpace } from "../colors/types";
 import {
 	ColorAreaContext,
 	type ColorAreaContextValue,

@@ -13,6 +13,8 @@ import {
 	splitProps,
 } from "solid-js";
 
+import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
+import type { Color } from "../colors";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
@@ -26,8 +28,6 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { createFormResetListener } from "../primitives";
-import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
-import type { Color } from "../colors";
 import {
 	ColorWheelContext,
 	type ColorWheelContextValue,

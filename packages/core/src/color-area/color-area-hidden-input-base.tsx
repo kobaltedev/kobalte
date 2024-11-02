@@ -10,12 +10,12 @@ import {
 	createMemo,
 	splitProps,
 } from "solid-js";
+import { COLOR_INTL_TRANSLATIONS } from "../colors";
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
-import { COLOR_INTL_TRANSLATIONS } from "../colors";
 import { useColorAreaContext } from "./color-area-context";
 
 export interface ColorAreaHiddenInputBaseProps extends ComponentProps<"input"> {

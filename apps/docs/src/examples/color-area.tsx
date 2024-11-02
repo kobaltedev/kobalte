@@ -1,6 +1,6 @@
-import { createSignal } from "solid-js";
 import { ColorArea } from "@kobalte/core/color-area";
 import { parseColor } from "@kobalte/core/colors";
+import { createSignal } from "solid-js";
 import style from "./color-area.module.css";
 
 export function BasicExample() {

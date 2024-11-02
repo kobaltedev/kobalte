@@ -6,10 +6,10 @@ import {
 	createUniqueId,
 	splitProps,
 } from "solid-js";
+import type { Color, ColorChannel, ColorSpace } from "../colors";
 import * as NumberField from "../number-field";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
-import type { Color, ColorChannel, ColorSpace } from "../colors";
 
 export interface ColorChannelFieldRootOptions
 	extends Omit<

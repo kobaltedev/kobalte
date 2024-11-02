@@ -7,12 +7,12 @@ import {
 	splitProps,
 } from "solid-js";
 
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createControllableSignal } from "../primitives/create-controllable-signal";
-import * as Slider from "../slider";
 import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
 import type { Color, ColorChannel, ColorSpace } from "../colors";
 import { parseColor } from "../colors";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { createControllableSignal } from "../primitives/create-controllable-signal";
+import * as Slider from "../slider";
 import {
 	ColorSliderContext,
 	type ColorSliderContextValue,

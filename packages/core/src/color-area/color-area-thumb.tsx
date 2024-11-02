@@ -1,13 +1,13 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import { COLOR_INTL_TRANSLATIONS } from "../colors";
 import { useFormControlContext } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { COLOR_INTL_TRANSLATIONS } from "../colors";
 import { useColorAreaContext } from "./color-area-context";
 
 export interface ColorAreaThumbOptions {}
