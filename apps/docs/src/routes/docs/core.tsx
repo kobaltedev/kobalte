@@ -50,6 +50,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/alert-dialog",
 			},
 			{
+				title: "Badge",
+				href: "/docs/core/components/badge",
+				status: "new",
+			},
+			{
 				title: "Breadcrumbs",
 				href: "/docs/core/components/breadcrumbs",
 			},

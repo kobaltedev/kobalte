@@ -13,6 +13,7 @@ export * from "./toast/toaster";
 export * as Accordion from "./accordion";
 export * as Alert from "./alert";
 export * as AlertDialog from "./alert-dialog";
+export * as Badge from "./badge";
 export * as Breadcrumbs from "./breadcrumbs";
 export * as Button from "./button";
 //export * as Calendar from "./calendar";
