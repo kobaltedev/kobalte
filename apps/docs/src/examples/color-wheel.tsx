@@ -48,14 +48,21 @@ export function ControlledValueExample() {
 
 	return (
 		<>
-			<ColorWheel class={style.ColorWheelRoot} value={value()} onChange={setValue} thickness={24}>
+			<ColorWheel
+				class={style.ColorWheelRoot}
+				value={value()}
+				onChange={setValue}
+				thickness={24}
+			>
 				<ColorWheel.Track class={style.ColorWheelTrack}>
 					<ColorWheel.Thumb class={style.ColorWheelThumb}>
 						<ColorWheel.Input />
 					</ColorWheel.Thumb>
 				</ColorWheel.Track>
 			</ColorWheel>
-			<p class="not-prose text-sm mt-4">Current color value: {value().toString("hsl")}</p>
+			<p class="not-prose text-sm mt-4">
+				Current color value: {value().toString("hsl")}
+			</p>
 		</>
 	);
 }
@@ -65,7 +72,7 @@ export function CustomValueLabelExample() {
 		<ColorWheel
 			class={style.ColorWheelRoot}
 			thickness={24}
-			getValueLabel={color =>
+			getValueLabel={(color) =>
 				color
 					.toFormat("hsl")
 					.withChannelValue("saturation", 100)
@@ -99,7 +106,11 @@ export function HTMLFormExample() {
 	};
 
 	return (
-		<form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
+		<form
+			ref={formRef}
+			onSubmit={onSubmit}
+			class="flex flex-col items-center space-y-6"
+		>
 			<ColorWheel class={style.ColorWheelRoot} name="hue" thickness={24}>
 				<ColorWheel.Track class={style.ColorWheelTrack}>
 					<ColorWheel.Thumb class={style.ColorWheelThumb}>

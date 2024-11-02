@@ -16,7 +16,10 @@ import {
 	FormControlLabel as Label,
 } from "../../form-control";
 
-import { type ColorWheelInputProps, ColorWheelInput as Input } from "./color-wheel-input";
+import {
+	type ColorWheelInputProps,
+	ColorWheelInput as Input,
+} from "./color-wheel-input";
 import {
 	type ColorWheelRootCommonProps,
 	type ColorWheelRootOptions,
@@ -77,7 +80,16 @@ export type {
 	ColorWheelValueLabelRenderProps,
 	ColorWheelValueLabelProps,
 };
-export { Description, ErrorMessage, Input, Label, Root, Thumb, Track, ValueLabel };
+export {
+	Description,
+	ErrorMessage,
+	Input,
+	Label,
+	Root,
+	Thumb,
+	Track,
+	ValueLabel,
+};
 
 export const ColorWheel = Object.assign(Root, {
 	Description,

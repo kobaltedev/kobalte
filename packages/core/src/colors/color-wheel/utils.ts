@@ -22,7 +22,10 @@ export function radToDeg(rad: number) {
 	return (rad * 180) / Math.PI;
 }
 
-export function angleToCartesian(angle: number, radius: number): { x: number; y: number } {
+export function angleToCartesian(
+	angle: number,
+	radius: number,
+): { x: number; y: number } {
 	const rad = degToRad(360 - angle + 90);
 	const x = Math.sin(rad) * radius;
 	const y = Math.cos(rad) * radius;

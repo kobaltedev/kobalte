@@ -1,17 +1,28 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent, createSignal, splitProps } from "solid-js";
+import {
+	type JSX,
+	type ValidComponent,
+	createSignal,
+	splitProps,
+} from "solid-js";
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
 	useFormControlContext,
 } from "../../form-control";
-import { type ElementOf, Polymorphic, type PolymorphicProps } from "../../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../../polymorphic";
 import { useColorWheelContext } from "./color-wheel-context";
 
 export interface ColorWheelThumbOptions {}
 
-export interface ColorWheelThumbCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorWheelThumbCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 	style?: JSX.CSSProperties | string;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -32,8 +43,9 @@ export interface ColorWheelThumbRenderProps extends ColorWheelThumbCommonProps {
 	"aria-valuemax": number;
 }
 
-export type ColorWheelThumbProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorWheelThumbOptions & Partial<ColorWheelThumbCommonProps<ElementOf<T>>>;
+export type ColorWheelThumbProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorWheelThumbOptions & Partial<ColorWheelThumbCommonProps<ElementOf<T>>>;
 
 export function ColorWheelThumb<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, ColorWheelThumbProps<T>>,
@@ -56,7 +68,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
-	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = e => {
+	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 		context.onStepKeyDown(e);
 	};
@@ -73,7 +85,9 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 
 	let startPosition = { x: 0, y: 0 };
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		const target = e.currentTarget as HTMLElement;
@@ -88,7 +102,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 		context.onDragStart?.(value);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		e.stopPropagation();
 		callHandler(e, local.onPointerMove);
 
@@ -105,7 +119,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = e => {
+	const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		e.stopPropagation();
 		callHandler(e, local.onPointerUp);
 

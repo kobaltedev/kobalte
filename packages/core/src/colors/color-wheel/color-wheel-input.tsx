@@ -1,4 +1,8 @@
-import { callHandler, mergeDefaultProps, visuallyHiddenStyles } from "@kobalte/utils";
+import {
+	callHandler,
+	mergeDefaultProps,
+	visuallyHiddenStyles,
+} from "@kobalte/utils";
 import { type ComponentProps, type JSX, splitProps } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -32,7 +36,9 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
-	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = e => {
+	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
+		e,
+	) => {
 		callHandler(e, local.onChange);
 
 		const target = e.target as HTMLInputElement;
@@ -65,7 +71,9 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
-			aria-invalid={formControlContext.validationState() === "invalid" || undefined}
+			aria-invalid={
+				formControlContext.validationState() === "invalid" || undefined
+			}
 			aria-required={formControlContext.isRequired() || undefined}
 			aria-disabled={formControlContext.isDisabled() || undefined}
 			aria-readonly={formControlContext.isReadOnly() || undefined}

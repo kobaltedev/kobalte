@@ -1,13 +1,28 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent, createMemo, createSignal, splitProps } from "solid-js";
-import { type FormControlDataSet, useFormControlContext } from "../../form-control";
-import { type ElementOf, Polymorphic, type PolymorphicProps } from "../../polymorphic";
+import {
+	type JSX,
+	type ValidComponent,
+	createMemo,
+	createSignal,
+	splitProps,
+} from "solid-js";
+import {
+	type FormControlDataSet,
+	useFormControlContext,
+} from "../../form-control";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../../polymorphic";
 import { useColorWheelContext } from "./color-wheel-context";
 
 export interface ColorWheelTrackOptions {}
 
-export interface ColorWheelTrackCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorWheelTrackCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	style?: JSX.CSSProperties | string;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -18,8 +33,9 @@ export interface ColorWheelTrackRenderProps
 	extends ColorWheelTrackCommonProps,
 		FormControlDataSet {}
 
-export type ColorWheelTrackProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorWheelTrackOptions & Partial<ColorWheelTrackCommonProps<ElementOf<T>>>;
+export type ColorWheelTrackProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorWheelTrackOptions & Partial<ColorWheelTrackCommonProps<ElementOf<T>>>;
 
 export function ColorWheelTrack<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorWheelTrackProps<T>>,
@@ -47,7 +63,9 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 
 	let startPosition = { x: 0, y: 0 };
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerDown);
 
 		const target = e.target as HTMLElement;
@@ -59,7 +77,9 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 		context.onDragStart?.(value);
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, local.onPointerMove);
 
 		const target = e.target as HTMLElement;
@@ -73,7 +93,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, local.onPointerUp);
 
 		const target = e.target as HTMLElement;

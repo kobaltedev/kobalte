@@ -13,11 +13,16 @@ import type { ElementOf, PolymorphicProps } from "../../polymorphic";
 import { createControllableSignal } from "../../primitives";
 import * as TextField from "../../text-field";
 import { parseColor } from "../utils";
-import { ColorFieldContext, type ColorFieldContextValue } from "./color-field-context";
+import {
+	ColorFieldContext,
+	type ColorFieldContextValue,
+} from "./color-field-context";
 
 export interface ColorFieldRootOptions extends TextField.TextFieldRootOptions {}
 
-export interface ColorFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorFieldRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -25,17 +30,25 @@ export interface ColorFieldRootRenderProps
 	extends ColorFieldRootCommonProps,
 		TextField.TextFieldRootRenderProps {}
 
-export type ColorFieldRootProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorFieldRootOptions & Partial<ColorFieldRootCommonProps<ElementOf<T>>>;
+export type ColorFieldRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorFieldRootOptions & Partial<ColorFieldRootCommonProps<ElementOf<T>>>;
 
 export function ColorFieldRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorFieldRootProps<T>>,
 ) {
 	const defaultId = `colorfield-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps({ id: defaultId }, props as ColorFieldRootProps);
+	const mergedProps = mergeDefaultProps(
+		{ id: defaultId },
+		props as ColorFieldRootProps,
+	);
 
-	const [local, others] = splitProps(mergedProps, ["value", "defaultValue", "onChange"]);
+	const [local, others] = splitProps(mergedProps, [
+		"value",
+		"defaultValue",
+		"onChange",
+	]);
 
 	const defaultValue = createMemo(() => {
 		let defaultValue = local.defaultValue;
@@ -52,7 +65,7 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 	const [value, setValue] = createControllableSignal<string>({
 		value: () => local.value,
 		defaultValue,
-		onChange: value => local.onChange?.(value),
+		onChange: (value) => local.onChange?.(value),
 	});
 
 	const [prevValue, setPrevValue] = createSignal(value());
@@ -63,14 +76,18 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = e => {
+	const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
+		e,
+	) => {
 		if (!value()!.length) {
 			setPrevValue("");
 			return;
 		}
 		let newValue: string;
 		try {
-			newValue = parseColor(value()!.startsWith("#") ? value()! : `#${value()}`).toString("hex");
+			newValue = parseColor(
+				value()!.startsWith("#") ? value()! : `#${value()}`,
+			).toString("hex");
 		} catch {
 			if (prevValue()) {
 				setValue(prevValue()!);
@@ -92,7 +109,12 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 	return (
 		<ColorFieldContext.Provider value={context}>
 			<TextField.Root<
-				Component<Omit<ColorFieldRootRenderProps, keyof TextField.TextFieldRootRenderProps>>
+				Component<
+					Omit<
+						ColorFieldRootRenderProps,
+						keyof TextField.TextFieldRootRenderProps
+					>
+				>
 			>
 				value={value()}
 				defaultValue={defaultValue()}

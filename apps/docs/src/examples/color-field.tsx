@@ -6,7 +6,9 @@ import style from "./color-field.module.css";
 export function BasicExample() {
 	return (
 		<ColorField class={style["color-field"]}>
-			<ColorField.Label class={style["color-field__label"]}>Favorite color</ColorField.Label>
+			<ColorField.Label class={style["color-field__label"]}>
+				Favorite color
+			</ColorField.Label>
 			<ColorField.Input class={style["color-field__input"]} />
 		</ColorField>
 	);
@@ -15,7 +17,9 @@ export function BasicExample() {
 export function DefaultValueExample() {
 	return (
 		<ColorField class={style["color-field"]} defaultValue="#7f007f">
-			<ColorField.Label class={style["color-field__label"]}>Favorite color</ColorField.Label>
+			<ColorField.Label class={style["color-field__label"]}>
+				Favorite color
+			</ColorField.Label>
 			<ColorField.Input class={style["color-field__input"]} />
 		</ColorField>
 	);
@@ -26,8 +30,14 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<ColorField class={style["color-field"]} value={value()} onChange={setValue}>
-				<ColorField.Label class={style["color-field__label"]}>Favorite color</ColorField.Label>
+			<ColorField
+				class={style["color-field"]}
+				value={value()}
+				onChange={setValue}
+			>
+				<ColorField.Label class={style["color-field__label"]}>
+					Favorite color
+				</ColorField.Label>
 				<ColorField.Input class={style["color-field__input"]} />
 			</ColorField>
 			<p class="not-prose text-sm mt-4">Your favorite color is: {value()}</p>
@@ -38,7 +48,9 @@ export function ControlledExample() {
 export function DescriptionExample() {
 	return (
 		<ColorField class={style["color-field"]}>
-			<ColorField.Label class={style["color-field__label"]}>Favorite color</ColorField.Label>
+			<ColorField.Label class={style["color-field__label"]}>
+				Favorite color
+			</ColorField.Label>
 			<ColorField.Input class={style["color-field__input"]} />
 			<ColorField.Description class={style["color-field__description"]}>
 				Choose the color you like the most.
@@ -57,7 +69,9 @@ export function ErrorMessageExample() {
 			onChange={setValue}
 			validationState={value() !== "#000000" ? "invalid" : "valid"}
 		>
-			<ColorField.Label class={style["color-field__label"]}>Favorite color</ColorField.Label>
+			<ColorField.Label class={style["color-field__label"]}>
+				Favorite color
+			</ColorField.Label>
 			<ColorField.Input class={style["color-field__input"]} />
 			<ColorField.ErrorMessage class={style["color-field__error-message"]}>
 				Hmm, I prefer black.
@@ -79,9 +93,15 @@ export function HTMLFormExample() {
 	};
 
 	return (
-		<form ref={formRef} onSubmit={onSubmit} class="flex flex-col items-center space-y-6">
+		<form
+			ref={formRef}
+			onSubmit={onSubmit}
+			class="flex flex-col items-center space-y-6"
+		>
 			<ColorField class={style["color-field"]} name="favorite-color">
-				<ColorField.Label class={style["color-field__label"]}>Favorite color</ColorField.Label>
+				<ColorField.Label class={style["color-field__label"]}>
+					Favorite color
+				</ColorField.Label>
 				<ColorField.Input class={style["color-field__input"]} />
 			</ColorField>
 			<div class="flex space-x-2">

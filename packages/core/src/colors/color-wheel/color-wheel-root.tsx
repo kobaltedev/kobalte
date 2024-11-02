@@ -20,11 +20,18 @@ import {
 	createFormControl,
 } from "../../form-control";
 import { useLocale } from "../../i18n";
-import { type ElementOf, Polymorphic, type PolymorphicProps } from "../../polymorphic";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../../polymorphic";
 import { createFormResetListener } from "../../primitives";
 import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../intl";
 import type { Color } from "../types";
-import { ColorWheelContext, type ColorWheelContextValue } from "./color-wheel-context";
+import {
+	ColorWheelContext,
+	type ColorWheelContextValue,
+} from "./color-wheel-context";
 import { createColorWheelState } from "./create-color-wheel-state";
 
 export interface ColorWheelRootOptions {
@@ -77,17 +84,22 @@ export interface ColorWheelRootOptions {
 	readOnly?: boolean;
 }
 
-export interface ColorWheelRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ColorWheelRootCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 	ref: T | ((el: T) => void);
 }
 
-export interface ColorWheelRootRenderProps extends ColorWheelRootCommonProps, FormControlDataSet {
+export interface ColorWheelRootRenderProps
+	extends ColorWheelRootCommonProps,
+		FormControlDataSet {
 	role: "group";
 }
 
-export type ColorWheelRootProps<T extends ValidComponent | HTMLElement = HTMLElement> =
-	ColorWheelRootOptions & Partial<ColorWheelRootCommonProps<ElementOf<T>>>;
+export type ColorWheelRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = ColorWheelRootOptions & Partial<ColorWheelRootCommonProps<ElementOf<T>>>;
 
 export function ColorWheelRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorWheelRootProps<T>>,
@@ -99,7 +111,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
-			getValueLabel: param => param.formatChannelValue("hue"),
+			getValueLabel: (param) => param.formatChannelValue("hue"),
 			translations: COLOR_INTL_TRANSLATIONS,
 			disabled: false,
 		},
@@ -155,7 +167,11 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	let currentPosition: { x: number; y: number } | null = null;
 	const onDragStart = (value: number[]) => {
 		state.setIsDragging(true);
-		state.setThumbValue(value[0], value[1], Math.sqrt(value[0] * value[0] + value[1] * value[1]));
+		state.setThumbValue(
+			value[0],
+			value[1],
+			Math.sqrt(value[0] * value[0] + value[1] * value[1]),
+		);
 		currentPosition = null;
 	};
 
@@ -270,7 +286,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 			<ColorWheelContext.Provider value={context}>
 				<Polymorphic<ColorWheelRootRenderProps>
 					as="div"
-					ref={mergeRefs(el => (ref = el), local.ref)}
+					ref={mergeRefs((el) => (ref = el), local.ref)}
 					role="group"
 					id={access(formControlProps.id)!}
 					{...formControlContext.dataset()}

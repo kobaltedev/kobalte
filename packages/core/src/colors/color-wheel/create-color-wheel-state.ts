@@ -3,7 +3,13 @@ import { type Accessor, createMemo, createSignal } from "solid-js";
 import { createControllableSignal } from "../../primitives";
 import type { Color } from "../types";
 import { parseColor } from "../utils";
-import { angleToCartesian, cartesianToAngle, mod, roundDown, roundToStep } from "./utils";
+import {
+	angleToCartesian,
+	cartesianToAngle,
+	mod,
+	roundDown,
+	roundToStep,
+} from "./utils";
 
 export interface ColorWheelState {
 	readonly value: Accessor<Color>;
@@ -48,12 +54,14 @@ export function createColorWheelState(props: StateOpts): ColorWheelState {
 	const [value, setValue] = createControllableSignal<Color>({
 		value: mergedProps.value,
 		defaultValue,
-		onChange: value => mergedProps.onChange?.(value),
+		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
 	const color = createMemo(() => {
 		const colorSpace = value()!.getColorSpace();
-		return colorSpace === "hsl" || colorSpace === "hsb" ? value()! : value()!.toFormat("hsl");
+		return colorSpace === "hsl" || colorSpace === "hsb"
+			? value()!
+			: value()!.toFormat("hsl");
 	});
 
 	const channelRange = () => color().getChannelRange("hue");
@@ -97,7 +105,8 @@ export function createColorWheelState(props: StateOpts): ColorWheelState {
 		}
 	};
 
-	const getThumbPosition = () => angleToCartesian(hue(), mergedProps.thumbRadius!());
+	const getThumbPosition = () =>
+		angleToCartesian(hue(), mergedProps.thumbRadius!());
 
 	const setThumbValue = (x: number, y: number, radius: number) => {
 		if (mergedProps.isDisabled!()) return;
