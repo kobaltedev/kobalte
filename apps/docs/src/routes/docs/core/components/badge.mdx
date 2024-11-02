@@ -1,0 +1,93 @@
+import { Preview, TabsSnippets, Callout } from "../../../../components";
+import { BasicExample } from "../../../../examples/badge";
+
+# Badge
+
+A `Badge` component is used to display small pieces of information or status indicators.
+
+## Import
+
+```ts
+import { Badge } from "@kobalte/core/badge";
+// or
+import { Root } from "@kobalte/core/badge";
+// or (deprecated)
+import { Badge } from "@kobalte/core";
+```
+
+## Features
+
+- Auto-populated ARIA labeling via the textValue prop for enhanced accessibility.
+- Built-in ARIA support with role="status" to communicate dynamic updates.
+
+## Anatomy
+
+The badge consists of:
+
+- **Badge:** The root container for the badge that supports accessibility and content customization.
+
+```tsx
+<Badge textValue="3 online users">3</Badge>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Badge } from "@kobalte/core/badge";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Badge class="badge" textValue="Unread messages: 5">
+          5 messages
+        </Badge>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .badge { 
+      display: inline-block; 
+      padding: 0.2em 0.4em; 
+      background-color: hsl(201 96% 32%);
+      color: white; border-radius: 12px; 
+      font-size: 0.875rem;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## API Reference
+
+### Badge
+
+`Badge` is equivalent to the `Root` import from `@kobalte/core/badge` (and deprecated `Badge.Root`).
+
+| Prop      | Description                                                                                                                                                                          |
+| :-------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| textValue | `string \| undefined` <br/> The textValue prop is essential for accessibility. It auto-populates the aria-label attribute, allowing screen readers to interpret the badge’s content. |
+
+| Data attribute | Description                                                         |
+| :------------- | :------------------------------------------------------------------ |
+| data-label     | Present when textValue is passed or aria-label is passed as a prop. |
+
+## Rendered elements
+
+| Component | Default rendered element |
+| :-------- | :----------------------- |
+| `Badge`   | `span`                   |

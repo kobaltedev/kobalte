@@ -1,19 +1,21 @@
-import type { ValidComponent } from "solid-js";
+import type { Component, ValidComponent } from "solid-js";
 import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+	Meter,
+	type MeterTrackCommonProps,
+	type MeterTrackOptions,
+	type MeterTrackRenderProps,
+} from "../meter";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { type ProgressDataSet, useProgressContext } from "./progress-context";
 
-export interface ProgressTrackOptions {}
+export interface ProgressTrackOptions extends MeterTrackOptions {}
 
-export interface ProgressTrackCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {}
+export interface ProgressTrackCommonProps<T extends HTMLElement = HTMLElement>
+	extends MeterTrackCommonProps {}
 
 export interface ProgressTrackRenderProps
-	extends ProgressTrackCommonProps,
+	extends MeterTrackRenderProps,
+		ProgressTrackCommonProps,
 		ProgressDataSet {}
 
 export type ProgressTrackProps<
@@ -30,8 +32,9 @@ export function ProgressTrack<T extends ValidComponent = "div">(
 	const context = useProgressContext();
 
 	return (
-		<Polymorphic<ProgressTrackRenderProps>
-			as="div"
+		<Meter.Track<
+			Component<Omit<ProgressTrackRenderProps, keyof MeterTrackRenderProps>>
+		>
 			{...context.dataset()}
 			{...(props as ProgressTrackProps)}
 		/>

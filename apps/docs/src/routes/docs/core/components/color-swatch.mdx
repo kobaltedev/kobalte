@@ -1,0 +1,173 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+	BasicExample,
+	ValueExample,
+	CustomColorNameExample,
+} from "../../../../examples/color-swatch";
+
+# Color Swatch
+
+Displays a preview of a selected color.
+
+## Import
+
+```ts
+import { ColorSwatch } from "@kobalte/core/color-swatch";
+// or
+import { Root } from "@kobalte/core/color-swatch";
+// or (deprecated)
+import { ColorSwatch } from "@kobalte/core";
+```
+
+## Features
+
+- Localized color descriptions for screen reader users.
+
+## Anatomy
+
+The color swatch consists of:
+
+- **ColorSwatch:** The root container for the color swatch.
+
+```tsx
+<ColorSwatch />
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+	import { ColorSwatch } from "@kobalte/core/color-swatch";
+    import { parseColor } from "@kobalte/utils";
+    import "./style.css";
+
+    function App() {
+      return (
+        <ColorSwatch class="ColorSwatchRoot" value={parseColor("hsl(200, 98%, 39%)")} />
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .ColorSwatchRoot {
+      height: 56px;
+      width: 56px;
+      border-radius: 6px;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+ColorSwatch accepts a value via the `value` prop. The value should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string.
+
+### Value
+
+<Preview>
+	<ValueExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+	import { ColorSwatch } from "@kobalte/core/color-swatch";
+    import { parseColor } from "@kobalte/utils";
+    import "./style.css";
+
+    function App() {
+      return (
+        <ColorSwatch class="ColorSwatchRoot" value={parseColor("#7f0000")} />
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .ColorSwatchRoot {
+      height: 56px;
+      width: 56px;
+      border-radius: 6px;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+### Custom Color Name
+
+<Preview>
+	<CustomColorNameExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+	import { ColorSwatch } from "@kobalte/core/color-swatch";
+    import { parseColor } from "@kobalte/utils";
+    import "./style.css";
+
+    function App() {
+      return (
+        <ColorSwatch class="ColorSwatchRoot" value={parseColor("hsl(200, 98%, 39%)")} colorName="Kobalte blue" />
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .ColorSwatchRoot {
+      height: 56px;
+      width: 56px;
+      border-radius: 6px;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## API Reference
+
+### ColorSwatch
+
+`ColorSwatch` is equivalent to the `Root` import from `@kobalte/core/color-swatch` (and deprecated `ColorSwatch.Root`).
+
+| Prop         | Description                                                                                                                                                                                                     |
+| :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value        | `Color` <br/> The color value to display in the swatch.                                                                                                                                                         |
+| colorName    | `string` <br/> A localized accessible name for the color. By default, a description is generated from the color value, but this can be overridden if you have a more specific color name (e.g. Pantone colors). |
+| translations | `ColorSwatchIntlTranslations` <br/> Localization strings.                                                                                                                                                       |
+
+## Rendered elements
+
+| Component     | Default rendered element |
+| :------------ | :----------------------- |
+| `ColorSwatch` | `div`                    |

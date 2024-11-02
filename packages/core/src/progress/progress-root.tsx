@@ -9,6 +9,7 @@
 import { clamp, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Accessor,
+	type Component,
 	type ValidComponent,
 	createMemo,
 	createSignal,
@@ -18,10 +19,12 @@ import {
 
 import { createNumberFormatter } from "../i18n";
 import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+	Meter,
+	type MeterRootCommonProps,
+	type MeterRootOptions,
+	type MeterRootRenderProps,
+} from "../meter";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import {
 	ProgressContext,
@@ -29,56 +32,21 @@ import {
 	type ProgressDataSet,
 } from "./progress-context";
 
-interface GetValueLabelParams {
-	value: number;
-	min: number;
-	max: number;
-}
-
-export interface ProgressRootOptions {
-	/**
-	 * The progress value.
-	 * @default 0
-	 */
-	value?: number;
-
-	/**
-	 * The minimum progress value.
-	 * @default 0
-	 */
-	minValue?: number;
-
-	/**
-	 * The maximum progress value.
-	 * @default 100
-	 */
-	maxValue?: number;
-
+export interface ProgressRootOptions
+	extends Omit<MeterRootOptions, "indeterminate"> {
 	/** Whether the progress is in an indeterminate state. */
 	indeterminate?: boolean;
-
-	/**
-	 * A function to get the accessible label text representing the current value in a human-readable format.
-	 * If not provided, the value label will be read as a percentage of the max value.
-	 */
-	getValueLabel?: (params: GetValueLabelParams) => string;
 }
 
-export interface ProgressRootCommonProps<T extends HTMLElement = HTMLElement> {
-	id: string;
-}
+export interface ProgressRootCommonProps<T extends HTMLElement = HTMLElement>
+	extends MeterRootCommonProps {}
 
 export interface ProgressRootRenderProps
-	extends ProgressRootCommonProps,
+	extends Omit<MeterRootRenderProps, "role">,
+		ProgressRootCommonProps,
 		ProgressDataSet {
 	role: "progressbar";
-	"aria-valuenow": number | undefined;
-	"aria-valuemin": number;
-	"aria-valuemax": number;
-	"aria-valuetext": string | undefined;
-	"aria-labelledby": string | undefined;
 }
-
 export type ProgressRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
 > = ProgressRootOptions & Partial<ProgressRootCommonProps<ElementOf<T>>>;
@@ -169,16 +137,13 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 
 	return (
 		<ProgressContext.Provider value={context}>
-			<Polymorphic<ProgressRootRenderProps>
-				as="div"
+			<Meter<
+				Component<Omit<ProgressRootRenderProps, keyof MeterRootRenderProps>>
+			>
 				role="progressbar"
-				aria-valuenow={local.indeterminate ? undefined : value()}
-				aria-valuemin={local.minValue}
-				aria-valuemax={local.maxValue}
-				aria-valuetext={valueLabel()}
-				aria-labelledby={labelId()}
+				indeterminate={local.indeterminate || false}
 				{...dataset()}
-				{...others}
+				{...mergedProps}
 			/>
 		</ProgressContext.Provider>
 	);
