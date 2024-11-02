@@ -62,6 +62,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/checkbox",
 			},
 			{
+				title: "Checkbox Group",
+				href: "/docs/core/components/checkbox-group",
+				status: "new",
+			},
+			{
 				title: "Collapsible",
 				href: "/docs/core/components/collapsible",
 			},

@@ -1,0 +1,478 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+	ControlledExample,
+	DefaultValueExample,
+	HTMLFormExample,
+	BasicExample,
+	DescriptionExample,
+	ErrorMessageExample,
+} from "../../../../examples/checkbox-group";
+
+# Checkbox Group
+
+A set of checkboxes, where more than one of the checkbox can be checked at a time.
+
+## Import
+
+```ts
+import { CheckboxGroup } from "@kobalte/core/checkbox-group";
+// or
+import { Root, Label, ... } from "@kobalte/core/checkbox-group";
+// or (deprecated)
+import { CheckboxGroup } from "@kobalte/core";
+```
+
+## Features
+
+- Each checkbox is built with a native HTML `<input>` element, which is visually hidden to allow custom styling.
+- Syncs with form reset events.
+- Group and checkbox labeling support for assistive technology.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The checkbox group consists of:
+
+- **CheckboxGroup**: The root container for the checkbox group.
+- **CheckboxGroup.Label**: The label that gives the user information on the checkbox group.
+- **CheckboxGroup.Description**: The description that gives the user more information on the checkbox group.
+- **CheckboxGroup.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the checkbox group.
+
+The checkbox item consists of:
+
+- **CheckboxGroup.Item**: The root container for a checkbox.
+- **CheckboxGroup.ItemInput**: The native html input that is visually hidden in the checkbox.
+- **CheckboxGroup.ItemControl**: The element that visually represents a checkbox.
+- **CheckboxGroup.ItemIndicator**: The visual indicator rendered when the checkbox is in a checked state.
+- **CheckboxGroup.ItemLabel**: The label that gives the user information on the checkbox.
+- **CheckboxGroup.ItemDescription**: The description that gives the user more information on the checkbox.
+
+```tsx
+<CheckboxGroup>
+	<CheckboxGroup.Label />
+	<CheckboxGroup.Item>
+		<CheckboxGroup.ItemInput />
+		<CheckboxGroup.ItemControl>
+			<CheckboxGroup.ItemIndicator />
+		</CheckboxGroup.ItemControl>
+		<CheckboxGroup.ItemLabel />
+		<CheckboxGroup.ItemDescription />
+	</CheckboxGroup.Item>
+	<CheckboxGroup.Description />
+	<CheckboxGroup.ErrorMessage />
+</CheckboxGroup>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+		import { CheckboxGroup } from "@kobalte/core/checkbox-group";
+    import "./style.css";
+
+    function App() {
+      return (
+        <CheckboxGroup class="checkbox-group">
+    		<CheckboxGroup.Label class="checkbox-group__label">
+    			Subscribe to topics
+    		</CheckboxGroup.Label>
+    		<div class="checkbox-group__items" role="presentation">
+    			<For each={["News", "Updates", "Offers"]}>
+    				{topic => (
+    					<CheckboxGroup.Item id={topic} value={topic} class="checkbox">
+    						<CheckboxGroup.ItemInput class="checkbox__input" />
+    						<CheckboxGroup.ItemControl class="style.checkbox__control">
+    							<CheckboxGroup.ItemIndicator>
+    								<CheckIcon />
+    							</CheckboxGroup.ItemIndicator>
+    						</CheckboxGroup.ItemControl>
+    						<CheckboxGroup.ItemLabel class="checkbox__label">
+    							{topic}
+    						</CheckboxGroup.ItemLabel>
+    					</CheckboxGroup.Item>
+    				)}
+    			</For>
+    		</div>
+    	</CheckboxGroup>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .checkbox-group__label {
+      color: hsl(240 6% 10%);
+      font-size: 14px;
+      font-weight: 500;
+      user-select: none;
+    }
+
+    .checkbox-group__description {
+      color: hsl(240 5% 26%);
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .checkbox-group__error-message {
+      color: hsl(0 72% 51%);
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .checkbox-group__items {
+      display: flex;
+      gap: 16px;
+    }
+
+    [data-kb-theme="dark"] .checkbox-group__label {
+      color: hsl(240 5% 84%);
+    }
+
+    [data-kb-theme="dark"] .checkbox-group__description {
+      color: hsl(240 5% 65%);
+    }
+
+    .checkbox {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .checkbox__control {
+      height: 20px;
+      width: 20px;
+      border-radius: 6px;
+      border: 1px solid hsl(240 5% 84%);
+      background-color: hsl(240 6% 90%);
+    }
+
+    .checkbox__input:focus-visible + .checkbox__control {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
+
+    .checkbox__control[data-checked] {
+      border-color: hsl(200 98% 39%);
+      background-color: hsl(200 98% 39%);
+      color: white;
+    }
+
+    .checkbox__control[data-invalid] {
+      border-color: hsl(0 72% 51%);
+    }
+
+    .checkbox__label {
+      margin-left: 6px;
+      color: hsl(240 6% 10%);
+      font-size: 14px;
+      user-select: none;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+// FIXME: finalize and update all examples below
+
+### Default value
+
+An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `value` prop of each checkbox.
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+```tsx {0,4}
+<CheckboxGroup defaultValues={["News"]}>
+	<CheckboxGroup.Label>Subscribe to topics</CheckboxGroup.Label>
+	<div role="presentation">
+		<For each={["News", "Updates", "Offers"]}>
+			{topic => (
+				<CheckboxGroup.Item id={topic} value={topic}>
+					<CheckboxGroup.ItemInput />
+					<CheckboxGroup.ItemControl>
+						<CheckboxGroup.ItemIndicator>
+							<CheckIcon />
+						</CheckboxGroup.ItemIndicator>
+					</CheckboxGroup.ItemControl>
+					<CheckboxGroup.ItemLabel>{topic}</CheckboxGroup.ItemLabel>
+				</CheckboxGroup.Item>
+			)}
+		</For>
+	</div>
+</CheckboxGroup>
+```
+
+The `role="presentation"` is required for all non content elements between the `CheckboxGroup` and `CheckboxGroup.Item` due to a bug in Chromium based browsers that incorrectly parse semantics and break screen readers.
+
+### Controlled value
+
+The `value` prop, which accepts a value corresponding with the `value` prop of each checkbox, can be used to make the value controlled. The `onChange` event is fired when the user selects a checkbox, and receives the new value.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {3,7,11}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal(["News"]);
+
+	return (
+		<CheckboxGroup values={value()} onChange={setValue}>
+			<CheckboxGroup.Label>What would you like to subscribe to?</CheckboxGroup.Label>
+			<div role="presentation">
+				<For each={["News", "Updates", "Offers"]}>
+					{option => (
+						<CheckboxGroup.Item id={option} value={option}>
+							<CheckboxGroup.ItemInput />
+							<CheckboxGroup.ItemControl>
+								<CheckboxGroup.ItemIndicator>
+									<CheckIcon />
+								</CheckboxGroup.ItemIndicator>
+							</CheckboxGroup.ItemControl>
+							<CheckboxGroup.ItemLabel>{option}</CheckboxGroup.ItemLabel>
+						</CheckboxGroup.Item>
+					)}
+				</For>
+			</div>
+		</CheckboxGroup>
+	);
+}
+```
+
+### Description
+
+The `CheckboxGroup.Description` component can be used to associate additional help text with a checkbox group.
+
+<Preview>
+	<DescriptionExample />
+</Preview>
+
+```tsx {7}
+<CheckboxGroup>
+	<CheckboxGroup.Label>What would you like to subscribe to?</CheckboxGroup.Label>
+	<div role="presentation">
+		<For each={["News", "Updates", "Offers"]}>
+			{option => (
+				<CheckboxGroup.Item value={option}>
+					<CheckboxGroup.ItemInput />
+					<CheckboxGroup.ItemControl>
+						<CheckboxGroup.ItemIndicator>
+							<CheckIcon />
+						</CheckboxGroup.ItemIndicator>
+					</CheckboxGroup.ItemControl>
+					<CheckboxGroup.ItemLabel>{option}</CheckboxGroup.ItemLabel>
+				</CheckboxGroup.Item>
+			)}
+		</For>
+	</div>
+	<CheckboxGroup.Description>
+		Select the types of updates you'd like to receive.
+	</CheckboxGroup.Description>
+</CheckboxGroup>
+```
+
+### Error message
+
+The `CheckboxGroup.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the checkbox group as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+	<ErrorMessageExample />
+</Preview>
+
+```tsx {9,17}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [value, setValue] = createSignal(["News"]);
+
+	return (
+		<CheckboxGroup
+			values={value()}
+			onChange={setValue}
+			validationState={!value().includes("News") ? "invalid" : "valid"}
+		>
+			<CheckboxGroup.Label>What would you like to subscribe to?</CheckboxGroup.Label>
+			<div role="presentation">
+				<For each={["News", "Updates", "Offers"]}>
+					{option => (
+						<CheckboxGroup.Item id={option} value={option}>
+							<CheckboxGroup.ItemInput />
+							<CheckboxGroup.ItemControl>
+								<CheckboxGroup.ItemIndicator>
+									<CheckIcon />
+								</CheckboxGroup.ItemIndicator>
+							</CheckboxGroup.ItemControl>
+							<CheckboxGroup.ItemLabel>{option}</CheckboxGroup.ItemLabel>
+						</CheckboxGroup.Item>
+					)}
+				</For>
+			</div>
+			<CheckboxGroup.ErrorMessage>Please select News to stay informed.</CheckboxGroup.ErrorMessage>
+		</CheckboxGroup>
+	);
+}
+```
+
+### HTML forms
+
+The checkbox group `name` prop, paired with the checkbox `value` prop, can be used for integration with HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx {7,11}
+function HTMLFormExample() {
+	let formRef: HTMLFormElement | undefined;
+
+	const onSubmit = (e: SubmitEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+
+		const formData = new FormData(formRef);
+		const subscriptions = Array.from(formData.getAll("subscriptions"));
+
+		const result = {
+			...Object.fromEntries(formData),
+			subscriptions,
+		};
+
+		alert(JSON.stringify(result, null, 2));
+	};
+
+	return (
+		<form ref={formRef} onSubmit={onSubmit}>
+			<CheckboxGroup name="subscriptions">
+				<CheckboxGroup.Label>What would you like to subscribe to?</CheckboxGroup.Label>
+				<div role="presentation">
+					<For each={["News", "Updates", "Offers"]}>
+						{option => (
+							<CheckboxGroup.Item id={option} value={option}>
+								<CheckboxGroup.ItemInput />
+								<CheckboxGroup.ItemControl>
+									<CheckboxGroup.ItemIndicator>
+										<CheckIcon />
+									</CheckboxGroup.ItemIndicator>
+								</CheckboxGroup.ItemControl>
+								<CheckboxGroup.ItemLabel>{option}</CheckboxGroup.ItemLabel>
+							</CheckboxGroup.Item>
+						)}
+					</For>
+				</div>
+			</CheckboxGroup>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+## API Reference
+
+### CheckboxGroup
+
+`CheckboxGroup` is equivalent to the `Root` import from `@kobalte/core/checkbox-group` (and deprecated `CheckboxGroup.Root`).
+
+| Prop            | Description                                                                                                                                                      |
+| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| values          | `string[]` <br/> The controlled values of the checkboxes to check.                                                                                               |
+| defaultValues   | `string[]` <br/> The value of the checkboxes that should be checked when initially rendered. Useful when you do not need to control the state of the checkboxes. |
+| onChange        | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                     |
+| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the checkbox group items should align with.                                                                          |
+| name            | `string` <br/> The name of the checkbox group. Submitted with its owning form as part of a name/value pair.                                                      |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the checkbox group should display its "valid" or "invalid" visual styling.                                                  |
+| required        | `boolean` <br/> Whether the user must check a checkbox group item before the owning form can be submitted.                                                       |
+| disabled        | `boolean` <br/> Whether the checkbox group is disabled.                                                                                                          |
+| readOnly        | `boolean` <br/> Whether the checkbox group items can be selected but not changed by the user.                                                                    |
+
+| Data attribute | Description                                                                                     |
+| :------------- | :---------------------------------------------------------------------------------------------- |
+| data-valid     | Present when the checkbox group is valid according to the validation rules.                     |
+| data-invalid   | Present when the checkbox group is invalid according to the validation rules.                   |
+| data-required  | Present when the user must check a checkbox group item before the owning form can be submitted. |
+| data-disabled  | Present when the checkbox group is disabled.                                                    |
+| data-readonly  | Present when the checkbox group is read only.                                                   |
+
+`CheckboxGroup.Label`, `CheckboxGroup.Description` and `CheckboxGroup.ErrorMesssage` shares the same data-attributes.
+
+### CheckboxGroup.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### CheckboxGroup.Item
+
+| Prop     | Description                                                                                                                                                             |
+| :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value    | `string` <br/> The value of the checkbox, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox#Value). |
+| disabled | `boolean` <br/> Whether the checkbox is disabled or not.                                                                                                                |
+
+| Data attribute | Description                                                                          |
+| :------------- | :----------------------------------------------------------------------------------- |
+| data-valid     | Present when the parent checkbox group is valid according to the validation rules.   |
+| data-invalid   | Present when the parent checkbox group is invalid according to the validation rules. |
+| data-checked   | Present when the checkbox is checked.                                                |
+| data-disabled  | Present when the checkbox is disabled.                                               |
+
+`CheckboxGroup.ItemInput`, `CheckboxGroup.ItemControl`, `CheckboxGroup.ItemIndicator` and `CheckboxGroup.ItemLabel` shares the same data-attributes.
+
+### CheckboxGroup.ItemIndicator
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                       | Default rendered element |
+| :------------------------------ | :----------------------- |
+| `CheckboxGroup`                 | `div`                    |
+| `CheckboxGroup.Label`           | `span`                   |
+| `CheckboxGroup.Description`     | `div`                    |
+| `CheckboxGroup.ErrorMessage`    | `div`                    |
+| `CheckboxGroup.Item`            | `div`                    |
+| `CheckboxGroup.ItemInput`       | `input`                  |
+| `CheckboxGroup.ItemControl`     | `div`                    |
+| `CheckboxGroup.ItemIndicator`   | `div`                    |
+| `CheckboxGroup.ItemLabel`       | `label`                  |
+| `CheckboxGroup.ItemDescription` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                                    |
+| :-------------------- | :----------------------------------------------------------------------------- |
+| <Kbd>Tab</Kbd>        | Moves focus to either the checked checkbox or the first checkbox in the group. |
+| <Kbd>Space</Kbd>      | When focus is on an unchecked checkbox, checks it.                             |
+| <Kbd>ArrowDown</Kbd>  | Moves focus and checks the next checkbox in the group.                         |
+| <Kbd>ArrowRight</Kbd> | Moves focus and checks the next checkbox in the group.                         |
+| <Kbd>ArrowUp</Kbd>    | Moves focus and checks the previous checkbox in the group.                     |
+| <Kbd>ArrowLeft</Kbd>  | Moves focus and checks the previous checkbox in the group.                     |
