@@ -1,0 +1,289 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+	BasicExample,
+	DefaultValueExample,
+	ControlledValueExample,
+	XAndYChannelExample,
+	HTMLFormExample,
+} from "../../../../examples/color-area";
+
+# Color Area
+
+Allows users to adjust two channels of an RGB, HSL, or HSB color value against a two-dimensional gradient background.
+
+## Import
+
+```ts
+import { ColorArea } from "@kobalte/core/color-area";
+// or
+import { Root, Background, ... } from "@kobalte/core/color-area";
+// or (deprecated)
+import { ColorArea } from "@kobalte/core";
+```
+
+## Features
+
+- Can be controlled or uncontrolled.
+- Support for adjusting two-channel values of an RGB, HSL or HSB color value.
+- Pressing on the color area background moves the thumb to that position.
+- Supports using the arrow keys, for changing value by step, as well as shift + arrow key, page up/down, home, and end keys, for changing the value by page step.
+- Support for disabling the color area.
+- Prevents text selection while dragging.
+- Exposed to assistive technology as a 2D slider element via ARIA.
+- Uses two hidden native input elements within a group to support touch screen readers.
+- Automatic ARIA labeling using the localized channel names by default.
+- Support for mirroring in RTL locales.
+
+## Anatomy
+
+The color area consists of:
+
+- **ColorArea:** The root container for the color area.
+- **ColorArea.Background:** The component that visually represents the range of colors from which a user can select.
+- **ColorArea.Thumb:** The thumb that is used to visually indicate a value in the color area background.
+- **ColorArea.HiddenInputX:** The horizontal native html input that is visually hidden in the color area thumb.
+- **ColorArea.HiddenInputY:** The vertical native html input that is visually hidden in the color area thumb.
+- **ColorArea.Label:** The label that gives the user information on the color area.
+
+```tsx
+<ColorArea>
+	<ColorArea.Label />
+	<ColorArea.Background>
+		<ColorArea.Thumb>
+			<ColorArea.HiddenInputX />
+			<ColorArea.HiddenInputY />
+		</ColorArea.Thumb>
+	</ColorArea.Track>
+</ColorArea>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+		import { ColorArea } from "@kobalte/core/color-area";
+    import { parseColor } from "@kobalte/utils";
+    import "./style.css";
+
+    function App() {
+      return (
+        <ColorArea class="ColorAreaRoot" defaultValue={parseColor("rgb(2, 132, 197)")}>
+    		    <ColorArea.Background class="ColorAreaBackground">
+    		    	<ColorArea.Thumb class="ColorAreaThumb">
+    		    		<ColorArea.HiddenInputX />
+    		    		<ColorArea.HiddenInputY />
+    		    	</ColorArea.Thumb>
+    		    </ColorArea.Background>
+    	   </ColorArea>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .ColorAreaRoot {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+      touch-action: none;
+      width: 200px;
+    }
+
+.ColorAreaBackground {
+position: relative;
+border-radius: 6px;
+height: 150px;
+width: 150px;
+}
+
+.ColorAreaThumb {
+display: block;
+width: 16px;
+height: 16px;
+border-radius: 9999px;
+border: 2px solid #fff;
+box-shadow: 0 0 0 1px #0000006b;
+}
+
+.ColorAreaThumb:focus {
+outline: none;
+}
+
+````
+
+</TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+A ColorArea requires either an uncontrolled default value or a controlled value, provided using the `defaultValue` or `value` props respectively.
+The value provided to either of these props should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string.
+The `xChannel` and `yChannel` must be one of the channels included in the color value, for example, for RGB colors, the "red", "green", and "blue" channels are available.
+If no `xChannel` or `yChannel` is provided, for the RGB color space, the red color channel maps to the horizontal axis or xChannel, and the green color channel maps to the vertical axis or yChannel. Similarly, for the HSL and HSB color spaces, the hue color channel maps to the horizontal axis or xChannel, and the saturation color channel maps to the vertical axis or yChannel.
+
+### Default value
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+```tsx {0}
+<ColorArea defaultValue={parseColor("hsb(219, 58%, 93%)")}>
+	<ColorArea.Background>
+		<ColorArea.Thumb>
+			<ColorArea.HiddenInputX />
+			<ColorArea.HiddenInputY />
+		</ColorArea.Thumb>
+	</ColorArea.Background>
+</ColorArea>
+````
+
+### Controlled value
+
+<Preview>
+	<ControlledValueExample />
+</Preview>
+
+```tsx {2, 4}
+import { createSignal } from "solid-js";
+
+const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
+<>
+	<ColorArea value={value()} onChange={setValue}>
+		<ColorArea.Background>
+			<ColorArea.Thumb>
+				<ColorArea.HiddenInputX />
+				<ColorArea.HiddenInputY />
+			</ColorArea.Thumb>
+		</ColorArea.Background>
+	</ColorArea>
+	<p>Current color value: {value().toString("hsl")}</p>
+</>;
+```
+
+### xChannel and yChannel
+
+The color channel for each axis of a color area can be specified using the `xChannel` and `yChannel` props. An array of channel names for a color can be returned using the color.getColorChannels method.
+
+<Preview>
+	<XAndYChannelExample />
+</Preview>
+
+```tsx {1, 3}
+const [value, setValue] = createSignal(parseColor("rgb(100, 149, 237)"));
+const [rChannel, gChannel, bChannel] = value().getColorChannels();
+
+<ColorArea value={value()} onChange={setValue} xChannel={gChannel} yChannel={bChannel}>
+	<ColorArea.Background>
+		<ColorArea.Thumb>
+			<ColorArea.HiddenInputX />
+			<ColorArea.HiddenInputY />
+		</ColorArea.Thumb>
+	</ColorArea.Background>
+</ColorArea>;
+```
+
+### HTML forms
+
+ColorArea supports the `xName` and `yName` props for integration with HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx {0}
+<ColorArea defaultValue={parseColor("rgb(100, 149, 237)")} xName="red" yName="green">
+	<ColorArea.Background>
+		<ColorArea.Thumb>
+			<ColorArea.HiddenInputX />
+			<ColorArea.HiddenInputY />
+		</ColorArea.Thumb>
+	</ColorArea.Background>
+</ColorArea>
+```
+
+## API Reference
+
+### ColorArea
+
+`ColorArea` is equivalent to the `Root` import from `@kobalte/core/color-area` (and deprecated `ColorArea.Root`).
+
+| Prop            | Description                                                                                                                                                                            |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `Color` <br/> The controlled value of the color area..                                                                                                                                 |
+| defaultValue    | `Color` <br/> The value of the color area when initially rendered.                                                                                                                     |
+| colorSpace      | `ColorSpace` <br/> The color space that the color area operates in. The `xChannel` and `yChannel` must be in this color space.                                                         |
+| onChange        | `(value: Color) => void` <br/> Event handler called when the value changes.                                                                                                            |
+| onChangeEnd     | `(value: Color) => void` <br/> Event handler called when the value changes at the end of an interaction.                                                                               |
+| xChannel        | `ColorChannel` <br/> Color channel for the horizontal axis.                                                                                                                            |
+| yChannel        | `ColorChannel` <br/> Color channel for the vertical axis.                                                                                                                              |
+| xName           | `string` <br/> The name of the x channel input element, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname). |
+| yName           | `string` <br/> The name of the y channel input element, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname). |
+| name            | `string` <br/> The name of the color area, used when submitting an HTML form.                                                                                                          |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the color area should display its "valid" or "invalid" visual styling.                                                                            |
+| required        | `boolean` <br/> Whether the user must check a radio group item before the owning form can be submitted.                                                                                |
+| disabled        | `boolean` <br/> Whether the radio group is disabled.                                                                                                                                   |
+| readOnly        | `boolean` <br/> Whether the radio group items can be selected but not changed by the user.                                                                                             |
+| translations    | `ColorAreaIntlTranslations` <br/> Localization strings.                                                                                                                                |
+
+| Data attribute | Description                                                                        |
+| :------------- | :--------------------------------------------------------------------------------- |
+| data-valid     | Present when the slider is valid according to the validation rules.                |
+| data-invalid   | Present when the slider is invalid according to the validation rules.              |
+| data-required  | Present when the user must slider an item before the owning form can be submitted. |
+| data-disabled  | Present when the slider is disabled.                                               |
+| data-readonly  | Present when the slider is read only.                                              |
+
+`ColorArea.Background`, `ColorArea.Thumb`, `ColorArea.HiddenInputX`, `ColorArea.HiddenInputY` and `ColorArea.Label` share the same data-attributes.
+
+### ColorArea.HiddenInputX
+
+| Data attribute                | Description     |
+| :---------------------------- | :-------------- |
+| data-orientation='horizontal' | Always presesnt |
+
+### ColorArea.HiddenInputY
+
+| Data attribute              | Description     |
+| :-------------------------- | :-------------- |
+| data-orientation='vertical' | Always presesnt |
+
+## Rendered elements
+
+| Component                | Default rendered element |
+| :----------------------- | :----------------------- |
+| `ColorArea`              | `div`                    |
+| `ColorArea.Background`   | `div`                    |
+| `ColorArea.Thumb`        | `span`                   |
+| `ColorArea.HiddenInputX` | `input`                  |
+| `ColorArea.HiddenInputY` | `input`                  |
+| `ColorArea.Label`        | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                                  |
+| :-------------------- | :--------------------------------------------------------------------------- |
+| <Kbd>PageUp</Kbd>     | Increments the value of the thumb in the vertical axis by a larger step.     |
+| <Kbd>PageDown</Kbd>   | Decrements the value of the thumb in the vertical axis by a larger step.     |
+| <Kbd>ArrowDown</Kbd>  | Decrements the value of the thumb in the vertical axis by the step amount.   |
+| <Kbd>ArrowUp</Kbd>    | Increments the value of the thumb in the vertical axis by the step amount.   |
+| <Kbd>ArrowRight</Kbd> | Increments the value of the thumb in the horizontal axis by the step amount. |
+| <Kbd>ArrowLeft</Kbd>  | Decrements the value of the thumb in the vertical axis by the step amount.   |
+| <Kbd>Home</Kbd>       | Decrements the value of the thumb in the horizontal axis by a larger step.   |
+| <Kbd>End</Kbd>        | Increments the value of the thumb in the horizontal axis by a larger step.   |

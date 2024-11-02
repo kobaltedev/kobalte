@@ -1,0 +1,35 @@
+.ColorAreaRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
+
+.ColorAreaBackground {
+	position: relative;
+	border-radius: 6px;
+	height: 150px;
+	width: 150px;
+}
+
+.ColorAreaThumb {
+	display: block;
+	width: 16px;
+	height: 16px;
+	border-radius: 9999px;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 1px #0000006b;
+}
+
+.ColorAreaThumb:focus {
+	outline: none;
+}
+
+.ColorAreaLabel {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}

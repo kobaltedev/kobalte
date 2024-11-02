@@ -1,0 +1,50 @@
+.ColorSliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
+
+.ColorSliderRoot[data-orientation="vertical"] {
+	height: 200px;
+}
+
+.ColorSliderTrack {
+	position: relative;
+	border-radius: 6px;
+	height: 24px;
+	width: 100%;
+}
+
+.ColorSliderTrack[data-orientation="vertical"] {
+	width: 24px;
+	height: 100%;
+}
+
+.ColorSliderThumb {
+	display: block;
+	top: 4px;
+	width: 16px;
+	height: 16px;
+	border-radius: 9999px;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 1px #0000006b;
+}
+
+.ColorSliderThumb[data-orientation="vertical"] {
+	top: unset;
+	left: 4px;
+}
+
+.ColorSliderThumb:focus {
+	outline: none;
+}
+
+.ColorSliderLabel {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}

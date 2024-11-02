@@ -1,0 +1,521 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+	BasicExample,
+	DefaultValueExample,
+	ControlledValueExample,
+	VerticalSliderExample,
+	CustomValueExample,
+} from "../../../../examples/color-slider";
+
+# Color Slider
+
+Adjusts an individual channel of a color value.
+
+## Import
+
+```ts
+import { ColorSlider } from "@kobalte/core/color-slider";
+// or
+import { Root, Track, ... } from "@kobalte/core/color-slider";
+// or (deprecated)
+import { ColorSlider } from "@kobalte/core";
+```
+
+## Features
+
+- Can be controlled or uncontrolled.
+- Localized color descriptions for screen reader users.
+- Support for adjusting a single channel of RGBA, HSLA and HSBA colors, in both horizontal and vertical orientations.
+- Support click or touch on track to change value.
+- Support right or left direction.
+- Support for custom value label.
+
+## Anatomy
+
+The color slider consists of:
+
+- **ColorSlider:** The root container for the color slider.
+- **ColorSlider.Track:** The component that visually represents the color slider track.
+- **ColorSlider.Thumb:** The thumb that is used to visually indicate a value in the color slider.
+- **ColorSlider.Input:** The native html input that is visually hidden in the color slider thumb.
+- **ColorSlider.Label:** The label that gives the user information on the color slider.
+- **ColorSlider.ValueLabel:** The accessible label text representing the current value in a human-readable format.
+
+```tsx
+<ColorSlider>
+	<ColorSlider.Label />
+	<ColorSlider.ValueLabel />
+	<ColorSlider.Track>
+		<ColorSlider.Thumb>
+			<ColorSlider.Input />
+		</ColorSlider.Thumb>
+	</ColorSlider.Track>
+</ColorSlider>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+		import { ColorSlider } from "@kobalte/core/color-slider";
+    import { parseColor } from "@kobalte/utils";
+    import "./style.css";
+
+    function App() {
+      return (
+        <ColorSlider class="ColorSliderRoot" defaultValue={parseColor("rgb(2, 132, 197)")} channel="blue">
+          <div class="ColorSliderLabel">
+            <ColorSlider.Label>Blue</ColorSlider.Label>
+            <ColorSlider.ValueLabel />
+          </div>
+          <ColorSlider.Track class="ColorSliderTrack">
+            <ColorSlider.Thumb class="ColorSliderThumb">
+              <ColorSlider.Input />
+            </ColorSlider.Thumb>
+          </ColorSlider.Track>
+        </ColorSlider>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .ColorSliderRoot {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+      touch-action: none;
+      width: 200px;
+    }
+
+    .ColorSliderTrack {
+      position: relative;
+      border-radius: 6px;
+      height: 24px;
+      width: 100%;
+    }
+
+    .ColorSliderThumb {
+      display: block;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px #0000006b;
+    }
+
+    .ColorSliderThumb:focus {
+      outline: none;
+    }
+
+    .ColorSliderLabel {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+A ColorSlider requires either an uncontrolled default value or a controlled value, provided using the `defaultValue` or `value` props respectively.
+The value provided to either of these props should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string. The `channel` prop must also be provided to specify which color channel the slider should display.
+This must be one of the channels included in the color value, for example, for RGB colors, the "red", "green", and "blue" channels are available.
+
+### Default value
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+		import { ColorSlider } from "@kobalte/core/color-slider";
+    import { parseColor } from "@kobalte/utils";
+    import "./style.css";
+
+    function App() {
+      return (
+        <ColorSlider class="ColorSliderRoot" defaultValue={parseColor("hsl(0, 100%, 50%)")} channel="hue">
+          <div class="ColorSliderLabel">
+            <ColorSlider.Label>Hue</ColorSlider.Label>
+            <ColorSlider.ValueLabel />
+          </div>
+          <ColorSlider.Track class="ColorSliderTrack">
+            <ColorSlider.Thumb class="ColorSliderThumb">
+              <ColorSlider.Input />
+            </ColorSlider.Thumb>
+          </ColorSlider.Track>
+        </ColorSlider>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .ColorSliderRoot {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+      touch-action: none;
+      width: 200px;
+    }
+
+    .ColorSliderTrack {
+      position: relative;
+      border-radius: 6px;
+      height: 24px;
+      width: 100%;
+    }
+
+    .ColorSliderThumb {
+      display: block;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px #0000006b;
+    }
+
+    .ColorSliderThumb:focus {
+      outline: none;
+    }
+
+    .ColorSliderLabel {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+### Controlled value
+
+<Preview>
+	<ControlledValueExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { createSignal } from "solid-js";
+		import { ColorSlider } from "@kobalte/core/color-slider";
+    import { parseColor } from "@kobalte/utils";
+    import "./style.css";
+
+    function App() {
+      const [value, setValue] = createSignal(parseColor('hsl(0, 100%, 50%)'));
+      return (
+        <ColorSlider class="ColorSliderRoot" value={value()} onChange={setValue} channel="hue">
+          <div class="ColorSliderLabel">
+            <ColorSlider.Label>Hue</ColorSlider.Label>
+            <ColorSlider.ValueLabel />
+          </div>
+          <ColorSlider.Track class="ColorSliderTrack">
+            <ColorSlider.Thumb class="ColorSliderThumb">
+              <ColorSlider.Input />
+            </ColorSlider.Thumb>
+          </ColorSlider.Track>
+        </ColorSlider>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .ColorSliderRoot {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+      touch-action: none;
+      width: 200px;
+    }
+
+    .ColorSliderTrack {
+      position: relative;
+      border-radius: 6px;
+      height: 24px;
+      width: 100%;
+    }
+
+    .ColorSliderThumb {
+      display: block;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px #0000006b;
+    }
+
+    .ColorSliderThumb:focus {
+      outline: none;
+    }
+
+    .ColorSliderLabel {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+### Vertical Slider
+
+<Preview>
+	<VerticalSliderExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+		import { ColorSlider } from "@kobalte/core/color-slider";
+    import { parseColor } from "@kobalte/utils";
+    import "./style.css";
+
+    function App() {
+      return (
+        <ColorSlider class="ColorSliderRoot" defaultValue={parseColor('#ff00ff')} channel="red" orientation="vertical">
+          <div class="ColorSliderLabel">
+            <ColorSlider.Label>Hue</ColorSlider.Label>
+            <ColorSlider.ValueLabel />
+          </div>
+          <ColorSlider.Track class="ColorSliderTrack">
+            <ColorSlider.Thumb class="ColorSliderThumb">
+              <ColorSlider.Input />
+            </ColorSlider.Thumb>
+          </ColorSlider.Track>
+        </ColorSlider>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .ColorSliderRoot {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+      touch-action: none;
+      height: 200px;
+    }
+
+    .ColorSliderTrack {
+      position: relative;
+      border-radius: 6px;
+      height: 100%;
+      width: 24px;
+    }
+
+    .ColorSliderThumb {
+      display: block;
+      left: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px #0000006b;
+    }
+
+    .ColorSliderThumb:focus {
+      outline: none;
+    }
+
+    .ColorSliderLabel {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+### Custom Value Label
+
+<Preview>
+	<CustomValueExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+		import { ColorSlider } from "@kobalte/core/color-slider";
+    import { parseColor } from "@kobalte/utils";
+    import "./style.css";
+
+    function App() {
+      return (
+        <ColorSlider class="ColorSliderRoot" defaultValue={parseColor("#ff00ff")} channel="green" getValueLabel={param => `${param.toFormat("rgb")}`}>
+          <div class="ColorSliderLabel">
+            <ColorSlider.ValueLabel />
+          </div>
+          <ColorSlider.Track class="ColorSliderTrack">
+            <ColorSlider.Thumb class="ColorSliderThumb">
+              <ColorSlider.Input />
+            </ColorSlider.Thumb>
+          </ColorSlider.Track>
+        </ColorSlider>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .ColorSliderRoot {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+      touch-action: none;
+      width: 200px;
+    }
+
+    .ColorSliderTrack {
+      position: relative;
+      border-radius: 6px;
+      height: 24px;
+      width: 100%;
+    }
+
+    .ColorSliderThumb {
+      display: block;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px #0000006b;
+    }
+
+    .ColorSliderThumb:focus {
+      outline: none;
+    }
+
+    .ColorSliderLabel {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    ```
+
+  </TabsSnippets.Content>
+{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## API Reference
+
+### ColorSlider
+
+`ColorSlider` is equivalent to the `Root` import from `@kobalte/core/color-slider` (and deprecated `ColorSlider.Root`).
+
+| Prop            | Description                                                                                                                             |
+| :-------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `Color` <br/> The controlled value of the slider. Must be used in conjunction with `onChange`.                                          |
+| defaultValue    | `Color` <br/> The value of the slider when initially rendered. Use when you do not need to control the state of the slider.             |
+| channel         | `ColorChannel` <br/> The color channel that the slider manipulates.                                                                     |
+| colorSpace      | `ColorSpace` <br/> The color space that the slider operates in. The `channel` must be in this color space.                              |
+| onChange        | `(value: Color) => void` <br/> Event handler called when the value changes.                                                             |
+| onChangeEnd     | `(value: Color) => void` <br/> Event handler called when the value changes at the end of an interaction.                                |
+| getValueLabel   | `(param: Color) => string` <br/> A function to get the accessible label text representing the current value in a human-readable format. |
+| orientation     | `'horizontal' \| 'vertical'` <br/> The orientation of the slider.                                                                       |
+| name            | `string` <br/> The name of the slider, used when submitting an HTML form.                                                               |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the slider should display its "valid" or "invalid" visual styling.                                 |
+| required        | `boolean` <br/> Whether the user must check a radio group item before the owning form can be submitted.                                 |
+| disabled        | `boolean` <br/> Whether the radio group is disabled.                                                                                    |
+| readOnly        | `boolean` <br/> Whether the radio group items can be selected but not changed by the user.                                              |
+| translations    | `ColorIntlTranslations` <br/> Localization strings.                                                                                     |
+
+| Data attribute                | Description                                                                        |
+| :---------------------------- | :--------------------------------------------------------------------------------- |
+| data-orientation='horizontal' | Present when the slider has horizontal orientation.                                |
+| data-orientation='vertical'   | Present when the slider has vertical orientation.                                  |
+| data-valid                    | Present when the slider is valid according to the validation rules.                |
+| data-invalid                  | Present when the slider is invalid according to the validation rules.              |
+| data-required                 | Present when the user must slider an item before the owning form can be submitted. |
+| data-disabled                 | Present when the slider is disabled.                                               |
+| data-readonly                 | Present when the slider is read only.                                              |
+
+`ColorSlider.ValueLabel`, `ColorSlider.Input`, `ColorSlider.Thumb` and `ColorSlider.Track` share the same data-attributes.
+
+## Rendered elements
+
+| Component                | Default rendered element |
+| :----------------------- | :----------------------- |
+| `ColorSlider`            | `div`                    |
+| `ColorSlider.Track`      | `div`                    |
+| `ColorSlider.Thumb`      | `span`                   |
+| `ColorSlider.Input`      | `input`                  |
+| `ColorSlider.ValueLabel` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                         |
+| :-------------------- | :------------------------------------------------------------------ |
+| <Kbd>PageUp</Kbd>     | Increases the value of the thumb by a larger step.                  |
+| <Kbd>PageDown</Kbd>   | Decreases the value of the thumb by a larger step.                  |
+| <Kbd>ArrowDown</Kbd>  | Decreases the value of the thumb by the step amount.                |
+| <Kbd>ArrowUp</Kbd>    | Increases the value of the thumb by the step amount.                |
+| <Kbd>ArrowRight</Kbd> | Increments/decrements by the step value depending on `orientation`. |
+| <Kbd>ArrowLeft</Kbd>  | Increments/decrements by the step value depending on `orientation`. |
+| <Kbd>Home</Kbd>       | Sets the value of the thumb to the minimum value.                   |
+| <Kbd>End</Kbd>        | Sets the value of the thumb to the maximum value.                   |

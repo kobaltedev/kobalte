@@ -71,6 +71,26 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/collapsible",
 			},
 			{
+				title: "Color Area",
+				href: "/docs/core/components/color-area",
+				status: "new",
+			},
+			{
+				title: "Color Channel Field",
+				href: "/docs/core/components/color-channel-field",
+				status: "new",
+			},
+			{
+				title: "Color Slider",
+				href: "/docs/core/components/color-slider",
+				status: "new",
+			},
+			{
+				title: "Color Swatch",
+				href: "/docs/core/components/color-swatch",
+				status: "new",
+			},
+			{
 				title: "Combobox",
 				href: "/docs/core/components/combobox",
 			},
