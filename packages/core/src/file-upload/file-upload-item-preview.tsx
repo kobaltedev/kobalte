@@ -1,4 +1,4 @@
-import type { JSX, ValidComponent } from "solid-js";
+import { Show, type JSX, type ValidComponent } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -27,13 +27,11 @@ export function FileUploadItemPreview<T extends ValidComponent = "div">(
 ) {
 	const { file } = useFileUploadItemContext();
 
-	if (!file.type.match(props.type ?? ".*")) {
-		return null;
-	}
-
 	return (
-		<Polymorphic as="div" class="file-upload__item-preview" {...props}>
-			{props.children}
-		</Polymorphic>
+		<Show when={file.type.match(props.type ?? ".*")} fallback={null}>
+			<Polymorphic as="div" class="file-upload__item-preview" {...props}>
+				{props.children}
+			</Polymorphic>
+		</Show>
 	);
 }
