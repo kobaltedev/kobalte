@@ -1,11 +1,5 @@
 // utils
-export * from "./colors/intl";
-export * from "./colors/types";
-export * from "./colors/utils";
 export * from "./color-mode";
-export * from "./colors/intl";
-export * from "./colors/types";
-export * from "./colors/utils";
 export * from "./form-control";
 export * from "./i18n";
 export * from "./list";

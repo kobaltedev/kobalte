@@ -1,0 +1,582 @@
+import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
+import { BasicExample, DebounceExample, CmdkStyleExample } from "../../../../examples/search";
+
+# Search
+
+Search a searchbox text input with a menu.
+Handle the case where dataset filtering needs to occur outside the combobox component.
+
+## Import
+
+```ts
+import { Search } from "@kobalte/core/search";
+// or
+import { Root, Label, ... } from "@kobalte/core/search";
+```
+
+## Features
+
+- Inherits all the features of [combobox](/docs/core/components/combobox), except result filtering which should be managed externally.
+- Debouncing text input to rate limit search suggestions calls.
+- Optional indicator to show when suggestions are loading.
+
+## Anatomy
+
+The search consists of:
+
+- **Search:** The root container for a search component.
+- **Search.Label:** The label that gives the user information on the search component.
+- **Search.Description:** The description that gives the user more information on the component.
+- **Search.Control:** Contains the search input and indicator.
+- **Search.Indicator:** Wrapper for icon to indicate loading status.
+- **Search.Icon:** A small icon often displayed next to the input as a visual affordance for the fact it can be open.
+- **Search.Input:** The input used to search and reflects the selected suggestion values.
+- **Search.Portal:** Portals its children into the `body` when the search is open.
+- **Search.Content:** Contains the content to be rendered when the search is open.
+- **Search.Arrow:** An optional arrow element to render alongside the search content.
+- **Search.Listbox:** Contains a list of items and allows a user to search one or more of them.
+- **Search.Section:** Used to render the label of an option group. It won't be focusable using arrow keys.
+- **Search.Item:** An item of the search suggestion.
+- **Search.ItemLabel:** An accessible label to be announced for the item.
+- **Search.ItemDescription:** An optional accessible description to be announced for the item.
+- **Search.NoResult:** Displayed when no suggestion options are given.
+
+```tsx
+<Search>
+	<Search.Label />
+
+	<Search.Control>
+		<Search.Indicator>
+			<Search.Icon />
+		</Search.Indicator>
+		<Search.Input />
+	</Search.Control>
+
+	<Search.Description />
+
+	<Search.Portal>
+		<Search.Content>
+			<Search.Arrow />
+			<Search.Listbox />
+			<Search.NoResult>
+		</Search.Content>
+	</Search.Portal>
+</Search>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+	import { Search } from "@kobalte/core/search";
+	import { MagnifyingGlassIcon, ReloadIcon } from "some-icon-library";
+	import { createSignal } from "solid-js";
+	import "./style.css";
+
+    import { queryEmojiData } from "your-search-function";
+
+    function App() {
+    	const [options, setOptions] = createSignal([]);
+    	const [emoji, setEmoji] = createSignal();
+    	return (
+    		<>
+    			<Search
+    				triggerMode="focus"
+    				options={options()}
+    				onInputChange={query => setOptions(queryEmojiData(query))}
+    				onChange={result => setEmoji(result)}
+    				optionValue="name"
+    				optionLabel="name"
+    				placeholder="Search an emoji…"
+    				itemComponent={props => (
+    					<Search.Item item={props.item} class="search__item">
+    						<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
+    					</Search.Item>
+    				)}
+    			>
+    				<Search.Control class="search__control" aria-label="Emoji">
+    					<Search.Indicator
+    						class="search__indicator"
+    						loadingComponent={
+    							<Search.Icon class="load__icon">
+    								<ReloadIcon class="spin__icon" />
+    							</Search.Icon>
+    						}
+    					>
+    						<Search.Icon class="search__icon">
+    							<MagnifyingGlassIcon class="center__icon" />
+    						</Search.Icon>
+    					</Search.Indicator>
+    					<Search.Input class="search__input" />
+    				</Search.Control>
+    				<Search.Portal>
+    					<Search.Content class="search__content" onCloseAutoFocus={(e) => e.preventDefault()}>
+    						<Search.Listbox class="search__listbox" />
+    						<Search.NoResult class="search__no_result">
+    							😬 No emoji found
+    						</Search.NoResult>
+    					</Search.Content>
+    				</Search.Portal>
+    			</Search>
+    			<div class="result__content">
+    				Emoji selected: {emoji()?.emoji} {emoji()?.name}
+    			</div>
+    		</>
+    	)
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+	.search__control {
+		display: inline-flex;
+		justify-content: space-between;
+		width: 240px;
+		border-radius: 6px;
+		font-size: 16px;
+		line-height: 1;
+		outline: none;
+		background-color: white;
+		border: 1px solid hsl(240 6% 90%);
+		color: hsl(240 4% 16%);
+		transition:
+			border-color 250ms,
+			color 250ms;
+	}
+	.search__control[data-invalid] {
+		border-color: hsl(0 72% 51%);
+		color: hsl(0 72% 51%);
+	}
+	.search__control_multi {
+		width: 100%;
+		min-width: 240px;
+		max-width: 300px;
+	}
+	.search__input {
+		appearance: none;
+		display: inline-flex;
+		width: 100%;
+		min-height: 40px;
+		padding-left: 16px;
+		font-size: 16px;
+		background: transparent;
+		border-top-left-radius: 6px;
+		border-bottom-left-radius: 6px;
+		outline: none;
+	}
+	.search__input::placeholder {
+		color: hsl(240 4% 46%);
+	}
+	.search__indicator {
+		appearance: none;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		width: auto;
+		outline: none;
+		border-top-left-radius: 6px;
+		border-bottom-left-radius: 6px;
+		padding: 0 10px;
+		background-color: hsl(240 5% 96%);
+		border-right: 1px solid hsl(240 6% 90%);
+		color: hsl(240 4% 16%);
+		font-size: 16px;
+		line-height: 0;
+		transition: 250ms background-color;
+	}
+	.search__icon {
+		height: 20px;
+		width: 20px;
+		flex: 0 0 16px;
+		display: grid;
+		justify-items: center;
+	}
+	.load__icon {
+		height: 20px;
+		width: 20px;
+		display: grid;
+		justify-items: center;
+		flex: 0 0 14px;
+	}
+	.center__icon {
+		margin: auto;
+	}
+	.spin__icon {
+		animation: spin 600ms linear;
+		animation-iteration-count: infinite;
+		margin: auto;
+	}
+	.search__description {
+		margin-top: 8px;
+		color: hsl(240 5% 26%);
+		font-size: 12px;
+		user-select: none;
+	}
+	.search__content {
+		background-color: white;
+		border-radius: 6px;
+		border: 1px solid hsl(240 6% 90%);
+		box-shadow:
+			0 4px 6px -1px rgb(0 0 0 / 0.1),
+			0 2px 4px -2px rgb(0 0 0 / 0.1);
+		transform-origin: var(--kb-search-content-transform-origin);
+		animation: contentHide 250ms ease-in forwards;
+	}
+	.search__content[data-expanded] {
+		animation: contentShow 250ms ease-out;
+	}
+	.search__listbox {
+		overflow-y: auto;
+		max-height: 360px;
+		padding: 8px;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+		row-gap: 6px;
+		column-gap: 6px;
+		line-height: 1;
+	}
+	.search__listbox:focus {
+		outline: none;
+	}
+	.search__item {
+		font-size: 24px;
+		line-height: 1;
+		color: hsl(240 4% 16%);
+		border-radius: 16px;
+		padding: 8px;
+		position: relative;
+		user-select: none;
+		outline: none;
+		display: grid;
+		justify-items: center;
+	}
+	.search__item[data-disabled] {
+		color: hsl(240 5% 65%);
+		opacity: 0.5;
+		pointer-events: none;
+	}
+	.search__item[data-highlighted] {
+		outline: none;
+		box-sizing: border-box;
+		background-color: hsl(240 5% 96%);
+		box-shadow: inset 0 0 0 2px hsl(200 98% 39%);
+	}
+	.search__section {
+		padding: 8px 0 0 8px;
+		font-size: 14px;
+		line-height: 32px;
+		color: hsl(240 4% 46%);
+	}
+	.search__no_result {
+		text-align: center;
+		padding: 8px;
+		padding-bottom: 24px;
+		margin: auto;
+		color: hsl(240 4% 46%);
+	}
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+	@keyframes contentShow {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	@keyframes contentHide {
+		from {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		to {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+	}
+	.result__content {
+		margin-top: 16px;
+		font-size: 16px;
+		line-height: 1;
+	}
+	```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Debounce
+
+Set `debounceOptionsMillisecond`, to prevent new search queries immediately on input change. Instead, search queries are requested once input is idle for a set time.
+
+Show a debouncing icon by adding a `loadingComponent` to `Search.Indicator`.
+
+<Preview>
+	<DebounceExample />
+</Preview>
+
+    	```tsx
+    	<Search
+    		triggerMode="focus"
+    		options={options()}
+    		onInputChange={query => setOptions(queryEmojiData(query))}
+    		onChange={result => setEmoji(result)}
+    		debounceOptionsMillisecond={300}
+    		optionValue="name"
+    		optionLabel="name"
+    		placeholder="Search an emoji…"
+    			itemComponent={(props: any) => (
+    			<Search.Item item={props.item}>
+    				<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
+    			</Search.Item>
+    		)}
+    	>
+    		<Search.Control aria-label="Emoji">
+    			<Search.Indicator
+    				loadingComponent={
+    					<Search.Icon>
+    						<ReloadIcon />
+    					</Search.Icon>
+    				}
+    			>
+    				<Search.Icon>
+    					<MagnifyingGlassIcon />
+    				</Search.Icon>
+    			</Search.Indicator>
+    			<Search.Input />
+    		</Search.Control>
+    		<Search.Portal>
+    			<Search.Content onCloseAutoFocus={(e) => e.preventDefault()}>
+    				<Search.Listbox />
+    				<Search.NoResult>
+    					😬 No emoji found
+    				</Search.NoResult>
+    			</Search.Content>
+    		</Search.Portal>
+    	</Search>
+    ```
+
+### Cmdk style
+
+To achieve the command menu look, add the `open` prop to permanently open dropdown. Replace `Search.Portal` and `Search.Content` with a `div` to directly mount your content below the search input.
+
+<Preview>
+	<CmdkStyleExample />
+</Preview>
+
+    	```tsx
+    	<Search
+    		open
+    		options={options()}
+    		onInputChange={query => setOptions(queryEmojiData(query))}
+    		onChange={result => setEmoji(result)}
+    		debounceOptionsMillisecond={300}
+    		optionValue="name"
+    		optionLabel="name"
+    		placeholder="Search an emoji…"
+    		itemComponent={(props: any) => (
+    			<Search.Item item={props.item}>
+    				<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
+    			</Search.Item>
+    		)}
+    	>
+    		<Search.Control aria-label="Emoji">
+    			<Search.Indicator>
+    				<Search.Icon>
+    					<MagnifyingGlassIcon />
+    				</Search.Icon>
+    			</Search.Indicator>
+    			<Search.Input />
+    		</Search.Control>
+    		<div>
+    				<Search.Listbox />
+    				<Search.NoResult>
+    					😬 No emoji found
+    				</Search.NoResult>
+    		</div>
+    	</Search>
+    ```
+
+## API Reference
+
+### Search
+
+`Search` is equivalent to the `Root` import from `@kobalte/core/search`.
+
+| Prop                          | Description                                                                                                                                                                                                                                                                                                                                                                             |
+| :---------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| options                       | `Array<T \| U>` <br/> An array of options to display as the available options.                                                                                                                                                                                                                                                                                                          |
+| optionValue                   | `keyof T \| ((option: T) => string \| number)` <br/> Property name or getter function to use as the value of an option. This is the value that will be submitted when the search component is part of a `<form>`.                                                                                                                                                                       |
+| optionTextValue               | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the text value of an option for typeahead purpose.                                                                                                                                                                                                                                                |
+| optionLabel                   | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the label of an option. This is the string representation of the option to display in the `Search.Input`.                                                                                                                                                                                         |
+| optionDisabled                | `keyof T \| ((option: T) => boolean)` <br/> Property name or getter function to use as the disabled flag of an option.                                                                                                                                                                                                                                                                  |
+| optionGroupChildren           | `keyof U` <br/> Property name that refers to the children options of an option group.                                                                                                                                                                                                                                                                                                   |
+| itemComponent                 | `Component<SearchItemComponentProps<T>>` <br/> When NOT virtualized, the component to render as an item in the `Search.Listbox`.                                                                                                                                                                                                                                                        |
+| sectionComponent              | `Component<SearchSectionComponentProps<U>>` <br/> When NOT virtualized, the component to render as a section in the `Search.Listbox`.                                                                                                                                                                                                                                                   |
+| multiple                      | `boolean` <br/> Whether the search component allows multi-selection.                                                                                                                                                                                                                                                                                                                    |
+| placeholder                   | `JSX.Element` <br/> The content that will be rendered when no value or defaultValue is set.                                                                                                                                                                                                                                                                                             |
+| value                         | `T \| Array<T>` <br/> The controlled value of the search input.                                                                                                                                                                                                                                                                                                                         |
+| defaultValue                  | `T \| Array<T>` <br/> The value of the search input when initially rendered. Useful when you do not need to control the value.                                                                                                                                                                                                                                                          |
+| onChange                      | `(value: T \| Array<T>) => void` <br/> Event handler called when the value changes.                                                                                                                                                                                                                                                                                                     |
+| open                          | `boolean` <br/> The controlled open state of the search suggestion.                                                                                                                                                                                                                                                                                                                     |
+| defaultOpen                   | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                                                                                                                                                                                                                                  |
+| onOpenChange                  | `(open: boolean, triggerMode?: SearchTriggerMode) => void` <br/> Event handler called when the open state of the search component changes. Returns the new open state and the action that caused the opening of the menu.                                                                                                                                                               |
+| onInputChange                 | `(value: string) => void` <br/> Handler that is called when the search input value changes.                                                                                                                                                                                                                                                                                             |
+| triggerMode                   | `SearchTriggerMode` <br/> The interaction required to display search suggestion, it can be one of the following: <br/> - **input**: open search suggestion when the user is typing. <br/> - **focus**: open search suggestion when the input is focused. <br/> - **manual**: open search suggestion when pressing arrow down/up while focus is on the input or clicking on the trigger. |
+| removeOnBackspace             | `boolean` <br/> When `multiple` is true, whether the last selected option should be removed when the user press the Backspace key and the input is empty.                                                                                                                                                                                                                               |
+| allowDuplicateSelectionEvents | `boolean` <br/> Whether `onChange` should fire even if the new value is the same as the last.                                                                                                                                                                                                                                                                                           |
+| disallowEmptySelection        | `boolean` <br/> Whether the search component allows empty selection or not.                                                                                                                                                                                                                                                                                                             |
+| allowsEmptyCollection         | `boolean` <br/> Whether the search component allows the menu to be open when the collection is empty.                                                                                                                                                                                                                                                                                   |
+| closeOnSelection              | `boolean` <br/> Whether the search component closes after selection.                                                                                                                                                                                                                                                                                                                    |
+| selectionBehavior             | `'toggle' \| 'replace'` <br/> How selection should behave in the search component.                                                                                                                                                                                                                                                                                                      |
+| virtualized                   | `boolean` <br/> Whether the search suggestion uses virtual scrolling.                                                                                                                                                                                                                                                                                                                   |
+| modal                         | `boolean` <br/> Whether the search component should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the search component content. <br/> - elements outside the search component content will not be visible for screen readers.      |
+| preventScroll                 | `boolean` <br/> Whether the scroll should be locked even if the search suggestion is not modal.                                                                                                                                                                                                                                                                                         |
+| forceMount                    | `boolean` <br/> Used to force mounting the search suggestion (portal, positioner and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                                          |
+| name                          | `string` <br/> The name of the search component. Submitted with its owning form as part of a name/value pair.                                                                                                                                                                                                                                                                           |
+| validationState               | `'valid' \| 'invalid'` <br/> Whether the search component should display its "valid" or "invalid" visual styling.                                                                                                                                                                                                                                                                       |
+| required                      | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                                                                                                                                                                                                                                                                           |
+| disabled                      | `boolean` <br/> Whether the search component is disabled.                                                                                                                                                                                                                                                                                                                               |
+| readOnly                      | `boolean` <br/> Whether the search component items can be selected but not changed by the user.                                                                                                                                                                                                                                                                                         |
+| autoComplete                  | `string` <br/> Describes the type of autocomplete functionality the input should provide if any. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete)                                                                                                                                                                                     |
+| translations                  | [`SearchIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/combobox/combobox.intl.ts) <br/> Localization strings.                                                                                                                                                                                                                                     |
+
+`Search` also accepts the following props to customize the placement of the `Search.Content`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| :--------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| placement        | `Placement` <br/> The placement of the search component content.                                                                                                                                                                                                                                                                                                                              |
+| gutter           | `number` <br/> The distance between the search component content and the trigger element.                                                                                                                                                                                                                                                                                                     |
+| shift            | `number` <br/> The skidding of the search component content along the trigger element.                                                                                                                                                                                                                                                                                                        |
+| flip             | `boolean \| string` <br/> Controls the behavior of the search component content when it overflows the viewport: <br/> - If a `boolean`, specifies whether the search component content should flip to the opposite side when it overflows.<br/> - If a `string`, indicates the preferred fallback placements when it overflows.<br/>The placements must be spaced-delimited, e.g. "top left". |
+| slide            | `boolean` <br/> Whether the search component content should slide when it overflows.                                                                                                                                                                                                                                                                                                          |
+| overlap          | `boolean` <br/> Whether the search component content can overlap the trigger element when it overflows.                                                                                                                                                                                                                                                                                       |
+| sameWidth        | `boolean` <br/> Whether the search component content should have the same width as the trigger element. This will be exposed to CSS as `--kb-popper-anchor-width`.                                                                                                                                                                                                                            |
+| fitViewport      | `boolean` <br/> Whether the search component content should fit the viewport. If this is set to true, the search component content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.                                                                                            |
+| hideWhenDetached | `boolean` <br/> Whether to hide the search component content when the trigger element becomes occluded.                                                                                                                                                                                                                                                                                       |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                                                         |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the search component content corner.                                                                                                                                                                                                                                                                                                 |
+| overflowPadding  | `number` <br/> The minimum padding between the search component content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                                 |
+
+| Data attribute | Description                                                                        |
+| :------------- | :--------------------------------------------------------------------------------- |
+| data-valid     | Present when the search component is valid according to the validation rules.      |
+| data-invalid   | Present when the search component is invalid according to the validation rules.    |
+| data-required  | Present when the user must select an item before the owning form can be submitted. |
+| data-disabled  | Present when the search component is disabled.                                     |
+| data-readonly  | Present when the search component is read only.                                    |
+
+`Search.Label`, `Search.Control`, `Search.Input`, `Search.Trigger`, `Search.Description` and `Search.ErrorMesssage` shares the same data-attributes.
+
+### Search.Control
+
+| Render Prop     | Description                                                                    |
+| :-------------- | :----------------------------------------------------------------------------- |
+| selectedOptions | `Accessor<T[]>` <br/> An array of selected options.                            |
+| remove          | `(option: T) => void` <br/> A function to remove an option from the selection. |
+| clear           | `() => void` <br/> A function to clear the selection.                          |
+
+### Search.Indicator
+
+| Prop             | Description                                                                                    |
+| :--------------- | :--------------------------------------------------------------------------------------------- |
+| loadingComponent | `JSX.Element` <br/> The component that is displayed when suggestion options are being fetched. |
+
+### Search.Icon
+
+| Data attribute | Description                                 |
+| :------------- | :------------------------------------------ |
+| data-expanded  | Present when the search component is open.  |
+| data-closed    | Present when the search component is close. |
+
+### Search.Content
+
+| Data attribute | Description                                 |
+| :------------- | :------------------------------------------ |
+| data-expanded  | Present when the search component is open.  |
+| data-closed    | Present when the search component is close. |
+
+### Search.Arrow
+
+| Prop | Description                           |
+| :--- | :------------------------------------ |
+| size | `number` <br/> The size of the arrow. |
+
+### Search.Listbox
+
+| Prop         | Description                                                                                                                                                                         |
+| :----------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| scrollRef    | `Accessor<HTMLElement \| undefined>` <br/> The ref attached to the scrollable element, used to provide automatic scrolling on item focus. If not provided, defaults to the listbox. |
+| scrollToItem | `(key: string) => void` <br/> When virtualized, the Virtualizer function used to scroll to the item of the given key.                                                               |
+| children     | `(items: Accessor<Collection<CollectionNode<T \| U>>>) => JSX.Element` <br/> When virtualized, a map function that receives an _items_ signal representing all items and sections.  |
+
+### Search.Item
+
+| Prop | Description                                           |
+| :--- | :---------------------------------------------------- |
+| item | `CollectionNode` <br/> The collection node to render. |
+
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-selected    | Present when the item is selected.    |
+| data-highlighted | Present when the item is highlighted. |
+
+`Search.ItemLabel` and `Search.ItemDescription` shares the same data-attributes.
+
+## Rendered elements
+
+| Component                | Default rendered element |
+| :----------------------- | :----------------------- |
+| `Search`                 | `div`                    |
+| `Search.Label`           | `span`                   |
+| `Search.Description`     | `div`                    |
+| `Search.Control`         | `div`                    |
+| `Search.Indicator`       | `div`                    |
+| `Search.Icon`            | `span`                   |
+| `Search.Input`           | `input`                  |
+| `Search.Portal`          | `Portal`                 |
+| `Search.Content`         | `div`                    |
+| `Search.Arrow`           | `div`                    |
+| `Search.Listbox`         | `ul`                     |
+| `Search.Section`         | `li`                     |
+| `Search.Item`            | `li`                     |
+| `Search.ItemLabel`       | `div`                    |
+| `Search.ItemDescription` | `div`                    |
+| `Search.NoResult`        | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                                   | Description                                                                                                                                                                               |
+| :------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <Kbd>Enter</Kbd>                      | When focus is virtualy on an item, selects the focused item.                                                                                                                              |
+| <Kbd>ArrowDown</Kbd>                  | When focus is on the input, opens the search suggestion and virtual focuses the first or selected item. <br/> When focus is virtualy on an item, moves virtual focus to the next item.    |
+| <Kbd>ArrowUp</Kbd>                    | When focus is on the input, opens the search suggestion and virtual focuses the last or selected item. <br/> When focus is virtualy on an item, moves virtual focus to the previous item. |
+| <Kbd>Alt</Kbd> + <Kbd>ArrowDown</Kbd> | When focus is on the input, opens the search suggestion.                                                                                                                                  |
+| <Kbd>Alt</Kbd> + <Kbd>ArrowUp</Kbd>   | When focus is on the input, closes the search suggestion.                                                                                                                                 |
+| <Kbd>Home</Kbd>                       | When focus is on the input, moves virtual focus to first item.                                                                                                                            |
+| <Kbd>End</Kbd>                        | When focus is on the input, moves virtual focus to last item.                                                                                                                             |
+| <Kbd>Esc</Kbd>                        | When the search suggestion is open, closes the search suggestion. <br/> When the search suggestion is closed, clear the input and selection.                                              |
