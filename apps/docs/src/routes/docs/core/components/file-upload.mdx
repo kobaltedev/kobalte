@@ -1,0 +1,357 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import { BasicExample, HTMLFormExample } from "../../../../examples/file-upload";
+
+# File Upload
+
+- A component that is used to upload multiple files, with ability to drag and drop files.
+
+## Import
+
+```ts
+import { FileUpload } from "@kobalte/core/file-upload";
+// or
+import { Root } from "@kobalte/core/file-upload";
+// or (deprecated)
+import { FileUpload } from "@kobalte/core";
+```
+
+## Features
+
+- Supports uploading multiple files at once.
+- Supports drag and drop functionality for uploading files.
+- Supports maximum file limits to restrict the number of files that can be uploaded.
+- Supports file size validation to ensure that files are within the specified size limits.
+- Supports custom validation rules for uploaded files.
+- Supports restricting the types of files that can be uploaded (e.g., images, documents).
+- Displays a list of files that have been selected for upload.
+- Allows users to remove files from the upload list before uploading.
+- Provides a preview of image files before they are uploaded.
+- Displays the size of each file in the upload list.
+- Supports customizing the components with custom styles and classes.
+
+## Anatomy
+
+The File Upload consists of:
+
+- **FileUpload**: The root container for the File Upload component.
+- **FileUpload.Dropzone**: The dropzone area where files can be dragged and dropped.
+- **FileUpload.Trigger**: The trigger element that opens the file selection dialog.
+- **FileUpload.Label**: The label for the File Upload component to toggle the file selection dialog.
+- **FileUpload.HiddenInput**: The hidden input element that triggers the file selection dialog.
+- **FileUpload.ItemGroup**: The container for the list of files that have been selected for upload.
+- **FileUpload.Item**: The individual file item in the list of files that have been selected for upload.
+- **FileUpload.Preview**: The preview container for image files that have been selected for upload.
+- **FileUpload.ItemPreviewImage**: The preview image for image files that have been selected for upload.
+- **FileUpload.ItemName**: The name of the file that has been selected for upload.
+- **FileUpload.ItemSize**: The size of the file that has been selected for upload.
+- **FileUpload.ItemDeleteTrigger**: The trigger element to remove a file from the list of files that have been selected for upload.
+- **FileUpload.Context**: The context provider for the File Upload component.
+
+```tsx
+<FileUpload>
+	<FileUpload.Label></FileUpload.Label>
+	<FileUpload.DropZone>
+		<FileUpload.Trigger></FileUpload.Trigger>
+	</FileUpload.DropZone>
+	<FileUpload.HiddenInput />
+	<FileUpload.ItemGroup>
+		<FileUpload.Context>
+			<FileUpload.Item>
+				<FileUpload.ItemPreview>
+					<FileUpload.ItemPreviewImage />
+				</FileUpload.ItemPreview>
+				<FileUpload.ItemSize />
+				<FileUpload.ItemName />
+				<FileUpload.ItemDeleteTrigger />
+			</FileUpload.Item>
+		</FileUpload.Context>
+	</FileUpload.ItemGroup>
+</FileUpload>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+	{/* <!-- prettier-ignore-start -->*/}
+	<TabsSnippets.Content value="index.tsx">
+		```tsx
+		import { FileUpload } from "@kobalte/core/file-upload";
+		import "./style.css";
+
+    	function App() {
+    		return (
+    			<FileUpload
+    				class={style.fileUpload}
+    				multiple
+    				maxFiles={5}
+    				onFileAccept={(data) => console.log("data", data)}
+    				onFileReject={(data) => console.log("data", data)}
+    				onFileChange={(data) => console.log("data", data)}
+    			>
+    				<FileUpload.Label class={style.fileUpload__label}>
+    					File Upload
+    				</FileUpload.Label>
+    				<FileUpload.DropZone class={style.fileUpload__dropzone}>
+    					Drop your files here...
+    					<FileUpload.Trigger class={style.fileUpload__trigger}>
+    						Choose files!
+    					</FileUpload.Trigger>
+    				</FileUpload.DropZone>
+    				<FileUpload.HiddenInput />
+    				<FileUpload.ItemGroup class={style.fileUpload__itemGroup}>
+    					<FileUpload.Context>
+    						{(context) => {
+    							return (
+    								<For each={context.acceptedFiles}>
+    									{(file) => (
+    										<FileUpload.Item file={file} class={style.fileUpload__item}>
+    											<FileUpload.ItemPreview
+    												type="image/*"
+    												class={style.fileUpload__itemPreview}
+    											>
+    												<FileUpload.ItemPreviewImage
+    													class={style.fileUpload__itemPreviewImage}
+    												/>
+    											</FileUpload.ItemPreview>
+    											<FileUpload.ItemName class={style.fileUpload__itemName} />
+    											<FileUpload.ItemSize class={style.fileUpload__itemSize} />
+    											<FileUpload.ItemDeleteTrigger
+    												class={style.fileUpload__itemDeleteTrigger}
+    											>
+    												Delete
+    											</FileUpload.ItemDeleteTrigger>
+    										</FileUpload.Item>
+    									)}
+    								</For>
+    							);
+    						}}
+    					</FileUpload.Context>
+    				</FileUpload.ItemGroup>
+    			</FileUpload>
+    		);
+    	}
+    ```
+
+    </TabsSnippets.Content>
+
+  <TabsSnippets.Content value="style.css">
+
+```css
+.fileUpload {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 400px;
+	width: 100%;
+	row-gap: 5px;
+}
+
+.fileUpload__label {
+	color: white;
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
+}
+
+.fileUpload__dropzone {
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
+	align-items: center;
+	justify-content: center;
+	border: 1px dashed rgb(42, 42, 40);
+	width: 100%;
+	height: 100%;
+	color: #ccc;
+	border-radius: 6px;
+}
+
+.fileUpload__trigger {
+	background-color: hsl(201 96% 32%);
+	color: white;
+	padding: 5px 10px;
+	border-radius: 4px;
+}
+
+.fileUpload__itemGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	width: 100%;
+}
+
+.fileUpload__item {
+	width: 100%;
+	display: grid;
+	padding: 16px;
+	column-gap: 10px;
+	border-radius: 6px;
+	grid-template-columns: auto 1fr auto;
+	grid-template-areas:
+		"preview name delete"
+		"preview size delete";
+	column-gap: 5px;
+	border: 1px solid rgb(42, 42, 40);
+	padding: 10px;
+}
+
+.fileUpload__itemPreview {
+	grid-area: preview;
+}
+
+.fileUpload__itemPreviewImage {
+	width: 50px;
+	object-fit: scale-down;
+	height: auto;
+	aspect-ratio: 1;
+}
+
+.fileUpload__itemName {
+	grid-area: name;
+	font-size: 14px;
+	color: #fff;
+}
+
+.fileUpload__itemSize {
+	grid-area: size;
+	font-size: 14px;
+	color: rgb(181, 179, 173);
+}
+
+.fileUpload__itemDeleteTrigger {
+	grid-area: delete;
+	cursor: pointer;
+	background-color: #a23434;
+	color: white;
+	padding: 2px 8px;
+	border-radius: 4px;
+	height: max-content;
+	align-self: center;
+}
+```
+
+    </TabsSnippets.Content>
+    {/* <!-- prettier-ignore-end -->*/}
+
+</TabsSnippets>
+
+## Usage
+
+### HTML forms
+
+By passing name prop to FileUpload.HiddenInput, you can use FileUpload in HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx
+function HTMLFormExample() {
+	let formRef: HTMLFormElement | undefined;
+
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+		const formData = new FormData(formRef);
+		const uploadedFiles = formData.getAll("uploaded-files");
+	};
+
+	return (
+		<form ref={formRef} onSubmit={onSubmit}>
+			<FileUpload
+				multiple
+				maxFiles={5}
+				onFileAccept={data => console.log("data", data)}
+				onFileReject={data => console.log("data", data)}
+				onFileChange={data => console.log("data", data)}
+			>
+				<FileUpload.Label>File Upload</FileUpload.Label>
+				<FileUpload.DropZone>
+					Drop your files here...
+					<FileUpload.Trigger>Choose files!</FileUpload.Trigger>
+				</FileUpload.DropZone>
+				<FileUpload.HiddenInput name="uploaded-files" />
+				<FileUpload.ItemGroup>
+					<FileUpload.Context>
+						{context => {
+							return (
+								<For each={context.acceptedFiles}>
+									{file => (
+										<FileUpload.Item file={file}>
+											<FileUpload.ItemPreview type="image/*" class={"fileUpload__itemPreview"}>
+												<FileUpload.ItemPreviewImage class={"fileUpload__itemPreviewImage"} />
+											</FileUpload.ItemPreview>
+											<FileUpload.ItemName />
+											<FileUpload.ItemSize />
+											<FileUpload.ItemDeleteTrigger>Delete</FileUpload.ItemDeleteTrigger>
+										</FileUpload.Item>
+									)}
+								</For>
+							);
+						}}
+					</FileUpload.Context>
+				</FileUpload.ItemGroup>
+			</FileUpload>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+## API Reference
+
+### FileUpload
+
+`FileUpload` is equivalent to the `Root` import from `@kobalte/core/file-upload` (and deprecated `FileUpload.Root`).
+
+| Prop               | Description                                                                                                 |
+| ------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `multiple`         | `boolean` <br /> Allows multiple files to be uploaded                                                       |
+| `maxFiles`         | `number` <br /> The maximum number of files that can be uploaded                                            |
+| `disabled`         | `boolean` <br /> Disables the file upload component                                                         |
+| `accept`           | `string \| string[] \| undefined` <br /> The types of files that can be uploaded.                           |
+| `allowDragAndDrop` | `boolean` <br /> Allows files to be dragged and dropped into the component.                                 |
+| `maxFileSize`      | `number` <br /> The maximum size of the file that can be uploaded in bytes.                                 |
+| `minFileSize`      | `number` <br /> The minimum size of the file that can be uploaded in bytes.                                 |
+| `onFileAccept`     | `(files: File[]) => void` <br /> Callback function that is called when file(s) is(are) accepted.            |
+| `onFileReject`     | `(files: FileRejection[]) => void` <br /> Callback function that is called when a file(s) is(are) rejected. |
+| `onFileChange`     | `(details: Details) => void` <br /> Callback function that is called when the list of files changes.        |
+| `validateFile`     | `(file: File) => FileError[] \| null ` <br /> Custom validation function for files.                         |
+
+### FileUpload.Item
+
+| Prop   | Description                        |
+| ------ | ---------------------------------- |
+| `file` | `File` <br /> Selected file object |
+
+### FileUpload.ItemSize
+
+| Prop        | Description                                                             |
+| ----------- | ----------------------------------------------------------------------- |
+| `precision` | `number` <br /> The number of decimal places to round the file size to. |
+
+### FileUpload.ItemPreview
+
+| Prop   | Description                                                              |
+| ------ | ------------------------------------------------------------------------ |
+| `type` | `string` <br /> The type of file to preview, only applicable for Images. |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description                                                                                              |
+| :--------------- | :------------------------------------------------------------------------------------------------------- |
+| <Kbd>Space</Kbd> | When focus is on dropzone, opens the file dialog.<br /> When focus is on trigger, opens the file dialog. |
+| <Kbd>Enter</Kbd> | When focus is on dropzone, opens the file dialog.<br /> When focus is on trigger, opens the file dialog. |

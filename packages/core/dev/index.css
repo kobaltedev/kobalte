@@ -1,0 +1,96 @@
+body {
+	background-color: #000;
+}
+
+.fileUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  width: 100%;
+  row-gap: 5px;
+}
+
+.fileUpload__label {
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  user-select: none;
+}
+
+.fileUpload__dropzone {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed rgb(42, 42, 40);
+  width: 100%;
+  height: 100%;
+  color: #ccc;
+  border-radius: 6px;
+}
+
+.fileUpload__trigger {
+  background-color: hsl(201 96% 32%);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.fileUpload__itemGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+}
+
+.fileUpload__item {
+  width: 100%;
+  display: grid;
+  padding: 16px;
+  column-gap: 10px;
+  border-radius: 6px;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "preview name delete"
+    "preview size delete";
+  column-gap: 5px;
+  border: 1px solid rgb(42, 42, 40);
+  padding: 10px;
+}
+
+.fileUpload__itemPreview {
+  grid-area: preview;
+}
+
+.fileUpload__itemPreviewImage {
+  width: 50px;
+  object-fit: scale-down;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.fileUpload__itemName {
+  grid-area: name;
+  font-size: 14px;
+  color: #fff;
+}
+
+.fileUpload__itemSize {
+  grid-area: size;
+  font-size: 14px;
+  color: rgb(181, 179, 173);
+}
+
+.fileUpload__itemDeleteTrigger {
+  grid-area: delete;
+  cursor: pointer;
+  background-color: #a23434;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  height: max-content;
+  align-self: center;
+}
