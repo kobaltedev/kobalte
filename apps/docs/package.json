@@ -34,7 +34,7 @@
 	"dependencies": {
 		"@docsearch/css": "3.5.2",
 		"@docsearch/js": "3.5.2",
-		"@kobalte/core": "0.13.7",
+		"@kobalte/core": "workspace:*",
 		"@solidjs/meta": "0.29.3",
 		"@solidjs/router": "0.12.4",
 		"@solidjs/start": "0.6.1",

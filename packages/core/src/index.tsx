@@ -1,11 +1,5 @@
 // utils
-export * from "./colors/intl";
-export * from "./colors/types";
-export * from "./colors/utils";
 export * from "./color-mode";
-export * from "./colors/intl";
-export * from "./colors/types";
-export * from "./colors/utils";
 export * from "./form-control";
 export * from "./i18n";
 export * from "./list";
@@ -39,7 +33,6 @@ export * as Pagination from "./pagination";
 export * as Popover from "./popover";
 export * as Progress from "./progress";
 export * as RadioGroup from "./radio-group";
-export * as Search from "./search";
 export * as Select from "./select";
 export * as Separator from "./separator";
 export * as Skeleton from "./skeleton";
