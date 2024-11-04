@@ -1,11 +1,5 @@
 // utils
-export * from "./colors/intl";
-export * from "./colors/types";
-export * from "./colors/utils";
 export * from "./color-mode";
-export * from "./colors/intl";
-export * from "./colors/types";
-export * from "./colors/utils";
 export * from "./form-control";
 export * from "./i18n";
 export * from "./list";
@@ -29,6 +23,7 @@ export * as ContextMenu from "./context-menu";
 //export * as DatePicker from "./date-picker";
 export * as Dialog from "./dialog";
 export * as DropdownMenu from "./dropdown-menu";
+export * as FileUpload from "./file-upload";
 export * as HoverCard from "./hover-card";
 export * as Image from "./image";
 export * as Link from "./link";

@@ -87,6 +87,9 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 		PopperRootOptions,
 		"anchorRef" | "contentRef" | "onCurrentPlacementChange"
 	> {
+	/** Prevents input reset on combobox blur when content is displayed. */
+	noResetInputOnBlur?: boolean;
+
 	/** The localized strings of the component. */
 	translations?: ComboboxIntlTranslations;
 
@@ -301,6 +304,7 @@ export function ComboboxBase<
 	const [local, popperProps, formControlProps, others] = splitProps(
 		mergedProps,
 		[
+			"noResetInputOnBlur",
 			"translations",
 			"itemComponent",
 			"sectionComponent",
@@ -714,9 +718,10 @@ export function ComboboxBase<
 			const selectedOption = allOptions().find(
 				(option) => getOptionValue(option) === selectedKey,
 			);
-
+			if (local.noResetInputOnBlur && !selectedOption) return;
 			setInputValue(selectedOption ? getOptionLabel(selectedOption) : "");
 		} else {
+			if (local.noResetInputOnBlur) return;
 			setInputValue("");
 		}
 	};
