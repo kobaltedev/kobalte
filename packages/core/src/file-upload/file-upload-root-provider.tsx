@@ -1,4 +1,11 @@
-import { type JSX, createContext, createUniqueId, useContext } from "solid-js";
+import {
+	type JSX,
+	createContext,
+	createUniqueId,
+	useContext,
+	createSignal,
+	Accessor, Setter
+} from "solid-js";
 import { createStore } from "solid-js/store";
 
 import { mergeDefaultProps } from "@kobalte/utils";
@@ -12,16 +19,18 @@ type FileUploadContextProviderProps = FileUploadRootOptions & {
 };
 
 export type FileUploadContextValue = {
-	inputId: string;
-	fileInputRef: HTMLInputElement | undefined;
-	dropzoneRef: HTMLElement | undefined;
-	disabled?: boolean;
-	multiple?: boolean;
-	accept?: string;
-	allowDragAndDrop?: boolean;
+	inputId: Accessor<string>;
+	fileInputRef: Accessor<HTMLInputElement | undefined>;
+	setFileInputRef: Setter<HTMLInputElement | undefined>;
+	dropzoneRef: Accessor<HTMLElement | undefined>;
+	setDropzoneRef: Setter<HTMLElement | undefined>;
+	disabled: Accessor<boolean | undefined>;
+	multiple: Accessor<boolean | undefined>;
+	accept: Accessor<string | undefined>;
+	allowDragAndDrop: Accessor<boolean | undefined>;
 	processFiles: (files: File[]) => void;
-	acceptedFiles: File[];
-	rejectedFiles: FileRejection[];
+	acceptedFiles: File[]; // store
+	rejectedFiles: FileRejection[]; // store
 	removeFile: (file: File) => void;
 };
 
@@ -29,8 +38,8 @@ export const FileUploadContext = createContext<FileUploadContextValue>();
 
 export const FileUploadProvider = (props: FileUploadContextProviderProps) => {
 	const inputId = createUniqueId();
-	const fileInputRef: HTMLInputElement | undefined = undefined;
-	const dropzoneRef: HTMLElement | undefined = undefined;
+	const [fileInputRef, setFileInputRef] = createSignal<HTMLInputElement>();
+	const [dropzoneRef, setDropzoneRef] = createSignal<HTMLElement>();
 
 	const [acceptedFilesState, setAcceptedFilesState] = createStore<File[]>([]);
 	const [rejectedFilesState, setRejectedFilesState] = createStore<
@@ -101,9 +110,11 @@ export const FileUploadProvider = (props: FileUploadContextProviderProps) => {
 	};
 
 	const value = {
-		inputId: inputId,
-		fileInputRef: fileInputRef,
-		dropzoneRef: dropzoneRef,
+		inputId: () => inputId,
+		fileInputRef,
+		setFileInputRef,
+		dropzoneRef,
+		setDropzoneRef,
 		disabled: mergedProps.disabled,
 		multiple: mergedProps.multiple,
 		accept: mergedProps.accept,
