@@ -3,7 +3,7 @@ import {
 	BasicExample,
 	DefaultValueExample,
 	ControlledExample,
-    HalfRatingsExample,
+	HalfRatingsExample,
 	DescriptionExample,
 	ErrorMessageExample,
 	HTMLFormExample,
@@ -81,19 +81,19 @@ The rating item consists of:
     function App() {
       return (
         <RatingGroup class="rating-group">
-			<RatingGroup.Label class="rating-group__label">Rate Us:</RatingGroup.Label>
-			<RatingGroup.Control class="rating-group__control">
-				<Index each={Array(5)}>
-					{_ => (
-						<RatingGroup.Item class="rating-group-item">
-							<RatingGroup.ItemControl>
-								<StarIcon />
-							</RatingGroup.ItemControl>
-						</RatingGroup.Item>
-					)}
-				</Index>
-			</RatingGroup.Control>
-		</RatingGroup>
+    		<RatingGroup.Label class="rating-group__label">Rate Us:</RatingGroup.Label>
+    		<RatingGroup.Control class="rating-group__control">
+    			<Index each={Array(5)}>
+    				{_ => (
+    					<RatingGroup.Item class="rating-group-item">
+    						<RatingGroup.ItemControl>
+    							<StarIcon />
+    						</RatingGroup.ItemControl>
+    					</RatingGroup.Item>
+    				)}
+    			</Index>
+    		</RatingGroup.Control>
+    	</RatingGroup>
       );
     }
     ```
@@ -107,40 +107,41 @@ The rating item consists of:
 	gap: 8px;
 }
 
-.rating-group__label {
-	color: hsl(240 6% 10%);
-	font-size: 14px;
-	font-weight: 500;
-	user-select: none;
+.rating-group\_\_label {
+color: hsl(240 6% 10%);
+font-size: 14px;
+font-weight: 500;
+user-select: none;
 }
 
-.rating-group__description {
-	color: hsl(240 5% 26%);
-	font-size: 12px;
-	user-select: none;
+.rating-group\_\_description {
+color: hsl(240 5% 26%);
+font-size: 12px;
+user-select: none;
 }
 
-.rating-group__error-message {
-	color: hsl(0 72% 51%);
-	font-size: 12px;
-	user-select: none;
+.rating-group\_\_error-message {
+color: hsl(0 72% 51%);
+font-size: 12px;
+user-select: none;
 }
 
-.rating-group__control {
-	display: flex;
-	gap: 4px;
+.rating-group\_\_control {
+display: flex;
+gap: 4px;
 }
 
 .rating-group-item {
-	cursor: pointer;
-	fill: hsl(240 6% 90%);
-	transition: fill 200ms cubic-bezier(0.2, 0, 0, 1);
+cursor: pointer;
+fill: hsl(240 6% 90%);
+transition: fill 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .rating-group-item[data-highlighted] {
-	fill: hsl(200 98% 39%);
+fill: hsl(200 98% 39%);
 }
-```
+
+````
 
   </TabsSnippets.Content>
   {/* <!-- prettier-ignore-end --> */}
@@ -170,7 +171,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 		</Index>
 	</RatingGroup.Control>
 </RatingGroup>
-```
+````
 
 ### Controlled value
 
@@ -255,7 +256,7 @@ The `RatingGroup.Description` component can be used to associate additional help
 			)}
 		</Index>
 	</RatingGroup.Control>
-    <RatingGroup.Description>Rate your experience with us.</RatingGroup.Description>
+	<RatingGroup.Description>Rate your experience with us.</RatingGroup.Description>
 </RatingGroup>
 ```
 
@@ -293,9 +294,7 @@ function ErrorMessageExample() {
 					)}
 				</Index>
 			</RatingGroup.Control>
-			<RatingGroup.ErrorMessage>
-				Please select a rating between 1 and 5.
-			</RatingGroup.ErrorMessage>
+			<RatingGroup.ErrorMessage>Please select a rating between 1 and 5.</RatingGroup.ErrorMessage>
 		</RatingGroup>
 	);
 }
@@ -329,7 +328,7 @@ function HTMLFormExample() {
 						)}
 					</Index>
 				</RatingGroup.Control>
-                <RatingGroup.HiddenInput />
+				<RatingGroup.HiddenInput />
 			</RatingGroup>
 			<div>
 				<button type="reset">Reset</button>
@@ -346,26 +345,26 @@ function HTMLFormExample() {
 
 `RatingGroup` is equivalent to the `Root` import from `@kobalte/core/Rating-group`.
 
-| Prop            | Description                                                                                                                                                         |
-| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| value           | `number` <br/> The current rating value.                                                                                                   |
-| defaultValue    | `number` <br/> The initial value of the rating group when it is first rendered. Use when you do not need to control the state of the rating group.|
-| onChange        | `(value: number) => void` <br/> Event handler called when the value changes.                                                                                        |
-| allowHalf       | `boolean` <br/> Whether to allow half ratings.                                                                               |
-| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the rating group items should align with.                                                                                |
-| name            | `string` <br/> The name of the rating group. Submitted with its owning form as part of a name/value pair.                                                            |
-| validationState | `'valid' \| 'invalid'` <br/> Whether the rating group should display its "valid" or "invalid" visual styling.                                                        |
-| required        | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                                             |
-| disabled        | `boolean` <br/> Whether the rating group is disabled.                                                                                                                |
-| readOnly        | `boolean` <br/> Whether the rating group items can be selected but not changed by the user.                                                                          |
+| Prop            | Description                                                                                                                                        |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `number` <br/> The current rating value.                                                                                                           |
+| defaultValue    | `number` <br/> The initial value of the rating group when it is first rendered. Use when you do not need to control the state of the rating group. |
+| onChange        | `(value: number) => void` <br/> Event handler called when the value changes.                                                                       |
+| allowHalf       | `boolean` <br/> Whether to allow half ratings.                                                                                                     |
+| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the rating group items should align with.                                                              |
+| name            | `string` <br/> The name of the rating group. Submitted with its owning form as part of a name/value pair.                                          |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the rating group should display its "valid" or "invalid" visual styling.                                      |
+| required        | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                                      |
+| disabled        | `boolean` <br/> Whether the rating group is disabled.                                                                                              |
+| readOnly        | `boolean` <br/> Whether the rating group items can be selected but not changed by the user.                                                        |
 
-| Data attribute | Description                                                                                  |
-| :------------- | :------------------------------------------------------------------------------------------- |
-| data-valid     | Present when the rating group is valid according to the validation rules.                     |
-| data-invalid   | Present when the rating group is invalid according to the validation rules.                   |
+| Data attribute | Description                                                                                    |
+| :------------- | :--------------------------------------------------------------------------------------------- |
+| data-valid     | Present when the rating group is valid according to the validation rules.                      |
+| data-invalid   | Present when the rating group is invalid according to the validation rules.                    |
 | data-required  | Present when the user must select a rating group item before the owning form can be submitted. |
-| data-disabled  | Present when the rating group is disabled.                                                    |
-| data-readonly  | Present when the rating group is read only.                                                   |
+| data-disabled  | Present when the rating group is disabled.                                                     |
+| data-readonly  | Present when the rating group is read only.                                                    |
 
 `RatingGroup.Label`, `RatingGroup.Description` and `RatingGroup.ErrorMesssage` shares the same data-attributes.
 
@@ -377,28 +376,28 @@ function HTMLFormExample() {
 
 ### RatingGroup.ItemControl
 
-| Render Prop     | Description                                                                                                                                                              |
-| :-------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| half            | `Accessor<boolean>` <br/> Whether the rating item is half.
-| highlighted     | `Accessor<boolean>` <br/> Whether the rating item is highlighted.                                                                                                            |
+| Render Prop | Description                                                       |
+| :---------- | :---------------------------------------------------------------- |
+| half        | `Accessor<boolean>` <br/> Whether the rating item is half.        |
+| highlighted | `Accessor<boolean>` <br/> Whether the rating item is highlighted. |
 
-| Data attribute | Description                                                                       |
-| :------------- | :-------------------------------------------------------------------------------- |
-| data-valid         | Present when the parent rating group is valid according to the validation rules.   |
-| data-invalid       | Present when the parent rating group is invalid according to the validation rules. |
-| data-required      | Present when the parent rating group is required.                                                |
-| data-disabled      | Present when the parent rating group is disabled.                                               |
-| data-readonly      | Present when the parent rating group is read only.                                               |
-| data-checked       | Present when the rating is checked.                                                |
-| data-half          | Present when the rating is half.                                                |
-| data-highlighted   | Present when the rating is highlighted.                                                |
+| Data attribute   | Description                                                                        |
+| :--------------- | :--------------------------------------------------------------------------------- |
+| data-valid       | Present when the parent rating group is valid according to the validation rules.   |
+| data-invalid     | Present when the parent rating group is invalid according to the validation rules. |
+| data-required    | Present when the parent rating group is required.                                  |
+| data-disabled    | Present when the parent rating group is disabled.                                  |
+| data-readonly    | Present when the parent rating group is read only.                                 |
+| data-checked     | Present when the rating is checked.                                                |
+| data-half        | Present when the rating is half.                                                   |
+| data-highlighted | Present when the rating is highlighted.                                            |
 
 `RatingGroup.ItemLabel` and `RatingGroup.ItemDescription` share the same data-attributes.
 
 ## Rendered elements
 
-| Component                    | Default rendered element  |
-| :--------------------------- | :-----------------------  |
+| Component                     | Default rendered element |
+| :---------------------------- | :----------------------- |
 | `RatingGroup`                 | `div`                    |
 | `RatingGroup.Control`         | `div`                    |
 | `RatingGroup.Label`           | `span`                   |
@@ -414,12 +413,12 @@ function HTMLFormExample() {
 
 ### Keyboard Interactions
 
-| Key                   | Description                                                                            |
-| :-------------------- | :------------------------------------------------------------------------------------- |
-| <Kbd>ArrowDown</Kbd>  | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.                            |
-| <Kbd>ArrowRight</Kbd> | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.                            |
-| <Kbd>ArrowUp</Kbd>    | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property.                       |
-| <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property.                         |
-| <Kbd>Space</Kbd>      | Selects the focused item in the rating group.                                 |
-| <Kbd>Home</Kbd>       | Sets the value of the rating group to 1. |
-| <Kbd>End</Kbd>        | Sets the value of the rating group to the maximum value. |
+| Key                   | Description                                                                                      |
+| :-------------------- | :----------------------------------------------------------------------------------------------- |
+| <Kbd>ArrowDown</Kbd>  | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.     |
+| <Kbd>ArrowRight</Kbd> | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.     |
+| <Kbd>ArrowUp</Kbd>    | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property. |
+| <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property. |
+| <Kbd>Space</Kbd>      | Selects the focused item in the rating group.                                                    |
+| <Kbd>Home</Kbd>       | Sets the value of the rating group to 1.                                                         |
+| <Kbd>End</Kbd>        | Sets the value of the rating group to the maximum value.                                         |
