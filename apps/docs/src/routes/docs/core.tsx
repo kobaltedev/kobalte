@@ -166,6 +166,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				status: "new",
 			},
 			{
+				title: "Search",
+				href: "/docs/core/components/search",
+				status: "new",
+			},
+			{
 				title: "Select",
 				href: "/docs/core/components/select",
 			},
