@@ -39,6 +39,7 @@ export * as Pagination from "./pagination";
 export * as Popover from "./popover";
 export * as Progress from "./progress";
 export * as RadioGroup from "./radio-group";
+export * as RatingGroup from "./rating-group";
 export * as Select from "./select";
 export * as Separator from "./separator";
 export * as Skeleton from "./skeleton";
