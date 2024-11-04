@@ -146,7 +146,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 				context.close();
 			}
 		} else {
-			if (collection().getSize() > 0) {
+			if (collection().getSize() > 0 || context.allowsEmptyCollection()) {
 				context.open(false, "input");
 			}
 		}
