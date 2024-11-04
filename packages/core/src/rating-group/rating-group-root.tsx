@@ -28,11 +28,11 @@ import {
 	createControllableSignal,
 	createFormResetListener,
 } from "../primitives";
+import { createDomCollection } from "../primitives/create-dom-collection";
 import {
 	RatingGroupContext,
 	type RatingGroupContextValue,
 } from "./rating-group-context";
-import { createDomCollection } from "../primitives/create-dom-collection";
 
 export interface RatingGroupRootOptions {
 	/** The current rating value. */

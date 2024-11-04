@@ -23,6 +23,13 @@ import {
 	type RatingGroupHiddenInputProps,
 } from "./rating-group-hidden-input";
 import {
+	RatingGroupItem as Item,
+	type RatingGroupItemCommonProps,
+	type RatingGroupItemOptions,
+	type RatingGroupItemProps,
+	type RatingGroupItemRenderProps,
+} from "./rating-group-item";
+import {
 	RatingGroupItemControl as ItemControl,
 	type RatingGroupItemControlCommonProps,
 	type RatingGroupItemControlOptions,
@@ -43,13 +50,6 @@ import {
 	type RatingGroupItemLabelProps,
 	type RatingGroupItemLabelRenderProps,
 } from "./rating-group-item-label";
-import {
-	RatingGroupItem as Item,
-	type RatingGroupItemCommonProps,
-	type RatingGroupItemOptions,
-	type RatingGroupItemProps,
-	type RatingGroupItemRenderProps,
-} from "./rating-group-item";
 import {
 	RatingGroupLabel as Label,
 	type RatingGroupLabelCommonProps,

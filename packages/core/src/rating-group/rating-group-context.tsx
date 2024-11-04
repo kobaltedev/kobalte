@@ -1,11 +1,11 @@
+import type { Orientation } from "@kobalte/utils";
 import {
 	type Accessor,
-	createContext,
 	type Setter,
+	createContext,
 	useContext,
 } from "solid-js";
 import type { CollectionItemWithRef } from "../primitives";
-import type { Orientation } from "@kobalte/utils";
 
 export interface RatingGroupContextValue {
 	value: Accessor<number | undefined>;

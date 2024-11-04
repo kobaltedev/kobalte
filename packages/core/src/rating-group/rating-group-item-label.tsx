@@ -1,4 +1,5 @@
 import { mergeDefaultProps, visuallyHiddenStyles } from "@kobalte/utils";
+import { combineStyle } from "@solid-primitives/props";
 import {
 	type JSX,
 	type ValidComponent,
@@ -15,7 +16,6 @@ import {
 	type RatingGroupItemDataSet,
 	useRatingGroupItemContext,
 } from "./rating-group-item-context";
-import { combineStyle } from "@solid-primitives/props";
 
 export interface RatingGroupItemLabelOptions {}
 

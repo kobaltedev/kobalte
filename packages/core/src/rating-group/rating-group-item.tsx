@@ -1,7 +1,7 @@
 import {
+	EventKey,
 	callHandler,
 	createGenerateId,
-	EventKey,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
@@ -9,7 +9,6 @@ import {
 	type Accessor,
 	type JSX,
 	type ValidComponent,
-	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -18,21 +17,21 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
+import { useLocale } from "../i18n";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
 import { type CollectionItemWithRef, createRegisterId } from "../primitives";
+import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { useRatingGroupContext } from "./rating-group-context";
 import {
 	RatingGroupItemContext,
 	type RatingGroupItemContextValue,
 	type RatingGroupItemDataSet,
 } from "./rating-group-item-context";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { getEventPoint, getRelativePoint } from "./utils";
-import { useLocale } from "../i18n";
 
 export interface RatingGroupItemOptions {}
 

@@ -1,12 +1,11 @@
 import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import { type JSX, type ValidComponent, splitProps } from "solid-js";
-
+import { useFormControlContext } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { useFormControlContext } from "../form-control";
 import { useRatingGroupContext } from "./rating-group-context";
 
 export interface RatingGroupControlOptions {}
