@@ -1,0 +1,411 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+	ControlledExample,
+	DefaultValueExample,
+	HTMLFormExample,
+	BasicExample,
+	DescriptionExample,
+	ErrorMessageExample,
+} from "../../../../examples/radio-group";
+
+# Rating Group
+
+A set of checkable buttons, known as radio buttons, where no more than one of the buttons can be checked at a time.
+
+## Import
+
+```ts
+import { RatingGroup } from "@kobalte/core/radio-group";
+// or
+import { Root, Label, ... } from "@kobalte/core/radio-group";
+// or (deprecated)
+import { RatingGroup } from "@kobalte/core";
+```
+
+## Features
+
+- Follow the [WAI ARIA Radio Group](https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/) design pattern.
+- Each radio is built with a native HTML `<input>` element, which is visually hidden to allow custom styling.
+- Syncs with form reset events.
+- Group and radio labeling support for assistive technology.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The radio group consists of:
+
+- **RatingGroup**: The root container for the radio group.
+- **RatingGroup.Label**: The label that gives the user information on the radio group.
+- **RatingGroup.Description**: The description that gives the user more information on the radio group.
+- **RatingGroup.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the radio group.
+
+The radio item consists of:
+
+- **RatingGroup.Item**: The root container for a radio button.
+- **RatingGroup.ItemInput**: The native html input that is visually hidden in the radio button.
+- **RatingGroup.ItemControl**: The element that visually represents a radio button.
+- **RatingGroup.ItemIndicator**: The visual indicator rendered when the radio button is in a checked state.
+- **RatingGroup.ItemLabel**: The label that gives the user information on the radio button.
+- **RatingGroup.ItemDescription**: The description that gives the user more information on the radio button.
+
+```tsx
+<RatingGroup>
+	<RatingGroup.Label />
+	<RatingGroup.Item>
+		<RatingGroup.ItemInput />
+		<RatingGroup.ItemControl>
+			<RatingGroup.ItemIndicator />
+		</RatingGroup.ItemControl>
+		<RatingGroup.ItemLabel />
+		<RatingGroup.ItemDescription />
+	</RatingGroup.Item>
+	<RatingGroup.Description />
+	<RatingGroup.ErrorMessage />
+</RatingGroup>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+		import { RatingGroup } from "@kobalte/core/radio-group";
+    import "./style.css";
+
+    function App() {
+      return (
+        <RatingGroup class="radio-group">
+          <RatingGroup.Label class="radio-group__label">Favorite fruit</RatingGroup.Label>
+          <div class="radio-group__items" role="presentation">
+            <For each={["Apple", "Orange", "Watermelon"]}>
+              {fruit => (
+                <RatingGroup.Item value={fruit} class="radio">
+                  <RatingGroup.ItemInput class="radio__input" />
+                  <RatingGroup.ItemControl class="radio__control">
+                    <RatingGroup.ItemIndicator class="radio__indicator" />
+                  </RatingGroup.ItemControl>
+                  <RatingGroup.ItemLabel class="radio__label">{fruit}</RatingGroup.ItemLabel>
+                </RatingGroup.Item>
+              )}
+            </For>
+          </div>
+        </RatingGroup>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .radio-group__label {
+      color: hsl(240 6% 10%);
+      font-size: 14px;
+      font-weight: 500;
+      user-select: none;
+    }
+
+    .radio-group__description {
+      color: hsl(240 5% 26%);
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .radio-group__error-message {
+      color: hsl(0 72% 51%);
+      font-size: 12px;
+      user-select: none;
+    }
+
+    .radio-group__items {
+      display: flex;
+      gap: 16px;
+    }
+
+    .radio {
+      display: flex;
+      align-items: center;
+    }
+
+    .radio__control {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 20px;
+      width: 20px;
+      border-radius: 10px;
+      border: 1px solid hsl(240 5% 84%);
+      background-color: hsl(240 6% 90%);
+    }
+
+    .radio__input:focus-visible + .radio__control {
+      outline: 2px solid hsl(200 98% 39%);
+      outline-offset: 2px;
+    }
+
+    .radio__control[data-checked] {
+      border-color: hsl(200 98% 39%);
+      background-color: hsl(200 98% 39%);
+    }
+
+    .radio__control[data-checked][data-invalid] {
+      border-color: hsl(0 72% 51%);
+      background-color: hsl(0 72% 51%);
+    }
+
+    .radio__indicator {
+      height: 10px;
+      width: 10px;
+      border-radius: 5px;
+      background-color: white;
+    }
+
+    .radio__label {
+      margin-left: 6px;
+      color: hsl(240 6% 10%);
+      font-size: 14px;
+      user-select: none;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Default value
+
+An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `value` prop of each radio.
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+```tsx {0,4}
+<RatingGroup defaultValue="Orange">
+	<RatingGroup.Label>Favorite fruit</RatingGroup.Label>
+	<div role="presentation">
+		<For each={["Apple", "Orange", "Watermelon"]}>
+			{fruit => <RatingGroup.Item value={fruit}>...</RatingGroup.Item>}
+		</For>
+	</div>
+</RatingGroup>
+```
+
+The `role="presentation"` is required for all non content elements between the `RatingGroup` and `RatingGroup.Item` due to a bug in Chromium based browsers that incorrectly parse semantics and break screen readers.
+
+### Controlled value
+
+The `value` prop, which accepts a value corresponding with the `value` prop of each radio, can be used to make the value controlled. The `onChange` event is fired when the user selects a radio, and receives the new value.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {3,7,11}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal("Orange");
+
+	return (
+		<>
+			<RatingGroup value={value()} onChange={setValue}>
+				<RatingGroup.Label>Favorite fruit</RatingGroup.Label>
+				<div role="presentation">
+					<For each={["Apple", "Orange", "Watermelon"]}>
+						{fruit => <RatingGroup.Item value={fruit}>...</RatingGroup.Item>}
+					</For>
+				</div>
+			</RatingGroup>
+			<p>Your favorite fruit is: {value()}.</p>
+		</>
+	);
+}
+```
+
+### Description
+
+The `RatingGroup.Description` component can be used to associate additional help text with a radio group.
+
+<Preview>
+	<DescriptionExample />
+</Preview>
+
+```tsx {7}
+<RatingGroup>
+	<RatingGroup.Label>Favorite fruit</RatingGroup.Label>
+	<div role="presentation">
+		<For each={["Apple", "Orange", "Watermelon"]}>
+			{fruit => <RatingGroup.Item value={fruit}>...</RatingGroup.Item>}
+		</For>
+	</div>
+	<RatingGroup.Description>Choose the fruit you like the most.</RatingGroup.Description>
+</RatingGroup>
+```
+
+### Error message
+
+The `RatingGroup.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the radio group as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+	<ErrorMessageExample />
+</Preview>
+
+```tsx {9,17}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [value, setValue] = createSignal("Orange");
+
+	return (
+		<RatingGroup
+			value={value()}
+			onChange={setValue}
+			validationState={value() !== "Apple" ? "invalid" : "valid"}
+		>
+			<RatingGroup.Label>Favorite fruit</RatingGroup.Label>
+			<div role="presentation">
+				<For each={["Apple", "Orange", "Watermelon"]}>
+					{fruit => <RatingGroup.Item value={fruit}>...</RatingGroup.Item>}
+				</For>
+			</div>
+			<RatingGroup.ErrorMessage>Hmm, I prefer apples.</RatingGroup.ErrorMessage>
+		</RatingGroup>
+	);
+}
+```
+
+### HTML forms
+
+The radio group `name` prop, paired with the radio `value` prop, can be used for integration with HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx {7,11}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<RatingGroup name="favorite-fruit">
+				<RatingGroup.Label>Favorite fruit</RatingGroup.Label>
+				<div role="presentation">
+					<For each={["Apple", "Orange", "Watermelon"]}>
+						{fruit => <RatingGroup.Item value={fruit}>...</RatingGroup.Item>}
+					</For>
+				</div>
+			</RatingGroup>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+## API Reference
+
+### RatingGroup
+
+`RatingGroup` is equivalent to the `Root` import from `@kobalte/core/radio-group` (and deprecated `RatingGroup.Root`).
+
+| Prop            | Description                                                                                                                                                         |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| value           | `string` <br/> The controlled value of the radio button to check.                                                                                                   |
+| defaultValue    | `string` <br/> The value of the radio button that should be checked when initially rendered. Useful when you do not need to control the state of the radio buttons. |
+| onChange        | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                        |
+| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the radio group items should align with.                                                                                |
+| name            | `string` <br/> The name of the radio group. Submitted with its owning form as part of a name/value pair.                                                            |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the radio group should display its "valid" or "invalid" visual styling.                                                        |
+| required        | `boolean` <br/> Whether the user must check a radio group item before the owning form can be submitted.                                                             |
+| disabled        | `boolean` <br/> Whether the radio group is disabled.                                                                                                                |
+| readOnly        | `boolean` <br/> Whether the radio group items can be selected but not changed by the user.                                                                          |
+
+| Data attribute | Description                                                                                  |
+| :------------- | :------------------------------------------------------------------------------------------- |
+| data-valid     | Present when the radio group is valid according to the validation rules.                     |
+| data-invalid   | Present when the radio group is invalid according to the validation rules.                   |
+| data-required  | Present when the user must check a radio group item before the owning form can be submitted. |
+| data-disabled  | Present when the radio group is disabled.                                                    |
+| data-readonly  | Present when the radio group is read only.                                                   |
+
+`RatingGroup.Label`, `RatingGroup.Description` and `RatingGroup.ErrorMesssage` shares the same data-attributes.
+
+### RatingGroup.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### RatingGroup.Item
+
+| Prop     | Description                                                                                                                                                              |
+| :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value    | `string` <br/> The value of the radio button, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio#Value). |
+| disabled | `boolean` <br/> Whether the radio button is disabled or not.                                                                                                             |
+
+| Data attribute | Description                                                                       |
+| :------------- | :-------------------------------------------------------------------------------- |
+| data-valid     | Present when the parent radio group is valid according to the validation rules.   |
+| data-invalid   | Present when the parent radio group is invalid according to the validation rules. |
+| data-checked   | Present when the radio is checked.                                                |
+| data-disabled  | Present when the radio is disabled.                                               |
+
+`RatingGroup.ItemInput`, `RatingGroup.ItemControl`, `RatingGroup.ItemIndicator` and `RatingGroup.ItemLabel` shares the same data-attributes.
+
+### RatingGroup.ItemIndicator
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                     | Default rendered element |
+| :---------------------------- | :----------------------- |
+| `RatingGroup`                 | `div`                    |
+| `RatingGroup.Label`           | `span`                   |
+| `RatingGroup.Description`     | `div`                    |
+| `RatingGroup.ErrorMessage`    | `div`                    |
+| `RatingGroup.Item`            | `div`                    |
+| `RatingGroup.ItemInput`       | `input`                  |
+| `RatingGroup.ItemControl`     | `div`                    |
+| `RatingGroup.ItemIndicator`   | `div`                    |
+| `RatingGroup.ItemLabel`       | `label`                  |
+| `RatingGroup.ItemDescription` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                                            |
+| :-------------------- | :------------------------------------------------------------------------------------- |
+| <Kbd>Tab</Kbd>        | Moves focus to either the checked radio button or the first radio button in the group. |
+| <Kbd>Space</Kbd>      | When focus is on an unchecked radio button, checks it.                                 |
+| <Kbd>ArrowDown</Kbd>  | Moves focus and checks the next radio button in the group.                             |
+| <Kbd>ArrowRight</Kbd> | Moves focus and checks the next radio button in the group.                             |
+| <Kbd>ArrowUp</Kbd>    | Moves focus and checks the previous radio button in the group.                         |
+| <Kbd>ArrowLeft</Kbd>  | Moves focus and checks the previous radio button in the group.                         |

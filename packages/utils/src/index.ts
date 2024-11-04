@@ -20,3 +20,5 @@ export * from "./scroll-into-view";
 export * from "./styles";
 export * from "./tabbable";
 export * from "./types";
+export * from "./get-event-point";
+export * from "./get-point-value";

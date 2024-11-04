@@ -10,10 +10,6 @@
 export type Point = [number, number];
 export type Polygon = Point[];
 
-export function getEventPoint(event: MouseEvent): Point {
-	return [event.clientX, event.clientY];
-}
-
 // Based on https://github.com/metafloor/pointinpoly
 export function isPointInPolygon(point: Point, polygon: Polygon) {
 	const [x, y] = point;
