@@ -230,7 +230,6 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 			case EventKey.Space:
 				e.preventDefault();
 				ratingGroupContext.setValue(newValue()!);
-				// ratingGroupContext.setHoveredValue(-1);
 				break;
 			case EventKey.Home:
 				e.preventDefault();
