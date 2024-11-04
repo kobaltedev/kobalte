@@ -46,11 +46,11 @@
 }
 
 .half-star-icon > path + path {
-    fill: hsl(240 6% 90%);
+	fill: hsl(240 6% 90%);
 }
 
 [data-kb-theme="dark"] .half-star-icon > path + path {
-    fill: hsl(240 5% 26%);
+	fill: hsl(240 5% 26%);
 }
 
 [data-kb-theme="dark"] .rating-group__label {
