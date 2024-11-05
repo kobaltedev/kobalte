@@ -37,7 +37,7 @@ import {
 
 export interface RatingGroupRootOptions {
 	/** The total number of rating items to display (e.g., 5 stars). */
-	count: number;
+	count?: number;
 
 	/** If true, allows selecting half-values (e.g., 2.5 stars). */
 	allowHalf?: boolean;
@@ -146,13 +146,7 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 		onChange: (value) => local.onChange?.(value),
 	});
 
-	const [inputId, setInputId] = createSignal<string>();
-	const [labelId, setLabelId] = createSignal<string>();
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
-
-	const [highlighted, setHighlighted] = createSignal<number>(
-		local.defaultValue!,
-	);
+	const [hovered, setHovered] = createSignal<number>(local.defaultValue!);
 	const [isInteractive, setIsInteractive] = createSignal<boolean>(false);
 
 	const { formControlContext } = createFormControl(formControlProps);
@@ -161,7 +155,7 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 		() => ref,
 		() => {
 			setSelected(local.defaultValue!);
-			setHighlighted(local.defaultValue!);
+			setHovered(local.defaultValue!);
 		},
 	);
 
@@ -181,17 +175,21 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 		return value === selected();
 	};
 
-	const isHighlightedValue = (value: number) => {
+	const isHoveredValue = (value: number) => {
 		if (isInteractive()) {
-			return value <= highlighted();
+			return value <= hovered();
 		}
 		return value <= selected()!;
 	};
 
 	const context: RatingGroupContextValue = {
-		allowHalf: local.allowHalf!,
-		count: local.count!,
+		allowHalf: () => local.allowHalf!,
+		orientation: () => local.orientation!,
+		value: () => selected()!,
+		count: () => local.count!,
+
 		ariaDescribedBy,
+
 		isSelectedValue,
 		setSelectedValue: (value: number) => {
 			if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
@@ -199,26 +197,18 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 			}
 			setSelected(value);
 		},
-		isHighlightedValue,
-		setHighlightedValue: (value: number) => {
+
+		isHoveredValue,
+		hoveredValue: () => hovered()!,
+		setHoveredValue: (value: number) => {
 			if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
 				return;
 			}
-			setHighlighted(value);
+			setHovered(value);
 		},
+
 		setIsInteractive,
 		isInteractive,
-		orientation: local.orientation!,
-
-		value: () => local.value!,
-		isDisabled: () => formControlProps.disabled!,
-		inputId,
-		labelId,
-		inputRef,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
-		registerInput: createRegisterId(setInputId),
-		registerLabel: createRegisterId(setLabelId),
-		setInputRef,
 	};
 
 	return (

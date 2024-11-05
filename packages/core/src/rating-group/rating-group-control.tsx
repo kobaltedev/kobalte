@@ -38,6 +38,7 @@ export interface RatingGroupControlCommonProps<
 export interface RatingGroupControlRenderProps
 	extends RatingGroupControlCommonProps {
 	children: JSX.Element;
+	role: "presentation";
 }
 
 export type RatingGroupControlProps<
@@ -53,9 +54,9 @@ export function RatingGroupControl<T extends ValidComponent = "div">(
 ) {
 	const formControlContext = useFormControlContext();
 	const context = useRatingGroupContext();
-	const defaultId = `${formControlContext.generateId(
-		"control",
-	)}-${createUniqueId()}`;
+
+	const defaultId = `${formControlContext.generateId("control")}-${createUniqueId()}`;
+
 	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
@@ -63,18 +64,51 @@ export function RatingGroupControl<T extends ValidComponent = "div">(
 		props as RatingGroupControlProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["children"]);
+	const [local, others] = splitProps(mergedProps, [
+		"children",
+		"onPointerEnter",
+		"onPointerLeave",
+	]);
+
+	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
+		if (formControlContext.isDisabled() || formControlContext.isReadOnly())
+			return;
+
+		if (!context.isInteractive()) {
+			callHandler(e, local.onPointerEnter);
+
+			context.setIsInteractive(true);
+			context.setHoveredValue(context.value()!);
+		}
+	};
+
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
+		if (formControlContext.isDisabled() || formControlContext.isReadOnly())
+			return;
+
+		if (context.isInteractive()) {
+			callHandler(e, local.onPointerLeave);
+
+			context.setIsInteractive(false);
+			context.setHoveredValue(-1);
+		}
+	};
 
 	return (
 		<Polymorphic<RatingGroupControlRenderProps>
 			as="div"
-			onPointerEnter={() => context.setIsInteractive(true)}
-			onPointerLeave={() => context.setIsInteractive(false)}
+			role="presentation"
+			onPointerEnter={onPointerEnter}
+			onPointerLeave={onPointerLeave}
 			{...others}
 		>
 			<RatingGroupControlChild
 				state={{
-					items: Array.from({ length: context.count }, (_, i) => i + 1),
+					items: Array.from({ length: context.count()! }, (_, i) => i + 1),
 				}}
 			>
 				{local.children}

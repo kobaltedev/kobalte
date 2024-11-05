@@ -19,6 +19,14 @@ import {
 } from "./rating-group-control";
 
 import {
+	RatingGroupItemControl as ItemControl,
+	type RatingGroupItemControlCommonProps,
+	type RatingGroupItemControlOptions,
+	type RatingGroupItemControlProps,
+	type RatingGroupItemControlRenderProps,
+} from "./rating-group-item-control";
+
+import {
 	RatingGroupInput as Input,
 	type RatingGroupInputCommonProps,
 	type RatingGroupInputOptions,
@@ -32,6 +40,23 @@ import {
 	type RatingGroupItemProps,
 	type RatingGroupItemRenderProps,
 } from "./rating-group-item";
+
+import {
+	RatingGroupItemDescription as ItemDescription,
+	type RatingGroupItemDescriptionCommonProps,
+	type RatingGroupItemDescriptionOptions,
+	type RatingGroupItemDescriptionProps,
+	type RatingGroupItemDescriptionRenderProps,
+} from "./rating-group-item-description";
+
+import {
+	RatingGroupItemLabel as ItemLabel,
+	type RatingGroupItemLabelCommonProps,
+	type RatingGroupItemLabelOptions,
+	type RatingGroupItemLabelProps,
+	type RatingGroupItemLabelRenderProps,
+} from "./rating-group-item-label";
+
 import {
 	RatingGroupLabel as Label,
 	type RatingGroupLabelCommonProps,
@@ -68,6 +93,18 @@ export type {
 	RatingGroupItemCommonProps,
 	RatingGroupItemRenderProps,
 	RatingGroupItemProps,
+	RatingGroupItemControlCommonProps,
+	RatingGroupItemControlOptions,
+	RatingGroupItemControlProps,
+	RatingGroupItemControlRenderProps,
+	RatingGroupItemDescriptionOptions,
+	RatingGroupItemDescriptionCommonProps,
+	RatingGroupItemDescriptionRenderProps,
+	RatingGroupItemDescriptionProps,
+	RatingGroupItemLabelOptions,
+	RatingGroupItemLabelCommonProps,
+	RatingGroupItemLabelRenderProps,
+	RatingGroupItemLabelProps,
 	RatingGroupLabelOptions,
 	RatingGroupLabelCommonProps,
 	RatingGroupLabelRenderProps,
@@ -78,7 +115,18 @@ export type {
 	RatingGroupRootProps,
 };
 
-export { Description, ErrorMessage, Item, Label, Root, Control, Input };
+export {
+	Description,
+	ErrorMessage,
+	Item,
+	Label,
+	Root,
+	Control,
+	Input,
+	ItemControl,
+	ItemLabel,
+	ItemDescription,
+};
 
 export const RatingGroup = Object.assign(Root, {
 	Description,
@@ -87,4 +135,7 @@ export const RatingGroup = Object.assign(Root, {
 	Label,
 	Control,
 	Input,
+	ItemControl,
+	ItemLabel,
+	ItemDescription,
 });

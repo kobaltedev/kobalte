@@ -30,16 +30,6 @@ export type RatingGroupLabelProps<
 export function RatingGroupLabel<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, RatingGroupLabelProps<T>>,
 ) {
-	const context = useRatingGroupContext();
-
-	const mergedProps = mergeDefaultProps(
-		{
-			id: context.generateId("label"),
-		},
-		props as RatingGroupLabelProps,
-	);
-
-	createEffect(() => onCleanup(context.registerLabel(mergedProps.id!)));
 	return (
 		<FormControlLabel<Component<RatingGroupLabelRenderProps>>
 			as="span"

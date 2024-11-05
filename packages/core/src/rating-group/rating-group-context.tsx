@@ -2,26 +2,18 @@ import type { Orientation } from "@kobalte/utils";
 import { type Accessor, createContext, useContext } from "solid-js";
 
 export interface RatingGroupContextValue {
-	ariaDescribedBy: Accessor<string | undefined>;
+	allowHalf: Accessor<boolean | undefined>;
+	orientation: Accessor<Orientation>;
+	value: Accessor<number | undefined>;
+	count: Accessor<number | undefined>;
 	isSelectedValue: (value: number) => boolean;
 	setSelectedValue: (value: number) => void;
-	isHighlightedValue: (value: number) => boolean;
-	setHighlightedValue: (value: number) => void;
-	allowHalf: boolean;
-	count: number;
 	setIsInteractive: (value: boolean) => void;
 	isInteractive: Accessor<boolean>;
-	orientation: Orientation;
-
-	value: Accessor<number>;
-	isDisabled: Accessor<boolean>;
-	inputId: Accessor<string | undefined>;
-	inputRef: Accessor<HTMLInputElement | undefined>;
-	generateId: (part: string) => string;
-	registerInput: (id: string) => () => void;
-	setInputRef: (el: HTMLInputElement) => void;
-	labelId: Accessor<string | undefined>;
-	registerLabel: (id: string) => () => void;
+	isHoveredValue: (value: number) => boolean;
+	hoveredValue: Accessor<number>;
+	setHoveredValue: (value: number) => void;
+	ariaDescribedBy: Accessor<string | undefined>;
 }
 
 export const RatingGroupContext = createContext<RatingGroupContextValue>();

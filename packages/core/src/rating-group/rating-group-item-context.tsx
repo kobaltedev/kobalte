@@ -11,18 +11,21 @@ export interface RatingGroupItemDataSet {
 	"data-half": string | undefined;
 }
 
+export interface RatingGroupItemState {
+	half: boolean;
+	highlighted: boolean;
+}
+
 export interface RatingGroupItemContextValue {
-	index: Accessor<number>;
-	dataset: Accessor<RatingGroupItemDataSet>;
-	isSelected: Accessor<boolean>;
-	isDisabled: Accessor<boolean>;
-	labelId: Accessor<string | undefined>;
-	descriptionId: Accessor<string | undefined>;
+	state: Accessor<RatingGroupItemState>;
+	index: Accessor<number | undefined>;
 	select: () => void;
+	setIsFocused: (isFocused: boolean) => void;
+	dataset: Accessor<RatingGroupItemDataSet>;
+	itemId: Accessor<string | undefined>;
 	generateId: (part: string) => string;
 	registerLabel: (id: string) => () => void;
 	registerDescription: (id: string) => () => void;
-	setIsFocused: (isFocused: boolean) => void;
 }
 
 export const RatingGroupItemContext =

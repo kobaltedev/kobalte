@@ -27,6 +27,7 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
+import { useLocale } from "../i18n";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -38,35 +39,33 @@ import {
 	RatingGroupItemContext,
 	type RatingGroupItemContextValue,
 	type RatingGroupItemDataSet,
+	RatingGroupItemState,
 } from "./rating-group-item-context";
 
-export interface RatingGroupItemState {
-	half: boolean;
-	highlighted: boolean;
-}
 export interface RatingGroupItemOptions {
+	/** Unique value/index of item */
 	index: number;
-
-	disabled?: boolean;
-
-	children?: JSX.Element | ((state: RatingGroupItemState) => JSX.Element);
 }
 
 export interface RatingGroupItemCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
+	// ref: T | ((el: T) => void);
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+	"aria-label"?: string;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
-	children: JSX.Element;
 }
 
 export interface RatingGroupItemRenderProps
 	extends RatingGroupItemCommonProps,
 		RatingGroupItemDataSet {
-	role: "group";
+	role: "radio";
+	tabIndex: number | undefined;
 }
 
 export type RatingGroupItemProps<
@@ -93,12 +92,12 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 
 	const [local, others] = splitProps(mergedProps, [
 		"index",
-		"disabled",
-		"children",
 		"onPointerDown",
 		"onKeyDown",
 		"onClick",
 		"onPointerMove",
+		"aria-labelledby",
+		"aria-describedby",
 	]);
 
 	const [labelId, setLabelId] = createSignal<string>();
@@ -106,23 +105,30 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 
 	const [isFocused, setIsFocused] = createSignal(false);
 
+	const itemIndex: number = local.index!;
+
 	const isSelected = createMemo(() => {
-		return ratingGroupContext.isSelectedValue(local.index);
+		return ratingGroupContext.isSelectedValue(itemIndex);
 	});
 
 	const isHighlighted = createMemo(() => {
-		return ratingGroupContext.isHighlightedValue(local.index);
+		return ratingGroupContext.isHoveredValue(itemIndex);
 	});
 
 	const isHalfHighlighted = createMemo(() => {
 		return (
-			!isHighlighted() &&
-			ratingGroupContext.isHighlightedValue(local.index - 0.5)
+			!isHighlighted() && ratingGroupContext.isHoveredValue(itemIndex - 0.5)
 		);
 	});
 
 	const isDisabled = createMemo(() => {
-		return local.disabled || formControlContext.isDisabled() || false;
+		return formControlContext.isDisabled() || false;
+	});
+
+	const tabIndex = createMemo(() => {
+		if (formControlContext.isDisabled()) return undefined;
+		if (formControlContext.isReadOnly()) isSelected() ? 0 : undefined;
+		return isSelected() ? 0 : -1;
 	});
 
 	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
@@ -131,13 +137,12 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 		const point = getEventPoint(e);
 		const relativePoint = getRelativePoint(point, e.currentTarget);
 		const percentX = relativePoint.getPercentValue({
-			orientation: ratingGroupContext.orientation,
+			orientation: ratingGroupContext.orientation(),
 			dir: "ltr",
 		});
 		const isMidway = percentX < 0.5;
-		ratingGroupContext.setHighlightedValue(
-			isMidway ? local.index - 0.5 : local.index,
-		);
+		const adjustment = isMidway && ratingGroupContext.allowHalf() ? -0.5 : 0;
+		ratingGroupContext.setHoveredValue(itemIndex + adjustment);
 	};
 
 	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
@@ -158,20 +163,23 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	}));
 
 	const context: RatingGroupItemContextValue = {
-		index: () => local.index,
+		index: () => itemIndex,
 		dataset,
-		isSelected,
-		isDisabled,
-		labelId,
-		descriptionId,
+		itemId: () => others.id,
 		select: () =>
 			ratingGroupContext.setSelectedValue(
-				isHalfHighlighted() ? local.index - 0.5 : local.index,
+				isHalfHighlighted() ? itemIndex - 0.5 : itemIndex,
 			),
 		generateId: createGenerateId(() => others.id!),
 		registerLabel: createRegisterId(setLabelId),
 		registerDescription: createRegisterId(setDescriptionId),
 		setIsFocused,
+		state: () => {
+			return {
+				highlighted: isHighlighted() || isHalfHighlighted(),
+				half: isHalfHighlighted(),
+			};
+		},
 	};
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
@@ -188,41 +196,48 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 		}
 	};
 
+	const ariaLabelledBy = () => {
+		return (
+			[
+				local["aria-labelledby"],
+				labelId(),
+				// If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
+				local["aria-labelledby"] != null && others["aria-label"] != null
+					? others.id
+					: undefined,
+			]
+				.filter(Boolean)
+				.join(" ") || undefined
+		);
+	};
+
+	const ariaDescribedBy = () => {
+		return (
+			[
+				local["aria-describedby"],
+				descriptionId(),
+				ratingGroupContext.ariaDescribedBy(),
+			]
+				.filter(Boolean)
+				.join(" ") || undefined
+		);
+	};
+
 	return (
 		<RatingGroupItemContext.Provider value={context}>
 			<Polymorphic<RatingGroupItemRenderProps>
 				as="div"
-				role="group"
+				role="radio"
+				tabIndex={tabIndex()}
+				aria-labelledby={ariaLabelledBy()}
+				aria-describedby={ariaDescribedBy()}
 				onClick={onClick}
 				onKeyDown={onKeyDown}
 				onPointerMove={onPointerMove}
 				onPointerDown={onPointerDown}
 				{...dataset()}
 				{...others}
-			>
-				<RatingGroupItemChild
-					state={{
-						half: isHalfHighlighted(),
-						highlighted: isHighlighted() || isHalfHighlighted(),
-					}}
-				>
-					{local.children}
-				</RatingGroupItemChild>
-			</Polymorphic>
+			/>
 		</RatingGroupItemContext.Provider>
 	);
-}
-
-interface RatingGroupItemChildProps
-	extends Pick<RatingGroupItemOptions, "children"> {
-	state: RatingGroupItemState;
-}
-
-function RatingGroupItemChild(props: RatingGroupItemChildProps) {
-	const resolvedChildren = children(() => {
-		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
-	});
-
-	return <>{resolvedChildren()}</>;
 }

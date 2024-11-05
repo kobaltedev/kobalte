@@ -17,6 +17,7 @@ import {
 	type ValidComponent,
 	createEffect,
 	createSignal,
+	createUniqueId,
 	on,
 	onCleanup,
 	splitProps,
@@ -37,18 +38,18 @@ export interface RatingGroupInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	"aria-label"?: string;
 	style?: JSX.CSSProperties | string;
+	tabIndex: number;
 }
 
 export interface RatingGroupInputRenderProps
 	extends RatingGroupInputCommonProps {
 	type: "text";
 	name: string;
-	value: string;
+	value: number;
 	required: boolean | undefined;
 	disabled: boolean | undefined;
 	readonly: boolean | undefined;
@@ -66,17 +67,20 @@ export function RatingGroupInput<T extends ValidComponent = "input">(
 	props: PolymorphicProps<T, RatingGroupInputProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
-	const ratingGroupContext = useRatingGroupContext();
+	const context = useRatingGroupContext();
+
+	const defaultId = `${formControlContext.generateId(
+		"input",
+	)}-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
 		{
-			id: ratingGroupContext.generateId("input"),
+			id: defaultId,
 		},
 		props as RatingGroupInputProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
-		"ref",
 		"style",
 		"aria-labelledby",
 		"aria-describedby",
@@ -86,7 +90,7 @@ export function RatingGroupInput<T extends ValidComponent = "input">(
 		return (
 			[
 				local["aria-labelledby"],
-				ratingGroupContext.labelId(),
+				formControlContext.labelId(),
 				// If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
 				local["aria-labelledby"] != null && others["aria-label"] != null
 					? others.id
@@ -99,27 +103,25 @@ export function RatingGroupInput<T extends ValidComponent = "input">(
 
 	const ariaDescribedBy = () => {
 		return (
-			[local["aria-describedby"], ratingGroupContext.ariaDescribedBy()]
+			[local["aria-describedby"], context.ariaDescribedBy()]
 				.filter(Boolean)
 				.join(" ") || undefined
 		);
 	};
 
-	createEffect(() => onCleanup(ratingGroupContext.registerInput(others.id!)));
-
 	return (
 		<Polymorphic<RatingGroupInputRenderProps>
 			as="input"
-			ref={mergeRefs(ratingGroupContext.setInputRef, local.ref)}
 			type="text"
+			tabIndex={-1}
 			name={formControlContext.name()}
-			value={String(ratingGroupContext.value())}
+			value={context.value()!}
 			required={formControlContext.isRequired()}
-			disabled={ratingGroupContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
 			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
 			aria-labelledby={ariaLabelledBy()}
 			aria-describedby={ariaDescribedBy()}
+			disabled={formControlContext.isDisabled()}
 			{...others}
 		/>
 	);
