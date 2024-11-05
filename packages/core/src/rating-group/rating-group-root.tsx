@@ -1,3 +1,11 @@
+/*
+ * Portions of this file are based on code from chakra-ui/zag
+ * MIT Licensed, Copyright (c) 2019 Segun Adebayo.
+ *
+ * Credits to the Chakra UI team:
+ * https://github.com/chakra-ui/zag/tree/main/packages/machines/rating-group
+ */
+
 import {
 	type Orientation,
 	type ValidationState,

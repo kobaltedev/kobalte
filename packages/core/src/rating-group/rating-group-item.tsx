@@ -1,9 +1,9 @@
 /*
- * Portions of this file are based on code from react-spectrum.
- * Apache License Version 2.0, Copyright 2020 Adobe.
+ * Portions of this file are based on code from chakra-ui/zag
+ * MIT Licensed, Copyright (c) 2019 Segun Adebayo.
  *
- * Credits to the React Spectrum team:
- * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRating.ts
+ * Credits to the Chakra UI team:
+ * https://github.com/chakra-ui/zag/tree/main/packages/machines/rating-group
  */
 
 import {

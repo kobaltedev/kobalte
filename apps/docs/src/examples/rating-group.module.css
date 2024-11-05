@@ -42,7 +42,7 @@
 }
 
 .rating-group-item[data-highlighted] {
-	fill: hsl(200 98% 39%);
+	fill: hsl(59, 97%, 58%);
 }
 
 .half-star-icon > path + path {
