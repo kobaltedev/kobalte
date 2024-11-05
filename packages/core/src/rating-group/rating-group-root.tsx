@@ -44,10 +44,10 @@ import {
 } from "./rating-group-context";
 
 export interface RatingGroupRootOptions {
-	/** The total number of rating items to display (e.g., 5 stars). */
+	/** The total number of rating items to display. */
 	count?: number;
 
-	/** If true, allows selecting half-values (e.g., 2.5 stars). */
+	/** If true, allows selecting half-values. */
 	allowHalf?: boolean;
 
 	/** The controlled value of the rating to check. */
