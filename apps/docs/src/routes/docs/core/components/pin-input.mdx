@@ -1,0 +1,435 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+	BasicExample,
+	DefaultValueExample,
+	ControlledExample,
+	PlaceholderExample,
+	BlurOnCompleteExample,
+	OTPExample,
+	MaskExample,
+	TypeExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	HTMLFormExample,
+} from "../../../../examples/pin-input";
+
+# Pin Input
+
+The pin input is optimized for entering a sequence of digits or letters. The input fields allow one character at a time. When the digit or letter is entered, focus transfers to the next input in the sequence, until every input is filled.
+
+## Import
+
+```ts
+import { PinInput } from "@kobalte/core/pin-input";
+// or
+import { Root, Label, ... } from "@kobalte/core/pin-input";
+```
+
+## Features
+
+- Automatically focuses the next field on typing and focuses the previous field on deletion.
+- Supports numeric and alphanumeric values.
+- Support for masking value (for sensitive data).
+- Support for copy/paste to autofill all fields.
+- Supports fast paste SMS-code.
+
+## Anatomy
+
+The pin input consists of:
+
+- **PinInput**: The root container for the pin input.
+- **PinInput.Label**: The label that gives the user information on the pin input.
+- **PinInput.Control**: The container for the input fields.
+- **PinInput.Input**: The input fields of the pin input.
+- **PinInput.HiddenInput**: The native html input that is visually hidden in the pin input.
+- **PinInput.Description**: The description that gives the user more information on the pin input.
+- **PinInput.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the pin input.
+
+```tsx
+<PinInput>
+	<PinInput.Label />
+	<PinInput.Control>
+        <PinInput.Input />
+    <PinInput.Control>
+	<PinInput.HiddenInput />
+	<PinInput.Description />
+	<PinInput.ErrorMessage />
+</PinInput>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+	import { PinInput } from "@kobalte/core/pin-input";
+    import "./style.css";
+
+    function App() {
+      return (
+        <PinInput class="pin-input">
+    		<PinInput.Label class="pin-input__label">
+    			PIN
+    		</PinInput.Label>
+    		<PinInput.Control class="pin-input__control">
+    			<Index each={Array(3)}>
+    				{(_) => (
+    					<PinInput.Input class="pin-input__input" />
+    				)}
+    			</Index>
+    		</PinInput.Control>
+    	</PinInput>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+```css
+.pin-input {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.pin-input\_\_label {
+color: hsl(240 6% 10%);
+font-size: 14px;
+font-weight: 500;
+user-select: none;
+}
+
+.pin-input\_\_control {
+display: flex;
+gap: 8px;
+}
+
+.pin-input\_\_input {
+width: 40px;
+height: 40px;
+border-radius: 6px;
+font-size: 16px;
+outline: none;
+background-color: white;
+text-align: center;
+border: 1px solid hsl(240 6% 90%);
+color: hsl(240 4% 16%);
+transition:
+border-color 250ms,
+color 250ms;
+}
+
+.pin-input\_\_input:hover {
+border-color: hsl(240 5% 65%);
+}
+
+.pin-input\_\_input:focus {
+outline: 2px solid hsl(200 98% 39%);
+outline-offset: 2px;
+}
+
+.pin-input\_\_input::placeholder {
+color: hsl(240 4% 46%);
+}
+
+````
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Default value
+
+Set the initial value of the pin input using the `defaultValue` prop.
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+```tsx {0}
+<PinInput defaultValue={["9", "9", "9"]}>
+	<PinInput.Control>
+		<Index each={Array(3)}>
+			{(_) => (
+				<PinInput.Input />
+			)}
+		</Index>
+	</PinInput.Control>
+</PinInput>
+````
+
+### Controlled value
+
+The `value` prop can be used to make the pin input controlled. The `onChange` event is fired on input change.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {3,7}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal([]);
+
+	return (
+		<>
+			<PinInput value={value()} onChange={setValue}>
+				<PinInput.Control>
+					<Index each={Array(3)}>{_ => <PinInput.Input />}</Index>
+				</PinInput.Control>
+			</PinInput>
+			<p>PIN code is: {value().join("")}</p>
+		</>
+	);
+}
+```
+
+### Placeholder
+
+Customize the default pin input placeholder for each input using the `placeholder` prop.
+
+<Preview>
+	<PlaceholderExample />
+</Preview>
+
+```tsx{0}
+<PinInput placeholder="*">
+	<PinInput.Control>
+		<Index each={Array(3)}>
+			{(_) => <PinInput.Input />}
+		</Index>
+	</PinInput.Control>
+</PinInput>
+```
+
+### Blur On Complete
+
+By default, the last input maintains focus when filled, and the `onComplete` callback is invoked. To blur the last input when the user completes the input, set the prop `blurOnComplete` to true.
+
+<Preview>
+	<BlurOnCompleteExample />
+</Preview>
+
+```tsx{0}
+<PinInput blurOnComplete>
+	<PinInput.Control>
+		<Index each={Array(3)}>
+			{(_) => <PinInput.Input />}
+		</Index>
+	</PinInput.Control>
+</PinInput>
+```
+
+### OTP
+
+Trigger smartphone OTP auto-suggestion by setting the `otp` prop to true.
+
+<Preview>
+	<OTPExample />
+</Preview>
+
+```tsx{0}
+<PinInput otp>
+	<PinInput.Control>
+		<Index each={Array(3)}>
+			{(_) => <PinInput.Input />}
+		</Index>
+	</PinInput.Control>
+</PinInput>
+```
+
+### Mask
+
+When collecting private or sensitive information using the pin input, you might need to mask the value entered, similar to \<input type="password">\. Set the `mask` prop to true.
+
+<Preview>
+	<MaskExample />
+</Preview>
+
+```tsx{0}
+<PinInput mask>
+	<PinInput.Control>
+		<Index each={Array(3)}>
+			{(_) => <PinInput.Input />}
+		</Index>
+	</PinInput.Control>
+</PinInput>
+```
+
+### Type
+
+By default, the pin input accepts only numeric values but you can choose between `numeric`, `alphanumeric` and `alphabetic` values. Use the `type` prop to change the input mode.
+
+<Preview>
+	<TypeExample />
+</Preview>
+
+```tsx{0}
+<PinInput type="alphanumeric">
+	<PinInput.Control>
+		<Index each={Array(3)}>
+			{(_) => <PinInput.Input />}
+		</Index>
+	</PinInput.Control>
+</PinInput>
+```
+
+### Description
+
+The `PinInput.Description` component can be used to associate additional help text with the pin input.
+
+<Preview>
+	<DescriptionExample />
+</Preview>
+
+```tsx {7-9}
+<PinInput>
+	<PinInput.Label>PIN</PinInput.Label>
+	<PinInput.Control>
+		<Index each={Array(3)}>{_ => <PinInput.Input />}</Index>
+	</PinInput.Control>
+	<PinInput.Description>Enter your 3 digit PIN code.</PinInput.Description>
+</PinInput>
+```
+
+### Error message
+
+The `PinInput.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the pin input as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+	<ErrorMessageExample />
+</Preview>
+
+```tsx {9,19-21}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [value, setValue] = createSignal([]);
+
+	return (
+		<PinInput
+			value={value()}
+			onChange={setValue}
+			validationState={value().every(element => element === "9") ? "valid" : "invalid"}
+		>
+			<PinInput.Label>PIN</PinInput.Label>
+			<PinInput.Control>
+				<Index each={Array(3)}>{_ => <PinInput.Input />}</Index>
+			</PinInput.Control>
+			<PinInput.ErrorMessage>Incorrect PIN. Please try again.</PinInput.ErrorMessage>
+		</PinInput>
+	);
+}
+```
+
+### HTML forms
+
+The `name` prop can be used for integration with HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx {7,13}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<PinInput name="PIN">
+				<PinInput.Control>
+					<Index each={Array(3)}>{_ => <PinInput.Input />}</Index>
+				</PinInput.Control>
+				<PinInput.HiddenInput />
+			</PinInput>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+## API Reference
+
+### PinInput
+
+`PinInput` is equivalent to the `Root` import from `@kobalte/core/pin-input`.
+
+| Prop            | Description                                                                                                                                    |
+| :-------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `string[]` <br/> The value of the the pin input.                                                                                               |
+| defaultValue    | `string[]` <br/> The initial value of the pin input when it is first rendered. Use when you do not need to control the state of the pin input. |
+| onChange        | `(value: string[]) => void` <br/> Function called on input change.                                                                             |
+| onComplete      | `(value: string[]) => void` <br/> Function called when all inputs have valid values.                                                           |
+| blurOnComplete  | `boolean` <br/> Whether to blur the input when the value is complete.                                                                          |
+| mask            | `boolean` <br/> If `true`, the input's value will be masked just like `type=password`.                                                         |
+| otp             | `boolean` <br/> If `true`, the pin input component signals to its fields that they should use `autocomplete="one-time-code"`.                  |
+| pattern         | `string` <br/> The regular expression that the user-entered input value is checked against.                                                    |
+| placeholder     | `string` <br/> The placeholder text for the input.                                                                                             |
+| selectOnFocus   | `boolean` <br/> Whether to select input value when input is focused.                                                                           |
+| type            | `'numeric' \| 'alphabetic'` \| 'alphanumeric'` <br/> The type of value the pin-input should allow.                                             |
+| name            | `string` <br/> The name of the pin input. Submitted with its owning form as part of a name/value pair.                                         |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the pin input should display its "valid" or "invalid" visual styling.                                     |
+| required        | `boolean` <br/> Whether the pin input is required.                                                                                             |
+| disabled        | `boolean` <br/> Whether the pin input is disabled.                                                                                             |
+| readOnly        | `boolean` <br/> Whether the pin input is read only.                                                                                            |
+| translations    | `PinInputIntlTranslations` <br/> The localized strings of the component.                                                                       |
+
+| Data attribute | Description                                                              |
+| :------------- | :----------------------------------------------------------------------- |
+| data-valid     | Present when the pin input is valid according to the validation rules.   |
+| data-invalid   | Present when the pin input is invalid according to the validation rules. |
+| data-required  | Present when the pin input is required.                                  |
+| data-disabled  | Present when the pin input is disabled.                                  |
+| data-readonly  | Present when the pin input is read only.                                 |
+| data-complete  | Present when the pin input value is complete.                            |
+
+`PinInput.Label`, `PinInput.Input`, `PinInput.Description` and `PinInput.ErrorMesssage` share the same data-attributes.
+
+### PinInput.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component               | Default rendered element |
+| :---------------------- | :----------------------- |
+| `PinInput`              | `div`                    |
+| `PinInput.Label`        | `span`                   |
+| `PinInput.Control`      | `div`                    |
+| `PinInput.Input`        | `input`                  |
+| `PinInput.HiddenInput`  | `input`                  |
+| `PinInput.Description`  | `div`                    |
+| `PinInput.ErrorMessage` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                    | Description                                                                   |
+| :--------------------- | :---------------------------------------------------------------------------- |
+| <Kbd>ArrowLeft</Kbd>   | Moves focus to the previous input.                                            |
+| <Kbd>ArrowRight</Kbd>  | Moves focus to the next input.                                                |
+| <Kbd>Backspace</Kbd>   | Deletes the value in the current input and moves focus to the previous input. |
+| <Kbd>Delete</Kbd>      | Deletes the value in the current input.                                       |
+| <Kbd>Control + V</Kbd> | Pastes the value into the input fields.                                       |

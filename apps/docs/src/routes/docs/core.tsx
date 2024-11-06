@@ -153,6 +153,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/pagination",
 			},
 			{
+				title: "Pin Input",
+				href: "/docs/core/components/pin-input",
+				status: "new",
+			},
+			{
 				title: "Popover",
 				href: "/docs/core/components/popover",
 			},

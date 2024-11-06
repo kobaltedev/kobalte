@@ -31,6 +31,7 @@ export * as Listbox from "./listbox";
 export * as Menubar from "./menubar";
 export * as NumberField from "./number-field";
 export * as Pagination from "./pagination";
+export * as PinInput from "./pin-input";
 export * as Popover from "./popover";
 export * as Progress from "./progress";
 export * as RadioGroup from "./radio-group";

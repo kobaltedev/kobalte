@@ -1,0 +1,89 @@
+.pin-input {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.pin-input__label {
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
+}
+
+.pin-input__description {
+	color: hsl(240 5% 26%);
+	font-size: 12px;
+	user-select: none;
+}
+
+.pin-input__error-message {
+	color: hsl(0 72% 51%);
+	font-size: 12px;
+	user-select: none;
+}
+
+.pin-input__control {
+	display: flex;
+	gap: 8px;
+}
+
+.pin-input__input {
+	width: 40px;
+	height: 40px;
+	border-radius: 6px;
+	font-size: 16px;
+	outline: none;
+	background-color: white;
+	text-align: center;
+	border: 1px solid hsl(240 6% 90%);
+	color: hsl(240 4% 16%);
+	transition:
+		border-color 250ms,
+		color 250ms;
+}
+
+.pin-input__input:hover {
+	border-color: hsl(240 5% 65%);
+}
+
+.pin-input__input:focus {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
+
+.pin-input__input::placeholder {
+	color: hsl(240 4% 46%);
+}
+
+.pin-input__input[data-invalid] {
+	border-color: hsl(0 72% 51%);
+	color: hsl(0 72% 51%);
+}
+
+[data-kb-theme="dark"] .pin-input__label {
+	color: hsl(240 5% 84%);
+}
+
+[data-kb-theme="dark"] .pin-input__input {
+	background-color: hsl(240 4% 16%);
+	border: 1px solid hsl(240 5% 34%);
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .pin-input__input:hover {
+	border-color: hsl(240 4% 46%);
+}
+
+[data-kb-theme="dark"] .pin-input__input::placeholder {
+	color: hsl(0 100% 100% / 0.5);
+}
+
+[data-kb-theme="dark"] .pin-input__input[data-invalid] {
+	border-color: hsl(0 72% 51%);
+	color: hsl(0 72% 51%);
+}
+
+[data-kb-theme="dark"] .pin-input__description {
+	color: hsl(240 5% 65%);
+}
