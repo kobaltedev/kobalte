@@ -45,6 +45,7 @@ export * as Toast from "./toast";
 export * as ToggleButton from "./toggle-button";
 export * as ToggleGroup from "./toggle-group";
 export * as Tooltip from "./tooltip";
+export * as Stepper from "./stepper";
 
 // @ts-ignore
 console["w" + "arn"](
