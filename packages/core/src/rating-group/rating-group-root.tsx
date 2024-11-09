@@ -175,15 +175,6 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 			}
 
 			setValue(newValue);
-
-			// Sync all radio input checked state in the group with the selected value.
-			// This is necessary because checked state might be out of sync
-			// (ex: when using controlled radio-group).
-			if (ref)
-				for (const el of ref.querySelectorAll("[role='radio']")) {
-					const radio = el as HTMLInputElement;
-					radio.checked = Number(radio.value) === value();
-				}
 		},
 		allowHalf: () => local.allowHalf,
 		orientation: () => local.orientation!,

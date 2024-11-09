@@ -1,3 +1,11 @@
+/*
+ * Portions of this file are based on code from zag.
+ * MIT License, Copyright 2021 Chakra UI.
+ *
+ * Credits to the Chakra UI team:
+ * https://github.com/chakra-ui/zag/blob/87ebdd171d5e28fffe2cec7d0b0d5f5a68601963/packages/utilities/dom-event/src/get-event-point.ts
+ */
+
 type PointType = "page" | "client";
 type AnyPointerEvent = MouseEvent | TouchEvent | PointerEvent;
 type Point = {
