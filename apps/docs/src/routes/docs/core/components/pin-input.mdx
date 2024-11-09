@@ -1,0 +1,334 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+	BasicExample,
+	HTMLFormExample,
+	OTPExample,
+	MaskExample,
+	PlaceholderExample,
+	DefaultValueExample,
+} from "../../../../examples/pin-input";
+
+# Pin Input
+
+- A component that is used to input pin or verification codes with focus handling, masking capabilities & autocomplete features.
+
+## Import
+
+```ts
+import { PinInput } from "@kobalte/core/pin-input";
+// or
+import { Root } from "@kobalte/core/pin-input";
+// or (deprecated)
+import { PinInput } from "@kobalte/core";
+```
+
+## Features
+
+- **Form Support**: The Pin Input component can be used in HTML forms.
+- **Placeholder**: The Pin Input component can override the default placeholder.
+- **Focus Handling**: The Pin Input component handles focus states for each input field.
+- **Masking**: The Pin Input component can mask the input values.
+- **Autocomplete**: The Pin Input component can handle autocomplete values.
+- **OTP**: The Pin Input component can be used to input OTP codes.
+- **Validation**: The Pin Input component can validate the input values and ability to override the default validation.
+
+## Anatomy
+
+The Pin Input consists of:
+
+- **PinInput**: The root component for Pin Input.
+- **PinInput.Label**: The label for the Pin Input component that can be used to describe the input.
+- **PinInput.Control**: The container for the input fields.
+- **PinInput.HiddenInput**: The hidden input field that stores the input values.
+- **PinInput.Input**: The input field for the Pin Input component.
+
+```tsx
+<PinInput>
+	<PinInput.Label></PinInput.Label>
+	<PinInput.Control>
+		<PinInput.Input />
+		<PinInput.Input />
+	</PinInput.Control>
+	<PinInput.HiddenInput />
+</PinInput>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+	{/* <!-- prettier-ignore-start -->*/}
+	<TabsSnippets.Content value="index.tsx">
+		```tsx
+		import { PinInput } from "@kobalte/core/pin-input";
+		import "./style.css";
+
+    	function App() {
+    		return (
+    			<PinInput.Root
+    					onValueChange={(e) => console.log(e)}
+    					onValueComplete={(e) => console.log(e)}
+    					class={style["pin-input-root"]}
+    					autoFocus
+    				>
+    					<PinInput.Label class={style["pin-input-label"]}>
+    						Pin Input
+    					</PinInput.Label>
+    					<PinInput.Control class={style["pin-input-control"]}>
+    						<Index each={[0, 1, 2, 3]}>
+    							{(id) => (
+    								<PinInput.Input index={id()} class={style["pin-input-input"]} />
+    							)}
+    						</Index>
+    					</PinInput.Control>
+    					<PinInput.HiddenInput class={style["pin-input-hidden-input"]} />
+    				</PinInput.Root>
+    		);
+    	}
+    ```
+
+    </TabsSnippets.Content>
+
+  <TabsSnippets.Content value="style.css">
+
+```css
+.pin-input-root {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	row-gap: 5px;
+	width: max-content;
+	padding: 10px;
+}
+
+.pin-input-label {
+	color: #fff;
+}
+
+.pin-input-control {
+	display: flex;
+	column-gap: 5px;
+}
+
+.pin-input-input {
+	background-color: transparent;
+	color: #fff;
+	border: 1px solid #ffffff19;
+	padding: 5px;
+	height: 38px;
+	width: 38px;
+	border-radius: 5px;
+	text-align: center;
+	padding: 0;
+}
+```
+
+    </TabsSnippets.Content>
+    {/* <!-- prettier-ignore-end -->*/}
+
+</TabsSnippets>
+
+## Usage
+
+### Setting a default value
+
+To set the initial value of the pin input, set the `defaultValue` prop.
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+```tsx
+function DefaultValueExample() {
+	return (
+		<PinInput.Root
+			defaultValue={["1", "2"]}
+			onValueChange={e => console.log(e)}
+			onValueComplete={e => console.log(e)}
+			class={style["pin-input-root"]}
+		>
+			<PinInput.Label class={style["pin-input-label"]}>Pin Input</PinInput.Label>
+			<PinInput.Control class={style["pin-input-control"]}>
+				<Index each={[0, 1, 2, 3]}>
+					{id => <PinInput.Input index={id()} class={style["pin-input-input"]} />}
+				</Index>
+			</PinInput.Control>
+			<PinInput.HiddenInput class={style["pin-input-hidden-input"]} />
+		</PinInput.Root>
+	);
+}
+```
+
+### Overriding placeholder
+
+To override the default placeholder, set the `placeholder` prop.
+
+<Preview>
+	<PlaceholderExample />
+</Preview>
+
+```tsx
+function PlaceholderExample() {
+	return (
+		<PinInput.Root
+			onValueChange={e => console.log(e)}
+			onValueComplete={e => console.log(e)}
+			class={style["pin-input-root"]}
+			placeholder="*"
+		>
+			<PinInput.Label class={style["pin-input-label"]}>Pin Input</PinInput.Label>
+			<PinInput.Control class={style["pin-input-control"]}>
+				<Index each={[0, 1, 2, 3]}>
+					{id => <PinInput.Input index={id()} class={style["pin-input-input"]} />}
+				</Index>
+			</PinInput.Control>
+			<PinInput.HiddenInput class={style["pin-input-hidden-input"]} />
+		</PinInput.Root>
+	);
+}
+```
+
+### HTML forms
+
+By passing name prop to PinInput.HiddenInput, you can use PinInput in HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx
+function HTMLFormExample() {
+	let formRef: HTMLFormElement | undefined;
+
+	const onSubmit = (event: SubmitEvent) => {
+		event.preventDefault();
+		event.stopPropagation();
+		const formData = new FormData(formRef);
+
+		alert(`submitted-pin: ${formData.get("pin")}`);
+	};
+
+	return (
+		<form ref={formRef} onSubmit={onSubmit}>
+			<PinInput.Root
+				onValueChange={e => console.log(e)}
+				onValueComplete={e => console.log(e)}
+				class={style["pin-input-root"]}
+			>
+				<PinInput.Label class={style["pin-input-label"]}>Pin Input</PinInput.Label>
+				<PinInput.Control class={style["pin-input-control"]}>
+					<Index each={[0, 1, 2, 3]}>
+						{id => <PinInput.Input index={id()} class={style["pin-input-input"]} />}
+					</Index>
+				</PinInput.Control>
+				<PinInput.HiddenInput class={style["pin-input-hidden-input"]} name="pin" required />
+			</PinInput.Root>
+			<button type="submit" class={"submit-btn"}>
+				Submit Pin
+			</button>
+		</form>
+	);
+}
+```
+
+### Using OTP mode
+
+To trigger OTP auto-suggestion, `autocomplete` attribute is set to `one-time-code`. The pin input component supports this when you set `otp` prop to true.
+
+<Preview>
+	<OTPExample />
+</Preview>
+
+```tsx
+function OTPExample() {
+	return (
+		<PinInput.Root
+			defaultValue={["1", "2"]}
+			onValueChange={e => console.log(e)}
+			onValueComplete={e => console.log(e)}
+			class={style["pin-input-root"]}
+			otp
+		>
+			<PinInput.Label class={style["pin-input-label"]}>Enter your OTP</PinInput.Label>
+			<PinInput.Control class={style["pin-input-control"]}>
+				<Index each={[0, 1, 2, 3]}>
+					{id => <PinInput.Input index={id()} class={style["pin-input-input"]} />}
+				</Index>
+			</PinInput.Control>
+			<PinInput.HiddenInput class={style["pin-input-hidden-input"]} />
+		</PinInput.Root>
+	);
+}
+```
+
+### Securing input component
+
+By setting the `mask` prop to true, the input values will be masked to collect sensitive or private information.
+
+<Preview>
+	<MaskExample />
+</Preview>
+
+```tsx
+function MaskExample() {
+	return (
+		<PinInput.Root
+			onValueChange={e => console.log(e)}
+			onValueComplete={e => console.log(e)}
+			class={style["pin-input-root"]}
+			mask
+		>
+			<PinInput.Label class={style["pin-input-label"]}>Enter your Secure Pin</PinInput.Label>
+			<PinInput.Control class={style["pin-input-control"]}>
+				<Index each={[0, 1, 2, 3]}>
+					{id => <PinInput.Input index={id()} class={style["pin-input-input"]} />}
+				</Index>
+			</PinInput.Control>
+			<PinInput.HiddenInput class={style["pin-input-hidden-input"]} />
+		</PinInput.Root>
+	);
+}
+```
+
+## API Reference
+
+### PinInput
+
+`PinInput` is equivalent to the `Root` import from `@kobalte/core/pin-input` (and deprecated `PinInput.Root`).
+
+| Prop              | Description                                                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `autoFocus`       | `boolean` <br /> Automatically focuses the first input field.                                                                                           |
+| `defaultValue`    | `string[]` <br /> The default value for the input fields.                                                                                               |
+| `value`           | `string[]` <br /> The value for the input fields.                                                                                                       |
+| `disabled`        | `boolean` <br /> Disables the pin input component                                                                                                       |
+| `mask`            | `boolean` <br /> Masks the input values.                                                                                                                |
+| `otp`             | `boolean` <br /> Enables OTP mode for the pin input component.                                                                                          |
+| `placeholder`     | `string` <br /> The placeholder for the input fields.                                                                                                   |
+| `pattern`         | `string` <br /> The pattern for the input fields which would be used for validating the input.                                                          |
+| `readOnly`        | `boolean` <br /> Makes the pin input component read-only.                                                                                               |
+| `inputMode`       | `InputMode` <br /> The input mode for the input fields.                                                                                                 |
+| `onValueChange`   | `(details: ValueChangeDetails[]) => void` <br /> Callback function that is called when the value of the input fields change.                            |
+| `onValueComplete` | `(details: ValueCompleteDetails) => void` <br /> Callback function that is called when the value of the input fields is complete on pressing Enter key. |
+| `onValueInvalid`  | `(details: ValueInvalidDetails) => void` <br /> Callback function that is called when the value of the input fields is invalid.                         |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                    | Description                                                                               |
+| :--------------------- | :---------------------------------------------------------------------------------------- |
+| <Kbd>ArrowLeft</Kbd>   | Moves focus to the previous input field.                                                  |
+| <Kbd>ArrowRight</Kbd>  | Moves focus to the next input field.                                                      |
+| <Kbd>Backspace</Kbd>   | Deletes the value of the current input field and moves focus to the previous input field. |
+| <Kbd>Delete</Kbd>      | Deletes the value of the current input field.                                             |
+| <Kbd>Enter</Kbd>       | If used in HTML forms, on complete it request the submission of form                      |
+| <Kbd>Control + v</Kbd> | Pastes the copied value into the input field.                                             |

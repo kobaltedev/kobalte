@@ -1,0 +1,45 @@
+.form-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	row-gap: 10px;
+}
+
+.pin-input-root {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	row-gap: 5px;
+	width: max-content;
+	padding: 10px;
+}
+
+.pin-input-label {
+	color: #fff;
+}
+
+.pin-input-control {
+	display: flex;
+	column-gap: 5px;
+}
+
+.pin-input-input {
+	background-color: transparent;
+	color: #fff;
+	border: 1px solid #ffffff19;
+	padding: 5px;
+	height: 38px;
+	width: 38px;
+	border-radius: 5px;
+	text-align: center;
+	padding: 0;
+}
+
+.submit-btn {
+	background-color: hsl(201 96% 32%);
+	color: white;
+	padding: 5px 10px;
+	border-radius: 4px;
+	text-align: center;
+}
