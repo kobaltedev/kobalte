@@ -1,29 +1,37 @@
-// src/stepper/stepper-completed-content.tsx
-import { type Component, type JSX, Show } from "solid-js";
+import { type ValidComponent, Show, splitProps, JSX } from "solid-js";
+import { type ElementOf, Polymorphic, type PolymorphicProps } from "../polymorphic";
 import { useStepperContext } from "./stepper-context";
 
-export interface StepperCompletedContentOptions {}
+export interface StepperCompletedContentOptions { }
 
-export interface StepperCompletedContentProps extends StepperCompletedContentOptions {
-  /** The completed content. */
-  children?: JSX.Element;
+export interface StepperCompletedContentCommonProps<T extends HTMLElement = HTMLElement> {
+	children?: JSX.Element;
 }
 
-export const StepperCompletedContent: Component<StepperCompletedContentProps> = (props) => {
-  const context = useStepperContext();
-  const options = context.options();
+export interface StepperCompletedContentRenderProps extends StepperCompletedContentCommonProps {
+	role: string;
+	"data-completed"?: string;
+}
 
-  const isCompleted = () => context.state.activeStep >= options.count;
+export type StepperCompletedContentProps<T extends ValidComponent | HTMLElement = HTMLElement> =
+	StepperCompletedContentOptions & Partial<StepperCompletedContentCommonProps<ElementOf<T>>>;
 
-  return (
-    <Show when={isCompleted()}>
-      <div
-        class="kb-stepper__completed"
-        role="tabpanel"
-        aria-label="All steps completed"
-      >
-        {props.children}
-      </div>
-    </Show>
-  );
-};
+export function StepperCompletedContent<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, StepperCompletedContentProps<T>>
+) {
+	const context = useStepperContext();
+	const [local, others] = splitProps(props as StepperCompletedContentProps, ["children"]);
+
+	return (
+		<Show when={context.isCompleted()}>
+			<Polymorphic<StepperCompletedContentRenderProps>
+				as="div"
+				role="alert"
+				data-completed=""
+				{...others}
+			>
+				{local.children}
+			</Polymorphic>
+		</Show>
+	);
+}

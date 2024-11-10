@@ -1,36 +1,42 @@
-// src/stepper/stepper-item.tsx
-import { type Component, type JSX, createMemo } from "solid-js";
+import { type ValidComponent, splitProps, JSX } from "solid-js";
+import { type ElementOf, Polymorphic, type PolymorphicProps } from "../polymorphic";
 import { useStepperContext } from "./stepper-context";
 
 export interface StepperItemOptions {
-  /** The index of the step. */
-  index: number;
+	/** The index of this step item */
+	index: number;
 }
 
-export interface StepperItemProps extends StepperItemOptions {
-  /** The item content. */
-  children?: JSX.Element;
+export interface StepperItemCommonProps<T extends HTMLElement = HTMLElement> {
+	children?: JSX.Element;
 }
 
-export const StepperItem: Component<StepperItemProps> = (props) => {
-  const context = useStepperContext();
-  const options = context.options();
+export interface StepperItemRenderProps extends StepperItemCommonProps {
+	"data-complete"?: string;
+	"data-current"?: string;
+}
 
-  const isActive = createMemo(() => context.state.activeStep === props.index);
-  const isCompleted = createMemo(() => context.state.activeStep > props.index);
-  const isSelectable = createMemo(() =>
-    options.allowNextStepsSelect || props.index <= context.state.activeStep
-  );
+export type StepperItemProps<T extends ValidComponent | HTMLElement = HTMLElement> =
+	StepperItemOptions & Partial<StepperItemCommonProps<ElementOf<T>>>;
 
-  return (
-    <div
-      class="kb-stepper__item"
-      data-active={isActive()}
-      data-completed={isCompleted()}
-      data-disabled={!isSelectable()}
-    >
-      {props.children}
-    </div>
-  );
-};
+export function StepperItem<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, StepperItemProps<T>>
+) {
+	const context = useStepperContext();
+	const [local, others] = splitProps(props as StepperItemProps, ["index", "children"]);
 
+	const isCurrent = () => context.step() === local.index;
+	const isComplete = () => context.step() > local.index;
+
+	return (
+		<Polymorphic<StepperItemRenderProps>
+			as="div"
+			aria-selected={isCurrent()}
+			data-current={isCurrent() ? "" : undefined}
+			data-complete={isComplete() ? "" : undefined}
+			{...others}
+		>
+			{local.children}
+		</Polymorphic>
+	);
+}

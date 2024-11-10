@@ -1,61 +1,100 @@
-// src/stepper/stepper-root.tsx
-import { type Component, type JSX } from "solid-js";
-import { createStore } from "solid-js/store";
 import { mergeDefaultProps } from "@kobalte/utils";
-import { StepperContext } from "./stepper-context";
-import type { StepperRootOptions, StepperState } from "./stepper.types";
+import {
+	type Component,
+	type JSX,
+	type ValidComponent,
+	createMemo,
+	createUniqueId,
+	splitProps,
+} from "solid-js";
 
-export interface StepperRootProps extends StepperRootOptions {
-	/** The stepper content. */
+import { type ElementOf, Polymorphic, type PolymorphicProps } from "../polymorphic";
+import { createControllableSignal } from "../primitives";
+import { StepperContext, type StepperContextValue } from "./stepper-context";
+
+export interface StepperRootOptions {
+	/** The controlled step of the stepper. */
+	step?: number;
+
+	/** The default step when initially rendered. Useful when you do not need to control the step state. */
+	defaultStep?: number;
+
+	/** Event handler called when the step changes. */
+	onStepChange?: (step: number) => void;
+
+	/** Whether the stepper is disabled. */
+	disabled?: boolean;
+
+  /** The maximum number of steps in the stepper. */
+  maxSteps: number;
+}
+
+export interface StepperRootCommonProps<T extends HTMLElement = HTMLElement> {
+	id?: string;
 	children?: JSX.Element;
 }
 
-export const StepperRoot: Component<StepperRootProps> = (originalProps) => {
-	const props = mergeDefaultProps(
+export interface StepperRootRenderProps extends StepperRootCommonProps {
+	"data-disabled"?: string;
+}
+
+export type StepperRootProps<T extends ValidComponent | HTMLElement = HTMLElement> =
+	StepperRootOptions & Partial<StepperRootCommonProps<ElementOf<T>>>;
+
+export function StepperRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, StepperRootProps<T>>
+) {
+	const defaultId = `stepper-${createUniqueId()}`;
+
+	const mergedProps = mergeDefaultProps(
 		{
-			defaultActiveStep: 0,
-			allowNextStepsSelect: true,
-			orientation: "horizontal",
-		} as Partial<StepperRootProps>,
-		originalProps
+			id: defaultId,
+		},
+		props as StepperRootProps
 	);
 
-	const [state, setState] = createStore<StepperState>({
-		activeStep: props.activeStep ?? props.defaultActiveStep!,
-		isNavigating: false,
+	const [local, others] = splitProps(mergedProps, [
+		"step",
+		"defaultStep",
+		"onStepChange",
+		"disabled",
+		"maxSteps",
+		"children",
+	]);
+
+	const state = createControllableSignal({
+		value: () => local.step,
+		defaultValue: () => local.defaultStep ?? 0,
+		onChange: local.onStepChange,
 	});
 
-	const options = (): StepperRootOptions => {
-		const {
-			activeStep,
-			defaultActiveStep,
-			onActiveStepChange,
-			count,
-			allowNextStepsSelect,
-			orientation
-		} = props;
+	// Ensure state[0]() returns a number
+	const currentStep = () => state[0]() ?? 0;
 
-		return {
-			activeStep: state.activeStep,
-			defaultActiveStep,
-			onActiveStepChange,
-			count,
-			allowNextStepsSelect,
-			orientation
-		};
+	const context: StepperContextValue = {
+		step: currentStep,
+		setStep: state[1],
+		isDisabled: () => local.disabled ?? false,
+		isCompleted: () => {
+			const step = currentStep();
+			return step > local.maxSteps - 1;
+		},
+		maxSteps: () => local.maxSteps,
+		isLastStep: () => {
+			const step = currentStep();
+			return step === local.maxSteps - 1;
+		},
 	};
 
 	return (
-		<StepperContext.Provider value={{ state, setState, options }}>
-			<div
-				class="kb-stepper"
-				data-orientation={props.orientation}
-				role="navigation"
-				aria-label="Stepper navigation"
+		<StepperContext.Provider value={context}>
+			<Polymorphic<StepperRootRenderProps>
+				as="div"
+				data-disabled={local.disabled ? "" : undefined}
+				{...others}
 			>
-				{props.children}
-			</div>
+				{local.children}
+			</Polymorphic>
 		</StepperContext.Provider>
 	);
-};
-
+}

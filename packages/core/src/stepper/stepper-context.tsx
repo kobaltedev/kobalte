@@ -1,15 +1,24 @@
-// src/stepper/stepper-context.ts
-import { createContext, useContext } from "solid-js";
-import type { StepperContextType } from "./stepper.types";
+import { type Accessor, type JSX, type Setter, createContext, useContext } from "solid-js";
 
-export const StepperContext = createContext<StepperContextType>();
+export interface StepperContextValue {
+  step: Accessor<number>;
+  setStep: Setter<number>;
+  isDisabled: Accessor<boolean>;
+  isCompleted: Accessor<boolean>;
+  maxSteps: Accessor<number>;
+  isLastStep: Accessor<boolean>;
+}
+
+export const StepperContext = createContext<StepperContextValue>();
 
 export function useStepperContext() {
   const context = useContext(StepperContext);
-  if (!context) {
+
+  if (context === undefined) {
     throw new Error(
-      "[kobalte] `useStepperContext` must be used within a `Stepper` component"
+      "[kobalte]: `useStepperContext` must be used within a `Stepper` component"
     );
   }
+
   return context;
 }

@@ -1,27 +1,28 @@
-// src/stepper/stepper-list.tsx
-import { type Component, type JSX } from "solid-js";
-import { useStepperContext } from "./stepper-context";
+import { type ValidComponent, splitProps, JSX } from "solid-js";
+import { type ElementOf, Polymorphic, type PolymorphicProps } from "../polymorphic";
 
-export interface StepperListOptions {}
+export interface StepperListOptions { }
 
-export interface StepperListProps extends StepperListOptions {
-  /** The list content. */
-  children?: JSX.Element;
+export interface StepperListCommonProps<T extends HTMLElement = HTMLElement> {
+	children?: JSX.Element;
 }
 
-export const StepperList: Component<StepperListProps> = (props) => {
-  const context = useStepperContext();
-  const options = context.options();
+export interface StepperListRenderProps extends StepperListCommonProps { }
 
-  return (
-    <div
-      class="kb-stepper__list"
-      data-orientation={options.orientation}
-      role="tablist"
-      aria-orientation={options.orientation}
-    >
-      {props.children}
-    </div>
-  );
-};
+export type StepperListProps<T extends ValidComponent | HTMLElement = HTMLElement> =
+	StepperListOptions & Partial<StepperListCommonProps<ElementOf<T>>>;
 
+export function StepperList<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, StepperListProps<T>>
+) {
+	const [local, others] = splitProps(props as StepperListProps, ["children"]);
+
+	return (
+		<Polymorphic<StepperListRenderProps>
+			as="div"
+			{...others}
+		>
+			{local.children}
+		</Polymorphic>
+	);
+}
