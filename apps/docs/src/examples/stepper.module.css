@@ -1,0 +1,246 @@
+.stepper__root {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.stepper__list {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 0.5rem;
+}
+
+.stepper__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.stepper__trigger {
+  appearance: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+  outline: none;
+  border-radius: 50%;
+  background-color: white;
+  color: hsl(240 4% 16%);
+  font-size: 16px;
+  line-height: 0;
+  transition: 250ms background-color, 250ms color, 250ms border-color;
+  cursor: pointer;
+  border: 2px solid hsl(240 6% 90%);
+}
+
+.stepper__trigger[data-current="true"] {
+  background-color: hsl(200 98% 39%);
+  color: white;
+  border-color: hsl(200 98% 39%);
+}
+
+.stepper__item[data-current] .stepper__trigger {
+  background-color: hsl(200 98% 39%);
+  color: white;
+  border-color: hsl(200 98% 39%);
+}
+
+/* And similarly for completed state */
+.stepper__item[data-complete] .stepper__trigger {
+  background-color: hsl(142 76% 36%);
+  color: white;
+  border-color: hsl(142 76% 36%);
+}
+
+.stepper__trigger:hover {
+  background-color: hsl(200 98% 39%);
+  color: white;
+  border-color: hsl(200 98% 39%);
+}
+
+.stepper__trigger:focus-visible {
+  outline: 2px solid hsl(200 98% 39%);
+  outline-offset: 2px;
+}
+
+.stepper__separator {
+  flex: 1;
+  height: 2px;
+  background-color: hsl(240 6% 90%);
+  margin: 0 0.5rem;
+  min-width: 3rem;
+  transition: background-color 250ms;
+}
+
+.stepper__separator[data-complete="true"] {
+  background-color: hsl(142 76% 36%);
+}
+
+.stepper__content {
+  padding: 1.5rem;
+  border: 1px solid hsl(240 6% 90%);
+  border-radius: 6px;
+  margin: 1rem 0;
+  min-height: 200px;
+}
+
+.stepper__label {
+  font-size: 14px;
+  color: hsl(240 4% 16%);
+  font-weight: 500;
+}
+
+.stepper__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: hsl(240 4% 16%);
+}
+
+.stepper__input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid hsl(240 6% 90%);
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.stepper__input.input__error {
+  border-color: hsl(0 72% 51%);
+}
+
+.stepper__inputContainer {
+  margin-bottom: 1rem;
+}
+
+.error {
+  color: hsl(0 72% 51%);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.stepper__review {
+  background-color: hsl(204 33% 97%);
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.stepper__summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stepper__completed {
+  text-align: center;
+  padding: 2rem;
+}
+
+.stepper__icon {
+  width: 3rem;
+  height: 3rem;
+  color: hsl(142 76% 36%);
+  margin-bottom: 1rem;
+}
+
+.stepper__actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.stepper__button {
+  appearance: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 6px;
+  background-color: white;
+  color: hsl(240 4% 16%);
+  font-size: 16px;
+  transition: 250ms background-color, 250ms color;
+  cursor: pointer;
+  border: 1px solid hsl(240 6% 90%);
+}
+
+.stepper__button:hover {
+  background-color: hsl(200 98% 39%);
+  color: white;
+}
+
+.stepper__button:focus-visible {
+  outline: 2px solid hsl(200 98% 39%);
+  outline-offset: 2px;
+}
+
+.stepper__button[data-disabled="true"],
+.stepper__button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.stepper__button__next {
+  composes: stepper__button;
+  background-color: hsl(200 98% 39%);
+  color: white;
+}
+
+.stepper__button__next:hover {
+  background-color: hsl(201 90% 27%);
+}
+
+.stepper__button__submit {
+  composes: stepper__button__next;
+}
+
+/* Dark theme styles */
+[data-kb-theme="dark"] .stepper__trigger {
+  background-color: hsl(240 4% 16%);
+  border-color: hsl(240 5% 34%);
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .stepper__content {
+  background-color: hsl(240 4% 16%);
+  border-color: hsl(240 5% 34%);
+}
+
+[data-kb-theme="dark"] .stepper__button {
+  background-color: hsl(240 4% 16%);
+  border-color: hsl(240 5% 34%);
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .stepper__button__next {
+  background-color: hsl(200 98% 39%);
+  border-color: hsl(240 5% 34%);
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .stepper__label {
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .stepper__title {
+  color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .stepper__review {
+  background-color: hsl(240 4% 16%);
+}
+
+[data-kb-theme="dark"] .stepper__input {
+  background-color: hsl(240 4% 16%);
+  border-color: hsl(240 5% 34%);
+  color: hsl(0 100% 100% / 0.9);
+}

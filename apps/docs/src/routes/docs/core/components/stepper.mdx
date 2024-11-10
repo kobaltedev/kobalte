@@ -1,0 +1,364 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+
+import {
+	BasicExample,
+	FormExample,
+	ValidatedExample
+} from "../../../../examples/stepper";
+
+# Stepper
+
+A multi-step interface that guides users through a sequence of related tasks or content.
+
+## Import
+
+```ts
+import { Stepper } from "@kobalte/core/stepper";
+// or
+import { Root, Item, ... } from "@kobalte/core/stepper";
+```
+
+## Features
+
+- Full keyboard navigation
+- Controlled and uncontrolled modes
+- Support for validation between steps
+- Customizable step indicators and content
+- Support for completed state
+- Accessible by default
+
+## Anatomy
+
+The stepper consists of:
+
+- **Stepper:** The root container for the stepper component.
+- **Stepper.List:** Contains the list of step indicators.
+- **Stepper.Item:** An individual step indicator.
+- **Stepper.Trigger:** The button that allows users to navigate to a step.
+- **Stepper.Separator:** Visual separator between step indicators.
+- **Stepper.Content:** Content associated with each step.
+- **Stepper.CompletedContent:** Content shown when all steps are completed.
+- **Stepper.PrevTrigger:** Button to navigate to the previous step.
+- **Stepper.NextTrigger:** Button to navigate to the next step.
+
+```tsx
+<Stepper>
+  <Stepper.List>
+    <Stepper.Item>
+      <Stepper.Trigger />
+    </Stepper.Item>
+    <Stepper.Separator />
+    <Stepper.Item>
+      <Stepper.Trigger />
+    </Stepper.Item>
+  </Stepper.List>
+
+  <Stepper.Content />
+  <Stepper.CompletedContent />
+
+  <div>
+    <Stepper.PrevTrigger />
+    <Stepper.NextTrigger />
+  </div>
+</Stepper>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Stepper } from "@kobalte/core/stepper";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Stepper maxSteps={3} defaultStep={0}>
+          <Stepper.List class="stepper__list">
+            <Stepper.Item class="stepper__item">
+              <Stepper.Trigger class="stepper__trigger" step={0}>1</Stepper.Trigger>
+            </Stepper.Item>
+
+            <Stepper.Separator class="stepper__separator" />
+
+            <Stepper.Item class="stepper__item">
+              <Stepper.Trigger class="stepper__trigger" step={1}>2</Stepper.Trigger>
+            </Stepper.Item>
+
+            <Stepper.Separator class="stepper__separator" />
+
+            <Stepper.Item class="stepper__item">
+              <Stepper.Trigger class="stepper__trigger" step={2}>3</Stepper.Trigger>
+            </Stepper.Item>
+          </Stepper.List>
+
+          <Stepper.Content class="stepper__content" index={0}>
+            <h2>Step 1</h2>
+            <p>This is the content for step 1</p>
+          </Stepper.Content>
+
+          <Stepper.Content class="stepper__content" index={1}>
+            <h2>Step 2</h2>
+            <p>This is the content for step 2</p>
+          </Stepper.Content>
+
+          <Stepper.Content class="stepper__content" index={2}>
+            <h2>Step 3</h2>
+            <p>This is the content for step 3</p>
+          </Stepper.Content>
+
+          <div class="stepper__actions">
+            <Stepper.PrevTrigger class="stepper__button">Previous</Stepper.PrevTrigger>
+            <Stepper.NextTrigger class="stepper__button">Next</Stepper.NextTrigger>
+          </div>
+        </Stepper>
+      );
+    }
+    ```
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .stepper__list {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 2rem;
+      padding: 0.5rem;
+    }
+
+    .stepper__item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+    }
+
+    .stepper__trigger {
+      appearance: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      background-color: white;
+      color: hsl(240 4% 16%);
+      font-size: 16px;
+      transition: 250ms background-color, 250ms color;
+      cursor: pointer;
+      border: 2px solid hsl(240 6% 90%);
+    }
+
+    .stepper__trigger[data-current="true"] {
+      background-color: hsl(200 98% 39%);
+      color: white;
+      border-color: hsl(200 98% 39%);
+    }
+
+    .stepper__separator {
+      flex: 1;
+      height: 2px;
+      background-color: hsl(240 6% 90%);
+      margin: 0 0.5rem;
+      min-width: 3rem;
+    }
+
+    .stepper__content {
+      padding: 1.5rem;
+      border: 1px solid hsl(240 6% 90%);
+      border-radius: 6px;
+      margin: 1rem 0;
+    }
+
+    .stepper__actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.5rem;
+    }
+
+    .stepper__button {
+      appearance: none;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 6px;
+      background-color: white;
+      color: hsl(240 4% 16%);
+      font-size: 16px;
+      transition: 250ms background-color, 250ms color;
+      cursor: pointer;
+      border: 1px solid hsl(240 6% 90%);
+    }
+
+    .stepper__button:hover {
+      background-color: hsl(200 98% 39%);
+      color: white;
+    }
+    ```
+  </TabsSnippets.Content>
+</TabsSnippets>
+
+## Usage
+
+### Form Integration
+
+The Stepper component can be used to create multi-step forms with validation.
+
+<Preview>
+  <FormExample />
+</Preview>
+
+```tsx
+export const FormExample = () => {
+  const [currentStep, setCurrentStep] = createSignal(0);
+  const [formData, setFormData] = createSignal({
+    name: "",
+    email: "",
+  });
+
+  return (
+    <Stepper
+      step={currentStep()}
+      onStepChange={setCurrentStep}
+      maxSteps={3}
+    >
+      <Stepper.List>
+        <Stepper.Item>
+          <Stepper.Trigger>1</Stepper.Trigger>
+          <span>Personal</span>
+        </Stepper.Item>
+
+        <Stepper.Separator />
+
+        {/* Additional steps */}
+      </Stepper.List>
+
+      <form>
+        <Stepper.Content index={0}>
+          <input
+            type="text"
+            value={formData().name}
+            onInput={(e) => setFormData({ ...formData(), name: e.currentTarget.value })}
+          />
+        </Stepper.Content>
+
+        {/* Additional step content */}
+      </form>
+    </Stepper>
+  );
+};
+```
+
+### Validation
+
+Steps can include validation logic before proceeding to the next step.
+
+<Preview>
+  <ValidatedExample />
+</Preview>
+
+```tsx
+export const ValidatedExample = () => {
+  const [currentStep, setCurrentStep] = createSignal(0);
+  const [errors, setErrors] = createSignal({});
+
+  const validateStep = (step: number) => {
+    const newErrors = {};
+    // Add validation logic
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleStepChange = (newStep: number) => {
+    if (newStep > currentStep()) {
+      if (validateStep(currentStep())) {
+        setCurrentStep(newStep);
+      }
+    } else {
+      setCurrentStep(newStep);
+    }
+  };
+
+  return (
+    <Stepper
+      step={currentStep()}
+      onStepChange={handleStepChange}
+      maxSteps={3}
+    >
+      {/* Stepper content */}
+    </Stepper>
+  );
+};
+```
+
+## API Reference
+
+### Stepper
+
+The root component that wraps all stepper elements.
+
+| Prop | Description |
+|:--|:--|
+| step | `number` <br/> The controlled step index. |
+| defaultStep | `number` <br/> The default step index when initially rendered. |
+| maxSteps | `number` <br/> The total number of steps. |
+| onStepChange | `(step: number) => void` <br/> Event handler called when the step changes. |
+| disabled | `boolean` <br/> When true, prevents interaction with the stepper. |
+
+| Data attribute | Description |
+|:--|:--|
+| data-disabled | Present when the stepper is disabled. |
+| data-complete | Present when all steps are completed. |
+
+### Stepper.Item
+
+Represents an individual step in the stepper.
+
+| Prop | Description |
+|:--|:--|
+| index | `number` <br/> The zero-based index of the step. |
+
+| Data attribute | Description |
+|:--|:--|
+| data-complete | Present when the step is completed. |
+| data-current | Present when the step is current. |
+
+### Stepper.Trigger
+
+The button that triggers step navigation.
+
+| Prop | Description |
+|:--|:--|
+| step | `number` <br/> The step index this trigger navigates to. |
+
+| Data attribute | Description |
+|:--|:--|
+| data-current | Present when this is the current step. |
+| data-complete | Present when this step is completed. |
+| data-disabled | Present when navigation is disabled. |
+
+## Rendered elements
+
+| Component | Default rendered element |
+|:--|:--|
+| `Stepper` | `div` |
+| `Stepper.List` | `div` |
+| `Stepper.Item` | `div` |
+| `Stepper.Trigger` | `button` |
+| `Stepper.Separator` | `div` |
+| `Stepper.Content` | `div` |
+| `Stepper.CompletedContent` | `div` |
+| `Stepper.PrevTrigger` | `button` |
+| `Stepper.NextTrigger` | `button` |
