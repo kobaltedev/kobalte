@@ -1,3 +1,5 @@
+import { Carousel } from "./carousel";
+
 // utils
 export * from "./color-mode";
 export * from "./form-control";
@@ -45,6 +47,7 @@ export * as Toast from "./toast";
 export * as ToggleButton from "./toggle-button";
 export * as ToggleGroup from "./toggle-group";
 export * as Tooltip from "./tooltip";
+export * as Carousel from "./carousel"
 
 // @ts-ignore
 console["w" + "arn"](
