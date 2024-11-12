@@ -182,9 +182,13 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
-		ratingGroupContext.setValue(newValue());
-		focusItem(newValue() - 1);
+		const value =
+			ratingGroupContext.hoveredValue() === -1
+				? index() + 1
+				: ratingGroupContext.hoveredValue();
+		ratingGroupContext.setValue(value);
 		ratingGroupContext.setHoveredValue(-1);
+		focusItem(value - 1);
 	};
 
 	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
@@ -238,9 +242,6 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 				e.preventDefault();
 				ratingGroupContext.setValue(ratingGroupContext.items().length);
 				break;
-		}
-		if (e.key === EventKey.Space) {
-			ratingGroupContext.setValue(newValue()!);
 		}
 	};
 
