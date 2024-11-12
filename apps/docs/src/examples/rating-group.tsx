@@ -77,15 +77,7 @@ export function HalfRatingsExample() {
 					{(_) => (
 						<RatingGroup.Item class={style["rating-group-item"]}>
 							<RatingGroup.ItemControl>
-								{(state) =>
-									state.half() ? (
-										<StarHalfIcon />
-									) : state.highlighted() ? (
-										<StarIcon />
-									) : (
-										<StarIcon />
-									)
-								}
+								{(state) => (state.half() ? <StarHalfIcon /> : <StarIcon />)}
 							</RatingGroup.ItemControl>
 						</RatingGroup.Item>
 					)}

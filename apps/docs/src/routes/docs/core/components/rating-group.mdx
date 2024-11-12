@@ -224,9 +224,7 @@ Allow 0.5 value steps by setting the `allowHalf` prop to true.
 			{_ => (
 				<RatingGroup.Item>
 					<RatingGroup.ItemControl>
-						{state =>
-							state.half() ? <StarHalfIcon /> : state.highlighted() ? <StarIcon /> : <StarIcon />
-						}
+						{(state) => (state.half() ? <StarHalfIcon /> : <StarIcon />)}
 					</RatingGroup.ItemControl>
 				</RatingGroup.Item>
 			)}
@@ -344,7 +342,7 @@ function HTMLFormExample() {
 
 ### RatingGroup
 
-`RatingGroup` is equivalent to the `Root` import from `@kobalte/core/Rating-group`.
+`RatingGroup` is equivalent to the `Root` import from `@kobalte/core/rating-group`.
 
 | Prop            | Description                                                                                                                                        |
 | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
