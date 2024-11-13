@@ -19,30 +19,25 @@
   align-items: center;
   gap: 0.5rem;
   position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .stepper__trigger {
-  appearance: none;
   display: inline-flex;
   justify-content: center;
   align-items: center;
   height: 40px;
   width: 40px;
-  outline: none;
   border-radius: 50%;
   background-color: white;
   color: hsl(240 4% 16%);
   font-size: 16px;
   line-height: 0;
   transition: 250ms background-color, 250ms color, 250ms border-color;
-  cursor: pointer;
   border: 2px solid hsl(240 6% 90%);
-}
-
-.stepper__trigger[data-current="true"] {
-  background-color: hsl(200 98% 39%);
-  color: white;
-  border-color: hsl(200 98% 39%);
 }
 
 .stepper__item[data-current] .stepper__trigger {
@@ -51,20 +46,24 @@
   border-color: hsl(200 98% 39%);
 }
 
-/* And similarly for completed state */
 .stepper__item[data-complete] .stepper__trigger {
   background-color: hsl(142 76% 36%);
   color: white;
   border-color: hsl(142 76% 36%);
 }
 
-.stepper__trigger:hover {
+.stepper__item[disabled] .stepper__trigger {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stepper__item:hover .stepper__trigger {
   background-color: hsl(200 98% 39%);
   color: white;
   border-color: hsl(200 98% 39%);
 }
 
-.stepper__trigger:focus-visible {
+.stepper__item:focus-visible {
   outline: 2px solid hsl(200 98% 39%);
   outline-offset: 2px;
 }
@@ -75,11 +74,6 @@
   background-color: hsl(240 6% 90%);
   margin: 0 0.5rem;
   min-width: 3rem;
-  transition: background-color 250ms;
-}
-
-.stepper__separator[data-complete="true"] {
-  background-color: hsl(142 76% 36%);
 }
 
 .stepper__content {

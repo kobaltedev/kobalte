@@ -1,195 +1,202 @@
 import { Stepper } from "@kobalte/core/stepper"
-import { Show, createSignal, For } from "solid-js";
-import style from "./stepper.module.css";
+import { createSignal } from "solid-js";
+import styles from "./stepper.module.css";
 
 export const BasicExample = () => {
 	return (
-		<Stepper class={style.stepper__root} maxSteps={3} defaultStep={0}>
-			<Stepper.List class={style.stepper__list}>
-				<For each={[0, 1, 2]}>
-					{(index) => (
-						<>
-							<Stepper.Item class={style.stepper__item} index={index}>
-								<Stepper.Trigger class={style.stepper__trigger} step={index}>
-									{index + 1}
-								</Stepper.Trigger>
-							</Stepper.Item>
-
-							<Show when={index < 2}>
-								<Stepper.Separator class={style.stepper__separator} />
-							</Show>
-						</>
-					)}
-				</For>
+		<Stepper
+			class={styles.stepper__root}
+			maxSteps={3}
+		>
+			<Stepper.List class={styles.stepper__list}>
+				<Stepper.Item class={styles.stepper__item} index={0}>
+					<div class={styles.stepper__trigger}>1</div>
+					<span class={styles.stepper__label}>Step 1</span>
+				</Stepper.Item>
+				<Stepper.Separator class={styles.stepper__separator} />
+				<Stepper.Item class={styles.stepper__item} index={1}>
+					<div class={styles.stepper__trigger}>2</div>
+					<span class={styles.stepper__label}>Step 2</span>
+				</Stepper.Item>
+				<Stepper.Separator class={styles.stepper__separator} />
+				<Stepper.Item class={styles.stepper__item} index={2}>
+					<div class={styles.stepper__trigger}>3</div>
+					<span class={styles.stepper__label}>Step 3</span>
+				</Stepper.Item>
 			</Stepper.List>
 
-			<div class={style.stepper__content}>
-				<Stepper.Content index={0}>
-					<h2 class={style.stepper__title}>Step 1</h2>
-					<p>This is the content for step 1</p>
-				</Stepper.Content>
+			<Stepper.Content class={styles.stepper__content} index={0}>
+				<h2 class={styles.stepper__title}>Step 1 Content</h2>
+				<p>This is the content for step 1</p>
+			</Stepper.Content>
 
-				<Stepper.Content index={1}>
-					<h2 class={style.stepper__title}>Step 2</h2>
-					<p>This is the content for step 2</p>
-				</Stepper.Content>
+			<Stepper.Content class={styles.stepper__content} index={1}>
+				<h2 class={styles.stepper__title}>Step 2 Content</h2>
+				<p>This is the content for step 2</p>
+			</Stepper.Content>
 
-				<Stepper.Content index={2}>
-					<h2 class={style.stepper__title}>Step 3</h2>
-					<p>This is the content for step 3</p>
-				</Stepper.Content>
-			</div>
+			<Stepper.Content class={styles.stepper__content} index={2}>
+				<h2 class={styles.stepper__title}>Step 3 Content</h2>
+				<p>This is the content for step 3</p>
+			</Stepper.Content>
 
-			<div class={style.stepper__actions}>
-				<Stepper.PrevTrigger class={style.stepper__button}>
+			<Stepper.CompletedContent class={styles.stepper__completed}>
+				<h2>All steps completed!</h2>
+				<p>Thank you for completing all steps.</p>
+				<Stepper.Trigger
+					class={styles.stepper__button}
+					step={0}
+				>
+					Start Over
+				</Stepper.Trigger>
+			</Stepper.CompletedContent>
+
+			<div class={styles.stepper__actions}>
+				<Stepper.PrevTrigger class={styles.stepper__button}>
 					Previous
 				</Stepper.PrevTrigger>
-				<Stepper.NextTrigger class={style.stepper__button__next}>
+				<Stepper.NextTrigger class={styles.stepper__button__next}>
 					Next
 				</Stepper.NextTrigger>
 			</div>
 		</Stepper>
 	);
-};
+}
 
 export const FormExample = () => {
 	const [currentStep, setCurrentStep] = createSignal(0);
 	const [formData, setFormData] = createSignal({
-		name: "",
-		email: "",
-		address: ""
+		personalInfo: { name: "", email: "" },
+		address: { street: "", city: "" },
+		review: false
 	});
-
-	const handleSubmit = (e: Event) => {
-		e.preventDefault();
-		// Handle form submission
-		console.log("Form submitted:", formData());
-	};
 
 	return (
 		<Stepper
-			class={style.stepper__root}
+			class={styles.stepper__root}
 			maxSteps={3}
 			step={currentStep()}
 			onStepChange={setCurrentStep}
 		>
-			<Stepper.List class={style.stepper__list}>
-				<Stepper.Item index={0} class={style.stepper__item}>
-					<Stepper.Trigger
-						step={0}
-						class={style.stepper__trigger}
-					>
-						1
-					</Stepper.Trigger>
-					<span class={style.stepper__label}>Personal</span>
+			<Stepper.List class={styles.stepper__list}>
+				<Stepper.Item class={styles.stepper__item} index={0}>
+					<div class={styles.stepper__trigger}>1</div>
+					<span class={styles.stepper__label}>Personal Info</span>
 				</Stepper.Item>
-
-				<Stepper.Separator class={style.stepper__separator} />
-
-				<Stepper.Item index={1} class={style.stepper__item}>
-					<Stepper.Trigger
-						step={1}
-						class={style.stepper__trigger}
-					>
-						2
-					</Stepper.Trigger>
-					<span class={style.stepper__label}>Contact</span>
+				<Stepper.Separator class={styles.stepper__separator} />
+				<Stepper.Item class={styles.stepper__item} index={1}>
+					<div class={styles.stepper__trigger}>2</div>
+					<span class={styles.stepper__label}>Address</span>
 				</Stepper.Item>
-
-				<Stepper.Separator class={style.stepper__separator} />
-
-				<Stepper.Item index={2} class={style.stepper__item}>
-					<Stepper.Trigger
-						step={2}
-						class={style.stepper__trigger}
-					>
-						3
-					</Stepper.Trigger>
-					<span class={style.stepper__label}>Review</span>
+				<Stepper.Separator class={styles.stepper__separator} />
+				<Stepper.Item class={styles.stepper__item} index={2}>
+					<div class={styles.stepper__trigger}>3</div>
+					<span class={styles.stepper__label}>Review</span>
 				</Stepper.Item>
 			</Stepper.List>
 
-			<form onSubmit={handleSubmit}>
-				<Stepper.Content index={0}>
-					<h2 class={style.stepper__title}>Personal Information</h2>
+			<Stepper.Content class={styles.stepper__content} index={0}>
+				<h2 class={styles.stepper__title}>Personal Information</h2>
+				<div class={styles.stepper__inputContainer}>
 					<input
+						class={styles.stepper__input}
 						type="text"
-						placeholder="Full Name"
-						value={formData().name}
-						onInput={(e) => setFormData({ ...formData(), name: e.currentTarget.value })}
-						class={style.stepper__input}
+						placeholder="Name"
+						value={formData().personalInfo.name}
+						onInput={(e) => setFormData({
+							...formData(),
+							personalInfo: { ...formData().personalInfo, name: e.currentTarget.value }
+						})}
 					/>
-				</Stepper.Content>
-
-				<Stepper.Content index={1}>
-					<h2 class={style.stepper__title}>Contact Information</h2>
+				</div>
+				<div class={styles.stepper__inputContainer}>
 					<input
+						class={styles.stepper__input}
 						type="email"
 						placeholder="Email"
-						value={formData().email}
-						onInput={(e) => setFormData({ ...formData(), email: e.currentTarget.value })}
-						class={style.stepper__input}
+						value={formData().personalInfo.email}
+						onInput={(e) => setFormData({
+							...formData(),
+							personalInfo: { ...formData().personalInfo, email: e.currentTarget.value }
+						})}
 					/>
-				</Stepper.Content>
-
-				<Stepper.Content index={2}>
-					<h2 class={style.stepper__title}>Review Information</h2>
-					<div class={style.stepper__review}>
-						<p>Name: {formData().name}</p>
-						<p>Email: {formData().email}</p>
-					</div>
-				</Stepper.Content>
-
-				<Stepper.CompletedContent>
-					<div class={style.stepper__completed}>
-						<h2>All steps completed!</h2>
-						<p>Thank you for submitting your information.</p>
-					</div>
-				</Stepper.CompletedContent>
-
-				<div class={style.stepper__actions}>
-					<Stepper.PrevTrigger class={style.stepper__button}>
-						Previous
-					</Stepper.PrevTrigger>
-
-					<Show
-						when={currentStep() === 2}
-						fallback={
-							<Stepper.NextTrigger class={style.stepper__button__next}>
-								Next
-							</Stepper.NextTrigger>
-						}
-					>
-						<button
-							type="submit"
-							class={style.kstepper__button__submit}
-						>
-							Submit
-						</button>
-					</Show>
 				</div>
-			</form>
+			</Stepper.Content>
+
+			<Stepper.Content class={styles.stepper__content} index={1}>
+				<h2 class={styles.stepper__title}>Address</h2>
+				<div class={styles.stepper__inputContainer}>
+					<input
+						class={styles.stepper__input}
+						type="text"
+						placeholder="Street"
+						value={formData().address.street}
+						onInput={(e) => setFormData({
+							...formData(),
+							address: { ...formData().address, street: e.currentTarget.value }
+						})}
+					/>
+				</div>
+				<div class={styles.stepper__inputContainer}>
+					<input
+						class={styles.stepper__input}
+						type="text"
+						placeholder="City"
+						value={formData().address.city}
+						onInput={(e) => setFormData({
+							...formData(),
+							address: { ...formData().address, city: e.currentTarget.value }
+						})}
+					/>
+				</div>
+			</Stepper.Content>
+
+			<Stepper.Content class={styles.stepper__content} index={2}>
+				<h2 class={styles.stepper__title}>Review</h2>
+				<div class={styles.stepper__review}>
+					<div class={styles.stepper__summary}>
+						<p>Name: {formData().personalInfo.name}</p>
+						<p>Email: {formData().personalInfo.email}</p>
+						<p>Street: {formData().address.street}</p>
+						<p>City: {formData().address.city}</p>
+					</div>
+				</div>
+			</Stepper.Content>
+
+			<div class={styles.stepper__actions}>
+				<Stepper.PrevTrigger class={styles.stepper__button}>
+					Previous
+				</Stepper.PrevTrigger>
+				<Stepper.NextTrigger class={styles.stepper__button__next}>
+					Next
+				</Stepper.NextTrigger>
+			</div>
+
+			<Stepper.CompletedContent class={styles.stepper__completed}>
+				<h2>All steps completed!</h2>
+				<p>Thank you for submitting your information.</p>
+			</Stepper.CompletedContent>
 		</Stepper>
 	);
-};
+}
 
 export const ValidatedExample = () => {
 	const [currentStep, setCurrentStep] = createSignal(0);
-	const [errors, setErrors] = createSignal<Record<string, string>>({});
+	const [errors, setErrors] = createSignal({});
 	const [formData, setFormData] = createSignal({
-		name: "",
+		username: "",
 		email: "",
-		phone: "",
+		password: ""
 	});
 
 	const validateStep = (step: number) => {
 		const newErrors: Record<string, string> = {};
 
 		if (step === 0) {
-			if (!formData().name) {
-				newErrors.name = "Name is required";
-			} else if (formData().name.length < 2) {
-				newErrors.name = "Name must be at least 2 characters";
+			if (!formData().username) {
+				newErrors.username = "Username is required";
+			} else if (formData().username.length < 3) {
+				newErrors.username = "Username must be at least 3 characters";
 			}
 		}
 
@@ -197,15 +204,15 @@ export const ValidatedExample = () => {
 			if (!formData().email) {
 				newErrors.email = "Email is required";
 			} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData().email)) {
-				newErrors.email = "Please enter a valid email address";
+				newErrors.email = "Invalid email format";
 			}
 		}
 
 		if (step === 2) {
-			if (!formData().phone) {
-				newErrors.phone = "Phone number is required";
-			} else if (!/^\d{10}$/.test(formData().phone.replace(/\D/g, ''))) {
-				newErrors.phone = "Please enter a valid 10-digit phone number";
+			if (!formData().password) {
+				newErrors.password = "Password is required";
+			} else if (formData().password.length < 6) {
+				newErrors.password = "Password must be at least 6 characters";
 			}
 		}
 
@@ -214,156 +221,94 @@ export const ValidatedExample = () => {
 	};
 
 	const handleStepChange = (newStep: number) => {
-		if (newStep > currentStep()) {
-			if (validateStep(currentStep())) {
-				setCurrentStep(newStep);
-			}
-		} else {
+		if (validateStep(currentStep())) {
 			setCurrentStep(newStep);
-		}
-	};
-
-	const handleSubmit = (e: Event) => {
-		e.preventDefault();
-		if (validateStep(2)) {
-			console.log("Form submitted:", formData());
 		}
 	};
 
 	return (
 		<Stepper
-			class={style.stepper__root}
+			class={styles.stepper__root}
 			maxSteps={3}
 			step={currentStep()}
 			onStepChange={handleStepChange}
 		>
-			<Stepper.List class={style.stepper__list}>
-				<For each={[
-					{ index: 0, label: "Personal" },
-					{ index: 1, label: "Contact" },
-					{ index: 2, label: "Review" }
-				]}>
-					{(item, index) => (
-						<>
-							<Stepper.Item class={style.stepper__item} index={item.index}>
-								<Stepper.Trigger class={style.stepper__trigger} step={item.index}>
-									{item.index + 1}
-								</Stepper.Trigger>
-								<span class={style.stepper__label}>{item.label}</span>
-							</Stepper.Item>
-
-							<Show when={index() < 2}>
-								<Stepper.Separator class={style.stepper__separator} />
-							</Show>
-						</>
-					)}
-				</For>
+			<Stepper.List class={styles.stepper__list}>
+				<Stepper.Item class={styles.stepper__item} index={0}>
+					<div class={styles.stepper__trigger}>1</div>
+					<span class={styles.stepper__label}>Username</span>
+				</Stepper.Item>
+				<Stepper.Separator class={styles.stepper__separator} />
+				<Stepper.Item class={styles.stepper__item} index={1}>
+					<div class={styles.stepper__trigger}>2</div>
+					<span class={styles.stepper__label}>Email</span>
+				</Stepper.Item>
+				<Stepper.Separator class={styles.stepper__separator} />
+				<Stepper.Item class={styles.stepper__item} index={2}>
+					<div class={styles.stepper__trigger}>3</div>
+					<span class={styles.stepper__label}>Password</span>
+				</Stepper.Item>
 			</Stepper.List>
 
-			<form onSubmit={handleSubmit}>
-				<div class={style.stepper__content}>
-					<Stepper.Content index={0}>
-						<h2 class={style.stepper__title}>Personal Information</h2>
-						<div class={style.stepper__inputContainer}>
-							<label class={style.stepper__label}>
-								<span>Full Name</span>
-								<input
-									type="text"
-									value={formData().name}
-									onInput={(e) => setFormData({ ...formData(), name: e.currentTarget.value })}
-									class={`${style.stepper__input} ${errors().name ? style.input__error : ""}`}
-								/>
-								<Show when={errors().name}>
-									<span class={style.error}>{errors().name}</span>
-								</Show>
-							</label>
-						</div>
-					</Stepper.Content>
-
-					<Stepper.Content index={1}>
-						<h2 class={style.stepper__title}>Contact Information</h2>
-						<div class={style.stepper__inputContainer}>
-							<label class={style.stepper__label}>
-								<span>Email Address</span>
-								<input
-									type="email"
-									value={formData().email}
-									onInput={(e) => setFormData({ ...formData(), email: e.currentTarget.value })}
-									class={`${style.stepper__input} ${errors().email ? style.input__error : ""}`}
-								/>
-								<Show when={errors().email}>
-									<span class={style.error}>{errors().email}</span>
-								</Show>
-							</label>
-						</div>
-					</Stepper.Content>
-
-					<Stepper.Content index={2}>
-						<h2 class={style.stepper__title}>Phone Number</h2>
-						<div class={style.stepper__inputContainer}>
-							<label class={style.stepper__label}>
-								<span>Phone Number</span>
-								<input
-									type="tel"
-									value={formData().phone}
-									onInput={(e) => setFormData({ ...formData(), phone: e.currentTarget.value })}
-									class={`${style.stepper__input} ${errors().phone ? style.input__error : ""}`}
-									placeholder="1234567890"
-								/>
-								<Show when={errors().phone}>
-									<span class={style.error}>{errors().phone}</span>
-								</Show>
-							</label>
-						</div>
-					</Stepper.Content>
-
-					<Stepper.CompletedContent>
-						<div class={style.stepper__completed}>
-							<div>
-								<svg class={style.stepper__icon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-								</svg>
-							</div>
-							<h2>Registration Complete!</h2>
-							<p>Thank you for submitting your information.</p>
-							<div class={style.stepper__summary}>
-								<p><strong>Name:</strong> {formData().name}</p>
-								<p><strong>Email:</strong> {formData().email}</p>
-								<p><strong>Phone:</strong> {formData().phone}</p>
-							</div>
-						</div>
-					</Stepper.CompletedContent>
+			<Stepper.Content class={styles.stepper__content} index={0}>
+				<h2 class={styles.stepper__title}>Choose Username</h2>
+				<div class={styles.stepper__inputContainer}>
+					<input
+						class={`${styles.stepper__input} ${errors().username ? styles.input__error : ''}`}
+						type="text"
+						placeholder="Username"
+						value={formData().username}
+						onInput={(e) => setFormData({ ...formData(), username: e.currentTarget.value })}
+					/>
+					{errors().username && <div class={styles.error}>{errors().username}</div>}
 				</div>
+			</Stepper.Content>
 
-				<div class={style.stepper__actions}>
-					<Stepper.PrevTrigger
-						class={style.stepper__button}
-						data-disabled={currentStep() === 0}
-					>
-						Previous
-					</Stepper.PrevTrigger>
-
-					<Show
-						when={currentStep() === 2}
-						fallback={
-							<Stepper.NextTrigger
-								class={style.stepper__button__next}
-								data-disabled={Boolean(errors()[currentStep()])}
-							>
-								Next
-							</Stepper.NextTrigger>
-						}
-					>
-						<button
-							type="submit"
-							class={style.stepper__button__submit}
-							disabled={Boolean(errors().phone)}
-						>
-							Submit
-						</button>
-					</Show>
+			<Stepper.Content class={styles.stepper__content} index={1}>
+				<h2 class={styles.stepper__title}>Enter Email</h2>
+				<div class={styles.stepper__inputContainer}>
+					<input
+						class={`${styles.stepper__input} ${errors().email ? styles.input__error : ''}`}
+						type="email"
+						placeholder="Email"
+						value={formData().email}
+						onInput={(e) => setFormData({ ...formData(), email: e.currentTarget.value })}
+					/>
+					{errors().email && <div class={styles.error}>{errors().email}</div>}
 				</div>
-			</form>
+			</Stepper.Content>
+
+			<Stepper.Content class={styles.stepper__content} index={2}>
+				<h2 class={styles.stepper__title}>Create Password</h2>
+				<div class={styles.stepper__inputContainer}>
+					<input
+						class={`${styles.stepper__input} ${errors().password ? styles.input__error : ''}`}
+						type="password"
+						placeholder="Password"
+						value={formData().password}
+						onInput={(e) => setFormData({ ...formData(), password: e.currentTarget.value })}
+					/>
+					{errors().password && <div class={styles.error}>{errors().password}</div>}
+				</div>
+			</Stepper.Content>
+
+			<div class={styles.stepper__actions}>
+				<Stepper.PrevTrigger class={styles.stepper__button}>
+					Previous
+				</Stepper.PrevTrigger>
+				<Stepper.NextTrigger class={styles.stepper__button__next}>
+					Next
+				</Stepper.NextTrigger>
+			</div>
 		</Stepper>
 	);
-};
+}
+export default function App() {
+	return (
+		<>
+			<BasicExample />
+			<FormExample />
+			<ValidatedExample />
+		</>
+	);
+}

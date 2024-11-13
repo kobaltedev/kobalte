@@ -8,7 +8,7 @@ import {
 
 # Stepper
 
-A multi-step interface that guides users through a sequence of related tasks or content.
+A multi-step interface that guides users through a sequence of related tasks or content. Built on top of the Tabs component for accessibility.
 
 ## Import
 
@@ -25,7 +25,8 @@ import { Root, Item, ... } from "@kobalte/core/stepper";
 - Support for validation between steps
 - Customizable step indicators and content
 - Support for completed state
-- Accessible by default
+- Built on top of Tabs component for accessibility
+- Can be controlled or uncontrolled
 
 ## Anatomy
 
@@ -34,7 +35,7 @@ The stepper consists of:
 - **Stepper:** The root container for the stepper component.
 - **Stepper.List:** Contains the list of step indicators.
 - **Stepper.Item:** An individual step indicator.
-- **Stepper.Trigger:** The button that allows users to navigate to a step.
+- **Stepper.Trigger:** The button that allows users to navigate to a specific step.
 - **Stepper.Separator:** Visual separator between step indicators.
 - **Stepper.Content:** Content associated with each step.
 - **Stepper.CompletedContent:** Content shown when all steps are completed.
@@ -42,23 +43,30 @@ The stepper consists of:
 - **Stepper.NextTrigger:** Button to navigate to the next step.
 
 ```tsx
-<Stepper>
+<Stepper maxSteps={3}>
   <Stepper.List>
-    <Stepper.Item>
-      <Stepper.Trigger />
+    <Stepper.Item index={0}>
+      <Stepper.Trigger step={0}>Step 1</Stepper.Trigger>
     </Stepper.Item>
     <Stepper.Separator />
-    <Stepper.Item>
-      <Stepper.Trigger />
+    <Stepper.Item index={1}>
+      <Stepper.Trigger step={1}>Step 2</Stepper.Trigger>
+    </Stepper.Item>
+    <Stepper.Separator />
+    <Stepper.Item index={2}>
+      <Stepper.Trigger step={2}>Step 3</Stepper.Trigger>
     </Stepper.Item>
   </Stepper.List>
 
-  <Stepper.Content />
-  <Stepper.CompletedContent />
+  <Stepper.Content index={0}>Step 1 content</Stepper.Content>
+  <Stepper.Content index={1}>Step 2 content</Stepper.Content>
+  <Stepper.Content index={2}>Step 3 content</Stepper.Content>
+
+  <Stepper.CompletedContent>All steps completed!</Stepper.CompletedContent>
 
   <div>
-    <Stepper.PrevTrigger />
-    <Stepper.NextTrigger />
+    <Stepper.PrevTrigger>Previous</Stepper.PrevTrigger>
+    <Stepper.NextTrigger>Next</Stepper.NextTrigger>
   </div>
 </Stepper>
 ```
@@ -77,43 +85,52 @@ The stepper consists of:
   <TabsSnippets.Content value="index.tsx">
     ```tsx
     import { Stepper } from "@kobalte/core/stepper";
+    import { createSignal } from "solid-js";
     import "./style.css";
 
     function App() {
+      const [currentStep, setCurrentStep] = createSignal(0);
+
       return (
-        <Stepper maxSteps={3} defaultStep={0}>
+        <Stepper
+          maxSteps={3}
+          step={currentStep()}
+          onStepChange={setCurrentStep}
+        >
           <Stepper.List class="stepper__list">
-            <Stepper.Item class="stepper__item">
+            <Stepper.Item class="stepper__item" index={0}>
               <Stepper.Trigger class="stepper__trigger" step={0}>1</Stepper.Trigger>
             </Stepper.Item>
 
             <Stepper.Separator class="stepper__separator" />
 
-            <Stepper.Item class="stepper__item">
+            <Stepper.Item class="stepper__item" index={1}>
               <Stepper.Trigger class="stepper__trigger" step={1}>2</Stepper.Trigger>
             </Stepper.Item>
 
             <Stepper.Separator class="stepper__separator" />
 
-            <Stepper.Item class="stepper__item">
+            <Stepper.Item class="stepper__item" index={2}>
               <Stepper.Trigger class="stepper__trigger" step={2}>3</Stepper.Trigger>
             </Stepper.Item>
           </Stepper.List>
 
-          <Stepper.Content class="stepper__content" index={0}>
-            <h2>Step 1</h2>
-            <p>This is the content for step 1</p>
-          </Stepper.Content>
+          <div class="stepper__content">
+            <Stepper.Content index={0}>
+              <h2>Step 1</h2>
+              <p>This is the content for step 1</p>
+            </Stepper.Content>
 
-          <Stepper.Content class="stepper__content" index={1}>
-            <h2>Step 2</h2>
-            <p>This is the content for step 2</p>
-          </Stepper.Content>
+            <Stepper.Content index={1}>
+              <h2>Step 2</h2>
+              <p>This is the content for step 2</p>
+            </Stepper.Content>
 
-          <Stepper.Content class="stepper__content" index={2}>
-            <h2>Step 3</h2>
-            <p>This is the content for step 3</p>
-          </Stepper.Content>
+            <Stepper.Content index={2}>
+              <h2>Step 3</h2>
+              <p>This is the content for step 3</p>
+            </Stepper.Content>
+          </div>
 
           <div class="stepper__actions">
             <Stepper.PrevTrigger class="stepper__button">Previous</Stepper.PrevTrigger>
@@ -305,60 +322,59 @@ export const ValidatedExample = () => {
 
 ## API Reference
 
-### Stepper
+### Stepper (Root)
 
 The root component that wraps all stepper elements.
 
-| Prop | Description |
-|:--|:--|
-| step | `number` <br/> The controlled step index. |
-| defaultStep | `number` <br/> The default step index when initially rendered. |
-| maxSteps | `number` <br/> The total number of steps. |
-| onStepChange | `(step: number) => void` <br/> Event handler called when the step changes. |
-| disabled | `boolean` <br/> When true, prevents interaction with the stepper. |
-
-| Data attribute | Description |
-|:--|:--|
-| data-disabled | Present when the stepper is disabled. |
-| data-complete | Present when all steps are completed. |
+| Prop | Type | Description |
+|:--|:--|:--|
+| `step` | `number` | The controlled step index |
+| `defaultStep` | `number` | The default step index when initially rendered |
+| `maxSteps` | `number` | The total number of steps (required) |
+| `onStepChange` | `(step: number) => void` | Event handler called when the step changes |
+| `disabled` | `boolean` | When true, prevents interaction with the stepper |
 
 ### Stepper.Item
 
-Represents an individual step in the stepper.
-
-| Prop | Description |
-|:--|:--|
-| index | `number` <br/> The zero-based index of the step. |
-
-| Data attribute | Description |
-|:--|:--|
-| data-complete | Present when the step is completed. |
-| data-current | Present when the step is current. |
+| Prop | Type | Description |
+|:--|:--|:--|
+| `index` | `number` | The zero-based index of this step (required) |
 
 ### Stepper.Trigger
 
-The button that triggers step navigation.
+| Prop | Type | Description |
+|:--|:--|:--|
+| `step` | `number` | The step index this trigger navigates to (required) |
 
-| Prop | Description |
+### Stepper.Content
+
+| Prop | Type | Description |
+|:--|:--|:--|
+| `index` | `number` | The step index this content belongs to (required) |
+
+## Data Attributes
+
+| Component | Attribute | Description |
+|:--|:--|:--|
+| `Stepper.Item` | `data-current` | Present when this is the current step |
+| `Stepper.Item` | `data-complete` | Present when this step is completed |
+| `Stepper.Trigger` | `data-disabled` | Present when the trigger is disabled |
+| `Stepper.CompletedContent` | `data-completed` | Present when all steps are completed |
+
+## Keyboard Interactions
+
+| Key | Description |
 |:--|:--|
-| step | `number` <br/> The step index this trigger navigates to. |
+| <Kbd>Tab</Kbd> | Moves focus to the next focusable element |
+| <Kbd>Space</Kbd> or <Kbd>Enter</Kbd> | Activates the focused step |
+| <Kbd>ArrowLeft</Kbd> | Moves to the previous step |
+| <Kbd>ArrowRight</Kbd> | Moves to the next step |
 
-| Data attribute | Description |
-|:--|:--|
-| data-current | Present when this is the current step. |
-| data-complete | Present when this step is completed. |
-| data-disabled | Present when navigation is disabled. |
+## Accessibility
 
-## Rendered elements
+The Stepper component is built on top of the Tabs component and follows the [WAI-ARIA Tabs Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/). It includes proper ARIA attributes and keyboard navigation support.
 
-| Component | Default rendered element |
-|:--|:--|
-| `Stepper` | `div` |
-| `Stepper.List` | `div` |
-| `Stepper.Item` | `div` |
-| `Stepper.Trigger` | `button` |
-| `Stepper.Separator` | `div` |
-| `Stepper.Content` | `div` |
-| `Stepper.CompletedContent` | `div` |
-| `Stepper.PrevTrigger` | `button` |
-| `Stepper.NextTrigger` | `button` |
+- Steps are automatically labeled with their position (e.g., "Step 1 of 3")
+- Current step is indicated with `aria-current="step"`
+- Navigation buttons are properly labeled for screen readers
+- Completed steps are announced to screen readers
