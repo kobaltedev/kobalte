@@ -1,20 +1,13 @@
-import { type ValidComponent, Show, splitProps, JSX } from "solid-js";
-import { type ElementOf, Polymorphic, type PolymorphicProps } from "../polymorphic";
-import { useStepperContext } from "./stepper-context";
+import { type ValidComponent, splitProps, JSX } from "solid-js";
+import { Tabs } from "../tabs";
+import { type ElementOf, type PolymorphicProps } from "../polymorphic";
 
 export interface StepperContentOptions {
-  /** The index of this content panel */
   index: number;
 }
 
 export interface StepperContentCommonProps<T extends HTMLElement = HTMLElement> {
   children?: JSX.Element;
-}
-
-export interface StepperContentRenderProps extends StepperContentCommonProps {
-  role: string;
-  "aria-labelledby"?: string;
-  "data-active"?: string;
 }
 
 export type StepperContentProps<T extends ValidComponent | HTMLElement = HTMLElement> =
@@ -23,21 +16,14 @@ export type StepperContentProps<T extends ValidComponent | HTMLElement = HTMLEle
 export function StepperContent<T extends ValidComponent = "div">(
   props: PolymorphicProps<T, StepperContentProps<T>>
 ) {
-  const context = useStepperContext();
   const [local, others] = splitProps(props as StepperContentProps, ["index", "children"]);
 
-  const isActive = () => context.step() === local.index;
-
   return (
-    <Show when={isActive()}>
-      <Polymorphic<StepperContentRenderProps>
-        as="div"
-        role="tabpanel"
-        data-active={isActive() ? "" : undefined}
-        {...others}
-      >
-        {local.children}
-      </Polymorphic>
-    </Show>
+    <Tabs.Content
+      value={local.index.toString()}
+      {...others}
+    >
+      {local.children}
+    </Tabs.Content>
   );
 }

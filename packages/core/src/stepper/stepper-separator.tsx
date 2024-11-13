@@ -9,7 +9,6 @@ export interface StepperSeparatorCommonProps<T extends HTMLElement = HTMLElement
 
 export interface StepperSeparatorRenderProps extends StepperSeparatorCommonProps {
 	role: string;
-	"aria-hidden": boolean;
 }
 
 export type StepperSeparatorProps<T extends ValidComponent | HTMLElement = HTMLElement> =
@@ -23,8 +22,7 @@ export function StepperSeparator<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<StepperSeparatorRenderProps>
 			as="div"
-			role="separator"
-			aria-hidden={true}
+			role="presentation"
 			{...others}
 		>
 			{local.children}

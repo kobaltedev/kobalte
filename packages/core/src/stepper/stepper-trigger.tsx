@@ -35,8 +35,6 @@ export function StepperTrigger<T extends ValidComponent = "button">(
 	return (
 		<Button.Root<Component<Omit<StepperTriggerRenderProps, keyof Button.ButtonRootRenderProps>>>
 			disabled={isDisabled()}
-			aria-disabled={isDisabled() || undefined}
-			data-disabled={isDisabled() ? "" : undefined}
 			onClick={composeEventHandlers([local.onClick, onClick])}
 			{...others}
 		/>

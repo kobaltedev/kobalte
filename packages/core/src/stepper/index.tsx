@@ -3,7 +3,6 @@ import {
   type StepperContentProps,
   type StepperContentOptions,
   type StepperContentCommonProps,
-  type StepperContentRenderProps,
 } from "./stepper-content";
 import {
   StepperItem as Item,
@@ -17,7 +16,6 @@ import {
   type StepperListProps,
   type StepperListOptions,
   type StepperListCommonProps,
-  type StepperListRenderProps,
 } from "./stepper-list";
 import {
   StepperNextTrigger as NextTrigger,
@@ -38,7 +36,6 @@ import {
   type StepperRootProps,
   type StepperRootOptions,
   type StepperRootCommonProps,
-  type StepperRootRenderProps,
 } from "./stepper-root";
 import {
   StepperSeparator as Separator,
@@ -65,7 +62,6 @@ import {
 export type {
   StepperContentOptions,
   StepperContentCommonProps,
-  StepperContentRenderProps,
   StepperContentProps,
   StepperItemOptions,
   StepperItemCommonProps,
@@ -73,7 +69,6 @@ export type {
   StepperItemProps,
   StepperListOptions,
   StepperListCommonProps,
-  StepperListRenderProps,
   StepperListProps,
   StepperNextTriggerOptions,
   StepperNextTriggerCommonProps,
@@ -85,7 +80,6 @@ export type {
   StepperPrevTriggerProps,
   StepperRootOptions,
   StepperRootCommonProps,
-  StepperRootRenderProps,
   StepperRootProps,
   StepperSeparatorOptions,
   StepperSeparatorCommonProps,

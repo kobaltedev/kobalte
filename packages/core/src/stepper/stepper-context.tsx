@@ -1,4 +1,4 @@
-import { type Accessor, type JSX, type Setter, createContext, useContext } from "solid-js";
+import { type Accessor, type Setter, createContext, useContext } from "solid-js";
 
 export interface StepperContextValue {
   step: Accessor<number>;

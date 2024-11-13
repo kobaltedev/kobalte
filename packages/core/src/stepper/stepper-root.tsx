@@ -1,15 +1,14 @@
+import { Tabs } from "../tabs";
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	type Component,
 	type JSX,
 	type ValidComponent,
-	createMemo,
 	createUniqueId,
 	splitProps,
+	createSignal,
 } from "solid-js";
 
-import { type ElementOf, Polymorphic, type PolymorphicProps } from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+import { type ElementOf, type PolymorphicProps } from "../polymorphic";
 import { StepperContext, type StepperContextValue } from "./stepper-context";
 
 export interface StepperRootOptions {
@@ -32,10 +31,6 @@ export interface StepperRootOptions {
 export interface StepperRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id?: string;
 	children?: JSX.Element;
-}
-
-export interface StepperRootRenderProps extends StepperRootCommonProps {
-	"data-disabled"?: string;
 }
 
 export type StepperRootProps<T extends ValidComponent | HTMLElement = HTMLElement> =
@@ -62,39 +57,39 @@ export function StepperRoot<T extends ValidComponent = "div">(
 		"children",
 	]);
 
-	const state = createControllableSignal({
-		value: () => local.step,
-		defaultValue: () => local.defaultStep ?? 0,
-		onChange: local.onStepChange,
-	});
+	const [internalStep, setInternalStep] = createSignal(local.defaultStep ?? 0);
 
-	// Ensure state[0]() returns a number
-	const currentStep = () => state[0]() ?? 0;
+	const currentStep = () => local.step ?? internalStep();
+
+	const value = () => currentStep().toString();
+	const defaultValue = () => local.defaultStep?.toString();
 
 	const context: StepperContextValue = {
 		step: currentStep,
-		setStep: state[1],
+		setStep: (step: number | ((prev: number) => number)) => {
+			const newStep = typeof step === 'function' ? step(currentStep()) : step;
+			if (!local.onStepChange) {
+				setInternalStep(newStep);
+			} else {
+				local.onStepChange?.(newStep);
+			}
+		},
 		isDisabled: () => local.disabled ?? false,
-		isCompleted: () => {
-			const step = currentStep();
-			return step > local.maxSteps - 1;
-		},
+		isCompleted: () => currentStep() > local.maxSteps - 1,
 		maxSteps: () => local.maxSteps,
-		isLastStep: () => {
-			const step = currentStep();
-			return step === local.maxSteps - 1;
-		},
+		isLastStep: () => currentStep() === local.maxSteps - 1,
 	};
 
 	return (
 		<StepperContext.Provider value={context}>
-			<Polymorphic<StepperRootRenderProps>
-				as="div"
-				data-disabled={local.disabled ? "" : undefined}
+			<Tabs
+				value={value()}
+				defaultValue={defaultValue()}
+				disabled={local.disabled}
 				{...others}
 			>
 				{local.children}
-			</Polymorphic>
+			</Tabs>
 		</StepperContext.Provider>
 	);
 }
