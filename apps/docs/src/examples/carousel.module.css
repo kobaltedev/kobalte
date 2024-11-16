@@ -1,0 +1,142 @@
+.item {
+	width: 400px;
+	height: 200px;
+	background-color: hsl(0 0% 98%);
+	margin: 8px;
+  flex: 0 0 100%;
+  min-width: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 8px;
+	border: 2px solid hsl(240 5% 84%);
+	transition: border-color 250ms;
+}
+
+.button {
+	appearance: none;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	padding: 0 16px;
+	margin-inline: 20px;
+	border-radius: 6px;
+	background-color: hsl(200 98% 39%);
+	color: white;
+	transition: background-color 250ms;
+}
+
+.button:hover {
+	background-color: hsl(201 96% 32%);
+}
+
+.button:focus-visible {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
+
+.button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.horizontal {
+	.root {
+		max-width: 500px;
+	  overflow: hidden;
+		margin: auto;
+	}
+	.viewport {
+		display: flex;
+		max-height: 400px;
+		gap: 16px;
+		margin: 16px;
+	}
+
+	.indicators {
+	  display: flex;
+	  justify-content: center;
+		align-items: center;
+	  gap: 8px;
+	  margin-top: 16px;
+	}
+
+	.indicator {
+	  width: 8px;
+	  height: 8px;
+	  border-radius: 50%;
+	  background: hsl(240 5% 84%);
+	  border: none;
+	  cursor: pointer;
+	  padding: 0;
+	  transition: background-color 250ms;
+	}
+
+	.indicator[data-selected] {
+	  background: hsl(200 98% 39%);
+	}
+}
+
+/* Dark theme styles */
+[data-kb-theme="dark"] .horizontal, .autoplay {
+	.item {
+		background-color: hsl(240 4% 16%);
+		border-color: hsl(240 5% 26%);
+	}
+
+	.button {
+		background-color: hsl(201 96% 32%);
+		color: hsla(0 100% 100% / 0.9);
+	}
+
+	.button:hover {
+		background-color: hsl(200 98% 39%);
+	}
+
+	.button:active {
+		background-color: hsl(199 89% 48%);
+	}
+
+	.indicator {
+		background: hsl(240 5% 26%);
+	}
+
+	.indicator[data-selected] {
+		background: hsl(201 96% 32%);
+	}
+}
+
+.vertical {
+	.root {
+		margin: 32px auto;
+	  overflow: hidden;
+		margin: auto;
+	}
+	.viewport {
+		max-height: 250px;
+		margin: 16px;
+	}
+
+	.indicators {
+	  display: flex;
+	  justify-content: center;
+	  gap: 8px;
+	  margin-top: 16px;
+	}
+
+	.indicator {
+	  width: 8px;
+	  height: 8px;
+	  border-radius: 50%;
+	  background: rgba(0, 0, 0, 0.3);
+	  border: none;
+	  cursor: pointer;
+	  padding: 0;
+	}
+
+	.indicator[data-selected] {
+	  background: rgba(0, 0, 0, 0.8);
+	}
+}
+

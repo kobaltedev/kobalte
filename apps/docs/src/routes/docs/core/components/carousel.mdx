@@ -1,0 +1,231 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+
+import {
+	HorrizontalExample,
+	VerticalExample,
+	AutoPlayExample
+} from "../../../../examples/carousel";
+
+# Carousel
+
+A carousel component that allows cycling through items (slides) with navigation controls, indicators, Built on top of [Embla Carousel](https://www.embla-carousel.com/).
+
+## Import
+
+```ts
+import { Carousel } from "@kobalte/core/carousel";
+// or
+import { Root, Viewport, ... } from "@kobalte/core/carousel";
+```
+
+
+## Features
+
+- Follow WAI ARIA best practices for carousel components
+- Support for horizontal and vertical orientations
+- Built-in navigation controls (Previous/Next buttons)
+- Support for slide indicators
+- Embla's `Options` and	`Plugins`support
+
+## Anatomy
+
+The carousel consists of:
+
+- **Carousel:** The root container for the carousel.
+- **Carousel.Viewport:** Contains the slides that are visible in the carousel.
+- **Carousel.Item:** An individual slide within the carousel.
+- **Carousel.Previous:** Button to navigate to the previous slide.
+- **Carousel.Next:** Button to navigate to the next slide.
+- **Carousel.Indicator:** Visual indicators showing the current slide position.
+
+```tsx
+<Carousel>
+    <Carousel.Viewport>
+        <Carousel.Item />
+    </Carousel.Viewport>
+
+    <Carousel.Previous />
+    <Carousel.Indicator />
+    <Carousel.Next />
+</Carousel>
+```
+
+
+## Example
+
+<Preview>
+  <HorrizontalExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Carousel } from "@kobalte/core/carousel";
+    import "./style.css";
+
+    const images = [
+      "https://picsum.photos/800/400?random=1",
+      "https://picsum.photos/800/400?random=2",
+      "https://picsum.photos/800/400?random=3",
+      "https://picsum.photos/800/400?random=4",
+    ];
+
+    function App() {
+      return (
+        <Carousel orientation="horizontal" class="carousel">
+          <Carousel.Viewport class="carousel__viewport">
+            <Index each={images}>
+              {(src, index) => (
+                <Carousel.Item class="carousel__item" index={index}>
+                  <img src={src()} alt={`Slide ${index + 1}`} />
+                </Carousel.Item>
+              )}
+            </Index>
+          </Carousel.Viewport>
+
+          <div class="carousel__controls">
+            <Carousel.Previous class="carousel__previous">Prev</Carousel.Previous>
+            <Index each={images}>
+              {(_, index) => (
+                <Carousel.Indicator
+                  class="carousel__indicator"
+                  index={index}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              )}
+            </Index>
+            <Carousel.Next class="carousel__next">Next</Carousel.Next>
+          </div>
+        </Carousel>
+      );
+    }
+    ```
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .carousel {
+      max-width: 500px;
+      overflow: hidden;
+      margin: auto;
+    }
+
+    .carousel__viewport {
+      display: flex;
+      max-height: 400px;
+      gap: 16px;
+      margin: 16px;
+    }
+
+    .carousel__item {
+      flex: 0 0 100%;
+      min-width: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      border: 2px solid black;
+    }
+
+    .carousel__item img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .carousel__controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .carousel__previous,
+    .carousel__next {
+      padding: 8px;
+      border-radius: 8px;
+      background: white;
+      color: black;
+      border: none;
+      cursor: pointer;
+    }
+
+    .carousel__indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.3);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .carousel__indicator[data-selected] {
+      background: rgba(0, 0, 0, 0.8);
+    }
+    ```
+  </TabsSnippets.Content>
+</TabsSnippets>
+
+## Usage
+
+### Vertical Orientation
+
+The carousel can be oriented vertically by setting the `orientation` prop to `vertical`.
+
+<Preview>
+  <VerticalExample />
+</Preview>
+
+
+### Autoplay
+
+The carousel supports autoplay functionality using the Embla Carousel autoplay plugin.
+
+<Preview>
+  <AutoPlayExample />
+</Preview>
+
+```tsx
+import Autoplay from "embla-carousel-autoplay";
+
+function AutoplayExample() {
+    const autoPlayPlugin = Autoplay({ delay: 2000, stopOnInteraction: true });
+    return (
+        <Carousel
+        plugins={[autoPlayPlugin]}
+        onMouseEnter={autoPlayPlugin.stop}
+        onMouseLeave={() => autoPlayPlugin.play(false)}
+        >
+        {/ ... rest of the carousel code ... /}
+        </Carousel>
+        );
+}
+```
+
+
+## API Reference
+
+### Carousel
+
+| Prop        | Description                                                                                     |
+| :---------- | :---------------------------------------------------------------------------------------------- |
+| orientation | `'horizontal' \| 'vertical'` <br/> The orientation of the carousel.                             |
+| disabled    | `boolean` <br/> Whether the carousel is disabled.                                               |
+| options     | `object` <br/> Custom embla carousel options.                                                   |
+| plugins     | `array` <br/> Custom embla carousel plugins (e.g., autoplay).                                  |
+
+### Carousel.Item
+
+| Prop  | Description                                                           |
+| :---- | :-------------------------------------------------------------------- |
+| index | `number` <br/> The index of this item in the carousel (zero-based).  |
+
+### Carousel.Indicator
+
+| Prop  | Description                                                                        |
+| :---- | :--------------------------------------------------------------------------------- |
+| index | `number` <br/> The index this indicator represents and navigates to when clicked. |
+

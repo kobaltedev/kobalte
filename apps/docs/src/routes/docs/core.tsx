@@ -62,6 +62,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/button",
 			},
 			{
+				title: "Carousel",
+				href: "/docs/core/components/carousel",
+				status: "new"
+			},
+			{
 				title: "Checkbox",
 				href: "/docs/core/components/checkbox",
 			},

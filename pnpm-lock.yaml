@@ -128,6 +128,9 @@ importers:
       clsx:
         specifier: 2.0.0
         version: 2.0.0
+      embla-carousel-autoplay:
+        specifier: ^8.3.1
+        version: 8.3.1(embla-carousel@8.3.1)
       minisearch:
         specifier: 7.1.0
         version: 7.1.0
@@ -240,7 +243,7 @@ importers:
         version: link:../tests
       esbuild-plugin-solid:
         specifier: ^0.5.0
-        version: 0.5.0(esbuild@0.18.20)(solid-js@1.8.15)
+        version: 0.5.0(esbuild@0.20.2)(solid-js@1.8.15)
       tsup:
         specifier: 7.2.0
         version: 7.2.0(postcss@8.4.38)(ts-node@10.9.2(@types/node@20.5.4)(typescript@4.9.5))(typescript@4.9.5)
@@ -3544,6 +3547,11 @@ packages:
 
   electron-to-chromium@1.4.788:
     resolution: {integrity: sha512-ubp5+Ev/VV8KuRoWnfP2QF2Bg+O2ZFdb49DiiNbz2VmgkIqrnyYaqIOqj8A6K/3p1xV0QcU5hBQ1+BmB6ot1OA==}
+
+  embla-carousel-autoplay@8.3.1:
+    resolution: {integrity: sha512-L8THF1AJJSQtlNa1wZ6lEKh/CiZssE3TsVFtabQNsS+pc1O1O/YTIYCC3khdQAztGMOBf3WfVDIY/4AIfQj3JQ==}
+    peerDependencies:
+      embla-carousel: 8.3.1
 
   embla-carousel-reactive-utils@8.3.1:
     resolution: {integrity: sha512-Js6rTTINNGnUGPu7l5kTcheoSbEnP5Ak2iX0G9uOoI8okTNLMzuWlEIpYFd1WP0Sq82FFcLkKM2oiO6jcElZ/Q==}
@@ -10607,6 +10615,10 @@ snapshots:
 
   electron-to-chromium@1.4.788: {}
 
+  embla-carousel-autoplay@8.3.1(embla-carousel@8.3.1):
+    dependencies:
+      embla-carousel: 8.3.1
+
   embla-carousel-reactive-utils@8.3.1(embla-carousel@8.3.1):
     dependencies:
       embla-carousel: 8.3.1
@@ -10782,12 +10794,12 @@ snapshots:
   esbuild-openbsd-64@0.15.18:
     optional: true
 
-  esbuild-plugin-solid@0.5.0(esbuild@0.18.20)(solid-js@1.8.15):
+  esbuild-plugin-solid@0.5.0(esbuild@0.20.2)(solid-js@1.8.15):
     dependencies:
       '@babel/core': 7.22.10
       '@babel/preset-typescript': 7.24.6(@babel/core@7.22.10)
       babel-preset-solid: 1.7.7(@babel/core@7.22.10)
-      esbuild: 0.18.20
+      esbuild: 0.20.2
       solid-js: 1.8.15
     transitivePeerDependencies:
       - supports-color
