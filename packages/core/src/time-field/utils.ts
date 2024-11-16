@@ -6,7 +6,11 @@ import {
 	today,
 } from "@internationalized/date";
 import { type Accessor, createEffect, createMemo } from "solid-js";
-import type { FormatterOptions, TimeFieldGranularity, TimeValue } from "./types";
+import type {
+	FormatterOptions,
+	TimeFieldGranularity,
+	TimeValue,
+} from "./types";
 
 export function createDefaultProps(props: {
 	value: Accessor<TimeValue | undefined>;
