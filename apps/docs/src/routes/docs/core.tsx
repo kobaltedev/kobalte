@@ -198,6 +198,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/text-field",
 			},
 			{
+				title: "Time Field",
+				href: "/docs/core/components/time-field",
+				status: "new",
+			},
+			{
 				title: "Toast",
 				href: "/docs/core/components/toast",
 			},
