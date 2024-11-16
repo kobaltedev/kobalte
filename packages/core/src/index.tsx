@@ -1,5 +1,3 @@
-import { Carousel } from "./carousel";
-
 // utils
 export * from "./color-mode";
 export * from "./form-control";

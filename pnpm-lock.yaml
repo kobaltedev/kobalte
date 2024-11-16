@@ -222,9 +222,6 @@ importers:
       '@solid-primitives/resize-observer':
         specifier: ^2.0.26
         version: 2.0.26(solid-js@1.8.15)
-      embla-carousel:
-        specifier: ^8.3.1
-        version: 8.3.1
       embla-carousel-solid:
         specifier: ^8.3.1
         version: 8.3.1(solid-js@1.8.15)

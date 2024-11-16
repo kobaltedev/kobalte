@@ -1,21 +1,19 @@
-import {
-  type Accessor,
-  type JSX,
-  type Setter,
-  createContext,
-  useContext,
-} from "solid-js";
-import { type EmblaCarouselType } from "embla-carousel";
+import { type Accessor, createContext, useContext } from "solid-js";
+import type { CreateEmblaCarouselType } from "embla-carousel-solid";
+import type { Orientation } from "@kobalte/utils";
+
+export type CarouselApi = CreateEmblaCarouselType[1];
 
 export interface CarouselContextValue {
-  emblaApi: Accessor<EmblaCarouselType | undefined>;
-  canScrollNext: Accessor<boolean>;
+  isDisabled: Accessor<boolean>;
+  orientation: Accessor<Orientation>;
   canScrollPrev: Accessor<boolean>;
-  scrollNext: () => void;
-  scrollPrev: () => void;
-  scrollTo: (index: number) => void;
+  canScrollNext: Accessor<boolean>;
   selectedIndex: Accessor<number>;
-  scrollSnaps: Accessor<number[]>;
+  api: Accessor<CarouselApi>;
+  scrollPrev: () => void;
+  scrollNext: () => void;
+  scrollTo: (index: number) => void;
 }
 
 export const CarouselContext = createContext<CarouselContextValue>();

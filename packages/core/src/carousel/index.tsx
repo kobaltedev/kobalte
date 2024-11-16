@@ -1,76 +1,72 @@
 import {
-	CarouselDots as Dots,
-	type CarouselDotsOptions,
-	type CarouselDotsCommonProps,
-	type CarouselDotsRenderProps,
-	type CarouselDotsProps,
-} from "./carousel-dots";
-import {
-	CarouselItem as Item,
-	type CarouselItemProps,
-	type CarouselItemOptions,
-	type CarouselItemCommonProps,
-	type CarouselItemRenderProps,
-} from "./carousel-item";
-import {
-	CarouselNext as Next,
-	type CarouselNextProps,
-	type CarouselNextOptions,
-	type CarouselNextCommonProps,
-	type CarouselNextRenderProps,
-} from "./carousel-next";
-import {
-	CarouselPrevious as Previous,
-	type CarouselPreviousProps,
-	type CarouselPreviousOptions,
-	type CarouselPreviousCommonProps,
-	type CarouselPreviousRenderProps,
-} from "./carousel-previous";
-import {
 	CarouselRoot as Root,
-	type CarouselRootProps,
 	type CarouselRootOptions,
 	type CarouselRootCommonProps,
+	type CarouselRootProps,
 	type CarouselRootRenderProps,
 } from "./carousel-root";
 import {
 	CarouselViewport as Viewport,
-	type CarouselViewportProps,
 	type CarouselViewportOptions,
 	type CarouselViewportCommonProps,
+	type CarouselViewportProps,
 	type CarouselViewportRenderProps,
 } from "./carousel-viewport";
+import {
+	CarouselItem as Item,
+	type CarouselItemOptions,
+	type CarouselItemCommonProps,
+	type CarouselItemProps,
+	type CarouselItemRenderProps,
+} from "./carousel-item";
+import {
+	CarouselPrevious as Previous,
+	type CarouselPreviousOptions,
+	type CarouselPreviousCommonProps,
+	type CarouselPreviousProps,
+} from "./carousel-previous";
+import {
+	CarouselNext as Next,
+	type CarouselNextOptions,
+	type CarouselNextCommonProps,
+	type CarouselNextProps,
+} from "./carousel-next";
+import {
+	CarouselIndicator as Indicator,
+	type CarouselIndicatorOptions,
+	type CarouselIndicatorCommonProps,
+	type CarouselIndicatorProps,
+	type CarouselIndicatorRenderProps,
+} from "./carousel-indicator";
 export type {
-	CarouselDotsOptions,
-	CarouselDotsCommonProps,
-	CarouselDotsRenderProps,
-	CarouselDotsProps,
-	CarouselItemOptions,
-	CarouselItemCommonProps,
-	CarouselItemRenderProps,
-	CarouselItemProps,
-	CarouselNextOptions,
-	CarouselNextCommonProps,
-	CarouselNextRenderProps,
-	CarouselNextProps,
-	CarouselPreviousOptions,
-	CarouselPreviousCommonProps,
-	CarouselPreviousRenderProps,
-	CarouselPreviousProps,
 	CarouselRootOptions,
 	CarouselRootCommonProps,
-	CarouselRootRenderProps,
 	CarouselRootProps,
+	CarouselRootRenderProps,
 	CarouselViewportOptions,
 	CarouselViewportCommonProps,
-	CarouselViewportRenderProps,
 	CarouselViewportProps,
+	CarouselViewportRenderProps,
+	CarouselItemOptions,
+	CarouselItemCommonProps,
+	CarouselItemProps,
+	CarouselItemRenderProps,
+	CarouselPreviousOptions,
+	CarouselPreviousCommonProps,
+	CarouselPreviousProps,
+	CarouselNextOptions,
+	CarouselNextCommonProps,
+	CarouselNextProps,
+	CarouselIndicatorOptions,
+	CarouselIndicatorCommonProps,
+	CarouselIndicatorProps,
+	CarouselIndicatorRenderProps,
 };
-export { Dots, Item, Next, Previous, Root, Viewport };
+export { Root, Viewport, Item, Previous, Next, Indicator };
 export const Carousel = Object.assign(Root, {
-	Dots,
-	Item,
-	Next,
-	Previous,
 	Viewport,
+	Item,
+	Previous,
+	Next,
+	Indicator,
 });

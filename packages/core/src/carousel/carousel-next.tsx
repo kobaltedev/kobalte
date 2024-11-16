@@ -1,40 +1,33 @@
-import { composeEventHandlers } from "@kobalte/utils";
-import { type Component, type JSX, type ValidComponent, splitProps } from "solid-js";
-import * as Button from "../button";
+import { type ValidComponent, splitProps } from "solid-js";
 import { type ElementOf, type PolymorphicProps } from "../polymorphic";
 import { useCarouselContext } from "./carousel-context";
+import { Button } from "../button";
 
 export interface CarouselNextOptions {}
 
 export interface CarouselNextCommonProps<T extends HTMLElement = HTMLElement> {
-  onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+  ref?: T | ((el: T) => void);
 }
-
-export interface CarouselNextRenderProps
-  extends CarouselNextCommonProps,
-    Button.ButtonRootRenderProps {}
 
 export type CarouselNextProps<T extends ValidComponent | HTMLElement = HTMLElement> =
   CarouselNextOptions & Partial<CarouselNextCommonProps<ElementOf<T>>>;
 
+/**
+ * Button that navigates to the next slide in the carousel.
+ */
 export function CarouselNext<T extends ValidComponent = "button">(
   props: PolymorphicProps<T, CarouselNextProps<T>>
 ) {
   const context = useCarouselContext();
-  const [local, others] = splitProps(props as CarouselNextProps, ["onClick"]);
-
-  const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = () => {
-    context.scrollNext();
-  };
-
-  const isDisabled = () => !context.canScrollNext();
+  const [local, others] = splitProps(props as CarouselNextProps, ["ref"]);
 
   return (
-    <Button.Root<Component<Omit<CarouselNextRenderProps, keyof Button.ButtonRootRenderProps>>>
-      disabled={isDisabled()}
-      aria-disabled={isDisabled() || undefined}
-      data-disabled={isDisabled() ? "" : undefined}
-      onClick={composeEventHandlers([local.onClick, onClick])}
+    <Button
+      ref={local.ref}
+      aria-label="Next slide"
+      disabled={!context.canScrollNext()}
+      onClick={() => context.scrollNext()}
+      data-orientation={context.orientation()}
       {...others}
     />
   );
