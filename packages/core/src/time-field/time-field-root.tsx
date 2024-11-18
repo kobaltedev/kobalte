@@ -291,8 +291,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		granularity,
 		hideTimeZone: () => local.hideTimeZone ?? false,
 		shouldForceLeadingZeros: () => local.shouldForceLeadingZeros ?? false,
-		placeholderValue: () =>
-			local.placeholderValue ?? local.defaultValue ?? local.value ?? new Time(),
+		placeholderValue: () => value() || (local.placeholderValue ?? new Time()),
 		defaultTimeZone,
 		formattedValue,
 		focusManager: () => focusManager,

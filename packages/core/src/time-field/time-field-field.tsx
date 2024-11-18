@@ -11,8 +11,6 @@ import { DateFormatter } from "@internationalized/date";
 import {
 	callHandler,
 	createGenerateId,
-	getFocusableTreeWalker,
-	getWindow,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
@@ -179,6 +177,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 			Object.keys(validSegments()).length >= Object.keys(allSegments()).length
 		) {
 			timeFieldContext.setValue(newValue);
+			setPlaceholderDate(convertValue(newValue));
 		} else {
 			setPlaceholderDate(convertValue(newValue));
 		}
