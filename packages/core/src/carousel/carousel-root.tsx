@@ -15,13 +15,27 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { CarouselContext, type CarouselContextValue } from "./carousel-context";
+import { AlignmentOptionType } from "embla-carousel/components/Alignment";
+import { SlidesInViewOptionsType } from "embla-carousel/components/SlidesInView";
+import { SlidesToScrollOptionType } from "embla-carousel/components/SlidesToScroll";
+import { ScrollContainOptionType } from "embla-carousel/components/ScrollContain";
+import { DragHandlerOptionType } from "embla-carousel/components/DragHandler";
+import { ResizeHandlerOptionType } from "embla-carousel/components/ResizeHandler";
+import { SlidesHandlerOptionType } from "embla-carousel/components/SlidesHandler";
+import { FocusHandlerOptionType } from "embla-carousel/components/SlideFocus";
 
 export interface CarouselRootOptions {
-	/** The controlled value of the selected slide index. */
-	selectedIndex?: number;
+	/** The alignment of the slides in the carousel. */
+	align?: AlignmentOptionType;
 
 	/** The index of the slide that should be active when initially rendered. */
 	defaultSelectedIndex?: number;
+
+	/** The duration of the scroll animation in milliseconds. */
+	duration?: number;
+
+	/** The controlled value of the selected slide index. */
+	selectedIndex?: number;
 
 	/** Event handler called when the selected index changes. */
 	onSelectedIndexChange?: (index: number) => void;
@@ -33,16 +47,40 @@ export interface CarouselRootOptions {
 	disabled?: boolean;
 
 	/** Whether the carousel should loop. */
-	//loop?: boolean;
-
-	/** Whether the carousel should align slides to the start or center. */
-	//align?: "start" | "center";
+	loop?: boolean;
 
 	/** Whether the carousel should drag free or snap to slides. */
-	//dragFree?: boolean;
+	dragFree?: boolean;
 
-	/** Custom embla carousel options. */
-	options?: ReturnType<NonNullable<Parameters<typeof createEmblaCarousel>[0]>>;
+	/** The number of slides to scroll at a time. */
+	slidesToScroll?: SlidesToScrollOptionType;
+
+	/** The drag threshold in pixels before a drag movement starts. */
+	dragThreshold?: number;
+
+	/** The threshold for considering a slide in view. */
+	inViewThreshold?: SlidesInViewOptionsType;
+
+	/** Whether to skip snap points when scrolling. */
+	skipSnaps?: boolean;
+
+	/** How to handle scrolling when content is contained within bounds. */
+	containScroll?: ScrollContainOptionType;
+
+	/** The direction of the carousel (ltr or rtl). */
+	direction?: Orientation;
+
+	/** Whether to watch for drag interactions. */
+	watchDrag?: DragHandlerOptionType;
+
+	/** Whether to watch for resize events. */
+	watchResize?: ResizeHandlerOptionType;
+
+	/** Whether to watch for changes to slides. */
+	watchSlides?: SlidesHandlerOptionType;
+
+	/** Whether to watch for focus events. */
+	watchFocus?: FocusHandlerOptionType;
 
 	/** Custom embla carousel plugins */
 	plugins?: ReturnType<NonNullable<Parameters<typeof createEmblaCarousel>[1]>>;
@@ -76,21 +114,43 @@ export function CarouselRoot<T extends ValidComponent = "div">(
 	}, props as CarouselRootProps);
 
 	const [local, others] = splitProps(mergedProps, [
-		"options",
 		"selectedIndex",
 		"defaultSelectedIndex",
 		"onSelectedIndexChange",
 		"orientation",
 		"disabled",
+		"loop",
+		"align",
+		"dragFree",
+		"slidesToScroll",
+		"dragThreshold",
+		"inViewThreshold",
+		"skipSnaps",
+		"duration",
+		"containScroll",
+		"watchDrag",
+		"watchResize",
+		"watchSlides",
+		"watchFocus",
 		"plugins"
 	]);
 
 	const [carouselRef, api] = createEmblaCarousel(() => ({
-		...local.options,
 		axis: local.orientation === "horizontal" ? "x" : "y",
-	}),
-		() => local.plugins ?? []
-	);
+		loop: local.loop,
+		align: local.align,
+		dragFree: local.dragFree,
+		slidesToScroll: local.slidesToScroll,
+		dragThreshold: local.dragThreshold,
+		inViewThreshold: local.inViewThreshold,
+		skipSnaps: local.skipSnaps,
+		duration: local.duration,
+		containScroll: local.containScroll,
+		watchDrag: local.watchDrag,
+		watchResize: local.watchResize,
+		watchSlides: local.watchSlides,
+		watchFocus: local.watchFocus,
+	}), () => local.plugins ?? []);
 
 	const [canScrollPrev, setCanScrollPrev] = createSignal(false);
 	const [canScrollNext, setCanScrollNext] = createSignal(false);

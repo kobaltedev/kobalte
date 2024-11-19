@@ -1,6 +1,7 @@
 import { type ValidComponent, splitProps } from "solid-js";
-import { type ElementOf, Polymorphic, type PolymorphicProps } from "../polymorphic";
+import { type ElementOf, type PolymorphicProps } from "../polymorphic";
 import { useCarouselContext } from "./carousel-context";
+import { Button } from "../button";
 
 export interface CarouselIndicatorOptions {
 	/** The index this indicator represents and will navigate to when clicked. */
@@ -36,16 +37,14 @@ export function CarouselIndicator<T extends ValidComponent = "button">(
 	const isSelected = () => context.selectedIndex() === local.index;
 
 	return (
-		<Polymorphic<CarouselIndicatorRenderProps>
-			as="button"
+		<Button
 			ref={local.ref}
 			role="tab"
-			type="button"
 			aria-label={`Slide ${local.index + 1}`}
 			aria-selected={isSelected()}
 			data-orientation={context.orientation()}
 			data-selected={isSelected() ? "" : undefined}
-			onClick={() => { context.scrollTo(local.index) }}
+			onClick={() => context.scrollTo(local.index)}
 			{...others}
 		/>
 	);

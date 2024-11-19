@@ -76,7 +76,8 @@
 		"@kobalte/utils": "^0.9.1",
 		"@solid-primitives/props": "^3.1.8",
 		"@solid-primitives/resize-observer": "^2.0.26",
-		"embla-carousel-solid": "^8.3.1",
+		"embla-carousel": "^8.4.0",
+		"embla-carousel-solid": "^8.4.0",
 		"solid-presence": "^0.1.8",
 		"solid-prevent-scroll": "^0.1.4"
 	},
