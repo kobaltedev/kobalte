@@ -2,12 +2,12 @@ import { mergeRefs } from "@kobalte/utils";
 import {
 	type Component,
 	type ValidComponent,
-	createEffect,
 	createSignal,
-	onCleanup,
 	splitProps,
 } from "solid-js";
+
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { createFormResetListener } from "../primitives";
 import {
 	RadioGroup,
 	type RadioGroupItemInputCommonProps,
@@ -15,7 +15,6 @@ import {
 	type RadioGroupItemInputRenderProps,
 } from "../radio-group";
 import { useRadioGroupItemContext } from "../radio-group/radio-group-item-context";
-import { useSegmentedControlContext } from "./segmented-control-context";
 
 export interface SegmentedControlItemInputOptions
 	extends RadioGroupItemInputOptions {}
@@ -36,34 +35,16 @@ export const SegmentedControlItemInput = <T extends ValidComponent = "input">(
 	props: PolymorphicProps<T, SegmentedControlItemInputProps<T>>,
 ) => {
 	const radioGroupItemContext = useRadioGroupItemContext();
-	const segmentedControlContext = useSegmentedControlContext();
 
 	const [localProps, otherProps] = splitProps(props, ["ref"]);
 
 	const [ref, setRef] = createSignal<HTMLInputElement>();
 
-	createEffect(() => {
-		const element = ref();
-		if (!element) return;
-
-		const form = element.form;
-		if (!form) return;
-
-		const handleReset = (_e: Event) => {
-			requestAnimationFrame(() => {
-				if (
-					radioGroupItemContext.value() ===
-					segmentedControlContext.defaultValue()
-				) {
-					radioGroupItemContext.select();
-				}
-			});
-		};
-
-		form.addEventListener("reset", handleReset);
-
-		onCleanup(() => {
-			form.removeEventListener("reset", handleReset);
+	createFormResetListener(ref, () => {
+		requestAnimationFrame(() => {
+			if (radioGroupItemContext.isDefault()) {
+				radioGroupItemContext.select();
+			}
 		});
 	});
 

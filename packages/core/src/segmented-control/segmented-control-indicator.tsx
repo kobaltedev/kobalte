@@ -38,13 +38,18 @@ export function SegmentedControlIndicator<T extends ValidComponent = "div">(
 	const [resizing, setResizing] = createSignal(false);
 
 	const computeStyle = () => {
-		const el = context.selectedItem();
-		if (!el) return;
+		const element = context.selectedItem();
+
+		if (!element) {
+			// TODO: Listen for transition to end here before removing the style.
+			setStyle(undefined);
+			return;
+		}
 
 		setStyle({
-			width: `${el.offsetWidth}px`,
-			height: `${el.offsetHeight}px`,
-			transform: computeTransform(el),
+			width: `${element.offsetWidth}px`,
+			height: `${element.offsetHeight}px`,
+			transform: computeTransform(element),
 			"transition-duration": resizing() ? "0ms" : undefined,
 		});
 	};
@@ -59,12 +64,10 @@ export function SegmentedControlIndicator<T extends ValidComponent = "div">(
 	};
 
 	createEffect(
-		on(context.selectedItem, () => {
-			// This effect should only run if the style is set; otherwise, the style will be computed
-			// in the resize observer callback, which will prevent the initial transition while resizing.
-			if (!style()) return;
-
+		on(context.value, () => {
+			setResizing(!style());
 			computeStyle();
+			setResizing(false);
 		}),
 	);
 

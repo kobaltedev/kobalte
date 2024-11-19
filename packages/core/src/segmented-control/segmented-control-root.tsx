@@ -1,6 +1,7 @@
 import { mergeRefs } from "@kobalte/utils";
 import {
 	type ValidComponent,
+	createEffect,
 	createSignal,
 	mergeProps,
 	splitProps,
@@ -17,18 +18,9 @@ export type SegmentedControlRootProps = RadioGroupRootProps;
 export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SegmentedControlRootProps>,
 ) => {
-	if (!props.value && !props.defaultValue) {
-		throw new Error(
-			"[kobalte]: No value or default value provided for the segmented control.",
-		);
-	}
-
-	if (!props.defaultValue) {
-		props.defaultValue = props.value;
-	}
-
 	const mergedProps = mergeProps(
 		{
+			defaultValue: props.value,
 			orientation: "horizontal",
 		},
 		props,
@@ -40,12 +32,19 @@ export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 	const [selectedItem, setSelectedItem] = createSignal<HTMLElement>();
 
 	const context: SegmentedControlContextValue = {
+		value: () => otherProps.value,
 		defaultValue: () => otherProps.defaultValue,
 		orientation: () => otherProps.orientation,
 		root: ref,
 		selectedItem: selectedItem,
 		setSelectedItem: setSelectedItem,
 	};
+
+	createEffect(() => {
+		if (context.value()) return;
+
+		setSelectedItem(undefined);
+	});
 
 	return (
 		<SegmentedControlContext.Provider value={context}>
