@@ -50,16 +50,16 @@ import {
 	type SegmentedControlItemRenderProps,
 } from "./segmented-control-item";
 import {
+	SegmentedControlItemInput as ItemInput,
+	type SegmentedControlItemInputCommonProps,
+	type SegmentedControlItemInputOptions,
+	type SegmentedControlItemInputProps,
+	type SegmentedControlItemInputRenderProps,
+} from "./segmented-control-item-input";
+import {
 	SegmentedControlRoot as Root,
 	type SegmentedControlRootProps,
 } from "./segmented-control-root";
-import {
-	SegmentedControlItemInput as ItemInput,
-	SegmentedControlItemInputCommonProps,
-	SegmentedControlItemInputOptions,
-	SegmentedControlItemInputProps,
-	SegmentedControlItemInputRenderProps,
-} from "./segmented-control-item-input";
 
 export type {
 	SegmentedControlContextValue,

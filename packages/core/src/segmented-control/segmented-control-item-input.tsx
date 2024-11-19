@@ -14,10 +14,11 @@ import {
 	type RadioGroupItemInputOptions,
 	type RadioGroupItemInputRenderProps,
 } from "../radio-group";
-import { useSegmentedControlContext } from "./segmented-control-context";
 import { useRadioGroupItemContext } from "../radio-group/radio-group-item-context";
+import { useSegmentedControlContext } from "./segmented-control-context";
 
-export interface SegmentedControlItemInputOptions extends RadioGroupItemInputOptions {}
+export interface SegmentedControlItemInputOptions
+	extends RadioGroupItemInputOptions {}
 
 export interface SegmentedControlItemInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
@@ -51,23 +52,28 @@ export const SegmentedControlItemInput = <T extends ValidComponent = "input">(
 		const handleReset = (e: Event) => {
 			e.preventDefault();
 			e.stopPropagation();
-			
-			if (radioGroupItemContext.value() === segmentedControlContext.defaultValue()) {
+
+			if (
+				radioGroupItemContext.value() === segmentedControlContext.defaultValue()
+			) {
 				radioGroupItemContext.select();
 			}
-		}
+		};
 
-		form.addEventListener("reset", handleReset)
+		form.addEventListener("reset", handleReset);
 
 		onCleanup(() => {
-			form.removeEventListener("reset", handleReset)
-		})
+			form.removeEventListener("reset", handleReset);
+		});
 	});
 
 	return (
 		<RadioGroup.ItemInput<
 			Component<
-				Omit<SegmentedControlItemInputRenderProps, keyof RadioGroupItemInputRenderProps>
+				Omit<
+					SegmentedControlItemInputRenderProps,
+					keyof RadioGroupItemInputRenderProps
+				>
 			>
 		>
 			ref={mergeRefs(setRef, localProps.ref)}
