@@ -25,7 +25,7 @@ import { Root, Viewport, ... } from "@kobalte/core/carousel";
 - Support for horizontal and vertical orientations
 - Built-in navigation controls (Previous/Next buttons)
 - Support for slide indicators
-- Embla's `Options` and	`Plugins`support
+- Full Embla Carousel configuration support
 
 ## Anatomy
 
@@ -205,27 +205,126 @@ function AutoplayExample() {
 }
 ```
 
-
 ## API Reference
 
-### Carousel
+### Carousel.Root
 
-| Prop        | Description                                                                                     |
-| :---------- | :---------------------------------------------------------------------------------------------- |
-| orientation | `'horizontal' \| 'vertical'` <br/> The orientation of the carousel.                             |
-| disabled    | `boolean` <br/> Whether the carousel is disabled.                                               |
-| options     | `object` <br/> Custom embla carousel options.                                                   |
-| plugins     | `array` <br/> Custom embla carousel plugins (e.g., autoplay).                                  |
+#### Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :------ | :---------- |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | The orientation of the carousel. |
+| `disabled` | `boolean` | `false` | Whether the carousel is disabled. |
+| `defaultSelectedIndex` | `number` | `0` | The index of the slide that should be active when initially rendered. |
+| `startIndex` | `number` | - | The controlled value of the selected slide index. |
+| `onSelectedIndexChange` | `(index: number) => void` | - | Event handler called when the selected index changes. |
+| `align` | `'start' \| 'center' \| 'end'` | `'start'` | The alignment of the slides in the carousel. |
+| `loop` | `boolean` | `false` | Whether the carousel should loop. |
+| `dragFree` | `boolean` | `false` | Whether the carousel should drag free or snap to slides. |
+| `slidesToScroll` | `number` | `1` | The number of slides to scroll at a time. |
+| `dragThreshold` | `number` | `10` | The drag threshold in pixels before a drag movement starts. |
+| `duration` | `number` | `25` | The duration of the scroll animation in milliseconds. |
+| `plugins` | `EmblaPluginType[]` | `[]` | Custom embla carousel plugins. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | The orientation of the carousel: `"horizontal"` or `"vertical"` |
+| `aria-roledescription` | Set to `"carousel"` |
+| `role` | Set to `"region"` |
+
+### Carousel.Viewport
+
+#### Props
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `ref` | `T \| ((el: T) => void)` | A reference to the viewport element. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | Matches the parent carousel's orientation |
 
 ### Carousel.Item
 
-| Prop  | Description                                                           |
-| :---- | :-------------------------------------------------------------------- |
-| index | `number` <br/> The index of this item in the carousel (zero-based).  |
+#### Props
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `index` | `number` | Required. The index of this item in the carousel. |
+| `ref` | `T \| ((el: T) => void)` | A reference to the item element. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | Matches the parent carousel's orientation |
+| `data-selected` | Present when the item is currently selected |
+| `role` | Set to `"group"` |
+| `aria-roledescription` | Set to `"slide"` |
+
+### Carousel.Previous
+
+`Carousel.Previous` use [Button](/docs/core/components/button) component under the hood.
+
+#### Props
+
+Inherits all button props plus:
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `ref` | `T \| ((el: T) => void)` | A reference to the button element. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | Matches the parent carousel's orientation |
+| `aria-label` | Set to `"Previous slide"` |
+| `disabled` | Present when cannot scroll to previous slide |
+
+### Carousel.Next
+
+`Carousel.Next` use [Button](/docs/core/components/button) component under the hood.
+
+#### Props
+
+Inherits all button props plus:
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `ref` | `T \| ((el: T) => void)` | A reference to the button element. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | Matches the parent carousel's orientation |
+| `aria-label` | Set to `"Next slide"` |
+| `disabled` | Present when cannot scroll to next slide |
 
 ### Carousel.Indicator
 
-| Prop  | Description                                                                        |
-| :---- | :--------------------------------------------------------------------------------- |
-| index | `number` <br/> The index this indicator represents and navigates to when clicked. |
+`Carousel.Indicator` use [Button](/docs/core/components/button) component under the hood.
+
+#### Props
+
+Inherits all button props plus:
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `index` | `number` | Required. The index this indicator represents. |
+| `ref` | `T \| ((el: T) => void)` | A reference to the button element. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | Matches the parent carousel's orientation |
+| `data-selected` | Present when this indicator's slide is selected |
+| `role` | Set to `"tab"` |
+| `aria-selected` | Set to `true` when this indicator's slide is selected |
 
