@@ -519,7 +519,11 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				>
 			>
 				ref={mergeRefs((el) => (ref = el), local.ref)}
-				tabIndex={formControlContext.isDisabled() ? undefined : 0}
+				tabIndex={
+					formControlContext.isDisabled() || !local.segment.isEditable
+						? undefined
+						: 0
+				}
 				value={local.segment.value}
 				textValue={textValue()}
 				minValue={local.segment.minValue}
