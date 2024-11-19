@@ -64,7 +64,7 @@ export function SegmentedControlIndicator<T extends ValidComponent = "div">(
 	};
 
 	createEffect(
-		on(context.value, () => {
+		on(context.selectedItem, () => {
 			setResizing(!style());
 			computeStyle();
 			setResizing(false);
