@@ -49,15 +49,15 @@ export const SegmentedControlItemInput = <T extends ValidComponent = "input">(
 		const form = element.form;
 		if (!form) return;
 
-		const handleReset = (e: Event) => {
-			e.preventDefault();
-			e.stopPropagation();
-
-			if (
-				radioGroupItemContext.value() === segmentedControlContext.defaultValue()
-			) {
-				radioGroupItemContext.select();
-			}
+		const handleReset = (_e: Event) => {
+			requestAnimationFrame(() => {
+				if (
+					radioGroupItemContext.value() ===
+					segmentedControlContext.defaultValue()
+				) {
+					radioGroupItemContext.select();
+				}
+			});
 		};
 
 		form.addEventListener("reset", handleReset);
