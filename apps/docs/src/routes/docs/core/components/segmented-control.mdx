@@ -302,9 +302,8 @@ The `value` prop, which accepts a value corresponding with the `value` prop of e
 	<ControlledExample />
 </Preview>
 
-```tsx {0,4,8}
+```tsx {0,3,7}
 import { createSignal } from "solid-js";
-import { SegmentedControl } from "@kobalte/core/segmented-control";
 
 function ControlledExample() {
 	const [value, setValue] = createSignal("Orange");
@@ -341,7 +340,7 @@ The `SegmentedControl.Description` component can be used to associate additional
 	<DescriptionExample />
 </Preview>
 
-```tsx {8}
+```tsx {10}
 <SegmentedControl defaultValue="Apple">
 	<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
 	<div role="presentation">
@@ -366,7 +365,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {9,18}
+```tsx {9,20}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -401,7 +400,7 @@ The segmented control `name` prop, paired with the item's radio `value` prop, ca
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7,12}
+```tsx {7,13}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.
