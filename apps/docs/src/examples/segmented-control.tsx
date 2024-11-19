@@ -157,7 +157,6 @@ export function ErrorMessageExample() {
 			class={style["segmented-control"]}
 			value={value()}
 			onChange={setValue}
-			defaultValue="Watermelon"
 			validationState={value() !== "Apple" ? "invalid" : "valid"}
 		>
 			<SegmentedControl.Label class={style["segmented-control__label"]}>
