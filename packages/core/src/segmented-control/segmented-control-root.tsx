@@ -17,6 +17,14 @@ export type SegmentedControlRootProps = RadioGroupRootProps;
 export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SegmentedControlRootProps>,
 ) => {
+	if (!props.value && !props.defaultValue) {
+		throw new Error("[kobalte]: No value or default value provided for the segmented control.")
+	}
+
+	if (!props.defaultValue) {
+		props.defaultValue = props.value;
+	}
+
 	const mergedProps = mergeProps(
 		{
 			orientation: "horizontal",
