@@ -90,16 +90,18 @@ The segmented control item consists of:
           </SegmentedControl.Label>
           <div class={style["segmented-control__wrapper"]} role="presentation">
             <SegmentedControl.Indicator class={style["segmented-control__indicator"]} />
-            <For each={["Apple", "Orange", "Watermelon"]}>
-              {(fruit) => (
-                <SegmentedControl.Item value={fruit} class={style["segmented-control__item"]}>
-                  <SegmentedControl.ItemInput class={style["segmented-control__item-input"]} />
-                  <SegmentedControl.ItemLabel class={style["segmented-control__item-label"]}>
-                    {fruit}
-                  </SegmentedControl.ItemLabel>
-                </SegmentedControl.Item>
-              )}
-            </For>
+            <div class={style["segmented-control__items"]} role="presentation">
+              <For each={["Apple", "Orange", "Watermelon"]}>
+                {(fruit) => (
+                  <SegmentedControl.Item value={fruit} class={style["segmented-control__item"]}>
+                    <SegmentedControl.ItemInput class={style["segmented-control__item-input"]} />
+                    <SegmentedControl.ItemLabel class={style["segmented-control__item-label"]}>
+                      {fruit}
+                    </SegmentedControl.ItemLabel>
+                  </SegmentedControl.Item>
+                )}
+              </For>
+            </div>
           </div>
         </SegmentedControl>
       );
@@ -154,19 +156,24 @@ The segmented control item consists of:
       background-color: var(--root-background-color);
       border-radius: var(--border-radius);
       box-shadow: inset 0px 0px 0px var(--border-width) var(--border-color);
-      display: inline-flex;
-      list-style: none;
       margin: 0;
       padding: 0;
       position: relative;
       width: fit-content;
     }
 
-    .segmented-control[aria-orientation="vertical"] .segmented-control__wrapper {
+    /* Items */
+
+    .segmented-control__items {
+      display: inline-flex;
+      list-style: none;
+    }
+
+    .segmented-control[aria-orientation="vertical"] .segmented-control__items {
       flex-direction: column;
     }
 
-    .segmented-control[aria-orientation="horizontal"] .segmented-control__wrapper {
+    .segmented-control[aria-orientation="horizontal"] .segmented-control__items {
       flex-direction: row;
     }
 
@@ -308,14 +315,16 @@ function ControlledExample() {
 				<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
 				<div role="presentation">
 					<SegmentedControl.Indicator />
-					<For each={["Apple", "Orange", "Watermelon"]}>
-						{fruit => (
-							<SegmentedControl.Item value={fruit}>
-								<SegmentedControl.ItemInput />
-								<SegmentedControl.ItemLabel>{fruit}</SegmentedControl.ItemLabel>
-							</SegmentedControl.Item>
-						)}
-					</For>
+					<div role="presentation">
+						<For each={["Apple", "Orange", "Watermelon"]}>
+							{fruit => (
+								<SegmentedControl.Item value={fruit}>
+									<SegmentedControl.ItemInput />
+									<SegmentedControl.ItemLabel>{fruit}</SegmentedControl.ItemLabel>
+								</SegmentedControl.Item>
+							)}
+						</For>
+					</div>
 				</div>
 			</SegmentedControl>
 			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
@@ -337,9 +346,11 @@ The `SegmentedControl.Description` component can be used to associate additional
 	<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
 	<div role="presentation">
 		<SegmentedControl.Indicator />
-		<For each={["Apple", "Orange", "Watermelon"]}>
-			{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
-		</For>
+		<div role="presentation">
+			<For each={["Apple", "Orange", "Watermelon"]}>
+				{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
+			</For>
+		</div>
 	</div>
 	<SegmentedControl.Description>Choose the fruit you like the most.</SegmentedControl.Description>
 </SegmentedControl>
@@ -370,9 +381,11 @@ function ErrorMessageExample() {
 			<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
 			<div role="presentation">
 				<SegmentedControl.Indicator />
-				<For each={["Apple", "Orange", "Watermelon"]}>
-					{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
-				</For>
+				<div role="presentation">
+					<For each={["Apple", "Orange", "Watermelon"]}>
+						{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
+					</For>
+				</div>
 			</div>
 			<SegmentedControl.ErrorMessage>Hmm, I prefer apples.</SegmentedControl.ErrorMessage>
 		</SegmentedControl>
@@ -400,9 +413,11 @@ function HTMLFormExample() {
 				<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
 				<div role="presentation">
 					<SegmentedControl.Indicator />
-					<For each={["Apple", "Orange", "Watermelon"]}>
-						{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
-					</For>
+					<div role="presentation">
+						<For each={["Apple", "Orange", "Watermelon"]}>
+							{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
+						</For>
+					</div>
 				</div>
 			</SegmentedControl>
 			<div>
@@ -427,9 +442,11 @@ The segmented control `orientation` prop can be used to change the segmented con
 	<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
 	<div role="presentation">
 		<SegmentedControl.Indicator />
-		<For each={["Apple", "Orange", "Watermelon"]}>
-			{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
-		</For>
+		<div role="presentation">
+			<For each={["Apple", "Orange", "Watermelon"]}>
+				{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
+			</For>
+		</div>
 	</div>
 	<SegmentedControl.Description>Choose the fruit you like the most.</SegmentedControl.Description>
 </SegmentedControl>

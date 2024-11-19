@@ -64,19 +64,24 @@
 	background-color: var(--root-background-color);
 	border-radius: var(--border-radius);
 	box-shadow: inset 0px 0px 0px var(--border-width) var(--border-color);
-	display: inline-flex;
-	list-style: none;
 	margin: 0;
 	padding: 0;
 	position: relative;
 	width: fit-content;
 }
 
-.segmented-control[aria-orientation="vertical"] .segmented-control__wrapper {
+/* Items */
+
+.segmented-control__items {
+	display: inline-flex;
+	list-style: none;
+}
+
+.segmented-control[aria-orientation="vertical"] .segmented-control__items {
 	flex-direction: column;
 }
 
-.segmented-control[aria-orientation="horizontal"] .segmented-control__wrapper {
+.segmented-control[aria-orientation="horizontal"] .segmented-control__items {
 	flex-direction: row;
 }
 

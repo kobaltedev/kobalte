@@ -13,23 +13,26 @@ export function BasicExample() {
 				<SegmentedControl.Indicator
 					class={style["segmented-control__indicator"]}
 				/>
-				<For each={["Apple", "Orange", "Watermelon"]}>
-					{(fruit) => (
-						<SegmentedControl.Item
-							value={fruit}
-							class={style["segmented-control__item"]}
-						>
-							<SegmentedControl.ItemInput
-								class={style["segmented-control__item-input"]}
-							/>
-							<SegmentedControl.ItemLabel
-								class={style["segmented-control__item-label"]}
+
+				<div class={style["segmented-control__items"]} role="presentation">
+					<For each={["Apple", "Orange", "Watermelon"]}>
+						{(fruit) => (
+							<SegmentedControl.Item
+								value={fruit}
+								class={style["segmented-control__item"]}
 							>
-								{fruit}
-							</SegmentedControl.ItemLabel>
-						</SegmentedControl.Item>
-					)}
-				</For>
+								<SegmentedControl.ItemInput
+									class={style["segmented-control__item-input"]}
+								/>
+								<SegmentedControl.ItemLabel
+									class={style["segmented-control__item-label"]}
+								>
+									{fruit}
+								</SegmentedControl.ItemLabel>
+							</SegmentedControl.Item>
+						)}
+					</For>
+				</div>
 			</div>
 		</SegmentedControl>
 	);
@@ -49,23 +52,25 @@ export function VerticalExample() {
 				<SegmentedControl.Indicator
 					class={style["segmented-control__indicator"]}
 				/>
-				<For each={["Apple", "Orange", "Watermelon"]}>
-					{(fruit) => (
-						<SegmentedControl.Item
-							value={fruit}
-							class={style["segmented-control__item"]}
-						>
-							<SegmentedControl.ItemInput
-								class={style["segmented-control__item-input"]}
-							/>
-							<SegmentedControl.ItemLabel
-								class={style["segmented-control__item-label"]}
+				<div class={style["segmented-control__items"]} role="presentation">
+					<For each={["Apple", "Orange", "Watermelon"]}>
+						{(fruit) => (
+							<SegmentedControl.Item
+								value={fruit}
+								class={style["segmented-control__item"]}
 							>
-								{fruit}
-							</SegmentedControl.ItemLabel>
-						</SegmentedControl.Item>
-					)}
-				</For>
+								<SegmentedControl.ItemInput
+									class={style["segmented-control__item-input"]}
+								/>
+								<SegmentedControl.ItemLabel
+									class={style["segmented-control__item-label"]}
+								>
+									{fruit}
+								</SegmentedControl.ItemLabel>
+							</SegmentedControl.Item>
+						)}
+					</For>
+				</div>
 			</div>
 		</SegmentedControl>
 	);
@@ -88,6 +93,45 @@ export function ControlledExample() {
 					<SegmentedControl.Indicator
 						class={style["segmented-control__indicator"]}
 					/>
+
+					<div class={style["segmented-control__items"]} role="presentation">
+						<For each={["Apple", "Orange", "Watermelon"]}>
+							{(fruit) => (
+								<SegmentedControl.Item
+									value={fruit}
+									class={style["segmented-control__item"]}
+								>
+									<SegmentedControl.ItemInput
+										class={style["segmented-control__item-input"]}
+									/>
+									<SegmentedControl.ItemLabel
+										class={style["segmented-control__item-label"]}
+									>
+										{fruit}
+									</SegmentedControl.ItemLabel>
+								</SegmentedControl.Item>
+							)}
+						</For>
+					</div>
+				</div>
+			</SegmentedControl>
+			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
+		</>
+	);
+}
+
+export function DescriptionExample() {
+	return (
+		<SegmentedControl class={style["segmented-control"]} defaultValue="Apple">
+			<SegmentedControl.Label class={style["segmented-control__label"]}>
+				Favorite fruit
+			</SegmentedControl.Label>
+			<div class={style["segmented-control__wrapper"]} role="presentation">
+				<SegmentedControl.Indicator
+					class={style["segmented-control__indicator"]}
+				/>
+
+				<div class={style["segmented-control__items"]} role="presentation">
 					<For each={["Apple", "Orange", "Watermelon"]}>
 						{(fruit) => (
 							<SegmentedControl.Item
@@ -106,39 +150,6 @@ export function ControlledExample() {
 						)}
 					</For>
 				</div>
-			</SegmentedControl>
-			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
-		</>
-	);
-}
-
-export function DescriptionExample() {
-	return (
-		<SegmentedControl class={style["segmented-control"]} defaultValue="Apple">
-			<SegmentedControl.Label class={style["segmented-control__label"]}>
-				Favorite fruit
-			</SegmentedControl.Label>
-			<div class={style["segmented-control__wrapper"]} role="presentation">
-				<SegmentedControl.Indicator
-					class={style["segmented-control__indicator"]}
-				/>
-				<For each={["Apple", "Orange", "Watermelon"]}>
-					{(fruit) => (
-						<SegmentedControl.Item
-							value={fruit}
-							class={style["segmented-control__item"]}
-						>
-							<SegmentedControl.ItemInput
-								class={style["segmented-control__item-input"]}
-							/>
-							<SegmentedControl.ItemLabel
-								class={style["segmented-control__item-label"]}
-							>
-								{fruit}
-							</SegmentedControl.ItemLabel>
-						</SegmentedControl.Item>
-					)}
-				</For>
 			</div>
 			<SegmentedControl.Description
 				class={style["segmented-control__description"]}
@@ -166,23 +177,26 @@ export function ErrorMessageExample() {
 				<SegmentedControl.Indicator
 					class={style["segmented-control__indicator"]}
 				/>
-				<For each={["Apple", "Orange", "Watermelon"]}>
-					{(fruit) => (
-						<SegmentedControl.Item
-							value={fruit}
-							class={style["segmented-control__item"]}
-						>
-							<SegmentedControl.ItemInput
-								class={style["segmented-control__item-input"]}
-							/>
-							<SegmentedControl.ItemLabel
-								class={style["segmented-control__item-label"]}
+
+				<div class={style["segmented-control__items"]} role="presentation">
+					<For each={["Apple", "Orange", "Watermelon"]}>
+						{(fruit) => (
+							<SegmentedControl.Item
+								value={fruit}
+								class={style["segmented-control__item"]}
 							>
-								{fruit}
-							</SegmentedControl.ItemLabel>
-						</SegmentedControl.Item>
-					)}
-				</For>
+								<SegmentedControl.ItemInput
+									class={style["segmented-control__item-input"]}
+								/>
+								<SegmentedControl.ItemLabel
+									class={style["segmented-control__item-label"]}
+								>
+									{fruit}
+								</SegmentedControl.ItemLabel>
+							</SegmentedControl.Item>
+						)}
+					</For>
+				</div>
 			</div>
 			<SegmentedControl.ErrorMessage
 				class={style["segmented-control__error-message"]}
@@ -223,23 +237,26 @@ export function HTMLFormExample() {
 					<SegmentedControl.Indicator
 						class={style["segmented-control__indicator"]}
 					/>
-					<For each={["Apple", "Orange", "Watermelon"]}>
-						{(fruit) => (
-							<SegmentedControl.Item
-								value={fruit}
-								class={style["segmented-control__item"]}
-							>
-								<SegmentedControl.ItemInput
-									class={style["segmented-control__item-input"]}
-								/>
-								<SegmentedControl.ItemLabel
-									class={style["segmented-control__item-label"]}
+
+					<div class={style["segmented-control__items"]} role="presentation">
+						<For each={["Apple", "Orange", "Watermelon"]}>
+							{(fruit) => (
+								<SegmentedControl.Item
+									value={fruit}
+									class={style["segmented-control__item"]}
 								>
-									{fruit}
-								</SegmentedControl.ItemLabel>
-							</SegmentedControl.Item>
-						)}
-					</For>
+									<SegmentedControl.ItemInput
+										class={style["segmented-control__item-input"]}
+									/>
+									<SegmentedControl.ItemLabel
+										class={style["segmented-control__item-label"]}
+									>
+										{fruit}
+									</SegmentedControl.ItemLabel>
+								</SegmentedControl.Item>
+							)}
+						</For>
+					</div>
 				</div>
 			</SegmentedControl>
 			<div class="flex space-x-2">
