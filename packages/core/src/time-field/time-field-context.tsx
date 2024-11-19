@@ -15,7 +15,8 @@ export interface TimeFieldContextValue {
 	granularity: Accessor<TimeFieldGranularity>;
 	hideTimeZone: Accessor<boolean>;
 	shouldForceLeadingZeros: Accessor<boolean>;
-	placeholderValue: Accessor<TimeValue>;
+	placeholderTime: Accessor<TimeValue>;
+	placeholderValue: Accessor<TimeValue | undefined>;
 	defaultTimeZone: Accessor<string | undefined>;
 	formattedValue: Accessor<string | undefined>;
 	isDisabled: Accessor<boolean>;

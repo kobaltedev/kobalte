@@ -100,13 +100,13 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 	const { locale, direction } = useLocale();
 
 	const val = createMemo(
-		() => timeFieldContext.value() || timeFieldContext.placeholderValue(),
+		() => timeFieldContext.value() || timeFieldContext.placeholderTime(),
 	);
 
 	const [placeholderDate, setPlaceholderDate] = createSignal(
 		createPlaceholderDate(
 			val(),
-			timeFieldContext.placeholderValue(),
+			timeFieldContext.placeholderTime(),
 			timeFieldContext.defaultTimeZone(),
 		),
 	);
@@ -208,7 +208,11 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 				const isPlaceholder =
 					isOriginallyEditable && !(validSegments() as any)[segment.type];
 				const placeholder = isOriginallyEditable
-					? getPlaceholder(segment.type, segment.value)
+					? getPlaceholder(
+							segment.type,
+							segment.value,
+							timeFieldContext.placeholderValue(),
+						)
 					: null;
 
 				return {
@@ -308,7 +312,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 
 		const placeholder = createPlaceholderDate(
 			val(),
-			timeFieldContext.placeholderValue(),
+			timeFieldContext.placeholderTime(),
 			timeFieldContext.defaultTimeZone(),
 		);
 
@@ -557,9 +561,27 @@ function setSegmentBase(
 	}
 }
 
-export function getPlaceholder(field: string, value: string) {
+export function getPlaceholder(
+	field: string,
+	value: string,
+	placeholderValue?: TimeValue,
+) {
 	if (field === "dayPeriod") {
 		return value;
+	}
+
+	if (placeholderValue) {
+		if (placeholderValue.hour && field === "hour") {
+			return String(placeholderValue.hour);
+		}
+
+		if (placeholderValue.minute && field === "minute") {
+			return String(placeholderValue.minute);
+		}
+
+		if (placeholderValue.second && field === "second") {
+			return String(placeholderValue.second);
+		}
 	}
 
 	return "––";
