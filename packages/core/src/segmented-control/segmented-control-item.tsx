@@ -38,7 +38,7 @@ export const SegmentedControlItem = <T extends ValidComponent = "div">(
 	const radioGroupContext = useRadioGroupContext();
 	const segmentedControlContext = useSegmentedControlContext();
 
-	const [local, others] = splitProps(props, ["ref"]);
+	const [localProps, otherProps] = splitProps(props, ["ref"]);
 
 	const [ref, setRef] = createSignal<HTMLElement>();
 
@@ -57,8 +57,8 @@ export const SegmentedControlItem = <T extends ValidComponent = "div">(
 				Omit<SegmentedControlItemRenderProps, keyof RadioGroupItemRenderProps>
 			>
 		>
-			ref={mergeRefs(setRef, local.ref)}
-			{...others}
+			ref={mergeRefs(setRef, localProps.ref)}
+			{...otherProps}
 		/>
 	);
 };
