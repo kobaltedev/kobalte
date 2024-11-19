@@ -11,10 +11,6 @@ export function HorrizontalExample() {
 			<Carousel
 				orientation="horizontal"
 				class={styles.root}
-				options={{
-					align: "start",
-					loop: false,
-				}}
 			>
 				<Carousel.Viewport class={styles.viewport}>
 					<Index each={slides}>
@@ -50,10 +46,6 @@ export function VerticalExample() {
 			<Carousel
 				orientation="vertical"
 				class={styles.root}
-				options={{
-					align: "start",
-					loop: false,
-				}}
 			>
 				<Carousel.Viewport class={styles.viewport}>
 					<Index each={slides}>
@@ -93,10 +85,6 @@ export function AutoPlayExample() {
 				onMouseEnter={autoPlayPlugin.stop}
 				onMouseLeave={() => autoPlayPlugin.play(false)}
 				class={styles.root}
-				options={{
-					align: "start",
-					loop: false,
-				}}
 			>
 				<Carousel.Viewport class={styles.viewport}>
 					<Index each={slides}>

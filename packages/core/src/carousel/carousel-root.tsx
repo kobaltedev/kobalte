@@ -35,7 +35,7 @@ export interface CarouselRootOptions {
 	duration?: number;
 
 	/** The controlled value of the selected slide index. */
-	selectedIndex?: number;
+	startIndex?: number;
 
 	/** Event handler called when the selected index changes. */
 	onSelectedIndexChange?: (index: number) => void;
@@ -114,7 +114,7 @@ export function CarouselRoot<T extends ValidComponent = "div">(
 	}, props as CarouselRootProps);
 
 	const [local, others] = splitProps(mergedProps, [
-		"selectedIndex",
+		"startIndex",
 		"defaultSelectedIndex",
 		"onSelectedIndexChange",
 		"orientation",
@@ -136,20 +136,21 @@ export function CarouselRoot<T extends ValidComponent = "div">(
 	]);
 
 	const [carouselRef, api] = createEmblaCarousel(() => ({
-		axis: local.orientation === "horizontal" ? "x" : "y",
-		loop: local.loop,
-		align: local.align,
-		dragFree: local.dragFree,
-		slidesToScroll: local.slidesToScroll,
-		dragThreshold: local.dragThreshold,
-		inViewThreshold: local.inViewThreshold,
-		skipSnaps: local.skipSnaps,
-		duration: local.duration,
-		containScroll: local.containScroll,
-		watchDrag: local.watchDrag,
-		watchResize: local.watchResize,
-		watchSlides: local.watchSlides,
-		watchFocus: local.watchFocus,
+		axis: local.orientation === "vertical" ? "y" : "x",
+		loop: local.loop || false,
+		align: local.align || "start",
+		dragFree: local.dragFree || false,
+		dragThreshold: local.dragThreshold || 10,
+		slidesToScroll: local.slidesToScroll || 1,
+		startIndex: local.startIndex || 0,
+		inViewThreshold: local.inViewThreshold || 0,
+		skipSnaps: local.skipSnaps || false,
+		duration: local.duration || 25,
+		containScroll: local.containScroll || "trimSnaps",
+		watchDrag: local.watchDrag || true,
+		watchResize: local.watchResize || true,
+		watchSlides: local.watchSlides || true,
+		watchFocus: local.watchFocus || true,
 	}), () => local.plugins ?? []);
 
 	const [canScrollPrev, setCanScrollPrev] = createSignal(false);
@@ -183,14 +184,13 @@ export function CarouselRoot<T extends ValidComponent = "div">(
 		local.onSelectedIndexChange?.(index);
 	};
 
-	onMount(() => {
-		if (!api()) return;
-		setCanScrollPrev(api()?.canScrollPrev() ?? false);
-		setCanScrollNext(api()?.canScrollNext() ?? false);
-	})
-
 	createEffect(on([() => api()], ([embla]) => {
 		if (!embla) return;
+
+		embla.on("init", () => {
+			setCanScrollPrev(embla.canScrollPrev());
+			setCanScrollNext(embla.canScrollNext());
+		});
 
 		embla.on("select", () => {
 			setCanScrollPrev(embla.canScrollPrev());

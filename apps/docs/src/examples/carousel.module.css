@@ -79,7 +79,7 @@
 }
 
 /* Dark theme styles */
-[data-kb-theme="dark"] .horizontal, .autoplay {
+[data-kb-theme="dark"] .horizontal, .autoplay, .vertical {
 	.item {
 		background-color: hsl(240 4% 16%);
 		border-color: hsl(240 5% 26%);
