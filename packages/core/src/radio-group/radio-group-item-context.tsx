@@ -12,6 +12,7 @@ export interface RadioGroupItemDataSet {
 export interface RadioGroupItemContextValue {
 	value: Accessor<string>;
 	dataset: Accessor<RadioGroupItemDataSet>;
+	isDefault: Accessor<boolean>;
 	isSelected: Accessor<boolean>;
 	isDisabled: Accessor<boolean>;
 	inputId: Accessor<string | undefined>;

@@ -2,6 +2,7 @@ import { type Accessor, createContext, useContext } from "solid-js";
 
 export interface RadioGroupContextValue {
 	ariaDescribedBy: Accessor<string | undefined>;
+	isDefaultValue: (value: string) => boolean;
 	isSelectedValue: (value: string) => boolean;
 	setSelectedValue: (value: string) => void;
 }
