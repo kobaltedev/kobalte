@@ -1,0 +1,522 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+	ControlledExample,
+	HTMLFormExample,
+	BasicExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	VerticalExample,
+} from "../../../../examples/segmented-control";
+
+# Segmented Control
+
+A linear set of two or more segments, each of which functions as a radio input, and a default value is required.
+
+## Import
+
+```ts
+import { SegmentedControl } from "@kobalte/core/segmented-control";
+// or
+import { Root, Label, ... } from "@kobalte/core/segmented-control";
+```
+
+## Features
+
+- Follow the [WAI ARIA Radio Group](https://www.w3.org/WAI/ARIA/apg/patterns/radiobutton/) design pattern.
+- Each segment is built with a native HTML `<input>` element, which is visually hidden to allow custom styling.
+- Syncs with form reset events.
+- Group and segment labeling support for assistive technology.
+- Can be controlled or uncontrolled.
+- Supports animatable indicator.
+
+## Anatomy
+
+The segmented control consists of:
+
+- **SegmentedControl**: The root container for the segmented control.
+- **SegmentedControl.Label**: The label that gives the user information on the segmented control.
+- **SegmentedControl.Description**: The description that gives the user more information on the segmented control.
+- **SegmentedControl.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the segmented control.
+- **SegmentedControl.Indicator:** The visual indicator displayed below the items to indicate the selected item.
+
+The segmented control item consists of:
+
+- **SegmentedControl.Item**: The root container for an item's radio button.
+- **SegmentedControl.ItemInput**: The native html input that is visually hidden in the item's radio button.
+- **SegmentedControl.ItemControl**: The element that visually represents an item's radio button.
+- **SegmentedControl.ItemIndicator**: The visual indicator rendered when the item's radio button is in a checked state.
+- **SegmentedControl.ItemLabel**: The label that gives the user information on the item's radio button.
+- **SegmentedControl.ItemDescription**: The description that gives the user more information on the item's radio button.
+
+```tsx
+<SegmentedControl>
+	<SegmentedControl.Label />
+	<SegmentedControl.Indicator />
+	<SegmentedControl.Item>
+		<SegmentedControl.ItemInput />
+		<SegmentedControl.ItemControl>
+			<SegmentedControl.ItemIndicator />
+		</SegmentedControl.ItemControl>
+		<SegmentedControl.ItemLabel />
+		<SegmentedControl.ItemDescription />
+	</SegmentedControl.Item>
+	<SegmentedControl.Description />
+	<SegmentedControl.ErrorMessage />
+</SegmentedControl>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { SegmentedControl } from "@kobalte/core/segmented-control";
+
+    import "./style.css";
+
+    function App() {
+      return (
+        <SegmentedControl class={style["segmented-control"]} defaultValue="Apple">
+          <SegmentedControl.Label class={style["segmented-control__label"]}>
+            Favorite fruit
+          </SegmentedControl.Label>
+          <div class={style["segmented-control__wrapper"]} role="presentation">
+            <SegmentedControl.Indicator class={style["segmented-control__indicator"]} />
+            <For each={["Apple", "Orange", "Watermelon"]}>
+              {(fruit) => (
+                <SegmentedControl.Item value={fruit} class={style["segmented-control__item"]}>
+                  <SegmentedControl.ItemInput class={style["segmented-control__item-input"]} />
+                  <SegmentedControl.ItemLabel class={style["segmented-control__item-label"]}>
+                    {fruit}
+                  </SegmentedControl.ItemLabel>
+                </SegmentedControl.Item>
+              )}
+            </For>
+          </div>
+        </SegmentedControl>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .segmented-control {
+      --border-color: hsl(240 6% 90%);
+      --border-active-color: hsl(240 6% 75%);
+      --label-color: hsl(240 6% 10%);
+      --description-color: hsl(240 5% 26%);
+      --error-message-color: hsl(0 72% 51%);
+      --root-background-color: hsl(0, 0%, 98%);
+      --indicator-background-color: hsl(0, 0%, 100%);
+      --indicator-focus-shadow-color: hsl(200 98% 39%);
+      --label-padding-x: 1rem;
+      --label-padding-y: 0.563rem;
+      --item-separator-translate: calc(-1 * var(--border-width) / 2);
+
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .segmented-control__label {
+      color: var(--label-color);
+      font-size: var(--font-size-md);
+      font-weight: 500;
+      user-select: none;
+      line-height: 1;
+    }
+
+    .segmented-control__description {
+      color: var(--description-color);
+      font-size: var(--font-size-sm);
+      user-select: none;
+    }
+
+    .segmented-control__error-message {
+      color: var(--error-message-color);
+      font-size: var(--font-size-sm);
+      user-select: none;
+    }
+
+    /* Wrapper */
+
+    .segmented-control__wrapper {
+      all: unset;
+      background-color: var(--root-background-color);
+      border-radius: var(--border-radius);
+      box-shadow: inset 0px 0px 0px var(--border-width) var(--border-color);
+      display: inline-flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      width: fit-content;
+    }
+
+    .segmented-control[aria-orientation="vertical"] .segmented-control__wrapper {
+      flex-direction: column;
+    }
+
+    .segmented-control[aria-orientation="horizontal"] .segmented-control__wrapper {
+      flex-direction: row;
+    }
+
+    /* Indicator */
+
+    .segmented-control__indicator {
+      background: var(--indicator-background-color);
+      border-radius: var(--border-radius);
+      box-shadow:
+        0px 1px 3px rgba(0 0 0 / 8%),
+        0px 2px 8px rgba(0 0 0 / 12%),
+        inset 0px 0px 0px var(--indicator-focus-shadow-width, 0px) var(--indicator-focus-shadow-color),
+        inset 0px 0px 0px var(--border-width) var(--border-active-color);
+      content: "";
+      opacity: var(--pane-opacity, 1);
+      position: absolute;
+      transition:
+        opacity 500ms ease-in-out,
+        box-shadow 100ms ease-in-out,
+        width 200ms ease,
+        height 200ms ease,
+        transform 200ms ease;
+    }
+
+    .segmented-control__wrapper:has(.segmented-control__item-input:focus-visible) .segmented-control__indicator {
+      --indicator-focus-shadow-width: 2px;
+    }
+
+    .segmented-control__wrapper:not(:has(.segmented-control__item-input:checked)) .segmented-control__indicator {
+      --pane-opacity: 0;
+    }
+
+    /* Item */
+
+    .segmented-control__item {
+      position: relative;
+    }
+
+    .segmented-control__item:not(:first-of-type)::before {
+      background: var(--border-color);
+      border-radius: var(--border-radius);
+      content: "";
+      inset: 0;
+      position: absolute;
+      transition: opacity 200ms ease;
+    }
+
+    .segmented-control__item:has(.segmented-control__item-input:checked)::before,
+    .segmented-control__item:has(.segmented-control__item-input:checked) + ::before{
+      opacity: 0;
+    }
+
+    .segmented-control[aria-orientation="vertical"] .segmented-control__item:not(:first-of-type)::before {
+      height: var(--border-width);
+      inset: 0 var(--label-padding-x);
+      transform: translateY(var(--item-separator-translate));
+    }
+
+    .segmented-control[aria-orientation="horizontal"] .segmented-control__item:not(:first-of-type)::before {
+      inset: var(--label-padding-y) 0;
+      transform: translateX(var(--item-separator-translate));
+      width: var(--border-width);
+    }
+
+    /* Item Label */
+
+    .segmented-control__item-label {
+      color: var(--description-color);
+      font-size: var(--font-size-md);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      display: flex;
+      flex-wrap: nowrap;
+      font-weight: 500;
+      gap: 0.25rem;
+      line-height: 1;
+      padding: var(--label-padding-y) var(--label-padding-x);
+      place-content: center;
+      position: relative;
+      transition-duration: 200ms;
+      transition-property: color, opacity;
+      transition-timing-function: ease-in-out;
+      user-select: none;
+    }
+
+    .segmented-control__item-input {
+      all: unset;
+    }
+
+    .segmented-control__item-input:checked + .segmented-control__item-label {
+      color: var(--label-color);
+    }
+
+    .segmented-control__item-input:disabled + .segmented-control__item-label {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .segmented-control__item-input:not(:checked, :disabled) + .segmented-control__item-label {
+      cursor: pointer;
+      opacity: var(--item-label-opacity, 1);
+      user-select: none;
+    }
+
+    .segmented-control__item-input:not(:checked, :disabled) + .segmented-control__item-label:hover {
+      --item-label-opacity: 0.75;
+    }
+
+    .segmented-control__item-input:not(:checked, :disabled) + .segmented-control__item-label:active {
+      --item-label-opacity: 0.5;
+    }
+    ```
+
+  </TabsSnippets.Content>
+</TabsSnippets>
+
+## Usage
+
+The `role="presentation"` is required for all non content elements between the `SegmentedControl` and `SegmentedControl.Item` due to a bug in Chromium based browsers that incorrectly parse semantics and break screen readers.
+
+### Controlled value
+
+The `value` prop, which accepts a value corresponding with the `value` prop of each radio, can be used to make the value controlled. The `onChange` event is fired when the user selects a radio, and receives the new value.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {0,4,8}
+import { createSignal } from "solid-js";
+import { SegmentedControl } from "@kobalte/core/segmented-control";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal("Orange");
+
+	return (
+		<>
+			<SegmentedControl value={value()} onChange={setValue}>
+				<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
+				<div role="presentation">
+					<SegmentedControl.Indicator />
+					<For each={["Apple", "Orange", "Watermelon"]}>
+						{fruit => (
+							<SegmentedControl.Item value={fruit}>
+								<SegmentedControl.ItemInput />
+								<SegmentedControl.ItemLabel>{fruit}</SegmentedControl.ItemLabel>
+							</SegmentedControl.Item>
+						)}
+					</For>
+				</div>
+			</SegmentedControl>
+			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
+		</>
+	);
+}
+```
+
+### Description
+
+The `SegmentedControl.Description` component can be used to associate additional help text with a segmented control.
+
+<Preview>
+	<DescriptionExample />
+</Preview>
+
+```tsx {8}
+<SegmentedControl defaultValue="Apple">
+	<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
+	<div role="presentation">
+		<SegmentedControl.Indicator />
+		<For each={["Apple", "Orange", "Watermelon"]}>
+			{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
+		</For>
+	</div>
+	<SegmentedControl.Description>Choose the fruit you like the most.</SegmentedControl.Description>
+</SegmentedControl>
+```
+
+### Error message
+
+The `SegmentedControl.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the segmented control as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+	<ErrorMessageExample />
+</Preview>
+
+```tsx {9,18}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [value, setValue] = createSignal("Orange");
+
+	return (
+		<SegmentedControl
+			value={value()}
+			onChange={setValue}
+			validationState={value() !== "Apple" ? "invalid" : "valid"}
+			defaultValue="Orange"
+		>
+			<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
+			<div role="presentation">
+				<SegmentedControl.Indicator />
+				<For each={["Apple", "Orange", "Watermelon"]}>
+					{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
+				</For>
+			</div>
+			<SegmentedControl.ErrorMessage>Hmm, I prefer apples.</SegmentedControl.ErrorMessage>
+		</SegmentedControl>
+	);
+}
+```
+
+### HTML forms
+
+The segmented control `name` prop, paired with the item's radio `value` prop, can be used for integration with HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx {7,12}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<SegmentedControl name="favorite-fruit" defaultValue="Orange">
+				<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
+				<div role="presentation">
+					<SegmentedControl.Indicator />
+					<For each={["Apple", "Orange", "Watermelon"]}>
+						{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
+					</For>
+				</div>
+			</SegmentedControl>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+### Orientation
+
+The segmented control `orientation` prop can be used to change the segmented control's orientation.
+
+<Preview>
+	<VerticalExample />
+</Preview>
+
+```tsx {0}
+<SegmentedControl orientation="vertical" defaultValue="Apple">
+	<SegmentedControl.Label>Favorite fruit</SegmentedControl.Label>
+	<div role="presentation">
+		<SegmentedControl.Indicator />
+		<For each={["Apple", "Orange", "Watermelon"]}>
+			{fruit => <SegmentedControl.Item value={fruit}>...</SegmentedControl.Item>}
+		</For>
+	</div>
+	<SegmentedControl.Description>Choose the fruit you like the most.</SegmentedControl.Description>
+</SegmentedControl>
+```
+
+## API Reference
+
+### SegmentedControl
+
+`SegmentedControl` is equivalent to the `Root` import from `@kobalte/core/segmented-control`.
+
+| Prop            | Description                                                                                                                                                                |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `string` <br/> The controlled value of the item's radio button to check.                                                                                                   |
+| defaultValue    | `string` <br/> The value of the item's radio button that should be checked when initially rendered. Useful when you do not need to control the state of the radio buttons. |
+| onChange        | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                               |
+| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the segmented control items should align with.                                                                                 |
+| name            | `string` <br/> The name of the segmented control. Submitted with its owning form as part of a name/value pair.                                                             |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the segmented control should display its "valid" or "invalid" visual styling.                                                         |
+| required        | `boolean` <br/> Whether the user must check a segmented control item before the owning form can be submitted.                                                              |
+| disabled        | `boolean` <br/> Whether the segmented control is disabled.                                                                                                                 |
+| readOnly        | `boolean` <br/> Whether the segmented control items can be selected but not changed by the user.                                                                           |
+
+| Data attribute | Description                                                                                        |
+| :------------- | :------------------------------------------------------------------------------------------------- |
+| data-valid     | Present when the segmented control is valid according to the validation rules.                     |
+| data-invalid   | Present when the segmented control is invalid according to the validation rules.                   |
+| data-required  | Present when the user must check a segmented control item before the owning form can be submitted. |
+| data-disabled  | Present when the segmented control is disabled.                                                    |
+| data-readonly  | Present when the segmented control is read only.                                                   |
+
+`SegmentedControl.Label`, `SegmentedControl.Description` and `SegmentedControl.ErrorMesssage` shares the same data-attributes.
+
+### SegmentedControl.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### SegmentedControl.Item
+
+| Prop     | Description                                                                                                                                                                     |
+| :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| value    | `string` <br/> The value of the item's radio button, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio#Value). |
+| disabled | `boolean` <br/> Whether the item's radio button is disabled or not.                                                                                                             |
+
+| Data attribute | Description                                                                             |
+| :------------- | :-------------------------------------------------------------------------------------- |
+| data-valid     | Present when the parent segmented control is valid according to the validation rules.   |
+| data-invalid   | Present when the parent segmented control is invalid according to the validation rules. |
+| data-checked   | Present when the segmented control checked.                                             |
+| data-disabled  | Present when the segmented control disabled.                                            |
+
+`SegmentedControl.ItemInput`, `SegmentedControl.ItemControl`, `SegmentedControl.ItemIndicator` and `SegmentedControl.ItemLabel` shares the same data-attributes.
+
+### SegmentedControl.ItemIndicator
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                          | Default rendered element |
+| :--------------------------------- | :----------------------- |
+| `SegmentedControl`                 | `div`                    |
+| `SegmentedControl.Label`           | `span`                   |
+| `SegmentedControl.Description`     | `div`                    |
+| `SegmentedControl.ErrorMessage`    | `div`                    |
+| `SegmentedControl.Indicator`       | `span`                   |
+| `SegmentedControl.Item`            | `div`                    |
+| `SegmentedControl.ItemInput`       | `input`                  |
+| `SegmentedControl.ItemControl`     | `div`                    |
+| `SegmentedControl.ItemIndicator`   | `div`                    |
+| `SegmentedControl.ItemLabel`       | `label`                  |
+| `SegmentedControl.ItemDescription` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                                                          |
+| :-------------------- | :--------------------------------------------------------------------------------------------------- |
+| <Kbd>Tab</Kbd>        | Moves focus to either the checked item's radio button or the first item's radio button in the group. |
+| <Kbd>Space</Kbd>      | When focus is on an unchecked item's radio button, checks it.                                        |
+| <Kbd>ArrowDown</Kbd>  | Moves focus and checks the next item's radio button in the group.                                    |
+| <Kbd>ArrowRight</Kbd> | Moves focus and checks the next item's radio button in the group.                                    |
+| <Kbd>ArrowUp</Kbd>    | Moves focus and checks the previous item's radio button in the group.                                |
+| <Kbd>ArrowLeft</Kbd>  | Moves focus and checks the previous item's radio button in the group.                                |
