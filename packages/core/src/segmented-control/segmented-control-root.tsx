@@ -30,6 +30,7 @@ export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 	const [selectedItem, setSelectedItem] = createSignal<HTMLElement>();
 
 	const context: SegmentedControlContextValue = {
+		defaultValue: () => otherProps.defaultValue,
 		orientation: () => otherProps.orientation,
 		root: ref,
 		selectedItem: selectedItem,

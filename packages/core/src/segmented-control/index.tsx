@@ -4,7 +4,6 @@ import {
 	ItemControl,
 	ItemDescription,
 	ItemIndicator,
-	ItemInput,
 	ItemLabel,
 	Label,
 	type RadioGroupDescriptionCommonProps as SegmentedControlDescriptionCommonProps,
@@ -27,10 +26,6 @@ import {
 	type RadioGroupItemIndicatorOptions as SegmentedControlItemIndicatorOptions,
 	type RadioGroupItemIndicatorProps as SegmentedControlItemIndicatorProps,
 	type RadioGroupItemIndicatorRenderProps as SegmentedControlItemIndicatorRenderProps,
-	type RadioGroupItemInputCommonProps as SegmentedControlItemInputCommonProps,
-	type RadioGroupItemInputOptions as SegmentedControlItemInputOptions,
-	type RadioGroupItemInputProps as SegmentedControlItemInputProps,
-	type RadioGroupItemInputRenderProps as SegmentedControlItemInputRenderProps,
 	type RadioGroupItemLabelCommonProps as SegmentedControlItemLabelCommonProps,
 	type RadioGroupItemLabelOptions as SegmentedControlItemLabelOptions,
 	type RadioGroupItemLabelProps as SegmentedControlItemLabelProps,
@@ -58,6 +53,13 @@ import {
 	SegmentedControlRoot as Root,
 	type SegmentedControlRootProps,
 } from "./segmented-control-root";
+import {
+	SegmentedControlItemInput as ItemInput,
+	SegmentedControlItemInputCommonProps,
+	SegmentedControlItemInputOptions,
+	SegmentedControlItemInputProps,
+	SegmentedControlItemInputRenderProps,
+} from "./segmented-control-item-input";
 
 export type {
 	SegmentedControlContextValue,

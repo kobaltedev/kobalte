@@ -7,6 +7,7 @@ import {
 } from "solid-js";
 
 export interface SegmentedControlContextValue {
+	defaultValue: Accessor<string | undefined>;
 	orientation: Accessor<Orientation | undefined>;
 	root: Accessor<HTMLElement | undefined>;
 	selectedItem: Accessor<HTMLElement | undefined>;
