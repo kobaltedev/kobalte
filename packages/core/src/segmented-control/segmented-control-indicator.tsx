@@ -27,7 +27,7 @@ export interface SegmentedControlIndicatorRenderProps
 export type SegmentedControlIndicatorProps = SegmentedControlIndicatorOptions &
 	Partial<SegmentedControlIndicatorCommonProps>;
 
-export function SegmentedControlIndicator<T extends ValidComponent = "span">(
+export function SegmentedControlIndicator<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SegmentedControlIndicatorProps>,
 ) {
 	const context = useSegmentedControlContext();
@@ -78,7 +78,7 @@ export function SegmentedControlIndicator<T extends ValidComponent = "span">(
 
 	return (
 		<Polymorphic<SegmentedControlIndicatorRenderProps>
-			as="span"
+			as="div"
 			role="presentation"
 			style={combineStyle(style(), localProps.style)}
 			data-resizing={resizing()}
