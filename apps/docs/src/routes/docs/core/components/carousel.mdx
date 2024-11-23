@@ -328,3 +328,21 @@ Inherits all button props plus:
 | `role` | Set to `"tab"` |
 | `aria-selected` | Set to `true` when this indicator's slide is selected |
 
+## Accessibility
+
+### Keyboard Interactions
+
+| Key | Description |
+| :-- | :---------- |
+| `ArrowRight` | Moves to the next slide when orientation is horizontal |
+| `ArrowLeft` | Moves to the previous slide when orientation is horizontal |
+| `ArrowDown` | Moves to the next slide when orientation is vertical |
+| `ArrowUp` | Moves to the previous slide when orientation is vertical |
+| `Home` | Moves to the first slide |
+| `End` | Moves to the last slide |
+| `Tab` | Moves focus to the next focusable element |
+| `Shift + Tab` | Moves focus to the previous focusable element |
+
+### ARIA
+
+The carousel follows the [WAI-ARIA Carousel Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/). The root element has `role="region"` and `aria-roledescription="carousel"`, while each slide has `role="group"` and `aria-roledescription="slide"`.

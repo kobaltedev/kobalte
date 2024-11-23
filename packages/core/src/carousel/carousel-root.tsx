@@ -1,4 +1,4 @@
-import { type Orientation, mergeDefaultProps } from "@kobalte/utils";
+import { type Orientation, mergeDefaultProps, callHandler } from "@kobalte/utils";
 import {
 	type ValidComponent,
 	createSignal,
@@ -6,7 +6,7 @@ import {
 	createUniqueId,
 	splitProps,
 	on,
-	onMount,
+	JSX,
 } from "solid-js";
 import createEmblaCarousel from "embla-carousel-solid";
 import {
@@ -88,12 +88,14 @@ export interface CarouselRootOptions {
 
 export interface CarouselRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id?: string;
+	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 }
 
 export interface CarouselRootRenderProps extends CarouselRootCommonProps {
 	role: "region";
 	"aria-roledescription": "carousel";
 	"data-orientation": Orientation;
+	"aria-label"?: string;
 }
 
 export type CarouselRootProps<T extends ValidComponent | HTMLElement = HTMLElement> =
@@ -132,7 +134,8 @@ export function CarouselRoot<T extends ValidComponent = "div">(
 		"watchResize",
 		"watchSlides",
 		"watchFocus",
-		"plugins"
+		"plugins",
+		"onKeyDown"
 	]);
 
 	const [carouselRef, api] = createEmblaCarousel(() => ({
@@ -211,6 +214,50 @@ export function CarouselRoot<T extends ValidComponent = "div">(
 		scrollTo,
 	};
 
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
+		callHandler(e, local.onKeyDown);
+
+		if (local.disabled) {
+			return;
+		}
+
+		switch (e.key) {
+			case "ArrowLeft":
+				if (local.orientation === "horizontal") {
+					e.preventDefault();
+					scrollPrev();
+				}
+				break;
+			case "ArrowRight":
+				if (local.orientation === "horizontal") {
+					e.preventDefault();
+					scrollNext();
+				}
+				break;
+			case "ArrowUp":
+				if (local.orientation === "vertical") {
+					e.preventDefault();
+					scrollPrev();
+				}
+				break;
+			case "ArrowDown":
+				if (local.orientation === "vertical") {
+					e.preventDefault();
+					scrollNext();
+				}
+				break;
+			case "Home":
+				e.preventDefault();
+				scrollTo(0);
+				break;
+			case "End":
+				e.preventDefault();
+				const lastIndex = api()!.scrollSnapList()!.length - 1;
+				scrollTo(lastIndex);
+				break;
+		}
+	};
+
 	return (
 		<CarouselContext.Provider value={context}>
 			<Polymorphic<CarouselRootRenderProps>
@@ -219,6 +266,7 @@ export function CarouselRoot<T extends ValidComponent = "div">(
 				ref={carouselRef}
 				aria-roledescription="carousel"
 				data-orientation={context.orientation()}
+				onKeyDown={onKeyDown}
 				{...others}
 			/>
 		</CarouselContext.Provider>

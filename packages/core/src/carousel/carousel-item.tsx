@@ -14,8 +14,10 @@ export interface CarouselItemCommonProps<T extends HTMLElement = HTMLElement> {
 export interface CarouselItemRenderProps extends CarouselItemCommonProps {
 	role: "group";
 	"aria-roledescription": "slide";
+	"aria-label"?: string;
 	"data-orientation": string;
 	"data-selected": string | undefined;
+	tabIndex: number;
 }
 
 export type CarouselItemProps<T extends ValidComponent | HTMLElement = HTMLElement> =
@@ -38,8 +40,10 @@ export function CarouselItem<T extends ValidComponent = "div">(
 			ref={local.ref}
 			role="group"
 			aria-roledescription="slide"
+			aria-label={`Slide ${local.index + 1}`}
 			data-orientation={context.orientation()}
 			data-selected={isSelected() ? "" : undefined}
+			tabIndex={isSelected() ? 0 : -1}
 			{...others}
 		/>
 	);
