@@ -13,11 +13,7 @@ import { isServer } from "solid-js/web";
 import { combineStyle } from "@solid-primitives/props";
 import { type MenuDataSet, useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
-import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+import { type ElementOf, Polymorphic, type PolymorphicProps } from "../polymorphic";
 import { useContextMenuContext } from "./context-menu-context";
 
 export interface ContextMenuTriggerOptions {
@@ -25,9 +21,7 @@ export interface ContextMenuTriggerOptions {
 	disabled?: boolean;
 }
 
-export interface ContextMenuTriggerCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {
+export interface ContextMenuTriggerCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 	ref: T | ((el: T) => void);
 	onContextMenu: JSX.EventHandlerUnion<T, MouseEvent>;
@@ -38,14 +32,10 @@ export interface ContextMenuTriggerCommonProps<
 	style?: JSX.CSSProperties | string;
 }
 
-export interface ContextMenuTriggerRenderProps
-	extends ContextMenuTriggerCommonProps,
-		MenuDataSet {}
+export interface ContextMenuTriggerRenderProps extends ContextMenuTriggerCommonProps, MenuDataSet {}
 
-export type ContextMenuTriggerProps<
-	T extends ValidComponent | HTMLElement = HTMLElement,
-> = ContextMenuTriggerOptions &
-	Partial<ContextMenuTriggerCommonProps<ElementOf<T>>>;
+export type ContextMenuTriggerProps<T extends ValidComponent | HTMLElement = HTMLElement> =
+	ContextMenuTriggerOptions & Partial<ContextMenuTriggerCommonProps<ElementOf<T>>>;
 
 export function ContextMenuTrigger<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ContextMenuTriggerProps<T>>,
@@ -72,21 +62,21 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		"onPointerUp",
 	]);
 
-	let longPressTimoutId = 0;
+	let longPressTimeoutId = 0;
 
 	const clearLongPressTimeout = () => {
 		if (isServer) {
 			return;
 		}
 
-		window.clearTimeout(longPressTimoutId);
+		window.clearTimeout(longPressTimeoutId);
 	};
 
 	onCleanup(() => {
 		clearLongPressTimeout();
 	});
 
-	const onContextMenu: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+	const onContextMenu: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = e => {
 		// If trigger is disabled, enable the native Context Menu.
 		if (local.disabled) {
 			callHandler(e, local.onContextMenu);
@@ -110,23 +100,20 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const isTouchOrPen = (e: PointerEvent) =>
-		e.pointerType === "touch" || e.pointerType === "pen";
+	const isTouchOrPen = (e: PointerEvent) => e.pointerType === "touch" || e.pointerType === "pen";
 
-	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = e => {
 		callHandler(e, local.onPointerDown);
 
 		if (!local.disabled && isTouchOrPen(e)) {
 			// Clear the long press here in case there's multiple touch points.
 			clearLongPressTimeout();
 			context.setAnchorRect({ x: e.clientX, y: e.clientY });
-			longPressTimoutId = window.setTimeout(() => menuContext.open(false), 700);
+			longPressTimeoutId = window.setTimeout(() => menuContext.open(false), 700);
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
 		callHandler(e, local.onPointerMove);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -134,9 +121,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
 		callHandler(e, local.onPointerCancel);
 
 		if (!local.disabled && isTouchOrPen(e)) {
@@ -144,7 +129,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
 		callHandler(e, local.onPointerUp);
 
 		if (!local.disabled && isTouchOrPen(e)) {
