@@ -9,9 +9,15 @@
 	},
 	"license": "MIT",
 	"author": "jer3m01 <jer3m01@jer3m01.com>",
-	"contributors": ["Fabien Marie-Louise <fabienml.dev@gmail.com>"],
-	"workspaces": ["apps/*", "packages/*"],
+	"contributors": [
+		"Fabien Marie-Louise <fabienml.dev@gmail.com>"
+	],
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
 	"scripts": {
+		"prepare": "pnpm build",
 		"build": "turbo run build",
 		"build:libs": "pnpm -F \\!docs -F \\!playground build && pnpm i",
 		"changeset": "changeset",
