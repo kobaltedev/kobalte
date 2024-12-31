@@ -86,6 +86,7 @@ import {
 	type ContextMenuContentProps,
 	type ContextMenuContentRenderProps,
 } from "./context-menu-content";
+import { useContextMenuContext } from "./context-menu-context";
 import {
 	type ContextMenuRootOptions,
 	type ContextMenuRootProps,
@@ -97,6 +98,7 @@ import {
 	type ContextMenuTriggerProps,
 	type ContextMenuTriggerRenderProps,
 	ContextMenuTrigger as Trigger,
+	useContextMenuTrigger,
 } from "./context-menu-trigger";
 
 export type {
@@ -212,4 +214,5 @@ export const ContextMenu = Object.assign(Root, {
 	SubContent,
 	SubTrigger,
 	Trigger,
+	useContextMenuTrigger,
 });
