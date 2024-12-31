@@ -99,6 +99,7 @@ import {
 	type ContextMenuTriggerRenderProps,
 	ContextMenuTrigger as Trigger,
 	useContextMenuTrigger,
+	UseContextMenuTriggerProps,
 } from "./context-menu-trigger";
 
 export type {
@@ -171,6 +172,7 @@ export type {
 	ContextMenuTriggerCommonProps,
 	ContextMenuTriggerRenderProps,
 	ContextMenuTriggerProps,
+	UseContextMenuTriggerProps,
 };
 
 export {
@@ -193,6 +195,7 @@ export {
 	SubContent,
 	SubTrigger,
 	Trigger,
+	useContextMenuTrigger,
 };
 
 export const ContextMenu = Object.assign(Root, {
@@ -214,5 +217,4 @@ export const ContextMenu = Object.assign(Root, {
 	SubContent,
 	SubTrigger,
 	Trigger,
-	useContextMenuTrigger,
 });
