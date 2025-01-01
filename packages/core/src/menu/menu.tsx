@@ -6,11 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import {
-	focusWithoutScrolling,
-	mergeDefaultProps,
-	removeItemFromArray,
-} from "@kobalte/utils";
+import { focusWithoutScrolling, mergeDefaultProps, removeItemFromArray } from "@kobalte/utils";
 import {
 	type Accessor,
 	type ParentProps,
@@ -49,10 +45,7 @@ import { useMenuRootContext } from "./menu-root-context";
 import { type GraceIntent, type Side, isPointerInGraceArea } from "./utils";
 
 export interface MenuOptions
-	extends Omit<
-		PopperRootOptions,
-		"anchorRef" | "contentRef" | "onCurrentPlacementChange"
-	> {
+	extends Omit<PopperRootOptions, "anchorRef" | "contentRef" | "onCurrentPlacementChange"> {
 	/** The controlled open state of the menu. */
 	open?: boolean;
 
@@ -64,6 +57,9 @@ export interface MenuOptions
 
 	/** Event handler called when the open state of the menu changes. */
 	onOpenChange?: (isOpen: boolean) => void;
+
+	/** Whether to prevent auto-focus when the menu is closed. */
+	dontAutoFocusWhenClosed?: boolean;
 }
 
 export interface MenuProps extends ParentProps<MenuOptions> {}
@@ -80,10 +76,7 @@ export function Menu(props: MenuProps) {
 
 	const mergedProps = mergeDefaultProps(
 		{
-			placement:
-				rootContext.orientation() === "horizontal"
-					? "bottom-start"
-					: "right-start",
+			placement: rootContext.orientation() === "horizontal" ? "bottom-start" : "right-start",
 		},
 		props,
 	);
@@ -92,6 +85,7 @@ export function Menu(props: MenuProps) {
 		"open",
 		"defaultOpen",
 		"onOpenChange",
+		"dontAutoFocusWhenClosed",
 	]);
 
 	let pointerGraceTimeoutId = 0;
@@ -104,12 +98,8 @@ export function Menu(props: MenuProps) {
 	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
 	const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
 
-	const [focusStrategy, setFocusStrategy] = createSignal<
-		FocusStrategy | boolean
-	>(true);
-	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
-		others.placement!,
-	);
+	const [focusStrategy, setFocusStrategy] = createSignal<FocusStrategy | boolean>(true);
+	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(others.placement!);
 	const [nestedMenus, setNestedMenus] = createSignal<HTMLElement[]>([]);
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
@@ -122,7 +112,7 @@ export function Menu(props: MenuProps) {
 	const disclosureState = createDisclosureState({
 		open: () => local.open,
 		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		onOpenChange: isOpen => local.onOpenChange?.(isOpen),
 	});
 
 	const { present: contentPresent } = createPresence({
@@ -155,6 +145,9 @@ export function Menu(props: MenuProps) {
 
 	const _focusContent = () => {
 		const content = contentRef();
+		if (local.dontAutoFocusWhenClosed && !disclosureState.isOpen()) {
+			return;
+		}
 
 		if (content) {
 			focusWithoutScrolling(content);
@@ -164,18 +157,17 @@ export function Menu(props: MenuProps) {
 	};
 
 	const focusContent = () => {
-		if (optionalNavigationMenuContext != null)
-			setTimeout(() => _focusContent());
+		if (optionalNavigationMenuContext != null) setTimeout(() => _focusContent());
 		else _focusContent();
 	};
 
 	const registerNestedMenu = (element: HTMLElement) => {
-		setNestedMenus((prev) => [...prev, element]);
+		setNestedMenus(prev => [...prev, element]);
 
 		const parentUnregister = parentMenuContext?.registerNestedMenu(element);
 
 		return () => {
-			setNestedMenus((prev) => removeItemFromArray(prev, element));
+			setNestedMenus(prev => removeItemFromArray(prev, element));
 			parentUnregister?.();
 		};
 	};
@@ -209,14 +201,9 @@ export function Menu(props: MenuProps) {
 	createHideOutside({
 		isDisabled: () => {
 			// Apply only on root menu when opened and modal.
-			return !(
-				parentMenuContext == null &&
-				disclosureState.isOpen() &&
-				rootContext.isModal()
-			);
+			return !(parentMenuContext == null && disclosureState.isOpen() && rootContext.isModal());
 		},
-		targets: () =>
-			[contentRef(), ...nestedMenus()].filter(Boolean) as Element[],
+		targets: () => [contentRef(), ...nestedMenus()].filter(Boolean) as Element[],
 	});
 
 	createEffect(() => {
@@ -235,15 +222,11 @@ export function Menu(props: MenuProps) {
 
 	createEffect(() => {
 		if (parentMenuContext !== undefined) return;
-		optionalMenubarContext?.registerMenu(rootContext.value()!, [
-			contentRef()!,
-			...nestedMenus(),
-		]);
+		optionalMenubarContext?.registerMenu(rootContext.value()!, [contentRef()!, ...nestedMenus()]);
 	});
 
 	createEffect(() => {
-		if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
-			return;
+		if (parentMenuContext !== undefined || optionalMenubarContext === undefined) return;
 		if (optionalMenubarContext.value() === rootContext.value()!) {
 			triggerRef()?.focus();
 			if (optionalMenubarContext.autoFocusMenu()) open(true);
@@ -251,10 +234,8 @@ export function Menu(props: MenuProps) {
 	});
 
 	createEffect(() => {
-		if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
-			return;
-		if (disclosureState.isOpen())
-			optionalMenubarContext.setValue(rootContext.value()!);
+		if (parentMenuContext !== undefined || optionalMenubarContext === undefined) return;
+		if (disclosureState.isOpen()) optionalMenubarContext.setValue(rootContext.value()!);
 	});
 
 	onCleanup(() => {
@@ -292,8 +273,7 @@ export function Menu(props: MenuProps) {
 		onTriggerLeave,
 		setPointerDir: (dir: Side) => (pointerDir = dir),
 		setPointerGraceTimeoutId: (id: number) => (pointerGraceTimeoutId = id),
-		setPointerGraceIntent: (intent: GraceIntent | null) =>
-			(pointerGraceIntent = intent),
+		setPointerGraceIntent: (intent: GraceIntent | null) => (pointerGraceIntent = intent),
 		registerNestedMenu,
 		registerItemToParentDomCollection: parentDomCollectionContext?.registerItem,
 		registerTriggerId: createRegisterId(setTriggerId),
@@ -303,10 +283,7 @@ export function Menu(props: MenuProps) {
 	return (
 		<DomCollectionProvider>
 			<MenuContext.Provider value={context}>
-				<Show
-					when={optionalNavigationMenuContext === undefined}
-					fallback={others.children}
-				>
+				<Show when={optionalNavigationMenuContext === undefined} fallback={others.children}>
 					<Popper
 						anchorRef={triggerRef}
 						contentRef={contentRef}
