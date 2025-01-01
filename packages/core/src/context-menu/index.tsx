@@ -65,6 +65,7 @@ import {
 	MenuSubContent as SubContent,
 	MenuSubTrigger as SubTrigger,
 } from "../menu";
+import { useMenuItemContext } from "../menu/menu-item.context";
 import {
 	Arrow,
 	type PopperArrowCommonProps as ContextMenuArrowCommonProps,
@@ -217,4 +218,6 @@ export const ContextMenu = Object.assign(Root, {
 	SubContent,
 	SubTrigger,
 	Trigger,
+	useContextMenuTrigger,
+	useMenuItemContext,
 });
