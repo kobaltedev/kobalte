@@ -24,11 +24,7 @@ import {
 	splitProps,
 } from "solid-js";
 
-import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+import { type ElementOf, Polymorphic, type PolymorphicProps } from "../polymorphic";
 import { type CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
 import { createSelectableItem } from "../selection";
@@ -82,9 +78,7 @@ export interface MenuItemBaseCommonProps<T extends HTMLElement = HTMLElement> {
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
-export interface MenuItemBaseRenderProps
-	extends MenuItemBaseCommonProps,
-		MenuItemDataSet {
+export interface MenuItemBaseRenderProps extends MenuItemBaseCommonProps, MenuItemDataSet {
 	tabIndex: number | undefined;
 	"aria-checked": boolean | "mixed" | undefined;
 	"aria-disabled": boolean | undefined;
@@ -93,9 +87,8 @@ export interface MenuItemBaseRenderProps
 	"data-key": string | undefined;
 }
 
-export type MenuItemBaseProps<
-	T extends ValidComponent | HTMLElement = HTMLElement,
-> = MenuItemBaseOptions & Partial<MenuItemBaseCommonProps<ElementOf<T>>>;
+export type MenuItemBaseProps<T extends ValidComponent | HTMLElement = HTMLElement> =
+	MenuItemBaseOptions & Partial<MenuItemBaseCommonProps<ElementOf<T>>>;
 
 /**
  * Base component for a menu item.
@@ -158,8 +151,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			ref: () => ref,
 			type: "item",
 			key: key(),
-			textValue:
-				local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
+			textValue: local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
 			disabled: local.disabled ?? false,
 		}),
 	});
@@ -186,9 +178,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	 * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
 	 * wiggles. This is to match native menu implementation.
 	 */
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
 		callHandler(e, local.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -200,7 +190,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		} else {
 			menuContext.onItemEnter(e);
 
-			if (!e.defaultPrevented) {
+			if (!e.defaultPrevented && !menuContext.preventAutoFocusWhenClosed()) {
 				focusWithoutScrolling(e.currentTarget);
 				menuContext.listState().selectionManager().setFocused(true);
 				menuContext.listState().selectionManager().setFocusedKey(key());
@@ -208,9 +198,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
+	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
 		callHandler(e, local.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {
@@ -220,7 +208,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		menuContext.onItemLeave(e);
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = e => {
 		callHandler(e, local.onPointerUp);
 
 		// Selection occurs on pointer up (main button).
@@ -229,7 +217,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = e => {
 		callHandler(e, local.onKeyDown);
 
 		// Ignore repeating events, which may have started on the menu trigger before moving
@@ -282,27 +270,18 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		<MenuItemContext.Provider value={context}>
 			<Polymorphic<MenuItemBaseRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el), local.ref)}
+				ref={mergeRefs(el => (ref = el), local.ref)}
 				tabIndex={selectableItem.tabIndex()}
 				aria-checked={ariaChecked()}
 				aria-disabled={local.disabled}
 				aria-labelledby={labelId()}
 				aria-describedby={descriptionId()}
 				data-key={selectableItem.dataKey()}
-				onPointerDown={composeEventHandlers([
-					local.onPointerDown,
-					selectableItem.onPointerDown,
-				])}
-				onPointerUp={composeEventHandlers([
-					onPointerUp,
-					selectableItem.onPointerUp,
-				])}
+				onPointerDown={composeEventHandlers([local.onPointerDown, selectableItem.onPointerDown])}
+				onPointerUp={composeEventHandlers([onPointerUp, selectableItem.onPointerUp])}
 				onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
 				onKeyDown={composeEventHandlers([onKeyDown, selectableItem.onKeyDown])}
-				onMouseDown={composeEventHandlers([
-					local.onMouseDown,
-					selectableItem.onMouseDown,
-				])}
+				onMouseDown={composeEventHandlers([local.onMouseDown, selectableItem.onMouseDown])}
 				onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
 				onPointerMove={onPointerMove}
 				onPointerLeave={onPointerLeave}

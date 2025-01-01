@@ -59,7 +59,7 @@ export interface MenuOptions
 	onOpenChange?: (isOpen: boolean) => void;
 
 	/** Whether to prevent auto-focus when the menu is closed. */
-	dontAutoFocusWhenClosed?: boolean;
+	preventAutoFocusWhenClosed?: boolean;
 }
 
 export interface MenuProps extends ParentProps<MenuOptions> {}
@@ -85,7 +85,7 @@ export function Menu(props: MenuProps) {
 		"open",
 		"defaultOpen",
 		"onOpenChange",
-		"dontAutoFocusWhenClosed",
+		"preventAutoFocusWhenClosed",
 	]);
 
 	let pointerGraceTimeoutId = 0;
@@ -145,7 +145,7 @@ export function Menu(props: MenuProps) {
 
 	const _focusContent = () => {
 		const content = contentRef();
-		if (local.dontAutoFocusWhenClosed && !disclosureState.isOpen()) {
+		if (local.preventAutoFocusWhenClosed && !disclosureState.isOpen()) {
 			return;
 		}
 
@@ -278,6 +278,7 @@ export function Menu(props: MenuProps) {
 		registerItemToParentDomCollection: parentDomCollectionContext?.registerItem,
 		registerTriggerId: createRegisterId(setTriggerId),
 		registerContentId: createRegisterId(setContentId),
+		preventAutoFocusWhenClosed: () => local.preventAutoFocusWhenClosed ?? false,
 	};
 
 	return (
