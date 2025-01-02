@@ -143,11 +143,16 @@ export function Menu(props: MenuProps) {
 		disclosureState.toggle();
 	};
 
+	const autoFocusDisabled = () => {
+		return !disclosureState.isOpen() && !!local.preventAutoFocusWhenClosed;
+	};
+
 	const _focusContent = () => {
-		const content = contentRef();
-		if (local.preventAutoFocusWhenClosed && !disclosureState.isOpen()) {
+		if (autoFocusDisabled()) {
 			return;
 		}
+
+		const content = contentRef();
 
 		if (content) {
 			focusWithoutScrolling(content);
@@ -278,7 +283,7 @@ export function Menu(props: MenuProps) {
 		registerItemToParentDomCollection: parentDomCollectionContext?.registerItem,
 		registerTriggerId: createRegisterId(setTriggerId),
 		registerContentId: createRegisterId(setContentId),
-		preventAutoFocusWhenClosed: () => local.preventAutoFocusWhenClosed ?? false,
+		autoFocusDisabled,
 	};
 
 	return (

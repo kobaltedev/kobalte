@@ -41,7 +41,7 @@ export interface MenuContextValue {
 	registerTriggerId: (id: string) => () => void;
 	registerContentId: (id: string) => () => void;
 	nestedMenus: Accessor<Element[]>;
-	preventAutoFocusWhenClosed: Accessor<boolean>;
+	autoFocusDisabled: () => boolean;
 }
 
 export const MenuContext = createContext<MenuContextValue>();
