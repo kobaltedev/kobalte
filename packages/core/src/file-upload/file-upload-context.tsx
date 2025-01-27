@@ -4,9 +4,9 @@ import {
 	useFileUploadContext,
 } from "./file-upload-root-provider";
 
-export type FileUploadContextProps = {
+export interface FileUploadContextProps {
 	children: (context: FileUploadContextValue) => JSX.Element;
-};
+}
 
 export const FileUploadContext = (props: FileUploadContextProps) =>
 	props.children(useFileUploadContext());

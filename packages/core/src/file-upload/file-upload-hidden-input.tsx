@@ -1,6 +1,6 @@
 import { mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { JSX, splitProps, ValidComponent } from "solid-js";
+import { type JSX, type ValidComponent, splitProps } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -18,7 +18,8 @@ export interface FileUploadHiddenInputCommonProps<
 	style: JSX.CSSProperties | string;
 }
 
-export interface FileUploadHiddenInputRenderProps extends FileUploadHiddenInputCommonProps {
+export interface FileUploadHiddenInputRenderProps
+	extends FileUploadHiddenInputCommonProps {
 	type: "file";
 	accepts: string | undefined;
 	multiple: boolean | undefined;
@@ -26,12 +27,16 @@ export interface FileUploadHiddenInputRenderProps extends FileUploadHiddenInputC
 
 export type FileUploadHiddenInputRootProps<
 	T extends ValidComponent | HTMLInputElement = HTMLInputElement,
-> = FileUploadHiddenInputOptions & Partial<FileUploadHiddenInputCommonProps<ElementOf<T>>>;
+> = FileUploadHiddenInputOptions &
+	Partial<FileUploadHiddenInputCommonProps<ElementOf<T>>>;
 
 export function FileUploadHiddenInput<T extends ValidComponent = "input">(
 	props: PolymorphicProps<T, FileUploadHiddenInputRootProps<T>>,
 ) {
-	const [local, others] = splitProps(props as FileUploadHiddenInputRootProps<T>, ["style", "ref"])
+	const [local, others] = splitProps(
+		props as FileUploadHiddenInputRootProps<T>,
+		["style", "ref"],
+	);
 
 	const context = useFileUploadContext();
 

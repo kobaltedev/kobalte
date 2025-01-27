@@ -1,10 +1,11 @@
 import {
+	type Accessor,
 	type JSX,
+	type Setter,
 	createContext,
+	createSignal,
 	createUniqueId,
 	useContext,
-	createSignal,
-	Accessor, Setter
 } from "solid-js";
 import { createStore } from "solid-js/store";
 
