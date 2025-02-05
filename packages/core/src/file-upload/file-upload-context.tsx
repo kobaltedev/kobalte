@@ -1,12 +1,37 @@
-import type { JSX } from "solid-js";
 import {
-	type FileUploadContextValue,
-	useFileUploadContext,
-} from "./file-upload-root-provider";
+	type Accessor,
+	type Setter,
+	createContext,
+	useContext,
+} from "solid-js";
+import type { FileRejection } from "./types";
 
-export interface FileUploadContextProps {
-	children: (context: FileUploadContextValue) => JSX.Element;
+export type FileUploadContextValue = {
+	inputId: Accessor<string>;
+	fileInputRef: Accessor<HTMLInputElement | undefined>;
+	setFileInputRef: Setter<HTMLInputElement | undefined>;
+	dropzoneRef: Accessor<HTMLElement | undefined>;
+	setDropzoneRef: Setter<HTMLElement | undefined>;
+	disabled: Accessor<boolean | undefined>;
+	multiple: Accessor<boolean | undefined>;
+	accept: Accessor<string | undefined>;
+	allowDragAndDrop: Accessor<boolean | undefined>;
+	processFiles: (files: File[]) => void;
+	acceptedFiles: File[]; // store
+	rejectedFiles: FileRejection[]; // store
+	removeFile: (file: File) => void;
+};
+
+export const FileUploadContext = createContext<FileUploadContextValue>();
+
+export function useFileUploadContext() {
+	const context = useContext(FileUploadContext);
+
+	if (context === undefined) {
+		throw new Error(
+			"[kobalte]: `useFileUploadContext` must be used within a `FileUploadContext.Root` component",
+		);
+	}
+
+	return context;
 }
-
-export const FileUploadContext = (props: FileUploadContextProps) =>
-	props.children(useFileUploadContext());

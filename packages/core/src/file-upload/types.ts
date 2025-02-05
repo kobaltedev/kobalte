@@ -15,17 +15,3 @@ export type Details = {
 };
 
 export type Accept = string | string[] | undefined;
-
-export type FileUploadRootOptions = {
-	multiple?: boolean;
-	disabled?: boolean;
-	accept?: Accept;
-	maxFiles?: number;
-	allowDragAndDrop?: boolean;
-	maxFileSize?: number;
-	minFileSize?: number;
-	onFileAccept?: (files: File[]) => void;
-	onFileReject?: (files: FileRejection[]) => void;
-	onFileChange?: (details: Details) => void;
-	validate?: (file: File) => FileError[] | null;
-};
