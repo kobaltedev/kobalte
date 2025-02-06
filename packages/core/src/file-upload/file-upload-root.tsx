@@ -1,26 +1,18 @@
-import {
-	type JSX,
-	type ValidComponent,
-	createSignal,
-	createUniqueId,
-} from "solid-js";
-
-import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+import { type ParentProps, createSignal, createUniqueId } from "solid-js";
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { createStore } from "solid-js/store";
+import { createStore, unwrap } from "solid-js/store";
 import {
 	FileUploadContext,
 	type FileUploadContextValue,
 } from "./file-upload-context";
-import type { FileRejection } from "./types";
+import type { Accept, Details, FileError, FileRejection } from "./types";
 import { getFiles, parseAcceptedTypes } from "./util";
 
-export type FileUploadRootOptions = {
+export interface FileUploadRootOptions {
+	/** The localized strings of the component. */
+	translations?: FileUploadIntlTranslations;
+
 	multiple?: boolean;
 	disabled?: boolean;
 	accept?: Accept;
@@ -32,21 +24,16 @@ export type FileUploadRootOptions = {
 	onFileReject?: (files: FileRejection[]) => void;
 	onFileChange?: (details: Details) => void;
 	validate?: (file: File) => FileError[] | null;
-};
 
-export interface FileUploadCommonProps<T extends HTMLElement = HTMLElement> {
 	id?: string;
-	style?: JSX.CSSProperties | string;
 }
 
-export type FileUploadRootProps<
-	T extends ValidComponent | HTMLElement = HTMLElement,
-> = FileUploadRootOptions & Partial<FileUploadCommonProps<ElementOf<T>>>;
+export interface FileUploadRootProps
+	extends ParentProps<FileUploadRootOptions> {}
 
-export function FileUpload<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, FileUploadRootProps<T>>,
-) {
-	const inputId = createUniqueId();
+export function FileUpload(props: FileUploadRootProps) {
+	const defaultId = `fileupload-${createUniqueId()}`;
+
 	const [fileInputRef, setFileInputRef] = createSignal<HTMLInputElement>();
 	const [dropzoneRef, setDropzoneRef] = createSignal<HTMLElement>();
 
@@ -57,6 +44,7 @@ export function FileUpload<T extends ValidComponent = "div">(
 
 	const mergedProps = mergeDefaultProps(
 		{
+			id: defaultId,
 			allowDragAndDrop: true,
 			disabled: false,
 			multiple: false,
@@ -64,8 +52,9 @@ export function FileUpload<T extends ValidComponent = "div">(
 			maxFileSize: Number.POSITIVE_INFINITY,
 			minFileSize: 0,
 			validate: undefined,
+			translations: FILE_UPLOAD_INTL_TRANSLATIONS,
 		},
-		props as FileUploadRootProps<T>,
+		props,
 	);
 
 	const processFiles = (files: File[]) => {
@@ -112,13 +101,13 @@ export function FileUpload<T extends ValidComponent = "div">(
 		);
 		// trigger on change
 		mergedProps.onFileChange?.({
-			acceptedFiles: acceptedFilesState.map((f) => f),
-			rejectedFiles: rejectedFilesState.map((f) => f),
+			acceptedFiles: unwrap(acceptedFilesState),
+			rejectedFiles: unwrap(rejectedFilesState),
 		});
 	};
 
 	const context: FileUploadContextValue = {
-		inputId: () => inputId,
+		inputId: () => mergedProps.id,
 		fileInputRef,
 		setFileInputRef,
 		dropzoneRef,
@@ -131,13 +120,12 @@ export function FileUpload<T extends ValidComponent = "div">(
 		acceptedFiles: acceptedFilesState,
 		rejectedFiles: rejectedFilesState,
 		removeFile,
+		translations: () => mergedProps.translations,
 	};
 
 	return (
 		<FileUploadContext.Provider value={context}>
-			<Polymorphic as="div" {...props}>
-				{props.children}
-			</Polymorphic>
+			{props.children}
 		</FileUploadContext.Provider>
 	);
 }

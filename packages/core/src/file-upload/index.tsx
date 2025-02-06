@@ -27,7 +27,7 @@ import {
 	type FileUploadItemGroupCommonProps,
 	type FileUploadItemGroupRootProps,
 	FileUploadItemGroup as ItemGroup,
-} from "./file-upload-item-group";
+} from "./file-upload-item-list";
 import {
 	type FileUploadItemNameCommonProps,
 	type FileUploadItemNameRootProps,

@@ -7,6 +7,7 @@ import {
 import type { FileRejection } from "./types";
 
 export type FileUploadContextValue = {
+	translations: Accessor<FileUploadIntlTranslations>;
 	inputId: Accessor<string>;
 	fileInputRef: Accessor<HTMLInputElement | undefined>;
 	setFileInputRef: Setter<HTMLInputElement | undefined>;

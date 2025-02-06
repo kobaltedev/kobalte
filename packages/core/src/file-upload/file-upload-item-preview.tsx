@@ -4,18 +4,18 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { useFileUploadItemContext } from "./file-upload-item-provider";
+import { useFileUploadItemContext } from "./file-upload-item-context";
 
-export type FileUploadItemPreviewOptions = {
+export interface FileUploadItemPreviewOptions {
 	type: string;
-};
+}
 
 export interface FileUploadItemPreviewCommonProps<
 	T extends HTMLElement = HTMLElement,
-> {
-	id?: string;
-	style?: JSX.CSSProperties | string;
-}
+> {}
+
+export interface FileUploadItemPreviewRenderProps
+	extends FileUploadItemPreviewCommonProps {}
 
 export type FileUploadItemPreviewRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -27,11 +27,13 @@ export function FileUploadItemPreview<T extends ValidComponent = "div">(
 ) {
 	const { file } = useFileUploadItemContext();
 
+	const [local, others] = splitProps(props as FileUploadItemPreviewRootProps, [
+		"type",
+	]);
+
 	return (
-		<Show when={file.type.match(props.type ?? ".*")} fallback={null}>
-			<Polymorphic as="div" {...props}>
-				{props.children}
-			</Polymorphic>
+		<Show when={file.type.match(local.type ?? ".*")}>
+			<Polymorphic<FileUploadItemPreviewRenderProps> as="div" {...others} />
 		</Show>
 	);
 }

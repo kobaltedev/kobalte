@@ -1,3 +1,4 @@
+import { composeEventHandlers } from "@kobalte/utils";
 import {
 	type Component,
 	type JSX,
@@ -6,19 +7,14 @@ import {
 } from "solid-js";
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useFileUploadContext } from "./file-upload-root-provider";
+import { useFileUploadContext } from "./file-upload-context";
 
-export interface FileUploadTriggerOptions {
-	children?: JSX.Element;
-}
+export interface FileUploadTriggerOptions {}
 
 export interface FileUploadTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	id?: string;
-	style?: JSX.CSSProperties | string;
-	"aria-label"?: string;
-	onClick?: JSX.EventHandlerUnion<T, MouseEvent>;
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 }
 
 export interface FileUploadTriggerRenderProps
@@ -36,16 +32,16 @@ export function FileUploadTrigger<T extends ValidComponent = "button">(
 	const context = useFileUploadContext();
 
 	const [local, others] = splitProps(props as FileUploadTriggerRootProps, [
-		"aria-label",
+		"onClick",
 	]);
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (event) => {
 		// if button is within dropzone ref, avoid trigger of file dialog for button
-		if (context.dropzoneRef?.contains(event.target as HTMLElement)) {
+		if (context.dropzoneRef()?.contains(event.target as HTMLElement)) {
 			event.stopPropagation();
 		}
 		// open the hidden input
-		context.fileInputRef?.click();
+		context.fileInputRef()?.click();
 	};
 
 	return (
@@ -54,11 +50,9 @@ export function FileUploadTrigger<T extends ValidComponent = "button">(
 				Omit<FileUploadTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-label={local["aria-label"]}
-			disabled={!!context.disabled}
-			id={context.inputId}
-			onClick={onClick}
-			{...(props as FileUploadTriggerRootProps)}
+			disabled={context.disabled()}
+			onClick={composeEventHandlers([local.onClick, onClick])}
+			{...others}
 		/>
 	);
 }

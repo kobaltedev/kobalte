@@ -11,8 +11,8 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 
-import { mergeRefs } from "@kobalte/utils";
-import { useFileUploadContext } from "./file-upload-root-provider";
+import { composeEventHandlers, mergeRefs } from "@kobalte/utils";
+import { useFileUploadContext } from "./file-upload-context";
 import { isDragEventWithFiles } from "./util";
 
 export interface FileUploadDropZoneOptions {}
@@ -20,8 +20,6 @@ export interface FileUploadDropZoneOptions {}
 export interface FileUploadDropZoneCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	id: string;
-	style: JSX.CSSProperties | string;
 	ref: T | ((el: T) => void);
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
@@ -35,7 +33,7 @@ export interface FileUploadDropZoneRenderProps
 	"aria-label": "dropzone";
 	role: "button";
 	tabindex: "0";
-	"aria-disabled": boolean;
+	"aria-disabled": boolean | undefined;
 	"data-dragging": boolean;
 }
 
@@ -114,7 +112,7 @@ export function FileUploadDropzone<T extends ValidComponent = "div">(
 		if (context.disabled() || !isFilesEvent) {
 			return;
 		}
-		const files = event.dataTransfer?.files;
+		const files = e.dataTransfer?.files;
 		const fileList = Array.from(files ?? []);
 		context.processFiles(fileList);
 	};

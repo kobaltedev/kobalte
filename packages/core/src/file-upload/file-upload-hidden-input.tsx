@@ -8,39 +8,20 @@ import {
 } from "../polymorphic";
 import { useFileUploadContext } from "./file-upload-root-provider";
 
-export interface FileUploadHiddenInputOptions {}
-
-export interface FileUploadHiddenInputCommonProps<
-	T extends HTMLInputElement = HTMLInputElement,
-> {
-	ref: T | ((el: T) => void);
-	id: string;
-	style: JSX.CSSProperties | string;
-}
-
-export interface FileUploadHiddenInputRenderProps
-	extends FileUploadHiddenInputCommonProps {
-	type: "file";
-	accepts: string | undefined;
-	multiple: boolean | undefined;
-}
-
-export type FileUploadHiddenInputRootProps<
-	T extends ValidComponent | HTMLInputElement = HTMLInputElement,
-> = FileUploadHiddenInputOptions &
-	Partial<FileUploadHiddenInputCommonProps<ElementOf<T>>>;
+export interface FileUploadHiddenInputProps extends ComponentProps<"input"> {}
 
 export function FileUploadHiddenInput<T extends ValidComponent = "input">(
-	props: PolymorphicProps<T, FileUploadHiddenInputRootProps<T>>,
+	props: FileUploadHiddenInputProps,
 ) {
-	const [local, others] = splitProps(
-		props as FileUploadHiddenInputRootProps<T>,
-		["style", "ref"],
-	);
+	const [local, others] = splitProps(props as FileUploadHiddenInputRootProps, [
+		"style",
+		"ref",
+		"onChange",
+	]);
 
 	const context = useFileUploadContext();
 
-	const onInput: JSX.EventHandler<HTMLInputElement, InputEvent> = (event) => {
+	const onChange: JSX.EventHandler<HTMLInputElement, InputEvent> = (event) => {
 		if (context.disabled) {
 			return;
 		}
@@ -50,18 +31,15 @@ export function FileUploadHiddenInput<T extends ValidComponent = "input">(
 	};
 
 	return (
-		<Polymorphic<FileUploadHiddenInputRenderProps>
-			as="input"
+		<input
 			type="file"
 			id={context.inputId}
 			accept={context.accept()}
 			multiple={context.multiple()}
 			ref={mergeRefs(context.setFileInputRef, local.ref)}
 			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
-			onChange={onInput}
+			onChange={composeEventHandlers([local.onChange, onChange])}
 			{...others}
-		>
-			{props.children}
-		</Polymorphic>
+		/>
 	);
 }

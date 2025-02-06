@@ -6,15 +6,22 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 
-import { useFileUploadItemContext } from "./file-upload-item-provider";
+import { useFileUploadItemContext } from "./file-upload-item-context";
 import { useFileUploadContext } from "./file-upload-root-provider";
 
-export type FileUploadItemDeleteTriggerCommonProps<
+export interface FileUploadItemDeleteTriggerOptions {}
+
+export interface FileUploadItemDeleteTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
-> = {
-	id?: string;
-	style?: JSX.CSSProperties | string;
-};
+> {
+	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
+}
+
+export interface FileUploadItemDeleteTriggerRenderProps
+	extends FileUploadItemDeleteTriggerCommonProps,
+		Button.ButtonRootRenderProps {
+	disabled: boolean | undefined;
+}
 
 export type FileUploadItemDeleteTriggerRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -26,21 +33,24 @@ export function FileUploadItemDeleteTrigger<
 	const context = useFileUploadContext();
 	const { file } = useFileUploadItemContext();
 
+	const [local, others] = splitProps(
+		props as FileUploadItemDeleteTriggerRootProps,
+		["onClick"],
+	);
+
 	const handleDelete = () => {
-		if (context.disabled) {
-			return;
-		}
 		context.removeFile(file);
 	};
 
 	return (
-		<Polymorphic
-			as="button"
-			onClick={handleDelete}
-			disabled={context.disabled}
-			{...props}
+		<Button.Root<
+			Component<
+				Omit<FileUploadTriggerRenderProps, keyof Button.ButtonRootRenderProps>
+			>
 		>
-			{props.children}
-		</Polymorphic>
+			onClick={composeEventHandlers([local.onClick, handleDelete])}
+			disabled={context.disabled()}
+			{...others}
+		/>
 	);
 }

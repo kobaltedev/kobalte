@@ -4,17 +4,23 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { useFileUploadItemContext } from "./file-upload-item-provider";
+import { useFileUploadItemContext } from "./file-upload-item-context";
 
-export type FileUploadItemNameCommonProps<T extends HTMLElement = HTMLElement> =
-	{
-		id?: string;
-		style?: JSX.CSSProperties | string;
-	};
+export interface FileUploadItemNameOptions {}
+
+export interface FileUploadItemNameCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
+	children: JSX.Element;
+}
+
+export interface FileUploadItemNameRenderProps
+	extends FileUploadItemNameCommonProps {}
 
 export type FileUploadItemNameRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = Partial<FileUploadItemNameCommonProps<ElementOf<T>>>;
+> = FileUploadItemNameOptions &
+	Partial<FileUploadItemNameCommonProps<ElementOf<T>>>;
 
 export function FileUploadItemName<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, FileUploadItemNameRootProps<T>>,
@@ -22,8 +28,11 @@ export function FileUploadItemName<T extends ValidComponent = "div">(
 	const { file } = useFileUploadItemContext();
 
 	return (
-		<Polymorphic as="div" {...props}>
-			{props.children || file.name}
+		<Polymorphic<FileUploadItemNameRenderProps>
+			as="div"
+			{...(props as FileUploadItemNameRootProps)}
+		>
+			{props.children ?? file.name}
 		</Polymorphic>
 	);
 }

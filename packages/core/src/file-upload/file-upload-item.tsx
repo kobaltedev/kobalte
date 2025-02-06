@@ -6,29 +6,26 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 
-import { FileUploadItemProvider } from "./file-upload-item-provider";
+export interface FileUploadItemOptions {}
 
-export type FileUploadItemOptions = {
-	file: File;
-};
+export interface FileUploadItemCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {}
 
-export type FileUploadItemCommonProps<T extends HTMLElement = HTMLElement> = {
-	id?: string;
-	style?: JSX.CSSProperties | string;
-};
+export interface FileUploadItemRenderProps extends FileUploadItemCommonProps {}
 
 export type FileUploadItemRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
 > = FileUploadItemOptions & Partial<FileUploadItemCommonProps<ElementOf<T>>>;
 
+// TODO: replace with List
 export function FileUploadItem<T extends ValidComponent = "li">(
 	props: PolymorphicProps<T, FileUploadItemRootProps<T>>,
 ) {
 	return (
-		<FileUploadItemProvider file={props.file}>
-			<Polymorphic as="li" {...props}>
-				{props.children}
-			</Polymorphic>
-		</FileUploadItemProvider>
+		<Polymorphic<FileUploadItemRenderProps>
+			as="li"
+			{...(props as FileUploadItemRootProps)}
+		/>
 	);
 }
