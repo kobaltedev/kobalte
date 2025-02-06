@@ -4,10 +4,11 @@ import {
 	createContext,
 	useContext,
 } from "solid-js";
+import type { FileFieldIntlTranslations } from "./file-field.intl";
 import type { FileRejection } from "./types";
 
-export type FileUploadContextValue = {
-	translations: Accessor<FileUploadIntlTranslations>;
+export interface FileFieldContextValue {
+	translations: Accessor<FileFieldIntlTranslations>;
 	inputId: Accessor<string>;
 	fileInputRef: Accessor<HTMLInputElement | undefined>;
 	setFileInputRef: Setter<HTMLInputElement | undefined>;
@@ -21,16 +22,16 @@ export type FileUploadContextValue = {
 	acceptedFiles: File[]; // store
 	rejectedFiles: FileRejection[]; // store
 	removeFile: (file: File) => void;
-};
+}
 
-export const FileUploadContext = createContext<FileUploadContextValue>();
+export const FileFieldContext = createContext<FileFieldContextValue>();
 
-export function useFileUploadContext() {
-	const context = useContext(FileUploadContext);
+export function useFileFieldContext() {
+	const context = useContext(FileFieldContext);
 
 	if (context === undefined) {
 		throw new Error(
-			"[kobalte]: `useFileUploadContext` must be used within a `FileUploadContext.Root` component",
+			"[kobalte]: `useFileFieldContext` must be used within a `FileFieldContext.Root` component",
 		);
 	}
 

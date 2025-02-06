@@ -12,12 +12,12 @@ import {
 } from "../polymorphic";
 
 import { composeEventHandlers, mergeRefs } from "@kobalte/utils";
-import { useFileUploadContext } from "./file-upload-context";
+import { useFileFieldContext } from "./file-field-context";
 import { isDragEventWithFiles } from "./util";
 
-export interface FileUploadDropZoneOptions {}
+export interface FileFieldDropzoneOptions {}
 
-export interface FileUploadDropZoneCommonProps<
+export interface FileFieldDropzoneCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	ref: T | ((el: T) => void);
@@ -28,8 +28,8 @@ export interface FileUploadDropZoneCommonProps<
 	onDrop: JSX.EventHandlerUnion<T, DragEvent>;
 }
 
-export interface FileUploadDropZoneRenderProps
-	extends FileUploadDropZoneCommonProps {
+export interface FileFieldDropzoneRenderProps
+	extends FileFieldDropzoneCommonProps {
 	"aria-label": "dropzone";
 	role: "button";
 	tabindex: "0";
@@ -37,18 +37,18 @@ export interface FileUploadDropZoneRenderProps
 	"data-dragging": boolean;
 }
 
-export type FileUploadDropZoneProps<
+export type FileFieldDropzoneProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = FileUploadDropZoneOptions &
-	Partial<FileUploadDropZoneCommonProps<ElementOf<T>>>;
+> = FileFieldDropzoneOptions &
+	Partial<FileFieldDropzoneCommonProps<ElementOf<T>>>;
 
-export function FileUploadDropzone<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, FileUploadDropZoneProps<T>>,
+export function FileFieldDropzone<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, FileFieldDropzoneProps<T>>,
 ) {
 	const [isDragging, setIsDragging] = createSignal(false);
-	const context = useFileUploadContext();
+	const context = useFileFieldContext();
 
-	const [local, others] = splitProps(props as FileUploadDropZoneProps, [
+	const [local, others] = splitProps(props as FileFieldDropzoneProps, [
 		"ref",
 		"onClick",
 		"onKeyDown",
@@ -118,7 +118,7 @@ export function FileUploadDropzone<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<Polymorphic<FileUploadDropZoneRenderProps>
+		<Polymorphic<FileFieldDropzoneRenderProps>
 			as="div"
 			aria-label="dropzone"
 			role="button"

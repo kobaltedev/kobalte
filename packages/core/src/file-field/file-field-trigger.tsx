@@ -7,31 +7,31 @@ import {
 } from "solid-js";
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useFileUploadContext } from "./file-upload-context";
+import { useFileFieldContext } from "./file-field-context";
 
-export interface FileUploadTriggerOptions {}
+export interface FileFieldTriggerOptions {}
 
-export interface FileUploadTriggerCommonProps<
+export interface FileFieldTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 }
 
-export interface FileUploadTriggerRenderProps
-	extends FileUploadTriggerCommonProps,
+export interface FileFieldTriggerRenderProps
+	extends FileFieldTriggerCommonProps,
 		Button.ButtonRootRenderProps {}
 
-export type FileUploadTriggerRootProps<
+export type FileFieldTriggerProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = FileUploadTriggerOptions &
-	Partial<FileUploadTriggerCommonProps<ElementOf<T>>>;
+> = FileFieldTriggerOptions &
+	Partial<FileFieldTriggerCommonProps<ElementOf<T>>>;
 
-export function FileUploadTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, FileUploadTriggerRootProps<T>>,
+export function FileFieldTrigger<T extends ValidComponent = "button">(
+	props: PolymorphicProps<T, FileFieldTriggerProps<T>>,
 ) {
-	const context = useFileUploadContext();
+	const context = useFileFieldContext();
 
-	const [local, others] = splitProps(props as FileUploadTriggerRootProps, [
+	const [local, others] = splitProps(props as FileFieldTriggerProps, [
 		"onClick",
 	]);
 
@@ -47,7 +47,7 @@ export function FileUploadTrigger<T extends ValidComponent = "button">(
 	return (
 		<Button.Root<
 			Component<
-				Omit<FileUploadTriggerRenderProps, keyof Button.ButtonRootRenderProps>
+				Omit<FileFieldTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
 			disabled={context.disabled()}

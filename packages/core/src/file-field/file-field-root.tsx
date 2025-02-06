@@ -3,15 +3,19 @@ import { type ParentProps, createSignal, createUniqueId } from "solid-js";
 import { mergeDefaultProps } from "@kobalte/utils";
 import { createStore, unwrap } from "solid-js/store";
 import {
-	FileUploadContext,
-	type FileUploadContextValue,
-} from "./file-upload-context";
+	FileFieldContext,
+	type FileFieldContextValue,
+} from "./file-field-context";
+import {
+	FILE_FIELD_INTL_TRANSLATIONS,
+	type FileFieldIntlTranslations,
+} from "./file-field.intl";
 import type { Accept, Details, FileError, FileRejection } from "./types";
 import { getFiles, parseAcceptedTypes } from "./util";
 
-export interface FileUploadRootOptions {
+export interface FileFieldRootOptions {
 	/** The localized strings of the component. */
-	translations?: FileUploadIntlTranslations;
+	translations?: FileFieldIntlTranslations;
 
 	multiple?: boolean;
 	disabled?: boolean;
@@ -28,11 +32,10 @@ export interface FileUploadRootOptions {
 	id?: string;
 }
 
-export interface FileUploadRootProps
-	extends ParentProps<FileUploadRootOptions> {}
+export interface FileFieldRootProps extends ParentProps<FileFieldRootOptions> {}
 
-export function FileUpload(props: FileUploadRootProps) {
-	const defaultId = `fileupload-${createUniqueId()}`;
+export function FileField(props: FileFieldRootProps) {
+	const defaultId = `FileField-${createUniqueId()}`;
 
 	const [fileInputRef, setFileInputRef] = createSignal<HTMLInputElement>();
 	const [dropzoneRef, setDropzoneRef] = createSignal<HTMLElement>();
@@ -52,7 +55,7 @@ export function FileUpload(props: FileUploadRootProps) {
 			maxFileSize: Number.POSITIVE_INFINITY,
 			minFileSize: 0,
 			validate: undefined,
-			translations: FILE_UPLOAD_INTL_TRANSLATIONS,
+			translations: FILE_FIELD_INTL_TRANSLATIONS,
 		},
 		props,
 	);
@@ -106,7 +109,7 @@ export function FileUpload(props: FileUploadRootProps) {
 		});
 	};
 
-	const context: FileUploadContextValue = {
+	const context: FileFieldContextValue = {
 		inputId: () => mergedProps.id,
 		fileInputRef,
 		setFileInputRef,
@@ -124,8 +127,8 @@ export function FileUpload(props: FileUploadRootProps) {
 	};
 
 	return (
-		<FileUploadContext.Provider value={context}>
+		<FileFieldContext.Provider value={context}>
 			{props.children}
-		</FileUploadContext.Provider>
+		</FileFieldContext.Provider>
 	);
 }
