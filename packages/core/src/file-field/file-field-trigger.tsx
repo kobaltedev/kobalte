@@ -8,6 +8,7 @@ import {
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useFileFieldContext } from "./file-field-context";
+import { FormControlDataSet, useFormControlContext } from "../form-control";
 
 export interface FileFieldTriggerOptions {}
 
@@ -19,7 +20,7 @@ export interface FileFieldTriggerCommonProps<
 
 export interface FileFieldTriggerRenderProps
 	extends FileFieldTriggerCommonProps,
-		FormControlDataset,
+		FormControlDataSet,
 		Button.ButtonRootRenderProps {}
 
 export type FileFieldTriggerProps<

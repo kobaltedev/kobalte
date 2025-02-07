@@ -1,16 +1,15 @@
 import {
-	type ParentProps,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	splitProps, ValidComponent
 } from "solid-js";
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import { createStore, unwrap } from "solid-js/store";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	createFormControl,
+	type FormControlDataSet,
 } from "../form-control";
 import {
 	FileFieldContext,
@@ -22,13 +21,17 @@ import {
 } from "./file-field.intl";
 import type { Accept, Details, FileError, FileRejection } from "./types";
 import { getFiles, parseAcceptedTypes } from "./util";
+import {
+	type ValidationState,
+	mergeDefaultProps,
+} from "@kobalte/utils";
+import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 export interface FileFieldRootOptions {
 	/** The localized strings of the component. */
 	translations?: FileFieldIntlTranslations;
 
 	multiple?: boolean;
-	disabled?: boolean;
 	accept?: Accept;
 	maxFiles?: number;
 	allowDragAndDrop?: boolean;
@@ -66,7 +69,7 @@ export interface FileFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface FileFieldRootRenderProps
 	extends FileFieldRootCommonProps,
-		FormControlDataset {
+		FormControlDataSet {
 	role: "group";
 }
 
@@ -181,7 +184,7 @@ export function FileField<T extends ValidComponent = "div">(
 				<Polymorphic<FileFieldRootRenderProps>
 					as="div"
 					role="group"
-					id={access(formControlProps.id)}
+					id={formControlProps.id}
 					{...formControlContext.dataset()}
 					{...others}
 				/>
