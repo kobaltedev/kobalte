@@ -1,0 +1,53 @@
+.section {
+	display: flex;
+	flex-direction: row;
+	column-gap: 10px;
+}
+
+.chip {
+	display: flex;
+	column-gap: 2px;
+	border: 1px solid black;
+	width: max-content;
+	padding: 5px 10px;
+	border-radius: 30px;
+	cursor: pointer;
+	background-color: #0369a0;
+}
+
+.chip:hover {
+	background-color: #0092e0;
+}
+
+.chip__label {
+	color: #fff;
+}
+
+.chip[aria-disabled="true"] {
+	background-color: #0369a0;
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.chip__deletable {
+	display: flex;
+	column-gap: 10px;
+	border: 1px solid black;
+	background-color: aliceblue;
+	width: max-content;
+	padding: 5px 10px;
+	border-radius: 30px;
+	cursor: pointer;
+	background-color: #0369a0;
+}
+
+.chip__deletable:hover {
+	background-color: #0092e0;
+}
+
+
+.delete {
+	color: black;
+	font-weight: 500;
+	font-size: 16px;
+}
