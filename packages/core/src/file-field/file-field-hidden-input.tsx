@@ -10,8 +10,8 @@ import {
 	type ValidComponent,
 	splitProps,
 } from "solid-js";
-import { useFileFieldContext } from "./file-field-context";
 import { useFormControlContext } from "../form-control";
+import { useFileFieldContext } from "./file-field-context";
 
 export interface FileFieldHiddenInputProps extends ComponentProps<"input"> {}
 

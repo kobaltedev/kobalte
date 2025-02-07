@@ -1,7 +1,17 @@
-import { type ParentProps, createSignal, createUniqueId, splitProps } from "solid-js";
+import {
+	type ParentProps,
+	createSignal,
+	createUniqueId,
+	splitProps,
+} from "solid-js";
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import { createStore, unwrap } from "solid-js/store";
+import {
+	FORM_CONTROL_PROP_NAMES,
+	FormControlContext,
+	createFormControl,
+} from "../form-control";
 import {
 	FileFieldContext,
 	type FileFieldContextValue,
@@ -12,7 +22,6 @@ import {
 } from "./file-field.intl";
 import type { Accept, Details, FileError, FileRejection } from "./types";
 import { getFiles, parseAcceptedTypes } from "./util";
-import { createFormControl, FormControlContext, FORM_CONTROL_PROP_NAMES } from "../form-control";
 
 export interface FileFieldRootOptions {
 	/** The localized strings of the component. */
@@ -142,7 +151,10 @@ export function FileField<T extends ValidComponent = "div">(
 		});
 	};
 
-	const [formControlProps, others] = splitProps(mergedProps, FORM_CONTROL_PROP_NAMES);
+	const [formControlProps, others] = splitProps(
+		mergedProps,
+		FORM_CONTROL_PROP_NAMES,
+	);
 
 	const { formControlContext } = createFormControl(formControlProps);
 
@@ -164,10 +176,16 @@ export function FileField<T extends ValidComponent = "div">(
 	};
 
 	return (
-			<FormControlContext.Provider value={formControlContext}>
-				<FileFieldContext.Provider value={context}>
-					<Polymorphic<FileFieldRootRenderProps> as="div" role="group" id={access(formControlProps.id)} {...formControlContext.dataset()} {...others}/>
-				</FileFieldContext.Provider>
-			</FormControlContext.Provider>
+		<FormControlContext.Provider value={formControlContext}>
+			<FileFieldContext.Provider value={context}>
+				<Polymorphic<FileFieldRootRenderProps>
+					as="div"
+					role="group"
+					id={access(formControlProps.id)}
+					{...formControlContext.dataset()}
+					{...others}
+				/>
+			</FileFieldContext.Provider>
+		</FormControlContext.Provider>
 	);
 }

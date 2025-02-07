@@ -80,7 +80,7 @@ export function HTMLFormExample() {
 				<FileField.HiddenInput name="uploaded-files" />
 				<FileField.ItemList class={style.FileField__itemGroup}>
 					{(file) => (
-						<FileField.Item  class={style.FileField__item}>
+						<FileField.Item class={style.FileField__item}>
 							<FileField.ItemPreviewImage
 								class={style.FileField__itemPreviewImage}
 							/>

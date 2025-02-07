@@ -46,7 +46,6 @@ The File Field consists of:
 - **FileField.Description**: The description that gives the user more information on the file field.
 - **FileField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the file field.
 
-
 ```tsx
 <FileField>
 	<FileField.Label />
@@ -107,6 +106,7 @@ The File Field consists of:
     				<FileField.HiddenInput />
     				<FileField.ItemList class={style.FileField__itemList}>
     					{(file) => (
+
  									<FileField.Item class={style.FileField__item}>
  										<FileField.ItemPreviewImage
  											class={style.FileField__itemPreviewImage}
@@ -305,13 +305,13 @@ function HTMLFormExample() {
 | `onFileChange`     | `(details: Details) => void` <br /> Callback function that is called when the list of files changes.        |
 | `validateFile`     | `(file: File) => FileError[] \| null ` <br /> Custom validation function for files.                         |
 
-| Data attribute                | Description                                                                        |
-| :---------------------------- | :--------------------------------------------------------------------------------- |
-| data-valid                    | Present when the slider is valid according to the validation rules.                |
-| data-invalid                  | Present when the slider is invalid according to the validation rules.              |
-| data-required                 | Present when the user must slider an item before the owning form can be submitted. |
-| data-disabled                 | Present when the slider is disabled.                                               |
-| data-readonly                 | Present when the slider is read only.                                              |
+| Data attribute | Description                                                                        |
+| :------------- | :--------------------------------------------------------------------------------- |
+| data-valid     | Present when the slider is valid according to the validation rules.                |
+| data-invalid   | Present when the slider is invalid according to the validation rules.              |
+| data-required  | Present when the user must slider an item before the owning form can be submitted. |
+| data-disabled  | Present when the slider is disabled.                                               |
+| data-readonly  | Present when the slider is read only.                                              |
 
 `Slider.Trigger` shares the same data-attributes.
 
@@ -333,7 +333,6 @@ function HTMLFormExample() {
 | ------ | ------------------------------------------------------------------------ |
 | `type` | `string` <br /> The type of file to preview, only applicable for Images. |
 
-
 - **FileField**: The root container for the File Field component.
 - **FileField.Dropzone**: The dropzone area where files can be dragged and dropped.
 - **FileField.Trigger**: The trigger element that opens the file selection dialog.
@@ -351,22 +350,22 @@ function HTMLFormExample() {
 
 ## Rendered elements
 
-| Component           | Default rendered element |
-| :------------------ | :----------------------- |
-| `FileField`            | `div`                    |
-| `FileField.Dropzone`      | `div`                    |
-| `FileField.Trigger`       | `button`                    |
-| `FileField.Label`      | `label`                   |
-| `FileField.HiddenInput`      | `input`                  |
-| `FileField.ItemList` | `ul`                    |
-| `FileField.Item` | `li`                    |
-| `FileField.Preview` | `div`                    |
-| `FileField.ItemPreviewImage` | `img`                    |
-| `FileField.ItemName` | `span`                    |
-| `FileField.ItemSize` | `span`                    |
-| `FileField.ItemDeleteTrigger` | `button`                    |
-| `FileField.Description`     | `div`                    |
-| `FileField.ErrorMessage`    | `div`                    |
+| Component                     | Default rendered element |
+| :---------------------------- | :----------------------- |
+| `FileField`                   | `div`                    |
+| `FileField.Dropzone`          | `div`                    |
+| `FileField.Trigger`           | `button`                 |
+| `FileField.Label`             | `label`                  |
+| `FileField.HiddenInput`       | `input`                  |
+| `FileField.ItemList`          | `ul`                     |
+| `FileField.Item`              | `li`                     |
+| `FileField.Preview`           | `div`                    |
+| `FileField.ItemPreviewImage`  | `img`                    |
+| `FileField.ItemName`          | `span`                   |
+| `FileField.ItemSize`          | `span`                   |
+| `FileField.ItemDeleteTrigger` | `button`                 |
+| `FileField.Description`       | `div`                    |
+| `FileField.ErrorMessage`      | `div`                    |
 
 ## Accessibility
 

@@ -70,10 +70,10 @@ import {
 	FileFieldLabel as Label,
 } from "./file-field-label";
 import {
-	type FileFieldRootOptions,
 	type FileFieldRootCommonProps,
-	type FileFieldRootRenderProps,
+	type FileFieldRootOptions,
 	type FileFieldRootProps,
+	type FileFieldRootRenderProps,
 	FileField as Root,
 } from "./file-field-root";
 import {
@@ -87,7 +87,6 @@ import {
 import {
 	FormControlDescription as Description,
 	FormControlErrorMessage as ErrorMessage,
-	FormControlLabel as Label,
 	type FormControlDescriptionCommonProps as FileFieldDescriptionCommonProps,
 	type FormControlDescriptionOptions as FileFieldDescriptionOptions,
 	type FormControlDescriptionProps as FileFieldDescriptionProps,
@@ -96,10 +95,6 @@ import {
 	type FormControlErrorMessageOptions as FileFieldErrorMessageOptions,
 	type FormControlErrorMessageProps as FileFieldErrorMessageProps,
 	type FormControlErrorMessageRenderProps as FileFieldErrorMessageRenderProps,
-	type FormControlLabelCommonProps as FileFieldLabelCommonProps,
-	type FormControlLabelOptions as FileFieldLabelOptions,
-	type FormControlLabelProps as FileFieldLabelProps,
-	type FormControlLabelRenderProps as FileFieldLabelRenderProps,
 } from "../form-control";
 
 import type { Accept, Details, FileError, FileRejection } from "./types";
