@@ -78,52 +78,51 @@ The File Field consists of:
     <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
     <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
   </TabsSnippets.List>
-	{/* <!-- prettier-ignore-start -->*/}
-	<TabsSnippets.Content value="index.tsx">
-		```tsx
-		import { FileField } from "@kobalte/core/file-field";
-		import "./style.css";
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { FileField } from "@kobalte/core/file-field";
+    import "./style.css";
 
-    	function App() {
-    		return (
-    			<FileField
-    				class={style.FileField}
-    				multiple
-    				maxFiles={5}
-    				onFileAccept={(data) => console.log("data", data)}
-    				onFileReject={(data) => console.log("data", data)}
-    				onFileChange={(data) => console.log("data", data)}
-    			>
-    				<FileField.Label class={style.FileField__label}>
-    					File Field
-    				</FileField.Label>
-    				<FileField.DropZone class={style.FileField__dropzone}>
-    					Drop your files here...
-    					<FileField.Trigger class={style.FileField__trigger}>
-    						Choose files!
-    					</FileField.Trigger>
-    				</FileField.DropZone>
-    				<FileField.HiddenInput />
-    				<FileField.ItemList class={style.FileField__itemList}>
-    					{(file) => (
-
- 									<FileField.Item class={style.FileField__item}>
- 										<FileField.ItemPreviewImage
- 											class={style.FileField__itemPreviewImage}
- 										/>
- 										<FileField.ItemName class={style.FileField__itemName} />
- 										<FileField.ItemSize class={style.FileField__itemSize} />
- 										<FileField.ItemDeleteTrigger
- 											class={style.FileField__itemDeleteTrigger}
- 										>
- 											Delete
- 										</FileField.ItemDeleteTrigger>
- 									</FileField.Item>
-    					)}
-    				</FileField.ItemList>
-    			</FileField>
-    		);
-    	}
+      function App() {
+        return (
+          <FileField
+            class={style.FileField}
+            multiple
+            maxFiles={5}
+            onFileAccept={(data) => console.log("data", data)}
+            onFileReject={(data) => console.log("data", data)}
+            onFileChange={(data) => console.log("data", data)}
+          >
+            <FileField.Label class={style.FileField__label}>
+              File Field
+            </FileField.Label>
+            <FileField.DropZone class={style.FileField__dropzone}>
+              Drop your files here...
+              <FileField.Trigger class={style.FileField__trigger}>
+                Choose files!
+              </FileField.Trigger>
+            </FileField.DropZone>
+            <FileField.HiddenInput />
+            <FileField.ItemList class={style.FileField__itemList}>
+              {(file) => (
+                   <FileField.Item class={style.FileField__item}>
+                     <FileField.ItemPreviewImage
+                       class={style.FileField__itemPreviewImage}
+                     />
+                     <FileField.ItemName class={style.FileField__itemName} />
+                     <FileField.ItemSize class={style.FileField__itemSize} />
+                     <FileField.ItemDeleteTrigger
+                       class={style.FileField__itemDeleteTrigger}
+                     >
+                       Delete
+                     </FileField.ItemDeleteTrigger>
+                   </FileField.Item>
+              )}
+            </FileField.ItemList>
+          </FileField>
+        );
+      }
     ```
 
     </TabsSnippets.Content>
@@ -332,21 +331,6 @@ function HTMLFormExample() {
 | Prop   | Description                                                              |
 | ------ | ------------------------------------------------------------------------ |
 | `type` | `string` <br /> The type of file to preview, only applicable for Images. |
-
-- **FileField**: The root container for the File Field component.
-- **FileField.Dropzone**: The dropzone area where files can be dragged and dropped.
-- **FileField.Trigger**: The trigger element that opens the file selection dialog.
-- **FileField.Label**: The label for the File Field component to toggle the file selection dialog.
-- **FileField.HiddenInput**: The hidden input element that triggers the file selection dialog.
-- **FileField.ItemList**: The container for the list of files that have been selected for upload.
-- **FileField.Item**: The individual file item in the list of files that have been selected for upload.
-- **FileField.Preview**: The preview for matching file types that have been selected for upload.
-- **FileField.ItemPreviewImage**: The preview image for image files that have been selected for upload.
-- **FileField.ItemName**: The name of the file that has been selected for upload.
-- **FileField.ItemSize**: The size of the file that has been selected for upload.
-- **FileField.ItemDeleteTrigger**: The trigger element to remove a file from the list of files that have been selected for upload.
-- **FileField.Description**: The description that gives the user more information on the file field.
-- **FileField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the file field.
 
 ## Rendered elements
 
