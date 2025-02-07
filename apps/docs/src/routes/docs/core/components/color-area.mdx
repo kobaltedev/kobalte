@@ -45,13 +45,13 @@ The color area consists of:
 
 ```tsx
 <ColorArea>
-	<ColorArea.Label />
-	<ColorArea.Background>
-		<ColorArea.Thumb>
-			<ColorArea.HiddenInputX />
-			<ColorArea.HiddenInputY />
-		</ColorArea.Thumb>
-	</ColorArea.Track>
+  <ColorArea.Label />
+  <ColorArea.Background>
+    <ColorArea.Thumb>
+      <ColorArea.HiddenInputX />
+      <ColorArea.HiddenInputY />
+    </ColorArea.Thumb>
+  </ColorArea.Track>
 </ColorArea>
 ```
 
@@ -69,20 +69,20 @@ The color area consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-		import { ColorArea } from "@kobalte/core/color-area";
+    import { ColorArea } from "@kobalte/core/color-area";
     import { parseColor } from "@kobalte/utils";
     import "./style.css";
 
     function App() {
       return (
         <ColorArea class="ColorAreaRoot" defaultValue={parseColor("rgb(2, 132, 197)")}>
-    		    <ColorArea.Background class="ColorAreaBackground">
-    		    	<ColorArea.Thumb class="ColorAreaThumb">
-    		    		<ColorArea.HiddenInputX />
-    		    		<ColorArea.HiddenInputY />
-    		    	</ColorArea.Thumb>
-    		    </ColorArea.Background>
-    	   </ColorArea>
+            <ColorArea.Background class="ColorAreaBackground">
+              <ColorArea.Thumb class="ColorAreaThumb">
+                <ColorArea.HiddenInputX />
+                <ColorArea.HiddenInputY />
+              </ColorArea.Thumb>
+            </ColorArea.Background>
+         </ColorArea>
       );
     }
     ```
@@ -136,17 +136,17 @@ If no `xChannel` or `yChannel` is provided, for the RGB color space, the red col
 ### Default value
 
 <Preview>
-	<DefaultValueExample />
+  <DefaultValueExample />
 </Preview>
 
 ```tsx {0}
 <ColorArea defaultValue={parseColor("hsb(219, 58%, 93%)")}>
-	<ColorArea.Background>
-		<ColorArea.Thumb>
-			<ColorArea.HiddenInputX />
-			<ColorArea.HiddenInputY />
-		</ColorArea.Thumb>
-	</ColorArea.Background>
+  <ColorArea.Background>
+    <ColorArea.Thumb>
+      <ColorArea.HiddenInputX />
+      <ColorArea.HiddenInputY />
+    </ColorArea.Thumb>
+  </ColorArea.Background>
 </ColorArea>
 ````
 
