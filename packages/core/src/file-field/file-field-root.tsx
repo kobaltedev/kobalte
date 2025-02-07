@@ -1,16 +1,23 @@
 import {
+	type ValidComponent,
 	createSignal,
 	createUniqueId,
-	splitProps, ValidComponent
+	splitProps,
 } from "solid-js";
 
+import { type ValidationState, mergeDefaultProps } from "@kobalte/utils";
 import { createStore, unwrap } from "solid-js/store";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
-	createFormControl,
 	type FormControlDataSet,
+	createFormControl,
 } from "../form-control";
+import {
+	type ElementOf,
+	Polymorphic,
+	type PolymorphicProps,
+} from "../polymorphic";
 import {
 	FileFieldContext,
 	type FileFieldContextValue,
@@ -21,11 +28,6 @@ import {
 } from "./file-field.intl";
 import type { Accept, Details, FileError, FileRejection } from "./types";
 import { getFiles, parseAcceptedTypes } from "./util";
-import {
-	type ValidationState,
-	mergeDefaultProps,
-} from "@kobalte/utils";
-import { ElementOf, Polymorphic, PolymorphicProps } from "../polymorphic";
 
 export interface FileFieldRootOptions {
 	/** The localized strings of the component. */

@@ -6,9 +6,12 @@ import {
 	splitProps,
 } from "solid-js";
 import * as Button from "../button";
+import {
+	type FormControlDataSet,
+	useFormControlContext,
+} from "../form-control";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useFileFieldContext } from "./file-field-context";
-import { FormControlDataSet, useFormControlContext } from "../form-control";
 
 export interface FileFieldTriggerOptions {}
 
