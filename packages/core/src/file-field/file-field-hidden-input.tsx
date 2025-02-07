@@ -11,6 +11,7 @@ import {
 	splitProps,
 } from "solid-js";
 import { useFileFieldContext } from "./file-field-context";
+import { useFormControlContext } from "../form-control";
 
 export interface FileFieldHiddenInputProps extends ComponentProps<"input"> {}
 
@@ -20,6 +21,7 @@ export function FileFieldHiddenInput<T extends ValidComponent = "input">(
 	const [local, others] = splitProps(props, ["style", "ref", "onChange"]);
 
 	const context = useFileFieldContext();
+	const formControlContext = useFormControlContext();
 
 	const onChange: JSX.EventHandler<HTMLInputElement, InputEvent> = (event) => {
 		if (context.disabled()) {
@@ -39,6 +41,9 @@ export function FileFieldHiddenInput<T extends ValidComponent = "input">(
 			ref={mergeRefs(context.setFileInputRef, local.ref)}
 			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
 			onChange={composeEventHandlers([local.onChange, onChange])}
+			required={formControlContext.isRequired()}
+			disabled={formControlContext.isDisabled()}
+			readOnly={formControlContext.isReadOnly()}
 			{...others}
 		/>
 	);

@@ -51,7 +51,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Badge",
 				href: "/docs/core/components/badge",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Breadcrumbs",
@@ -118,7 +118,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "File Field",
 				href: "/docs/core/components/file-field",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Hover Card",
@@ -139,7 +139,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Meter",
 				href: "/docs/core/components/meter",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Navigation Menu",
@@ -168,7 +168,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Search",
 				href: "/docs/core/components/search",
-				status: "new",
+				status: "unreleased",
 			},
 			{
 				title: "Select",

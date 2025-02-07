@@ -44,6 +44,9 @@ The slider consists of:
 - **Slider.Input:** The native html input that is visually hidden in the slider thumb.
 - **Slider.Label:** The label that gives the user information on the slider.
 - **Slider.ValueLabel:** The accessible label text representing the current value in a human-readable format.
+- **Slider.Description**: The description that gives the user more information on the slider.
+- **Slider.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the slider.
+
 
 ```tsx
 <Slider>
@@ -55,6 +58,8 @@ The slider consists of:
 			<Slider.Input />
 		</Slider.Thumb>
 	</Slider.Track>
+	<Slider.Description />
+	<Slider.ErrorMessage />
 </Slider>
 ```
 
@@ -802,6 +807,8 @@ The slider consists of:
 | `Slider.Thumb`      | `span`                   |
 | `Slider.Input`      | `input`                  |
 | `Slider.ValueLabel` | `div`                    |
+| `Slider.Description`     | `div`                    |
+| `Slider.ErrorMessage`    | `div`                    |
 
 ## Accessibility
 

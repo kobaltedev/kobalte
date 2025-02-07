@@ -38,7 +38,7 @@ function formatBytes(
 	return `${Number.parseFloat((bytes / k ** i).toFixed(precision))} ${sizes[i]}`;
 }
 
-export function FileFieldItemSize<T extends ValidComponent = "div">(
+export function FileFieldItemSize<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, FileFieldItemSizeProps<T>>,
 ) {
 	const { translations } = useFileFieldContext();
@@ -56,7 +56,7 @@ export function FileFieldItemSize<T extends ValidComponent = "div">(
 	]);
 
 	return (
-		<Polymorphic<FileFieldItemSizeRenderProps> as="div" {...others}>
+		<Polymorphic<FileFieldItemSizeRenderProps> as="span" {...others}>
 			{formatBytes(file.size, local.precision ?? 2, size())}
 		</Polymorphic>
 	);

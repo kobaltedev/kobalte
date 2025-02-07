@@ -19,6 +19,7 @@ export interface FileFieldTriggerCommonProps<
 
 export interface FileFieldTriggerRenderProps
 	extends FileFieldTriggerCommonProps,
+	FormControlDataset,
 		Button.ButtonRootRenderProps {}
 
 export type FileFieldTriggerProps<
@@ -30,6 +31,7 @@ export function FileFieldTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, FileFieldTriggerProps<T>>,
 ) {
 	const context = useFileFieldContext();
+	const formControlContext = useFormControlContext();
 
 	const [local, others] = splitProps(props as FileFieldTriggerProps, [
 		"onClick",
@@ -52,6 +54,7 @@ export function FileFieldTrigger<T extends ValidComponent = "button">(
 		>
 			disabled={context.disabled()}
 			onClick={composeEventHandlers([local.onClick, onClick])}
+		 {...formControlContext.dataset()}
 			{...others}
 		/>
 	);

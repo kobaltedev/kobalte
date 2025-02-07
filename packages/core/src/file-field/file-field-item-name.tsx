@@ -22,14 +22,14 @@ export type FileFieldItemNameProps<
 > = FileFieldItemNameOptions &
 	Partial<FileFieldItemNameCommonProps<ElementOf<T>>>;
 
-export function FileFieldItemName<T extends ValidComponent = "div">(
+export function FileFieldItemName<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, FileFieldItemNameProps<T>>,
 ) {
 	const { file } = useFileFieldItemContext();
 
 	return (
 		<Polymorphic<FileFieldItemNameRenderProps>
-			as="div"
+			as="span"
 			{...(props as FileFieldItemNameProps)}
 		>
 			{props.children ?? file.name}

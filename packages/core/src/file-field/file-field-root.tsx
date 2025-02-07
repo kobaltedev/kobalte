@@ -1,4 +1,4 @@
-import { type ParentProps, createSignal, createUniqueId } from "solid-js";
+import { type ParentProps, createSignal, createUniqueId, splitProps } from "solid-js";
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import { createStore, unwrap } from "solid-js/store";
@@ -12,6 +12,7 @@ import {
 } from "./file-field.intl";
 import type { Accept, Details, FileError, FileRejection } from "./types";
 import { getFiles, parseAcceptedTypes } from "./util";
+import { createFormControl, FormControlContext, FORM_CONTROL_PROP_NAMES } from "../form-control";
 
 export interface FileFieldRootOptions {
 	/** The localized strings of the component. */
@@ -30,11 +31,43 @@ export interface FileFieldRootOptions {
 	validate?: (file: File) => FileError[] | null;
 
 	id?: string;
+
+	/**
+	 * The name of the select.
+	 * Submitted with its owning form as part of a name/value pair.
+	 */
+	name?: string;
+
+	/** Whether the select should display its "valid" or "invalid" visual styling. */
+	validationState?: ValidationState;
+
+	/** Whether the user must select an item before the owning form can be submitted. */
+	required?: boolean;
+
+	/** Whether the select is disabled. */
+	disabled?: boolean;
+
+	/** Whether the select is read only. */
+	readOnly?: boolean;
 }
 
-export interface FileFieldRootProps extends ParentProps<FileFieldRootOptions> {}
+export interface FileFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
+	id: string;
+}
 
-export function FileField(props: FileFieldRootProps) {
+export interface FileFieldRootRenderProps
+	extends FileFieldRootCommonProps,
+		FormControlDataset {
+	role: "group";
+}
+
+export type FileFieldRootProps<
+	T extends ValidComponent | HTMLElement = HTMLElement,
+> = FileFieldRootOptions & Partial<FileFieldRootCommonProps<ElementOf<T>>>;
+
+export function FileField<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, FileFieldRootProps<T>>,
+) {
 	const defaultId = `FileField-${createUniqueId()}`;
 
 	const [fileInputRef, setFileInputRef] = createSignal<HTMLInputElement>();
@@ -57,7 +90,7 @@ export function FileField(props: FileFieldRootProps) {
 			validate: undefined,
 			translations: FILE_FIELD_INTL_TRANSLATIONS,
 		},
-		props,
+		props as FileFieldRootProps,
 	);
 
 	const processFiles = (files: File[]) => {
@@ -109,6 +142,10 @@ export function FileField(props: FileFieldRootProps) {
 		});
 	};
 
+	const [formControlProps, others] = splitProps(mergedProps, FORM_CONTROL_PROP_NAMES);
+
+	const { formControlContext } = createFormControl(formControlProps);
+
 	const context: FileFieldContextValue = {
 		inputId: () => mergedProps.id,
 		fileInputRef,
@@ -127,8 +164,10 @@ export function FileField(props: FileFieldRootProps) {
 	};
 
 	return (
-		<FileFieldContext.Provider value={context}>
-			{props.children}
-		</FileFieldContext.Provider>
+			<FormControlContext.Provider value={formControlContext}>
+				<FileFieldContext.Provider value={context}>
+					<Polymorphic<FileFieldRootRenderProps> as="div" role="group" id={access(formControlProps.id)} {...formControlContext.dataset()} {...others}/>
+				</FileFieldContext.Provider>
+			</FormControlContext.Provider>
 	);
 }

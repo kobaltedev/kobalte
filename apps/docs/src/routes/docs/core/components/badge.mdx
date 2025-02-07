@@ -25,7 +25,7 @@ The badge consists of:
 - **Badge:** The root container for the badge that supports accessibility and content customization.
 
 ```tsx
-<Badge textValue="3 online users">3</Badge>
+<Badge />
 ```
 
 ## Example
@@ -47,7 +47,7 @@ The badge consists of:
 
     function App() {
       return (
-        <Badge class="badge" textValue="Unread messages: 5">
+        <Badge class="badge" textValue="5 unread messages">
           5 messages
         </Badge>
       );
@@ -77,12 +77,8 @@ The badge consists of:
 `Badge` is equivalent to the `Root` import from `@kobalte/core/badge`.
 
 | Prop      | Description                                                                                                                                                                          |
-| :-------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| textValue | `string \| undefined` <br/> The textValue prop is essential for accessibility. It auto-populates the aria-label attribute, allowing screen readers to interpret the badge’s content. |
-
-| Data attribute | Description                                                         |
-| :------------- | :------------------------------------------------------------------ |
-| data-label     | Present when textValue is passed or aria-label is passed as a prop. |
+| :-------- | :---------------------------------------------------------------------------------------- |
+| textValue | `string \| undefined` <br/> Accessible text description of the badge if child is not text |
 
 ## Rendered elements
 

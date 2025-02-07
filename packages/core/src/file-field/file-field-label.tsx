@@ -4,7 +4,7 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { useFileFieldContext } from "./file-upload-root-provider";
+import { useFileFieldContext } from "./file-field-context";
 
 export interface FileFieldLabelOptions {}
 
@@ -28,7 +28,7 @@ export function FileFieldLabel<T extends ValidComponent = "label">(
 	return (
 		<Polymorphic<FileFieldLabelRenderProps>
 			as="label"
-			for={context.inputId}
+			for={context.inputId()}
 			{...(props as FileFieldLabelProps)}
 		/>
 	);

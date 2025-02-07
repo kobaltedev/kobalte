@@ -1,18 +1,16 @@
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
-import { BasicExample, HTMLFormExample } from "../../../../examples/file-upload";
+import { BasicExample, HTMLFormExample } from "../../../../examples/file-field";
 
-# File Upload
+# File Field
 
-- A component that is used to upload multiple files, with ability to drag and drop files.
+A file input to upload multiple files, with ability to drag and drop files.
 
 ## Import
 
 ```ts
-import { FileUpload } from "@kobalte/core/file-upload";
+import { FileField } from "@kobalte/core/file-field";
 // or
-import { Root } from "@kobalte/core/file-upload";
-// or (deprecated)
-import { FileUpload } from "@kobalte/core";
+import { Root } from "@kobalte/core/file-field";
 ```
 
 ## Features
@@ -31,42 +29,43 @@ import { FileUpload } from "@kobalte/core";
 
 ## Anatomy
 
-The File Upload consists of:
+The File Field consists of:
 
-- **FileUpload**: The root container for the File Upload component.
-- **FileUpload.Dropzone**: The dropzone area where files can be dragged and dropped.
-- **FileUpload.Trigger**: The trigger element that opens the file selection dialog.
-- **FileUpload.Label**: The label for the File Upload component to toggle the file selection dialog.
-- **FileUpload.HiddenInput**: The hidden input element that triggers the file selection dialog.
-- **FileUpload.ItemGroup**: The container for the list of files that have been selected for upload.
-- **FileUpload.Item**: The individual file item in the list of files that have been selected for upload.
-- **FileUpload.Preview**: The preview container for image files that have been selected for upload.
-- **FileUpload.ItemPreviewImage**: The preview image for image files that have been selected for upload.
-- **FileUpload.ItemName**: The name of the file that has been selected for upload.
-- **FileUpload.ItemSize**: The size of the file that has been selected for upload.
-- **FileUpload.ItemDeleteTrigger**: The trigger element to remove a file from the list of files that have been selected for upload.
-- **FileUpload.Context**: The context provider for the File Upload component.
+- **FileField**: The root container for the File Field component.
+- **FileField.Dropzone**: The dropzone area where files can be dragged and dropped.
+- **FileField.Trigger**: The trigger element that opens the file selection dialog.
+- **FileField.Label**: The label for the File Field component to toggle the file selection dialog.
+- **FileField.HiddenInput**: The hidden input element that triggers the file selection dialog.
+- **FileField.ItemList**: The container for the list of files that have been selected for upload.
+- **FileField.Item**: The individual file item in the list of files that have been selected for upload.
+- **FileField.Preview**: The preview for matching file types that have been selected for upload.
+- **FileField.ItemPreviewImage**: The preview image for image files that have been selected for upload.
+- **FileField.ItemName**: The name of the file that has been selected for upload.
+- **FileField.ItemSize**: The size of the file that has been selected for upload.
+- **FileField.ItemDeleteTrigger**: The trigger element to remove a file from the list of files that have been selected for upload.
+- **FileField.Description**: The description that gives the user more information on the file field.
+- **FileField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the file field.
+
 
 ```tsx
-<FileUpload>
-	<FileUpload.Label></FileUpload.Label>
-	<FileUpload.DropZone>
-		<FileUpload.Trigger></FileUpload.Trigger>
-	</FileUpload.DropZone>
-	<FileUpload.HiddenInput />
-	<FileUpload.ItemGroup>
-		<FileUpload.Context>
-			<FileUpload.Item>
-				<FileUpload.ItemPreview>
-					<FileUpload.ItemPreviewImage />
-				</FileUpload.ItemPreview>
-				<FileUpload.ItemSize />
-				<FileUpload.ItemName />
-				<FileUpload.ItemDeleteTrigger />
-			</FileUpload.Item>
-		</FileUpload.Context>
-	</FileUpload.ItemGroup>
-</FileUpload>
+<FileField>
+	<FileField.Label />
+	<FileField.Dropzone>
+		<FileField.Trigger />
+	</FileField.Dropzone>
+	<FileField.HiddenInput />
+	<FileField.ItemList>
+		<FileField.Item>
+			<FileField.ItemPreview />
+			<FileField.ItemPreviewImage />
+			<FileField.ItemSize />
+			<FileField.ItemName />
+			<FileField.ItemDeleteTrigger />
+		</FileField.Item>
+	</FileField.ItemList>
+	<FileField.Description />
+	<FileField.ErrorMessage />
+</FileField>
 ```
 
 ## Example
@@ -83,59 +82,46 @@ The File Upload consists of:
 	{/* <!-- prettier-ignore-start -->*/}
 	<TabsSnippets.Content value="index.tsx">
 		```tsx
-		import { FileUpload } from "@kobalte/core/file-upload";
+		import { FileField } from "@kobalte/core/file-field";
 		import "./style.css";
 
     	function App() {
     		return (
-    			<FileUpload
-    				class={style.fileUpload}
+    			<FileField
+    				class={style.FileField}
     				multiple
     				maxFiles={5}
     				onFileAccept={(data) => console.log("data", data)}
     				onFileReject={(data) => console.log("data", data)}
     				onFileChange={(data) => console.log("data", data)}
     			>
-    				<FileUpload.Label class={style.fileUpload__label}>
-    					File Upload
-    				</FileUpload.Label>
-    				<FileUpload.DropZone class={style.fileUpload__dropzone}>
+    				<FileField.Label class={style.FileField__label}>
+    					File Field
+    				</FileField.Label>
+    				<FileField.DropZone class={style.FileField__dropzone}>
     					Drop your files here...
-    					<FileUpload.Trigger class={style.fileUpload__trigger}>
+    					<FileField.Trigger class={style.FileField__trigger}>
     						Choose files!
-    					</FileUpload.Trigger>
-    				</FileUpload.DropZone>
-    				<FileUpload.HiddenInput />
-    				<FileUpload.ItemGroup class={style.fileUpload__itemGroup}>
-    					<FileUpload.Context>
-    						{(context) => {
-    							return (
-    								<For each={context.acceptedFiles}>
-    									{(file) => (
-    										<FileUpload.Item file={file} class={style.fileUpload__item}>
-    											<FileUpload.ItemPreview
-    												type="image/*"
-    												class={style.fileUpload__itemPreview}
-    											>
-    												<FileUpload.ItemPreviewImage
-    													class={style.fileUpload__itemPreviewImage}
-    												/>
-    											</FileUpload.ItemPreview>
-    											<FileUpload.ItemName class={style.fileUpload__itemName} />
-    											<FileUpload.ItemSize class={style.fileUpload__itemSize} />
-    											<FileUpload.ItemDeleteTrigger
-    												class={style.fileUpload__itemDeleteTrigger}
-    											>
-    												Delete
-    											</FileUpload.ItemDeleteTrigger>
-    										</FileUpload.Item>
-    									)}
-    								</For>
-    							);
-    						}}
-    					</FileUpload.Context>
-    				</FileUpload.ItemGroup>
-    			</FileUpload>
+    					</FileField.Trigger>
+    				</FileField.DropZone>
+    				<FileField.HiddenInput />
+    				<FileField.ItemList class={style.FileField__itemList}>
+    					{(file) => (
+ 									<FileField.Item class={style.FileField__item}>
+ 										<FileField.ItemPreviewImage
+ 											class={style.FileField__itemPreviewImage}
+ 										/>
+ 										<FileField.ItemName class={style.FileField__itemName} />
+ 										<FileField.ItemSize class={style.FileField__itemSize} />
+ 										<FileField.ItemDeleteTrigger
+ 											class={style.FileField__itemDeleteTrigger}
+ 										>
+ 											Delete
+ 										</FileField.ItemDeleteTrigger>
+ 									</FileField.Item>
+    					)}
+    				</FileField.ItemList>
+    			</FileField>
     		);
     	}
     ```
@@ -145,7 +131,7 @@ The File Upload consists of:
   <TabsSnippets.Content value="style.css">
 
 ```css
-.fileUpload {
+.FileField {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -155,14 +141,14 @@ The File Upload consists of:
 	row-gap: 5px;
 }
 
-.fileUpload__label {
+.FileField__label {
 	color: white;
 	font-size: 14px;
 	font-weight: 500;
 	user-select: none;
 }
 
-.fileUpload__dropzone {
+.FileField__dropzone {
 	display: flex;
 	flex-direction: column;
 	row-gap: 10px;
@@ -175,21 +161,21 @@ The File Upload consists of:
 	border-radius: 6px;
 }
 
-.fileUpload__trigger {
+.FileField__trigger {
 	background-color: hsl(201 96% 32%);
 	color: white;
 	padding: 5px 10px;
 	border-radius: 4px;
 }
 
-.fileUpload__itemGroup {
+.FileField__itemList {
 	display: flex;
 	flex-direction: column;
 	gap: 3px;
 	width: 100%;
 }
 
-.fileUpload__item {
+.FileField__item {
 	width: 100%;
 	display: grid;
 	padding: 16px;
@@ -204,30 +190,30 @@ The File Upload consists of:
 	padding: 10px;
 }
 
-.fileUpload__itemPreview {
+.FileField__itemPreview {
 	grid-area: preview;
 }
 
-.fileUpload__itemPreviewImage {
+.FileField__itemPreviewImage {
 	width: 50px;
 	object-fit: scale-down;
 	height: auto;
 	aspect-ratio: 1;
 }
 
-.fileUpload__itemName {
+.FileField__itemName {
 	grid-area: name;
 	font-size: 14px;
 	color: #fff;
 }
 
-.fileUpload__itemSize {
+.FileField__itemSize {
 	grid-area: size;
 	font-size: 14px;
 	color: rgb(181, 179, 173);
 }
 
-.fileUpload__itemDeleteTrigger {
+.FileField__itemDeleteTrigger {
 	grid-area: delete;
 	cursor: pointer;
 	background-color: #a23434;
@@ -248,7 +234,7 @@ The File Upload consists of:
 
 ### HTML forms
 
-By passing name prop to FileUpload.HiddenInput, you can use FileUpload in HTML forms.
+By passing name prop to FileField.HiddenInput, you can use FileField in HTML forms.
 
 <Preview>
 	<HTMLFormExample />
@@ -266,40 +252,30 @@ function HTMLFormExample() {
 
 	return (
 		<form ref={formRef} onSubmit={onSubmit}>
-			<FileUpload
+			<FileField
 				multiple
 				maxFiles={5}
 				onFileAccept={data => console.log("data", data)}
 				onFileReject={data => console.log("data", data)}
 				onFileChange={data => console.log("data", data)}
 			>
-				<FileUpload.Label>File Upload</FileUpload.Label>
-				<FileUpload.DropZone>
+				<FileField.Label>File Field</FileField.Label>
+				<FileField.Dropzone>
 					Drop your files here...
-					<FileUpload.Trigger>Choose files!</FileUpload.Trigger>
-				</FileUpload.DropZone>
-				<FileUpload.HiddenInput name="uploaded-files" />
-				<FileUpload.ItemGroup>
-					<FileUpload.Context>
-						{context => {
-							return (
-								<For each={context.acceptedFiles}>
-									{file => (
-										<FileUpload.Item file={file}>
-											<FileUpload.ItemPreview type="image/*" class={"fileUpload__itemPreview"}>
-												<FileUpload.ItemPreviewImage class={"fileUpload__itemPreviewImage"} />
-											</FileUpload.ItemPreview>
-											<FileUpload.ItemName />
-											<FileUpload.ItemSize />
-											<FileUpload.ItemDeleteTrigger>Delete</FileUpload.ItemDeleteTrigger>
-										</FileUpload.Item>
-									)}
-								</For>
-							);
-						}}
-					</FileUpload.Context>
-				</FileUpload.ItemGroup>
-			</FileUpload>
+					<FileField.Trigger>Choose files!</FileField.Trigger>
+				</FileField.Dropzone>
+				<FileField.HiddenInput name="uploaded-files" />
+				<FileField.ItemList>
+					{file => (
+						<FileField.Item>
+							<FileField.ItemPreviewImage class={"FileField__itemPreviewImage"} />
+							<FileField.ItemName />
+							<FileField.ItemSize />
+							<FileField.ItemDeleteTrigger>Delete</FileField.ItemDeleteTrigger>
+						</FileField.Item>
+					)}
+				</FileField.ItemList>
+			</FileField>
 			<div>
 				<button type="reset">Reset</button>
 				<button type="submit">Submit</button>
@@ -311,9 +287,9 @@ function HTMLFormExample() {
 
 ## API Reference
 
-### FileUpload
+### FileField
 
-`FileUpload` is equivalent to the `Root` import from `@kobalte/core/file-upload` (and deprecated `FileUpload.Root`).
+`FileField` is equivalent to the `Root` import from `@kobalte/core/file-field`.
 
 | Prop               | Description                                                                                                 |
 | ------------------ | ----------------------------------------------------------------------------------------------------------- |
@@ -329,23 +305,68 @@ function HTMLFormExample() {
 | `onFileChange`     | `(details: Details) => void` <br /> Callback function that is called when the list of files changes.        |
 | `validateFile`     | `(file: File) => FileError[] \| null ` <br /> Custom validation function for files.                         |
 
-### FileUpload.Item
+| Data attribute                | Description                                                                        |
+| :---------------------------- | :--------------------------------------------------------------------------------- |
+| data-valid                    | Present when the slider is valid according to the validation rules.                |
+| data-invalid                  | Present when the slider is invalid according to the validation rules.              |
+| data-required                 | Present when the user must slider an item before the owning form can be submitted. |
+| data-disabled                 | Present when the slider is disabled.                                               |
+| data-readonly                 | Present when the slider is read only.                                              |
+
+`Slider.Trigger` shares the same data-attributes.
+
+### FileField.Item
 
 | Prop   | Description                        |
 | ------ | ---------------------------------- |
 | `file` | `File` <br /> Selected file object |
 
-### FileUpload.ItemSize
+### FileField.ItemSize
 
 | Prop        | Description                                                             |
 | ----------- | ----------------------------------------------------------------------- |
 | `precision` | `number` <br /> The number of decimal places to round the file size to. |
 
-### FileUpload.ItemPreview
+### FileField.ItemPreview
 
 | Prop   | Description                                                              |
 | ------ | ------------------------------------------------------------------------ |
 | `type` | `string` <br /> The type of file to preview, only applicable for Images. |
+
+
+- **FileField**: The root container for the File Field component.
+- **FileField.Dropzone**: The dropzone area where files can be dragged and dropped.
+- **FileField.Trigger**: The trigger element that opens the file selection dialog.
+- **FileField.Label**: The label for the File Field component to toggle the file selection dialog.
+- **FileField.HiddenInput**: The hidden input element that triggers the file selection dialog.
+- **FileField.ItemList**: The container for the list of files that have been selected for upload.
+- **FileField.Item**: The individual file item in the list of files that have been selected for upload.
+- **FileField.Preview**: The preview for matching file types that have been selected for upload.
+- **FileField.ItemPreviewImage**: The preview image for image files that have been selected for upload.
+- **FileField.ItemName**: The name of the file that has been selected for upload.
+- **FileField.ItemSize**: The size of the file that has been selected for upload.
+- **FileField.ItemDeleteTrigger**: The trigger element to remove a file from the list of files that have been selected for upload.
+- **FileField.Description**: The description that gives the user more information on the file field.
+- **FileField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the file field.
+
+## Rendered elements
+
+| Component           | Default rendered element |
+| :------------------ | :----------------------- |
+| `FileField`            | `div`                    |
+| `FileField.Dropzone`      | `div`                    |
+| `FileField.Trigger`       | `button`                    |
+| `FileField.Label`      | `label`                   |
+| `FileField.HiddenInput`      | `input`                  |
+| `FileField.ItemList` | `ul`                    |
+| `FileField.Item` | `li`                    |
+| `FileField.Preview` | `div`                    |
+| `FileField.ItemPreviewImage` | `img`                    |
+| `FileField.ItemName` | `span`                    |
+| `FileField.ItemSize` | `span`                    |
+| `FileField.ItemDeleteTrigger` | `button`                    |
+| `FileField.Description`     | `div`                    |
+| `FileField.ErrorMessage`    | `div`                    |
 
 ## Accessibility
 

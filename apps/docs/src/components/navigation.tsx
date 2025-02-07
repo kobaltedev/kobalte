@@ -47,6 +47,11 @@ export function Navigation(props: NavigationProps) {
 															updated
 														</span>
 													</Match>
+													<Match when={link.status === "unreleased"}>
+														<span class="inline-flex items-center font-medium leading-none uppercase px-1.5 py-1 text-[12px] rounded text-gray-400 bg-gray-800">
+															unreleased
+														</span>
+													</Match>
 												</Switch>
 											</a>
 										</li>

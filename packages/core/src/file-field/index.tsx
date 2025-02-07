@@ -71,6 +71,8 @@ import {
 } from "./file-field-label";
 import {
 	type FileFieldRootOptions,
+	type FileFieldRootCommonProps,
+	type FileFieldRootRenderProps,
 	type FileFieldRootProps,
 	FileField as Root,
 } from "./file-field-root";
@@ -81,6 +83,24 @@ import {
 	type FileFieldTriggerRenderProps,
 	FileFieldTrigger as Trigger,
 } from "./file-field-trigger";
+
+import {
+	FormControlDescription as Description,
+	FormControlErrorMessage as ErrorMessage,
+	FormControlLabel as Label,
+	type FormControlDescriptionCommonProps as FileFieldDescriptionCommonProps,
+	type FormControlDescriptionOptions as FileFieldDescriptionOptions,
+	type FormControlDescriptionProps as FileFieldDescriptionProps,
+	type FormControlDescriptionRenderProps as FileFieldDescriptionRenderProps,
+	type FormControlErrorMessageCommonProps as FileFieldErrorMessageCommonProps,
+	type FormControlErrorMessageOptions as FileFieldErrorMessageOptions,
+	type FormControlErrorMessageProps as FileFieldErrorMessageProps,
+	type FormControlErrorMessageRenderProps as FileFieldErrorMessageRenderProps,
+	type FormControlLabelCommonProps as FileFieldLabelCommonProps,
+	type FormControlLabelOptions as FileFieldLabelOptions,
+	type FormControlLabelProps as FileFieldLabelProps,
+	type FormControlLabelRenderProps as FileFieldLabelRenderProps,
+} from "../form-control";
 
 import type { Accept, Details, FileError, FileRejection } from "./types";
 
@@ -130,9 +150,19 @@ export type {
 	FileFieldItemDeleteTriggerCommonProps,
 	FileFieldItemNameCommonProps,
 	FileFieldRootOptions,
+	FileFieldRootCommonProps,
+	FileFieldRootRenderProps,
 	FileFieldRootProps,
 	FileFieldTriggerOptions,
 	FileFieldTriggerRenderProps,
+	FileFieldDescriptionOptions,
+	FileFieldDescriptionCommonProps,
+	FileFieldDescriptionRenderProps,
+	FileFieldDescriptionProps,
+	FileFieldErrorMessageOptions,
+	FileFieldErrorMessageCommonProps,
+	FileFieldErrorMessageRenderProps,
+	FileFieldErrorMessageProps,
 };
 
 export {
@@ -149,6 +179,8 @@ export {
 	ItemSize,
 	ItemDeleteTrigger,
 	ItemName,
+	Description,
+	ErrorMessage,
 };
 
 export const FileField = Object.assign(Root, {
@@ -164,4 +196,6 @@ export const FileField = Object.assign(Root, {
 	ItemSize,
 	ItemDeleteTrigger,
 	ItemName,
+	Description,
+	ErrorMessage,
 });
