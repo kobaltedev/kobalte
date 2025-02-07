@@ -104,7 +104,7 @@ export type ColorWheelRootProps<
 export function ColorWheelRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorWheelRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement>();
 
 	const defaultId = `colorwheel-${createUniqueId()}`;
 
@@ -157,10 +157,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 		isDisabled: () => formControlContext.isDisabled() ?? false,
 	});
 
-	createFormResetListener(
-		() => ref,
-		() => state.resetValue(),
-	);
+	createFormResetListener(ref, () => state.resetValue());
 
 	const isLTR = () => direction() === "ltr";
 
@@ -286,7 +283,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 			<ColorWheelContext.Provider value={context}>
 				<Polymorphic<ColorWheelRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
+					ref={mergeRefs(setRef, local.ref)}
 					role="group"
 					id={access(formControlProps.id)!}
 					{...formControlContext.dataset()}

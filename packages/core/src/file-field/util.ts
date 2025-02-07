@@ -65,10 +65,7 @@ export const isFilesWithinMaxRange = (
 	if (!multiple && acceptedFilesLength > 1) {
 		return false;
 	}
-	if (acceptedFilesLength > maxFiles) {
-		return false;
-	}
-	return true;
+	return acceptedFilesLength <= maxFiles;
 };
 
 export const getFiles = (
@@ -133,10 +130,6 @@ export const isDragEventWithFiles = (event: DragEvent) => {
 };
 
 export const parseAcceptedTypes = (accept: Accept): string | undefined => {
-	if (!accept) {
-		return;
-	}
-
 	if (typeof accept === "string") {
 		return accept;
 	}

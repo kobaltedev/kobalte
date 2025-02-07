@@ -11,7 +11,7 @@ import { Polymorphic, type PolymorphicProps } from "../polymorphic";
 
 export interface BadgeRootOptions {
 	/**
-	 * Optional textValue for badge.
+	 * Accessible text description of the badge if child is not text.
 	 */
 	textValue?: string;
 }
@@ -29,15 +29,13 @@ export type BadgeRootProps<
 export function BadgeRoot<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, BadgeRootProps<T>>,
 ) {
-	const [local, others] = splitProps(props, ["textValue", "aria-label"]);
-
-	const ariaLabel = () => local["aria-label"] || local.textValue;
+	const [local, others] = splitProps(props, ["textValue"]);
 
 	return (
 		<Polymorphic<BadgeRootRenderProps>
 			as="span"
 			role="status"
-			aria-label={ariaLabel()}
+			aria-label={local.textValue}
 			{...others}
 		>
 			{others.children}

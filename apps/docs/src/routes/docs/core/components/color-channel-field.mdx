@@ -73,32 +73,32 @@ The color channel field consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-	import { ColorChannelField } from "@kobalte/core/color-channel-field";
-	import { parseColor } from "@kobalte/utils";
+  import { ColorChannelField } from "@kobalte/core/color-channel-field";
+  import { parseColor } from "@kobalte/utils";
     import "./style.css";
 
     function App() {
       return (
         <ColorChannelField class={style["color-channel-field"]} defaultValue={parseColor("hsl(200, 98%, 39%)")} channel="hue">
-    		<ColorChannelField.Label class={style["color-channel-field__label"]}>
-    			Hue
-    		</ColorChannelField.Label>
-    		<div class={style["color-channel-field__group"]}>
-    			<ColorChannelField.Input class={style["color-channel-field__input"]} />
-    			<ColorChannelField.IncrementTrigger
-    				aria-label="Increment"
-    				class={style["color-channel-field__increment"]}
-    			>
-    				<ArrowIcon />
-    			</ColorChannelField.IncrementTrigger>
-    			<ColorChannelField.DecrementTrigger
-    				aria-label="Decrement"
-    				class={style["color-channel-field__decrement"]}
-    			>
-    				<ArrowIcon style="transform: rotate(180deg);" />
-    			</ColorChannelField.DecrementTrigger>
-    		</div>
-    	</ColorChannelField>
+        <ColorChannelField.Label class={style["color-channel-field__label"]}>
+          Hue
+        </ColorChannelField.Label>
+        <div class={style["color-channel-field__group"]}>
+          <ColorChannelField.Input class={style["color-channel-field__input"]} />
+          <ColorChannelField.IncrementTrigger
+            aria-label="Increment"
+            class={style["color-channel-field__increment"]}
+          >
+            <ArrowIcon />
+          </ColorChannelField.IncrementTrigger>
+          <ColorChannelField.DecrementTrigger
+            aria-label="Decrement"
+            class={style["color-channel-field__decrement"]}
+          >
+            <ArrowIcon style="transform: rotate(180deg);" />
+          </ColorChannelField.DecrementTrigger>
+        </div>
+      </ColorChannelField>
       );
     }
     ```

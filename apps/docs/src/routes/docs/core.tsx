@@ -72,32 +72,32 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Color Area",
 				href: "/docs/core/components/color-area",
-				status: "new",
+				status: "unreleased",
 			},
 			{
 				title: "Color Channel Field",
 				href: "/docs/core/components/color-channel-field",
-				status: "new",
+				status: "unreleased",
 			},
 			{
 				title: "Color Field",
 				href: "/docs/core/components/color-field",
-				status: "new",
+				status: "unreleased",
 			},
 			{
 				title: "Color Slider",
 				href: "/docs/core/components/color-slider",
-				status: "new",
+				status: "unreleased",
 			},
 			{
 				title: "Color Swatch",
 				href: "/docs/core/components/color-swatch",
-				status: "new",
+				status: "unreleased",
 			},
 			{
 				title: "Color Wheel",
 				href: "/docs/core/components/color-wheel",
-				status: "new",
+				status: "unreleased",
 			},
 			{
 				title: "Combobox",
@@ -116,8 +116,9 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/dropdown-menu",
 			},
 			{
-				title: "File Upload",
-				href: "/docs/core/components/file-upload",
+				title: "File Field",
+				href: "/docs/core/components/file-field",
+				status: "new",
 			},
 			{
 				title: "Hover Card",
@@ -167,7 +168,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Search",
 				href: "/docs/core/components/search",
-				status: "new",
+				status: "unreleased",
 			},
 			{
 				title: "Select",

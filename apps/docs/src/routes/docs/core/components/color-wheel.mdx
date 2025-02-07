@@ -66,18 +66,18 @@ The color wheel consists of:
 {/* <!-- prettier-ignore-start -->*/}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-	  import { ColorWheel } from "@kobalte/core/color-wheel";
+    import { ColorWheel } from "@kobalte/core/color-wheel";
     import "./style.css";
 
     function App() {
       return (
         <ColorWheel class="ColorWheelRoot" thickness={24}>
-    	    	<ColorWheel.Track class="ColorWheelTrack">
-    	    		<ColorWheel.Thumb class="ColorWheelThumb">
-    	    			<ColorWheel.Input />
-    	    		</ColorWheel.Thumb>
-    	    	</ColorWheel.Track>
-    	    </ColorWheel>
+            <ColorWheel.Track class="ColorWheelTrack">
+              <ColorWheel.Thumb class="ColorWheelThumb">
+                <ColorWheel.Input />
+              </ColorWheel.Thumb>
+            </ColorWheel.Track>
+          </ColorWheel>
       );
     }
     ```
@@ -86,37 +86,37 @@ The color wheel consists of:
   <TabsSnippets.Content value="style.css">
     ```css
     .ColorWheelRoot {
-    	position: relative;
-    	display: flex;
-    	flex-direction: column;
-    	align-items: center;
-    	user-select: none;
-    	touch-action: none;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+      touch-action: none;
     }
 
     .ColorWheelTrack {
-    	position: relative;
-    	height: 160px;
-    	width: 160px;
+      position: relative;
+      height: 160px;
+      width: 160px;
     }
 
     .ColorWheelThumb {
-    	display: block;
-    	width: 16px;
-    	height: 16px;
-    	border-radius: 9999px;
-    	border: 2px solid #fff;
-    	box-shadow: 0 0 0 1px #0000006b;
+      display: block;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px #0000006b;
     }
 
     .ColorWheelThumb:focus {
-    	outline: none;
+      outline: none;
     }
 
     .ColorWheelLabel {
-    	display: flex;
-    	justify-content: space-between;
-    	width: 100%;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
     }
     ```
 
