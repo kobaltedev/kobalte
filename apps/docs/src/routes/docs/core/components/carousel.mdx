@@ -1,0 +1,348 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+
+import {
+	HorrizontalExample,
+	VerticalExample,
+	AutoPlayExample
+} from "../../../../examples/carousel";
+
+# Carousel
+
+A carousel component that allows cycling through items (slides) with navigation controls, indicators, Built on top of [Embla Carousel](https://www.embla-carousel.com/).
+
+## Import
+
+```ts
+import { Carousel } from "@kobalte/core/carousel";
+// or
+import { Root, Viewport, ... } from "@kobalte/core/carousel";
+```
+
+
+## Features
+
+- Follow WAI ARIA best practices for carousel components
+- Support for horizontal and vertical orientations
+- Built-in navigation controls (Previous/Next buttons)
+- Support for slide indicators
+- Full Embla Carousel configuration support
+
+## Anatomy
+
+The carousel consists of:
+
+- **Carousel:** The root container for the carousel.
+- **Carousel.Viewport:** Contains the slides that are visible in the carousel.
+- **Carousel.Item:** An individual slide within the carousel.
+- **Carousel.Previous:** Button to navigate to the previous slide.
+- **Carousel.Next:** Button to navigate to the next slide.
+- **Carousel.Indicator:** Visual indicators showing the current slide position.
+
+```tsx
+<Carousel>
+    <Carousel.Viewport>
+        <Carousel.Item />
+    </Carousel.Viewport>
+
+    <Carousel.Previous />
+    <Carousel.Indicator />
+    <Carousel.Next />
+</Carousel>
+```
+
+
+## Example
+
+<Preview>
+  <HorrizontalExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Carousel } from "@kobalte/core/carousel";
+    import "./style.css";
+
+    const images = [
+      "https://picsum.photos/800/400?random=1",
+      "https://picsum.photos/800/400?random=2",
+      "https://picsum.photos/800/400?random=3",
+      "https://picsum.photos/800/400?random=4",
+    ];
+
+    function App() {
+      return (
+        <Carousel orientation="horizontal" class="carousel">
+          <Carousel.Viewport class="carousel__viewport">
+            <Index each={images}>
+              {(src, index) => (
+                <Carousel.Item class="carousel__item" index={index}>
+                  <img src={src()} alt={`Slide ${index + 1}`} />
+                </Carousel.Item>
+              )}
+            </Index>
+          </Carousel.Viewport>
+
+          <div class="carousel__controls">
+            <Carousel.Previous class="carousel__previous">Prev</Carousel.Previous>
+            <Index each={images}>
+              {(_, index) => (
+                <Carousel.Indicator
+                  class="carousel__indicator"
+                  index={index}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              )}
+            </Index>
+            <Carousel.Next class="carousel__next">Next</Carousel.Next>
+          </div>
+        </Carousel>
+      );
+    }
+    ```
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .carousel {
+      max-width: 500px;
+      overflow: hidden;
+      margin: auto;
+    }
+
+    .carousel__viewport {
+      display: flex;
+      max-height: 400px;
+      gap: 16px;
+      margin: 16px;
+    }
+
+    .carousel__item {
+      flex: 0 0 100%;
+      min-width: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      border: 2px solid black;
+    }
+
+    .carousel__item img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .carousel__controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .carousel__previous,
+    .carousel__next {
+      padding: 8px;
+      border-radius: 8px;
+      background: white;
+      color: black;
+      border: none;
+      cursor: pointer;
+    }
+
+    .carousel__indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.3);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .carousel__indicator[data-selected] {
+      background: rgba(0, 0, 0, 0.8);
+    }
+    ```
+  </TabsSnippets.Content>
+</TabsSnippets>
+
+## Usage
+
+### Vertical Orientation
+
+The carousel can be oriented vertically by setting the `orientation` prop to `vertical`.
+
+<Preview>
+  <VerticalExample />
+</Preview>
+
+
+### Autoplay
+
+The carousel supports autoplay functionality using the Embla Carousel autoplay plugin.
+
+<Preview>
+  <AutoPlayExample />
+</Preview>
+
+```tsx
+import Autoplay from "embla-carousel-autoplay";
+
+function AutoplayExample() {
+    const autoPlayPlugin = Autoplay({ delay: 2000, stopOnInteraction: true });
+    return (
+        <Carousel
+        plugins={[autoPlayPlugin]}
+        onMouseEnter={autoPlayPlugin.stop}
+        onMouseLeave={() => autoPlayPlugin.play(false)}
+        >
+        {/ ... rest of the carousel code ... /}
+        </Carousel>
+        );
+}
+```
+
+## API Reference
+
+### Carousel.Root
+
+#### Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :------ | :---------- |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | The orientation of the carousel. |
+| `disabled` | `boolean` | `false` | Whether the carousel is disabled. |
+| `defaultSelectedIndex` | `number` | `0` | The index of the slide that should be active when initially rendered. |
+| `startIndex` | `number` | - | The controlled value of the selected slide index. |
+| `onSelectedIndexChange` | `(index: number) => void` | - | Event handler called when the selected index changes. |
+| `align` | `'start' \| 'center' \| 'end'` | `'start'` | The alignment of the slides in the carousel. |
+| `loop` | `boolean` | `false` | Whether the carousel should loop. |
+| `dragFree` | `boolean` | `false` | Whether the carousel should drag free or snap to slides. |
+| `slidesToScroll` | `number` | `1` | The number of slides to scroll at a time. |
+| `dragThreshold` | `number` | `10` | The drag threshold in pixels before a drag movement starts. |
+| `duration` | `number` | `25` | The duration of the scroll animation in milliseconds. |
+| `plugins` | `EmblaPluginType[]` | `[]` | Custom embla carousel plugins. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | The orientation of the carousel: `"horizontal"` or `"vertical"` |
+| `aria-roledescription` | Set to `"carousel"` |
+| `role` | Set to `"region"` |
+
+### Carousel.Viewport
+
+#### Props
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `ref` | `T \| ((el: T) => void)` | A reference to the viewport element. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | Matches the parent carousel's orientation |
+
+### Carousel.Item
+
+#### Props
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `index` | `number` | Required. The index of this item in the carousel. |
+| `ref` | `T \| ((el: T) => void)` | A reference to the item element. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | Matches the parent carousel's orientation |
+| `data-selected` | Present when the item is currently selected |
+| `role` | Set to `"group"` |
+| `aria-roledescription` | Set to `"slide"` |
+
+### Carousel.Previous
+
+`Carousel.Previous` use [Button](/docs/core/components/button) component under the hood.
+
+#### Props
+
+Inherits all button props plus:
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `ref` | `T \| ((el: T) => void)` | A reference to the button element. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | Matches the parent carousel's orientation |
+| `aria-label` | Set to `"Previous slide"` |
+| `disabled` | Present when cannot scroll to previous slide |
+
+### Carousel.Next
+
+`Carousel.Next` use [Button](/docs/core/components/button) component under the hood.
+
+#### Props
+
+Inherits all button props plus:
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `ref` | `T \| ((el: T) => void)` | A reference to the button element. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | Matches the parent carousel's orientation |
+| `aria-label` | Set to `"Next slide"` |
+| `disabled` | Present when cannot scroll to next slide |
+
+### Carousel.Indicator
+
+`Carousel.Indicator` use [Button](/docs/core/components/button) component under the hood.
+
+#### Props
+
+Inherits all button props plus:
+
+| Prop | Type | Description |
+| :--- | :--- | :---------- |
+| `index` | `number` | Required. The index this indicator represents. |
+| `ref` | `T \| ((el: T) => void)` | A reference to the button element. |
+
+#### Data Attributes
+
+| Attribute | Description |
+| :--- | :---------- |
+| `data-orientation` | Matches the parent carousel's orientation |
+| `data-selected` | Present when this indicator's slide is selected |
+| `role` | Set to `"tab"` |
+| `aria-selected` | Set to `true` when this indicator's slide is selected |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key | Description |
+| :-- | :---------- |
+| `ArrowRight` | Moves to the next slide when orientation is horizontal |
+| `ArrowLeft` | Moves to the previous slide when orientation is horizontal |
+| `ArrowDown` | Moves to the next slide when orientation is vertical |
+| `ArrowUp` | Moves to the previous slide when orientation is vertical |
+| `Home` | Moves to the first slide |
+| `End` | Moves to the last slide |
+| `Tab` | Moves focus to the next focusable element |
+| `Shift + Tab` | Moves focus to the previous focusable element |
+
+### ARIA
+
+The carousel follows the [WAI-ARIA Carousel Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/). The root element has `role="region"` and `aria-roledescription="carousel"`, while each slide has `role="group"` and `aria-roledescription="slide"`.
