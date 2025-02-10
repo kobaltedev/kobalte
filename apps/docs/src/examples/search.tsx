@@ -660,7 +660,7 @@ export function DebounceExample() {
 	);
 }
 
-export function CmdkStyleExample() {
+export function InlineStyleExample() {
 	const [options, setOptions] = createSignal<EmojiDatum[]>([]);
 	const [emoji, setEmoji] = createSignal<EmojiDatum | null>();
 	return (
@@ -680,9 +680,9 @@ export function CmdkStyleExample() {
 						<Search.ItemLabel>{props.item.rawValue.emoji}</Search.ItemLabel>
 					</Search.Item>
 				)}
-				class={style.search__root_cmdk}
+				class={style.search__root_inline}
 			>
-				<Search.Control class={style.search__control_cmdk} aria-label="Emoji">
+				<Search.Control class={style.search__control_inline} aria-label="Emoji">
 					<Search.Indicator class={style.search__indicator}>
 						<Search.Icon class={style.search__icon}>
 							<MagnifyingGlassIcon class={style.center__icon} />
@@ -691,9 +691,9 @@ export function CmdkStyleExample() {
 
 					<Search.Input class={style.search__input} />
 				</Search.Control>
-				<div class={style.search__content_cmdk}>
+				<div class={style.search__content_inline}>
 					<Search.Listbox class={style.search__listbox} />
-					<Search.NoResult class={style.search__no_result_cmdk}>
+					<Search.NoResult class={style.search__no_result_inline}>
 						😬 No emoji found
 					</Search.NoResult>
 				</div>
