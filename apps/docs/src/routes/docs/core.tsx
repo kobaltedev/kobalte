@@ -168,7 +168,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Search",
 				href: "/docs/core/components/search",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Select",
