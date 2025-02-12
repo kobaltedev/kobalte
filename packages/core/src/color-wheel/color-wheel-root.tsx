@@ -114,6 +114,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 			getValueLabel: (param) => param.formatChannelValue("hue"),
 			translations: COLOR_INTL_TRANSLATIONS,
 			disabled: false,
+			thickness: 25,
 		},
 		props as ColorWheelRootProps,
 	);
@@ -142,11 +143,14 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	const [outerRadius, setOuterRadius] = createSignal<number>();
 
 	createEffect(() => {
-		setOuterRadius(trackRef()!.getBoundingClientRect()?.width / 2);
+		const tr = trackRef();
+		setTimeout(() => {
+			if (tr) setOuterRadius(tr.getBoundingClientRect()?.width / 2);
+		}, 1);
 	});
 
-	const innerRadius = () => outerRadius()! - local.thickness;
-	const thumbRadius = () => (outerRadius()! + innerRadius()) / 2;
+	const thumbRadius = () =>
+		(outerRadius()! + outerRadius()! * local.thickness) / 2;
 
 	const state = createColorWheelState({
 		value: () => local.value,
@@ -264,7 +268,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	const context: ColorWheelContextValue = {
 		state,
 		outerRadius,
-		innerRadius,
+		thickness: () => local.thickness,
 		onDragStart,
 		onDrag,
 		onDragEnd,

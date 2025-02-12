@@ -146,6 +146,8 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 					transform: "translate(-50%, -50%)",
 					"forced-color-adjust": "none",
 					"touch-action": "none",
+					opacity: context.outerRadius() ? 1 : 0,
+					transition: "opacity .1s linear",
 				},
 				local.style,
 			)}

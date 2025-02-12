@@ -105,28 +105,24 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 		}
 	};
 
-	const backgroundStyle = createMemo(() => {
-		return {
-			background: `
-          conic-gradient(
-            from 90deg,
-            hsl(0, 100%, 50%),
-            hsl(30, 100%, 50%),
-            hsl(60, 100%, 50%),
-            hsl(90, 100%, 50%),
-            hsl(120, 100%, 50%),
-            hsl(150, 100%, 50%),
-            hsl(180, 100%, 50%),
-            hsl(210, 100%, 50%),
-            hsl(240, 100%, 50%),
-            hsl(270, 100%, 50%),
-            hsl(300, 100%, 50%),
-            hsl(330, 100%, 50%),
-            hsl(360, 100%, 50%)
-          )
-        `,
-		};
-	});
+	const backgroundStyle = `
+      conic-gradient(
+        from 90deg,
+        hsl(0, 100%, 50%),
+        hsl(30, 100%, 50%),
+        hsl(60, 100%, 50%),
+        hsl(90, 100%, 50%),
+        hsl(120, 100%, 50%),
+        hsl(150, 100%, 50%),
+        hsl(180, 100%, 50%),
+        hsl(210, 100%, 50%),
+        hsl(240, 100%, 50%),
+        hsl(270, 100%, 50%),
+        hsl(300, 100%, 50%),
+        hsl(330, 100%, 50%),
+        hsl(360, 100%, 50%)
+      )
+    `;
 
 	return (
 		<Polymorphic<ColorWheelTrackRenderProps>
@@ -136,8 +132,9 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 				{
 					"touch-action": "none",
 					"forced-color-adjust": "none",
-					...backgroundStyle(),
-					"clip-path": `path(evenodd, "${circlePath(context.outerRadius()!, context.outerRadius()!, context.outerRadius()!)} ${circlePath(context.outerRadius()!, context.outerRadius()!, context.innerRadius())}")`,
+					background: backgroundStyle,
+					"clip-path": "circle(50%)",
+					mask: `radial-gradient(#0000 ${100 - 2 * context.thickness()}%, #000 ${100 - 2 * context.thickness() + 0.5}%)`,
 				},
 				local.style,
 			)}
@@ -148,8 +145,4 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 			{...others}
 		/>
 	);
-}
-
-function circlePath(cx: number, cy: number, r: number) {
-	return `M ${cx}, ${cy} m ${-r}, 0 a ${r}, ${r}, 0, 1, 0, ${r * 2}, 0 a ${r}, ${r}, 0, 1, 0 ${-r * 2}, 0`;
 }

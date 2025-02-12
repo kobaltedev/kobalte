@@ -5,7 +5,7 @@ import type { ColorWheelState } from "./create-color-wheel-state";
 export interface ColorWheelContextValue {
 	state: ColorWheelState;
 	outerRadius: Accessor<number | undefined>;
-	innerRadius: Accessor<number>;
+	thickness: Accessor<number>;
 	onDragStart: ((value: number[]) => void) | undefined;
 	onDrag: ((deltas: { deltaX: number; deltaY: number }) => void) | undefined;
 	onDragEnd: (() => void) | undefined;
