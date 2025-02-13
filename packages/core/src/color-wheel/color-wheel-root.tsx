@@ -114,7 +114,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 			getValueLabel: (param) => param.formatChannelValue("hue"),
 			translations: COLOR_INTL_TRANSLATIONS,
 			disabled: false,
-			thickness: 25,
+			thickness: 30,
 		},
 		props as ColorWheelRootProps,
 	);
@@ -150,7 +150,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	});
 
 	const thumbRadius = () =>
-		(outerRadius()! + outerRadius()! * local.thickness) / 2;
+		((139.75 - (local.thickness / 100) * 70) * outerRadius()!) / 140;
 
 	const state = createColorWheelState({
 		value: () => local.value,

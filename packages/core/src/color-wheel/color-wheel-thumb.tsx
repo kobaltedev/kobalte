@@ -24,7 +24,7 @@ export interface ColorWheelThumbCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	style?: JSX.CSSProperties | string;
+	style: JSX.CSSProperties | string;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;

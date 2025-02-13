@@ -134,7 +134,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 					"forced-color-adjust": "none",
 					background: backgroundStyle,
 					"clip-path": "circle(50%)",
-					mask: `radial-gradient(#0000 ${100 - 2 * context.thickness()}%, #000 ${100 - 2 * context.thickness() + 0.5}%)`,
+					mask: `radial-gradient(#0000 ${70 - (context.thickness() / 100) * 70}%, #000 ${70.5 - (context.thickness() / 100) * 70}%)`,
 				},
 				local.style,
 			)}
