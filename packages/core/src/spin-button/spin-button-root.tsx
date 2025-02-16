@@ -27,6 +27,7 @@ import {
 	SPIN_BUTTON_INTL_TRANSLATIONS,
 	type SpinButtonIntlTranslations,
 } from "./spin-button.intl";
+import { combineStyle } from "@solid-primitives/props";
 
 export interface SpinButtonRootOptions {
 	/** The localized strings of the component. */
@@ -78,6 +79,7 @@ export interface SpinButtonRootOptions {
 export interface SpinButtonRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
+	style?: JSX.CSSProperties | string;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -110,6 +112,7 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 	);
 
 	const [local, others] = splitProps(mergedProps, [
+		"style",
 		"translations",
 		"value",
 		"textValue",
@@ -219,6 +222,11 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		<Polymorphic<SpinButtonRootRenderProps>
 			as="div"
 			role="spinbutton"
+			style={combineStyle({
+ 					"touch-action": "none",
+ 				},
+ 				local.style,
+ 			)}
 			aria-valuenow={
 				local.value != null && !Number.isNaN(local.value)
 					? local.value
