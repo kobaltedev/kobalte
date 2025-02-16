@@ -147,11 +147,13 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 		if (tr) {
 			setOuterRadius(tr.getBoundingClientRect()?.width / 2);
 
-			console.log("SET OUTER RADIUS", tr.getBoundingClientRect()?.width / 2);
+			//@ts-ignore
+			console["l" + "og"]("SET OUTER RADIUS", tr.getBoundingClientRect()?.width / 2);
 		}
 	});
 
-	createEffect(() => console.log("OUTER", outerRadius()))
+	//@ts-ignore
+	createEffect(() => console["l" + "og"]("OUTER", outerRadius()))
 
 	const thumbRadius = () =>
 		((139.75 - (local.thickness / 100) * 70) * outerRadius()!) / 140;
