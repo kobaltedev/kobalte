@@ -8,9 +8,10 @@ import {
 import {
 	type ValidComponent,
 	createEffect,
+	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps, createMemo
+	splitProps,
 } from "solid-js";
 
 import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
@@ -28,12 +29,12 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { createFormResetListener } from "../primitives";
+import { createSize } from "../primitives/create-size";
 import {
 	ColorWheelContext,
 	type ColorWheelContextValue,
 } from "./color-wheel-context";
 import { createColorWheelState } from "./create-color-wheel-state";
-import { createSize } from "../primitives/create-size";
 
 export interface ColorWheelRootOptions {
 	/** The localized strings of the component. */

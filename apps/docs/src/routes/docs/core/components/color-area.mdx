@@ -76,13 +76,14 @@ The color area consists of:
     function App() {
       return (
         <ColorArea class="ColorAreaRoot" defaultValue={parseColor("rgb(2, 132, 197)")}>
-            <ColorArea.Background class="ColorAreaBackground">
-              <ColorArea.Thumb class="ColorAreaThumb">
-                <ColorArea.HiddenInputX />
-                <ColorArea.HiddenInputY />
-              </ColorArea.Thumb>
-            </ColorArea.Background>
-         </ColorArea>
+          <ColorArea.Label class="ColorAreaLabel">Label</ColorArea.Label>
+          <ColorArea.Background class="ColorAreaBackground">
+            <ColorArea.Thumb class="ColorAreaThumb">
+              <ColorArea.HiddenInputX />
+              <ColorArea.HiddenInputY />
+            </ColorArea.Thumb>
+          </ColorArea.Background>
+        </ColorArea>
       );
     }
     ```
@@ -100,27 +101,32 @@ The color area consists of:
       width: 200px;
     }
 
-.ColorAreaBackground {
-position: relative;
-border-radius: 6px;
-height: 150px;
-width: 150px;
-}
+    .ColorAreaBackground {
+    position: relative;
+    border-radius: 6px;
+    height: 150px;
+    width: 150px;
+    }
 
-.ColorAreaThumb {
-display: block;
-width: 16px;
-height: 16px;
-border-radius: 9999px;
-border: 2px solid #fff;
-box-shadow: 0 0 0 1px #0000006b;
-}
+    .ColorAreaThumb {
+    display: block;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #0000006b;
+    }
 
-.ColorAreaThumb:focus {
-outline: none;
-}
+    .ColorAreaThumb:focus {
+    outline: none;
+    }
 
-````
+    .ColorArealLabel {
+      font-size: 14px;
+      font-weight: 500;
+      user-select: none;
+    }
+    ```
 
 </TabsSnippets.Content>
 {/* <!-- prettier-ignore-end -->*/}
@@ -136,19 +142,20 @@ If no `xChannel` or `yChannel` is provided, for the RGB color space, the red col
 ### Default value
 
 <Preview>
-  <DefaultValueExample />
+	<DefaultValueExample />
 </Preview>
 
 ```tsx {0}
 <ColorArea defaultValue={parseColor("hsb(219, 58%, 93%)")}>
-  <ColorArea.Background>
-    <ColorArea.Thumb>
-      <ColorArea.HiddenInputX />
-      <ColorArea.HiddenInputY />
-    </ColorArea.Thumb>
-  </ColorArea.Background>
+	<ColorArea.Label>Label</ColorArea.Label>
+	<ColorArea.Background>
+		<ColorArea.Thumb>
+			<ColorArea.HiddenInputX />
+			<ColorArea.HiddenInputY />
+		</ColorArea.Thumb>
+	</ColorArea.Background>
 </ColorArea>
-````
+```
 
 ### Controlled value
 
@@ -162,6 +169,7 @@ import { createSignal } from "solid-js";
 const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
 <>
 	<ColorArea value={value()} onChange={setValue}>
+		<ColorArea.Label>Label</ColorArea.Label>
 		<ColorArea.Background>
 			<ColorArea.Thumb>
 				<ColorArea.HiddenInputX />
@@ -186,6 +194,7 @@ const [value, setValue] = createSignal(parseColor("rgb(100, 149, 237)"));
 const [rChannel, gChannel, bChannel] = value().getColorChannels();
 
 <ColorArea value={value()} onChange={setValue} xChannel={gChannel} yChannel={bChannel}>
+	<ColorArea.Label>Label</ColorArea.Label>
 	<ColorArea.Background>
 		<ColorArea.Thumb>
 			<ColorArea.HiddenInputX />
@@ -205,6 +214,7 @@ ColorArea supports the `xName` and `yName` props for integration with HTML forms
 
 ```tsx {0}
 <ColorArea defaultValue={parseColor("rgb(100, 149, 237)")} xName="red" yName="green">
+	<ColorArea.Label>Label</ColorArea.Label>
 	<ColorArea.Background>
 		<ColorArea.Thumb>
 			<ColorArea.HiddenInputX />
@@ -269,7 +279,9 @@ ColorArea supports the `xName` and `yName` props for integration with HTML forms
 | `ColorArea.Thumb`        | `span`                   |
 | `ColorArea.HiddenInputX` | `input`                  |
 | `ColorArea.HiddenInputY` | `input`                  |
-| `ColorArea.Label`        | `div`                    |
+| `ColorArea.Label`        | `label`                  |
+| `ColorArea.Description`  | `div`                    |
+| `ColorArea.ErrorMessage` | `div`                    |
 
 ## Accessibility
 

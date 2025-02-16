@@ -7,7 +7,7 @@ export function BasicExample() {
 	return (
 		<ColorField class={style["color-field"]}>
 			<ColorField.Label class={style["color-field__label"]}>
-				Favorite color
+				Favorite hex color
 			</ColorField.Label>
 			<ColorField.Input class={style["color-field__input"]} />
 		</ColorField>
@@ -18,7 +18,7 @@ export function DefaultValueExample() {
 	return (
 		<ColorField class={style["color-field"]} defaultValue="#7f007f">
 			<ColorField.Label class={style["color-field__label"]}>
-				Favorite color
+				Favorite hex color
 			</ColorField.Label>
 			<ColorField.Input class={style["color-field__input"]} />
 		</ColorField>
@@ -36,7 +36,7 @@ export function ControlledExample() {
 				onChange={setValue}
 			>
 				<ColorField.Label class={style["color-field__label"]}>
-					Favorite color
+					Favorite hex color
 				</ColorField.Label>
 				<ColorField.Input class={style["color-field__input"]} />
 			</ColorField>
@@ -49,7 +49,7 @@ export function DescriptionExample() {
 	return (
 		<ColorField class={style["color-field"]}>
 			<ColorField.Label class={style["color-field__label"]}>
-				Favorite color
+				Favorite hex color
 			</ColorField.Label>
 			<ColorField.Input class={style["color-field__input"]} />
 			<ColorField.Description class={style["color-field__description"]}>
@@ -70,7 +70,7 @@ export function ErrorMessageExample() {
 			validationState={value() !== "#000000" ? "invalid" : "valid"}
 		>
 			<ColorField.Label class={style["color-field__label"]}>
-				Favorite color
+				Favorite hex color
 			</ColorField.Label>
 			<ColorField.Input class={style["color-field__input"]} />
 			<ColorField.ErrorMessage class={style["color-field__error-message"]}>
@@ -100,7 +100,7 @@ export function HTMLFormExample() {
 		>
 			<ColorField class={style["color-field"]} name="favorite-color">
 				<ColorField.Label class={style["color-field__label"]}>
-					Favorite color
+					Favorite hex color
 				</ColorField.Label>
 				<ColorField.Input class={style["color-field__input"]} />
 			</ColorField>

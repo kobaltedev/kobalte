@@ -6,7 +6,7 @@ import style from "./color-wheel.module.css";
 export function BasicExample() {
 	return (
 		<ColorWheel class={style.ColorWheelRoot}>
-				<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
+			<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
 			<ColorWheel.Track class={style.ColorWheelTrack}>
 				<ColorWheel.Thumb class={style.ColorWheelThumb}>
 					<ColorWheel.Input />
@@ -35,7 +35,7 @@ export function DefaultValueExample() {
 export function ThicknessExample() {
 	return (
 		<ColorWheel class={style.ColorWheelRoot} thickness={60}>
-				<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
+			<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
 			<ColorWheel.Track class={style.ColorWheelTrack}>
 				<ColorWheel.Thumb class={style.ColorWheelThumb}>
 					<ColorWheel.Input />
@@ -88,7 +88,7 @@ export function CustomValueLabelExample() {
 					<ColorWheel.Input />
 				</ColorWheel.Thumb>
 			</ColorWheel.Track>
-			<ColorWheel.ValueLabel class={style.ColorWheelValueLabel}/>
+			<ColorWheel.ValueLabel class={style.ColorWheelValueLabel} />
 		</ColorWheel>
 	);
 }

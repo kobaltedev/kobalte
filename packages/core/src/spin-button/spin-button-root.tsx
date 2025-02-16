@@ -17,6 +17,7 @@ import {
 	splitProps,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import { announce, clearAnnouncer } from "../live-announcer";
 import {
 	type ElementOf,
@@ -27,7 +28,6 @@ import {
 	SPIN_BUTTON_INTL_TRANSLATIONS,
 	type SpinButtonIntlTranslations,
 } from "./spin-button.intl";
-import { combineStyle } from "@solid-primitives/props";
 
 export interface SpinButtonRootOptions {
 	/** The localized strings of the component. */
@@ -222,11 +222,12 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		<Polymorphic<SpinButtonRootRenderProps>
 			as="div"
 			role="spinbutton"
-			style={combineStyle({
- 					"touch-action": "none",
- 				},
- 				local.style,
- 			)}
+			style={combineStyle(
+				{
+					"touch-action": "none",
+				},
+				local.style,
+			)}
 			aria-valuenow={
 				local.value != null && !Number.isNaN(local.value)
 					? local.value

@@ -69,7 +69,7 @@ The color field consists of:
     function App() {
       return (
         <ColorField class="color-field">
-        <ColorField.Label class="color-field__label">Favorite color</ColorField.Label>
+        <ColorField.Label class="color-field__label">Favorite hex color</ColorField.Label>
         <ColorField.Input class="color-field__input" />
       </ColorField>
       );
@@ -152,7 +152,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 ```tsx {0}
 <ColorField class="color-field" defaultValue="#7f007f">
-	<ColorField.Label class="color-field__label">Favorite color</ColorField.Label>
+	<ColorField.Label class="color-field__label">Favorite hex color</ColorField.Label>
 	<ColorField.Input class="color-field__input" />
 </ColorField>
 ```
@@ -174,7 +174,7 @@ function ControlledExample() {
 	return (
 		<>
 			<ColorField class="color-field" value={value()} onChange={setValue}>
-				<ColorField.Label class="color-field__label">Favorite color</ColorField.Label>
+				<ColorField.Label class="color-field__label">Favorite hex color</ColorField.Label>
 				<ColorField.Input class="color-field__input" />
 			</ColorField>
 			<p>Your favorite color is: {value()}</p>
@@ -193,7 +193,7 @@ The `ColorField.Description` component can be used to associate additional help 
 
 ```tsx {3}
 <ColorField class="color-field">
-	<ColorField.Label class="color-field__label">Favorite color</ColorField.Label>
+	<ColorField.Label class="color-field__label">Favorite hex color</ColorField.Label>
 	<ColorField.Input class="color-field__input" />
 	<ColorField.Description class="color-field__description">
 		Choose the color you like the most.
@@ -223,7 +223,7 @@ function ErrorMessageExample() {
 			onChange={setValue}
 			validationState={value() !== "#000000" ? "invalid" : "valid"}
 		>
-			<ColorField.Label>Favorite color</ColorField.Label>
+			<ColorField.Label>Favorite hex color</ColorField.Label>
 			<ColorField.Input />
 			<ColorField.ErrorMessage>Hmm, I prefer black.</ColorField.ErrorMessage>
 		</ColorField>
@@ -248,7 +248,7 @@ function HTMLFormExample() {
 	return (
 		<form onSubmit={onSubmit}>
 			<ColorField name="favorite-color">
-				<ColorField.Label>Favorite color</ColorField.Label>
+				<ColorField.Label>Favorite hex color</ColorField.Label>
 				<ColorField.Input />
 			</ColorField>
 		</form>

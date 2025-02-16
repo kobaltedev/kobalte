@@ -108,7 +108,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 	const backgroundStyle = `
       conic-gradient(
         from 90deg,
-				${[...Array(13).keys()].map(i => `hsl(${i * 30} 100% 50%)`).join(",")}
+				${[...Array(13).keys()].map((i) => `hsl(${i * 30} 100% 50%)`).join(",")}
       )
     `;
 

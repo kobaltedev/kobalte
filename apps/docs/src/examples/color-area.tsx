@@ -9,6 +9,7 @@ export function BasicExample() {
 			class={style.ColorAreaRoot}
 			defaultValue={parseColor("rgb(2, 132, 197)")}
 		>
+			<ColorArea.Label class={style.ColorAreaLabel}>Label</ColorArea.Label>
 			<ColorArea.Background class={style.ColorAreaBackground}>
 				<ColorArea.Thumb class={style.ColorAreaThumb}>
 					<ColorArea.HiddenInputX />
@@ -25,6 +26,7 @@ export function DefaultValueExample() {
 			class={style.ColorAreaRoot}
 			defaultValue={parseColor("hsb(219, 58%, 93%)")}
 		>
+			<ColorArea.Label class={style.ColorAreaLabel}>Label</ColorArea.Label>
 			<ColorArea.Background class={style.ColorAreaBackground}>
 				<ColorArea.Thumb class={style.ColorAreaThumb}>
 					<ColorArea.HiddenInputX />
@@ -44,6 +46,7 @@ export function ControlledValueExample() {
 				value={value()}
 				onChange={setValue}
 			>
+				<ColorArea.Label class={style.ColorAreaLabel}>Label</ColorArea.Label>
 				<ColorArea.Background class={style.ColorAreaBackground}>
 					<ColorArea.Thumb class={style.ColorAreaThumb}>
 						<ColorArea.HiddenInputX />
@@ -69,6 +72,7 @@ export function XAndYChannelExample() {
 			xChannel={gChannel}
 			yChannel={bChannel}
 		>
+			<ColorArea.Label class={style.ColorAreaLabel}>Label</ColorArea.Label>
 			<ColorArea.Background class={style.ColorAreaBackground}>
 				<ColorArea.Thumb class={style.ColorAreaThumb}>
 					<ColorArea.HiddenInputX />
@@ -103,6 +107,7 @@ export function HTMLFormExample() {
 				xName="red"
 				yName="green"
 			>
+				<ColorArea.Label class={style.ColorAreaLabel}>Label</ColorArea.Label>
 				<ColorArea.Background class={style.ColorAreaBackground}>
 					<ColorArea.Thumb class={style.ColorAreaThumb}>
 						<ColorArea.HiddenInputX />
