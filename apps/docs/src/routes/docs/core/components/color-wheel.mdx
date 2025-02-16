@@ -1,11 +1,11 @@
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
-	BasicExample,
-	DefaultValueExample,
-	ThicknessExample,
-	ControlledValueExample,
-	CustomValueLabelExample,
-	HTMLFormExample,
+  BasicExample,
+  DefaultValueExample,
+  ThicknessExample,
+  ControlledValueExample,
+  CustomValueLabelExample,
+  HTMLFormExample,
 } from "../../../../examples/color-wheel";
 
 # Color Wheel
@@ -42,20 +42,20 @@ The color wheel consists of:
 
 ```tsx
 <ColorWheel>
-	<ColorWheel.Label />
-	<ColorWheel.ValueLabel />
-	<ColorWheel.Track>
-		<ColorWheel.Thumb>
-			<ColorWheel.Input />
-		</ColorWheel.Thumb>
-	</ColorWheel.Track>
+  <ColorWheel.Label />
+  <ColorWheel.ValueLabel />
+  <ColorWheel.Track>
+    <ColorWheel.Thumb>
+      <ColorWheel.Input />
+    </ColorWheel.Thumb>
+  </ColorWheel.Track>
 </ColorWheel>
 ```
 
 ## Example
 
 <Preview>
-	<BasicExample />
+  <BasicExample />
 </Preview>
 
 <TabsSnippets>
@@ -71,7 +71,8 @@ The color wheel consists of:
 
     function App() {
       return (
-        <ColorWheel class="ColorWheelRoot" thickness={24}>
+        <ColorWheel class="ColorWheelRoot">
+            <ColorWheel.Label class="ColorWheelLabel">Label</ColorWheel.Label>
             <ColorWheel.Track class="ColorWheelTrack">
               <ColorWheel.Thumb class="ColorWheelThumb">
                 <ColorWheel.Input />
@@ -114,9 +115,9 @@ The color wheel consists of:
     }
 
     .ColorWheelLabel {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
+      font-size: 14px;
+      font-weight: 500;
+      user-select: none;
     }
     ```
 
@@ -131,7 +132,7 @@ The color wheel consists of:
 By default, `ColorWheel` is uncontrolled with a default value of red (hue = 0). You can change the default value using the `defaultValue` prop.
 
 <Preview>
-	<DefaultValueExample />
+  <DefaultValueExample />
 </Preview>
 
 ```tsx {6}
@@ -139,15 +140,16 @@ import { ColorWheel } from "@kobalte/core/color-wheel";
 import { parseColor } from "@kobalte/core";
 
 function App() {
-	return (
-		<ColorWheel defaultValue={parseColor("hsl(80, 100%, 50%)")} thickness={24}>
-			<ColorWheel.Track>
-				<ColorWheel.Thumb>
-					<ColorWheel.Input />
-				</ColorWheel.Thumb>
-			</ColorWheel.Track>
-		</ColorWheel>
-	);
+  return (
+    <ColorWheel defaultValue={parseColor("hsl(80, 100%, 50%)")}>
+      <ColorWheel.Label>Label</ColorWheel.Label>
+      <ColorWheel.Track>
+        <ColorWheel.Thumb>
+          <ColorWheel.Input />
+        </ColorWheel.Thumb>
+      </ColorWheel.Track>
+    </ColorWheel>
+  );
 }
 ```
 
@@ -156,27 +158,28 @@ function App() {
 A `ColorWheel` can be made controlled using the `value` prop. The `onChange` event is fired when the user drags the thumb and receive the new value.
 
 <Preview>
-	<ControlledValueExample />
+  <ControlledValueExample />
 </Preview>
 
 ```tsx {3, 8-9}
 import { createSignal } from "solid-js";
 
 function ControlledValueExample() {
-	const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
+  const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
 
-	return (
-		<>
-			<ColorWheel value={value()} onChange={setValue} thickness={24}>
-				<ColorWheel.Track>
-					<ColorWheel.Thumb>
-						<ColorWheel.Input />
-					</ColorWheel.Thumb>
-				</ColorWheel.Track>
-			</ColorWheel>
-			<p>Current color value: {value().toString("hsl")}</p>
-		</>
-	);
+  return (
+    <>
+      <ColorWheel value={value()} onChange={setValue}>
+        <ColorWheel.Label>Label</ColorWheel.Label>
+        <ColorWheel.Track>
+          <ColorWheel.Thumb>
+            <ColorWheel.Input />
+          </ColorWheel.Thumb>
+        </ColorWheel.Track>
+      </ColorWheel>
+      <p>Current color value: {value().toString("hsl")}</p>
+    </>
+  );
 }
 ```
 
@@ -185,45 +188,46 @@ function ControlledValueExample() {
 The `thickness` prop controls the width of the `ColorWheel`'s circular track. This prop is required.
 
 <Preview>
-	<ThicknessExample />
+  <ThicknessExample />
 </Preview>
 
 ```tsx {0}
-<ColorWheel thickness={56}>
-	<ColorWheel.Track>
-		<ColorWheel.Thumb>
-			<ColorWheel.Input />
-		</ColorWheel.Thumb>
-	</ColorWheel.Track>
+<ColorWheel thickness={60}>
+  <ColorWheel.Label>Label</ColorWheel.Label>
+  <ColorWheel.Track>
+    <ColorWheel.Thumb>
+      <ColorWheel.Input />
+    </ColorWheel.Thumb>
+  </ColorWheel.Track>
 </ColorWheel>
 ```
 
 ### Custom Value Label
 
 <Preview>
-	<CustomValueLabelExample />
+  <CustomValueLabelExample />
 </Preview>
 
 ```tsx {2-8}
 <ColorWheel
-	thickness={24}
-	getValueLabel={color =>
-		color
-			.toFormat("hsl")
-			.withChannelValue("saturation", 100)
-			.withChannelValue("lightness", 50)
-			.withChannelValue("alpha", 1)
-			.toString()
-	}
+  getValueLabel={color =>
+    color
+      .toFormat("hsl")
+      .withChannelValue("saturation", 100)
+      .withChannelValue("lightness", 50)
+      .withChannelValue("alpha", 1)
+      .toString()
+  }
 >
-	<div>
-		<ColorWheel.ValueLabel />
-	</div>
-	<ColorWheel.Track>
-		<ColorWheel.Thumb>
-			<ColorWheel.Input />
-		</ColorWheel.Thumb>
-	</ColorWheel.Track>
+  <ColorWheel.Label>Label</ColorWheel.Label>
+  <ColorWheel.Track>
+    <ColorWheel.Thumb>
+      <ColorWheel.Input />
+    </ColorWheel.Thumb>
+  </ColorWheel.Track>
+  <div>
+    <ColorWheel.ValueLabel />
+  </div>
 </ColorWheel>
 ```
 
@@ -232,26 +236,26 @@ The `thickness` prop controls the width of the `ColorWheel`'s circular track. Th
 `ColorWheel` supports the `name` prop for integration with HTML forms.
 
 <Preview>
-	<HTMLFormExample />
+  <HTMLFormExample />
 </Preview>
 
 ```tsx {7}
 function HTMLFormExample() {
-	const onSubmit = (e: SubmitEvent) => {
-		// handle form submission.
-	};
+  const onSubmit = (e: SubmitEvent) => {
+    // handle form submission.
+  };
 
-	return (
-		<form onSubmit={onSubmit}>
-			<ColorWheel name="hue" thickness={24}>
-				<ColorWheel.Track>
-					<ColorWheel.Thumb>
-						<ColorWheel.Input />
-					</ColorWheel.Thumb>
-				</ColorWheel.Track>
-			</ColorWheel>
-		</form>
-	);
+  return (
+    <form onSubmit={onSubmit}>
+      <ColorWheel name="hue">
+        <ColorWheel.Track>
+          <ColorWheel.Thumb>
+            <ColorWheel.Input />
+          </ColorWheel.Thumb>
+        </ColorWheel.Track>
+      </ColorWheel>
+    </form>
+  );
 }
 ```
 
@@ -265,7 +269,7 @@ function HTMLFormExample() {
 | :-------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
 | value           | `Color` <br/> The controlled value of the color wheel. Must be used in conjunction with `onChange`.                                     |
 | defaultValue    | `Color` <br/> The value of the color wheel when initially rendered. Use when you do not need to control the state of the color wheel.   |
-| thickness       | `number` <br/> The thickness of the track.                                                                                              |
+| thickness       | `number` <br/> The thickness of the track `0-100`.                                                                                              |
 | onChange        | `(value: Color) => void` <br/> Event handler called when the value changes.                                                             |
 | onChangeEnd     | `(value: Color) => void` <br/> Event handler called when the value changes at the end of an interaction.                                |
 | getValueLabel   | `(param: Color) => string` <br/> A function to get the accessible label text representing the current value in a human-readable format. |
@@ -295,6 +299,9 @@ function HTMLFormExample() {
 | `ColorWheel.Thumb`      | `span`                   |
 | `ColorWheel.Input`      | `input`                  |
 | `ColorWheel.ValueLabel` | `div`                    |
+| `ColorWheel.Label`             | `label`                  |
+| `ColorWheel.Description`       | `div`                    |
+| `ColorWheel.ErrorMessage`      | `div`                    |
 
 ## Accessibility
 

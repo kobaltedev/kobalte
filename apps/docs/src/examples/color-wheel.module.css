@@ -26,8 +26,16 @@
 	outline: none;
 }
 
-.ColorWheelLabel {
+.ColorWheelValueLabel {
 	display: flex;
 	justify-content: space-between;
-	width: 100%;
+	width: 20ch;
+	text-align: center;
+}
+
+
+.ColorWheelLabel {
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
 }

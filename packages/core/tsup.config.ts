@@ -62,7 +62,7 @@ function generateConfig(jsx: boolean): Options {
 				options.jsx = "preserve";
 			}
 			options.chunkNames = "[name]/[hash]";
-//			options.drop = ["console", "debugger"];
+			options.drop = ["console", "debugger"];
 		},
 		outExtension() {
 			return jsx ? { js: ".jsx" } : {};

@@ -6,6 +6,7 @@ import style from "./color-wheel.module.css";
 export function BasicExample() {
 	return (
 		<ColorWheel class={style.ColorWheelRoot}>
+				<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
 			<ColorWheel.Track class={style.ColorWheelTrack}>
 				<ColorWheel.Thumb class={style.ColorWheelThumb}>
 					<ColorWheel.Input />
@@ -21,6 +22,7 @@ export function DefaultValueExample() {
 			class={style.ColorWheelRoot}
 			defaultValue={parseColor("hsl(80, 100%, 50%)")}
 		>
+			<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
 			<ColorWheel.Track class={style.ColorWheelTrack}>
 				<ColorWheel.Thumb class={style.ColorWheelThumb}>
 					<ColorWheel.Input />
@@ -33,6 +35,7 @@ export function DefaultValueExample() {
 export function ThicknessExample() {
 	return (
 		<ColorWheel class={style.ColorWheelRoot} thickness={60}>
+				<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
 			<ColorWheel.Track class={style.ColorWheelTrack}>
 				<ColorWheel.Thumb class={style.ColorWheelThumb}>
 					<ColorWheel.Input />
@@ -52,6 +55,7 @@ export function ControlledValueExample() {
 				value={value()}
 				onChange={setValue}
 			>
+				<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
 				<ColorWheel.Track class={style.ColorWheelTrack}>
 					<ColorWheel.Thumb class={style.ColorWheelThumb}>
 						<ColorWheel.Input />
@@ -78,14 +82,13 @@ export function CustomValueLabelExample() {
 					.toString()
 			}
 		>
-			<div class={style.ColorWheelLabel}>
-				<ColorWheel.ValueLabel />
-			</div>
+			<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
 			<ColorWheel.Track class={style.ColorWheelTrack}>
 				<ColorWheel.Thumb class={style.ColorWheelThumb}>
 					<ColorWheel.Input />
 				</ColorWheel.Thumb>
 			</ColorWheel.Track>
+			<ColorWheel.ValueLabel class={style.ColorWheelValueLabel}/>
 		</ColorWheel>
 	);
 }
@@ -109,6 +112,7 @@ export function HTMLFormExample() {
 			class="flex flex-col items-center space-y-6"
 		>
 			<ColorWheel class={style.ColorWheelRoot} name="hue">
+				<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
 				<ColorWheel.Track class={style.ColorWheelTrack}>
 					<ColorWheel.Thumb class={style.ColorWheelThumb}>
 						<ColorWheel.Input />

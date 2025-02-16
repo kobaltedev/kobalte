@@ -97,7 +97,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Color Wheel",
 				href: "/docs/core/components/color-wheel",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Combobox",
