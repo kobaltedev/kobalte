@@ -10,7 +10,7 @@ import {
 	createEffect,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	splitProps, createMemo
 } from "solid-js";
 
 import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
@@ -33,6 +33,7 @@ import {
 	type ColorWheelContextValue,
 } from "./color-wheel-context";
 import { createColorWheelState } from "./create-color-wheel-state";
+import { createSize } from "../primitives/create-size";
 
 export interface ColorWheelRootOptions {
 	/** The localized strings of the component. */
@@ -140,18 +141,14 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 
 	const [trackRef, setTrackRef] = createSignal<HTMLElement>();
 	const [thumbRef, setThumbRef] = createSignal<HTMLElement>();
-	const [outerRadius, setOuterRadius] = createSignal<number>();
 
-	createEffect(() => {
-		const tr = trackRef();
-		if (tr) {
-			setOuterRadius(tr.getBoundingClientRect()?.width / 2);
+	const size = createSize(trackRef);
 
-			console.log("SET OUTER RADIUS", tr.getBoundingClientRect()?.width / 2);
-		}
+	const outerRadius = createMemo(() => {
+		if (size.width() === 0) return undefined;
+
+		return size.width() / 2;
 	});
-
-	createEffect(() => console.log("OUTER", outerRadius()))
 
 	const thumbRadius = () =>
 		((139.75 - (local.thickness / 100) * 70) * outerRadius()!) / 140;
