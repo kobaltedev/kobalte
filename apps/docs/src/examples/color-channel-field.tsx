@@ -8,7 +8,6 @@ export function BasicExample() {
 	return (
 		<ColorChannelField
 			class={style["color-channel-field"]}
-			defaultValue={parseColor("hsl(200, 98%, 39%)")}
 			channel="hue"
 		>
 			<ColorChannelField.Label class={style["color-channel-field__label"]}>

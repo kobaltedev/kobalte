@@ -76,7 +76,7 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 
 	const [value, setValue] = createControllableSignal<Color>({
 		value: () => local.value,
-		defaultValue: () => local.defaultValue,
+		defaultValue: () => local.defaultValue ?? parseColor("hsl(0, 100%, 50%)",
 		onChange: (value) => local.onChange?.(value),
 	});
 
@@ -99,9 +99,11 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 			color()!.withChannelValue(
 				local.channel,
 				!Number.isNaN(value)
-					? Math.max(
-							Math.min(value * multiplier(), range().maxValue),
-							range().minValue,
+					? Math.round(
+							Math.max(
+								Math.min(value * multiplier(), range().maxValue),
+								range().minValue,
+							),
 						)
 					: Number.NaN,
 			),

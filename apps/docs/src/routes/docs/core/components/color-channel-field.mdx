@@ -79,7 +79,7 @@ The color channel field consists of:
 
     function App() {
       return (
-        <ColorChannelField class={style["color-channel-field"]} defaultValue={parseColor("hsl(200, 98%, 39%)")} channel="hue">
+        <ColorChannelField class={style["color-channel-field"]} channel="hue">
         <ColorChannelField.Label class={style["color-channel-field__label"]}>
           Hue
         </ColorChannelField.Label>
@@ -184,8 +184,7 @@ The color channel field consists of:
 
 ## Usage
 
-A ColorChannelField requires either an uncontrolled default value or a controlled value, provided using the `defaultValue` or `value` props respectively.
-The value provided to either of these props should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string. The `channel` prop must also be provided to specify which color channel the field manipulates.
+The value provided to `defaultValue` or `value`  should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string. The `channel` prop must also be provided to specify which color channel the field manipulates.
 This must be one of the channels included in the color value, for example, for RGB colors, the "red", "green", and "blue" channels are available.
 
 ### Default value
