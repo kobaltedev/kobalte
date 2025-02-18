@@ -77,7 +77,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Color Channel Field",
 				href: "/docs/core/components/color-channel-field",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Color Field",

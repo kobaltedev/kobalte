@@ -60,7 +60,9 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 	const defaultId = `colorchannelfield-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
+		{
+			id: defaultId,
+		},
 		props as ColorChannelFieldRootProps,
 	);
 
@@ -71,10 +73,6 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 		"channel",
 		"colorSpace",
 	]);
-
-	if (!local.value && !local.defaultValue) {
-		throw new Error("ColorChannelField requires a value or defaultValue");
-	}
 
 	const [value, setValue] = createControllableSignal<Color>({
 		value: () => local.value,
@@ -100,7 +98,12 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 		setValue(
 			color()!.withChannelValue(
 				local.channel,
-				!Number.isNaN(value) ? value * multiplier() : Number.NaN,
+				!Number.isNaN(value)
+					? Math.max(
+							Math.min(value * multiplier(), range().maxValue),
+							range().minValue,
+						)
+					: Number.NaN,
 			),
 		);
 	};
@@ -114,9 +117,9 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 				>
 			>
 		>
-			value={
+			rawValue={
 				Number.isNaN(color()!.getChannelValue(local.channel))
-					? ""
+					? undefined
 					: color()!.getChannelValue(local.channel) / multiplier()
 			}
 			minValue={range().minValue / multiplier()}
