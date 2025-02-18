@@ -7,6 +7,7 @@ import {
 	splitProps,
 } from "solid-js";
 import type { Color, ColorChannel, ColorSpace } from "../colors";
+import { parseColor } from "../colors";
 import * as NumberField from "../number-field";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
@@ -76,7 +77,7 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 
 	const [value, setValue] = createControllableSignal<Color>({
 		value: () => local.value,
-		defaultValue: () => local.defaultValue ?? parseColor("hsl(0, 100%, 50%)",
+		defaultValue: () => local.defaultValue ?? parseColor("hsl(0, 100%, 50%)"),
 		onChange: (value) => local.onChange?.(value),
 	});
 

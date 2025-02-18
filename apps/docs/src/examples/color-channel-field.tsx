@@ -6,10 +6,7 @@ import style from "./color-channel-field.module.css";
 
 export function BasicExample() {
 	return (
-		<ColorChannelField
-			class={style["color-channel-field"]}
-			channel="hue"
-		>
+		<ColorChannelField class={style["color-channel-field"]} channel="hue">
 			<ColorChannelField.Label class={style["color-channel-field__label"]}>
 				Hue
 			</ColorChannelField.Label>
