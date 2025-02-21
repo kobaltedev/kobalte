@@ -2,7 +2,6 @@
 "@kobalte/core": patch
 ---
 
-
 ## v0.13.9 (February 21, 2025)
 
 **New features**
