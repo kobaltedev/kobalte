@@ -13,6 +13,7 @@ import {
 	splitProps,
 } from "solid-js";
 
+import { parseColor } from "../colors";
 import type { Color, ColorChannel, ColorSpace } from "../colors/types";
 import {
 	FORM_CONTROL_PROP_NAMES,
@@ -127,6 +128,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 			id: defaultId,
 			translations: COLOR_AREA_INTL_TRANSLATIONS,
 			disabled: false,
+			defaultValue: parseColor("hsl(0, 100%, 50%)"),
 		},
 		props as ColorAreaRootProps,
 	);

@@ -57,13 +57,14 @@ export function createColorAreaState(props: StateOpts): ColorAreaState {
 	const mergedProps: StateOpts = mergeDefaultProps(
 		{
 			isDisabled: () => false,
+			defaultValue: () => parseColor("hsl(0, 100%, 50%)"),
 		},
 		props,
 	);
 
 	const [value, setValue] = createControllableSignal<Color>({
 		value: mergedProps.value,
-		defaultValue: mergedProps.defaultValue ?? parseColor("hsl(0, 100%, 50%)"),
+		defaultValue: mergedProps.defaultValue,
 		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
