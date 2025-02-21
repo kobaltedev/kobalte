@@ -54,7 +54,13 @@ export function ColorSliderThumb<T extends ValidComponent = "span">(
 				Omit<ColorSliderThumbRenderProps, keyof Slider.SliderThumbRenderProps>
 			>
 		>
-			style={combineStyle({ "forced-color-adjust": "none" }, local.style)}
+			style={combineStyle(
+				{
+					"forced-color-adjust": "none",
+					"--kb-color-current": context.value().toString(),
+				},
+				local.style,
+			)}
 			aria-valuetext={valueText()}
 			{...others}
 		/>

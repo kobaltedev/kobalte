@@ -7,6 +7,7 @@ import {
 	splitProps,
 } from "solid-js";
 import type { Color, ColorChannel, ColorSpace } from "../colors";
+import { parseColor } from "../colors";
 import * as NumberField from "../number-field";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
@@ -60,7 +61,9 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 	const defaultId = `colorchannelfield-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
+		{
+			id: defaultId,
+		},
 		props as ColorChannelFieldRootProps,
 	);
 
@@ -72,13 +75,9 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 		"colorSpace",
 	]);
 
-	if (!local.value && !local.defaultValue) {
-		throw new Error("ColorChannelField requires a value or defaultValue");
-	}
-
 	const [value, setValue] = createControllableSignal<Color>({
 		value: () => local.value,
-		defaultValue: () => local.defaultValue,
+		defaultValue: () => local.defaultValue ?? parseColor("hsl(0, 100%, 50%)"),
 		onChange: (value) => local.onChange?.(value),
 	});
 
@@ -100,7 +99,14 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 		setValue(
 			color()!.withChannelValue(
 				local.channel,
-				!Number.isNaN(value) ? value * multiplier() : Number.NaN,
+				!Number.isNaN(value)
+					? Math.round(
+							Math.max(
+								Math.min(value * multiplier(), range().maxValue),
+								range().minValue,
+							),
+						)
+					: Number.NaN,
 			),
 		);
 	};
@@ -114,9 +120,9 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 				>
 			>
 		>
-			value={
+			rawValue={
 				Number.isNaN(color()!.getChannelValue(local.channel))
-					? ""
+					? undefined
 					: color()!.getChannelValue(local.channel) / multiplier()
 			}
 			minValue={range().minValue / multiplier()}

@@ -17,6 +17,7 @@ import {
 	splitProps,
 } from "solid-js";
 
+import { combineStyle } from "@solid-primitives/props";
 import { announce, clearAnnouncer } from "../live-announcer";
 import {
 	type ElementOf,
@@ -78,6 +79,7 @@ export interface SpinButtonRootOptions {
 export interface SpinButtonRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
+	style?: JSX.CSSProperties | string;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -110,6 +112,7 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 	);
 
 	const [local, others] = splitProps(mergedProps, [
+		"style",
 		"translations",
 		"value",
 		"textValue",
@@ -219,6 +222,12 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		<Polymorphic<SpinButtonRootRenderProps>
 			as="div"
 			role="spinbutton"
+			style={combineStyle(
+				{
+					"touch-action": "none",
+				},
+				local.style,
+			)}
 			aria-valuenow={
 				local.value != null && !Number.isNaN(local.value)
 					? local.value

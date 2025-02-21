@@ -98,7 +98,11 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 	const defaultId = `colorslider-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
-		{ id: defaultId, translations: COLOR_INTL_TRANSLATIONS },
+		{
+			id: defaultId,
+			translations: COLOR_INTL_TRANSLATIONS,
+			defaultValue: parseColor("hsl(0, 100%, 50%)"),
+		},
 		props as ColorSliderRootProps,
 	);
 
@@ -112,10 +116,6 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 		"getValueLabel",
 		"translations",
 	]);
-
-	if (!local.value && !local.defaultValue) {
-		throw new Error("ColorSlider requires a value or defaultValue");
-	}
 
 	const [value, setValue] = createControllableSignal<Color>({
 		value: () => local.value,

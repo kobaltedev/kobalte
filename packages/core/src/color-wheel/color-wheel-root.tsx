@@ -8,6 +8,7 @@ import {
 import {
 	type ValidComponent,
 	createEffect,
+	createMemo,
 	createSignal,
 	createUniqueId,
 	splitProps,
@@ -28,6 +29,7 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { createFormResetListener } from "../primitives";
+import { createSize } from "../primitives/create-size";
 import {
 	ColorWheelContext,
 	type ColorWheelContextValue,
@@ -114,6 +116,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 			getValueLabel: (param) => param.formatChannelValue("hue"),
 			translations: COLOR_INTL_TRANSLATIONS,
 			disabled: false,
+			thickness: 30,
 		},
 		props as ColorWheelRootProps,
 	);
@@ -139,14 +142,17 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 
 	const [trackRef, setTrackRef] = createSignal<HTMLElement>();
 	const [thumbRef, setThumbRef] = createSignal<HTMLElement>();
-	const [outerRadius, setOuterRadius] = createSignal<number>();
 
-	createEffect(() => {
-		setOuterRadius(trackRef()!.getBoundingClientRect()?.width / 2);
+	const size = createSize(trackRef);
+
+	const outerRadius = createMemo(() => {
+		if (size.width() === 0) return undefined;
+
+		return size.width() / 2;
 	});
 
-	const innerRadius = () => outerRadius()! - local.thickness;
-	const thumbRadius = () => (outerRadius()! + innerRadius()) / 2;
+	const thumbRadius = () =>
+		((139.75 - (local.thickness / 100) * 70) * outerRadius()!) / 140;
 
 	const state = createColorWheelState({
 		value: () => local.value,
@@ -264,7 +270,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	const context: ColorWheelContextValue = {
 		state,
 		outerRadius,
-		innerRadius,
+		thickness: () => local.thickness,
 		onDragStart,
 		onDrag,
 		onDragEnd,

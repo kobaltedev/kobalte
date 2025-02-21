@@ -9,7 +9,6 @@
 }
 
 .FileField__label {
-	color: white;
 	font-size: 14px;
 	font-weight: 500;
 	user-select: none;
@@ -31,7 +30,6 @@
 
 .FileField__trigger {
 	background-color: hsl(201 96% 32%);
-	color: white;
 	padding: 5px 10px;
 	border-radius: 4px;
 }
@@ -105,7 +103,6 @@
 
 .submit-btn {
 	background-color: hsl(201 96% 32%);
-	color: white;
 	padding: 5px 10px;
 	border-radius: 4px;
 	align-self: flex-end;

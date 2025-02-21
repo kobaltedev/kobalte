@@ -24,7 +24,7 @@ export interface ColorWheelThumbCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	style?: JSX.CSSProperties | string;
+	style: JSX.CSSProperties | string;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -146,6 +146,9 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 					transform: "translate(-50%, -50%)",
 					"forced-color-adjust": "none",
 					"touch-action": "none",
+					opacity: context.outerRadius() ? 1 : 0,
+					transition: "opacity .1s linear",
+					"--kb-color-current": context.state.value().toString(),
 				},
 				local.style,
 			)}

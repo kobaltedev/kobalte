@@ -31,7 +31,7 @@
 	height: 16px;
 	border-radius: 9999px;
 	border: 2px solid #fff;
-	box-shadow: 0 0 0 1px #0000006b;
+	background: var(--kb-color-current);
 }
 
 .ColorSliderThumb[data-orientation="vertical"] {

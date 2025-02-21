@@ -29,4 +29,4 @@ jobs:
         with:
           dry: true
           prettier_options: . --check
-          prettier_version: 4.0.0-alpha.8
+          prettier_version: 4.0.0-alpha.10

@@ -71,7 +71,7 @@ The color slider consists of:
 
     function App() {
       return (
-        <ColorSlider class="ColorSliderRoot" defaultValue={parseColor("rgb(2, 132, 197)")} channel="blue">
+        <ColorSlider class="ColorSliderRoot" channel="blue">
           <div class="ColorSliderLabel">
             <ColorSlider.Label>Blue</ColorSlider.Label>
             <ColorSlider.ValueLabel />
@@ -113,7 +113,7 @@ The color slider consists of:
       height: 16px;
       border-radius: 9999px;
       border: 2px solid #fff;
-      box-shadow: 0 0 0 1px #0000006b;
+      background: var(--kb-color-current);
     }
 
     .ColorSliderThumb:focus {
@@ -133,8 +133,7 @@ The color slider consists of:
 
 ## Usage
 
-A ColorSlider requires either an uncontrolled default value or a controlled value, provided using the `defaultValue` or `value` props respectively.
-The value provided to either of these props should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string. The `channel` prop must also be provided to specify which color channel the slider should display.
+The value provided to `defaultValue` or `value` should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string. The `channel` prop must also be provided to specify which color channel the slider should display.
 This must be one of the channels included in the color value, for example, for RGB colors, the "red", "green", and "blue" channels are available.
 
 ### Default value
@@ -493,15 +492,22 @@ This must be one of the channels included in the color value, for example, for R
 
 `ColorSlider.ValueLabel`, `ColorSlider.Input`, `ColorSlider.Thumb` and `ColorSlider.Track` share the same data-attributes.
 
+### ColorSlider.Thumb
+
+The current color is available on the thumb using the custom css property `--kb-color-current`.
+
 ## Rendered elements
 
-| Component                | Default rendered element |
-| :----------------------- | :----------------------- |
-| `ColorSlider`            | `div`                    |
-| `ColorSlider.Track`      | `div`                    |
-| `ColorSlider.Thumb`      | `span`                   |
-| `ColorSlider.Input`      | `input`                  |
-| `ColorSlider.ValueLabel` | `div`                    |
+| Component                  | Default rendered element |
+| :------------------------- | :----------------------- |
+| `ColorSlider`              | `div`                    |
+| `ColorSlider.Track`        | `div`                    |
+| `ColorSlider.Thumb`        | `span`                   |
+| `ColorSlider.Input`        | `input`                  |
+| `ColorSlider.ValueLabel`   | `div`                    |
+| `ColorSlider.Label`        | `label`                  |
+| `ColorSlider.Description`  | `div`                    |
+| `ColorSlider.ErrorMessage` | `div`                    |
 
 ## Accessibility
 

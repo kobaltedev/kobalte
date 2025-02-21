@@ -21,15 +21,15 @@
 	height: 16px;
 	border-radius: 9999px;
 	border: 2px solid #fff;
-	box-shadow: 0 0 0 1px #0000006b;
+	background: var(--kb-color-current);
 }
 
 .ColorAreaThumb:focus {
 	outline: none;
 }
 
-.ColorAreaLabel {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
+.ColorArealLabel {
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
 }

@@ -19,15 +19,22 @@
 	height: 16px;
 	border-radius: 9999px;
 	border: 2px solid #fff;
-	box-shadow: 0 0 0 1px #0000006b;
+	background: var(--kb-color-current);
 }
 
 .ColorWheelThumb:focus {
 	outline: none;
 }
 
-.ColorWheelLabel {
+.ColorWheelValueLabel {
 	display: flex;
 	justify-content: space-between;
-	width: 100%;
+	width: 20ch;
+	text-align: center;
+}
+
+.ColorWheelLabel {
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
 }

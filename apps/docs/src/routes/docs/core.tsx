@@ -72,32 +72,32 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Color Area",
 				href: "/docs/core/components/color-area",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Color Channel Field",
 				href: "/docs/core/components/color-channel-field",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Color Field",
 				href: "/docs/core/components/color-field",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Color Slider",
 				href: "/docs/core/components/color-slider",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Color Swatch",
 				href: "/docs/core/components/color-swatch",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Color Wheel",
 				href: "/docs/core/components/color-wheel",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Combobox",
@@ -168,7 +168,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Search",
 				href: "/docs/core/components/search",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Select",

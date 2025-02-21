@@ -1,6 +1,11 @@
 import { clamp, mergeDefaultProps, snapValueToStep } from "@kobalte/utils";
 import { type Accessor, batch, createMemo, createSignal } from "solid-js";
-import type { Color, ColorChannel, ColorSpace } from "../colors";
+import {
+	type Color,
+	type ColorChannel,
+	type ColorSpace,
+	parseColor,
+} from "../colors";
 import { createControllableSignal } from "../primitives";
 
 export interface ColorAreaState {
@@ -52,13 +57,10 @@ export function createColorAreaState(props: StateOpts): ColorAreaState {
 	const mergedProps: StateOpts = mergeDefaultProps(
 		{
 			isDisabled: () => false,
+			defaultValue: () => parseColor("hsl(0, 100%, 50%)"),
 		},
 		props,
 	);
-
-	if (!mergedProps.value() && !mergedProps.defaultValue()) {
-		throw new Error("ColorArea requires a value or defaultValue");
-	}
 
 	const [value, setValue] = createControllableSignal<Color>({
 		value: mergedProps.value,
