@@ -113,13 +113,9 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 		"translations",
 	]);
 
-	if (!local.value && !local.defaultValue) {
-		throw new Error("ColorSlider requires a value or defaultValue");
-	}
-
 	const [value, setValue] = createControllableSignal<Color>({
 		value: () => local.value,
-		defaultValue: () => local.defaultValue,
+		defaultValue: () => local.defaultValue ?? parseColor("hsl(0, 100%, 50%)"),
 		onChange: (value) => local.onChange?.(value),
 	});
 

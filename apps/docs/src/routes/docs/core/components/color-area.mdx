@@ -75,7 +75,7 @@ The color area consists of:
 
     function App() {
       return (
-        <ColorArea class="ColorAreaRoot" defaultValue={parseColor("rgb(2, 132, 197)")}>
+        <ColorArea class="ColorAreaRoot">
           <ColorArea.Label class="ColorAreaLabel">Label</ColorArea.Label>
           <ColorArea.Background class="ColorAreaBackground">
             <ColorArea.Thumb class="ColorAreaThumb">
@@ -102,23 +102,23 @@ The color area consists of:
     }
 
     .ColorAreaBackground {
-    position: relative;
-    border-radius: 6px;
-    height: 150px;
-    width: 150px;
+      position: relative;
+      border-radius: 6px;
+      height: 150px;
+      width: 150px;
     }
 
     .ColorAreaThumb {
-    display: block;
-    width: 16px;
-    height: 16px;
-    border-radius: 9999px;
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 1px #0000006b;
+      display: block;
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+      border: 2px solid #fff;
+      background: var(--kb-color-current);
     }
 
     .ColorAreaThumb:focus {
-    outline: none;
+       outline: none;
     }
 
     .ColorArealLabel {
@@ -134,8 +134,7 @@ The color area consists of:
 
 ## Usage
 
-A ColorArea requires either an uncontrolled default value or a controlled value, provided using the `defaultValue` or `value` props respectively.
-The value provided to either of these props should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string.
+The value provided to `defaultValue` or `value` should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string.
 The `xChannel` and `yChannel` must be one of the channels included in the color value, for example, for RGB colors, the "red", "green", and "blue" channels are available.
 If no `xChannel` or `yChannel` is provided, for the RGB color space, the red color channel maps to the horizontal axis or xChannel, and the green color channel maps to the vertical axis or yChannel. Similarly, for the HSL and HSB color spaces, the hue color channel maps to the horizontal axis or xChannel, and the saturation color channel maps to the vertical axis or yChannel.
 
@@ -146,7 +145,7 @@ If no `xChannel` or `yChannel` is provided, for the RGB color space, the red col
 </Preview>
 
 ```tsx {0}
-<ColorArea defaultValue={parseColor("hsb(219, 58%, 93%)")}>
+<ColorArea defaultValue={parseColor("rgb(2, 132, 197)")}>
 	<ColorArea.Label>Label</ColorArea.Label>
 	<ColorArea.Background>
 		<ColorArea.Thumb>
@@ -257,6 +256,10 @@ ColorArea supports the `xName` and `yName` props for integration with HTML forms
 | data-readonly  | Present when the slider is read only.                                              |
 
 `ColorArea.Background`, `ColorArea.Thumb`, `ColorArea.HiddenInputX`, `ColorArea.HiddenInputY` and `ColorArea.Label` share the same data-attributes.
+
+### ColorArea.Thumb
+
+The current color is available on the thumb using the custom css property `--kb-color-current`.
 
 ### ColorArea.HiddenInputX
 

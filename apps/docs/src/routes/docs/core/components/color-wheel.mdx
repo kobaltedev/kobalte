@@ -107,7 +107,7 @@ The color wheel consists of:
       height: 16px;
       border-radius: 9999px;
       border: 2px solid #fff;
-      box-shadow: 0 0 0 1px #0000006b;
+      background: var(--kb-color-current);
     }
 
     .ColorWheelThumb:focus {
@@ -289,6 +289,10 @@ function HTMLFormExample() {
 | data-readonly  | Present when the color wheel is read only.                                 |
 
 `ColorWheel.ValueLabel`, `ColorWheel.Input`, `ColorWheel.Thumb` and `ColorWheel.Track` share the same data-attributes.
+
+### ColorWheel.Thumb
+
+The current color is available on the thumb using the custom css property `--kb-color-current`.
 
 ## Rendered elements
 

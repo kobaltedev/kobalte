@@ -128,6 +128,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 					transform: "translate(-50%, -50%)",
 					"forced-color-adjust": "none",
 					"touch-action": "none",
+					"--kb-color-current": context.state.value().toString(),
 				},
 				local.style,
 			)}

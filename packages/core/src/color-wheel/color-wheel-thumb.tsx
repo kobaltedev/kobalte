@@ -148,6 +148,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 					"touch-action": "none",
 					opacity: context.outerRadius() ? 1 : 0,
 					transition: "opacity .1s linear",
+					"--kb-color-current": context.state.value().toString(),
 				},
 				local.style,
 			)}
