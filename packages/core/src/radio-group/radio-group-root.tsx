@@ -161,29 +161,36 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 		return formControlContext.getAriaDescribedBy(local["aria-describedby"]);
 	};
 
+	const isDefaultValue = (value: string) => {
+		return value === props.defaultValue;
+	};
+
 	const isSelectedValue = (value: string) => {
 		return value === selected();
 	};
 
+	const setSelectedValue = (value: string) => {
+		if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
+			return;
+		}
+
+		setSelected(value);
+
+		// Sync all radio input checked state in the group with the selected value.
+		// This is necessary because checked state might be out of sync
+		// (ex: when using controlled radio-group).
+		if (ref)
+			for (const el of ref.querySelectorAll("[type='radio']")) {
+				const radio = el as HTMLInputElement;
+				radio.checked = isSelectedValue(radio.value);
+			}
+	};
+
 	const context: RadioGroupContextValue = {
 		ariaDescribedBy,
+		isDefaultValue,
 		isSelectedValue,
-		setSelectedValue: (value) => {
-			if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
-				return;
-			}
-
-			setSelected(value);
-
-			// Sync all radio input checked state in the group with the selected value.
-			// This is necessary because checked state might be out of sync
-			// (ex: when using controlled radio-group).
-			if (ref)
-				for (const el of ref.querySelectorAll("[type='radio']")) {
-					const radio = el as HTMLInputElement;
-					radio.checked = isSelectedValue(radio.value);
-				}
-		},
+		setSelectedValue,
 	};
 
 	return (

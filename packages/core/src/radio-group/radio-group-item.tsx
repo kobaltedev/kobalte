@@ -96,6 +96,10 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
 	const [isFocused, setIsFocused] = createSignal(false);
 
+	const isDefault = createMemo(() => {
+		return radioGroupContext.isDefaultValue(local.value);
+	});
+
 	const isSelected = createMemo(() => {
 		return radioGroupContext.isSelectedValue(local.value);
 	});
@@ -122,6 +126,7 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 	const context: RadioGroupItemContextValue = {
 		value: () => local.value,
 		dataset,
+		isDefault,
 		isSelected,
 		isDisabled,
 		inputId,

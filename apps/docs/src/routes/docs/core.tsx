@@ -171,6 +171,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				status: "new",
 			},
 			{
+				title: "Segmented Control",
+				href: "/docs/core/components/segmented-control",
+				status: "unreleased",
+			},
+			{
 				title: "Select",
 				href: "/docs/core/components/select",
 			},
