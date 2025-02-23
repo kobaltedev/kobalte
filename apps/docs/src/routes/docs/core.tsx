@@ -166,6 +166,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/radio-group",
 			},
 			{
+				title: "Rating Group",
+				href: "/docs/core/components/rating-group",
+				status: "new",
+			},
+			{
 				title: "Search",
 				href: "/docs/core/components/search",
 				status: "new",
