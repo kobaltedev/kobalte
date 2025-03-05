@@ -9,8 +9,13 @@
 	},
 	"license": "MIT",
 	"author": "jer3m01 <jer3m01@jer3m01.com>",
-	"contributors": ["Fabien Marie-Louise <fabienml.dev@gmail.com>"],
-	"workspaces": ["apps/*", "packages/*"],
+	"contributors": [
+		"Fabien Marie-Louise <fabienml.dev@gmail.com>"
+	],
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
 	"scripts": {
 		"build": "turbo run build",
 		"build:libs": "pnpm -F \\!docs -F \\!playground build && pnpm i",
@@ -56,7 +61,7 @@
 		"rollup-plugin-license": "3.2.0",
 		"rollup-preset-solid": "2.0.1",
 		"solid-js": "1.8.15",
-		"tsup": "7.2.0",
+		"tsup": "8.4.0",
 		"turbo": "1.10.13",
 		"typescript": "4.9.5",
 		"vite": "5.0.11",
