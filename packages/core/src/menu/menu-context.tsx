@@ -37,7 +37,9 @@ export interface MenuContextValue {
 	setPointerGraceTimeoutId: (id: number) => void;
 	setPointerGraceIntent: (intent: GraceIntent | null) => void;
 	registerNestedMenu: (element: HTMLElement) => () => void;
-	registerItemToParentDomCollection: ((item: CollectionItemWithRef) => () => void) | undefined;
+	registerItemToParentDomCollection:
+		| ((item: CollectionItemWithRef) => () => void)
+		| undefined;
 	registerTriggerId: (id: string) => () => void;
 	registerContentId: (id: string) => () => void;
 	nestedMenus: Accessor<Element[]>;
@@ -54,7 +56,9 @@ export function useMenuContext() {
 	const context = useOptionalMenuContext();
 
 	if (context === undefined) {
-		throw new Error("[kobalte]: `useMenuContext` must be used within a `Menu` component");
+		throw new Error(
+			"[kobalte]: `useMenuContext` must be used within a `Menu` component",
+		);
 	}
 
 	return context;

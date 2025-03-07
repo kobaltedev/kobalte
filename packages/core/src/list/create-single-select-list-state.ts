@@ -9,9 +9,17 @@
 import { access } from "@kobalte/utils";
 import { type Accessor, createMemo, mergeProps, splitProps } from "solid-js";
 
-import { type CollectionBase, type CollectionNode, createControllableSignal } from "../primitives";
+import {
+	type CollectionBase,
+	type CollectionNode,
+	createControllableSignal,
+} from "../primitives";
 import type { SingleSelection } from "../selection";
-import { type CreateListStateProps, type ListState, createListState } from "./create-list-state";
+import {
+	type CreateListStateProps,
+	type ListState,
+	createListState,
+} from "./create-list-state";
 
 export interface CreateSingleSelectListStateProps
 	extends CollectionBase,
@@ -41,7 +49,7 @@ export function createSingleSelectListState(
 	const [selectedKey, setSelectedKey] = createControllableSignal<string>({
 		value: () => access(props.selectedKey),
 		defaultValue: () => access(props.defaultSelectedKey),
-		onChange: value => props.onSelectionChange?.(value),
+		onChange: (value) => props.onSelectionChange?.(value),
 	});
 
 	const selectedKeys = createMemo(() => {
@@ -49,7 +57,9 @@ export function createSingleSelectListState(
 		return selection != null ? [selection] : [];
 	});
 
-	const [, defaultCreateListStateProps] = splitProps(props, ["onSelectionChange"]);
+	const [, defaultCreateListStateProps] = splitProps(props, [
+		"onSelectionChange",
+	]);
 
 	const createListStateProps = mergeProps(defaultCreateListStateProps, {
 		selectionMode: "single",
@@ -69,7 +79,8 @@ export function createSingleSelectListState(
 		},
 	} as Partial<CreateListStateProps>);
 
-	const { collection, selectionManager } = createListState(createListStateProps);
+	const { collection, selectionManager } =
+		createListState(createListStateProps);
 
 	const selectedItem = createMemo(() => {
 		const selection = selectedKey();

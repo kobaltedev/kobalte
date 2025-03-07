@@ -99,8 +99,8 @@ import {
 	type ContextMenuTriggerProps,
 	type ContextMenuTriggerRenderProps,
 	ContextMenuTrigger as Trigger,
+	type UseContextMenuTriggerProps,
 	useContextMenuTrigger,
-	UseContextMenuTriggerProps,
 } from "./context-menu-trigger";
 
 export type {
