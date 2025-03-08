@@ -6,7 +6,7 @@ export function BasicExample() {
 	return (
 		<Meter value={80} class={style.meter}>
 			<div class={style["meter__label-container"]}>
-				<Meter.Label class={style.meter__label}>Batter Level:</Meter.Label>
+				<Meter.Label class={style.meter__label}>Battery Level:</Meter.Label>
 				<Meter.ValueLabel class={style["meter__value-label"]} />
 			</div>
 			<Meter.Track class={style.meter__track}>
