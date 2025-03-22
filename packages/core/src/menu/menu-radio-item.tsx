@@ -10,10 +10,10 @@ import {
 } from "./menu-item-base";
 import { useMenuRadioGroupContext } from "./menu-radio-group-context";
 
-export interface MenuRadioItemOptions
+export interface MenuRadioItemOptions<TValue = string>
 	extends Omit<MenuItemBaseOptions, "checked" | "indeterminate"> {
 	/** The value of the menu item radio. */
-	value: string;
+	value: TValue;
 }
 
 export interface MenuRadioItemCommonProps<T extends HTMLElement = HTMLElement>
@@ -27,19 +27,22 @@ export interface MenuRadioItemRenderProps
 
 export type MenuRadioItemProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = MenuRadioItemOptions & Partial<MenuRadioItemCommonProps<ElementOf<T>>>;
+	TValue = string,
+> = MenuRadioItemOptions<TValue> &
+	Partial<MenuRadioItemCommonProps<ElementOf<T>>>;
 
 /**
  * An item that can be controlled and rendered like a radio.
  */
-export function MenuRadioItem<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuRadioItemProps<T>>,
-) {
-	const context = useMenuRadioGroupContext();
+export function MenuRadioItem<
+	T extends ValidComponent = "div",
+	TValue = string,
+>(props: PolymorphicProps<T, MenuRadioItemProps<T, TValue>>) {
+	const context = useMenuRadioGroupContext<TValue>();
 
 	const mergedProps = mergeDefaultProps(
 		{ closeOnSelect: false },
-		props as MenuRadioItemProps,
+		props as MenuRadioItemProps<T, TValue>,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["value", "onSelect"]);
