@@ -28,18 +28,18 @@ import {
 } from "./menu-radio-group-context";
 import { useMenuRootContext } from "./menu-root-context";
 
-export interface MenuRadioGroupOptions {
+export interface MenuRadioGroupOptions<TValue = string> {
 	/** The controlled value of the item radio to check. */
-	value?: string;
+	value?: TValue;
 
 	/**
 	 * The value of the item radio that should be checked when initially rendered.
 	 * Useful when you do not need to control the state of the menu radio group.
 	 */
-	defaultValue?: string;
+	defaultValue?: TValue;
 
 	/** Event handler called when the value changes. */
-	onChange?: (value: string) => void;
+	onChange?: (value: TValue) => void;
 
 	/** Whether the menu radio group is disabled. */
 	disabled?: boolean;
@@ -56,14 +56,17 @@ export interface MenuRadioGroupRenderProps
 
 export type MenuRadioGroupProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = MenuRadioGroupOptions & Partial<MenuRadioGroupCommonProps<ElementOf<T>>>;
+	TValue = string,
+> = MenuRadioGroupOptions<TValue> &
+	Partial<MenuRadioGroupCommonProps<ElementOf<T>>>;
 
 /**
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
-export function MenuRadioGroup<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, MenuRadioGroupProps<T>>,
-) {
+export function MenuRadioGroup<
+	T extends ValidComponent = "div",
+	TValue = string,
+>(props: PolymorphicProps<T, MenuRadioGroupProps<T, TValue>>) {
 	const rootContext = useMenuRootContext();
 
 	const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);
@@ -72,7 +75,7 @@ export function MenuRadioGroup<T extends ValidComponent = "div">(
 		{
 			id: defaultId,
 		},
-		props as MenuRadioGroupProps,
+		props as MenuRadioGroupProps<T, TValue>,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -82,16 +85,17 @@ export function MenuRadioGroup<T extends ValidComponent = "div">(
 		"disabled",
 	]);
 
-	const [selected, setSelected] = createControllableSignal<string>({
+	const [selected, setSelected] = createControllableSignal<TValue>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
 		onChange: (value) => local.onChange?.(value),
 	});
 
-	const context: MenuRadioGroupContextValue = {
+	const context: MenuRadioGroupContextValue<TValue> = {
 		isDisabled: () => local.disabled,
-		isSelectedValue: (value: string) => value === selected(),
-		setSelectedValue: setSelected,
+		isSelectedValue: (value: TValue) => value === selected(),
+		setSelectedValue: (value: TValue) =>
+			setSelected(value as Exclude<TValue, Function>),
 	};
 
 	return (
