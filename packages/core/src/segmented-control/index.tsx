@@ -32,10 +32,6 @@ import {
 	type RadioGroupItemLabelRenderProps as SegmentedControlItemLabelRenderProps,
 } from "../radio-group";
 import {
-	type SegmentedControlContextValue,
-	useSegmentedControlContext as useContext,
-} from "./segmented-control-context";
-import {
 	SegmentedControlIndicator as Indicator,
 	type SegmentedControlIndicatorCommonProps,
 	type SegmentedControlIndicatorOptions,
@@ -62,7 +58,6 @@ import {
 } from "./segmented-control-root";
 
 export type {
-	SegmentedControlContextValue,
 	SegmentedControlDescriptionCommonProps,
 	SegmentedControlDescriptionOptions,
 	SegmentedControlDescriptionProps,
@@ -114,7 +109,6 @@ export {
 	ItemLabel,
 	Label,
 	Root,
-	useContext,
 };
 
 export const SegmentedControl = Object.assign(Root, {
@@ -128,5 +122,4 @@ export const SegmentedControl = Object.assign(Root, {
 	ItemInput,
 	ItemLabel,
 	Label,
-	useContext,
 });

@@ -64,8 +64,8 @@ export type MenuRadioGroupProps<
  * A container used to group multiple `Menu.RadioItem`s and manage the selection.
  */
 export function MenuRadioGroup<
-	T extends ValidComponent = "div",
 	TValue = string,
+	T extends ValidComponent = "div",
 >(props: PolymorphicProps<T, MenuRadioGroupProps<T, TValue>>) {
 	const rootContext = useMenuRootContext();
 

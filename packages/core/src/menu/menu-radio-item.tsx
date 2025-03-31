@@ -35,8 +35,8 @@ export type MenuRadioItemProps<
  * An item that can be controlled and rendered like a radio.
  */
 export function MenuRadioItem<
-	T extends ValidComponent = "div",
 	TValue = string,
+	T extends ValidComponent = "div",
 >(props: PolymorphicProps<T, MenuRadioItemProps<T, TValue>>) {
 	const context = useMenuRadioGroupContext<TValue>();
 
