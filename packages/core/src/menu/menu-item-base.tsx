@@ -200,7 +200,9 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		} else {
 			menuContext.onItemEnter(e);
 
-			if (!e.defaultPrevented) {
+			const canFocus = !e.defaultPrevented && !menuContext.autoFocusDisabled();
+
+			if (canFocus) {
 				focusWithoutScrolling(e.currentTarget);
 				menuContext.listState().selectionManager().setFocused(true);
 				menuContext.listState().selectionManager().setFocusedKey(key());
