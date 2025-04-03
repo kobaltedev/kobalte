@@ -1,0 +1,274 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+	BasicExample,
+	ImagePreviewExample,
+	HTMLFormExample,
+} from "../../../../examples/signature-pad";
+
+# Signature Pad
+
+- A component that allows users to draw their signature using a mouse, stylus, or finger.
+
+## Import
+
+```ts
+import { SignaturePad } from "@kobalte/core/signature-pad";
+// or
+import { Root } from "@kobalte/core/signature-pad";
+// or (deprecated)
+import { SignaturePad } from "@kobalte/core";
+```
+
+## Features
+
+- **Draw Signature**: Users can draw their signature using a mouse, stylus, or finger.
+- **Clear Signature**: Users can clear the signature pad.
+- **Signature Image**: Users can get the signature as an image.
+- **Customization**: The signature drawing can be customized using various options.
+
+## Anatomy
+
+The Signature Pad consists of:
+
+- **SignaturePad**: The root container for the Signature Pad component.
+- **SignaturePad.Label**: The label for the Signature Pad component.
+- **SignaturePad.Control**: The container for the signature drawing area and the control buttons.
+- **SignaturePad.Segment**: SVG container for the signature drawing area.
+- **SignaturePad.ClearTrigger**: The trigger element to clear the signature.
+- **SignaturePad.Guide**: The divider line for the signature drawing area.
+- **SignaturePad.HiddenInput**: The hidden input field to store the signature data which can be used in forms.
+- **SignaturePad.Context**: The context provider for the signature pad component.
+
+```tsx
+<SignaturePad>
+	<SignaturePad.Label></SignaturePad.Label>
+	<SignaturePad.Control>
+		<SignaturePad.Segment />
+		<SignaturePad.ClearTrigger></SignaturePad.ClearTrigger>
+		<SignaturePad.Guide />
+	</SignaturePad.Control>
+	<SignaturePad.HiddenInput></SignaturePad.HiddenInput>
+</SignaturePad>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+	{/* <!-- prettier-ignore-start -->*/}
+	<TabsSnippets.Content value="index.tsx">
+		```tsx
+		import { SignaturePad } from "@kobalte/core/signature-pad";
+		import "./style.css";
+
+    	function App() {
+    		return (
+    			<SignaturePad
+    					class={styles["signature-pad-root"]}
+    					onDrawing={(details) => console.log("onDrawing", details)}
+    					onDrawingEnd={async (details) => {
+    						console.log("onDrawingEnd", details);
+    					}}
+    				>
+    					<SignaturePad.Label class={styles["signature-pad-label"]}>
+    						Sign here
+    					</SignaturePad.Label>
+    					<SignaturePad.Control class={styles["signature-pad-control"]}>
+    						<SignaturePad.Segment class={styles["signature-pad-segment"]} />
+    						<SignaturePad.ClearTrigger
+    							class={styles["signature-pad-clear-trigger"]}
+    						>
+    							&#x21bb;
+    						</SignaturePad.ClearTrigger>
+    						<SignaturePad.Guide class={styles["signature-pad-guide"]} />
+    					</SignaturePad.Control>
+    				</SignaturePad>
+    		);
+    	}
+    ```
+
+    </TabsSnippets.Content>
+
+  <TabsSnippets.Content value="style.css">
+
+```css
+.signature-pad-root {
+	width: 400px;
+	height: 400px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	row-gap: 20px;
+	align-items: center;
+	border: 1px solid #fff;
+}
+
+.signature-pad-label {
+	color: #fff;
+	font-size: 20px;
+}
+
+.signature-pad-control {
+	width: 100%;
+	height: 100%;
+	border: 1px dashed #fff;
+	position: relative;
+}
+
+.signature-pad-segment {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	fill: #ccc;
+}
+
+.signature-pad-clear-trigger {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	cursor: pointer;
+	background-color: transparent;
+	color: #ccc;
+	border-color: transparent;
+	border-radius: 3px;
+	font-size: 20px;
+	padding: 5px;
+	margin: 0;
+	width: max-content;
+}
+
+.signature-pad-clear-trigger:hover {
+	background-color: gray;
+}
+
+.signature-pad-guide {
+	border-bottom: 1px dashed #ccc;
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+	right: 20px;
+}
+```
+
+    </TabsSnippets.Content>
+    {/* <!-- prettier-ignore-end -->*/}
+
+</TabsSnippets>
+
+## Usage
+
+### Image Preview
+
+After drawing an image, an Image preview can be shown to user, so that they can review the signature before saving it.
+
+<Preview>
+	<ImagePreviewExample />
+</Preview>
+
+```tsx
+function ImagePreviewExample() {
+	const [imageUrl, setImageUrl] = createSignal<string>();
+
+	return (
+		<>
+			<SignaturePad
+				class={styles["signature-pad-root"]}
+				onDrawing={details => console.log("onDrawing", details)}
+				onDrawingEnd={async details => {
+					console.log("onDrawingEnd", details);
+					details.getDataUrl({ type: "image/png" }).then(dataUrl => {
+						setImageUrl(dataUrl);
+					});
+				}}
+			>
+				<SignaturePad.Label class={styles["signature-pad-label"]}>Sign here</SignaturePad.Label>
+				<SignaturePad.Control class={styles["signature-pad-control"]}>
+					<SignaturePad.Segment class={styles["signature-pad-segment"]} />
+					<SignaturePad.ClearTrigger class={styles["signature-pad-clear-trigger"]}>
+						&#x21bb;
+					</SignaturePad.ClearTrigger>
+					<SignaturePad.Guide class={styles["signature-pad-guide"]} />
+				</SignaturePad.Control>
+				<SignaturePad.HiddenInput name="signature" value={imageUrl()} />
+			</SignaturePad>
+			<Show when={imageUrl()}>
+				<img src={imageUrl()} alt="Signature" />
+			</Show>
+		</>
+	);
+}
+```
+
+### HTML forms
+
+By passing name prop to SignaturePad.HiddenInput, you can use Signature Pad in HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx
+function HTMLFormExample() {
+	let formRef: HTMLFormElement | undefined;
+
+	const [imageUrl, setImageUrl] = createSignal<string>();
+
+	const onSubmit = (e: SubmitEvent) => {
+		event.preventDefault();
+		const formData = new FormData(formRef);
+		console.log("formData", formData.get("signature"));
+	};
+
+	return (
+		<form onSubmit={onSubmit} ref={formRef}>
+			<SignaturePad
+				class={styles["signature-pad-root"]}
+				onDrawing={details => console.log("onDrawing", details)}
+				onDrawingEnd={async details => {
+					console.log("onDrawingEnd", details);
+					details.getDataUrl({ type: "image/png" }).then(dataUrl => {
+						setImageUrl(dataUrl);
+					});
+				}}
+			>
+				<SignaturePad.Label class={styles["signature-pad-label"]}>Sign here</SignaturePad.Label>
+				<SignaturePad.Control class={styles["signature-pad-control"]}>
+					<SignaturePad.Segment class={styles["signature-pad-segment"]} />
+					<SignaturePad.ClearTrigger class={styles["signature-pad-clear-trigger"]}>
+						&#x21bb;
+					</SignaturePad.ClearTrigger>
+					<SignaturePad.Guide class={styles["signature-pad-guide"]} />
+				</SignaturePad.Control>
+				<SignaturePad.HiddenInput name="signature" value={imageUrl()} />
+			</SignaturePad>
+			<Show when={imageUrl()}>
+				<img src={imageUrl()} alt="Signature" />
+			</Show>
+			<button type="submit">Submit</button>
+		</form>
+	);
+}
+```
+
+## API Reference
+
+### SignaturePad
+
+`SignaturePad` is equivalent to the `Root` import from `@kobalte/core/signature-pad` (and deprecated `SignaturePad.Root`).
+
+| Prop             | Description                                                                                                 |
+| ---------------- | ----------------------------------------------------------------------------------------------------------- |
+| `disabled`       | `boolean` <br /> Disables the signature pad component                                                       |
+| `drawingOptions` | `DrawingOptions` <br /> Options for drawing the signature.                                                  |
+| `onDrawing`      | `(details: DrawingDetails) => void` <br /> Callback function that is called when the user is drawing.       |
+| `onDrawingEnd`   | `(details: DrawingEndDetails) => void` <br /> Callback function that is called when the user stops drawing. |
