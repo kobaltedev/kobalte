@@ -38,7 +38,7 @@ The File Field consists of:
 - **FileField.HiddenInput**: The hidden input element that triggers the file selection dialog.
 - **FileField.ItemList**: The container for the list of files that have been selected for upload.
 - **FileField.Item**: The individual file item in the list of files that have been selected for upload.
-- **FileField.Preview**: The preview for matching file types that have been selected for upload.
+- **FileField.ItemPreview**: The preview for matching file types that have been selected for upload.
 - **FileField.ItemPreviewImage**: The preview image for image files that have been selected for upload.
 - **FileField.ItemName**: The name of the file that has been selected for upload.
 - **FileField.ItemSize**: The size of the file that has been selected for upload.
@@ -97,12 +97,12 @@ The File Field consists of:
             <FileField.Label class={style.FileField__label}>
               File Field
             </FileField.Label>
-            <FileField.DropZone class={style.FileField__dropzone}>
+            <FileField.Dropzone class={style.FileField__dropzone}>
               Drop your files here...
               <FileField.Trigger class={style.FileField__trigger}>
                 Choose files!
               </FileField.Trigger>
-            </FileField.DropZone>
+            </FileField.Dropzone>
             <FileField.HiddenInput />
             <FileField.ItemList class={style.FileField__itemList}>
               {(file) => (
@@ -343,7 +343,7 @@ function HTMLFormExample() {
 | `FileField.HiddenInput`       | `input`                  |
 | `FileField.ItemList`          | `ul`                     |
 | `FileField.Item`              | `li`                     |
-| `FileField.Preview`           | `div`                    |
+| `FileField.ItemPreview`       | `div`                    |
 | `FileField.ItemPreviewImage`  | `img`                    |
 | `FileField.ItemName`          | `span`                   |
 | `FileField.ItemSize`          | `span`                   |
