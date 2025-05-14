@@ -262,6 +262,7 @@ class RGBColor extends Color {
 		super();
 	}
 
+
 	static parse(value: string) {
 		let colors: Array<number | undefined> = [];
 		// matching #rgb, #rgba, #rrggbb, #rrggbbaa
@@ -280,7 +281,13 @@ class RGBColor extends Color {
 		// matching rgb(rrr, ggg, bbb), rgba(rrr, ggg, bbb, 0.a)
 		const match = value.match(/^rgba?\((.*)\)$/);
 		if (match?.[1]) {
-			colors = match[1].split(",").map((value) => Number(value.trim()));
+			colors = match[1]
+				.replace(/(\d+)%$/u, (_substring, numberValue) => (Number(numberValue) / 100).toString())
+				.replaceAll(/,|\//gu, ' ')
+				.replaceAll(/\s{2,}/gu,' ')
+				.split(" ").map((value) => {
+					return Number(value.trim())
+				});
 			colors = colors.map((num, i) => {
 				return clamp(num ?? 0, 0, i < 3 ? 255 : 1);
 			});
@@ -315,9 +322,9 @@ class RGBColor extends Color {
 						.toString(16)
 						.padStart(2, "0")
 				).toUpperCase()}`;
-			case "rgb":
-				return `rgb(${this.red}, ${this.green}, ${this.blue})`;
 			case "css":
+			case "rgb":
+				return `rgb(${this.red} ${this.green} ${this.blue}${this.alpha !==1 && this.alpha !== 100 ? ' / ' + this?.alpha  : ''})`;
 			case "rgba":
 				return `rgba(${this.red}, ${this.green}, ${this.blue}, ${this.alpha})`;
 			default:
@@ -521,9 +528,9 @@ class HSBColor extends Color {
 			case "hexa":
 				return this.toRGB().toString("hexa");
 			case "hsb":
-				return `hsb(${this.hue}, ${toFixedNumber(this.saturation, 2)}%, ${toFixedNumber(this.brightness, 2)}%)`;
+				return `hsb(${this.hue} ${toFixedNumber(this.saturation, 2)}% ${toFixedNumber(this.brightness, 2)}%)`;
 			case "hsba":
-				return `hsba(${this.hue}, ${toFixedNumber(this.saturation, 2)}%, ${toFixedNumber(this.brightness, 2)}%, ${this.alpha})`;
+				return `hsba(${this.hue} ${toFixedNumber(this.saturation, 2)}% ${toFixedNumber(this.brightness, 2)}% ${this.alpha})`;
 			default:
 				return this.toFormat(format).toString(format);
 		}
@@ -679,10 +686,10 @@ class HSLColor extends Color {
 			case "hexa":
 				return this.toRGB().toString("hexa");
 			case "hsl":
-				return `hsl(${this.hue}, ${toFixedNumber(this.saturation, 2)}%, ${toFixedNumber(this.lightness, 2)}%)`;
+				return `hsl(${this.hue} ${toFixedNumber(this.saturation, 2)}% ${toFixedNumber(this.lightness, 2)}%${this.alpha !==1 && this.alpha !== 100 ? ' / ' + this.alpha : ''})`;
 			case "css":
 			case "hsla":
-				return `hsla(${this.hue}, ${toFixedNumber(this.saturation, 2)}%, ${toFixedNumber(this.lightness, 2)}%, ${this.alpha})`;
+				return `hsla(${this.hue} ${toFixedNumber(this.saturation, 2)}% ${toFixedNumber(this.lightness, 2)}% / ${this.alpha})`;
 			default:
 				return this.toFormat(format).toString(format);
 		}
