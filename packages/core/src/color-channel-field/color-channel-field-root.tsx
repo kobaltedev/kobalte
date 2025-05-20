@@ -1,4 +1,4 @@
-import { mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, clamp } from "@kobalte/utils";
 import {
 	type Component,
 	type ValidComponent,
@@ -48,7 +48,7 @@ export interface ColorChannelFieldRootCommonProps<
 
 export interface ColorChannelFieldRootRenderProps
 	extends ColorChannelFieldRootCommonProps,
-		NumberField.NumberFieldRootRenderProps {}
+	NumberField.NumberFieldRootRenderProps { }
 
 export type ColorChannelFieldRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -96,19 +96,18 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 	);
 
 	const onRawValueChange = (value: number) => {
-		setValue(
-			color()!.withChannelValue(
-				local.channel,
-				!Number.isNaN(value)
-					? Math.round(
-							Math.max(
-								Math.min(value * multiplier(), range().maxValue),
-								range().minValue,
-							),
-						)
-					: Number.NaN,
-			),
-		);
+		if (Number.isNaN(value)) {
+			setValue(color()!.withChannelValue(local.channel, Number.NaN));
+			return;
+		}
+
+		const clampedValue = clamp(value * multiplier(), range().minValue, range().maxValue);
+
+		const digits = formatOptions().maximumFractionDigits ?? 0;
+
+		const roundedValue = Math.round(clampedValue * (10 ** digits)) / (10 ** digits);
+
+		setValue(color()!.withChannelValue(local.channel, roundedValue));
 	};
 
 	return (
