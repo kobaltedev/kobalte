@@ -98,3 +98,11 @@ export const ColorSlider = Object.assign(Root, {
 	Track,
 	ValueLabel,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useColorSliderContext,
+	type ColorSliderContextValue,
+} from "./color-slider-context";

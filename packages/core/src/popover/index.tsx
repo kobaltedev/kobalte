@@ -113,3 +113,8 @@ export const Popover = Object.assign(Root, {
 	Title,
 	Trigger,
 });
+
+/**
+ * API will most probably change
+ */
+export { usePopoverContext, type PopoverContextValue } from "./popover-context";

@@ -60,3 +60,11 @@ export const ColorField = Object.assign(Root, {
 	Input,
 	Label,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useColorFieldContext,
+	type ColorFieldContextValue,
+} from "./color-field-context";

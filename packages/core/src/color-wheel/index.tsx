@@ -100,3 +100,11 @@ export const ColorWheel = Object.assign(Root, {
 	Track,
 	ValueLabel,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useColorWheelContext,
+	type ColorWheelContextValue,
+} from "./color-wheel-context";

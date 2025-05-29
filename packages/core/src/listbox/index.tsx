@@ -77,3 +77,8 @@ export const Listbox = Object.assign(Root, {
 	ItemLabel,
 	Section,
 });
+
+/**
+ * API will most probably change
+ */
+export { useListboxContext, type ListboxContextValue } from "./listbox-context";

@@ -99,3 +99,11 @@ export const NumberField = Object.assign(Root, {
 	DecrementTrigger,
 	Label,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useNumberFieldContext,
+	type NumberFieldContextValue,
+} from "./number-field-context";

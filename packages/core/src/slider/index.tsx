@@ -111,3 +111,8 @@ export const Slider = Object.assign(Root, {
 	Track,
 	ValueLabel,
 });
+
+/**
+ * API will most probably change
+ */
+export { useSliderContext, type SliderContextValue } from "./slider-context";

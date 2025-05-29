@@ -94,3 +94,11 @@ export const ColorArea = Object.assign(Root, {
 	HiddenInputX,
 	HiddenInputY,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useColorAreaContext,
+	type ColorAreaContextValue,
+} from "./color-area-context";

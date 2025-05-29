@@ -245,3 +245,11 @@ export const NavigationMenu = Object.assign(Root, {
 	Trigger,
 	Viewport,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useNavigationMenuContext,
+	type NavigationMenuContextValue,
+} from "./navigation-menu-context";

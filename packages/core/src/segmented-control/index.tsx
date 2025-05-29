@@ -123,3 +123,11 @@ export const SegmentedControl = Object.assign(Root, {
 	ItemLabel,
 	Label,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useSegmentedControlContext,
+	type SegmentedControlContextValue,
+} from "./segmented-control-context";

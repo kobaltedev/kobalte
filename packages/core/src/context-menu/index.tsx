@@ -213,3 +213,11 @@ export const ContextMenu = Object.assign(Root, {
 	SubTrigger,
 	Trigger,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useContextMenuContext,
+	type ContextMenuContextValue,
+} from "./context-menu-context";

@@ -40,3 +40,11 @@ export const Collapsible = Object.assign(Root, {
 	Content,
 	Trigger,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useCollapsibleContext,
+	type CollapsibleContextValue,
+} from "./collapsible-context";

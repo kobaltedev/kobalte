@@ -210,3 +210,8 @@ export const Search = Object.assign(Root, {
 	NoResult,
 	Indicator,
 });
+
+/**
+ * API will most probably change
+ */
+export { useSearchContext, type SearchContextValue } from "./search-context";

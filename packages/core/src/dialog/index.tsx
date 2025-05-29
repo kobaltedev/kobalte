@@ -100,3 +100,8 @@ export const Dialog = Object.assign(Root, {
 	Title,
 	Trigger,
 });
+
+/**
+ * API will most probably change
+ */
+export { useDialogContext, type DialogContextValue } from "./dialog-context";
