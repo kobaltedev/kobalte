@@ -65,6 +65,7 @@ import {
 	MenuSubContent as SubContent,
 	MenuSubTrigger as SubTrigger,
 } from "../menu";
+import { useMenuItemContext } from "../menu/menu-item.context";
 import {
 	Arrow,
 	type PopperArrowCommonProps as ContextMenuArrowCommonProps,
@@ -86,6 +87,7 @@ import {
 	type ContextMenuContentProps,
 	type ContextMenuContentRenderProps,
 } from "./context-menu-content";
+import { useContextMenuContext } from "./context-menu-context";
 import {
 	type ContextMenuRootOptions,
 	type ContextMenuRootProps,
@@ -97,6 +99,8 @@ import {
 	type ContextMenuTriggerProps,
 	type ContextMenuTriggerRenderProps,
 	ContextMenuTrigger as Trigger,
+	type UseContextMenuTriggerProps,
+	useContextMenuTrigger,
 } from "./context-menu-trigger";
 
 export type {
@@ -169,6 +173,7 @@ export type {
 	ContextMenuTriggerCommonProps,
 	ContextMenuTriggerRenderProps,
 	ContextMenuTriggerProps,
+	UseContextMenuTriggerProps,
 };
 
 export {
@@ -191,6 +196,7 @@ export {
 	SubContent,
 	SubTrigger,
 	Trigger,
+	useContextMenuTrigger,
 };
 
 export const ContextMenu = Object.assign(Root, {
@@ -212,6 +218,8 @@ export const ContextMenu = Object.assign(Root, {
 	SubContent,
 	SubTrigger,
 	Trigger,
+	useContextMenuTrigger,
+	useMenuItemContext,
 });
 
 /**
