@@ -134,3 +134,11 @@ export const RadioGroup = Object.assign(Root, {
 	ItemLabel,
 	Label,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useRadioGroupContext,
+	type RadioGroupContextValue,
+} from "./radio-group-context";

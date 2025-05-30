@@ -70,3 +70,11 @@ export const Pagination = Object.assign(Root, {
 	Next,
 	Previous,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	usePaginationContext,
+	type PaginationContextValue,
+} from "./pagination-context";

@@ -104,7 +104,6 @@ export type {
 	Details,
 	FileRejection,
 	FileError,
-	FileFieldContextValue,
 	FileFieldLabelCommonProps,
 	FileFieldDropzoneOptions,
 	FileFieldDropzoneCommonProps,
@@ -194,3 +193,11 @@ export const FileField = Object.assign(Root, {
 	Description,
 	ErrorMessage,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useFileFieldContext,
+	type FileFieldContextValue,
+} from "./file-field-context";

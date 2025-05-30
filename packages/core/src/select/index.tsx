@@ -209,3 +209,8 @@ export const Select = Object.assign(Root, {
 	Trigger,
 	Value,
 });
+
+/**
+ * API will most probably change
+ */
+export { useSelectContext, type SelectContextValue } from "./select-context";

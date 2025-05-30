@@ -28,3 +28,11 @@ export type {
 export const ToggleGroup = Object.assign(Root, {
 	Item,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useToggleGroupContext,
+	type ToggleGroupContextValue,
+} from "./toggle-group-context";

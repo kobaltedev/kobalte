@@ -215,3 +215,11 @@ export const Combobox = Object.assign(Root, {
 	Section,
 	Trigger,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useComboboxContext,
+	type ComboboxContextValue,
+} from "./combobox-context";

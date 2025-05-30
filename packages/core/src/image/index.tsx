@@ -40,3 +40,8 @@ export const Image = Object.assign(Root, {
 	Fallback,
 	Img,
 });
+
+/**
+ * API will most probably change
+ */
+export { useImageContext, type ImageContextValue } from "./image-context";

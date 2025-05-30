@@ -88,3 +88,8 @@ export const Switch = Object.assign(Root, {
 	Label,
 	Thumb,
 });
+
+/**
+ * API will most probably change
+ */
+export { useSwitchContext, type SwitchContextValue } from "./switch-context";

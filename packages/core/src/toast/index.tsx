@@ -127,3 +127,8 @@ export const Toast = Object.assign(Root, {
 	Title,
 	toaster,
 });
+
+/**
+ * API will most probably change
+ */
+export { useToastContext, type ToastContextValue } from "./toast-context";

@@ -55,3 +55,8 @@ export const Tooltip = Object.assign(Root, {
 	Portal,
 	Trigger,
 });
+
+/**
+ * API will most probably change
+ */
+export { useTooltipContext, type TooltipContextValue } from "./tooltip-context";

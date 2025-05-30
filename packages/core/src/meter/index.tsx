@@ -64,3 +64,8 @@ export const Meter = Object.assign(Root, {
 	Track,
 	ValueLabel,
 });
+
+/**
+ * API will most probably change
+ */
+export { useMeterContext, type MeterContextValue } from "./meter-context";

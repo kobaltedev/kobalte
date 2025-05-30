@@ -86,3 +86,11 @@ export const Checkbox = Object.assign(Root, {
 	Input,
 	Label,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useCheckboxContext,
+	type CheckboxContextValue,
+} from "./checkbox-context";

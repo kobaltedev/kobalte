@@ -72,3 +72,11 @@ export const TextField = Object.assign(Root, {
 	Label,
 	TextArea,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useTextFieldContext,
+	type TextFieldContextValue,
+} from "./text-field-context";

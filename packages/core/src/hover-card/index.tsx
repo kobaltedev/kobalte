@@ -55,3 +55,11 @@ export const HoverCard = Object.assign(Root, {
 	Portal,
 	Trigger,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useHoverCardContext,
+	type HoverCardContextValue,
+} from "./hover-card-context";

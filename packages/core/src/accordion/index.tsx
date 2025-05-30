@@ -64,3 +64,11 @@ export const Accordion = Object.assign(Root, {
 	Item,
 	Trigger,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useAccordionContext,
+	type AccordionContextValue,
+} from "./accordion-context";

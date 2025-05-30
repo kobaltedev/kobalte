@@ -51,7 +51,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Badge",
 				href: "/docs/core/components/badge",
-				status: "new",
 			},
 			{
 				title: "Breadcrumbs",
@@ -72,32 +71,26 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Color Area",
 				href: "/docs/core/components/color-area",
-				status: "new",
 			},
 			{
 				title: "Color Channel Field",
 				href: "/docs/core/components/color-channel-field",
-				status: "new",
 			},
 			{
 				title: "Color Field",
 				href: "/docs/core/components/color-field",
-				status: "new",
 			},
 			{
 				title: "Color Slider",
 				href: "/docs/core/components/color-slider",
-				status: "new",
 			},
 			{
 				title: "Color Swatch",
 				href: "/docs/core/components/color-swatch",
-				status: "new",
 			},
 			{
 				title: "Color Wheel",
 				href: "/docs/core/components/color-wheel",
-				status: "new",
 			},
 			{
 				title: "Combobox",
@@ -118,7 +111,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "File Field",
 				href: "/docs/core/components/file-field",
-				status: "new",
 			},
 			{
 				title: "Hover Card",
@@ -139,7 +131,6 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Meter",
 				href: "/docs/core/components/meter",
-				status: "new",
 			},
 			{
 				title: "Navigation Menu",
@@ -168,12 +159,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Search",
 				href: "/docs/core/components/search",
-				status: "new",
 			},
 			{
 				title: "Segmented Control",
 				href: "/docs/core/components/segmented-control",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Select",

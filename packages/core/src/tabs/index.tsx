@@ -64,3 +64,8 @@ export const Tabs = Object.assign(Root, {
 	List,
 	Trigger,
 });
+
+/**
+ * API will most probably change
+ */
+export { useTabsContext, type TabsContextValue } from "./tabs-context";

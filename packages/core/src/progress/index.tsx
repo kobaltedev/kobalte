@@ -64,3 +64,11 @@ export const Progress = Object.assign(Root, {
 	Track,
 	ValueLabel,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useProgressContext,
+	type ProgressContextValue,
+} from "./progress-context";

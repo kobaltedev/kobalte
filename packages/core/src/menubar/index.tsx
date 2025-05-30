@@ -222,3 +222,8 @@ export const Menubar = Object.assign(Root, {
 	SubTrigger,
 	Trigger,
 });
+
+/**
+ * API will most probably change
+ */
+export { useMenubarContext, type MenubarContextValue } from "./menubar-context";

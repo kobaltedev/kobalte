@@ -36,3 +36,11 @@ export const Breadcrumbs = Object.assign(Root, {
 	Link,
 	Separator,
 });
+
+/**
+ * API will most probably change
+ */
+export {
+	useBreadcrumbsContext,
+	type BreadcrumbsContextValue,
+} from "./breadcrumbs-context";
