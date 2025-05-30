@@ -1,5 +1,15 @@
 # @kobalte/core
 
+## 0.13.10
+
+### Patch Changes
+
+- 6d1737b1: ## v0.13.10 (May 30, 2025)
+
+  **New features**
+
+  - [New `SegmentedControl` component](/docs/core/components/segmented-control) ([#531](https://github.com/kobaltedev/kobalte/pull/531))
+
 ## 0.13.9
 
 ### Patch Changes
