@@ -68,6 +68,12 @@ export function ImageImg<T extends ValidComponent = "img">(
 				};
 
 				setLoadingStatus("loading");
+				if (props.crossOrigin !== undefined) {
+					image.crossOrigin = props.crossOrigin;
+				}
+				if (props.referrerPolicy !== undefined) {
+					image.referrerPolicy = props.referrerPolicy;
+				}
 				image.onload = updateStatus("loaded");
 				image.onerror = updateStatus("error");
 				image.src = src;
