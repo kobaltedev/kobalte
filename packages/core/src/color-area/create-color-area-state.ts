@@ -1,5 +1,5 @@
 import { clamp, mergeDefaultProps, snapValueToStep } from "@kobalte/utils";
-import { type Accessor, batch, createMemo, createSignal } from "solid-js";
+import { type Accessor, createMemo, createSignal } from "solid-js";
 import {
 	type Color,
 	type ColorChannel,
@@ -182,10 +182,12 @@ export function createColorAreaState(props: StateOpts): ColorAreaState {
 			yStep(),
 		);
 
-		batch(() => {
-			setXValue(xSnappedValue);
-			setYValue(ySnappedValue);
-		});
+		if (xSnappedValue === xValue() && ySnappedValue === yValue()) return;
+		setValue(
+			color()
+				.withChannelValue(channels().xChannel, xSnappedValue)
+				.withChannelValue(channels().yChannel, ySnappedValue),
+		);
 	};
 
 	const setThumbPercent = (value: { x: number; y: number }) => {
