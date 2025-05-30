@@ -99,7 +99,7 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 		{
 			key: () => local.value,
 			selectionManager: selectionManager,
-			disabled: local.disabled || rootContext.isDisabled(),
+			disabled: isDisabled,
 		},
 		() => ref,
 	);
