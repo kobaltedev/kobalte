@@ -174,6 +174,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/separator",
 			},
 			{
+				title: "Signature Pad",
+				href: "/docs/core/components/signature-pad",
+			},
+			{
 				title: "Skeleton",
 				href: "/docs/core/components/skeleton",
 			},
