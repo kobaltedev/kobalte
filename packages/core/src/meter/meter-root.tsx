@@ -140,7 +140,7 @@ export function MeterRoot<T extends ValidComponent = "div">(
 	};
 
 	const meterFillWidth = () => {
-		return `${Math.round(valuePercent() * 100)}%`;
+		return `${valuePercent() * 100}%`;
 	};
 
 	const dataset: Accessor<MeterDataSet> = createMemo(() => {
