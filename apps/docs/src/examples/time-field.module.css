@@ -1,0 +1,91 @@
+.time-field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.time-field__label {
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
+}
+
+.time-field__field {
+	display: flex;
+	padding: 4px 8px;
+	border-radius: 6px;
+	width: 150px;
+	white-space: nowrap;
+	forced-color-adjust: none;
+	background-color: #fff;
+	border: 1px solid hsl(240 6% 90%);
+	color: hsl(240 4% 16%);
+	font-size: 14px;
+}
+
+.time-field__field:focus-within {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: -1px;
+}
+
+.time-field__segment {
+	padding: 0 2px;
+	font-variant-numeric: tabular-nums;
+	text-align: end;
+}
+
+.time-field__segment[data-type="literal"] {
+	padding: 0;
+}
+
+.time-field__segment[data-placeholder] {
+	color: hsl(240 4% 46%);
+	font-style: italic;
+}
+
+.time-field__segment:focus {
+	color: #fff !important;
+	background: hsl(200 98% 39%);
+	outline: none;
+	border-radius: 4px;
+}
+
+.time-field__segment::selection {
+	background-color: transparent;
+}
+
+.time-field__description {
+	color: hsl(240 5% 26%);
+	font-size: 12px;
+	user-select: none;
+}
+
+.time-field__error-message {
+	color: hsl(0 72% 51%);
+	font-size: 12px;
+	user-select: none;
+}
+
+[data-kb-theme="dark"] .time-field__label {
+	color: hsl(240 5% 84%);
+}
+
+[data-kb-theme="dark"] .time-field__field {
+	background-color: hsl(240 4% 16%);
+	border: 1px solid hsl(240 5% 34%);
+	color: hsl(0 100% 100% / 0.9);
+}
+
+.time-field__field[data-invalid] {
+	border-color: hsl(0 72% 51%);
+	outline-color: hsl(0 72% 51%);
+}
+
+[data-kb-theme="dark"] .time-field__segment[data-placeholder] {
+	color: hsl(0 100% 100% / 0.5);
+}
+
+[data-kb-theme="dark"] .time-field__description {
+	color: hsl(240 5% 65%);
+}

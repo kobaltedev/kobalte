@@ -41,6 +41,7 @@ export * as Slider from "./slider";
 export * as Switch from "./switch";
 export * as Tabs from "./tabs";
 export * as TextField from "./text-field";
+export * as TimeField from "./time-field";
 export * as Toast from "./toast";
 export * as ToggleButton from "./toggle-button";
 export * as ToggleGroup from "./toggle-group";
