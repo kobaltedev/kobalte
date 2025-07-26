@@ -200,7 +200,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Time Field",
 				href: "/docs/core/components/time-field",
-				status: "new",
+				status: "unreleased",
 			},
 			{
 				title: "Toast",
