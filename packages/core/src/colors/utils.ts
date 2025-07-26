@@ -262,7 +262,6 @@ class RGBColor extends Color {
 		super();
 	}
 
-
 	static parse(value: string) {
 		let colors: Array<number | undefined> = [];
 		// matching #rgb, #rgba, #rrggbb, #rrggbbaa
@@ -278,15 +277,18 @@ class RGBColor extends Color {
 			colors[3] = colors[3] !== undefined ? colors[3] / 255 : undefined;
 		}
 
-		// matching rgb(rrr, ggg, bbb), rgba(rrr, ggg, bbb, 0.a)
+		// matching rgb(rrr, ggg, bbb), rgba(rrr, ggg, bbb, 0.a), rgb(rrr ggg bbb), rgba(rrr ggg bbb a)
 		const match = value.match(/^rgba?\((.*)\)$/);
 		if (match?.[1]) {
 			colors = match[1]
-				.replace(/(\d+)%$/u, (_substring, numberValue) => (Number(numberValue) / 100).toString())
-				.replaceAll(/,|\//gu, ' ')
-				.replaceAll(/\s{2,}/gu,' ')
-				.split(" ").map((value) => {
-					return Number(value.trim())
+				.replace(/(\d+)%$/u, (_substring, numberValue) =>
+					(Number(numberValue) / 100).toString(),
+				)
+				.replaceAll(/,|\//gu, " ")
+				.replaceAll(/\s{2,}/gu, " ")
+				.split(" ")
+				.map((value) => {
+					return Number(value.trim());
 				});
 			colors = colors.map((num, i) => {
 				return clamp(num ?? 0, 0, i < 3 ? 255 : 1);
@@ -324,7 +326,7 @@ class RGBColor extends Color {
 				).toUpperCase()}`;
 			case "css":
 			case "rgb":
-				return `rgb(${this.red} ${this.green} ${this.blue}${this.alpha !==1 && this.alpha !== 100 ? ' / ' + this?.alpha  : ''})`;
+				return `rgb(${this.red}, ${this.green}, ${this.blue}${this.alpha !== 1 && this.alpha !== 100 ? ` / ${this?.alpha}` : ""})`;
 			case "rgba":
 				return `rgba(${this.red}, ${this.green}, ${this.blue}, ${this.alpha})`;
 			default:
@@ -686,7 +688,7 @@ class HSLColor extends Color {
 			case "hexa":
 				return this.toRGB().toString("hexa");
 			case "hsl":
-				return `hsl(${this.hue} ${toFixedNumber(this.saturation, 2)}% ${toFixedNumber(this.lightness, 2)}%${this.alpha !==1 && this.alpha !== 100 ? ' / ' + this.alpha : ''})`;
+				return `hsl(${this.hue} ${toFixedNumber(this.saturation, 2)}% ${toFixedNumber(this.lightness, 2)}%${this.alpha !== 1 && this.alpha !== 100 ? ` / ${this.alpha}` : ""})`;
 			case "css":
 			case "hsla":
 				return `hsla(${this.hue} ${toFixedNumber(this.saturation, 2)}% ${toFixedNumber(this.lightness, 2)}% / ${this.alpha})`;

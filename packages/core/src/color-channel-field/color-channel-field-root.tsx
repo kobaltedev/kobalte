@@ -1,4 +1,4 @@
-import { mergeDefaultProps, clamp } from "@kobalte/utils";
+import { clamp, mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Component,
 	type ValidComponent,
@@ -48,7 +48,7 @@ export interface ColorChannelFieldRootCommonProps<
 
 export interface ColorChannelFieldRootRenderProps
 	extends ColorChannelFieldRootCommonProps,
-	NumberField.NumberFieldRootRenderProps { }
+		NumberField.NumberFieldRootRenderProps {}
 
 export type ColorChannelFieldRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -101,11 +101,15 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 			return;
 		}
 
-		const clampedValue = clamp(value * multiplier(), range().minValue, range().maxValue);
+		const clampedValue = clamp(
+			value * multiplier(),
+			range().minValue,
+			range().maxValue,
+		);
 
 		const digits = formatOptions().maximumFractionDigits ?? 0;
 
-		const roundedValue = Math.round(clampedValue * (10 ** digits)) / (10 ** digits);
+		const roundedValue = Math.round(clampedValue * 10 ** digits) / 10 ** digits;
 
 		setValue(color()!.withChannelValue(local.channel, roundedValue));
 	};
