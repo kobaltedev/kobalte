@@ -454,7 +454,7 @@ class RGBColor extends Color {
 			case "blue":
 				return { style: "decimal" };
 			case "alpha":
-				return { style: "percent" };
+				return { style: "percent", maximumFractionDigits: 2 };
 			default:
 				throw new Error(`Unknown color channel: ${channel}`);
 		}
@@ -611,7 +611,7 @@ class HSBColor extends Color {
 			case "saturation":
 			case "brightness":
 			case "alpha":
-				return { style: "percent" };
+				return { style: "percent", maximumFractionDigits: 2 };
 			default:
 				throw new Error(`Unknown color channel: ${channel}`);
 		}
@@ -767,7 +767,7 @@ class HSLColor extends Color {
 			case "saturation":
 			case "lightness":
 			case "alpha":
-				return { style: "percent" };
+				return { style: "percent", maximumFractionDigits: 2 };
 			default:
 				throw new Error(`Unknown color channel: ${channel}`);
 		}
