@@ -106,9 +106,7 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 	};
 
 	const progressFillWidth = () => {
-		return local.indeterminate
-			? undefined
-			: `${Math.round(valuePercent() * 100)}%`;
+		return local.indeterminate ? undefined : `${valuePercent() * 100}%`;
 	};
 
 	const dataset: Accessor<ProgressDataSet> = createMemo(() => {
