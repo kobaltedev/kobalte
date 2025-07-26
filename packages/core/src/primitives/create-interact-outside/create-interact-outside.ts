@@ -43,7 +43,7 @@ export interface CreateInteractOutsideProps {
 	 * When user interacts with the argument element outside the ref,
 	 * return `true` if the interaction should not trigger the "interact outside" handlers.
 	 */
-	shouldExcludeElement?: (element: HTMLElement) => boolean;
+	shouldExcludeElement?: (element: Element) => boolean;
 
 	/**
 	 * Event handler called when a `pointerdown` event happens outside the ref.
@@ -68,7 +68,7 @@ export interface CreateInteractOutsideProps {
 const POINTER_DOWN_OUTSIDE_EVENT = "interactOutside.pointerDownOutside";
 const FOCUS_OUTSIDE_EVENT = "interactOutside.focusOutside";
 
-export function createInteractOutside<T extends HTMLElement>(
+export function createInteractOutside<T extends Element>(
 	props: CreateInteractOutsideProps,
 	ref: Accessor<T | undefined>,
 ) {
@@ -83,9 +83,9 @@ export function createInteractOutside<T extends HTMLElement>(
 		props.onInteractOutside?.(e);
 
 	const isEventOutside = (e: Event) => {
-		const target = e.target as HTMLElement | null;
+		const target = e.target as Element | null;
 
-		if (!(target instanceof HTMLElement)) {
+		if (!(target instanceof Element)) {
 			return false;
 		}
 
@@ -108,7 +108,7 @@ export function createInteractOutside<T extends HTMLElement>(
 	const onPointerDown = (e: PointerEvent) => {
 		function handler() {
 			const container = ref();
-			const target = e.target as HTMLElement | null;
+			const target = e.target as Element | null;
 
 			if (!container || !target || !isEventOutside(e)) {
 				return;
@@ -161,7 +161,7 @@ export function createInteractOutside<T extends HTMLElement>(
 
 	const onFocusIn = (e: FocusEvent) => {
 		const container = ref();
-		const target = e.target as HTMLElement | null;
+		const target = e.target as Element | null;
 
 		if (!container || !target || !isEventOutside(e)) {
 			return;
