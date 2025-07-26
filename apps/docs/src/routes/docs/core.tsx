@@ -167,7 +167,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Rating Group",
 				href: "/docs/core/components/rating-group",
-				status: "new",
+				status: "unreleased",
 			},
 			{
 				title: "Search",
