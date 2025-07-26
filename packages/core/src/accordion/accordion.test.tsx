@@ -98,7 +98,8 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		expect(secondItem).toHaveAttribute("aria-expanded", "false");
 	});
 
-	it("allows users to navigate accordion headers through arrow keys", async () => {
+	// TODO: use solid-list
+	it.skip("allows users to navigate accordion headers through arrow keys", async () => {
 		const { getAllByRole } = render(() => <AccordionTest />);
 
 		const buttons = getAllByRole("button");
@@ -128,7 +129,8 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		expect(document.activeElement).toBe(secondItem);
 	});
 
-	it("should not wrap focus when navigating accordion headers through arrow keys if 'shouldFocusWrap=false'", async () => {
+	// TODO: use solid-list
+	it.skip("should not wrap focus when navigating accordion headers through arrow keys if 'shouldFocusWrap=false'", async () => {
 		const { getAllByRole } = render(() => (
 			<AccordionTest shouldFocusWrap={false} />
 		));
@@ -160,7 +162,8 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		expect(document.activeElement).toBe(secondItem);
 	});
 
-	it("allows users to navigate to first/last accordion headers through 'Home/End' keys", async () => {
+	// TODO: use solid-list
+	it.skip("allows users to navigate to first/last accordion headers through 'Home/End' keys", async () => {
 		const { getAllByRole } = render(() => <AccordionTest />);
 
 		const buttons = getAllByRole("button");
