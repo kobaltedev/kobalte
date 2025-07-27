@@ -35,9 +35,7 @@ import { getEventPoint, getRelativePoint } from "./utils";
 
 export interface RatingItemOptions {}
 
-export interface RatingItemCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {
+export interface RatingItemCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 	ref: T | ((el: T) => void);
 	"aria-labelledby": string | undefined;
@@ -157,9 +155,7 @@ export function RatingItem<T extends ValidComponent = "div">(
 	};
 
 	const focusItem = (index: number) =>
-		(
-			RatingContext.items()[Math.round(index)].ref() as HTMLElement
-		).focus();
+		(RatingContext.items()[Math.round(index)].ref() as HTMLElement).focus();
 
 	const setPrevValue = () => {
 		const factor = RatingContext.allowHalf() ? 0.5 : 1;
@@ -172,8 +168,7 @@ export function RatingItem<T extends ValidComponent = "div">(
 		const factor = RatingContext.allowHalf() ? 0.5 : 1;
 		const value = Math.min(
 			RatingContext.items().length,
-			(RatingContext.value() === -1 ? 0 : RatingContext.value())! +
-				factor,
+			(RatingContext.value() === -1 ? 0 : RatingContext.value())! + factor,
 		);
 		RatingContext.setValue(value);
 		focusItem(value - 1);

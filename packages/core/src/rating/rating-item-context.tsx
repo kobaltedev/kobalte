@@ -21,8 +21,7 @@ export interface RatingItemContextValue {
 	registerDescription: (id: string) => () => void;
 }
 
-export const RatingItemContext =
-	createContext<RatingItemContextValue>();
+export const RatingItemContext = createContext<RatingItemContextValue>();
 
 export function useRatingItemContext() {
 	const context = useContext(RatingItemContext);

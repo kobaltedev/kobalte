@@ -34,8 +34,7 @@ export interface RatingItemLabelRenderProps
 
 export type RatingItemLabelProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = RatingItemLabelOptions &
-	Partial<RatingItemLabelCommonProps<ElementOf<T>>>;
+> = RatingItemLabelOptions & Partial<RatingItemLabelCommonProps<ElementOf<T>>>;
 
 export function RatingItemLabel<T extends ValidComponent = "label">(
 	props: PolymorphicProps<T, RatingItemLabelProps<T>>,

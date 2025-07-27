@@ -5,11 +5,9 @@ import style from "./rating.module.css";
 
 export function BasicExample() {
 	return (
-		<Rating class={style["rating"]}>
-			<Rating.Label class={style["rating__label"]}>
-				Rate Us:
-			</Rating.Label>
-			<Rating.Control class={style["rating__control"]}>
+		<Rating class={style.rating}>
+			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
+			<Rating.Control class={style.rating__control}>
 				<Index each={Array(5)}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
@@ -26,8 +24,8 @@ export function BasicExample() {
 
 export function DefaultValueExample() {
 	return (
-		<Rating class={style["rating"]} defaultValue={3}>
-			<Rating.Control class={style["rating__control"]}>
+		<Rating class={style.rating} defaultValue={3}>
+			<Rating.Control class={style.rating__control}>
 				<Index each={Array(5)}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
@@ -47,12 +45,8 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<Rating
-				class={style["rating"]}
-				value={value()}
-				onChange={setValue}
-			>
-				<Rating.Control class={style["rating__control"]}>
+			<Rating class={style.rating} value={value()} onChange={setValue}>
+				<Rating.Control class={style.rating__control}>
 					<Index each={Array(5)}>
 						{(_) => (
 							<Rating.Item class={style["rating-item"]}>
@@ -71,8 +65,8 @@ export function ControlledExample() {
 
 export function HalfRatingsExample() {
 	return (
-		<Rating class={style["rating"]} allowHalf>
-			<Rating.Control class={style["rating__control"]}>
+		<Rating class={style.rating} allowHalf>
+			<Rating.Control class={style.rating__control}>
 				<Index each={Array(5)}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
@@ -89,11 +83,9 @@ export function HalfRatingsExample() {
 
 export function DescriptionExample() {
 	return (
-		<Rating class={style["rating"]}>
-			<Rating.Label class={style["rating__label"]}>
-				Rate Us:
-			</Rating.Label>
-			<Rating.Control class={style["rating__control"]}>
+		<Rating class={style.rating}>
+			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
+			<Rating.Control class={style.rating__control}>
 				<Index each={Array(5)}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
@@ -104,7 +96,7 @@ export function DescriptionExample() {
 					)}
 				</Index>
 			</Rating.Control>
-			<Rating.Description class={style["rating__description"]}>
+			<Rating.Description class={style.rating__description}>
 				Rate your experience with us.
 			</Rating.Description>
 		</Rating>
@@ -116,15 +108,13 @@ export function ErrorMessageExample() {
 
 	return (
 		<Rating
-			class={style["rating"]}
+			class={style.rating}
 			value={value()}
 			onChange={setValue}
 			validationState={value() === 0 ? "invalid" : "valid"}
 		>
-			<Rating.Label class={style["rating__label"]}>
-				Rate Us:
-			</Rating.Label>
-			<Rating.Control class={style["rating__control"]}>
+			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
+			<Rating.Control class={style.rating__control}>
 				<Index each={Array(5)}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
@@ -160,8 +150,8 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<Rating class={style["rating"]} name="rate">
-				<Rating.Control class={style["rating__control"]}>
+			<Rating class={style.rating} name="rate">
+				<Rating.Control class={style.rating__control}>
 					<Index each={Array(5)}>
 						{(_) => (
 							<Rating.Item class={style["rating-item"]}>
