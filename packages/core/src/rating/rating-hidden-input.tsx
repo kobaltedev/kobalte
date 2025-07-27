@@ -2,13 +2,13 @@ import { visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { useRatingGroupContext } from "./rating-group-context";
+import { useRatingContext } from "./rating-context";
 
-export interface RatingGroupHiddenInputProps extends ComponentProps<"input"> {}
+export interface RatingHiddenInputProps extends ComponentProps<"input"> {}
 
-export function RatingGroupHiddenInput(props: RatingGroupHiddenInputProps) {
+export function RatingHiddenInput(props: RatingHiddenInputProps) {
 	const formControlContext = useFormControlContext();
-	const context = useRatingGroupContext();
+	const context = useRatingContext();
 
 	return (
 		<input
