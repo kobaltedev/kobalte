@@ -13,40 +13,40 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import {
-	type RatingGroupItemDataSet,
-	useRatingGroupItemContext,
-} from "./rating-group-item-context";
+	type RatingItemDataSet,
+	useRatingItemContext,
+} from "./rating-item-context";
 
-export interface RatingGroupItemLabelOptions {}
+export interface RatingItemLabelOptions {}
 
-export interface RatingGroupItemLabelCommonProps<
+export interface RatingItemLabelCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 	style: JSX.CSSProperties | string;
 }
 
-export interface RatingGroupItemLabelRenderProps
-	extends RatingGroupItemLabelCommonProps,
-		RatingGroupItemDataSet {
+export interface RatingItemLabelRenderProps
+	extends RatingItemLabelCommonProps,
+		RatingItemDataSet {
 	for: string | undefined;
 }
 
-export type RatingGroupItemLabelProps<
+export type RatingItemLabelProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = RatingGroupItemLabelOptions &
-	Partial<RatingGroupItemLabelCommonProps<ElementOf<T>>>;
+> = RatingItemLabelOptions &
+	Partial<RatingItemLabelCommonProps<ElementOf<T>>>;
 
-export function RatingGroupItemLabel<T extends ValidComponent = "label">(
-	props: PolymorphicProps<T, RatingGroupItemLabelProps<T>>,
+export function RatingItemLabel<T extends ValidComponent = "label">(
+	props: PolymorphicProps<T, RatingItemLabelProps<T>>,
 ) {
-	const context = useRatingGroupItemContext();
+	const context = useRatingItemContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
 			id: context.generateId("label"),
 		},
-		props as RatingGroupItemLabelProps,
+		props as RatingItemLabelProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["style"]);
@@ -54,7 +54,7 @@ export function RatingGroupItemLabel<T extends ValidComponent = "label">(
 	createEffect(() => onCleanup(context.registerLabel(others.id!)));
 
 	return (
-		<Polymorphic<RatingGroupItemLabelRenderProps>
+		<Polymorphic<RatingItemLabelRenderProps>
 			as="label"
 			for={context.itemId()}
 			style={combineStyle(visuallyHiddenStyles, local.style)}

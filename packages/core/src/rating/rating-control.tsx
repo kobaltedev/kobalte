@@ -6,32 +6,32 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { useRatingGroupContext } from "./rating-group-context";
+import { useRatingContext } from "./rating-context";
 
-export interface RatingGroupControlOptions {}
+export interface RatingControlOptions {}
 
-export interface RatingGroupControlCommonProps<
+export interface RatingControlCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
-export interface RatingGroupControlRenderProps
-	extends RatingGroupControlCommonProps {
+export interface RatingControlRenderProps
+	extends RatingControlCommonProps {
 	role: "presentation";
 }
 
-export type RatingGroupControlProps<
+export type RatingControlProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = RatingGroupControlOptions &
-	Partial<RatingGroupControlCommonProps<ElementOf<T>>>;
+> = RatingControlOptions &
+	Partial<RatingControlCommonProps<ElementOf<T>>>;
 
-export function RatingGroupControl<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, RatingGroupControlProps<T>>,
+export function RatingControl<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, RatingControlProps<T>>,
 ) {
 	const formControlContext = useFormControlContext();
-	const context = useRatingGroupContext();
+	const context = useRatingContext();
 
 	const defaultId = `${formControlContext.generateId("control")}`;
 
@@ -39,7 +39,7 @@ export function RatingGroupControl<T extends ValidComponent = "div">(
 		{
 			id: defaultId,
 		},
-		props as RatingGroupControlProps,
+		props as RatingControlProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["onPointerLeave"]);
@@ -60,7 +60,7 @@ export function RatingGroupControl<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<Polymorphic<RatingGroupControlRenderProps>
+		<Polymorphic<RatingControlRenderProps>
 			as="div"
 			role="presentation"
 			onPointerLeave={onPointerLeave}

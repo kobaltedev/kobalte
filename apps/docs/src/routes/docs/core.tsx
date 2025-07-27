@@ -157,8 +157,8 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/radio-group",
 			},
 			{
-				title: "Rating Group",
-				href: "/docs/core/components/rating-group",
+				title: "Rating",
+				href: "/docs/core/components/rating",
 				status: "unreleased",
 			},
 			{
