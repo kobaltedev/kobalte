@@ -1,0 +1,423 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import {
+	BasicExample,
+	DefaultValueExample,
+	ControlledExample,
+	HalfRatingsExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	HTMLFormExample,
+} from "../../../../examples/rating";
+
+# Rating Group
+
+Allows users to rate items using a set of icons.
+
+## Import
+
+```ts
+import { Rating } from "@kobalte/core/rating";
+// or
+import { Root, Label, ... } from "@kobalte/core/rating";
+```
+
+## Features
+
+- Precise ratings with half-value increments.
+- Syncs with form reset events.
+- Group and rating labeling support for assistive technology.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The rating group consists of:
+
+- **Rating**: The root container for the rating group.
+- **Rating.Control**: The container for the rating items.
+- **Rating.Label**: The label that gives the user information on the rating group.
+- **Rating.HiddenInput**: The native html input that is visually hidden in the rating group.
+- **Rating.Description**: The description that gives the user more information on the rating group.
+- **Rating.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the rating group.
+
+The rating item consists of:
+
+- **Rating.Item**: The root container for a rating item.
+- **Rating.ItemControl**: The element that visually represents a rating item.
+- **Rating.ItemLabel**: The label that gives the user information on the rating item.
+- **Rating.ItemDescription**: The description that gives the user more information on the rating item.
+
+```tsx
+<Rating>
+	<Rating.Label />
+	<Rating.Control>
+        <Rating.Item>
+            <Rating.ItemControl />
+            <Rating.ItemLabel />
+            <Rating.ItemDescription />
+        </Rating.Item>
+    <Rating.Control>
+	<Rating.HiddenInput />
+	<Rating.Description />
+	<Rating.ErrorMessage />
+</Rating>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+	import { Rating } from "@kobalte/core/rating";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Rating class="rating">
+    		<Rating.Label class="rating__label">Rate Us:</Rating.Label>
+    		<Rating.Control class="rating__control">
+    			<Index each={Array(5)}>
+    				{_ => (
+    					<Rating.Item class="rating-item">
+    						<Rating.ItemControl>
+    							<StarIcon />
+    						</Rating.ItemControl>
+    					</Rating.Item>
+    				)}
+    			</Index>
+    		</Rating.Control>
+    	</Rating>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+```css
+.rating {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.rating\_\_label {
+color: hsl(240 6% 10%);
+font-size: 14px;
+font-weight: 500;
+user-select: none;
+}
+
+.rating\_\_description {
+color: hsl(240 5% 26%);
+font-size: 12px;
+user-select: none;
+}
+
+.rating\_\_error-message {
+color: hsl(0 72% 51%);
+font-size: 12px;
+user-select: none;
+}
+
+.rating\_\_control {
+display: flex;
+gap: 4px;
+}
+
+.rating-item {
+cursor: pointer;
+fill: hsl(240 6% 90%);
+transition: fill 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.rating-item[data-highlighted] {
+fill: hsl(200 98% 39%);
+}
+
+````
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Default value
+
+An initial, uncontrolled value can be provided using the `defaultValue` prop.
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+```tsx {0}
+<Rating defaultValue={3}>
+	<Rating.Control>
+		<Index each={Array(5)}>
+			{_ => (
+				<Rating.Item>
+					<Rating.ItemControl>
+						<StarIcon />
+					</Rating.ItemControl>
+				</Rating.Item>
+			)}
+		</Index>
+	</Rating.Control>
+</Rating>
+````
+
+### Controlled value
+
+The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user selects a rating, and receives the new value.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {3,7}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal(0);
+
+	return (
+		<>
+			<Rating value={value()} onChange={setValue}>
+				<Rating.Control>
+					<Index each={Array(5)}>
+						{_ => (
+							<Rating.Item>
+								<Rating.ItemControl>
+									<StarIcon />
+								</Rating.ItemControl>
+							</Rating.Item>
+						)}
+					</Index>
+				</Rating.Control>
+			</Rating>
+			<p>Your rating is: {value()}/5</p>
+		</>
+	);
+}
+```
+
+### Half Ratings
+
+Allow 0.5 value steps by setting the `allowHalf` prop to true.
+
+<Preview>
+	<HalfRatingsExample />
+</Preview>
+
+```tsx{0}
+<Rating allowHalf>
+	<Rating.Control>
+		<Index each={Array(5)}>
+			{_ => (
+				<Rating.Item>
+					<Rating.ItemControl>
+						{(state) => (state.half() ? <StarHalfIcon /> : <StarIcon />)}
+					</Rating.ItemControl>
+				</Rating.Item>
+			)}
+		</Index>
+	</Rating.Control>
+</Rating>
+```
+
+### Description
+
+The `Rating.Description` component can be used to associate additional help text with a rating group.
+
+<Preview>
+	<DescriptionExample />
+</Preview>
+
+```tsx {13}
+<Rating>
+	<Rating.Label>Rate Us:</Rating.Label>
+	<Rating.Control>
+		<Index each={Array(5)}>
+			{_ => (
+				<Rating.Item>
+					<Rating.ItemControl>
+						<StarIcon />
+					</Rating.ItemControl>
+				</Rating.Item>
+			)}
+		</Index>
+	</Rating.Control>
+	<Rating.Description>Rate your experience with us.</Rating.Description>
+</Rating>
+```
+
+### Error message
+
+The `Rating.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the rating group as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+<Preview>
+	<ErrorMessageExample />
+</Preview>
+
+```tsx {9,23-25}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [value, setValue] = createSignal(0);
+
+	return (
+		<Rating
+			value={value()}
+			onChange={setValue}
+			validationState={value() === 0 ? "invalid" : "valid"}
+		>
+			<Rating.Label>Rate Us:</Rating.Label>
+			<Rating.Control>
+				<Index each={Array(5)}>
+					{_ => (
+						<Rating.Item>
+							<Rating.ItemControl>
+								<StarIcon />
+							</Rating.ItemControl>
+						</Rating.Item>
+					)}
+				</Index>
+			</Rating.Control>
+			<Rating.ErrorMessage>Please select a rating between 1 and 5.</Rating.ErrorMessage>
+		</Rating>
+	);
+}
+```
+
+### HTML forms
+
+The `name` prop can be used for integration with HTML forms.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx {7,19}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<Rating name="rate">
+				<Rating.Control>
+					<Index each={Array(5)}>
+						{_ => (
+							<Rating.Item>
+								<Rating.ItemControl>
+									<StarIcon />
+								</Rating.ItemControl>
+							</Rating.Item>
+						)}
+					</Index>
+				</Rating.Control>
+				<Rating.HiddenInput />
+			</Rating>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+## API Reference
+
+### Rating
+
+`Rating` is equivalent to the `Root` import from `@kobalte/core/rating`.
+
+| Prop            | Description                                                                                                                                        |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `number` <br/> The current rating value.                                                                                                           |
+| defaultValue    | `number` <br/> The initial value of the rating group when it is first rendered. Use when you do not need to control the state of the rating group. |
+| onChange        | `(value: number) => void` <br/> Event handler called when the value changes.                                                                       |
+| allowHalf       | `boolean` <br/> Whether to allow half ratings.                                                                                                     |
+| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the rating group items should align with.                                                              |
+| name            | `string` <br/> The name of the rating group. Submitted with its owning form as part of a name/value pair.                                          |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the rating group should display its "valid" or "invalid" visual styling.                                      |
+| required        | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                                      |
+| disabled        | `boolean` <br/> Whether the rating group is disabled.                                                                                              |
+| readOnly        | `boolean` <br/> Whether the rating group items can be selected but not changed by the user.                                                        |
+
+| Data attribute | Description                                                                                    |
+| :------------- | :--------------------------------------------------------------------------------------------- |
+| data-valid     | Present when the rating group is valid according to the validation rules.                      |
+| data-invalid   | Present when the rating group is invalid according to the validation rules.                    |
+| data-required  | Present when the user must select a rating group item before the owning form can be submitted. |
+| data-disabled  | Present when the rating group is disabled.                                                     |
+| data-readonly  | Present when the rating group is read only.                                                    |
+
+`Rating.Label`, `Rating.Description` and `Rating.ErrorMesssage` shares the same data-attributes.
+
+### Rating.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### Rating.ItemControl
+
+| Render Prop | Description                                                       |
+| :---------- | :---------------------------------------------------------------- |
+| half        | `Accessor<boolean>` <br/> Whether the rating item is half.        |
+| highlighted | `Accessor<boolean>` <br/> Whether the rating item is highlighted. |
+
+| Data attribute   | Description                                                                        |
+| :--------------- | :--------------------------------------------------------------------------------- |
+| data-valid       | Present when the parent rating group is valid according to the validation rules.   |
+| data-invalid     | Present when the parent rating group is invalid according to the validation rules. |
+| data-required    | Present when the parent rating group is required.                                  |
+| data-disabled    | Present when the parent rating group is disabled.                                  |
+| data-readonly    | Present when the parent rating group is read only.                                 |
+| data-checked     | Present when the rating is checked.                                                |
+| data-half        | Present when the rating is half.                                                   |
+| data-highlighted | Present when the rating is highlighted.                                            |
+
+`Rating.ItemLabel` and `Rating.ItemDescription` share the same data-attributes.
+
+## Rendered elements
+
+| Component                     | Default rendered element |
+| :---------------------------- | :----------------------- |
+| `Rating`                 | `div`                    |
+| `Rating.Control`         | `div`                    |
+| `Rating.Label`           | `span`                   |
+| `Rating.HiddenInput`     | `input`                  |
+| `Rating.Description`     | `div`                    |
+| `Rating.ErrorMessage`    | `div`                    |
+| `Rating.Item`            | `div`                    |
+| `Rating.ItemControl`     | `div`                    |
+| `Rating.ItemLabel`       | `label`                  |
+| `Rating.ItemDescription` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                                                      |
+| :-------------------- | :----------------------------------------------------------------------------------------------- |
+| <Kbd>ArrowDown</Kbd>  | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.     |
+| <Kbd>ArrowRight</Kbd> | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.     |
+| <Kbd>ArrowUp</Kbd>    | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property. |
+| <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property. |
+| <Kbd>Space</Kbd>      | Selects the focused item in the rating group.                                                    |
+| <Kbd>Home</Kbd>       | Sets the value of the rating group to 1.                                                         |
+| <Kbd>End</Kbd>        | Sets the value of the rating group to the maximum value.                                         |
