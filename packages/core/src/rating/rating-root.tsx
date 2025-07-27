@@ -29,10 +29,7 @@ import {
 	createFormResetListener,
 } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
-import {
-	RatingContext,
-	type RatingContextValue,
-} from "./rating-context";
+import { RatingContext, type RatingContextValue } from "./rating-context";
 
 export interface RatingRootOptions {
 	/** The current rating value. */
@@ -79,9 +76,7 @@ export interface RatingRootOptions {
 	readOnly?: boolean;
 }
 
-export interface RatingRootCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {
+export interface RatingRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 	ref: T | ((el: T) => void);
 	"aria-labelledby": string | undefined;

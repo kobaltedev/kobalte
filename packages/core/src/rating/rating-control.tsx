@@ -10,22 +10,18 @@ import { useRatingContext } from "./rating-context";
 
 export interface RatingControlOptions {}
 
-export interface RatingControlCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {
+export interface RatingControlCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
-export interface RatingControlRenderProps
-	extends RatingControlCommonProps {
+export interface RatingControlRenderProps extends RatingControlCommonProps {
 	role: "presentation";
 }
 
 export type RatingControlProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = RatingControlOptions &
-	Partial<RatingControlCommonProps<ElementOf<T>>>;
+> = RatingControlOptions & Partial<RatingControlCommonProps<ElementOf<T>>>;
 
 export function RatingControl<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, RatingControlProps<T>>,
