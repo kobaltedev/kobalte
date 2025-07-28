@@ -7,7 +7,7 @@ import {
 	DescriptionExample,
 	ErrorMessageExample,
 	HTMLFormExample,
-} from "../../../../examples/rating-group";
+} from "../../../../examples/rating";
 
 # Rating Group
 
@@ -16,9 +16,9 @@ Allows users to rate items using a set of icons.
 ## Import
 
 ```ts
-import { RatingGroup } from "@kobalte/core/rating-group";
+import { Rating } from "@kobalte/core/rating";
 // or
-import { Root, Label, ... } from "@kobalte/core/rating-group";
+import { Root, Label, ... } from "@kobalte/core/rating";
 ```
 
 ## Features
@@ -32,34 +32,34 @@ import { Root, Label, ... } from "@kobalte/core/rating-group";
 
 The rating group consists of:
 
-- **RatingGroup**: The root container for the rating group.
-- **RatingGroup.Control**: The container for the rating items.
-- **RatingGroup.Label**: The label that gives the user information on the rating group.
-- **RatingGroup.HiddenInput**: The native html input that is visually hidden in the rating group.
-- **RatingGroup.Description**: The description that gives the user more information on the rating group.
-- **RatingGroup.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the rating group.
+- **Rating**: The root container for the rating group.
+- **Rating.Control**: The container for the rating items.
+- **Rating.Label**: The label that gives the user information on the rating group.
+- **Rating.HiddenInput**: The native html input that is visually hidden in the rating group.
+- **Rating.Description**: The description that gives the user more information on the rating group.
+- **Rating.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the rating group.
 
 The rating item consists of:
 
-- **RatingGroup.Item**: The root container for a rating item.
-- **RatingGroup.ItemControl**: The element that visually represents a rating item.
-- **RatingGroup.ItemLabel**: The label that gives the user information on the rating item.
-- **RatingGroup.ItemDescription**: The description that gives the user more information on the rating item.
+- **Rating.Item**: The root container for a rating item.
+- **Rating.ItemControl**: The element that visually represents a rating item.
+- **Rating.ItemLabel**: The label that gives the user information on the rating item.
+- **Rating.ItemDescription**: The description that gives the user more information on the rating item.
 
 ```tsx
-<RatingGroup>
-	<RatingGroup.Label />
-	<RatingGroup.Control>
-        <RatingGroup.Item>
-            <RatingGroup.ItemControl />
-            <RatingGroup.ItemLabel />
-            <RatingGroup.ItemDescription />
-        </RatingGroup.Item>
-    <RatingGroup.Control>
-	<RatingGroup.HiddenInput />
-	<RatingGroup.Description />
-	<RatingGroup.ErrorMessage />
-</RatingGroup>
+<Rating>
+	<Rating.Label />
+	<Rating.Control>
+        <Rating.Item>
+            <Rating.ItemControl />
+            <Rating.ItemLabel />
+            <Rating.ItemDescription />
+        </Rating.Item>
+    <Rating.Control>
+	<Rating.HiddenInput />
+	<Rating.Description />
+	<Rating.ErrorMessage />
+</Rating>
 ```
 
 ## Example
@@ -76,25 +76,25 @@ The rating item consists of:
   {/* <!-- prettier-ignore-start --> */}
   <TabsSnippets.Content value="index.tsx">
     ```tsx
-	import { RatingGroup } from "@kobalte/core/rating-group";
+	import { Rating } from "@kobalte/core/rating";
     import "./style.css";
 
     function App() {
       return (
-        <RatingGroup class="rating-group">
-    		<RatingGroup.Label class="rating-group__label">Rate Us:</RatingGroup.Label>
-    		<RatingGroup.Control class="rating-group__control">
+        <Rating class="rating">
+    		<Rating.Label class="rating__label">Rate Us:</Rating.Label>
+    		<Rating.Control class="rating__control">
     			<Index each={Array(5)}>
     				{_ => (
-    					<RatingGroup.Item class="rating-group-item">
-    						<RatingGroup.ItemControl>
+    					<Rating.Item class="rating-item">
+    						<Rating.ItemControl>
     							<StarIcon />
-    						</RatingGroup.ItemControl>
-    					</RatingGroup.Item>
+    						</Rating.ItemControl>
+    					</Rating.Item>
     				)}
     			</Index>
-    		</RatingGroup.Control>
-    	</RatingGroup>
+    		</Rating.Control>
+    	</Rating>
       );
     }
     ```
@@ -102,43 +102,43 @@ The rating item consists of:
   </TabsSnippets.Content>
   <TabsSnippets.Content value="style.css">
 ```css
-.rating-group {
+.rating {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 }
 
-.rating-group\_\_label {
+.rating\_\_label {
 color: hsl(240 6% 10%);
 font-size: 14px;
 font-weight: 500;
 user-select: none;
 }
 
-.rating-group\_\_description {
+.rating\_\_description {
 color: hsl(240 5% 26%);
 font-size: 12px;
 user-select: none;
 }
 
-.rating-group\_\_error-message {
+.rating\_\_error-message {
 color: hsl(0 72% 51%);
 font-size: 12px;
 user-select: none;
 }
 
-.rating-group\_\_control {
+.rating\_\_control {
 display: flex;
 gap: 4px;
 }
 
-.rating-group-item {
+.rating-item {
 cursor: pointer;
 fill: hsl(240 6% 90%);
 transition: fill 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-.rating-group-item[data-highlighted] {
+.rating-item[data-highlighted] {
 fill: hsl(200 98% 39%);
 }
 
@@ -159,19 +159,19 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 </Preview>
 
 ```tsx {0}
-<RatingGroup defaultValue={3}>
-	<RatingGroup.Control>
+<Rating defaultValue={3}>
+	<Rating.Control>
 		<Index each={Array(5)}>
 			{_ => (
-				<RatingGroup.Item>
-					<RatingGroup.ItemControl>
+				<Rating.Item>
+					<Rating.ItemControl>
 						<StarIcon />
-					</RatingGroup.ItemControl>
-				</RatingGroup.Item>
+					</Rating.ItemControl>
+				</Rating.Item>
 			)}
 		</Index>
-	</RatingGroup.Control>
-</RatingGroup>
+	</Rating.Control>
+</Rating>
 ````
 
 ### Controlled value
@@ -190,19 +190,19 @@ function ControlledExample() {
 
 	return (
 		<>
-			<RatingGroup value={value()} onChange={setValue}>
-				<RatingGroup.Control>
+			<Rating value={value()} onChange={setValue}>
+				<Rating.Control>
 					<Index each={Array(5)}>
 						{_ => (
-							<RatingGroup.Item>
-								<RatingGroup.ItemControl>
+							<Rating.Item>
+								<Rating.ItemControl>
 									<StarIcon />
-								</RatingGroup.ItemControl>
-							</RatingGroup.Item>
+								</Rating.ItemControl>
+							</Rating.Item>
 						)}
 					</Index>
-				</RatingGroup.Control>
-			</RatingGroup>
+				</Rating.Control>
+			</Rating>
 			<p>Your rating is: {value()}/5</p>
 		</>
 	);
@@ -218,50 +218,50 @@ Allow 0.5 value steps by setting the `allowHalf` prop to true.
 </Preview>
 
 ```tsx{0}
-<RatingGroup allowHalf>
-	<RatingGroup.Control>
+<Rating allowHalf>
+	<Rating.Control>
 		<Index each={Array(5)}>
 			{_ => (
-				<RatingGroup.Item>
-					<RatingGroup.ItemControl>
+				<Rating.Item>
+					<Rating.ItemControl>
 						{(state) => (state.half() ? <StarHalfIcon /> : <StarIcon />)}
-					</RatingGroup.ItemControl>
-				</RatingGroup.Item>
+					</Rating.ItemControl>
+				</Rating.Item>
 			)}
 		</Index>
-	</RatingGroup.Control>
-</RatingGroup>
+	</Rating.Control>
+</Rating>
 ```
 
 ### Description
 
-The `RatingGroup.Description` component can be used to associate additional help text with a rating group.
+The `Rating.Description` component can be used to associate additional help text with a rating group.
 
 <Preview>
 	<DescriptionExample />
 </Preview>
 
 ```tsx {13}
-<RatingGroup>
-	<RatingGroup.Label>Rate Us:</RatingGroup.Label>
-	<RatingGroup.Control>
+<Rating>
+	<Rating.Label>Rate Us:</Rating.Label>
+	<Rating.Control>
 		<Index each={Array(5)}>
 			{_ => (
-				<RatingGroup.Item>
-					<RatingGroup.ItemControl>
+				<Rating.Item>
+					<Rating.ItemControl>
 						<StarIcon />
-					</RatingGroup.ItemControl>
-				</RatingGroup.Item>
+					</Rating.ItemControl>
+				</Rating.Item>
 			)}
 		</Index>
-	</RatingGroup.Control>
-	<RatingGroup.Description>Rate your experience with us.</RatingGroup.Description>
-</RatingGroup>
+	</Rating.Control>
+	<Rating.Description>Rate your experience with us.</Rating.Description>
+</Rating>
 ```
 
 ### Error message
 
-The `RatingGroup.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the rating group as invalid for assistive technologies.
+The `Rating.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the rating group as invalid for assistive technologies.
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
@@ -276,25 +276,25 @@ function ErrorMessageExample() {
 	const [value, setValue] = createSignal(0);
 
 	return (
-		<RatingGroup
+		<Rating
 			value={value()}
 			onChange={setValue}
 			validationState={value() === 0 ? "invalid" : "valid"}
 		>
-			<RatingGroup.Label>Rate Us:</RatingGroup.Label>
-			<RatingGroup.Control>
+			<Rating.Label>Rate Us:</Rating.Label>
+			<Rating.Control>
 				<Index each={Array(5)}>
 					{_ => (
-						<RatingGroup.Item>
-							<RatingGroup.ItemControl>
+						<Rating.Item>
+							<Rating.ItemControl>
 								<StarIcon />
-							</RatingGroup.ItemControl>
-						</RatingGroup.Item>
+							</Rating.ItemControl>
+						</Rating.Item>
 					)}
 				</Index>
-			</RatingGroup.Control>
-			<RatingGroup.ErrorMessage>Please select a rating between 1 and 5.</RatingGroup.ErrorMessage>
-		</RatingGroup>
+			</Rating.Control>
+			<Rating.ErrorMessage>Please select a rating between 1 and 5.</Rating.ErrorMessage>
+		</Rating>
 	);
 }
 ```
@@ -315,20 +315,20 @@ function HTMLFormExample() {
 
 	return (
 		<form onSubmit={onSubmit}>
-			<RatingGroup name="rate">
-				<RatingGroup.Control>
+			<Rating name="rate">
+				<Rating.Control>
 					<Index each={Array(5)}>
 						{_ => (
-							<RatingGroup.Item>
-								<RatingGroup.ItemControl>
+							<Rating.Item>
+								<Rating.ItemControl>
 									<StarIcon />
-								</RatingGroup.ItemControl>
-							</RatingGroup.Item>
+								</Rating.ItemControl>
+							</Rating.Item>
 						)}
 					</Index>
-				</RatingGroup.Control>
-				<RatingGroup.HiddenInput />
-			</RatingGroup>
+				</Rating.Control>
+				<Rating.HiddenInput />
+			</Rating>
 			<div>
 				<button type="reset">Reset</button>
 				<button type="submit">Submit</button>
@@ -340,9 +340,9 @@ function HTMLFormExample() {
 
 ## API Reference
 
-### RatingGroup
+### Rating
 
-`RatingGroup` is equivalent to the `Root` import from `@kobalte/core/rating-group`.
+`Rating` is equivalent to the `Root` import from `@kobalte/core/rating`.
 
 | Prop            | Description                                                                                                                                        |
 | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -365,15 +365,15 @@ function HTMLFormExample() {
 | data-disabled  | Present when the rating group is disabled.                                                     |
 | data-readonly  | Present when the rating group is read only.                                                    |
 
-`RatingGroup.Label`, `RatingGroup.Description` and `RatingGroup.ErrorMesssage` shares the same data-attributes.
+`Rating.Label`, `Rating.Description` and `Rating.ErrorMesssage` shares the same data-attributes.
 
-### RatingGroup.ErrorMessage
+### Rating.ErrorMessage
 
 | Prop       | Description                                                                                                                             |
 | :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
 | forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
-### RatingGroup.ItemControl
+### Rating.ItemControl
 
 | Render Prop | Description                                                       |
 | :---------- | :---------------------------------------------------------------- |
@@ -391,22 +391,22 @@ function HTMLFormExample() {
 | data-half        | Present when the rating is half.                                                   |
 | data-highlighted | Present when the rating is highlighted.                                            |
 
-`RatingGroup.ItemLabel` and `RatingGroup.ItemDescription` share the same data-attributes.
+`Rating.ItemLabel` and `Rating.ItemDescription` share the same data-attributes.
 
 ## Rendered elements
 
-| Component                     | Default rendered element |
-| :---------------------------- | :----------------------- |
-| `RatingGroup`                 | `div`                    |
-| `RatingGroup.Control`         | `div`                    |
-| `RatingGroup.Label`           | `span`                   |
-| `RatingGroup.HiddenInput`     | `input`                  |
-| `RatingGroup.Description`     | `div`                    |
-| `RatingGroup.ErrorMessage`    | `div`                    |
-| `RatingGroup.Item`            | `div`                    |
-| `RatingGroup.ItemControl`     | `div`                    |
-| `RatingGroup.ItemLabel`       | `label`                  |
-| `RatingGroup.ItemDescription` | `div`                    |
+| Component                | Default rendered element |
+| :----------------------- | :----------------------- |
+| `Rating`                 | `div`                    |
+| `Rating.Control`         | `div`                    |
+| `Rating.Label`           | `span`                   |
+| `Rating.HiddenInput`     | `input`                  |
+| `Rating.Description`     | `div`                    |
+| `Rating.ErrorMessage`    | `div`                    |
+| `Rating.Item`            | `div`                    |
+| `Rating.ItemControl`     | `div`                    |
+| `Rating.ItemLabel`       | `label`                  |
+| `Rating.ItemDescription` | `div`                    |
 
 ## Accessibility
 
