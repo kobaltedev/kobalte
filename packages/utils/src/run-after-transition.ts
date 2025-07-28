@@ -18,7 +18,7 @@ const transitionsByElement = new Map<EventTarget, Set<string>>();
 const transitionCallbacks = new Set<() => void>();
 
 function setupGlobalEvents() {
-	if (typeof window === "undefined") {
+	if (typeof window === "undefined" || document.body === null) {
 		return;
 	}
 
