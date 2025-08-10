@@ -16,6 +16,7 @@ export * as AlertDialog from "./alert-dialog";
 export * as Breadcrumbs from "./breadcrumbs";
 export * as Button from "./button";
 //export * as Calendar from "./calendar";
+export * as Chip from "./chip";
 export * as Checkbox from "./checkbox";
 export * as Collapsible from "./collapsible";
 export * as Combobox from "./combobox";
