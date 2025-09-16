@@ -186,6 +186,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/slider",
 			},
 			{
+				title: "Stepper",
+				href: "/docs/core/components/stepper",
+				status: "new",
+			},
+			{
 				title: "Switch",
 				href: "/docs/core/components/switch",
 			},
