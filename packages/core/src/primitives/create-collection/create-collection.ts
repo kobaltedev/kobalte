@@ -9,10 +9,7 @@
 import { access } from "@kobalte/utils";
 import {
 	type Accessor,
-	createEffect,
 	createMemo,
-	createSignal,
-	on,
 } from "solid-js";
 
 import type { Collection, CollectionBase, CollectionNode } from "./types";
