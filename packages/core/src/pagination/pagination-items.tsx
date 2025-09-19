@@ -24,8 +24,11 @@ export function PaginationItems(props: PaginationItemsProps) {
 		const _showFirst = showFirst() && page() - 1 > siblingCount();
 		const _showLast = showLast() && count() - page() > siblingCount();
 
-		let showFirstEllipsis = page() - (showFirst() ? 2 : 1) > siblingCount();
+		let showFirstEllipsis =
+			fixedItems() !== "no-ellipsis" &&
+			page() - (showFirst() ? 2 : 1) > siblingCount();
 		let showLastEllipsis =
+			fixedItems() !== "no-ellipsis" &&
 			count() - page() - (showLast() ? 1 : 0) > siblingCount();
 
 		let previousSiblingCount = Math.min(page() - 1, siblingCount());
@@ -40,23 +43,24 @@ export function PaginationItems(props: PaginationItemsProps) {
 			previousSiblingCount += Math.max(siblingCount() - nextSiblingCountRef, 0);
 			nextSiblingCount += Math.max(siblingCount() - previousSiblingCountRef, 0);
 
-			if (!_showFirst) nextSiblingCount++;
-			if (!_showLast) previousSiblingCount++;
+			if (showFirst() && !_showFirst) nextSiblingCount++;
+			if (showLast() && !_showLast) previousSiblingCount++;
 
 			// Check specifically if true and not "no-ellipsis"
 			if (fixedItems() === true) {
 				if (!showFirstEllipsis) nextSiblingCount++;
 				if (!showLastEllipsis) previousSiblingCount++;
-			}
 
-			//replace ellipsis if it would replace only one item
-			if (page() - previousSiblingCount - (showFirst() ? 2 : 1) === 1) {
-				showFirstEllipsis = false;
-				previousSiblingCount++;
-			}
-			if (count() - page() - nextSiblingCount - (showLast() ? 1 : 0) === 1) {
-				showLastEllipsis = false;
-				nextSiblingCount++;
+				//replace ellipsis if it would replace only one item
+				if (page() - previousSiblingCount - (showFirst() ? 2 : 1) === 1) {
+					showFirstEllipsis = false;
+					previousSiblingCount++;
+				}
+
+				if (count() - page() - nextSiblingCount - (showLast() ? 1 : 0) === 1) {
+					showLastEllipsis = false;
+					nextSiblingCount++;
+				}
 			}
 		}
 

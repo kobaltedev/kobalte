@@ -40,7 +40,7 @@ export function BreadcrumbsSeparator<T extends ValidComponent = "span">(
 			aria-hidden="true"
 			{...(props as BreadcrumbsSeparatorProps)}
 		>
-			{context.separator()}
+			{props.children ?? context.separator()}
 		</Polymorphic>
 	);
 }
