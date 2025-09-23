@@ -149,7 +149,10 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		if (local.closeOnSelect) {
 			setTimeout(() => {
 				menuContext.close(true);
-			});
+			},
+			// Fix #446
+			// Requires a delay for NavigationMenu to work on mobile.
+			1);
 		}
 	};
 
