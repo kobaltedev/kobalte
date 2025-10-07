@@ -9,14 +9,13 @@ import { type Accessor, createEffect, createMemo } from "solid-js";
 import type {
 	FormatterOptions,
 	TimeFieldGranularity,
-	TimeValue,
 } from "./types";
 
 export function createDefaultProps(props: {
-	value: Accessor<TimeValue | undefined>;
+	value: Accessor<Date | undefined>;
 	granularity: Accessor<TimeFieldGranularity | undefined>;
 }) {
-	let lastValue: TimeValue;
+	let lastValue: Date;
 
 	const value = createMemo(() => {
 		const resolvedValue = props.value();
@@ -28,15 +27,15 @@ export function createDefaultProps(props: {
 		return lastValue;
 	});
 
-	const defaultTimeZone = createMemo(() => {
-		const resolvedValue = value();
+	// const defaultTimeZone = createMemo(() => {
+	// 	const resolvedValue = value();
 
-		if (resolvedValue && "timeZone" in resolvedValue) {
-			return resolvedValue.timeZone;
-		}
+	// 	if (resolvedValue && "timeZone" in resolvedValue) {
+	// 		return resolvedValue.timeZone;
+	// 	}
 
-		return undefined;
-	});
+	// 	return undefined;
+	// });
 
 	const granularity = createMemo(() => {
 		return props.granularity() || "minute";
@@ -53,35 +52,18 @@ export function createDefaultProps(props: {
 		}
 	});
 
-	return { granularity, defaultTimeZone };
-}
-
-export function convertValue(
-	value?: TimeValue | null,
-	date: DateValue = today(getLocalTimeZone()),
-) {
-	if (!value) {
-		return null;
-	}
-
-	if ("day" in value) {
-		return value;
-	}
-
-	return toCalendarDateTime(date, value);
+	return { granularity/*, defaultTimeZone  */};
 }
 
 export function createPlaceholderDate(
-	value?: TimeValue | null,
-	placeholderValue?: TimeValue | null,
+	placeholderValue?: Date | null,
 	timeZone?: string,
 ) {
-	const valueTimeZone =
-		value && "timeZone" in value ? value.timeZone : undefined;
 
-	return (valueTimeZone || timeZone) && placeholderValue
-		? toZoned(convertValue(placeholderValue)!, (valueTimeZone || timeZone)!)
-		: convertValue(placeholderValue);
+	return placeholderValue;
+	// (valueTimeZone || timeZone) && placeholderValue
+	// 	? toZoned(convertValue(placeholderValue)!, (valueTimeZone || timeZone)!)
+	// 	: convertValue(placeholderValue);
 }
 
 export function getTimeFieldFormatOptions(
@@ -124,4 +106,11 @@ export function getTimeFieldFormatOptions(
 	}
 
 	return opts;
+}
+
+/**
+ * Returns the current date with the time set to 00:00:00.
+ */
+export function emptyDateTime(): Date {
+	return new Date(new Date().setHours(0, 0, 0, 0));
 }

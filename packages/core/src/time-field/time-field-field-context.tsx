@@ -1,10 +1,9 @@
-import type { ResolvedDateTimeFormatOptions } from "@internationalized/date";
 import { type Accessor, createContext, useContext } from "solid-js";
 import type { SegmentType, TimeSegment } from "./types";
 
 export interface TimeFieldFieldContextValue {
 	dateValue: Accessor<Date | undefined>;
-	dateFormatterResolvedOptions: Accessor<ResolvedDateTimeFormatOptions>;
+	dateFormatterResolvedOptions: Accessor<Intl.ResolvedDateTimeFormatOptions>;
 	segments: Accessor<TimeSegment[]>;
 	ariaLabel: Accessor<string | undefined>;
 	ariaLabelledBy: Accessor<string | undefined>;
