@@ -1,4 +1,3 @@
-import { DateFormatter, Time } from "@internationalized/date";
 import {
 	type ValidationState,
 	access,
@@ -43,26 +42,24 @@ import {
 	type TimeFieldIntlTranslations,
 } from "./time-field.intl";
 import type {
-	MappedTimeValue,
 	TimeFieldGranularity,
 	TimeFieldHourCycle,
-	TimeValue,
 } from "./types";
 import {
-	convertValue,
 	createDefaultProps,
+	emptyDateTime,
 	getTimeFieldFormatOptions,
 } from "./utils";
 
 export interface TimeFieldRootOptions {
 	/** The current value (controlled). */
-	value?: TimeValue;
+	value?: Date;
 
 	/** The default value (uncontrolled). */
-	defaultValue?: TimeValue;
+	defaultValue?: Date;
 
 	/** Handler that is called when the value changes. */
-	onChange?: (value: MappedTimeValue<TimeValue>) => void;
+	onChange?: (value: Date) => void;
 
 	/**
 	 * Whether to display the time in 12 or 24-hour format.
@@ -89,13 +86,13 @@ export interface TimeFieldRootOptions {
 	 * A placeholder time that influences the format of the placeholder shown when no value is selected.
 	 * Defaults to 12:00 AM or 00:00 depending on the hour cycle.
 	 */
-	placeholderValue?: TimeValue;
+	placeholderValue?: Date;
 
 	/** The minimum allowed time that a user may select. */
-	minValue?: TimeValue;
+	minValue?: Date;
 
 	/** The maximum allowed time that a user may select. */
-	maxValue?: TimeValue;
+	maxValue?: Date;
 
 	/**
 	 * A unique identifier for the component.
@@ -152,7 +149,7 @@ export type TimeFieldRootProps<
 export function TimeFieldRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, TimeFieldRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement>();
 
 	const defaultId = `time-field-${createUniqueId()}`;
 
@@ -195,21 +192,21 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 	const focusManager = createFocusManager(inputRef);
 
-	const [value, setValue] = createControllableSignal<TimeValue | undefined>({
+	const [value, setValue] = createControllableSignal<Date | undefined>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
 		onChange: (value) => local.onChange?.(value!),
 	});
 
-	const { granularity, defaultTimeZone } = createDefaultProps({
+	const { granularity } = createDefaultProps({
 		value: () => value() ?? local.placeholderValue,
 		granularity: () => local.granularity,
 	});
 
 	createFormResetListener(
-		() => ref,
+		ref,
 		() => {
-			setValue(local.defaultValue ?? new Time());
+			setValue(local.defaultValue ?? emptyDateTime());
 		},
 	);
 
@@ -218,19 +215,17 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 			return local.validationState;
 		}
 
-		const v = value() || local.placeholderValue;
-		const day = v && "day" in v ? v : undefined;
-		const minDate = convertValue(local.minValue, day);
-		const maxDate = convertValue(local.maxValue, day);
+		const minDate = local.minValue;
+		const maxDate = local.maxValue;
 
 		const rangeOverflow =
 			value() != null &&
 			minDate != null &&
-			value()!.compare(convertValue(local.maxValue)!) > 0;
+			value()! > (local.maxValue ?? Number.POSITIVE_INFINITY);
 		const rangeUnderflow =
 			value() != null &&
 			maxDate != null &&
-			value()!.compare(convertValue(local.minValue)!) < 0;
+			value()! < (local.minValue ?? Number.NEGATIVE_INFINITY);
 
 		return rangeOverflow || rangeUnderflow ? "invalid" : undefined;
 	});
@@ -246,19 +241,17 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	const formattedValue = createMemo(() => {
 		const formatOptions = getTimeFieldFormatOptions({
 			granularity: granularity(),
-			timeZone: defaultTimeZone(),
+			// timeZone: defaultTimeZone(),
 			hideTimeZone: local.hideTimeZone,
 			hourCycle: local.hourCycle,
 		});
 
 		const dateFormatter = createMemo(
-			() => new DateFormatter(locale(), formatOptions),
+			() => new Intl.DateTimeFormat(locale(), formatOptions),
 		);
 
 		if (value()) {
-			return dateFormatter().format(
-				convertValue(value())!.toDate(defaultTimeZone() ?? "UTC"),
-			);
+			return dateFormatter().format(value());
 		}
 
 		return "";
@@ -291,9 +284,9 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		granularity,
 		hideTimeZone: () => local.hideTimeZone ?? false,
 		shouldForceLeadingZeros: () => local.shouldForceLeadingZeros ?? false,
-		placeholderTime: () => value() || (local.placeholderValue ?? new Time()),
+		placeholderTime: () => value() || (local.placeholderValue ?? emptyDateTime()),
 		placeholderValue: () => local.placeholderValue,
-		defaultTimeZone,
+		// defaultTimeZone,
 		formattedValue,
 		focusManager: () => focusManager,
 		isDisabled: () => formControlContext.isDisabled() ?? false,
@@ -310,7 +303,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 			<TimeFieldContext.Provider value={context}>
 				<Polymorphic<TimeFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
+					ref={mergeRefs(setRef, local.ref)}
 					role="group"
 					id={access(formControlProps.id)!}
 					aria-invalid={

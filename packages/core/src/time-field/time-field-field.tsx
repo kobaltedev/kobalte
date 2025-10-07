@@ -7,7 +7,6 @@
  * https://github.com/adobe/react-spectrum/blob/a98da553e73ca70bb3215a106878fa98fac826f2/packages/%40react-aria/datepicker/src/useDateField.ts
  */
 
-import { DateFormatter } from "@internationalized/date";
 import {
 	callHandler,
 	createGenerateId,
@@ -25,7 +24,7 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { useLocale } from "../i18n";
+import { createDateFormatter, useLocale } from "../i18n";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -40,11 +39,9 @@ import type {
 	FormatterOptions,
 	SegmentType,
 	TimeSegment,
-	TimeValue,
 } from "./types";
 import {
-	convertValue,
-	createPlaceholderDate,
+	emptyDateTime,
 	getTimeFieldFormatOptions,
 } from "./utils";
 
@@ -76,8 +73,6 @@ export type TimeFieldFieldProps<
 export function TimeFieldField<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, TimeFieldFieldProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
-
 	const formControlContext = useFormControlContext();
 	const timeFieldContext = useTimeFieldContext();
 
@@ -97,19 +92,13 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 		"aria-describedby",
 	]);
 
-	const { locale, direction } = useLocale();
+	const { direction } = useLocale();
 
 	const val = createMemo(
 		() => timeFieldContext.value() || timeFieldContext.placeholderTime(),
 	);
 
-	const [placeholderDate, setPlaceholderDate] = createSignal(
-		createPlaceholderDate(
-			val(),
-			timeFieldContext.placeholderTime(),
-			timeFieldContext.defaultTimeZone(),
-		),
-	);
+	const [placeholderDate, setPlaceholderDate] = createSignal(emptyDateTime());
 
 	const formatOpts: Accessor<FormatterOptions> = createMemo(() => ({
 		granularity: timeFieldContext.granularity(),
@@ -122,7 +111,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 
 	const opts = createMemo(() => getTimeFieldFormatOptions(formatOpts()));
 
-	const dateFormatter = createMemo(() => new DateFormatter(locale(), opts()));
+	const dateFormatter = createDateFormatter(opts);
 	const resolvedOptions = createMemo(() => dateFormatter().resolvedOptions());
 
 	const ariaLabelledBy = createMemo(() => {
@@ -168,7 +157,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 			: placeholderDate();
 	});
 
-	const setValue = (newValue: TimeValue) => {
+	const setValue = (newValue: Date) => {
 		if (formControlContext.isDisabled() || formControlContext.isReadOnly()) {
 			return;
 		}
@@ -177,28 +166,18 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 			Object.keys(validSegments()).length >= Object.keys(allSegments()).length
 		) {
 			timeFieldContext.setValue(newValue);
-			setPlaceholderDate(convertValue(newValue));
-		} else {
-			setPlaceholderDate(convertValue(newValue));
-		}
+		} 
+		setPlaceholderDate(newValue);
 	};
 
-	const dateValue = createMemo(() =>
-		convertValue(displayValue())?.toDate(
-			timeFieldContext.defaultTimeZone() ?? "UTC",
-		),
-	);
-
 	const segments = createMemo(() => {
-		const resolvedDateValue = dateValue();
-		const resolvedDisplayValue = displayValue();
 
-		if (!resolvedDateValue || !resolvedDisplayValue) {
+		if (!displayValue()) {
 			return [];
 		}
 
 		return dateFormatter()
-			.formatToParts(resolvedDateValue)
+			.formatToParts(displayValue())
 			.map((segment) => {
 				const isOriginallyEditable =
 					EDITABLE_SEGMENTS[segment.type as keyof typeof EDITABLE_SEGMENTS];
@@ -221,7 +200,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 						segment.type,
 					text: isPlaceholder ? placeholder : segment.value,
 					...getSegmentLimits(
-						resolvedDisplayValue,
+						displayValue()!,
 						segment.type,
 						resolvedOptions(),
 					),
@@ -259,7 +238,6 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 				resolvedDisplayValue,
 				type,
 				amount,
-				resolvedOptions(),
 			);
 
 			if (newValue) {
@@ -310,33 +288,37 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 			return newValue;
 		});
 
-		const placeholder = createPlaceholderDate(
-			val(),
-			timeFieldContext.placeholderTime(),
-			timeFieldContext.defaultTimeZone(),
-		);
+		const placeholder = emptyDateTime();
 
 		const resolvedDisplayValue = displayValue();
-		let value = resolvedDisplayValue;
+		let value = resolvedDisplayValue || emptyDateTime();
 
 		if (resolvedDisplayValue && placeholder) {
 			if (part === "dayPeriod") {
-				const isPM = resolvedDisplayValue.hour >= 12;
-				const shouldBePM = placeholder.hour >= 12;
+				const isPM = resolvedDisplayValue.getHours() >= 12;
+				const shouldBePM = placeholder.getHours() >= 12;
 
 				if (isPM && !shouldBePM) {
-					value = resolvedDisplayValue.set({
-						hour: resolvedDisplayValue.hour - 12,
-					});
+					value.setHours(
+						resolvedDisplayValue.getHours() - 12,
+					);
 				} else if (!isPM && shouldBePM) {
-					value = resolvedDisplayValue.set({
-						hour: resolvedDisplayValue.hour + 12,
-					});
+					value.setHours(
+						resolvedDisplayValue.getHours() + 12,
+					);
 				}
 			} else if (part in resolvedDisplayValue) {
-				value = resolvedDisplayValue.set({
-					[part]: placeholder[part as keyof typeof placeholder],
-				});
+				switch (part) {
+					case "hour":
+						value.setHours(placeholder.getHours());
+						break;
+					case "minute":
+						value.setMinutes(placeholder.getMinutes());
+						break;
+					case "second":
+						value.setSeconds(placeholder.getSeconds());
+						break;
+				}
 			}
 		}
 		timeFieldContext.setValue(undefined);
@@ -392,13 +374,13 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 			const resolvedDisplayValue = displayValue();
 
 			if (resolvedDisplayValue) {
-				setValue(resolvedDisplayValue.copy());
+				setValue(resolvedDisplayValue);
 			}
 		}
 	};
 
 	const context: TimeFieldFieldContextValue = {
-		dateValue,
+		dateValue: displayValue,
 		dateFormatterResolvedOptions: resolvedOptions,
 		ariaLabel: () => others["aria-label"],
 		ariaLabelledBy,
@@ -418,10 +400,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 			<Polymorphic<TimeFieldFieldRenderProps>
 				as="div"
 				role="presentation"
-				ref={mergeRefs((el) => {
-					timeFieldContext.setInputRef(el);
-					ref = el;
-				}, local.ref)}
+				ref={mergeRefs(timeFieldContext.setInputRef, local.ref)}
 				aria-labelledby={ariaLabelledBy()}
 				aria-describedby={ariaDescribedBy()}
 				onKeyDown={onKeyDown}
@@ -455,41 +434,41 @@ const TYPE_MAPPING = {
 };
 
 function getSegmentLimits(
-	date: TimeValue,
+	date: Date,
 	type: string,
 	options: Intl.ResolvedDateTimeFormatOptions,
 ) {
 	switch (type) {
 		case "dayPeriod":
 			return {
-				value: date.hour >= 12 ? 12 : 0,
+				value: date.getHours() >= 12 ? 12 : 0,
 				minValue: 0,
 				maxValue: 12,
 			};
 		case "hour":
 			if (options.hour12) {
-				const isPM = date.hour >= 12;
+				const isPM = date.getHours() >= 12;
 				return {
-					value: date.hour,
+					value: date.getHours(),
 					minValue: isPM ? 12 : 0,
 					maxValue: isPM ? 23 : 11,
 				};
 			}
 
 			return {
-				value: date.hour,
+				value: date.getHours(),
 				minValue: 0,
 				maxValue: 23,
 			};
 		case "minute":
 			return {
-				value: date.minute,
+				value: date.getMinutes(),
 				minValue: 0,
 				maxValue: 59,
 			};
 		case "second":
 			return {
-				value: date.second,
+				value: date.getSeconds(),
 				minValue: 0,
 				maxValue: 59,
 			};
@@ -499,31 +478,33 @@ function getSegmentLimits(
 }
 
 function addSegment(
-	value: TimeValue,
+	value: Date,
 	part: string,
 	amount: number,
-	options: Intl.ResolvedDateTimeFormatOptions,
 ) {
 	if ("hour" in value) {
 		switch (part) {
 			case "dayPeriod": {
-				const hours = value.hour;
+				const hours = value.getHours();
 				const isPM = hours >= 12;
-				return value.set({ hour: isPM ? hours - 12 : hours + 12 });
+				value.setHours(isPM ? hours - 12 : hours + 12);
+				return value;
 			}
 			case "hour":
+				value.setHours((value.getHours() + amount) % 24);
+				return value;
 			case "minute":
+				value.setMinutes((value.getMinutes() + amount) % 60);
+				return value;
 			case "second":
-				return value.cycle(part, amount, {
-					round: part !== "hour",
-					hourCycle: options.hour12 ? 12 : 24,
-				});
+				value.setSeconds((value.getSeconds() + amount) % 60);
+				return value;
 		}
 	}
 }
 
 function setSegmentBase(
-	value: TimeValue,
+	value: Date,
 	part: string,
 	segmentValue: number,
 	options: Intl.ResolvedDateTimeFormatOptions,
@@ -531,18 +512,19 @@ function setSegmentBase(
 	if ("hour" in value) {
 		switch (part) {
 			case "dayPeriod": {
-				const hours = value.hour;
+				const hours = value.getHours();
 				const wasPM = hours >= 12;
 				const isPM = segmentValue >= 12;
 				if (isPM === wasPM) {
 					return value;
 				}
-				return value.set({ hour: wasPM ? hours - 12 : hours + 12 });
+				value.setHours(wasPM ? hours - 12 : hours + 12);
+				return value;
 			}
 
 			case "hour":
 				if (options.hour12) {
-					const hours = value.hour;
+					const hours = value.getHours();
 					const wasPM = hours >= 12;
 					if (!wasPM && segmentValue === 12) {
 						// biome-ignore lint/style/noParameterAssign: used in fallthrough
@@ -553,10 +535,14 @@ function setSegmentBase(
 						segmentValue += 12;
 					}
 				}
-				return value.set({ [part]: segmentValue });
+				value.setHours(segmentValue);
+				return value;
 			case "minute":
+				value.setMinutes(segmentValue);
+				return value;
 			case "second":
-				return value.set({ [part]: segmentValue });
+				value.setSeconds(segmentValue);
+				return value;
 		}
 	}
 }
@@ -564,23 +550,23 @@ function setSegmentBase(
 export function getPlaceholder(
 	field: string,
 	value: string,
-	placeholderValue?: TimeValue,
+	placeholderValue?: Date,
 ) {
 	if (field === "dayPeriod") {
 		return value;
 	}
 
 	if (placeholderValue) {
-		if (placeholderValue.hour && field === "hour") {
-			return String(placeholderValue.hour);
+		if (placeholderValue.getHours() && field === "hour") {
+			return String(placeholderValue.getHours());
 		}
 
-		if (placeholderValue.minute && field === "minute") {
-			return String(placeholderValue.minute);
+		if (placeholderValue.getMinutes() && field === "minute") {
+			return String(placeholderValue.getMinutes());
 		}
 
-		if (placeholderValue.second && field === "second") {
-			return String(placeholderValue.second);
+		if (placeholderValue.getSeconds() && field === "second") {
+			return String(placeholderValue.getSeconds());
 		}
 	}
 

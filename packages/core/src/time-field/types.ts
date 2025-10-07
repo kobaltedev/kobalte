@@ -1,22 +1,6 @@
-import type {
-	CalendarDateTime,
-	Time,
-	ZonedDateTime,
-} from "@internationalized/date";
-
 export type TimeFieldGranularity = "hour" | "minute" | "second";
 
 export type TimeFieldHourCycle = 12 | 24;
-
-export type TimeValue = Time | CalendarDateTime | ZonedDateTime;
-
-export type MappedTimeValue<T> = T extends ZonedDateTime
-	? ZonedDateTime
-	: T extends CalendarDateTime
-		? CalendarDateTime
-		: T extends Time
-			? Time
-			: never;
 
 export type SegmentType =
 	| "hour"
