@@ -1,44 +1,42 @@
 import { Index, createSignal } from "solid-js";
-import { RatingGroup } from "../../../../packages/core/src/rating-group";
+import { Rating } from "../../../../packages/core/src/rating";
 
-import style from "./rating-group.module.css";
+import style from "./rating.module.css";
 
 export function BasicExample() {
 	return (
-		<RatingGroup class={style["rating-group"]}>
-			<RatingGroup.Label class={style["rating-group__label"]}>
-				Rate Us:
-			</RatingGroup.Label>
-			<RatingGroup.Control class={style["rating-group__control"]}>
+		<Rating class={style.rating}>
+			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
+			<Rating.Control class={style.rating__control}>
 				<Index each={Array(5)}>
 					{(_) => (
-						<RatingGroup.Item class={style["rating-group-item"]}>
-							<RatingGroup.ItemControl>
+						<Rating.Item class={style["rating-item"]}>
+							<Rating.ItemControl>
 								<StarIcon />
-							</RatingGroup.ItemControl>
-						</RatingGroup.Item>
+							</Rating.ItemControl>
+						</Rating.Item>
 					)}
 				</Index>
-			</RatingGroup.Control>
-		</RatingGroup>
+			</Rating.Control>
+		</Rating>
 	);
 }
 
 export function DefaultValueExample() {
 	return (
-		<RatingGroup class={style["rating-group"]} defaultValue={3}>
-			<RatingGroup.Control class={style["rating-group__control"]}>
+		<Rating class={style.rating} defaultValue={3}>
+			<Rating.Control class={style.rating__control}>
 				<Index each={Array(5)}>
 					{(_) => (
-						<RatingGroup.Item class={style["rating-group-item"]}>
-							<RatingGroup.ItemControl>
+						<Rating.Item class={style["rating-item"]}>
+							<Rating.ItemControl>
 								<StarIcon />
-							</RatingGroup.ItemControl>
-						</RatingGroup.Item>
+							</Rating.ItemControl>
+						</Rating.Item>
 					)}
 				</Index>
-			</RatingGroup.Control>
-		</RatingGroup>
+			</Rating.Control>
+		</Rating>
 	);
 }
 
@@ -47,23 +45,19 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<RatingGroup
-				class={style["rating-group"]}
-				value={value()}
-				onChange={setValue}
-			>
-				<RatingGroup.Control class={style["rating-group__control"]}>
+			<Rating class={style.rating} value={value()} onChange={setValue}>
+				<Rating.Control class={style.rating__control}>
 					<Index each={Array(5)}>
 						{(_) => (
-							<RatingGroup.Item class={style["rating-group-item"]}>
-								<RatingGroup.ItemControl>
+							<Rating.Item class={style["rating-item"]}>
+								<Rating.ItemControl>
 									<StarIcon />
-								</RatingGroup.ItemControl>
-							</RatingGroup.Item>
+								</Rating.ItemControl>
+							</Rating.Item>
 						)}
 					</Index>
-				</RatingGroup.Control>
-			</RatingGroup>
+				</Rating.Control>
+			</Rating>
 			<p class="not-prose text-sm mt-4">Your rating is: {value()}/5</p>
 		</>
 	);
@@ -71,43 +65,41 @@ export function ControlledExample() {
 
 export function HalfRatingsExample() {
 	return (
-		<RatingGroup class={style["rating-group"]} allowHalf>
-			<RatingGroup.Control class={style["rating-group__control"]}>
+		<Rating class={style.rating} allowHalf>
+			<Rating.Control class={style.rating__control}>
 				<Index each={Array(5)}>
 					{(_) => (
-						<RatingGroup.Item class={style["rating-group-item"]}>
-							<RatingGroup.ItemControl>
+						<Rating.Item class={style["rating-item"]}>
+							<Rating.ItemControl>
 								{(state) => (state.half() ? <StarHalfIcon /> : <StarIcon />)}
-							</RatingGroup.ItemControl>
-						</RatingGroup.Item>
+							</Rating.ItemControl>
+						</Rating.Item>
 					)}
 				</Index>
-			</RatingGroup.Control>
-		</RatingGroup>
+			</Rating.Control>
+		</Rating>
 	);
 }
 
 export function DescriptionExample() {
 	return (
-		<RatingGroup class={style["rating-group"]}>
-			<RatingGroup.Label class={style["rating-group__label"]}>
-				Rate Us:
-			</RatingGroup.Label>
-			<RatingGroup.Control class={style["rating-group__control"]}>
+		<Rating class={style.rating}>
+			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
+			<Rating.Control class={style.rating__control}>
 				<Index each={Array(5)}>
 					{(_) => (
-						<RatingGroup.Item class={style["rating-group-item"]}>
-							<RatingGroup.ItemControl>
+						<Rating.Item class={style["rating-item"]}>
+							<Rating.ItemControl>
 								<StarIcon />
-							</RatingGroup.ItemControl>
-						</RatingGroup.Item>
+							</Rating.ItemControl>
+						</Rating.Item>
 					)}
 				</Index>
-			</RatingGroup.Control>
-			<RatingGroup.Description class={style["rating-group__description"]}>
+			</Rating.Control>
+			<Rating.Description class={style.rating__description}>
 				Rate your experience with us.
-			</RatingGroup.Description>
-		</RatingGroup>
+			</Rating.Description>
+		</Rating>
 	);
 }
 
@@ -115,30 +107,28 @@ export function ErrorMessageExample() {
 	const [value, setValue] = createSignal(0);
 
 	return (
-		<RatingGroup
-			class={style["rating-group"]}
+		<Rating
+			class={style.rating}
 			value={value()}
 			onChange={setValue}
 			validationState={value() === 0 ? "invalid" : "valid"}
 		>
-			<RatingGroup.Label class={style["rating-group__label"]}>
-				Rate Us:
-			</RatingGroup.Label>
-			<RatingGroup.Control class={style["rating-group__control"]}>
+			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
+			<Rating.Control class={style.rating__control}>
 				<Index each={Array(5)}>
 					{(_) => (
-						<RatingGroup.Item class={style["rating-group-item"]}>
-							<RatingGroup.ItemControl>
+						<Rating.Item class={style["rating-item"]}>
+							<Rating.ItemControl>
 								<StarIcon />
-							</RatingGroup.ItemControl>
-						</RatingGroup.Item>
+							</Rating.ItemControl>
+						</Rating.Item>
 					)}
 				</Index>
-			</RatingGroup.Control>
-			<RatingGroup.ErrorMessage class={style["rating-group__error-message"]}>
+			</Rating.Control>
+			<Rating.ErrorMessage class={style["rating__error-message"]}>
 				Please select a rating between 1 and 5.
-			</RatingGroup.ErrorMessage>
-		</RatingGroup>
+			</Rating.ErrorMessage>
+		</Rating>
 	);
 }
 
@@ -160,20 +150,20 @@ export function HTMLFormExample() {
 			onSubmit={onSubmit}
 			class="flex flex-col items-center space-y-6"
 		>
-			<RatingGroup class={style["rating-group"]} name="rate">
-				<RatingGroup.Control class={style["rating-group__control"]}>
+			<Rating class={style.rating} name="rate">
+				<Rating.Control class={style.rating__control}>
 					<Index each={Array(5)}>
 						{(_) => (
-							<RatingGroup.Item class={style["rating-group-item"]}>
-								<RatingGroup.ItemControl>
+							<Rating.Item class={style["rating-item"]}>
+								<Rating.ItemControl>
 									<StarIcon />
-								</RatingGroup.ItemControl>
-							</RatingGroup.Item>
+								</Rating.ItemControl>
+							</Rating.Item>
 						)}
 					</Index>
-				</RatingGroup.Control>
-				<RatingGroup.HiddenInput />
-			</RatingGroup>
+				</Rating.Control>
+				<Rating.HiddenInput />
+			</Rating>
 			<div class="flex space-x-2">
 				<button type="reset" class="kb-button">
 					Reset

@@ -7,7 +7,7 @@ import {
 } from "solid-js";
 import type { CollectionItemWithRef } from "../primitives";
 
-export interface RatingGroupContextValue {
+export interface RatingContextValue {
 	value: Accessor<number | undefined>;
 	setValue: (value: number) => void;
 	allowHalf: Accessor<boolean | undefined>;
@@ -20,14 +20,14 @@ export interface RatingGroupContextValue {
 	setItems: Setter<CollectionItemWithRef[]>;
 }
 
-export const RatingGroupContext = createContext<RatingGroupContextValue>();
+export const RatingContext = createContext<RatingContextValue>();
 
-export function useRatingGroupContext() {
-	const context = useContext(RatingGroupContext);
+export function useRatingContext() {
+	const context = useContext(RatingContext);
 
 	if (context === undefined) {
 		throw new Error(
-			"[kobalte]: `useRatingGroupContext` must be used within a `RatingGroup` component",
+			"[kobalte]: `useRatingContext` must be used within a `Rating` component",
 		);
 	}
 

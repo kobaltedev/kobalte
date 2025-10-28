@@ -7,39 +7,39 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import {
-	type RatingGroupItemState,
-	useRatingGroupItemContext,
-} from "./rating-group-item-context";
+	type RatingItemState,
+	useRatingItemContext,
+} from "./rating-item-context";
 
-export interface RatingGroupItemControlOptions {
+export interface RatingItemControlOptions {
 	/**
 	 * The children of the rating group item.
 	 * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
 	 */
-	children?: JSX.Element | ((state: RatingGroupItemState) => JSX.Element);
+	children?: JSX.Element | ((state: RatingItemState) => JSX.Element);
 }
 
-export interface RatingGroupItemControlCommonProps<
+export interface RatingItemControlCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
 
-export interface RatingGroupItemControlRenderProps
-	extends RatingGroupItemControlCommonProps {
+export interface RatingItemControlRenderProps
+	extends RatingItemControlCommonProps {
 	role: "presentation";
 	children: JSX.Element;
 }
 
-export type RatingGroupItemControlProps<
+export type RatingItemControlProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = RatingGroupItemControlOptions &
-	Partial<RatingGroupItemControlCommonProps<ElementOf<T>>>;
+> = RatingItemControlOptions &
+	Partial<RatingItemControlCommonProps<ElementOf<T>>>;
 
-export function RatingGroupItemControl<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, RatingGroupItemControlProps<T>>,
+export function RatingItemControl<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, RatingItemControlProps<T>>,
 ) {
-	const context = useRatingGroupItemContext();
+	const context = useRatingItemContext();
 
 	const defaultId = `${context.generateId("control")}`;
 
@@ -47,35 +47,35 @@ export function RatingGroupItemControl<T extends ValidComponent = "div">(
 		{
 			id: defaultId,
 		},
-		props as RatingGroupItemControlProps,
+		props as RatingItemControlProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, ["children"]);
 
 	return (
-		<Polymorphic<RatingGroupItemControlRenderProps>
+		<Polymorphic<RatingItemControlRenderProps>
 			as="div"
 			role="presentation"
 			{...others}
 		>
-			<RatingGroupItemControlChild
+			<RatingItemControlChild
 				state={{
 					highlighted: context.state.highlighted,
 					half: context.state.half,
 				}}
 			>
 				{local.children}
-			</RatingGroupItemControlChild>
+			</RatingItemControlChild>
 		</Polymorphic>
 	);
 }
 
-interface RatingGroupItemControlChildProps
-	extends Pick<RatingGroupItemControlProps, "children"> {
-	state: RatingGroupItemState;
+interface RatingItemControlChildProps
+	extends Pick<RatingItemControlProps, "children"> {
+	state: RatingItemState;
 }
 
-function RatingGroupItemControlChild(props: RatingGroupItemControlChildProps) {
+function RatingItemControlChild(props: RatingItemControlChildProps) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
 		return isFunction(body) ? body(props.state) : body;
