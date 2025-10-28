@@ -46,7 +46,6 @@ import type {
 	TimeFieldHourCycle,
 } from "./types";
 import {
-	createDefaultProps,
 	emptyDateTime,
 	getTimeFieldFormatOptions,
 } from "./utils";
@@ -198,11 +197,6 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		onChange: (value) => local.onChange?.(value!),
 	});
 
-	const { granularity } = createDefaultProps({
-		value: () => value() ?? local.placeholderValue,
-		granularity: () => local.granularity,
-	});
-
 	createFormResetListener(
 		ref,
 		() => {
@@ -240,7 +234,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 	const formattedValue = createMemo(() => {
 		const formatOptions = getTimeFieldFormatOptions({
-			granularity: granularity(),
+			granularity: local.granularity!,
 			// timeZone: defaultTimeZone(),
 			hideTimeZone: local.hideTimeZone,
 			hourCycle: local.hourCycle,
@@ -281,7 +275,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		value,
 		setValue,
 		hourCycle: () => local.hourCycle,
-		granularity,
+		granularity: () => local.granularity!,
 		hideTimeZone: () => local.hideTimeZone ?? false,
 		shouldForceLeadingZeros: () => local.shouldForceLeadingZeros ?? false,
 		placeholderTime: () => value() || (local.placeholderValue ?? emptyDateTime()),
