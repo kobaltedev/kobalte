@@ -11,49 +11,6 @@ import type {
 	TimeFieldGranularity,
 } from "./types";
 
-export function createDefaultProps(props: {
-	value: Accessor<Date | undefined>;
-	granularity: Accessor<TimeFieldGranularity | undefined>;
-}) {
-	let lastValue: Date;
-
-	const value = createMemo(() => {
-		const resolvedValue = props.value();
-
-		if (resolvedValue) {
-			lastValue = resolvedValue;
-		}
-
-		return lastValue;
-	});
-
-	// const defaultTimeZone = createMemo(() => {
-	// 	const resolvedValue = value();
-
-	// 	if (resolvedValue && "timeZone" in resolvedValue) {
-	// 		return resolvedValue.timeZone;
-	// 	}
-
-	// 	return undefined;
-	// });
-
-	const granularity = createMemo(() => {
-		return props.granularity() || "minute";
-	});
-
-	createEffect(() => {
-		const resolvedValue = value();
-		const resolvedGranularity = granularity();
-
-		if (resolvedValue && !(resolvedGranularity in resolvedValue)) {
-			throw new Error(
-				`Invalid granularity ${resolvedGranularity} for value ${resolvedValue.toString()}`,
-			);
-		}
-	});
-
-	return { granularity/*, defaultTimeZone  */};
-}
 
 export function createPlaceholderDate(
 	placeholderValue?: Date | null,

@@ -103,7 +103,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 	const formatOpts: Accessor<FormatterOptions> = createMemo(() => ({
 		granularity: timeFieldContext.granularity(),
 		maxGranularity: "hour",
-		timeZone: timeFieldContext.defaultTimeZone(),
+		// timeZone: timeFieldContext.defaultTimeZone(),
 		hideTimeZone: timeFieldContext.hideTimeZone(),
 		hourCycle: timeFieldContext.hourCycle(),
 		shouldForceLeadingZeros: timeFieldContext.shouldForceLeadingZeros(),
@@ -166,7 +166,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 			Object.keys(validSegments()).length >= Object.keys(allSegments()).length
 		) {
 			timeFieldContext.setValue(newValue);
-		} 
+		}
 		setPlaceholderDate(newValue);
 	};
 
@@ -225,13 +225,30 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 	) => {
 		const resolvedDisplayValue = displayValue();
 
+		console.log("ADJUST", type, amount, validSegments(), resolvedDisplayValue, Object.keys(validSegments()).length, Object.keys(allSegments()).length);
+
 		if (!(validSegments() as any)[type]) {
 			markValid(type);
 			if (
 				resolvedDisplayValue &&
 				Object.keys(validSegments()).length >= Object.keys(allSegments()).length
 			) {
-				setValue(resolvedDisplayValue);
+				let multiplier = 1000;
+
+				switch (type) {
+					case "hour":
+						multiplier *= 60 * 60;
+						break;
+					case "minute":
+						multiplier *= 60;
+						break;
+					case "dayPeriod":
+						multiplier *= 60 * 60 * 12;
+						break;
+				}
+
+				console.log(new Date(resolvedDisplayValue.getTime() + amount * multiplier))
+				setValue(new Date(resolvedDisplayValue.getTime() + amount * multiplier))
 			}
 		} else if (resolvedDisplayValue) {
 			const newValue = addSegment(
