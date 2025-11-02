@@ -43,7 +43,6 @@ import {
 } from "../polymorphic";
 import * as SpinButton from "../spin-button";
 import { useTimeFieldContext } from "./time-field-context";
-import { useTimeFieldFieldContext } from "./time-field-field-context";
 import type { TimeSegment } from "./types";
 
 export interface TimeFieldSegmentOptions {
@@ -78,11 +77,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 	const formControlContext = useFormControlContext();
 	const context = useTimeFieldContext();
-	const fieldContext = useTimeFieldFieldContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
-			id: `${fieldContext.generateId("segment")}-${createUniqueId()}`,
+			id: `${context.generateId("segment")}-${createUniqueId()}`,
 		},
 		props as TimeFieldSegmentProps,
 	);
@@ -111,7 +109,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	// spin buttons cannot be focused with VoiceOver on iOS.
 	const touchPropOverrides = createMemo(() => {
 		return (
-			isIOS() || local.segment.type === "timeZoneName"
+			isIOS()
 				? {
 						role: "textbox",
 						"aria-valuemax": undefined,
@@ -124,15 +122,13 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	});
 
 	const firstSegment = createMemo(() =>
-		fieldContext.segments().find((s) => s.isEditable),
+		context.segments()[0],
 	);
 
 	// Prepend the label passed from the field to each segment name.
 	// This is needed because VoiceOver on iOS does not announce groups.
 	const name = createMemo(() => {
-		return local.segment.type === "literal"
-			? ""
-			: context.translations()[local.segment.type];
+		return context.translations()[local.segment.type];
 	});
 
 	const ariaLabel = createMemo(() => {
@@ -506,20 +502,6 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	);
 
 	return (
-		<Show
-			when={local.segment.type !== "literal"}
-			fallback={
-				<Polymorphic
-					as="div"
-					aria-hidden={true}
-					data-separator=""
-					data-type="literal"
-					{...others}
-				>
-					{local.segment.text}
-				</Polymorphic>
-			}
-		>
 			<SpinButton.Root<
 				Component<
 					Omit<
@@ -576,6 +558,5 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 					{resolvedChildren()}
 				</Show>
 			</SpinButton.Root>
-		</Show>
 	);
 }

@@ -11,12 +11,12 @@ import {
 	type FormControlErrorMessageRenderProps as TimeFieldErrorMessageRenderProps,
 } from "../form-control";
 import {
-	TimeFieldField as Field,
-	type TimeFieldFieldCommonProps,
-	type TimeFieldFieldOptions,
-	type TimeFieldFieldProps,
-	type TimeFieldFieldRenderProps,
-} from "./time-field-field";
+	TimeFieldInput as Input,
+	type TimeFieldInputCommonProps,
+	type TimeFieldInputOptions,
+	type TimeFieldInputProps,
+	type TimeFieldInputRenderProps,
+} from "./time-field-input";
 import {
 	TimeFieldHiddenInput as HiddenInput,
 	type TimeFieldHiddenInputProps,
@@ -57,10 +57,10 @@ export type {
 	TimeFieldSegmentCommonProps,
 	TimeFieldSegmentRenderProps,
 	TimeFieldSegmentProps,
-	TimeFieldFieldOptions,
-	TimeFieldFieldCommonProps,
-	TimeFieldFieldRenderProps,
-	TimeFieldFieldProps,
+	TimeFieldInputOptions,
+	TimeFieldInputCommonProps,
+	TimeFieldInputRenderProps,
+	TimeFieldInputProps,
 	TimeFieldLabelOptions,
 	TimeFieldLabelCommonProps,
 	TimeFieldLabelRenderProps,
@@ -71,11 +71,11 @@ export type {
 	TimeFieldRootProps,
 };
 
-export { Root, Label, Field, Segment, Description, ErrorMessage, HiddenInput };
+export { Root, Label, Input, Segment, Description, ErrorMessage, HiddenInput };
 
 export const TimeField = Object.assign(Root, {
 	Label,
-	Field,
+	Input,
 	Segment,
 	Description,
 	ErrorMessage,

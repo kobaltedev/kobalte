@@ -21,7 +21,6 @@ import {
 	type FormControlDataSet,
 	createFormControl,
 } from "../form-control";
-import { useLocale } from "../i18n";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -41,18 +40,17 @@ import {
 	TIME_FIELD_INTL_MESSAGES,
 	type TimeFieldIntlTranslations,
 } from "./time-field.intl";
-import type { TimeFieldGranularity, TimeFieldHourCycle } from "./types";
-import { emptyDateTime, getTimeFieldFormatOptions } from "./utils";
+import type { TimeFieldGranularity, TimeFieldHourCycle, Time, TimeSegment, SegmentType } from "./types";
 
 export interface TimeFieldRootOptions {
 	/** The current value (controlled). */
-	value?: Date;
+	value?: Time;
 
 	/** The default value (uncontrolled). */
-	defaultValue?: Date;
+	defaultValue?: Time;
 
 	/** Handler that is called when the value changes. */
-	onChange?: (value: Date) => void;
+	onChange?: (value: Time) => void;
 
 	/**
 	 * Whether to display the time in 12 or 24-hour format.
@@ -66,9 +64,6 @@ export interface TimeFieldRootOptions {
 	 */
 	granularity?: TimeFieldGranularity;
 
-	/** Whether to hide the time zone abbreviation. */
-	hideTimeZone?: boolean;
-
 	/**
 	 * Whether to always show leading zeros in the hour field.
 	 * By default, this is determined by the user's locale.
@@ -79,13 +74,13 @@ export interface TimeFieldRootOptions {
 	 * A placeholder time that influences the format of the placeholder shown when no value is selected.
 	 * Defaults to 12:00 AM or 00:00 depending on the hour cycle.
 	 */
-	placeholderValue?: Date;
+	placeholder?: Time;
 
 	/** The minimum allowed time that a user may select. */
-	minValue?: Date;
+	min?: Time;
 
 	/** The maximum allowed time that a user may select. */
-	maxValue?: Date;
+	max?: Time;
 
 	/**
 	 * A unique identifier for the component.
@@ -160,12 +155,11 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		[
 			"ref",
 			"translations",
-			"minValue",
-			"maxValue",
-			"placeholderValue",
+			"min",
+			"max",
+			"placeholder",
 			"hourCycle",
 			"granularity",
-			"hideTimeZone",
 			"shouldForceLeadingZeros",
 			"validationState",
 			"value",
@@ -178,24 +172,35 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		FORM_CONTROL_PROP_NAMES,
 	);
 
-	const { locale } = useLocale();
-
 	const [inputRef, setInputRef] = createSignal<HTMLDivElement>();
 	const [valueDescriptionId, setValueDescriptionId] = createSignal<string>();
 
 	const focusManager = createFocusManager(inputRef);
 
-	const [value, _setValue] = createControllableSignal<Date | undefined>({
+	const [value, _setValue] = createControllableSignal<Partial<Time> | undefined>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
+		// @ts-ignore
 		onChange: (value) => local.onChange?.(value!),
 	});
 
-	const setValue = (value: Date | undefined) =>
-		_setValue(value ? new Date(value.getTime()) : undefined);
+	const setValue = (v: Partial<Time> | undefined) => {
+		if (!v) {
+			_setValue(undefined);
+			return;
+		}
+
+		let newValue = {...value()};
+
+		if ("hour" in v) newValue.hour = v.hour;
+		if ("minute" in v) newValue.minute = v.minute;
+		if ("second" in v) newValue.second = v.second;
+
+		_setValue(newValue);
+	}
 
 	createFormResetListener(ref, () => {
-		setValue(local.defaultValue ?? emptyDateTime());
+		setValue(local.defaultValue);
 	});
 
 	const validationState = createMemo(() => {
@@ -203,19 +208,13 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 			return local.validationState;
 		}
 
-		const minDate = local.minValue;
-		const maxDate = local.maxValue;
+		const minTime = Number.parseInt(`${local.min?.hour ?? "00"}${local.min?.minute ?? "00"}${local.min?.second ?? "00"}`);
+		const maxTime = Number.parseInt(`${local.max?.hour ?? "00"}${local.max?.minute ?? "00"}${local.max?.second ?? "00"}`);
+		const val = Number.parseInt(`${value()?.hour ?? "00"}${value()?.minute ?? "00"}${value()?.second ?? "00"}`);
 
-		const rangeOverflow =
-			value() != null &&
-			minDate != null &&
-			value()! > (local.maxValue ?? Number.POSITIVE_INFINITY);
-		const rangeUnderflow =
-			value() != null &&
-			maxDate != null &&
-			value()! < (local.minValue ?? Number.NEGATIVE_INFINITY);
+		if (val > maxTime || val < minTime) return "invalid";
 
-		return rangeOverflow || rangeUnderflow ? "invalid" : undefined;
+		return undefined;
 	});
 
 	const { formControlContext } = createFormControl(
@@ -226,23 +225,45 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		}),
 	);
 
+	const resolvedGranularity = createMemo(() => {
+		return {
+			hour: true,
+			minute: true,
+			second: true,
+		}
+	})
+
 	const formattedValue = createMemo(() => {
-		const formatOptions = getTimeFieldFormatOptions({
-			granularity: local.granularity!,
-			// timeZone: defaultTimeZone(),
-			hideTimeZone: local.hideTimeZone,
-			hourCycle: local.hourCycle,
-		});
+		let hour = value()?.hour ?? 0;
+		const pm = hour > 12;
 
-		const dateFormatter = createMemo(
-			() => new Intl.DateTimeFormat(locale(), formatOptions),
-		);
-
-		if (value()) {
-			return dateFormatter().format(value());
+		if (local.hourCycle === 12 && pm) {
+			hour -= 12;
 		}
 
-		return "";
+		const padding = local.shouldForceLeadingZeros ? 2 : 1;
+
+		const segments: string[] = [];
+
+		if (resolvedGranularity().hour) {
+			segments.push(hour.toString().padStart(padding, "0"));
+		}
+
+		if (resolvedGranularity().minute) {
+		segments.push((value()?.minute ?? 0).toString().padStart(padding, "0"));
+		}
+
+		if (resolvedGranularity().second) {
+			segments.push((value()?.second ?? 0).toString().padStart(padding, "0"));
+		}
+
+		let val = segments.join(":");
+
+		if (local.hourCycle === 12) {
+			val += ` ${pm ? local.translations?.pm : local.translations?.am}`;
+		}
+
+		return val;
 	});
 
 	const ariaLabelledBy = () => {
@@ -264,18 +285,22 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		);
 	};
 
+		const segments = createMemo(() => {
+			const seg = Object.keys(resolvedGranularity());
+
+			if (seg.includes("hour") && local.hourCycle === 12) seg.push("dayPeriod");
+
+			return seg as SegmentType[];
+		})
+
 	const context: TimeFieldContextValue = {
 		translations: () => local.translations!,
 		value,
 		setValue,
 		hourCycle: () => local.hourCycle,
-		granularity: () => local.granularity!,
-		hideTimeZone: () => local.hideTimeZone ?? false,
+		resolvedGranularity,
 		shouldForceLeadingZeros: () => local.shouldForceLeadingZeros ?? false,
-		placeholderTime: () =>
-			value() || (local.placeholderValue ?? emptyDateTime()),
-		placeholderValue: () => local.placeholderValue,
-		// defaultTimeZone,
+		placeholder: () => local.placeholder,
 		formattedValue,
 		focusManager: () => focusManager,
 		isDisabled: () => formControlContext.isDisabled() ?? false,
@@ -285,6 +310,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		valueDescriptionId,
 		registerValueDescriptionId: createRegisterId(setValueDescriptionId),
 		generateId: createGenerateId(() => access(formControlProps.id)!),
+		segments,
 	};
 
 	return (
