@@ -35,15 +35,8 @@ import {
 	TimeFieldFieldContext,
 	type TimeFieldFieldContextValue,
 } from "./time-field-field-context";
-import type {
-	FormatterOptions,
-	SegmentType,
-	TimeSegment,
-} from "./types";
-import {
-	emptyDateTime,
-	getTimeFieldFormatOptions,
-} from "./utils";
+import type { FormatterOptions, SegmentType, TimeSegment } from "./types";
+import { emptyDateTime, getTimeFieldFormatOptions } from "./utils";
 
 export interface TimeFieldFieldOptions {
 	children?: (segment: Accessor<TimeSegment>) => JSX.Element;
@@ -98,7 +91,10 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 		() => timeFieldContext.value() || timeFieldContext.placeholderTime(),
 	);
 
-	const [placeholderDate, setPlaceholderDate] = createSignal(emptyDateTime());
+	const [placeholderDate, _setPlaceholderDate] = createSignal(emptyDateTime());
+
+	const setPlaceholderDate = (value: Date) =>
+		_setPlaceholderDate(new Date(value.getTime()));
 
 	const formatOpts: Accessor<FormatterOptions> = createMemo(() => ({
 		granularity: timeFieldContext.granularity(),
@@ -171,7 +167,6 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 	};
 
 	const segments = createMemo(() => {
-
 		if (!displayValue()) {
 			return [];
 		}
@@ -199,11 +194,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 						TYPE_MAPPING[segment.type as keyof typeof TYPE_MAPPING] ||
 						segment.type,
 					text: isPlaceholder ? placeholder : segment.value,
-					...getSegmentLimits(
-						displayValue()!,
-						segment.type,
-						resolvedOptions(),
-					),
+					...getSegmentLimits(displayValue()!, segment.type, resolvedOptions()),
 					isPlaceholder,
 					placeholder,
 					isEditable,
@@ -225,37 +216,9 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 	) => {
 		const resolvedDisplayValue = displayValue();
 
-		console.log("ADJUST", type, amount, validSegments(), resolvedDisplayValue, Object.keys(validSegments()).length, Object.keys(allSegments()).length);
-
-		if (!(validSegments() as any)[type]) {
+		if (resolvedDisplayValue) {
 			markValid(type);
-			if (
-				resolvedDisplayValue &&
-				Object.keys(validSegments()).length >= Object.keys(allSegments()).length
-			) {
-				let multiplier = 1000;
-
-				switch (type) {
-					case "hour":
-						multiplier *= 60 * 60;
-						break;
-					case "minute":
-						multiplier *= 60;
-						break;
-					case "dayPeriod":
-						multiplier *= 60 * 60 * 12;
-						break;
-				}
-
-				console.log(new Date(resolvedDisplayValue.getTime() + amount * multiplier))
-				setValue(new Date(resolvedDisplayValue.getTime() + amount * multiplier))
-			}
-		} else if (resolvedDisplayValue) {
-			const newValue = addSegment(
-				resolvedDisplayValue,
-				type,
-				amount,
-			);
+			const newValue = addSegment(resolvedDisplayValue, type, amount);
 
 			if (newValue) {
 				setValue(newValue);
@@ -284,6 +247,8 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 
 		const resolvedDisplayValue = displayValue();
 
+		console.log(part, value);
+
 		if (resolvedDisplayValue) {
 			const newValue = setSegmentBase(
 				resolvedDisplayValue,
@@ -291,6 +256,8 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 				value,
 				resolvedOptions(),
 			);
+
+			console.log(newValue);
 
 			if (newValue) {
 				setValue(newValue);
@@ -308,7 +275,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 		const placeholder = emptyDateTime();
 
 		const resolvedDisplayValue = displayValue();
-		let value = resolvedDisplayValue || emptyDateTime();
+		const value = resolvedDisplayValue || emptyDateTime();
 
 		if (resolvedDisplayValue && placeholder) {
 			if (part === "dayPeriod") {
@@ -316,13 +283,9 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 				const shouldBePM = placeholder.getHours() >= 12;
 
 				if (isPM && !shouldBePM) {
-					value.setHours(
-						resolvedDisplayValue.getHours() - 12,
-					);
+					value.setHours(resolvedDisplayValue.getHours() - 12);
 				} else if (!isPM && shouldBePM) {
-					value.setHours(
-						resolvedDisplayValue.getHours() + 12,
-					);
+					value.setHours(resolvedDisplayValue.getHours() + 12);
 				}
 			} else if (part in resolvedDisplayValue) {
 				switch (part) {
@@ -494,29 +457,23 @@ function getSegmentLimits(
 	return {};
 }
 
-function addSegment(
-	value: Date,
-	part: string,
-	amount: number,
-) {
-	if ("hour" in value) {
-		switch (part) {
-			case "dayPeriod": {
-				const hours = value.getHours();
-				const isPM = hours >= 12;
-				value.setHours(isPM ? hours - 12 : hours + 12);
-				return value;
-			}
-			case "hour":
-				value.setHours((value.getHours() + amount) % 24);
-				return value;
-			case "minute":
-				value.setMinutes((value.getMinutes() + amount) % 60);
-				return value;
-			case "second":
-				value.setSeconds((value.getSeconds() + amount) % 60);
-				return value;
+function addSegment(value: Date, part: string, amount: number) {
+	switch (part) {
+		case "dayPeriod": {
+			const hours = value.getHours();
+			const isPM = hours >= 12;
+			value.setHours(isPM ? hours - 12 : hours + 12);
+			return value;
 		}
+		case "hour":
+			value.setHours((value.getHours() + amount) % 24);
+			return value;
+		case "minute":
+			value.setMinutes((value.getMinutes() + amount) % 60);
+			return value;
+		case "second":
+			value.setSeconds((value.getSeconds() + amount) % 60);
+			return value;
 	}
 }
 
@@ -526,41 +483,39 @@ function setSegmentBase(
 	segmentValue: number,
 	options: Intl.ResolvedDateTimeFormatOptions,
 ) {
-	if ("hour" in value) {
-		switch (part) {
-			case "dayPeriod": {
-				const hours = value.getHours();
-				const wasPM = hours >= 12;
-				const isPM = segmentValue >= 12;
-				if (isPM === wasPM) {
-					return value;
-				}
-				value.setHours(wasPM ? hours - 12 : hours + 12);
+	switch (part) {
+		case "dayPeriod": {
+			const hours = value.getHours();
+			const wasPM = hours >= 12;
+			const isPM = segmentValue >= 12;
+			if (isPM === wasPM) {
 				return value;
 			}
-
-			case "hour":
-				if (options.hour12) {
-					const hours = value.getHours();
-					const wasPM = hours >= 12;
-					if (!wasPM && segmentValue === 12) {
-						// biome-ignore lint/style/noParameterAssign: used in fallthrough
-						segmentValue = 0;
-					}
-					if (wasPM && segmentValue < 12) {
-						// biome-ignore lint/style/noParameterAssign: used in fallthrough
-						segmentValue += 12;
-					}
-				}
-				value.setHours(segmentValue);
-				return value;
-			case "minute":
-				value.setMinutes(segmentValue);
-				return value;
-			case "second":
-				value.setSeconds(segmentValue);
-				return value;
+			value.setHours(wasPM ? hours - 12 : hours + 12);
+			return value;
 		}
+
+		case "hour":
+			if (options.hour12) {
+				const hours = value.getHours();
+				const wasPM = hours >= 12;
+				if (!wasPM && segmentValue === 12) {
+					// biome-ignore lint/style/noParameterAssign: used in fallthrough
+					segmentValue = 0;
+				}
+				if (wasPM && segmentValue < 12) {
+					// biome-ignore lint/style/noParameterAssign: used in fallthrough
+					segmentValue += 12;
+				}
+			}
+			value.setHours(segmentValue);
+			return value;
+		case "minute":
+			value.setMinutes(segmentValue);
+			return value;
+		case "second":
+			value.setSeconds(segmentValue);
+			return value;
 	}
 }
 

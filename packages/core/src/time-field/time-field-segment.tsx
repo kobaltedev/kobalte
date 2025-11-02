@@ -186,7 +186,6 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	const hourDateFormatter = createDateFormatter(() => ({
 		hour: "numeric",
 		hour12: options().hour12,
-		timeZone: options().timeZone,
 	}));
 
 	const amPmFormatter = createDateFormatter({
@@ -277,6 +276,8 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		const newValue = enteredKeys + key;
 
+		console.log("AAAAAAAAAAAAAAAAAAAAA", newValue);
+
 		switch (local.segment.type) {
 			case "dayPeriod":
 				if (filter.startsWith(am(), key)) {
@@ -295,9 +296,14 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 					return;
 				}
 
+				console.log("valid");
+
 				let numberValue = numberParser().parse(newValue);
 				let segmentValue = numberValue;
 				let allowsZero = local.segment.minValue === 0;
+
+				console.log(numberValue, segmentValue);
+
 				if (
 					local.segment.type === "hour" &&
 					fieldContext.dateFormatterResolvedOptions().hour12
@@ -335,6 +341,8 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				}
 
 				const shouldSetValue = segmentValue !== 0 || allowsZero;
+
+				console.log(shouldSetValue, segmentValue);
 
 				if (shouldSetValue) {
 					fieldContext.setSegment(local.segment.type, segmentValue);
@@ -469,6 +477,11 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		if (resolvedDateValue) {
 			if (local.segment.type === "hour" && !local.segment.isPlaceholder) {
+				console.log(
+					"EFFECT",
+					resolvedDateValue,
+					hourDateFormatter().format(resolvedDateValue),
+				);
 				setTextValue(hourDateFormatter().format(resolvedDateValue));
 			} else {
 				setTextValue(local.segment.isPlaceholder ? "" : local.segment.text);

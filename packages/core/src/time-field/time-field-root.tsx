@@ -41,14 +41,8 @@ import {
 	TIME_FIELD_INTL_MESSAGES,
 	type TimeFieldIntlTranslations,
 } from "./time-field.intl";
-import type {
-	TimeFieldGranularity,
-	TimeFieldHourCycle,
-} from "./types";
-import {
-	emptyDateTime,
-	getTimeFieldFormatOptions,
-} from "./utils";
+import type { TimeFieldGranularity, TimeFieldHourCycle } from "./types";
+import { emptyDateTime, getTimeFieldFormatOptions } from "./utils";
 
 export interface TimeFieldRootOptions {
 	/** The current value (controlled). */
@@ -191,18 +185,18 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 	const focusManager = createFocusManager(inputRef);
 
-	const [value, setValue] = createControllableSignal<Date | undefined>({
+	const [value, _setValue] = createControllableSignal<Date | undefined>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
 		onChange: (value) => local.onChange?.(value!),
 	});
 
-	createFormResetListener(
-		ref,
-		() => {
-			setValue(local.defaultValue ?? emptyDateTime());
-		},
-	);
+	const setValue = (value: Date | undefined) =>
+		_setValue(value ? new Date(value.getTime()) : undefined);
+
+	createFormResetListener(ref, () => {
+		setValue(local.defaultValue ?? emptyDateTime());
+	});
 
 	const validationState = createMemo(() => {
 		if (local.validationState) {
@@ -278,7 +272,8 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		granularity: () => local.granularity!,
 		hideTimeZone: () => local.hideTimeZone ?? false,
 		shouldForceLeadingZeros: () => local.shouldForceLeadingZeros ?? false,
-		placeholderTime: () => value() || (local.placeholderValue ?? emptyDateTime()),
+		placeholderTime: () =>
+			value() || (local.placeholderValue ?? emptyDateTime()),
 		placeholderValue: () => local.placeholderValue,
 		// defaultTimeZone,
 		formattedValue,

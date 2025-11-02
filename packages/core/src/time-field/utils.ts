@@ -6,17 +6,12 @@ import {
 	today,
 } from "@internationalized/date";
 import { type Accessor, createEffect, createMemo } from "solid-js";
-import type {
-	FormatterOptions,
-	TimeFieldGranularity,
-} from "./types";
-
+import type { FormatterOptions, TimeFieldGranularity } from "./types";
 
 export function createPlaceholderDate(
 	placeholderValue?: Date | null,
 	timeZone?: string,
 ) {
-
 	return placeholderValue;
 	// (valueTimeZone || timeZone) && placeholderValue
 	// 	? toZoned(convertValue(placeholderValue)!, (valueTimeZone || timeZone)!)

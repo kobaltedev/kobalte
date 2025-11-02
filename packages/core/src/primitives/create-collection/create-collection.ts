@@ -7,10 +7,7 @@
  */
 
 import { access } from "@kobalte/utils";
-import {
-	type Accessor,
-	createMemo,
-} from "solid-js";
+import { type Accessor, createMemo } from "solid-js";
 
 import type { Collection, CollectionBase, CollectionNode } from "./types";
 import { buildNodes } from "./utils";
