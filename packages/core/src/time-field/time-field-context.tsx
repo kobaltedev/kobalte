@@ -1,10 +1,7 @@
 import type { FocusManager } from "@kobalte/utils";
 import { type Accessor, createContext, useContext } from "solid-js";
 import type { TimeFieldIntlTranslations } from "./time-field.intl";
-import type {
-	TimeFieldGranularity,
-	TimeFieldHourCycle,
-} from "./types";
+import type { TimeFieldGranularity, TimeFieldHourCycle } from "./types";
 
 export interface TimeFieldContextValue {
 	translations: Accessor<TimeFieldIntlTranslations>;
