@@ -1,4 +1,8 @@
-export type TimeFieldGranularity = "hour" | "minute" | "second";
+export type TimeFieldGranularity = "hour" | "minute" | "second" | {
+	hour: boolean,
+	minute: boolean,
+	second: boolean,
+};
 
 export type TimeFieldHourCycle = 12 | 24;
 
@@ -6,9 +10,7 @@ export type SegmentType =
 	| "hour"
 	| "minute"
 	| "second"
-	| "dayPeriod"
-	| "literal"
-	| "timeZoneName";
+	| "dayPeriod";
 
 export interface TimeSegment {
 	/** The type of segment. */
@@ -31,15 +33,11 @@ export interface TimeSegment {
 
 	/** A placeholder string for the segment. */
 	placeholder: string;
-
-	/** Whether the segment is editable. */
-	isEditable: boolean;
 }
 
-export interface FormatterOptions {
-	timeZone?: string;
-	hideTimeZone?: boolean;
-	granularity?: TimeFieldGranularity;
-	hourCycle?: TimeFieldHourCycle;
-	shouldForceLeadingZeros?: boolean;
+
+export interface Time {
+	hour: number | undefined,
+	minute: number | undefined,
+	second: number | undefined,
 }

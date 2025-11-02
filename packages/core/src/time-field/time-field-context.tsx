@@ -1,19 +1,21 @@
 import type { FocusManager } from "@kobalte/utils";
 import { type Accessor, createContext, useContext } from "solid-js";
 import type { TimeFieldIntlTranslations } from "./time-field.intl";
-import type { TimeFieldGranularity, TimeFieldHourCycle } from "./types";
+import type { SegmentType, Time, TimeFieldGranularity, TimeFieldHourCycle } from "./types";
 
 export interface TimeFieldContextValue {
 	translations: Accessor<TimeFieldIntlTranslations>;
-	value: Accessor<Date | undefined>;
-	setValue: (value: Date | undefined) => void;
+	value: Accessor<Partial<Time> | undefined>;
+	setValue: (value: Partial<Time>) => void;
 	hourCycle: Accessor<TimeFieldHourCycle | undefined>;
-	granularity: Accessor<TimeFieldGranularity>;
-	hideTimeZone: Accessor<boolean>;
+	resolvedGranularity: Accessor<{
+		hour: boolean,
+		minute: boolean,
+		second: boolean,
+}>;
+	segments: Accessor<SegmentType[]>,
 	shouldForceLeadingZeros: Accessor<boolean>;
-	placeholderTime: Accessor<Date>;
-	placeholderValue: Accessor<Date | undefined>;
-	// defaultTimeZone: Accessor<string | undefined>;
+	placeholder: Accessor<Partial<Time> | undefined>;
 	formattedValue: Accessor<string | undefined>;
 	isDisabled: Accessor<boolean>;
 	focusManager: Accessor<FocusManager>;

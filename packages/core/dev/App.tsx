@@ -5,9 +5,9 @@ export default function App() {
 		<>
 	   <TimeField class="time-field">
 	      <TimeField.Label class="time-field__label">Event time</TimeField.Label>
-	      <TimeField.Field class="time-field__field">
+	      <TimeField.Input class="time-field__field">
 	        {segment => <TimeField.Segment class="time-field__segment" segment={segment()} />}
-	      </TimeField.Field>
+	      </TimeField.Input>
 			</TimeField>
 		</>
 	);

@@ -1,4 +1,3 @@
-import { Time } from "@internationalized/date";
 import { visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps } from "solid-js";
 import { useFormControlContext } from "../form-control";
@@ -34,10 +33,13 @@ const parseTime = (value: string) => {
 
 	const parsedHours =
 		period === "PM" ? Number.parseInt(hours) + 12 : Number.parseInt(hours);
+	const parsedMinutes = Number.parseInt(minutes);
+	const parsedSeconds = Number.parseInt(seconds);
 
-	return new Time(
-		parsedHours,
-		Number.parseInt(minutes),
-		Number.parseInt(seconds),
-	);
+
+	return {
+		hour: Number.isNaN(parsedHours) ? undefined : parsedHours,
+		minute: Number.isNaN(parsedMinutes) ? undefined : parsedMinutes,
+		second: Number.isNaN(parsedSeconds) ? undefined : parsedSeconds,
+	}
 };
