@@ -376,76 +376,71 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		}
 	};
 
-	const setAM = () => {
-		if ((context.value()?.hour ?? 0) > 12)
-			context.setValue({ hour: context.value()!.hour! - 12 });
+	const cycleDayPeriod = () => {
+		if ((context.value()?.hour ?? 0) > 12) context.setValue({ hour: context.value()!.hour! - 12 });
+		else context.setValue({ hour: context.value()!.hour! + 12 });
 	};
 
-	const setPM = () => {
-		if ((context.value()?.hour ?? 0) <= 12)
-			context.setValue({ hour: context.value()!.hour! + 12 });
-	};
+	const adjust = (adjust: number) => {
+		const is12Cycle = local.segment === "hour" && context.hourCycle() === 12;
+		const isPM = is12Cycle && (context.value()?.hour ?? 0) > 12;
+
+		const max = is12Cycle ? 12 : maxValue();
+		const v = ((context.value()?.[local.segment as keyof Time] ?? 0) - (isPM ? 12 : 0) + adjust) % (max + (is12Cycle ? 0 : 1));
+		return (v < 0 ? max : v) + (isPM ? 12 : 0);
+	}
 
 	const onIncrement = () => {
 		enteredKeys = "";
 		if (local.segment === "dayPeriod") {
-			setPM();
+			cycleDayPeriod();
 			return;
 		}
 		context.setValue({
-			[local.segment]: Math.min(
-				(context.value()?.[local.segment] ?? 0) + 1,
-				maxValue(),
-			),
+			[local.segment]: adjust(1),
 		});
 	};
 
 	const onDecrement = () => {
 		enteredKeys = "";
 		if (local.segment === "dayPeriod") {
-			setAM();
+			cycleDayPeriod();
 			return;
 		}
 		context.setValue({
-			[local.segment]: Math.max((context.value()?.[local.segment] ?? 0) - 1, 0),
+			[local.segment]: adjust(-1),
 		});
 	};
 
 	const onIncrementPage = () => {
 		enteredKeys = "";
 		if (local.segment === "dayPeriod") {
-			setPM();
+			cycleDayPeriod();
 			return;
 		}
 		context.setValue({
-			[local.segment]: Math.min(
-				(context.value()?.[local.segment] ?? 0) + PAGE_STEP[local.segment],
-				maxValue(),
-			),
+			[local.segment]: adjust(PAGE_STEP[local.segment])
 		});
 	};
 
 	const onDecrementPage = () => {
 		enteredKeys = "";
 		if (local.segment === "dayPeriod") {
-			setAM();
+			cycleDayPeriod();
 			return;
 		}
 		context.setValue({
-			[local.segment]: Math.max(
-				(context.value()?.[local.segment] ?? 0) - PAGE_STEP[local.segment],
-				0,
-			),
+			[local.segment]: adjust(-PAGE_STEP[local.segment]),
 		});
 	};
 
 	const onDecrementToMin = () => {
 		enteredKeys = "";
 		if (local.segment === "dayPeriod") {
-			setPM();
+			cycleDayPeriod();
 			return;
 		}
-		if (context.hourCycle() === 12) {
+		if (local.segment === "hour" && context.hourCycle() === 12) {
 			if ((context.value()?.hour ?? 0) > 12) context.setValue({ hour: 12 });
 			else context.setValue({ hour: 0 });
 		} else context.setValue({ [local.segment]: 0 });
@@ -454,10 +449,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	const onIncrementToMax = () => {
 		enteredKeys = "";
 		if (local.segment === "dayPeriod") {
-			setAM();
+			cycleDayPeriod();
 			return;
 		}
-		if (context.hourCycle() === 12) {
+		if (local.segment === "hour" && context.hourCycle() === 12) {
 			if ((context.value()?.hour ?? 0) > 12) context.setValue({ hour: 24 });
 			else context.setValue({ hour: 12 });
 		} else context.setValue({ [local.segment]: maxValue() });
