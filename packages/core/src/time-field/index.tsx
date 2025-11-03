@@ -11,16 +11,16 @@ import {
 	type FormControlErrorMessageRenderProps as TimeFieldErrorMessageRenderProps,
 } from "../form-control";
 import {
+	TimeFieldHiddenInput as HiddenInput,
+	type TimeFieldHiddenInputProps,
+} from "./time-field-hidden-input";
+import {
 	TimeFieldInput as Input,
 	type TimeFieldInputCommonProps,
 	type TimeFieldInputOptions,
 	type TimeFieldInputProps,
 	type TimeFieldInputRenderProps,
 } from "./time-field-input";
-import {
-	TimeFieldHiddenInput as HiddenInput,
-	type TimeFieldHiddenInputProps,
-} from "./time-field-hidden-input";
 import {
 	TimeFieldLabel as Label,
 	type TimeFieldLabelCommonProps,

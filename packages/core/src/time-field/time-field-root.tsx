@@ -40,7 +40,12 @@ import {
 	TIME_FIELD_INTL_MESSAGES,
 	type TimeFieldIntlTranslations,
 } from "./time-field.intl";
-import type { TimeFieldGranularity, TimeFieldHourCycle, Time, TimeSegment, SegmentType } from "./types";
+import type {
+	SegmentType,
+	Time,
+	TimeFieldGranularity,
+	TimeFieldHourCycle,
+} from "./types";
 
 export interface TimeFieldRootOptions {
 	/** The current value (controlled). */
@@ -175,9 +180,16 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	const [inputRef, setInputRef] = createSignal<HTMLDivElement>();
 	const [valueDescriptionId, setValueDescriptionId] = createSignal<string>();
 
+	const [fieldAriaLabel, setFieldAriaLabel] = createSignal<string>();
+	const [fieldAriaLabelledBy, setFieldAriaLabelledBy] = createSignal<string>();
+	const [fieldAriaDescribedBy, setFieldAriaDescribedBy] =
+		createSignal<string>();
+
 	const focusManager = createFocusManager(inputRef);
 
-	const [value, _setValue] = createControllableSignal<Partial<Time> | undefined>({
+	const [value, _setValue] = createControllableSignal<
+		Partial<Time> | undefined
+	>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
 		// @ts-ignore
@@ -190,14 +202,14 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 			return;
 		}
 
-		let newValue = {...value()};
+		const newValue = { ...value() };
 
 		if ("hour" in v) newValue.hour = v.hour;
 		if ("minute" in v) newValue.minute = v.minute;
 		if ("second" in v) newValue.second = v.second;
 
 		_setValue(newValue);
-	}
+	};
 
 	createFormResetListener(ref, () => {
 		setValue(local.defaultValue);
@@ -208,9 +220,17 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 			return local.validationState;
 		}
 
-		const minTime = Number.parseInt(`${local.min?.hour ?? "00"}${local.min?.minute ?? "00"}${local.min?.second ?? "00"}`);
-		const maxTime = Number.parseInt(`${local.max?.hour ?? "00"}${local.max?.minute ?? "00"}${local.max?.second ?? "00"}`);
-		const val = Number.parseInt(`${value()?.hour ?? "00"}${value()?.minute ?? "00"}${value()?.second ?? "00"}`);
+		const minTime = Number.parseInt(
+			`${local.min?.hour ?? "00"}${local.min?.minute ?? "00"}${local.min?.second ?? "00"}`,
+		);
+		const maxTime = Number.parseInt(
+			`${local.max?.hour ?? "23"}${local.max?.minute ?? "59"}${local.max?.second ?? "59"}`,
+		);
+		const val = Number.parseInt(
+			`${value()?.hour ?? "00"}${value()?.minute ?? "00"}${value()?.second ?? "00"}`,
+		);
+
+		console.log(minTime, maxTime, val, val > maxTime, val < minTime);
 
 		if (val > maxTime || val < minTime) return "invalid";
 
@@ -230,8 +250,8 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 			hour: true,
 			minute: true,
 			second: true,
-		}
-	})
+		};
+	});
 
 	const formattedValue = createMemo(() => {
 		let hour = value()?.hour ?? 0;
@@ -250,7 +270,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		}
 
 		if (resolvedGranularity().minute) {
-		segments.push((value()?.minute ?? 0).toString().padStart(padding, "0"));
+			segments.push((value()?.minute ?? 0).toString().padStart(padding, "0"));
 		}
 
 		if (resolvedGranularity().second) {
@@ -285,13 +305,13 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		);
 	};
 
-		const segments = createMemo(() => {
-			const seg = Object.keys(resolvedGranularity());
+	const segments = createMemo(() => {
+		const seg = Object.keys(resolvedGranularity());
 
-			if (seg.includes("hour") && local.hourCycle === 12) seg.push("dayPeriod");
+		if (seg.includes("hour") && local.hourCycle === 12) seg.push("dayPeriod");
 
-			return seg as SegmentType[];
-		})
+		return seg as SegmentType[];
+	});
 
 	const context: TimeFieldContextValue = {
 		translations: () => local.translations!,
@@ -311,6 +331,13 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		registerValueDescriptionId: createRegisterId(setValueDescriptionId),
 		generateId: createGenerateId(() => access(formControlProps.id)!),
 		segments,
+
+		fieldAriaLabel,
+		fieldAriaLabelledBy,
+		fieldAriaDescribedBy,
+		setFieldAriaLabel,
+		setFieldAriaLabelledBy,
+		setFieldAriaDescribedBy,
 	};
 
 	return (
