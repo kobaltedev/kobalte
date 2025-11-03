@@ -221,13 +221,13 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		}
 
 		const minTime = Number.parseInt(
-			`${local.min?.hour ?? "00"}${local.min?.minute ?? "00"}${local.min?.second ?? "00"}`,
+			`${(local.min?.hour ?? "00").toString().padStart(2, "0")}${(local.min?.minute ?? "00").toString().padStart(2, "0")}${(local.min?.second ?? "00").toString().padStart(2, "0")}`,
 		);
 		const maxTime = Number.parseInt(
-			`${local.max?.hour ?? "23"}${local.max?.minute ?? "59"}${local.max?.second ?? "59"}`,
+			`${(local.max?.hour ?? "23").toString().padStart(2, "0")}${(local.max?.minute ?? "59").toString().padStart(2, "0")}${(local.max?.second ?? "59").toString().padStart(2, "0")}`,
 		);
 		const val = Number.parseInt(
-			`${value()?.hour ?? "00"}${value()?.minute ?? "00"}${value()?.second ?? "00"}`,
+			`${(value()?.hour ?? "00").toString().padStart(2, "0")}${(value()?.minute ?? "00").toString().padStart(2, "0")}${(value()?.second ?? "00").toString().padStart(2, "0")}`,
 		);
 
 		console.log(minTime, maxTime, val, val > maxTime, val < minTime);
