@@ -1,13 +1,10 @@
-import {
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import {
 	type Accessor,
 	Index,
 	type JSX,
 	type ValidComponent,
+	createEffect,
 	createMemo,
 	splitProps,
 } from "solid-js";
@@ -20,7 +17,7 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { useTimeFieldContext } from "./time-field-context";
-import type { SegmentType, Time, TimeSegment } from "./types";
+import type { SegmentType, Time } from "./types";
 
 export interface TimeFieldInputOptions {
 	children?: (segment: Accessor<SegmentType>) => JSX.Element;
@@ -69,21 +66,27 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 		"aria-describedby",
 	]);
 
-	const { direction } = useLocale();
+	createEffect(() => timeFieldContext.setFieldAriaLabel(others["aria-label"]));
 
-	const ariaLabelledBy = createMemo(() => {
-		return formControlContext.getAriaLabelledBy(
-			others.id,
-			others["aria-label"],
-			local["aria-labelledby"],
+	createEffect(() => {
+		timeFieldContext.setFieldAriaLabelledBy(
+			formControlContext.getAriaLabelledBy(
+				others.id,
+				others["aria-label"],
+				local["aria-labelledby"],
+			),
 		);
 	});
 
-	const ariaDescribedBy = createMemo(() => {
-		return [local["aria-describedby"], timeFieldContext.ariaDescribedBy()]
-			.filter(Boolean)
-			.join(" ");
+	createEffect(() => {
+		timeFieldContext.setFieldAriaDescribedBy(
+			[local["aria-describedby"], timeFieldContext.ariaDescribedBy()]
+				.filter(Boolean)
+				.join(" "),
+		);
 	});
+
+	const { direction } = useLocale();
 
 	const displayValue = createMemo(() => ({
 		hour: 0,
@@ -93,7 +96,7 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 		...timeFieldContext.value(),
 	}));
 
-	const setValue = (newValue: Partial<Time>) => {
+	const setValue = (newValue: Time) => {
 		if (formControlContext.isDisabled() || formControlContext.isReadOnly()) {
 			return;
 		}
@@ -132,7 +135,6 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 		if (formControlContext.isDisabled() || formControlContext.isReadOnly()) {
 			return;
 		}
-
 	};
 
 	return (
@@ -140,8 +142,8 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 			as="div"
 			role="presentation"
 			ref={mergeRefs(timeFieldContext.setInputRef, local.ref)}
-			aria-labelledby={ariaLabelledBy()}
-			aria-describedby={ariaDescribedBy()}
+			aria-labelledby={timeFieldContext.fieldAriaLabelledBy()}
+			aria-describedby={timeFieldContext.fieldAriaDescribedBy()}
 			onKeyDown={onKeyDown}
 			onFocusOut={onFocusOut}
 			{...formControlContext.dataset()}
@@ -153,9 +155,3 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 		</Polymorphic>
 	);
 }
-
-const PAGE_STEP = {
-	hour: 2,
-	minute: 15,
-	second: 15,
-};

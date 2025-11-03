@@ -36,10 +36,9 @@ const parseTime = (value: string) => {
 	const parsedMinutes = Number.parseInt(minutes);
 	const parsedSeconds = Number.parseInt(seconds);
 
-
 	return {
 		hour: Number.isNaN(parsedHours) ? undefined : parsedHours,
 		minute: Number.isNaN(parsedMinutes) ? undefined : parsedMinutes,
 		second: Number.isNaN(parsedSeconds) ? undefined : parsedSeconds,
-	}
+	};
 };
