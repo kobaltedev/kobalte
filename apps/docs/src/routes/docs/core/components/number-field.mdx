@@ -45,9 +45,9 @@ The number field consists of:
 - **NumberField**: The root container for the number field.
 - **NumberField.Label**: The label that gives the user information on the number field.
 - **NumberField.Input**: The native HTML input of the number field, used for display number.
-- **NumberField.HiddenInput**: The native HTML input of the number field, used for raw number form submition.
+- **NumberField.HiddenInput**: The native HTML input of the number field, used for raw number form submission.
 - **NumberField.IncrementTrigger**: The increment button of the number field.
-- **NumberField.DecrementTrigger**: The increment button of the number field.
+- **NumberField.DecrementTrigger**: The decrement button of the number field.
 - **NumberField.Description**: The description that gives the user more information on the number field.
 - **NumberField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on number field.
 
@@ -399,7 +399,7 @@ The number field supports autofill through `NumberField.HiddenInput`.
 | largeStep        | `number` <br/> Increment/Decrement step when using the Page UP/Down keys in the number field, defaults `10 * step`.                                                                                               |
 | changeOnWheel    | `boolean` <br/> Whether to increment/decrement on wheel scroll inside the number field.                                                                                                                           |
 | format           | `boolean` <br/> Whether to format the input value.                                                                                                                                                                |
-| formatOptions    | [`Intl.NumberFormatOptions`](https://github.com/microsoft/TypeScript/blob/353ccb7688351ae33ccf6e0acb913aa30621eaf4/src/lib/es2020.intl.d.ts#L243-L251) <br/> Formating options for the value of the number field. |
+| formatOptions    | [`Intl.NumberFormatOptions`](https://github.com/microsoft/TypeScript/blob/353ccb7688351ae33ccf6e0acb913aa30621eaf4/src/lib/es2020.intl.d.ts#L243-L251) <br/> Formatting options for the value of the number field. |
 | allowedInput     | `RegExp` <br/> Allowed input characters in the number field (only prevents onInput, not paste), defaults to locale and format characters.                                                                         |
 | name             | `string` <br/> The name of the NumberField.HiddenInput of the number field, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).        |
 | validationState  | `'valid' \| 'invalid'` <br/> Whether the number field should display its "valid" or "invalid" visual styling.                                                                                                     |
@@ -415,7 +415,7 @@ The number field supports autofill through `NumberField.HiddenInput`.
 | data-disabled  | Present when the number field is disabled.                                                |
 | data-readonly  | Present when the number field is read only.                                               |
 
-`NumberField.Label`, `NumberField.Input`, `NumberField.HiddenInput`, `NumberField.Description` and `NumberField.ErrorMesssage` share the same data-attributes.
+`NumberField.Label`, `NumberField.Input`, `NumberField.HiddenInput`, `NumberField.Description` and `NumberField.ErrorMessage` share the same data-attributes.
 
 ### NumberField.ErrorMessage
 
