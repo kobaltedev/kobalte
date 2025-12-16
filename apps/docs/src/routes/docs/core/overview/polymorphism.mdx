@@ -1,10 +1,17 @@
+import { Callout } from "../../../../components/callout.tsx";
+
 # Polymorphism
 
-All component parts that render a DOM element have an `as` prop.
+Kobalte components that render a DOM element support polymorphism via the `as` prop. This allows you to change the rendered element or component while preserving behavior, accessibility, and state management.
 
-## The `as` prop
+Polymorphism is useful when you want to:
+- Change the underlying element (`button` → `a`)
+- Integrate with your own design system components
+- Control which props reach your component
 
-For simple use cases the `as` prop can be used, either with native HTML elements or custom Solid components:
+## Basic usage
+
+Use `as` with a native element or a custom Solid component.
 
 ```tsx {8, 13}
 import { Tabs } from "@kobalte/core/tabs";
@@ -30,17 +37,20 @@ function App() {
 }
 ```
 
-## The `as` prop callback
+Kobalte consumes its own options internally and forwards valid HTML attributes to the rendered element.
 
-For more advanced use cases the `as` prop can accept a callback.
-The main reason to use a callback over the normal `as` prop is being able to set props without interfering with Kobalte.
+## Using `as` callbacks
 
-When using this pattern the following rules apply to the callback:
+For full control over which props are passed, `as` can also be a callback.
 
-- You must spread the props forwarded to your callback onto your node/component.
-- Custom props are passed as is from the parent.
-- Kobalte options are not passed to the callback, only the resulting html attributes.
-- You should set your event handlers on the parent and not inside your callback.
+When using an `as` callback:
+
+- Always spread the provided props
+- Custom props are forwarded **unchanged**
+- Kobalte options are *not* passed
+- Event handlers must be defined on the **parent**
+
+Violating these rules can break behavior or accessibility.
 
 ```tsx {17}
 import { Tabs } from "@kobalte/core/tabs";
@@ -50,16 +60,13 @@ function App() {
 	return (
 		<Tabs>
 			<Tabs.List>
-				{/* The `value` prop is used by Kobalte and not passed to MyCustomButton */}
 				<Tabs.Trigger value="one" as={MyCustomButton}>
 					A Trigger
 				</Tabs.Trigger>
 
-				{/* The `value` prop is used by Kobalte and not passed to MyCustomButton */}
 				<Tabs.Trigger
 					value="one"
 					as={props => (
-						// The `value` prop is directly passed to MyCustomButton
 						<MyCustomButton value="custom" {...props} />
 					)}
 				>
@@ -71,8 +78,14 @@ function App() {
 	);
 }
 ```
+In this example:
+- `value="one"` is used by Kobalte and not passed to `MyCustomButton`
+- `value="custom"` is explicitly passed to `MyCustomButton`
 
-You can optionally use a type helper to get the exact types passed to your callback:
+
+### Typing `as` callbacks
+
+You can use `PolymorphicCallbackProps` to get exact typing for callback props:
 
 ```tsx {6-9}
 import { Tabs, TabsTriggerOptions, TabsTriggerRenderProps } from "@kobalte/core/tabs";
@@ -97,15 +110,15 @@ import { PolymorphicCallbackProps } from "@kobalte/core/polymorphic";
 
 ## Event lifecycle
 
-Setting custom event handlers on component will call your custom handler before Kobalte's.
+Custom event handlers defined on a Kobalte component are called *before* Kobalte’s internal handlers.
 
-## Types
+## Component Prop Types
 
-This section is mainly for library authors that want to build on top of Kobalte and expose the correct types
-to your end users.
+<Callout type={"warning"}>
+	This section is intended for **library authors** building on top of Kobalte.
+</Callout>
 
-Every component that renders an HTML element has the following types:
-
+Every Kobalte component that renders an element exposes four core types:
 - `ComponentOptions`
 - `ComponentCommonProps<T>`
 - `ComponentRenderProps`
@@ -120,93 +133,113 @@ This type allows components to accept Kobalte's props and all other props accept
 
 ### `ComponentOptions`
 
-This type contains all custom props consumed by Kobalte, these props do not exist in HTML.
-These are not passed to the HTML element nor to the `as` callback.
+Custom props consumed internally by Kobalte.
+
+- Not valid HTML
+- Not forwarded to the DOM
+- Not passed to `as` callbacks
 
 ### `ComponentCommonProps<T>`
 
-This type contains HTML attributes optionally accepted by the Kobalte component and will
-be forwarded to the rendered DOM node. These are managed by Kobalte but can be customized by the end
-user. It includes attributes such as `id`, `ref`, event handlers, etc. The generic is used by `ref` and event handlers,
-by default it is `HTMLElement`.
+Optional HTML attributes that wil be accepted and forwarded to the rendered DOM node.
+
+- Includes `id`, `ref`, and event handlers
+- Managed by Kobalte but customizable by the end user
+- Generic is used by `ref` and event handlers, by default it is `HTMLElement`.
 
 ### `ComponentRenderProps`
 
-This type extends `ComponentCommonProps` and additionally contains attributes that are passed
-to the DOM node and fully managed by Kobalte. You should never assign these yourself or set them on
-the Kobalte component. Modifying these props will break your component's behavior and accessibility.
+Extends `ComponentCommonProps` with attributes that are passed to the DOM node and fully controlled by Kobalte.
+
+- These props must not be modified.
+- Changing them will break behavior and accessibility.
 
 ### `ComponentProps<T>`
 
-This is the final type exported by components, it is equal to `ComponentOptions & Partial<ComponentCommonProps>`.
-It combines all props expected by Kobalte's component. The generic is used by the CommonProps, by default it is `HTMLElement`.
+Public props type exported by the component.
+
+- Combines all props exepcted by Kobalte's component.
+- Generic is used by `CommonProps`, by default is `HTMLElement`.
+
+Equivalent to `ComponentOptions` & `Partial<ComponentCommonProps>`.
 
 ### `PolymorphicProps<T, ComponentProps>`
 
-If you're writing a custom component and want to expose Kobalte's `as` prop to the end user
-and keep proper typing, be sure to use `PolymorphicProps<T, ComponentProps>` for your props type.
+Use `PolymorphicProps<T, ComponentProps>` when you’re building a wrapper component and want to expose Kobalte’s `as` prop to end users with correct typing.
+
+####  Example
 
 ```tsx
 import { Tabs, TabsTriggerProps } from "@kobalte/core/tabs";
 import { PolymorphicProps } from "@kobalte/core/polymorphic";
+import type { ValidComponent } from "@kobalte/utils";
+import { splitProps } from "solid-js";
 
-// Optionally extend `TabsTriggerProps` if you wish to
-// expose Kobalte props to your end user.
 interface CustomProps<T extends ValidComponent = "button"> extends TabsTriggerProps<T> {
 	variant: "default" | "outline";
 }
 
-// Your generic `T` should extend ValidComponent and have a default value of the default DOM node.
 function CustomTabsTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, CustomProps<T>>,
 ) {
-	// Typescript degrades typechecking when using generics, as long as we
-	// spread `others` to our element, we can effectively ignore them.
 	const [local, others] = splitProps(props as CustomProps, ["variant"]);
 
 	return (
 		<Tabs.Trigger
-			// Optional, will default to Kobalte otherwise.
-			// This should match with your generic `T` default.
 			as="button"
 			class={local.variant === "default" ? "default-trigger" : "outline-trigger"}
-			// Make sure to spread these props!
 			{...others}
 		/>
 	);
 }
 ```
+<Callout type="info">
+	When using generics, TypeScript can lose some precision; splitting local props and spreading the remaining props helps preserve usability.
+</Callout>
 
-If you do not wish to allow changing the element type, you can simplify your types by making
-props: `OverrideComponentProps<"button", CustomProps>`, replace `"button"` with the correct
-tagname for other components, imported from `"@kobalte/utils"`.
 
-If you also want to export exact types, you can re-export and extends component types:
+Note:
+- `T` should extend `ValidComponent` and default to the underlying element you render (eg. `"button"`).
+
+### Fixed element wrappers
+
+If your wrapper should always render a specific element type, and you don’t want to support `as`, you can simplify typing with `OverrideComponentProps` from `@kobalte/utils`:
+
+For example, use `OverrideComponentProps<"button", CustomProps>` where `"button"` is the tag name you want to render.
+
+### Exporting exact types
+
+If you want to expose a strongly-typed surface area (eg. for downstream libraries), you can re-export and extend the underlying component types:
 
 ```tsx
+import type { ValidComponent } from "@kobalte/utils";
+import type {
+	TabsTriggerOptions,
+	TabsTriggerCommonProps,
+	TabsTriggerRenderProps,
+} from "@kobalte/core/tabs";
+import type { ElementOf, PolymorphicProps } from "@kobalte/core/polymorphic";
+
 export interface CustomTabsTriggerOptions extends TabsTriggerOptions {
 	variant: "default" | "outline";
 }
 
-export interface CustomTabsTriggerCommonProps<T extends HTMLElement = HTMLElement> extends TabsTriggerCommonProps<T> {
-	// If you allow users to set classes and extend them.
-	//class: string;
-}
+export interface CustomTabsTriggerCommonProps<T extends HTMLElement = HTMLElement>
+	extends TabsTriggerCommonProps<T> {}
 
 export interface CustomTabsTriggerRenderProps
 	extends CustomTabsTriggerCommonProps,
 		TabsTriggerRenderProps {
-	// If you do not allow users to set classes and manage all of them.
 	class: string;
 }
 
-export type CustomTabsTriggerProps<T extends ValidComponent = "button"> = CustomTabsTriggerOptions &
-	Partial<CustomTabsTriggerCommonProps<ElementOf<T>>>;
+export type CustomTabsTriggerProps<T extends ValidComponent = "button"> =
+	CustomTabsTriggerOptions & Partial<CustomTabsTriggerCommonProps<ElementOf<T>>>;
 
 export function CustomTabsTrigger<T extends ValidComponent = "button">(
-	props: PolymorphicProps<T, CustomTabsTriggerProps<T>,
+	props: PolymorphicProps<T, CustomTabsTriggerProps<T>>,
 ) {}
+
 ```
 
-`ElementOf<T>` is a helper from `"@kobalte/core/polymorphic"` that converts a tag name into its element
-(e.g. `ElementOf<"button"> = HTMLButtonElement`).
+`ElementOf<T>` (from `@kobalte/core/polymorphic`) maps a tag name to its corresponding DOM element type (eg. `ElementOf<"button">` → `HTMLButtonElement`).
