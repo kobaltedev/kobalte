@@ -72,10 +72,10 @@ export function createSingleSelectListState(
 			// Always fire onSelectionChange, even if the key is the same
 			// as the current key (createControllableSignal does not).
 			if (key === selectedKey()) {
-				props.onSelectionChange?.(key);
+				props.onSelectionChange?.(key ?? "");
 			}
 
-			setSelectedKey(key);
+			setSelectedKey(key ?? "");
 		},
 	} as Partial<CreateListStateProps>);
 

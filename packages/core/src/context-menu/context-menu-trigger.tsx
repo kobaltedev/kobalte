@@ -18,7 +18,10 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { useContextMenuContext } from "./context-menu-context";
+import {
+	ContextMenuContextValue,
+	useContextMenuContext,
+} from "./context-menu-context";
 
 export interface ContextMenuTriggerOptions {
 	/** Whether the context menu trigger is disabled. */
@@ -38,8 +41,9 @@ export interface ContextMenuTriggerCommonProps<
 	style?: JSX.CSSProperties | string;
 }
 
-export interface ContextMenuTriggerRenderProps
-	extends ContextMenuTriggerCommonProps,
+export interface ContextMenuTriggerRenderProps<
+	T extends HTMLElement = HTMLElement,
+> extends ContextMenuTriggerCommonProps<T>,
 		MenuDataSet {}
 
 export type ContextMenuTriggerProps<
@@ -47,30 +51,21 @@ export type ContextMenuTriggerProps<
 > = ContextMenuTriggerOptions &
 	Partial<ContextMenuTriggerCommonProps<ElementOf<T>>>;
 
-export function ContextMenuTrigger<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, ContextMenuTriggerProps<T>>,
+export type UseContextMenuTriggerProps<T extends HTMLElement = HTMLElement> =
+	ContextMenuTriggerOptions &
+		Partial<{
+			onContextMenu: JSX.EventHandlerUnion<T, MouseEvent>;
+			onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
+			onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
+			onPointerCancel: JSX.EventHandlerUnion<T, PointerEvent>;
+			onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
+		}>;
+
+export function useContextMenuTrigger<T extends HTMLElement = HTMLElement>(
+	props: UseContextMenuTriggerProps<T>,
 ) {
-	const rootContext = useMenuRootContext();
 	const menuContext = useMenuContext();
 	const context = useContextMenuContext();
-
-	const mergedProps = mergeDefaultProps(
-		{
-			id: rootContext.generateId("trigger"),
-		},
-		props as ContextMenuTriggerProps,
-	);
-
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"style",
-		"disabled",
-		"onContextMenu",
-		"onPointerDown",
-		"onPointerMove",
-		"onPointerCancel",
-		"onPointerUp",
-	]);
 
 	let longPressTimoutId = 0;
 
@@ -86,10 +81,10 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		clearLongPressTimeout();
 	});
 
-	const onContextMenu: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+	const onContextMenu: JSX.EventHandlerUnion<T, MouseEvent> = (e) => {
 		// If trigger is disabled, enable the native Context Menu.
-		if (local.disabled) {
-			callHandler(e, local.onContextMenu);
+		if (props.disabled) {
+			callHandler(e, props.onContextMenu);
 			return;
 		}
 
@@ -113,10 +108,10 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 	const isTouchOrPen = (e: PointerEvent) =>
 		e.pointerType === "touch" || e.pointerType === "pen";
 
-	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerDown);
+	const onPointerDown: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+		callHandler(e, props.onPointerDown);
 
-		if (!local.disabled && isTouchOrPen(e)) {
+		if (!props.disabled && isTouchOrPen(e)) {
 			// Clear the long press here in case there's multiple touch points.
 			clearLongPressTimeout();
 			context.setAnchorRect({ x: e.clientX, y: e.clientY });
@@ -124,36 +119,73 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
-		callHandler(e, local.onPointerMove);
+	const onPointerMove: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+		callHandler(e, props.onPointerMove);
 
-		if (!local.disabled && isTouchOrPen(e)) {
+		if (!props.disabled && isTouchOrPen(e)) {
 			clearLongPressTimeout();
 		}
 	};
 
-	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
-		e,
-	) => {
-		callHandler(e, local.onPointerCancel);
+	const onPointerCancel: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+		callHandler(e, props.onPointerCancel);
 
-		if (!local.disabled && isTouchOrPen(e)) {
+		if (!props.disabled && isTouchOrPen(e)) {
 			clearLongPressTimeout();
 		}
 	};
 
-	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerUp);
+	const onPointerUp: JSX.EventHandlerUnion<T, PointerEvent> = (e) => {
+		callHandler(e, props.onPointerUp);
 
-		if (!local.disabled && isTouchOrPen(e)) {
+		if (!props.disabled && isTouchOrPen(e)) {
 			clearLongPressTimeout();
 		}
 	};
+
+	return {
+		onContextMenu,
+		onPointerDown,
+		onPointerMove,
+		onPointerCancel,
+		onPointerUp,
+	};
+}
+
+export function ContextMenuTrigger<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, ContextMenuTriggerProps<T>>,
+) {
+	const rootContext = useMenuRootContext();
+	const menuContext = useMenuContext();
+
+	const mergedProps = mergeDefaultProps(
+		{
+			id: rootContext.generateId("trigger"),
+		},
+		props as ContextMenuTriggerProps,
+	);
+
+	const [local, others] = splitProps(mergedProps, [
+		"ref",
+		"style",
+		"disabled",
+		"onContextMenu",
+		"onPointerDown",
+		"onPointerMove",
+		"onPointerCancel",
+		"onPointerUp",
+	]);
+
+	const {
+		onContextMenu,
+		onPointerDown,
+		onPointerMove,
+		onPointerCancel,
+		onPointerUp,
+	} = useContextMenuTrigger(props);
 
 	return (
-		<Polymorphic<ContextMenuTriggerRenderProps>
+		<Polymorphic<ContextMenuTriggerRenderProps<ElementOf<T>>>
 			as="div"
 			ref={mergeRefs(menuContext.setTriggerRef, local.ref)}
 			style={combineStyle(
