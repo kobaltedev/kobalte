@@ -1,0 +1,94 @@
+.signature-pad-root {
+	width: 400px;
+	height: 400px;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	row-gap: 20px;
+	align-items: center;
+	border: 1px solid #fff;
+}
+
+.signature-pad-label {
+	color: #fff;
+	font-size: 20px;
+}
+
+.signature-pad-control {
+	width: 100%;
+	height: 100%;
+	border: 1px dashed #fff;
+	position: relative;
+	touch-action: none;
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+.signature-pad-segment {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	fill: #ccc;
+}
+
+.signature-pad-clear-trigger {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	cursor: pointer;
+	background-color: transparent;
+	color: #fff;
+	border-color: transparent;
+	border-radius: 3px;
+	font-size: 20px;
+	padding: 5px;
+	margin: 0;
+	width: max-content;
+}
+
+.signature-pad-clear-trigger:hover {
+	background-color: gray;
+}
+
+.signature-pad-guide {
+	border-bottom: 1px dashed #ccc;
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+	right: 20px;
+}
+
+.signature-pad-image-container {
+	height: 200px;
+	width: 200px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	row-gap: 10px;
+	border: 1px solid #fff;
+	margin-top: 10px;
+}
+
+.signature-pad-image-preview {
+	height: 100%;
+	width: 100%;
+	background-color: transparent;
+}
+
+.form-container {
+	display: flex;
+	flex-direction: column;
+	row-gap: 20px;
+	width: 100%;
+	align-items: center;
+}
+
+.submit-btn {
+	background-color: hsl(201 96% 32%);
+	color: white;
+	padding: 5px 10px;
+	border-radius: 4px;
+}
