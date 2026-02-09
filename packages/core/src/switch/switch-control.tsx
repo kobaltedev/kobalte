@@ -51,7 +51,7 @@ export function SwitchControl<T extends ValidComponent = "div">(
 		callHandler(e, local.onClick);
 
 		context.toggle();
-		context.inputRef()?.focus();
+		context.inputRef()?.focus({ preventScroll: true });
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
@@ -59,7 +59,7 @@ export function SwitchControl<T extends ValidComponent = "div">(
 
 		if (e.key === EventKey.Space) {
 			context.toggle();
-			context.inputRef()?.focus();
+			context.inputRef()?.focus({ preventScroll: true });
 		}
 	};
 
