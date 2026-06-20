@@ -4,7 +4,7 @@ import {
 	type JSX,
 	type ValidComponent,
 	createMemo,
-	splitProps,
+	omit,
 } from "solid-js";
 import { useLocale } from "../i18n";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -35,7 +35,7 @@ export function ColorSliderTrack<T extends ValidComponent = "div">(
 	const sliderContext = useSliderContext();
 	const context = useColorSliderContext();
 
-	const [local, others] = splitProps(props, ["style"]);
+	const others = omit(props, "style");
 
 	const { direction } = useLocale();
 
@@ -114,7 +114,7 @@ export function ColorSliderTrack<T extends ValidComponent = "div">(
 					"forced-color-adjust": "none",
 					background: backgroundStyles(),
 				},
-				local.style,
+				props.style,
 			)}
 			{...others}
 		/>

@@ -3,7 +3,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -31,7 +31,7 @@ export function PaginationNext<T extends ValidComponent = "button">(
 ) {
 	const context = usePaginationContext();
 
-	const [local, others] = splitProps(props as PaginationNextProps, ["onClick"]);
+	const others = omit(props as PaginationNextProps, "onClick");
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = () => {
 		context.setPage(context.page() + 1);
@@ -52,7 +52,7 @@ export function PaginationNext<T extends ValidComponent = "button">(
 				disabled={isDisabled()}
 				aria-disabled={isDisabled() || undefined}
 				data-disabled={isDisabled() ? "" : undefined}
-				onClick={composeEventHandlers([local.onClick, onClick])}
+				onClick={composeEventHandlers([props.onClick, onClick])}
 				{...others}
 			/>
 		</li>

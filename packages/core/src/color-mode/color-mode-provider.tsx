@@ -80,8 +80,8 @@ export function ColorModeProvider(props: ColorModeProviderProps) {
 	};
 
 	return (
-		<ColorModeContext.Provider value={context}>
+		<ColorModeContext value={context}>
 			{props.children}
-		</ColorModeContext.Provider>
+		</ColorModeContext>
 	);
 }

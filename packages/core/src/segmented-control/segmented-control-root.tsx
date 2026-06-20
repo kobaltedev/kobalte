@@ -3,8 +3,8 @@ import {
 	type ValidComponent,
 	createEffect,
 	createSignal,
-	mergeProps,
-	splitProps,
+	merge,
+	omit,
 } from "solid-js";
 import type { PolymorphicProps } from "../polymorphic";
 import { RadioGroup, type RadioGroupRootProps } from "../radio-group";
@@ -18,7 +18,7 @@ export type SegmentedControlRootProps = RadioGroupRootProps;
 export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SegmentedControlRootProps>,
 ) => {
-	const mergedProps = mergeProps(
+	const mergedProps = merge(
 		{
 			defaultValue: props.value,
 			orientation: "horizontal",
@@ -26,7 +26,7 @@ export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 		props,
 	);
 
-	const [localProps, otherProps] = splitProps(mergedProps, ["ref"]);
+	const otherProps = omit(mergedProps, "ref");
 
 	const [ref, setRef] = createSignal<HTMLElement>();
 	const [selectedItem, setSelectedItem] = createSignal<HTMLElement>();
@@ -47,8 +47,8 @@ export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 	});
 
 	return (
-		<SegmentedControlContext.Provider value={context}>
-			<RadioGroup ref={mergeRefs(setRef, localProps.ref)} {...otherProps} />
-		</SegmentedControlContext.Provider>
+		<SegmentedControlContext value={context}>
+			<RadioGroup ref={mergeRefs(setRef, mergedProps.ref)} {...otherProps} />
+		</SegmentedControlContext>
 	);
 };

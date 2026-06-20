@@ -1,5 +1,5 @@
 import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { Show, type ValidComponent, splitProps } from "solid-js";
+import { Show, type ValidComponent, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -47,10 +47,10 @@ export function MenuItemIndicator<T extends ValidComponent = "div">(
 		props as MenuItemIndicatorProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["forceMount"]);
+	const others = omit(mergedProps, "forceMount");
 
 	return (
-		<Show when={local.forceMount || context.isChecked()}>
+		<Show when={mergedProps.forceMount || context.isChecked()}>
 			<Polymorphic<MenuItemIndicatorRenderProps>
 				as="div"
 				{...context.dataset()}

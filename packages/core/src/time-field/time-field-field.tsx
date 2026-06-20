@@ -16,12 +16,12 @@ import {
 } from "@kobalte/utils";
 import {
 	type Accessor,
-	Index,
+	For,
 	type JSX,
 	type ValidComponent,
 	createMemo,
 	createSignal,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -88,14 +88,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 		props as TimeFieldFieldProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"children",
-		"onKeyDown",
-		"onFocusOut",
-		"aria-labelledby",
-		"aria-describedby",
-	]);
+	const others = omit(mergedProps, "ref", "children", "onKeyDown", "onFocusOut", "aria-labelledby", "aria-describedby");
 
 	const { locale, direction } = useLocale();
 
@@ -129,12 +122,12 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 		return formControlContext.getAriaLabelledBy(
 			others.id,
 			others["aria-label"],
-			local["aria-labelledby"],
+			mergedProps["aria-labelledby"],
 		);
 	});
 
 	const ariaDescribedBy = createMemo(() => {
-		return [local["aria-describedby"], timeFieldContext.ariaDescribedBy()]
+		return [mergedProps["aria-describedby"], timeFieldContext.ariaDescribedBy()]
 			.filter(Boolean)
 			.join(" ");
 	});
@@ -347,7 +340,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		switch (e.key) {
 			case "ArrowLeft":
@@ -372,7 +365,7 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocusOut);
+		callHandler(e, mergedProps.onFocusOut);
 
 		if (formControlContext.isDisabled() || formControlContext.isReadOnly()) {
 			return;
@@ -414,14 +407,14 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<TimeFieldFieldContext.Provider value={context}>
+		<TimeFieldFieldContext value={context}>
 			<Polymorphic<TimeFieldFieldRenderProps>
 				as="div"
 				role="presentation"
 				ref={mergeRefs((el) => {
 					timeFieldContext.setInputRef(el);
 					ref = el;
-				}, local.ref)}
+				}, mergedProps.ref)}
 				aria-labelledby={ariaLabelledBy()}
 				aria-describedby={ariaDescribedBy()}
 				onKeyDown={onKeyDown}
@@ -429,11 +422,11 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 				{...formControlContext.dataset()}
 				{...others}
 			>
-				<Index each={segments()}>
-					{(segment) => local.children?.(segment)}
-				</Index>
+				<For each={segments()} keyed={false}>
+					{(segment) => mergedProps.children?.(segment)}
+				</For>
 			</Polymorphic>
-		</TimeFieldFieldContext.Provider>
+		</TimeFieldFieldContext>
 	);
 }
 

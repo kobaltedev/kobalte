@@ -30,8 +30,8 @@ import {
 	createSignal,
 	createUniqueId,
 	on,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -87,23 +87,15 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		props as TimeFieldSegmentProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"segment",
-		"onKeyDown",
-		"onBeforeInput",
-		"onInput",
-		"onFocus",
-		"children",
-	]);
+	const others = omit(mergedProps, "ref", "segment", "onKeyDown", "onBeforeInput", "onInput", "onFocus", "children");
 
 	const { locale } = useLocale();
 
 	const [textValue, setTextValue] = createSignal(
-		local.segment.isPlaceholder ? "" : local.segment.text,
+		mergedProps.segment.isPlaceholder ? "" : mergedProps.segment.text,
 	);
 
-	const resolvedChildren = children(() => local.children);
+	const resolvedChildren = children(() => mergedProps.children);
 
 	let enteredKeys = "";
 	let composition: string | null = "";
@@ -111,7 +103,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	// spin buttons cannot be focused with VoiceOver on iOS.
 	const touchPropOverrides = createMemo(() => {
 		return (
-			isIOS() || local.segment.type === "timeZoneName"
+			isIOS() || mergedProps.segment.type === "timeZoneName"
 				? {
 						role: "textbox",
 						"aria-valuemax": undefined,
@@ -130,9 +122,9 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	// Prepend the label passed from the field to each segment name.
 	// This is needed because VoiceOver on iOS does not announce groups.
 	const name = createMemo(() => {
-		return local.segment.type === "literal"
+		return mergedProps.segment.type === "literal"
 			? ""
-			: context.translations()[local.segment.type];
+			: context.translations()[mergedProps.segment.type];
 	});
 
 	const ariaLabel = createMemo(() => {
@@ -145,7 +137,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		// Only apply aria-describedby to the first segment, unless the field is invalid. This avoids it being
 		// read every time the user navigates to a new segment.
 		if (
-			local.segment !== firstSegment() &&
+			mergedProps.segment !== firstSegment() &&
 			formControlContext.validationState() !== "invalid"
 		) {
 			return undefined;
@@ -166,13 +158,13 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		return (
 			!formControlContext.isDisabled() &&
 			!formControlContext.isReadOnly() &&
-			local.segment.isEditable
+			mergedProps.segment.isEditable
 		);
 	});
 
 	const inputMode = createMemo(() => {
 		return formControlContext.isDisabled() ||
-			local.segment.type === "dayPeriod" ||
+			mergedProps.segment.type === "dayPeriod" ||
 			!isEditable()
 			? undefined
 			: "numeric";
@@ -223,30 +215,30 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	});
 
 	const onBackspaceKeyDown = () => {
-		if (local.segment.text === local.segment.placeholder) {
+		if (mergedProps.segment.text === mergedProps.segment.placeholder) {
 			context.focusManager().focusPrevious();
 		}
 		if (
-			numberParser().isValidPartialNumber(local.segment.text) &&
+			numberParser().isValidPartialNumber(mergedProps.segment.text) &&
 			!formControlContext.isReadOnly() &&
-			!local.segment.isPlaceholder
+			!mergedProps.segment.isPlaceholder
 		) {
-			let newValue = local.segment.text.slice(0, -1);
+			let newValue = mergedProps.segment.text.slice(0, -1);
 			const parsed = numberParser().parse(newValue);
 			newValue = parsed === 0 ? "" : newValue;
 			if (newValue.length === 0 || parsed === 0) {
-				fieldContext.clearSegment(local.segment.type);
+				fieldContext.clearSegment(mergedProps.segment.type);
 			} else {
-				fieldContext.setSegment(local.segment.type, parsed);
+				fieldContext.setSegment(mergedProps.segment.type, parsed);
 			}
 			enteredKeys = newValue;
-		} else if (local.segment.type === "dayPeriod") {
-			fieldContext.clearSegment(local.segment.type);
+		} else if (mergedProps.segment.type === "dayPeriod") {
+			fieldContext.clearSegment(mergedProps.segment.type);
 		}
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		// Firefox does not fire selectstart for Ctrl/Cmd + A
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=1742153
@@ -277,7 +269,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		const newValue = enteredKeys + key;
 
-		switch (local.segment.type) {
+		switch (mergedProps.segment.type) {
 			case "dayPeriod":
 				if (filter.startsWith(am(), key)) {
 					fieldContext.setSegment("dayPeriod", 0);
@@ -297,9 +289,9 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 				let numberValue = numberParser().parse(newValue);
 				let segmentValue = numberValue;
-				let allowsZero = local.segment.minValue === 0;
+				let allowsZero = mergedProps.segment.minValue === 0;
 				if (
-					local.segment.type === "hour" &&
+					mergedProps.segment.type === "hour" &&
 					fieldContext.dateFormatterResolvedOptions().hour12
 				) {
 					switch (fieldContext.dateFormatterResolvedOptions().hourCycle) {
@@ -317,15 +309,15 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 					}
 
 					if (
-						local.segment.value != null &&
-						local.segment.value >= 12 &&
+						mergedProps.segment.value != null &&
+						mergedProps.segment.value >= 12 &&
 						numberValue > 1
 					) {
 						numberValue += 12;
 					}
 				} else if (
-					local.segment.maxValue != null &&
-					numberValue > local.segment.maxValue
+					mergedProps.segment.maxValue != null &&
+					numberValue > mergedProps.segment.maxValue
 				) {
 					segmentValue = numberParser().parse(key);
 				}
@@ -337,13 +329,13 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				const shouldSetValue = segmentValue !== 0 || allowsZero;
 
 				if (shouldSetValue) {
-					fieldContext.setSegment(local.segment.type, segmentValue);
+					fieldContext.setSegment(mergedProps.segment.type, segmentValue);
 				}
 
 				if (
-					(local.segment.maxValue != null &&
-						Number(`${numberValue}0`) > local.segment.maxValue) ||
-					newValue.length >= String(local.segment.maxValue).length
+					(mergedProps.segment.maxValue != null &&
+						Number(`${numberValue}0`) > mergedProps.segment.maxValue) ||
+					newValue.length >= String(mergedProps.segment.maxValue).length
 				) {
 					enteredKeys = "";
 					if (shouldSetValue) {
@@ -358,7 +350,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	};
 
 	const onBeforeInput: JSX.EventHandlerUnion<HTMLElement, InputEvent> = (e) => {
-		callHandler(e, local.onBeforeInput);
+		callHandler(e, mergedProps.onBeforeInput);
 
 		e.preventDefault();
 
@@ -366,7 +358,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			case "deleteContentBackward":
 			case "deleteContentForward":
 				if (
-					numberParser().isValidPartialNumber(local.segment.text) &&
+					numberParser().isValidPartialNumber(mergedProps.segment.text) &&
 					!formControlContext.isReadOnly()
 				) {
 					onBackspaceKeyDown();
@@ -392,7 +384,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	};
 
 	const onInput: JSX.EventHandlerUnion<HTMLElement, InputEvent> = (e) => {
-		callHandler(e, local.onInput);
+		callHandler(e, mergedProps.onInput);
 
 		const { inputType, data } = e;
 
@@ -412,7 +404,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 
 		if (ref) {
 			enteredKeys = "";
@@ -428,50 +420,50 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 	const onIncrement = () => {
 		enteredKeys = "";
-		fieldContext.increment(local.segment.type);
+		fieldContext.increment(mergedProps.segment.type);
 	};
 
 	const onDecrement = () => {
 		enteredKeys = "";
-		fieldContext.decrement(local.segment.type);
+		fieldContext.decrement(mergedProps.segment.type);
 	};
 
 	const onIncrementPage = () => {
 		enteredKeys = "";
-		fieldContext.incrementPage(local.segment.type);
+		fieldContext.incrementPage(mergedProps.segment.type);
 	};
 
 	const onDecrementPage = () => {
 		enteredKeys = "";
-		fieldContext.decrementPage(local.segment.type);
+		fieldContext.decrementPage(mergedProps.segment.type);
 	};
 
 	const onDecrementToMin = () => {
-		if (local.segment.minValue == null) {
+		if (mergedProps.segment.minValue == null) {
 			return;
 		}
 
 		enteredKeys = "";
-		fieldContext.setSegment(local.segment.type, local.segment.minValue);
+		fieldContext.setSegment(mergedProps.segment.type, mergedProps.segment.minValue);
 	};
 
 	const onIncrementToMax = () => {
-		if (local.segment.maxValue == null) {
+		if (mergedProps.segment.maxValue == null) {
 			return;
 		}
 
 		enteredKeys = "";
-		fieldContext.setSegment(local.segment.type, local.segment.maxValue);
+		fieldContext.setSegment(mergedProps.segment.type, mergedProps.segment.maxValue);
 	};
 
 	createEffect(() => {
 		const resolvedDateValue = fieldContext.dateValue();
 
 		if (resolvedDateValue) {
-			if (local.segment.type === "hour" && !local.segment.isPlaceholder) {
+			if (mergedProps.segment.type === "hour" && !mergedProps.segment.isPlaceholder) {
 				setTextValue(hourDateFormatter().format(resolvedDateValue));
 			} else {
-				setTextValue(local.segment.isPlaceholder ? "" : local.segment.text);
+				setTextValue(mergedProps.segment.isPlaceholder ? "" : mergedProps.segment.text);
 			}
 		}
 	});
@@ -494,7 +486,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 	return (
 		<Show
-			when={local.segment.type !== "literal"}
+			when={mergedProps.segment.type !== "literal"}
 			fallback={
 				<Polymorphic
 					as="div"
@@ -503,7 +495,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 					data-type="literal"
 					{...others}
 				>
-					{local.segment.text}
+					{mergedProps.segment.text}
 				</Polymorphic>
 			}
 		>
@@ -518,20 +510,20 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 					>
 				>
 			>
-				ref={mergeRefs((el) => (ref = el), local.ref)}
+				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				tabIndex={
-					formControlContext.isDisabled() || !local.segment.isEditable
+					formControlContext.isDisabled() || !mergedProps.segment.isEditable
 						? undefined
 						: 0
 				}
-				value={local.segment.value}
+				value={mergedProps.segment.value}
 				textValue={textValue()}
-				minValue={local.segment.minValue}
-				maxValue={local.segment.maxValue}
+				minValue={mergedProps.segment.minValue}
+				maxValue={mergedProps.segment.maxValue}
 				validationState={formControlContext.validationState()}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
-				readOnly={formControlContext.isReadOnly() || !local.segment.isEditable}
+				readOnly={formControlContext.isReadOnly() || !mergedProps.segment.isEditable}
 				contentEditable={isEditable()}
 				inputMode={inputMode()}
 				// @ts-ignore
@@ -543,8 +535,8 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				aria-label={ariaLabel()}
 				aria-labelledby={ariaLabelledBy()}
 				aria-describedby={ariaDescribedBy()}
-				data-placeholder={local.segment.isPlaceholder ? "" : undefined}
-				data-type={local.segment.type}
+				data-placeholder={mergedProps.segment.isPlaceholder ? "" : undefined}
+				data-type={mergedProps.segment.type}
 				onKeyDown={onKeyDown}
 				onBeforeInput={onBeforeInput}
 				onInput={onInput}
@@ -559,7 +551,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				{...others}
 				{...touchPropOverrides()}
 			>
-				<Show when={resolvedChildren()} fallback={local.segment.text}>
+				<Show when={resolvedChildren()} fallback={mergedProps.segment.text}>
 					{resolvedChildren()}
 				</Show>
 			</SpinButton.Root>

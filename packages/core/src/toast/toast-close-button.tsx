@@ -11,7 +11,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -44,13 +44,10 @@ export function ToastCloseButton<T extends ValidComponent = "button">(
 ) {
 	const context = useToastContext();
 
-	const [local, others] = splitProps(props as ToastCloseButtonProps, [
-		"aria-label",
-		"onClick",
-	]);
+	const others = omit(props as ToastCloseButtonProps, "aria-label", "onClick");
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, props.onClick);
 		context.close();
 	};
 
@@ -60,7 +57,7 @@ export function ToastCloseButton<T extends ValidComponent = "button">(
 				Omit<ToastCloseButtonRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-label={local["aria-label"] || context.translations().close}
+			aria-label={props["aria-label"] || context.translations().close}
 			onClick={onClick}
 			{...others}
 		/>

@@ -22,7 +22,7 @@ import {
 	noop,
 } from "@kobalte/utils";
 import { type Accessor, createEffect, onCleanup } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer } from "@solidjs/web";
 
 import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
 

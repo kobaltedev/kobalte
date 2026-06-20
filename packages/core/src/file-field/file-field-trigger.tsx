@@ -3,7 +3,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 import * as Button from "../button";
 import {
@@ -37,9 +37,7 @@ export function FileFieldTrigger<T extends ValidComponent = "button">(
 	const context = useFileFieldContext();
 	const formControlContext = useFormControlContext();
 
-	const [local, others] = splitProps(props as FileFieldTriggerProps, [
-		"onClick",
-	]);
+	const others = omit(props as FileFieldTriggerProps, "onClick");
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (event) => {
 		// if button is within dropzone ref, avoid trigger of file dialog for button
@@ -57,7 +55,7 @@ export function FileFieldTrigger<T extends ValidComponent = "button">(
 			>
 		>
 			disabled={context.disabled()}
-			onClick={composeEventHandlers([local.onClick, onClick])}
+			onClick={composeEventHandlers([props.onClick, onClick])}
 			{...formControlContext.dataset()}
 			{...others}
 		/>

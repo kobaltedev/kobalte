@@ -6,7 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/context-menu/src/ContextMenu.tsx
  */
 
-import { type Component, type ValidComponent, splitProps } from "solid-js";
+import { type Component, type ValidComponent, omit } from "solid-js";
 
 import {
 	MenuContent,
@@ -38,15 +38,12 @@ export function ContextMenuContent<T extends ValidComponent = "div">(
 ) {
 	const rootContext = useMenuRootContext();
 
-	const [local, others] = splitProps(props, [
-		"onCloseAutoFocus",
-		"onInteractOutside",
-	]);
+	const others = omit(props, "onCloseAutoFocus", "onInteractOutside");
 
 	let hasInteractedOutside = false;
 
 	const onCloseAutoFocus = (e: Event) => {
-		local.onCloseAutoFocus?.(e);
+		props.onCloseAutoFocus?.(e);
 
 		if (!e.defaultPrevented && hasInteractedOutside) {
 			e.preventDefault();
@@ -56,7 +53,7 @@ export function ContextMenuContent<T extends ValidComponent = "div">(
 	};
 
 	const onInteractOutside = (e: InteractOutsideEvent) => {
-		local.onInteractOutside?.(e);
+		props.onInteractOutside?.(e);
 
 		if (!e.defaultPrevented && !rootContext.isModal()) {
 			hasInteractedOutside = true;

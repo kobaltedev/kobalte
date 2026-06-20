@@ -1,6 +1,6 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, omit } from "solid-js";
 import { COLOR_INTL_TRANSLATIONS } from "../colors";
 import { useFormControlContext } from "../form-control";
 import {
@@ -37,14 +37,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 	const context = useColorAreaContext();
 	const formControlContext = useFormControlContext();
 
-	const [local, others] = splitProps(props, [
-		"style",
-		"aria-label",
-		"onKeyDown",
-		"onPointerDown",
-		"onPointerMove",
-		"onPointerUp",
-	]);
+	const others = omit(props, "style", "aria-label", "onKeyDown", "onPointerDown", "onPointerMove", "onPointerUp");
 
 	const ariaLabel = () => {
 		const xChannel = context.state.channels().xChannel;
@@ -55,12 +48,12 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 			.value()
 			.getColorName(COLOR_INTL_TRANSLATIONS);
 		return (
-			local["aria-label"] ?? [xChannelName, yChannelName, colorName].join(", ")
+			props["aria-label"] ?? [xChannelName, yChannelName, colorName].join(", ")
 		);
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, props.onKeyDown);
 		context.onStepKeyDown(e);
 	};
 
@@ -69,7 +62,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, props.onPointerDown);
 
 		const target = e.currentTarget as HTMLElement;
 
@@ -87,7 +80,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 
 	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		e.stopPropagation();
-		callHandler(e, local.onPointerMove);
+		callHandler(e, props.onPointerMove);
 
 		const target = e.currentTarget as HTMLElement;
 
@@ -104,7 +97,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 
 	const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		e.stopPropagation();
-		callHandler(e, local.onPointerUp);
+		callHandler(e, props.onPointerUp);
 
 		const target = e.currentTarget as HTMLElement;
 
@@ -130,7 +123,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 					"touch-action": "none",
 					"--kb-color-current": context.state.value().toString(),
 				},
-				local.style,
+				props.style,
 			)}
 			aria-label={ariaLabel()}
 			onKeyDown={onKeyDown}

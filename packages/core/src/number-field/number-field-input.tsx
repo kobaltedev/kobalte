@@ -8,7 +8,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -76,11 +76,8 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 		props as NumberFieldInputProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
-		mergedProps as typeof mergedProps & { as: ValidComponent },
-		["ref", "onInput", "onChange", "onWheel", "as"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
-	);
+	const formControlFieldProps = omit(mergedProps as typeof mergedProps & { as: ValidComponent }, "ref", "onInput", "onChange", "onWheel", "as", "inputMode", "autocomplete", "autocorrect", "spellcheck");
+	const others = omit(mergedProps as typeof mergedProps & { as: ValidComponent }, "ref", "onInput", "onChange", "onWheel", "as", "id", "aria-label", "aria-labelledby", "aria-describedby");
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
@@ -99,7 +96,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 		>
 			type="text"
 			id={fieldProps.id()}
-			ref={mergeRefs(context.setInputRef, local.ref)}
+			ref={mergeRefs(context.setInputRef, mergedProps.ref)}
 			value={context.value()}
 			validationState={formControlContext.validationState()}
 			required={formControlContext.isRequired()}
@@ -131,7 +128,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			translations={context.translations()}
 			onChange={(e) => {
 				// @ts-ignore: Polymorphic error
-				callHandler(e, local.onChange);
+				callHandler(e, mergedProps.onChange);
 
 				// format on change end
 				context.format();
@@ -139,7 +136,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			// @ts-ignore: Polymorphic error
 			onWheel={(e) => {
 				// @ts-ignore: Polymorphic error
-				callHandler(e, local.onWheel);
+				callHandler(e, mergedProps.onWheel);
 
 				if (
 					!context.changeOnWheel() ||
@@ -152,7 +149,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 				if (e.deltaY < 0) context.varyValue(context.step());
 				else context.varyValue(-context.step());
 			}}
-			onInput={composeEventHandlers([local.onInput, context.onInput])}
+			onInput={composeEventHandlers([mergedProps.onInput, context.onInput])}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
@@ -167,7 +164,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 						keyof SpinButton.SpinButtonRootRenderProps
 					>
 				>
-					as={local.as || "input"}
+					as={mergedProps.as || "input"}
 					value={
 						Number.isNaN(context.rawValue()) || context.value() === undefined
 							? ""

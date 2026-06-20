@@ -11,7 +11,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -47,10 +47,10 @@ export function CollapsibleTrigger<T extends ValidComponent = "div">(
 ) {
 	const context = useCollapsibleContext();
 
-	const [local, others] = splitProps(props, ["onClick"]);
+	const others = omit(props, "onClick");
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, props.onClick);
 		context.toggle();
 	};
 

@@ -3,7 +3,7 @@ import {
 	mergeDefaultProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { type ComponentProps, type JSX, splitProps } from "solid-js";
+import { type ComponentProps, type JSX, omit } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
 import {
@@ -28,18 +28,15 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 		props,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
-		mergedProps,
-		["style", "onChange"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
-	);
+	const formControlFieldProps = omit(mergedProps, "style", "onChange");
+	const others = omit(mergedProps, "style", "onChange", ...FORM_CONTROL_FIELD_PROP_NAMES);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e, local.onChange);
+		callHandler(e, mergedProps.onChange);
 
 		const target = e.target as HTMLInputElement;
 
@@ -66,7 +63,7 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
+			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
 			aria-valuetext={context.getThumbValueLabel()}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}

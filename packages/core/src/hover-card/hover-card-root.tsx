@@ -20,10 +20,10 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer } from "@solidjs/web";
 
 import createPresence from "solid-presence";
 import { Popper, type PopperRootOptions } from "../popper";
@@ -93,16 +93,7 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"id",
-		"open",
-		"defaultOpen",
-		"onOpenChange",
-		"openDelay",
-		"closeDelay",
-		"ignoreSafeArea",
-		"forceMount",
-	]);
+	const others = omit(mergedProps, "id", "open", "defaultOpen", "onOpenChange", "openDelay", "closeDelay", "ignoreSafeArea", "forceMount");
 
 	let openTimeoutId: number | undefined;
 	let closeTimeoutId: number | undefined;
@@ -115,13 +106,13 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 	);
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
 	const { present: contentPresent } = createPresence({
-		show: () => local.forceMount || disclosureState.isOpen(),
+		show: () => mergedProps.forceMount || disclosureState.isOpen(),
 		element: () => contentRef() ?? null,
 	});
 
@@ -135,7 +126,7 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 		openTimeoutId = window.setTimeout(() => {
 			openTimeoutId = undefined;
 			disclosureState.open();
-		}, local.openDelay);
+		}, mergedProps.openDelay);
 	};
 
 	const closeWithDelay = () => {
@@ -146,7 +137,7 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 		closeTimeoutId = window.setTimeout(() => {
 			closeTimeoutId = undefined;
 			disclosureState.close();
-		}, local.closeDelay);
+		}, mergedProps.closeDelay);
 	};
 
 	const cancelOpening = () => {
@@ -191,7 +182,7 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 			return;
 		}
 
-		if (!local.ignoreSafeArea) {
+		if (!mergedProps.ignoreSafeArea) {
 			const polygon = getPolygonSafeArea(currentPlacement());
 
 			//Don't close if the current's event mouse position is inside the polygon safe area.
@@ -250,13 +241,13 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 	};
 
 	return (
-		<HoverCardContext.Provider value={context}>
+		<HoverCardContext value={context}>
 			<Popper
 				anchorRef={triggerRef}
 				contentRef={contentRef}
 				onCurrentPlacementChange={setCurrentPlacement}
 				{...others}
 			/>
-		</HoverCardContext.Provider>
+		</HoverCardContext>
 	);
 }

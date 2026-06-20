@@ -11,7 +11,6 @@ import {
 	type ValidComponent,
 	createEffect,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import {

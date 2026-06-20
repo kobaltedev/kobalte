@@ -3,8 +3,8 @@ import {
 	type ValidComponent,
 	createEffect,
 	createSignal,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -42,9 +42,7 @@ export function ToastProgressFill<T extends ValidComponent = "div">(
 	const rootContext = useToastRegionContext();
 	const context = useToastContext();
 
-	const [local, others] = splitProps(props as ToastProgressFillProps, [
-		"style",
-	]);
+	const others = omit(props as ToastProgressFillProps, "style");
 
 	const [lifeTime, setLifeTime] = createSignal(100);
 	let totalElapsedTime = 0;
@@ -75,7 +73,7 @@ export function ToastProgressFill<T extends ValidComponent = "div">(
 				{
 					"--kb-toast-progress-fill-width": `${lifeTime()}%`,
 				},
-				local.style,
+				props.style,
 			)}
 			{...others}
 		/>

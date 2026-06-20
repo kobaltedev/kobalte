@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-spectrum/badge/src/Badge.tsx
  */
 
-import { type ValidComponent, splitProps } from "solid-js";
+import { type ValidComponent, omit } from "solid-js";
 import { Polymorphic, type PolymorphicProps } from "../polymorphic";
 
 export interface BadgeRootOptions {
@@ -29,13 +29,13 @@ export type BadgeRootProps<
 export function BadgeRoot<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, BadgeRootProps<T>>,
 ) {
-	const [local, others] = splitProps(props, ["textValue"]);
+	const others = omit(props, "textValue");
 
 	return (
 		<Polymorphic<BadgeRootRenderProps>
 			as="span"
 			role="status"
-			aria-label={local.textValue}
+			aria-label={props.textValue}
 			{...others}
 		>
 			{others.children}

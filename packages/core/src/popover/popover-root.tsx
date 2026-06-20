@@ -13,7 +13,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import createPresence from "solid-presence";
@@ -99,17 +99,7 @@ export function PopoverRoot(props: PopoverRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"translations",
-		"id",
-		"open",
-		"defaultOpen",
-		"onOpenChange",
-		"modal",
-		"preventScroll",
-		"forceMount",
-		"anchorRef",
-	]);
+	const others = omit(mergedProps, "translations", "id", "open", "defaultOpen", "onOpenChange", "modal", "preventScroll", "forceMount", "anchorRef");
 
 	const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<HTMLElement>();
 	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
@@ -120,17 +110,17 @@ export function PopoverRoot(props: PopoverRootProps) {
 	const [descriptionId, setDescriptionId] = createSignal<string>();
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
 	const anchorRef = () => {
-		return local.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef();
+		return mergedProps.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef();
 	};
 
 	const { present: contentPresent } = createPresence({
-		show: () => local.forceMount || disclosureState.isOpen(),
+		show: () => mergedProps.forceMount || disclosureState.isOpen(),
 		element: () => contentRef() ?? null,
 	});
 
@@ -140,11 +130,11 @@ export function PopoverRoot(props: PopoverRootProps) {
 	}));
 
 	const context: PopoverContextValue = {
-		translations: () => local.translations ?? POPOVER_INTL_TRANSLATIONS,
+		translations: () => mergedProps.translations ?? POPOVER_INTL_TRANSLATIONS,
 		dataset,
 		isOpen: disclosureState.isOpen,
-		isModal: () => local.modal ?? false,
-		preventScroll: () => local.preventScroll ?? context.isModal(),
+		isModal: () => mergedProps.modal ?? false,
+		preventScroll: () => mergedProps.preventScroll ?? context.isModal(),
 		contentPresent,
 		triggerRef,
 		contentId,
@@ -155,15 +145,15 @@ export function PopoverRoot(props: PopoverRootProps) {
 		setContentRef,
 		close: disclosureState.close,
 		toggle: disclosureState.toggle,
-		generateId: createGenerateId(() => local.id!),
+		generateId: createGenerateId(() => mergedProps.id!),
 		registerContentId: createRegisterId(setContentId),
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};
 
 	return (
-		<PopoverContext.Provider value={context}>
+		<PopoverContext value={context}>
 			<Popper anchorRef={anchorRef} contentRef={contentRef} {...others} />
-		</PopoverContext.Provider>
+		</PopoverContext>
 	);
 }

@@ -12,8 +12,8 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
+	omit,
 	on,
-	splitProps,
 } from "solid-js";
 import {
 	DismissableLayer,
@@ -86,11 +86,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 
 	const [ref, setRef] = createSignal<HTMLElement>();
 
-	const [local, others] = splitProps(props as NavigationMenuViewportProps, [
-		"ref",
-		"style",
-		"onEscapeKeyDown",
-	]);
+	const others = omit(props as NavigationMenuViewportProps, "ref", "style", "onEscapeKeyDown");
 
 	const close = () => {
 		menubarContext.setAutoFocusMenu(false);
@@ -139,7 +135,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 					>
 				>
 					as="li"
-					ref={mergeRefs(context.setViewportRef, local.ref)}
+					ref={mergeRefs(context.setViewportRef, props.ref)}
 					excludedElements={[context.rootRef]}
 					bypassTopMostLayerCheck
 					style={combineStyle(
@@ -154,10 +150,10 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 								: undefined,
 							position: "relative",
 						},
-						local.style,
+						props.style,
 					)}
 					onEscapeKeyDown={composeEventHandlers([
-						local.onEscapeKeyDown,
+						props.onEscapeKeyDown,
 						onEscapeKeyDown,
 					])}
 					onDismiss={close}

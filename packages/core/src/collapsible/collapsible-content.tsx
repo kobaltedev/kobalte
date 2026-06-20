@@ -13,10 +13,10 @@ import {
 	type ValidComponent,
 	createEffect,
 	createSignal,
+	omit,
 	on,
 	onCleanup,
-	onMount,
-	splitProps,
+	onSettled,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -65,7 +65,7 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 		props as CollapsibleContentProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "id", "style"]);
+	const others = omit(mergedProps, "ref", "id", "style");
 
 	const { present } = createPresence({
 		show: context.shouldMount,
@@ -80,14 +80,14 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 	const isOpen = () => context.isOpen() || present();
 	let isMountAnimationPrevented = isOpen();
 
-	onMount(() => {
+	onSettled(() => {
 		const raf = requestAnimationFrame(() => {
 			isMountAnimationPrevented = false;
 		});
 
-		onCleanup(() => {
+		return () => {
 			cancelAnimationFrame(raf);
-		});
+		};
 	});
 
 	createEffect(
@@ -134,14 +134,14 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 		),
 	);
 
-	createEffect(() => onCleanup(context.registerContentId(local.id)));
+	createEffect(() => onCleanup(context.registerContentId(mergedProps.id)));
 
 	return (
 		<Show when={present()}>
 			<Polymorphic<CollapsibleContentRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, local.ref)}
-				id={local.id}
+				ref={mergeRefs(setRef, mergedProps.ref)}
+				id={mergedProps.id}
 				style={combineStyle(
 					{
 						"--kb-collapsible-content-height": height()
@@ -151,7 +151,7 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 							? `${width()}px`
 							: undefined,
 					},
-					local.style,
+					mergedProps.style,
 				)}
 				{...context.dataset()}
 				{...others}

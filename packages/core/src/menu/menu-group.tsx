@@ -59,13 +59,13 @@ export function MenuGroup<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<MenuGroupContext.Provider value={context}>
+		<MenuGroupContext value={context}>
 			<Polymorphic<MenuGroupRenderProps>
 				as="div"
 				role="group"
 				aria-labelledby={labelId()}
 				{...mergedProps}
 			/>
-		</MenuGroupContext.Provider>
+		</MenuGroupContext>
 	);
 }

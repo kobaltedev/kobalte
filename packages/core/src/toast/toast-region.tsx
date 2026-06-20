@@ -23,7 +23,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -136,31 +136,29 @@ export function ToastRegion<T extends ValidComponent = "div">(
 		props as ToastRegionProps,
 	);
 
-	const [local, others] = splitProps(
+	const others = omit(
 		mergedProps as typeof mergedProps & { id: string },
-		[
-			"translations",
-			"style",
-			"hotkey",
-			"duration",
-			"limit",
-			"swipeDirection",
-			"swipeThreshold",
-			"pauseOnInteraction",
-			"pauseOnPageIdle",
-			"topLayer",
-			"aria-label",
-			"regionId",
-		],
+		"translations",
+		"style",
+		"hotkey",
+		"duration",
+		"limit",
+		"swipeDirection",
+		"swipeThreshold",
+		"pauseOnInteraction",
+		"pauseOnPageIdle",
+		"topLayer",
+		"aria-label",
+		"regionId",
 	);
 
 	const toasts = createMemo(() =>
 		toastStore
 			.toasts()
 			.filter(
-				(toast) => toast.region === local.regionId && toast.dismiss === false,
+				(toast) => toast.region === mergedProps.regionId && toast.dismiss === false,
 			)
-			.slice(0, local.limit!),
+			.slice(0, mergedProps.limit!),
 	);
 
 	const [isPaused, setIsPaused] = createSignal(false);
@@ -168,37 +166,37 @@ export function ToastRegion<T extends ValidComponent = "div">(
 	const hasToasts = () => toasts().length > 0;
 
 	const hotkeyLabel = () => {
-		return local.hotkey!.join("+").replace(/Key/g, "").replace(/Digit/g, "");
+		return mergedProps.hotkey!.join("+").replace(/Key/g, "").replace(/Digit/g, "");
 	};
 
 	const ariaLabel = () => {
 		const label =
-			local["aria-label"] ||
-			local.translations!.notifications(TOAST_HOTKEY_PLACEHOLDER);
+			mergedProps["aria-label"] ||
+			mergedProps.translations!.notifications(TOAST_HOTKEY_PLACEHOLDER);
 
 		return label.replace(TOAST_HOTKEY_PLACEHOLDER, hotkeyLabel());
 	};
 
 	const topLayerAttr = () => ({
-		[DATA_TOP_LAYER_ATTR]: local.topLayer ? "" : undefined,
+		[DATA_TOP_LAYER_ATTR]: mergedProps.topLayer ? "" : undefined,
 	});
 
 	const context: ToastRegionContextValue = {
 		isPaused,
 		toasts,
-		hotkey: () => local.hotkey!,
-		duration: () => local.duration!,
-		swipeDirection: () => local.swipeDirection!,
-		swipeThreshold: () => local.swipeThreshold!,
-		pauseOnInteraction: () => local.pauseOnInteraction!,
-		pauseOnPageIdle: () => local.pauseOnPageIdle!,
+		hotkey: () => mergedProps.hotkey!,
+		duration: () => mergedProps.duration!,
+		swipeDirection: () => mergedProps.swipeDirection!,
+		swipeThreshold: () => mergedProps.swipeThreshold!,
+		pauseOnInteraction: () => mergedProps.pauseOnInteraction!,
+		pauseOnPageIdle: () => mergedProps.pauseOnPageIdle!,
 		pauseAllTimer: () => setIsPaused(true),
 		resumeAllTimer: () => setIsPaused(false),
 		generateId: createGenerateId(() => others.id!),
 	};
 
 	return (
-		<ToastRegionContext.Provider value={context}>
+		<ToastRegionContext value={context}>
 			<Polymorphic<ToastRegionRenderProps>
 				as="div"
 				role="region"
@@ -210,16 +208,16 @@ export function ToastRegion<T extends ValidComponent = "div">(
 				style={combineStyle(
 					{
 						"pointer-events": hasToasts()
-							? local.topLayer
+							? mergedProps.topLayer
 								? "auto"
 								: undefined
 							: "none",
 					},
-					local.style,
+					mergedProps.style,
 				)}
 				{...topLayerAttr()}
 				{...others}
 			/>
-		</ToastRegionContext.Provider>
+		</ToastRegionContext>
 	);
 }

@@ -13,7 +13,7 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, omit } from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -89,34 +89,22 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		props as ComboboxInputProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
-		mergedProps,
-		[
-			"ref",
-			"disabled",
-			"onClick",
-			"onInput",
-			"onKeyDown",
-			"onFocus",
-			"onBlur",
-			"onTouchEnd",
-		],
-		FORM_CONTROL_FIELD_PROP_NAMES,
-	);
+	const formControlFieldProps = omit(mergedProps, "ref", "disabled", "onClick", "onInput", "onKeyDown", "onFocus", "onBlur", "onTouchEnd");
+	const others = omit(mergedProps, "ref", "disabled", "onClick", "onInput", "onKeyDown", "onFocus", "onBlur", "onTouchEnd", "id", "aria-label", "aria-labelledby", "aria-describedby");
 
 	const collection = () => context.listState().collection();
 	const selectionManager = () => context.listState().selectionManager();
 
 	const isDisabled = () => {
 		return (
-			local.disabled || context.isDisabled() || formControlContext.isDisabled()
+			mergedProps.disabled || context.isDisabled() || formControlContext.isDisabled()
 		);
 	};
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
 	const onClick: JSX.EventHandlerUnion<HTMLInputElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
 		if (context.triggerMode() === "focus" && !context.isOpen()) {
 			context.open(false, "focus");
@@ -124,7 +112,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	};
 
 	const onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
-		callHandler(e, local.onInput);
+		callHandler(e, mergedProps.onInput);
 
 		if (formControlContext.isReadOnly() || isDisabled()) {
 			return;
@@ -155,7 +143,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	const onKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		if (formControlContext.isReadOnly() || isDisabled()) {
 			return;
@@ -235,7 +223,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 
 		if (context.isInputFocused()) {
 			return;
@@ -245,7 +233,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 
 		// Ignore blur if focused moved into the control or menu.
 		if (
@@ -264,7 +252,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	const onTouchEnd: JSX.EventHandlerUnion<HTMLInputElement, TouchEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onTouchEnd);
+		callHandler(e, mergedProps.onTouchEnd);
 
 		if (!ref || formControlContext.isReadOnly() || isDisabled()) {
 			return;
@@ -299,7 +287,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 			ref={mergeRefs((el) => {
 				context.setInputRef(el);
 				ref = el;
-			}, local.ref)}
+			}, mergedProps.ref)}
 			id={fieldProps.id()}
 			value={context.inputValue()}
 			required={formControlContext.isRequired()}

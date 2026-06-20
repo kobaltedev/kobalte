@@ -1,5 +1,5 @@
 import { mergeRefs } from "@kobalte/utils";
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, omit } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
 import {
@@ -36,15 +36,12 @@ export function PopperPositioner<T extends ValidComponent = "div">(
 ) {
 	const context = usePopperContext();
 
-	const [local, others] = splitProps(props as PopperPositionerProps, [
-		"ref",
-		"style",
-	]);
+	const others = omit(props as PopperPositionerProps, "ref", "style");
 
 	return (
 		<Polymorphic<PopperPositionerRenderProps>
 			as="div"
-			ref={mergeRefs(context.setPositionerRef, local.ref)}
+			ref={mergeRefs(context.setPositionerRef, props.ref)}
 			data-popper-positioner=""
 			style={combineStyle(
 				{
@@ -53,7 +50,7 @@ export function PopperPositioner<T extends ValidComponent = "div">(
 					left: 0,
 					"min-width": "max-content",
 				},
-				local.style,
+				props.style,
 			)}
 			{...others}
 		/>

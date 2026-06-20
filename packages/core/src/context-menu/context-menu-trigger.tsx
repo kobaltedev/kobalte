@@ -7,8 +7,8 @@
  */
 
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type JSX, type ValidComponent, onCleanup, splitProps } from "solid-js";
-import { isServer } from "solid-js/web";
+import { type JSX, type ValidComponent, omit, onCleanup } from "solid-js";
+import { isServer } from "@solidjs/web";
 
 import { combineStyle } from "@solid-primitives/props";
 import { type MenuDataSet, useMenuContext } from "../menu/menu-context";
@@ -61,16 +61,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		props as ContextMenuTriggerProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"style",
-		"disabled",
-		"onContextMenu",
-		"onPointerDown",
-		"onPointerMove",
-		"onPointerCancel",
-		"onPointerUp",
-	]);
+	const others = omit(mergedProps, "ref", "style", "disabled", "onContextMenu", "onPointerDown", "onPointerMove", "onPointerCancel", "onPointerUp");
 
 	let longPressTimoutId = 0;
 
@@ -88,8 +79,8 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 
 	const onContextMenu: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// If trigger is disabled, enable the native Context Menu.
-		if (local.disabled) {
-			callHandler(e, local.onContextMenu);
+		if (mergedProps.disabled) {
+			callHandler(e, mergedProps.onContextMenu);
 			return;
 		}
 
@@ -114,9 +105,9 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		e.pointerType === "touch" || e.pointerType === "pen";
 
 	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
-		if (!local.disabled && isTouchOrPen(e)) {
+		if (!mergedProps.disabled && isTouchOrPen(e)) {
 			// Clear the long press here in case there's multiple touch points.
 			clearLongPressTimeout();
 			context.setAnchorRect({ x: e.clientX, y: e.clientY });
@@ -127,9 +118,9 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
-		if (!local.disabled && isTouchOrPen(e)) {
+		if (!mergedProps.disabled && isTouchOrPen(e)) {
 			clearLongPressTimeout();
 		}
 	};
@@ -137,17 +128,17 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 	const onPointerCancel: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerCancel);
+		callHandler(e, mergedProps.onPointerCancel);
 
-		if (!local.disabled && isTouchOrPen(e)) {
+		if (!mergedProps.disabled && isTouchOrPen(e)) {
 			clearLongPressTimeout();
 		}
 	};
 
 	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerUp);
+		callHandler(e, mergedProps.onPointerUp);
 
-		if (!local.disabled && isTouchOrPen(e)) {
+		if (!mergedProps.disabled && isTouchOrPen(e)) {
 			clearLongPressTimeout();
 		}
 	};
@@ -155,15 +146,15 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<ContextMenuTriggerRenderProps>
 			as="div"
-			ref={mergeRefs(menuContext.setTriggerRef, local.ref)}
+			ref={mergeRefs(menuContext.setTriggerRef, mergedProps.ref)}
 			style={combineStyle(
 				{
 					// prevent iOS context menu from appearing
 					"-webkit-touch-callout": "none",
 				},
-				local.style,
+				mergedProps.style,
 			)}
-			data-disabled={local.disabled ? "" : undefined}
+			data-disabled={mergedProps.disabled ? "" : undefined}
 			onContextMenu={onContextMenu}
 			onPointerDown={onPointerDown}
 			onPointerMove={onPointerMove}

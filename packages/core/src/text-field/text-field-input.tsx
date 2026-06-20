@@ -7,7 +7,7 @@
  */
 
 import { composeEventHandlers, mergeDefaultProps } from "@kobalte/utils";
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, omit } from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -71,11 +71,8 @@ export function TextFieldInputBase<T extends ValidComponent = "input">(
 		props as TextFieldInputProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
-		mergedProps,
-		["onInput"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
-	);
+	const formControlFieldProps = omit(mergedProps, "onInput");
+	const others = omit(mergedProps, "onInput", ...FORM_CONTROL_FIELD_PROP_NAMES);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
@@ -97,7 +94,7 @@ export function TextFieldInputBase<T extends ValidComponent = "input">(
 			aria-required={formControlContext.isRequired() || undefined}
 			aria-disabled={formControlContext.isDisabled() || undefined}
 			aria-readonly={formControlContext.isReadOnly() || undefined}
-			onInput={composeEventHandlers([local.onInput, context.onInput])}
+			onInput={composeEventHandlers([mergedProps.onInput, context.onInput])}
 			{...formControlContext.dataset()}
 			{...others}
 		/>

@@ -7,7 +7,7 @@
  */
 
 import { access } from "@kobalte/utils";
-import { type Accessor, createComputed } from "solid-js";
+import { type Accessor, createEffect } from "solid-js";
 
 import {
 	type Collection,
@@ -65,13 +65,15 @@ export function createListState(props: CreateListStateProps): ListState {
 	const selectionManager = new SelectionManager(collection, selectionState);
 
 	// Reset focused key if that item is deleted from the collection.
-	createComputed(() => {
-		const focusedKey = selectionState.focusedKey();
-
-		if (focusedKey != null && !collection().getItem(focusedKey)) {
-			selectionState.setFocusedKey(undefined);
-		}
-	});
+	createEffect(
+		() => {
+			const focusedKey = selectionState.focusedKey();
+			return focusedKey != null && !collection().getItem(focusedKey);
+		},
+		(shouldReset) => {
+			if (shouldReset) selectionState.setFocusedKey(undefined);
+		},
+	);
 
 	return {
 		collection,

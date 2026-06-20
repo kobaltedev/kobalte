@@ -4,7 +4,7 @@ import {
 	type ValidComponent,
 	createEffect,
 	createSignal,
-	splitProps,
+	omit,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
@@ -38,7 +38,7 @@ export const SegmentedControlItem = <T extends ValidComponent = "div">(
 	const radioGroupContext = useRadioGroupContext();
 	const segmentedControlContext = useSegmentedControlContext();
 
-	const [localProps, otherProps] = splitProps(props, ["ref"]);
+	const otherProps = omit(props, "ref");
 
 	const [ref, setRef] = createSignal<HTMLElement>();
 
@@ -57,7 +57,7 @@ export const SegmentedControlItem = <T extends ValidComponent = "div">(
 				Omit<SegmentedControlItemRenderProps, keyof RadioGroupItemRenderProps>
 			>
 		>
-			ref={mergeRefs(setRef, localProps.ref)}
+			ref={mergeRefs(setRef, props.ref)}
 			{...otherProps}
 		/>
 	);

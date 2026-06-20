@@ -13,8 +13,8 @@ import {
 	type ValidComponent,
 	createEffect,
 	createMemo,
+	omit,
 	on,
-	splitProps,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -111,24 +111,7 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		props as SpinButtonRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"style",
-		"translations",
-		"value",
-		"textValue",
-		"minValue",
-		"maxValue",
-		"validationState",
-		"onIncrement",
-		"onIncrementPage",
-		"onDecrement",
-		"onDecrementPage",
-		"onDecrementToMin",
-		"onIncrementToMax",
-		"onKeyDown",
-		"onFocus",
-		"onBlur",
-	]);
+	const others = omit(mergedProps, "style", "translations", "value", "textValue", "minValue", "maxValue", "validationState", "onIncrement", "onIncrementPage", "onDecrement", "onDecrementPage", "onDecrementToMin", "onIncrementToMax", "onKeyDown", "onFocus", "onBlur");
 
 	let isFocused = false;
 
@@ -137,15 +120,15 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 	// and the number (e.g. currency symbol). Otherwise, it announces nothing because it assumes the character is a hyphen.
 	// In addition, replace the empty string with the word "Empty" so that iOS VoiceOver does not read "50%" for an empty field.
 	const textValue = createMemo(() => {
-		if (local.textValue === "") {
-			return local.translations?.empty;
+		if (mergedProps.textValue === "") {
+			return mergedProps.translations?.empty;
 		}
 
-		return (local.textValue || `${local.value}`).replace("-", "\u2212");
+		return (mergedProps.textValue || `${mergedProps.value}`).replace("-", "\u2212");
 	});
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || props.readOnly) {
 			return;
@@ -154,57 +137,57 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		switch (e.key) {
 			// biome-ignore lint/suspicious/noFallthroughSwitchClause: fallthrough
 			case "PageUp":
-				if (local.onIncrementPage) {
+				if (mergedProps.onIncrementPage) {
 					e.preventDefault();
-					local.onIncrementPage();
+					mergedProps.onIncrementPage();
 					break;
 				}
 			// fallthrough!
 			case "ArrowUp":
 			case "Up":
-				if (local.onIncrement) {
+				if (mergedProps.onIncrement) {
 					e.preventDefault();
-					local.onIncrement();
+					mergedProps.onIncrement();
 				}
 				break;
 			// biome-ignore lint/suspicious/noFallthroughSwitchClause: fallthrough
 			case "PageDown":
-				if (local.onDecrementPage) {
+				if (mergedProps.onDecrementPage) {
 					e.preventDefault();
-					local.onDecrementPage();
+					mergedProps.onDecrementPage();
 					break;
 				}
 			// fallthrough!
 			case "ArrowDown":
 			case "Down":
-				if (local.onDecrement) {
+				if (mergedProps.onDecrement) {
 					e.preventDefault();
-					local.onDecrement();
+					mergedProps.onDecrement();
 				}
 				break;
 			case "Home":
-				if (local.onDecrementToMin) {
+				if (mergedProps.onDecrementToMin) {
 					e.preventDefault();
-					local.onDecrementToMin();
+					mergedProps.onDecrementToMin();
 				}
 				break;
 			case "End":
-				if (local.onIncrementToMax) {
+				if (mergedProps.onIncrementToMax) {
 					e.preventDefault();
-					local.onIncrementToMax();
+					mergedProps.onIncrementToMax();
 				}
 				break;
 		}
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 
 		isFocused = true;
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 
 		isFocused = false;
 	};
@@ -226,20 +209,20 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 				{
 					"touch-action": "none",
 				},
-				local.style,
+				mergedProps.style,
 			)}
 			aria-valuenow={
-				local.value != null && !Number.isNaN(local.value)
-					? local.value
+				mergedProps.value != null && !Number.isNaN(mergedProps.value)
+					? mergedProps.value
 					: undefined
 			}
 			aria-valuetext={textValue()}
-			aria-valuemin={local.minValue}
-			aria-valuemax={local.maxValue}
+			aria-valuemin={mergedProps.minValue}
+			aria-valuemax={mergedProps.maxValue}
 			aria-required={props.required || undefined}
 			aria-disabled={props.disabled || undefined}
 			aria-readonly={props.readOnly || undefined}
-			aria-invalid={local.validationState === "invalid" || undefined}
+			aria-invalid={mergedProps.validationState === "invalid" || undefined}
 			onKeyDown={onKeyDown}
 			onFocus={onFocus}
 			onBlur={onBlur}

@@ -9,7 +9,7 @@ import {
 	type ValidComponent,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -119,20 +119,8 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 		props as RatingGroupRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
-		mergedProps,
-		[
-			"ref",
-			"value",
-			"defaultValue",
-			"onChange",
-			"allowHalf",
-			"orientation",
-			"aria-labelledby",
-			"aria-describedby",
-		],
-		FORM_CONTROL_PROP_NAMES,
-	);
+	const formControlProps = omit(mergedProps, "ref", "value", "defaultValue", "onChange", "allowHalf", "orientation", "aria-labelledby", "aria-describedby");
+	const others = omit(mergedProps, "ref", "value", "defaultValue", "onChange", "allowHalf", "orientation", "aria-labelledby", "aria-describedby", ...FORM_CONTROL_PROP_NAMES);
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 	const { DomCollectionProvider } = createDomCollection({
@@ -143,28 +131,28 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 	const [hoveredValue, setHoveredValue] = createSignal(-1);
 
 	const [value, setValue] = createControllableSignal<number>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue ?? 0,
-		onChange: (value) => local.onChange?.(value),
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue ?? 0,
+		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
 	const { formControlContext } = createFormControl(formControlProps);
 
 	createFormResetListener(
 		() => ref,
-		() => setValue(local.defaultValue!),
+		() => setValue(mergedProps.defaultValue!),
 	);
 
 	const ariaLabelledBy = () => {
 		return formControlContext.getAriaLabelledBy(
-			access(formControlProps.id),
+			access(mergedProps.id),
 			others["aria-label"],
-			local["aria-labelledby"],
+			mergedProps["aria-labelledby"],
 		);
 	};
 
 	const ariaDescribedBy = () => {
-		return formControlContext.getAriaDescribedBy(local["aria-describedby"]);
+		return formControlContext.getAriaDescribedBy(mergedProps["aria-describedby"]);
 	};
 
 	const context: RatingGroupContextValue = {
@@ -176,8 +164,8 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 
 			setValue(newValue);
 		},
-		allowHalf: () => local.allowHalf,
-		orientation: () => local.orientation!,
+		allowHalf: () => mergedProps.allowHalf,
+		orientation: () => mergedProps.orientation!,
 		hoveredValue,
 		setHoveredValue,
 		isHovering: () => hoveredValue() > -1,
@@ -188,27 +176,27 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 
 	return (
 		<DomCollectionProvider>
-			<FormControlContext.Provider value={formControlContext}>
-				<RatingGroupContext.Provider value={context}>
+			<FormControlContext value={formControlContext}>
+				<RatingGroupContext value={context}>
 					<Polymorphic<RatingGroupRootRenderProps>
 						as="div"
-						ref={mergeRefs((el) => (ref = el), local.ref)}
+						ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 						role="radiogroup"
-						id={access(formControlProps.id)!}
+						id={access(mergedProps.id)!}
 						aria-invalid={
 							formControlContext.validationState() === "invalid" || undefined
 						}
 						aria-required={formControlContext.isRequired() || undefined}
 						aria-disabled={formControlContext.isDisabled() || undefined}
 						aria-readonly={formControlContext.isReadOnly() || undefined}
-						aria-orientation={local.orientation}
+						aria-orientation={mergedProps.orientation}
 						aria-labelledby={ariaLabelledBy()}
 						aria-describedby={ariaDescribedBy()}
 						{...formControlContext.dataset()}
 						{...others}
 					/>
-				</RatingGroupContext.Provider>
-			</FormControlContext.Provider>
+				</RatingGroupContext>
+			</FormControlContext>
 		</DomCollectionProvider>
 	);
 }

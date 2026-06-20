@@ -10,9 +10,9 @@ import {
 	type ValidComponent,
 	createEffect,
 	createSignal,
+	omit,
 	on,
-	onMount,
-	splitProps,
+	onSettled,
 } from "solid-js";
 
 import type { Orientation } from "@kobalte/utils";
@@ -50,7 +50,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 ) {
 	const context = useTabsContext();
 
-	const [local, others] = splitProps(props as TabsIndicatorProps, ["style"]);
+	const others = omit(props as TabsIndicatorProps, "style");
 
 	const [style, setStyle] = createSignal<JSX.CSSProperties>({
 		width: undefined,
@@ -98,7 +98,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 
 	// For the first run, wait for all tabs to be mounted and registered in tabs DOM collection
 	// before computing the style.
-	onMount(() => {
+	onSettled(() => {
 		queueMicrotask(() => {
 			computeStyle();
 		});
@@ -142,7 +142,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		<Polymorphic<TabsIndicatorRenderProps>
 			as="div"
 			role="presentation"
-			style={combineStyle(style(), local.style)}
+			style={combineStyle(style(), props.style)}
 			data-orientation={context.orientation()}
 			data-resizing={resizing()}
 			{...others}

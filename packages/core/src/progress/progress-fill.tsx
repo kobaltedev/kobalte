@@ -1,4 +1,4 @@
-import { type Component, type ValidComponent, splitProps } from "solid-js";
+import { type Component, type ValidComponent, omit } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
 import {
@@ -33,7 +33,7 @@ export function ProgressFill<T extends ValidComponent = "div">(
 ) {
 	const context = useProgressContext();
 
-	const [local, others] = splitProps(props as ProgressFillProps, ["style"]);
+	const others = omit(props as ProgressFillProps, "style");
 
 	return (
 		<Meter.Fill<
@@ -43,7 +43,7 @@ export function ProgressFill<T extends ValidComponent = "div">(
 				{
 					"--kb-progress-fill-width": context.progressFillWidth(),
 				},
-				local.style,
+				props.style,
 			)}
 			{...context.dataset()}
 			{...others}

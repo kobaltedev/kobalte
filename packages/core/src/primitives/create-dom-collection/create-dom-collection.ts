@@ -63,7 +63,7 @@ export function createDomCollection<
 	};
 
 	const DomCollectionProvider: FlowComponent = (props) => {
-		return createComponent(DomCollectionContext.Provider, {
+		return createComponent(DomCollectionContext, {
 			value: { registerItem } as DomCollectionContextValue,
 			get children() {
 				return props.children;

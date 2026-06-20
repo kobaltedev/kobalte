@@ -18,7 +18,7 @@ import {
 	ComponentProps,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -87,16 +87,13 @@ export function SwitchInput<T extends ValidComponent = "input">(
 		props as SwitchInputProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
-		mergedProps,
-		["ref", "style", "onChange", "onFocus", "onBlur"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
-	);
+	const formControlFieldProps = omit(mergedProps, "ref", "style", "onChange", "onFocus", "onBlur");
+	const others = omit(mergedProps, "ref", "style", "onChange", "onFocus", "onBlur", ...FORM_CONTROL_FIELD_PROP_NAMES);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
 	const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (e) => {
-		callHandler(e, local.onChange);
+		callHandler(e, mergedProps.onChange);
 
 		e.stopPropagation();
 
@@ -115,19 +112,19 @@ export function SwitchInput<T extends ValidComponent = "input">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 		context.setIsFocused(true);
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 		context.setIsFocused(false);
 	};
 
 	return (
 		<Polymorphic<SwitchInputRenderProps>
 			as="input"
-			ref={mergeRefs(context.setInputRef, local.ref)}
+			ref={mergeRefs(context.setInputRef, mergedProps.ref)}
 			type="checkbox"
 			role="switch"
 			id={fieldProps.id()}
@@ -137,7 +134,7 @@ export function SwitchInput<T extends ValidComponent = "input">(
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
+			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
 			aria-checked={context.checked()}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}

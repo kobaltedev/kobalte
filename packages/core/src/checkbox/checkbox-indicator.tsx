@@ -4,7 +4,7 @@ import {
 	type ValidComponent,
 	createEffect,
 	createSignal,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import createPresence from "solid-presence";
@@ -63,11 +63,11 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 		props as CheckboxIndicatorProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "forceMount"]);
+	const others = omit(mergedProps, "ref", "forceMount");
 
 	const { present } = createPresence({
 		show: () =>
-			local.forceMount || context.indeterminate() || context.checked(),
+			mergedProps.forceMount || context.indeterminate() || context.checked(),
 		element: () => ref() ?? null,
 	});
 
@@ -75,7 +75,7 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<CheckboxIndicatorRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, local.ref)}
+				ref={mergeRefs(setRef, mergedProps.ref)}
 				{...formControlContext.dataset()}
 				{...context.dataset()}
 				{...others}

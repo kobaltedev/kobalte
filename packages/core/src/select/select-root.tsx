@@ -2,7 +2,7 @@ import {
 	type Component,
 	type ValidComponent,
 	createMemo,
-	splitProps,
+	omit,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
@@ -78,33 +78,35 @@ export function SelectRoot<
 	OptGroup = never,
 	T extends ValidComponent = "div",
 >(props: PolymorphicProps<T, SelectRootProps<Option, OptGroup, T>>) {
-	const [local, others] = splitProps(
+	const others = omit(
 		props as SelectRootProps<Option, OptGroup>,
-		["value", "defaultValue", "onChange", "multiple"],
+		"value", "defaultValue", "onChange", "multiple",
 	);
 
+	const _props = props as SelectRootProps<Option, OptGroup>;
+
 	const value = createMemo(() => {
-		if (local.value != null) {
-			return local.multiple ? local.value : [local.value];
+		if (_props.value != null) {
+			return _props.multiple ? _props.value : [_props.value];
 		}
 
-		return local.value;
+		return _props.value;
 	});
 
 	const defaultValue = createMemo(() => {
-		if (local.defaultValue != null) {
-			return local.multiple ? local.defaultValue : [local.defaultValue];
+		if (_props.defaultValue != null) {
+			return _props.multiple ? _props.defaultValue : [_props.defaultValue];
 		}
 
-		return local.defaultValue;
+		return _props.defaultValue;
 	});
 
 	const onChange = (value: Option[]) => {
-		if (local.multiple) {
-			local.onChange?.((value ?? []) as any);
+		if (_props.multiple) {
+			_props.onChange?.((value ?? []) as any);
 		} else {
 			// use `null` as "no value" because `undefined` mean the component is "uncontrolled".
-			local.onChange?.((value[0] ?? null) as any); // TODO: maybe return undefined? breaking change!
+			_props.onChange?.((value[0] ?? null) as any); // TODO: maybe return undefined? breaking change!
 		}
 	};
 
@@ -117,7 +119,7 @@ export function SelectRoot<
 			value={value() as any}
 			defaultValue={defaultValue() as any}
 			onChange={onChange}
-			selectionMode={local.multiple ? "multiple" : "single"}
+			selectionMode={_props.multiple ? "multiple" : "single"}
 			{...others}
 		/>
 	);

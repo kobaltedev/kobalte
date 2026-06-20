@@ -27,8 +27,8 @@ import {
 	createSignal,
 	createUniqueId,
 	on,
-	onMount,
-	splitProps,
+	omit,
+	onSettled,
 } from "solid-js";
 import {
 	type ElementOf,
@@ -145,28 +145,26 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		props as ToastRootProps,
 	);
 
-	const [local, others] = splitProps(
+	const others = omit(
 		mergedProps as typeof mergedProps & { toastId: string; id: string },
-		[
-			"ref",
-			"translations",
-			"toastId",
-			"style",
-			"priority",
-			"duration",
-			"persistent",
-			"onPause",
-			"onResume",
-			"onSwipeStart",
-			"onSwipeMove",
-			"onSwipeCancel",
-			"onSwipeEnd",
-			"onEscapeKeyDown",
-			"onKeyDown",
-			"onPointerDown",
-			"onPointerMove",
-			"onPointerUp",
-		],
+		"ref",
+		"translations",
+		"toastId",
+		"style",
+		"priority",
+		"duration",
+		"persistent",
+		"onPause",
+		"onResume",
+		"onSwipeStart",
+		"onSwipeMove",
+		"onSwipeCancel",
+		"onSwipeEnd",
+		"onEscapeKeyDown",
+		"onKeyDown",
+		"onPointerDown",
+		"onPointerMove",
+		"onPointerUp",
 	);
 
 	const [isOpen, setIsOpen] = createSignal(true);
@@ -180,7 +178,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		element: () => ref() ?? null,
 	});
 
-	const duration = createMemo(() => local.duration || rootContext.duration());
+	const duration = createMemo(() => mergedProps.duration || rootContext.duration());
 
 	let closeTimerId: number;
 	let closeTimerStartTime = 0;
@@ -197,11 +195,11 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	};
 
 	const deleteToast = () => {
-		toastStore.remove(local.toastId);
+		toastStore.remove(mergedProps.toastId);
 	};
 
 	const startTimer = (duration: number) => {
-		if (!duration || local.persistent) {
+		if (!duration || mergedProps.persistent) {
 			return;
 		}
 
@@ -214,7 +212,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	const resumeTimer = () => {
 		startTimer(closeTimerRemainingTime);
 
-		local.onResume?.();
+		mergedProps.onResume?.();
 	};
 
 	const pauseTimer = () => {
@@ -223,17 +221,17 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 		window.clearTimeout(closeTimerId);
 
-		local.onPause?.();
+		mergedProps.onPause?.();
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		if (e.key !== "Escape") {
 			return;
 		}
 
-		local.onEscapeKeyDown?.(e);
+		mergedProps.onEscapeKeyDown?.(e);
 
 		if (!e.defaultPrevented) {
 			close();
@@ -243,7 +241,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		if (e.button !== 0) {
 			return;
@@ -255,7 +253,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		if (!pointerStart) {
 			return;
@@ -287,7 +285,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 			handleAndDispatchCustomEvent(
 				TOAST_SWIPE_MOVE_EVENT,
-				local.onSwipeMove,
+				mergedProps.onSwipeMove,
 				eventDetail,
 			);
 
@@ -302,7 +300,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 			handleAndDispatchCustomEvent(
 				TOAST_SWIPE_START_EVENT,
-				local.onSwipeStart,
+				mergedProps.onSwipeStart,
 				eventDetail,
 			);
 			e.currentTarget.setAttribute("data-swipe", "start");
@@ -316,7 +314,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	};
 
 	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerUp);
+		callHandler(e, mergedProps.onPointerUp);
 
 		const delta = swipeDelta;
 		const target = e.target as HTMLElement;
@@ -341,7 +339,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 			) {
 				handleAndDispatchCustomEvent(
 					TOAST_SWIPE_END_EVENT,
-					local.onSwipeEnd,
+					mergedProps.onSwipeEnd,
 					eventDetail,
 				);
 
@@ -356,7 +354,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 			} else {
 				handleAndDispatchCustomEvent(
 					TOAST_SWIPE_CANCEL_EVENT,
-					local.onSwipeCancel,
+					mergedProps.onSwipeCancel,
 					eventDetail,
 				);
 
@@ -375,12 +373,12 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		}
 	};
 
-	onMount(() => {
+	onSettled(() => {
 		// Disable animation for updated toast.
 		if (
 			rootContext
 				.toasts()
-				.find((toast) => toast.id === local.toastId && toast.update)
+				.find((toast) => toast.id === mergedProps.toastId && toast.update)
 		) {
 			setIsAnimationEnabled(false);
 		}
@@ -415,7 +413,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 	createEffect(
 		on(
-			() => toastStore.get(local.toastId)?.dismiss,
+			() => toastStore.get(mergedProps.toastId)?.dismiss,
 			(dismiss) => dismiss && close(),
 		),
 	);
@@ -428,10 +426,10 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	);
 
 	const context: ToastContextValue = {
-		translations: () => local.translations!,
+		translations: () => mergedProps.translations!,
 		close,
 		duration,
-		isPersistent: () => local.persistent ?? false,
+		isPersistent: () => mergedProps.persistent ?? false,
 		closeTimerStartTime: () => closeTimerStartTime,
 		generateId: createGenerateId(() => others.id!),
 		registerTitleId: createRegisterId(setTitleId),
@@ -440,10 +438,10 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 	return (
 		<Show when={present()}>
-			<ToastContext.Provider value={context}>
+			<ToastContext value={context}>
 				<Polymorphic<ToastRootRenderProps>
 					as="li"
-					ref={mergeRefs(setRef, local.ref)}
+					ref={mergeRefs(setRef, mergedProps.ref)}
 					role="status"
 					tabIndex={0}
 					style={combineStyle(
@@ -452,9 +450,9 @@ export function ToastRoot<T extends ValidComponent = "li">(
 							"user-select": "none",
 							"touch-action": "none",
 						},
-						local.style,
+						mergedProps.style,
 					)}
-					aria-live={local.priority === "high" ? "assertive" : "polite"}
+					aria-live={mergedProps.priority === "high" ? "assertive" : "polite"}
 					aria-atomic="true"
 					aria-labelledby={titleId()}
 					aria-describedby={descriptionId()}
@@ -467,7 +465,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 					onPointerUp={onPointerUp}
 					{...others}
 				/>
-			</ToastContext.Provider>
+			</ToastContext>
 		</Show>
 	);
 }

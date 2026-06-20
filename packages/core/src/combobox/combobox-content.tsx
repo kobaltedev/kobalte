@@ -4,7 +4,7 @@ import {
 	type JSX,
 	Show,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -75,12 +75,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 
 	const context = useComboboxContext();
 
-	const [local, others] = splitProps(props as ComboboxContentProps, [
-		"ref",
-		"style",
-		"onCloseAutoFocus",
-		"onFocusOutside",
-	]);
+	const others = omit(props as ComboboxContentProps, "ref", "style", "onCloseAutoFocus", "onFocusOutside");
 
 	const dismiss = () => {
 		context.resetInputValue(
@@ -93,7 +88,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		props.onFocusOutside?.(e);
 
 		// When focus is trapped (in modal mode), a `focusout` event may still happen.
 		// We make sure we don't trigger our `onDismiss` in such case.
@@ -134,7 +129,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 				e.preventDefault();
 			},
 			onUnmountAutoFocus: (e) => {
-				local.onCloseAutoFocus?.(e);
+				props.onCloseAutoFocus?.(e);
 
 				if (!e.defaultPrevented) {
 					focusWithoutScrolling(context.inputRef());
@@ -156,7 +151,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
 						ref = el;
-					}, local.ref)}
+					}, props.ref)}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.controlRef]}
 					style={combineStyle(
@@ -165,7 +160,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 								"var(--kb-popper-content-transform-origin)",
 							position: "relative",
 						},
-						local.style,
+						props.style,
 					)}
 					onFocusOutside={onFocusOutside}
 					onDismiss={dismiss}

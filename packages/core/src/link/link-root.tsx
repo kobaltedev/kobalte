@@ -7,7 +7,7 @@
  */
 
 import { mergeRefs } from "@kobalte/utils";
-import { type ValidComponent, splitProps } from "solid-js";
+import { type ValidComponent, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -45,11 +45,7 @@ export function LinkRoot<T extends ValidComponent = "a">(
 ) {
 	let ref: HTMLElement | undefined;
 
-	const [local, others] = splitProps(props as LinkRootProps, [
-		"ref",
-		"href",
-		"disabled",
-	]);
+	const others = omit(props as LinkRootProps, "ref", "href", "disabled");
 
 	const tagName = createTagName(
 		() => ref,
@@ -59,12 +55,12 @@ export function LinkRoot<T extends ValidComponent = "a">(
 	return (
 		<Polymorphic<LinkRootRenderProps>
 			as="a"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
-			role={tagName() !== "a" || local.disabled ? "link" : undefined}
-			tabIndex={tagName() !== "a" && !local.disabled ? 0 : undefined}
-			href={!local.disabled ? local.href : undefined}
-			aria-disabled={local.disabled ? true : undefined}
-			data-disabled={local.disabled ? "" : undefined}
+			ref={mergeRefs((el) => (ref = el), props.ref)}
+			role={tagName() !== "a" || props.disabled ? "link" : undefined}
+			tabIndex={tagName() !== "a" && !props.disabled ? 0 : undefined}
+			href={!props.disabled ? props.href : undefined}
+			aria-disabled={props.disabled ? true : undefined}
+			data-disabled={props.disabled ? "" : undefined}
 			{...others}
 		/>
 	);

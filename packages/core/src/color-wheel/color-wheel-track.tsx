@@ -5,7 +5,7 @@ import {
 	type ValidComponent,
 	createMemo,
 	createSignal,
-	splitProps,
+	omit,
 } from "solid-js";
 import {
 	type FormControlDataSet,
@@ -43,12 +43,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 	const context = useColorWheelContext();
 	const formControlContext = useFormControlContext();
 
-	const [local, others] = splitProps(props, [
-		"style",
-		"onPointerDown",
-		"onPointerMove",
-		"onPointerUp",
-	]);
+	const others = omit(props, "style", "onPointerDown", "onPointerMove", "onPointerUp");
 
 	const [sRect, setRect] = createSignal<DOMRect>();
 
@@ -66,7 +61,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, props.onPointerDown);
 
 		const target = e.target as HTMLElement;
 		target.setPointerCapture(e.pointerId);
@@ -80,7 +75,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, props.onPointerMove);
 
 		const target = e.target as HTMLElement;
 
@@ -94,7 +89,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 	};
 
 	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerUp);
+		callHandler(e, props.onPointerUp);
 
 		const target = e.target as HTMLElement;
 
@@ -124,7 +119,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 					"clip-path": "circle(50%)",
 					mask: `radial-gradient(#0000 ${70 - (context.thickness() / 100) * 70}%, #000 ${70.5 - (context.thickness() / 100) * 70}%)`,
 				},
-				local.style,
+				props.style,
 			)}
 			onPointerDown={onPointerDown}
 			onPointerMove={onPointerMove}

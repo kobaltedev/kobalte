@@ -2,8 +2,8 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import {
@@ -45,14 +45,14 @@ export function PopoverDescription<T extends ValidComponent = "p">(
 		props as PopoverDescriptionProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["id"]);
+	const others = omit(mergedProps, "id");
 
-	createEffect(() => onCleanup(context.registerDescriptionId(local.id)));
+	createEffect(() => onCleanup(context.registerDescriptionId(mergedProps.id)));
 
 	return (
 		<Polymorphic<PopoverDescriptionRenderProps>
 			as="p"
-			id={local.id}
+			id={mergedProps.id}
 			{...context.dataset()}
 			{...others}
 		/>

@@ -3,8 +3,8 @@ import {
 	type Component,
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -57,7 +57,7 @@ export function ComboboxListbox<
 		props as ComboboxListboxProps<Option, OptGroup>,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref"]);
+	const others = omit(mergedProps, "ref");
 
 	const ariaLabelledBy = () => {
 		return formControlContext.getAriaLabelledBy(
@@ -77,7 +77,7 @@ export function ComboboxListbox<
 				Omit<ComboboxListboxRenderProps, keyof Listbox.ListboxRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setListboxRef, local.ref)}
+			ref={mergeRefs(context.setListboxRef, mergedProps.ref)}
 			state={context.listState()}
 			autoFocus={context.autoFocus()}
 			shouldUseVirtualFocus

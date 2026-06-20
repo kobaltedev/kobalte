@@ -1,4 +1,4 @@
-import { createStore } from "solid-js/store";
+import { createStore } from "solid-js";
 
 import type { ToastConfig } from "./types";
 

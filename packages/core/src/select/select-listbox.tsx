@@ -5,7 +5,7 @@ import {
 	type ValidComponent,
 	createEffect,
 	onCleanup,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Listbox from "../listbox";
@@ -55,12 +55,12 @@ export function SelectListbox<
 		props as SelectListboxProps<Option, OptGroup>,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "id", "onKeyDown"]);
+	const others = omit(mergedProps, "ref", "id", "onKeyDown");
 
-	createEffect(() => onCleanup(context.registerListboxId(local.id)));
+	createEffect(() => onCleanup(context.registerListboxId(mergedProps.id)));
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		// Prevent from clearing the selection by `createSelectableCollection` on escape.
 		if (e.key === "Escape") {
@@ -74,8 +74,8 @@ export function SelectListbox<
 			OptGroup,
 			Component<Omit<SelectListboxRenderProps, keyof ListboxRootRenderProps>>
 		>
-			ref={mergeRefs(context.setListboxRef, local.ref)}
-			id={local.id}
+			ref={mergeRefs(context.setListboxRef, mergedProps.ref)}
+			id={mergedProps.id}
 			state={context.listState()}
 			virtualized={context.isVirtualized()}
 			autoFocus={context.autoFocus()}

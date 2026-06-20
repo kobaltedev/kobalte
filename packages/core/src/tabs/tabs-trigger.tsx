@@ -18,8 +18,8 @@ import {
 	type JSX,
 	type ValidComponent,
 	createEffect,
+	omit,
 	on,
-	splitProps,
 } from "solid-js";
 
 import {
@@ -87,33 +87,22 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 		props as TabsTriggerProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"id",
-		"value",
-		"disabled",
-		"onPointerDown",
-		"onPointerUp",
-		"onClick",
-		"onKeyDown",
-		"onMouseDown",
-		"onFocus",
-	]);
+	const others = omit(mergedProps, "ref", "id", "value", "disabled", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
 
-	const id = () => local.id ?? context.generateTriggerId(local.value);
+	const id = () => mergedProps.id ?? context.generateTriggerId(mergedProps.value);
 
 	const isHighlighted = () =>
-		context.listState().selectionManager().focusedKey() === local.value;
+		context.listState().selectionManager().focusedKey() === mergedProps.value;
 
-	const isDisabled = () => local.disabled || context.isDisabled();
+	const isDisabled = () => mergedProps.disabled || context.isDisabled();
 
-	const contentId = () => context.contentIdsMap().get(local.value);
+	const contentId = () => context.contentIdsMap().get(mergedProps.value);
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
 			ref: () => ref,
 			type: "item",
-			key: local.value,
+			key: mergedProps.value,
 			textValue: "", // not applicable here
 			disabled: isDisabled(),
 		}),
@@ -121,7 +110,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 
 	const selectableItem = createSelectableItem(
 		{
-			key: () => local.value,
+			key: () => mergedProps.value,
 			selectionManager: () => context.listState().selectionManager(),
 			disabled: isDisabled,
 		},
@@ -136,7 +125,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 	};
 
 	createEffect(
-		on([() => local.value, id], ([value, id]) => {
+		on([() => mergedProps.value, id], ([value, id]) => {
 			context.triggerIdsMap().set(value, id);
 		}),
 	);
@@ -144,7 +133,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 	return (
 		<Polymorphic<TabsTriggerRenderProps>
 			as="button"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 			id={id()}
 			role="tab"
 			tabIndex={!isDisabled() ? selectableItem.tabIndex() : undefined}
@@ -158,27 +147,27 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 			data-highlighted={isHighlighted() ? "" : undefined}
 			data-disabled={isDisabled() ? "" : undefined}
 			onPointerDown={composeEventHandlers([
-				local.onPointerDown,
+				mergedProps.onPointerDown,
 				selectableItem.onPointerDown,
 			])}
 			onPointerUp={composeEventHandlers([
-				local.onPointerUp,
+				mergedProps.onPointerUp,
 				selectableItem.onPointerUp,
 			])}
 			onClick={composeEventHandlers([
-				local.onClick,
+				mergedProps.onClick,
 				selectableItem.onClick,
 				onClick,
 			])}
 			onKeyDown={composeEventHandlers([
-				local.onKeyDown,
+				mergedProps.onKeyDown,
 				selectableItem.onKeyDown,
 			])}
 			onMouseDown={composeEventHandlers([
-				local.onMouseDown,
+				mergedProps.onMouseDown,
 				selectableItem.onMouseDown,
 			])}
-			onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+			onFocus={composeEventHandlers([mergedProps.onFocus, selectableItem.onFocus])}
 			{...others}
 		/>
 	);

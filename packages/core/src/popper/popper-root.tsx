@@ -373,8 +373,8 @@ export function PopperRoot(props: PopperRootProps) {
 	};
 
 	return (
-		<PopperContext.Provider value={context}>
+		<PopperContext value={context}>
 			{mergedProps.children}
-		</PopperContext.Provider>
+		</PopperContext>
 	);
 }

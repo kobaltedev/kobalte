@@ -2,8 +2,8 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import {
@@ -40,11 +40,11 @@ export function DialogTitle<T extends ValidComponent = "h2">(
 		props as DialogTitleProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["id"]);
+	const others = omit(mergedProps, "id");
 
-	createEffect(() => onCleanup(context.registerTitleId(local.id)));
+	createEffect(() => onCleanup(context.registerTitleId(mergedProps.id)));
 
 	return (
-		<Polymorphic<DialogTitleRenderProps> as="h2" id={local.id} {...others} />
+		<Polymorphic<DialogTitleRenderProps> as="h2" id={mergedProps.id} {...others} />
 	);
 }

@@ -3,7 +3,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -37,17 +37,14 @@ export function PaginationItem<T extends ValidComponent = "button">(
 ) {
 	const context = usePaginationContext();
 
-	const [local, others] = splitProps(props as PaginationItemProps, [
-		"page",
-		"onClick",
-	]);
+	const others = omit(props as PaginationItemProps, "page", "onClick");
 
 	const isCurrent = () => {
-		return context.page() === local.page;
+		return context.page() === props.page;
 	};
 
 	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = () => {
-		context.setPage(local.page);
+		context.setPage(props.page);
 	};
 
 	return (
@@ -59,7 +56,7 @@ export function PaginationItem<T extends ValidComponent = "button">(
 			>
 				aria-current={isCurrent() ? "page" : undefined}
 				data-current={isCurrent() ? "" : undefined}
-				onClick={composeEventHandlers([local.onClick, onClick])}
+				onClick={composeEventHandlers([props.onClick, onClick])}
 				{...others}
 			/>
 		</li>

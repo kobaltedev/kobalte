@@ -6,8 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/i18n/src/useDefaultLocale.ts
  */
 
-import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
-import { isServer } from "solid-js/web";
+import { createMemo, createSignal, onSettled } from "solid-js";
+import { isServer } from "@solidjs/web";
 
 import { type Direction, getReadingDirection } from "./utils";
 
@@ -70,20 +70,20 @@ export function createDefaultLocale() {
 		isServer ? defaultSSRLocale : defaultClientLocale(),
 	);
 
-	onMount(() => {
+	onSettled(() => {
 		if (listeners.size === 0) {
 			window.addEventListener("languagechange", updateLocale);
 		}
 
 		listeners.add(setDefaultClientLocale);
 
-		onCleanup(() => {
+		return () => {
 			listeners.delete(setDefaultClientLocale);
 
 			if (listeners.size === 0) {
 				window.removeEventListener("languagechange", updateLocale);
 			}
-		});
+		};
 	});
 
 	return {

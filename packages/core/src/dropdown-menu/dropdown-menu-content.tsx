@@ -1,5 +1,5 @@
 import { OverrideComponentProps, focusWithoutScrolling } from "@kobalte/utils";
-import { type Component, type ValidComponent, splitProps } from "solid-js";
+import { type Component, type ValidComponent, omit } from "solid-js";
 
 import {
 	MenuContent,
@@ -36,15 +36,12 @@ export function DropdownMenuContent<T extends ValidComponent = "div">(
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 
-	const [local, others] = splitProps(props, [
-		"onCloseAutoFocus",
-		"onInteractOutside",
-	]);
+	const others = omit(props, "onCloseAutoFocus", "onInteractOutside");
 
 	let hasInteractedOutside = false;
 
 	const onCloseAutoFocus = (e: Event) => {
-		local.onCloseAutoFocus?.(e);
+		props.onCloseAutoFocus?.(e);
 
 		if (!hasInteractedOutside) {
 			focusWithoutScrolling(context.triggerRef());
@@ -57,7 +54,7 @@ export function DropdownMenuContent<T extends ValidComponent = "div">(
 	};
 
 	const onInteractOutside = (e: InteractOutsideEvent) => {
-		local.onInteractOutside?.(e);
+		props.onInteractOutside?.(e);
 
 		if (!rootContext.isModal() || e.detail.isContextMenu) {
 			hasInteractedOutside = true;

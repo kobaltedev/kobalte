@@ -44,9 +44,9 @@ export function I18nProvider(props: I18nProviderProps) {
 	};
 
 	return (
-		<I18nContext.Provider value={context}>
+		<I18nContext value={context}>
 			{props.children}
-		</I18nContext.Provider>
+		</I18nContext>
 	);
 }
 

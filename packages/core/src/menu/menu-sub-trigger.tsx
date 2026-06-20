@@ -25,11 +25,11 @@ import {
 	type ValidComponent,
 	createEffect,
 	createUniqueId,
+	omit,
 	on,
 	onCleanup,
-	splitProps,
 } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer } from "@solidjs/web";
 
 import { type Direction, useLocale } from "../i18n";
 import {
@@ -121,20 +121,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		props as MenuSubTriggerProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"id",
-		"textValue",
-		"disabled",
-		"onPointerMove",
-		"onPointerLeave",
-		"onPointerDown",
-		"onPointerUp",
-		"onClick",
-		"onKeyDown",
-		"onMouseDown",
-		"onFocus",
-	]);
+	const others = omit(mergedProps, "ref", "id", "textValue", "disabled", "onPointerMove", "onPointerLeave", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
 
 	let openTimeoutId: number | null = null;
 
@@ -152,7 +139,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 
 	const { direction } = useLocale();
 
-	const key = () => local.id!;
+	const key = () => mergedProps.id!;
 
 	const parentSelectionManager = () => {
 		const parentMenuContext = context.parentMenuContext();
@@ -176,15 +163,15 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			selectionManager: parentSelectionManager,
 			shouldSelectOnPressUp: true,
 			allowsDifferentPressOrigin: true,
-			disabled: () => local.disabled,
+			disabled: () => mergedProps.disabled,
 		},
 		() => ref,
 	);
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
-		if (!context.isOpen() && !local.disabled) {
+		if (!context.isOpen() && !mergedProps.disabled) {
 			context.open(true);
 		}
 	};
@@ -192,7 +179,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
 			return;
@@ -206,7 +193,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			return;
 		}
 
-		if (local.disabled) {
+		if (mergedProps.disabled) {
 			parentMenuContext?.onItemLeave(e);
 			return;
 		}
@@ -239,7 +226,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerLeave);
+		callHandler(e, mergedProps.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {
 			return;
@@ -280,7 +267,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		// Ignore repeating events, which may have started on the menu trigger before moving
 		// focus to the menu item. We want to wait for a second complete key press sequence.
@@ -288,7 +275,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			return;
 		}
 
-		if (local.disabled) {
+		if (mergedProps.disabled) {
 			return;
 		}
 
@@ -331,8 +318,8 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			ref: () => ref,
 			type: "item",
 			key: key(),
-			textValue: local.textValue ?? ref?.textContent ?? "",
-			disabled: local.disabled ?? false,
+			textValue: mergedProps.textValue ?? ref?.textContent ?? "",
+			disabled: mergedProps.disabled ?? false,
 		});
 
 		onCleanup(unregister);
@@ -350,7 +337,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		),
 	);
 
-	createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
+	createEffect(() => onCleanup(context.registerTriggerId(mergedProps.id!)));
 
 	onCleanup(() => {
 		clearOpenTimeout();
@@ -362,32 +349,32 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			ref={mergeRefs((el) => {
 				context.setTriggerRef(el);
 				ref = el;
-			}, local.ref)}
-			id={local.id}
+			}, mergedProps.ref)}
+			id={mergedProps.id}
 			role="menuitem"
 			tabIndex={selectableItem.tabIndex()}
 			aria-haspopup="true"
 			aria-expanded={context.isOpen()}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
-			aria-disabled={local.disabled}
+			aria-disabled={mergedProps.disabled}
 			data-key={selectableItem.dataKey()}
 			data-highlighted={isHighlighted() ? "" : undefined}
-			data-disabled={local.disabled ? "" : undefined}
+			data-disabled={mergedProps.disabled ? "" : undefined}
 			onPointerDown={composeEventHandlers([
-				local.onPointerDown,
+				mergedProps.onPointerDown,
 				selectableItem.onPointerDown,
 			])}
 			onPointerUp={composeEventHandlers([
-				local.onPointerUp,
+				mergedProps.onPointerUp,
 				selectableItem.onPointerUp,
 			])}
 			onClick={composeEventHandlers([onClick, selectableItem.onClick])}
 			onKeyDown={composeEventHandlers([onKeyDown, selectableItem.onKeyDown])}
 			onMouseDown={composeEventHandlers([
-				local.onMouseDown,
+				mergedProps.onMouseDown,
 				selectableItem.onMouseDown,
 			])}
-			onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+			onFocus={composeEventHandlers([mergedProps.onFocus, selectableItem.onFocus])}
 			onPointerMove={onPointerMove}
 			onPointerLeave={onPointerLeave}
 			{...context.dataset()}

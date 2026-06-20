@@ -6,8 +6,8 @@ import {
 import {
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import {
@@ -58,7 +58,7 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 		props as FormControlLabelProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref"]);
+	const others = omit(mergedProps, "ref");
 
 	const tagName = createTagName(
 		() => ref,
@@ -70,7 +70,7 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 	return (
 		<Polymorphic<FormControlLabelRenderProps>
 			as="label"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 			for={tagName() === "label" ? context.fieldId() : undefined}
 			{...context.dataset()}
 			{...others}

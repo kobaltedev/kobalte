@@ -28,10 +28,10 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer } from "@solidjs/web";
 
 import createPresence from "solid-presence";
 import { Popper, type PopperRootOptions } from "../popper";
@@ -125,20 +125,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"id",
-		"open",
-		"defaultOpen",
-		"onOpenChange",
-		"disabled",
-		"triggerOnFocusOnly",
-		"openDelay",
-		"closeDelay",
-		"skipDelayDuration",
-		"ignoreSafeArea",
-		"forceMount",
-		"onCurrentPlacementChange",
-	]);
+	const others = omit(mergedProps, "id", "open", "defaultOpen", "onOpenChange", "disabled", "triggerOnFocusOnly", "openDelay", "closeDelay", "skipDelayDuration", "ignoreSafeArea", "forceMount", "onCurrentPlacementChange");
 
 	let closeTimeoutId: number | undefined;
 
@@ -151,13 +138,13 @@ export function TooltipRoot(props: TooltipRootProps) {
 	);
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
 	const { present: contentPresent } = createPresence({
-		show: () => local.forceMount || disclosureState.isOpen(),
+		show: () => mergedProps.forceMount || disclosureState.isOpen(),
 		element: () => contentRef() ?? null,
 	});
 
@@ -179,7 +166,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 			return;
 		}
 
-		if (immediate || (local.closeDelay && local.closeDelay <= 0)) {
+		if (immediate || (mergedProps.closeDelay && mergedProps.closeDelay <= 0)) {
 			window.clearTimeout(closeTimeoutId);
 			closeTimeoutId = undefined;
 			disclosureState.close();
@@ -187,17 +174,17 @@ export function TooltipRoot(props: TooltipRootProps) {
 			closeTimeoutId = window.setTimeout(() => {
 				closeTimeoutId = undefined;
 				disclosureState.close();
-			}, local.closeDelay);
+			}, mergedProps.closeDelay);
 		}
 
 		window.clearTimeout(globalWarmUpTimeout);
 		globalWarmUpTimeout = undefined;
 
-		if (local.skipDelayDuration && local.skipDelayDuration >= 0) {
+		if (mergedProps.skipDelayDuration && mergedProps.skipDelayDuration >= 0) {
 			globalSkipDelayTimeout = window.setTimeout(() => {
 				window.clearTimeout(globalSkipDelayTimeout);
 				globalSkipDelayTimeout = undefined;
-			}, local.skipDelayDuration);
+			}, mergedProps.skipDelayDuration);
 		}
 
 		if (globalWarmedUp) {
@@ -207,7 +194,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 				delete tooltips[tooltipId];
 				globalCoolDownTimeout = undefined;
 				globalWarmedUp = false;
-			}, local.closeDelay);
+			}, mergedProps.closeDelay);
 		}
 	};
 
@@ -246,7 +233,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 				globalWarmUpTimeout = undefined;
 				globalWarmedUp = true;
 				showTooltip();
-			}, local.openDelay);
+			}, mergedProps.openDelay);
 		} else if (!disclosureState.isOpen()) {
 			showTooltip();
 		}
@@ -259,8 +246,8 @@ export function TooltipRoot(props: TooltipRootProps) {
 
 		if (
 			!immediate &&
-			local.openDelay &&
-			local.openDelay > 0 &&
+			mergedProps.openDelay &&
+			mergedProps.openDelay > 0 &&
 			!closeTimeoutId &&
 			!globalSkipDelayTimeout
 		) {
@@ -313,7 +300,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 			return;
 		}
 
-		if (!local.ignoreSafeArea) {
+		if (!mergedProps.ignoreSafeArea) {
 			const polygon = getPolygonSafeArea(currentPlacement());
 
 			//Don't close if the current's event mouse position is inside the polygon safe area.
@@ -395,8 +382,8 @@ export function TooltipRoot(props: TooltipRootProps) {
 	const context: TooltipContextValue = {
 		dataset,
 		isOpen: disclosureState.isOpen,
-		isDisabled: () => local.disabled ?? false,
-		triggerOnFocusOnly: () => local.triggerOnFocusOnly ?? false,
+		isDisabled: () => mergedProps.disabled ?? false,
+		triggerOnFocusOnly: () => mergedProps.triggerOnFocusOnly ?? false,
 		contentId,
 		contentPresent,
 		openTooltip,
@@ -410,16 +397,16 @@ export function TooltipRoot(props: TooltipRootProps) {
 	};
 
 	return (
-		<TooltipContext.Provider value={context}>
+		<TooltipContext value={context}>
 			<Popper
 				anchorRef={triggerRef}
 				contentRef={contentRef}
 				onCurrentPlacementChange={(value) => {
 					setCurrentPlacement(value);
-					local.onCurrentPlacementChange?.(value);
+					mergedProps.onCurrentPlacementChange?.(value);
 				}}
 				{...others}
 			/>
-		</TooltipContext.Provider>
+		</TooltipContext>
 	);
 }

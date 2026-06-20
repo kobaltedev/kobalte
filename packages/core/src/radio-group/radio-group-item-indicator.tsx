@@ -1,5 +1,5 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { Show, type ValidComponent, createSignal, splitProps } from "solid-js";
+import { Show, type ValidComponent, createSignal, omit } from "solid-js";
 
 import createPresence from "solid-presence";
 import {
@@ -52,12 +52,12 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 		props as RadioGroupItemIndicatorProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "forceMount"]);
+	const others = omit(mergedProps, "ref", "forceMount");
 
 	const [ref, setRef] = createSignal<HTMLElement>();
 
 	const { present } = createPresence({
-		show: () => local.forceMount || context.isSelected(),
+		show: () => mergedProps.forceMount || context.isSelected(),
 		element: () => ref() ?? null,
 	});
 
@@ -65,7 +65,7 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<RadioGroupItemIndicatorRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, local.ref)}
+				ref={mergeRefs(setRef, mergedProps.ref)}
 				{...context.dataset()}
 				{...others}
 			/>

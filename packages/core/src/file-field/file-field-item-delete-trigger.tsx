@@ -2,7 +2,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -36,9 +36,7 @@ export function FileFieldItemDeleteTrigger<T extends ValidComponent = "button">(
 	const context = useFileFieldContext();
 	const { file } = useFileFieldItemContext();
 
-	const [local, others] = splitProps(props as FileFieldItemDeleteTriggerProps, [
-		"onClick",
-	]);
+	const others = omit(props as FileFieldItemDeleteTriggerProps, "onClick");
 
 	const handleDelete = () => {
 		context.removeFile(file);
@@ -53,7 +51,7 @@ export function FileFieldItemDeleteTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			onClick={composeEventHandlers([local.onClick, handleDelete])}
+			onClick={composeEventHandlers([props.onClick, handleDelete])}
 			disabled={context.disabled()}
 			{...others}
 		/>

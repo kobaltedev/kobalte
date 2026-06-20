@@ -3,7 +3,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -37,10 +37,10 @@ export function SelectLabel<T extends ValidComponent = "span">(
 ) {
 	const context = useSelectContext();
 
-	const [local, others] = splitProps(props as SelectLabelProps, ["onClick"]);
+	const others = omit(props as SelectLabelProps, "onClick");
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, props.onClick);
 
 		if (!context.isDisabled()) {
 			context.triggerRef()?.focus();

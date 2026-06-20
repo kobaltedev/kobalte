@@ -4,8 +4,8 @@ import {
 	createEffect,
 	createSignal,
 	createUniqueId,
+	omit,
 	on,
-	splitProps,
 } from "solid-js";
 import type { MenubarMenuOptions, MenubarMenuProps } from "../menubar";
 import { useMenubarContext } from "../menubar/menubar-context";
@@ -23,7 +23,7 @@ export function NavigationMenuMenu(props: NavigationMenuMenuProps) {
 	const menubarContext = useMenubarContext();
 	const context = useNavigationMenuContext();
 
-	const [local, others] = splitProps(props, ["value"]);
+	const others = omit(props, "value");
 
 	const uniqueid = createUniqueId();
 
@@ -33,7 +33,7 @@ export function NavigationMenuMenu(props: NavigationMenuMenuProps) {
 
 	const mergedPropsWithId = mergeDefaultProps({ id: defaultId }, others);
 
-	const value = () => local.value ?? uniqueid;
+	const value = () => props.value ?? uniqueid;
 
 	const [forceMount, setForceMount] = createSignal(false);
 

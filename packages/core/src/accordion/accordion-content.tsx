@@ -11,8 +11,8 @@ import {
 	type Component,
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -55,9 +55,9 @@ export function AccordionContent<T extends ValidComponent = "div">(
 		props as AccordionContentProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["id", "style"]);
+	const others = omit(mergedProps, "id", "style");
 
-	createEffect(() => onCleanup(itemContext.registerContentId(local.id)));
+	createEffect(() => onCleanup(itemContext.registerContentId(mergedProps.id)));
 
 	return (
 		<Collapsible.Content<
@@ -76,7 +76,7 @@ export function AccordionContent<T extends ValidComponent = "div">(
 						"var(--kb-collapsible-content-height)",
 					"--kb-accordion-content-width": "var(--kb-collapsible-content-width)",
 				},
-				local.style,
+				mergedProps.style,
 			)}
 			{...others}
 		/>

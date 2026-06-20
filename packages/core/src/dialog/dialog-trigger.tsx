@@ -11,7 +11,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -47,13 +47,10 @@ export function DialogTrigger<T extends ValidComponent = "button">(
 ) {
 	const context = useDialogContext();
 
-	const [local, others] = splitProps(props as DialogTriggerProps, [
-		"ref",
-		"onClick",
-	]);
+	const others = omit(props as DialogTriggerProps, "ref", "onClick");
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, props.onClick);
 		context.toggle();
 	};
 
@@ -63,7 +60,7 @@ export function DialogTrigger<T extends ValidComponent = "button">(
 				Omit<DialogTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			ref={mergeRefs(context.setTriggerRef, props.ref)}
 			aria-haspopup="dialog"
 			aria-expanded={context.isOpen()}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}

@@ -8,7 +8,7 @@ import {
 	type ComponentProps,
 	type JSX,
 	createMemo,
-	splitProps,
+	omit,
 } from "solid-js";
 import { COLOR_INTL_TRANSLATIONS } from "../colors";
 import {
@@ -40,15 +40,12 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 		props,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
-		mergedProps,
-		["style", "orientation", "onChange", "onFocus", "onBlur"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
-	);
+	const formControlFieldProps = omit(mergedProps, "style", "orientation", "onChange", "onFocus", "onBlur");
+	const others = omit(mergedProps, "style", "orientation", "onChange", "onFocus", "onBlur", ...FORM_CONTROL_FIELD_PROP_NAMES);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
-	const isVertical = () => local.orientation === "vertical";
+	const isVertical = () => mergedProps.orientation === "vertical";
 
 	const ariaLabel = () => {
 		return [fieldProps.ariaLabel(), context.translations().colorPicker]
@@ -59,7 +56,7 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e, local.onChange);
+		callHandler(e, mergedProps.onChange);
 		const target = e.target as HTMLInputElement;
 
 		isVertical()
@@ -99,10 +96,10 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
+			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
 			aria-roledescription={context.translations().twoDimensionalSlider}
 			aria-valuetext={valueText()}
-			aria-orientation={local.orientation}
+			aria-orientation={mergedProps.orientation}
 			aria-label={ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
@@ -112,7 +109,7 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 			aria-required={formControlContext.isRequired() || undefined}
 			aria-disabled={formControlContext.isDisabled() || undefined}
 			aria-readonly={formControlContext.isReadOnly() || undefined}
-			data-orientation={local.orientation}
+			data-orientation={mergedProps.orientation}
 			onChange={onChange}
 			{...formControlContext.dataset()}
 			{...others}

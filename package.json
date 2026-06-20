@@ -55,7 +55,8 @@
 		"rollup-plugin-copy": "3.5.0",
 		"rollup-plugin-license": "3.2.0",
 		"rollup-preset-solid": "2.0.1",
-		"solid-js": "1.8.15",
+		"@solidjs/web": "2.0.0-beta.14",
+		"solid-js": "2.0.0-beta.14",
 		"tsup": "7.2.0",
 		"turbo": "1.10.13",
 		"typescript": "4.9.5",
@@ -63,6 +64,21 @@
 		"vite-plugin-solid": "2.9.1",
 		"vitest": "1.3.1",
 		"@vitest/ui": "^1.5.2"
+	},
+	"pnpm": {
+		"overrides": {
+			"@solid-primitives/utils": "link:/Users/ddibiase/Projects/solid-primitives/packages/utils",
+			"@solid-primitives/event-listener": "link:/Users/ddibiase/Projects/solid-primitives/packages/event-listener",
+			"@solid-primitives/keyed": "link:/Users/ddibiase/Projects/solid-primitives/packages/keyed",
+			"@solid-primitives/map": "link:/Users/ddibiase/Projects/solid-primitives/packages/map",
+			"@solid-primitives/media": "link:/Users/ddibiase/Projects/solid-primitives/packages/media",
+			"@solid-primitives/props": "link:/Users/ddibiase/Projects/solid-primitives/packages/props",
+			"@solid-primitives/refs": "link:/Users/ddibiase/Projects/solid-primitives/packages/refs",
+			"@solid-primitives/resize-observer": "link:/Users/ddibiase/Projects/solid-primitives/packages/resize-observer",
+			"@solid-primitives/trigger": "link:/Users/ddibiase/Projects/solid-primitives/packages/trigger",
+			"@solid-primitives/rootless": "link:/Users/ddibiase/Projects/solid-primitives/packages/rootless",
+			"@solid-primitives/static-store": "link:/Users/ddibiase/Projects/solid-primitives/packages/static-store"
+		}
 	},
 	"packageManager": "pnpm@9.12.3"
 }

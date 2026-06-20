@@ -10,7 +10,7 @@ import {
 	type ValidComponent,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { parseColor } from "../colors";
@@ -133,39 +133,22 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 		props as ColorAreaRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
-		mergedProps,
-		[
-			"ref",
-			"value",
-			"defaultValue",
-			"colorSpace",
-			"xChannel",
-			"yChannel",
-			"onChange",
-			"onChangeEnd",
-			"translations",
-			"xName",
-			"yName",
-			"disabled",
-		],
-		FORM_CONTROL_PROP_NAMES,
-	);
+	const others = omit(mergedProps, "ref", "value", "defaultValue", "colorSpace", "xChannel", "yChannel", "onChange", "onChangeEnd", "translations", "xName", "yName", "disabled", ...FORM_CONTROL_PROP_NAMES);
 
-	const { formControlContext } = createFormControl(formControlProps);
+	const { formControlContext } = createFormControl(mergedProps);
 	const { direction } = useLocale();
 
 	const [backgroundRef, setBackgroundRef] = createSignal<HTMLElement>();
 	const [thumbRef, setThumbRef] = createSignal<HTMLElement>();
 
 	const state = createColorAreaState({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue,
-		onChange: local.onChange,
-		onChangeEnd: local.onChangeEnd,
-		colorSpace: () => local.colorSpace,
-		xChannel: () => local.xChannel,
-		yChannel: () => local.yChannel,
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue,
+		onChange: mergedProps.onChange,
+		onChangeEnd: mergedProps.onChangeEnd,
+		colorSpace: () => mergedProps.colorSpace,
+		xChannel: () => mergedProps.xChannel,
+		yChannel: () => mergedProps.yChannel,
 		isDisabled: () => formControlContext.isDisabled() ?? false,
 	});
 
@@ -199,7 +182,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 		const xPercent = clamp(currentPosition.x / width, 0, 1);
 		const yPercent = clamp(currentPosition.y / height, 0, 1);
 		state.setThumbPercent({ x: xPercent, y: yPercent });
-		local.onChange?.(state.value());
+		mergedProps.onChange?.(state.value());
 	};
 
 	const onDragEnd = () => {
@@ -300,33 +283,33 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 
 	const context: ColorAreaContextValue = {
 		state,
-		xName: () => local.xName,
-		yName: () => local.yName,
+		xName: () => mergedProps.xName,
+		yName: () => mergedProps.yName,
 		onDragStart,
 		onDrag,
 		onDragEnd,
-		translations: () => local.translations,
+		translations: () => mergedProps.translations,
 		getDisplayColor,
 		onStepKeyDown,
 		backgroundRef,
 		setBackgroundRef,
 		thumbRef,
 		setThumbRef,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: createGenerateId(() => access(mergedProps.id)!),
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<ColorAreaContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<ColorAreaContext value={context}>
 				<Polymorphic<ColorAreaRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
+					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 					role="group"
-					id={access(formControlProps.id)!}
+					id={access(mergedProps.id)!}
 					{...formControlContext.dataset()}
 					{...others}
 				/>
-			</ColorAreaContext.Provider>
-		</FormControlContext.Provider>
+			</ColorAreaContext>
+		</FormControlContext>
 	);
 }

@@ -2,11 +2,12 @@ import {
 	type ValidComponent,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
+	snapshot,
+	createStore,
 } from "solid-js";
 
 import { type ValidationState, mergeDefaultProps } from "@kobalte/utils";
-import { createStore, unwrap } from "solid-js/store";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
@@ -151,17 +152,14 @@ export function FileField<T extends ValidComponent = "div">(
 		);
 		// trigger on change
 		mergedProps.onFileChange?.({
-			acceptedFiles: unwrap(acceptedFilesState),
-			rejectedFiles: unwrap(rejectedFilesState),
+			acceptedFiles: snapshot(acceptedFilesState),
+			rejectedFiles: snapshot(rejectedFilesState),
 		});
 	};
 
-	const [formControlProps, others] = splitProps(
-		mergedProps,
-		FORM_CONTROL_PROP_NAMES,
-	);
+	const others = omit(mergedProps, ...FORM_CONTROL_PROP_NAMES);
 
-	const { formControlContext } = createFormControl(formControlProps);
+	const { formControlContext } = createFormControl(mergedProps);
 
 	const context: FileFieldContextValue = {
 		inputId: () => mergedProps.id,
@@ -181,16 +179,16 @@ export function FileField<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<FileFieldContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<FileFieldContext value={context}>
 				<Polymorphic<FileFieldRootRenderProps>
 					as="div"
 					role="group"
-					id={formControlProps.id}
+					id={mergedProps.id}
 					{...formControlContext.dataset()}
 					{...others}
 				/>
-			</FileFieldContext.Provider>
-		</FormControlContext.Provider>
+			</FileFieldContext>
+		</FormControlContext>
 	);
 }

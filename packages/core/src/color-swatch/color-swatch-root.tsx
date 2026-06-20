@@ -4,7 +4,7 @@ import {
 	type JSX,
 	type ValidComponent,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 import { COLOR_INTL_TRANSLATIONS } from "../colors";
 import type { Color } from "../colors";
@@ -60,36 +60,30 @@ export function ColorSwatchRoot<T extends ValidComponent = "div">(
 		props as ColorSwatchRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"style",
-		"value",
-		"colorName",
-		"aria-label",
-		"translations",
-	]);
+	const others = omit(mergedProps, "style", "value", "colorName", "aria-label", "translations");
 
 	const ariaLabel = () => {
 		const colorName =
-			local.colorName ??
-			(local.value.getChannelValue("alpha") === 0
-				? local.translations.transparent
-				: local.value.getColorName(COLOR_INTL_TRANSLATIONS));
+			mergedProps.colorName ??
+			(mergedProps.value.getChannelValue("alpha") === 0
+				? mergedProps.translations.transparent
+				: mergedProps.value.getColorName(COLOR_INTL_TRANSLATIONS));
 
-		return [colorName, local["aria-label"]].filter(Boolean).join(", ");
+		return [colorName, mergedProps["aria-label"]].filter(Boolean).join(", ");
 	};
 
 	return (
 		<Polymorphic<ColorSwatchRootRenderProps>
 			as="div"
 			role="img"
-			aria-roledescription={local.translations.roleDescription}
+			aria-roledescription={mergedProps.translations.roleDescription}
 			aria-label={ariaLabel()}
 			style={combineStyle(
 				{
-					"background-color": local.value.toString("css"),
+					"background-color": mergedProps.value.toString("css"),
 					"forced-color-adjust": "none",
 				},
-				local.style,
+				mergedProps.style,
 			)}
 			{...others}
 		/>

@@ -1,5 +1,5 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
-import { type JSX, Show, type ValidComponent, splitProps } from "solid-js";
+import { type JSX, Show, type ValidComponent, omit } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
 import {
@@ -34,16 +34,12 @@ export function DialogOverlay<T extends ValidComponent = "div">(
 ) {
 	const context = useDialogContext();
 
-	const [local, others] = splitProps(props as DialogOverlayProps, [
-		"ref",
-		"style",
-		"onPointerDown",
-	]);
+	const others = omit(props as DialogOverlayProps, "ref", "style", "onPointerDown");
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, props.onPointerDown);
 
 		// fixes a firefox issue that starts text selection https://bugzilla.mozilla.org/show_bug.cgi?id=1675846
 		if (e.target === e.currentTarget) {
@@ -55,9 +51,9 @@ export function DialogOverlay<T extends ValidComponent = "div">(
 		<Show when={context.overlayPresent()}>
 			<Polymorphic<DialogOverlayRenderProps>
 				as="div"
-				ref={mergeRefs(context.setOverlayRef, local.ref)}
+				ref={mergeRefs(context.setOverlayRef, props.ref)}
 				// We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling.
-				style={combineStyle({ "pointer-events": "auto" }, local.style)}
+				style={combineStyle({ "pointer-events": "auto" }, props.style)}
 				data-expanded={context.isOpen() ? "" : undefined}
 				data-closed={!context.isOpen() ? "" : undefined}
 				onPointerDown={onPointerDown}

@@ -5,7 +5,7 @@ import {
 	getDocument,
 } from "@kobalte/utils";
 import { type Accessor, createEffect, onCleanup } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer } from "@solidjs/web";
 
 export interface CreateEscapeKeyDownProps {
 	/** Whether the escape key down events should be listened or not. */

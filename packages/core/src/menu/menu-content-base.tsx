@@ -22,8 +22,8 @@ import {
 	createEffect,
 	createUniqueId,
 	onCleanup,
-	onMount,
-	splitProps,
+	omit,
+	onSettled,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -136,21 +136,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		props as MenuContentBaseProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"id",
-		"style",
-		"onOpenAutoFocus",
-		"onCloseAutoFocus",
-		"onEscapeKeyDown",
-		"onFocusOutside",
-		"onPointerEnter",
-		"onPointerMove",
-		"onKeyDown",
-		"onMouseDown",
-		"onFocusIn",
-		"onFocusOut",
-	]);
+	const others = omit(mergedProps, "ref", "id", "style", "onOpenAutoFocus", "onCloseAutoFocus", "onEscapeKeyDown", "onFocusOutside", "onPointerEnter", "onPointerMove", "onKeyDown", "onMouseDown", "onFocusIn", "onFocusOut");
 
 	let lastPointerX = 0;
 
@@ -183,9 +169,9 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			trapFocus: () => isRootModalContent() && context.isOpen(),
 			onMountAutoFocus: (event) => {
 				if (optionalMenubarContext === undefined)
-					local.onOpenAutoFocus?.(event);
+					mergedProps.onOpenAutoFocus?.(event);
 			},
-			onUnmountAutoFocus: local.onCloseAutoFocus,
+			onUnmountAutoFocus: mergedProps.onCloseAutoFocus,
 		},
 		() => ref,
 	);
@@ -226,7 +212,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 	};
 
 	const onEscapeKeyDown = (e: KeyboardEvent) => {
-		local.onEscapeKeyDown?.(e);
+		mergedProps.onEscapeKeyDown?.(e);
 
 		optionalMenubarContext?.setAutoFocusMenu(false);
 
@@ -237,7 +223,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		mergedProps.onFocusOutside?.(e);
 
 		if (rootContext.isModal()) {
 			// When focus is trapped, a `focusout` event may still happen.
@@ -249,7 +235,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerEnter);
+		callHandler(e, mergedProps.onPointerEnter);
 
 		if (!context.isOpen()) {
 			return;
@@ -271,7 +257,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
 			return;
@@ -288,7 +274,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	createEffect(() => onCleanup(context.registerContentId(local.id!)));
+	createEffect(() => onCleanup(context.registerContentId(mergedProps.id!)));
 
 	onCleanup(() => context.setContentRef(undefined));
 
@@ -297,10 +283,10 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			ref: mergeRefs((el) => {
 				context.setContentRef(el);
 				ref = el;
-			}, local.ref),
+			}, mergedProps.ref),
 			role: "menu",
 			get id() {
-				return local.id;
+				return mergedProps.id;
 			},
 			get tabIndex() {
 				return selectableList.tabIndex();
@@ -309,20 +295,20 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 				return context.triggerId();
 			},
 			onKeyDown: composeEventHandlers([
-				local.onKeyDown,
+				mergedProps.onKeyDown,
 				selectableList.onKeyDown,
 				onKeyDown,
 			]),
 			onMouseDown: composeEventHandlers([
-				local.onMouseDown,
+				mergedProps.onMouseDown,
 				selectableList.onMouseDown,
 			]),
 			onFocusIn: composeEventHandlers([
-				local.onFocusIn,
+				mergedProps.onFocusIn,
 				selectableList.onFocusIn,
 			]),
 			onFocusOut: composeEventHandlers([
-				local.onFocusOut,
+				mergedProps.onFocusOut,
 				selectableList.onFocusOut,
 			]),
 			onPointerEnter,
@@ -368,7 +354,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 									"var(--kb-popper-content-transform-origin)",
 								position: "relative",
 							},
-							local.style,
+							mergedProps.style,
 						)}
 						onEscapeKeyDown={onEscapeKeyDown}
 						onFocusOutside={onFocusOutside}

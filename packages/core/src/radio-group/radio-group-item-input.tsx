@@ -17,9 +17,9 @@ import {
 	type ValidComponent,
 	createEffect,
 	createSignal,
+	omit,
 	on,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -85,23 +85,15 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 		props as RadioGroupItemInputProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"style",
-		"aria-labelledby",
-		"aria-describedby",
-		"onChange",
-		"onFocus",
-		"onBlur",
-	]);
+	const others = omit(mergedProps, "ref", "style", "aria-labelledby", "aria-describedby", "onChange", "onFocus", "onBlur");
 
 	const ariaLabelledBy = () => {
 		return (
 			[
-				local["aria-labelledby"],
+				mergedProps["aria-labelledby"],
 				radioContext.labelId(),
 				// If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
-				local["aria-labelledby"] != null && others["aria-label"] != null
+				mergedProps["aria-labelledby"] != null && others["aria-label"] != null
 					? others.id
 					: undefined,
 			]
@@ -113,7 +105,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	const ariaDescribedBy = () => {
 		return (
 			[
-				local["aria-describedby"],
+				mergedProps["aria-describedby"],
 				radioContext.descriptionId(),
 				radioGroupContext.ariaDescribedBy(),
 			]
@@ -125,7 +117,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
 
 	const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (e) => {
-		callHandler(e, local.onChange);
+		callHandler(e, mergedProps.onChange);
 
 		e.stopPropagation();
 
@@ -147,12 +139,12 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 		radioContext.setIsFocused(true);
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 		radioContext.setIsFocused(false);
 	};
 
@@ -181,7 +173,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	return (
 		<Polymorphic<RadioGroupItemInputRenderProps>
 			as="input"
-			ref={mergeRefs(radioContext.setInputRef, local.ref)}
+			ref={mergeRefs(radioContext.setInputRef, mergedProps.ref)}
 			type="radio"
 			name={formControlContext.name()}
 			value={radioContext.value()}
@@ -189,7 +181,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 			required={formControlContext.isRequired()}
 			disabled={radioContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
+			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
 			aria-labelledby={ariaLabelledBy()}
 			aria-describedby={ariaDescribedBy()}
 			onChange={onChange}

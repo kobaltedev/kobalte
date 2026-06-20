@@ -3,7 +3,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -37,13 +37,10 @@ export function PopoverCloseButton<T extends ValidComponent = "button">(
 ) {
 	const context = usePopoverContext();
 
-	const [local, others] = splitProps(props as PopoverCloseButtonProps, [
-		"aria-label",
-		"onClick",
-	]);
+	const others = omit(props as PopoverCloseButtonProps, "aria-label", "onClick");
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, props.onClick);
 		context.close();
 	};
 
@@ -53,7 +50,7 @@ export function PopoverCloseButton<T extends ValidComponent = "button">(
 				Omit<PopoverCloseButtonRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-label={local["aria-label"] || context.translations().dismiss}
+			aria-label={props["aria-label"] || context.translations().dismiss}
 			onClick={onClick}
 			{...context.dataset()}
 			{...others}

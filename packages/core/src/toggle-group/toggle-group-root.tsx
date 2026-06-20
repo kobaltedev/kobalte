@@ -2,7 +2,7 @@ import {
 	type Component,
 	type ValidComponent,
 	createMemo,
-	splitProps,
+	omit,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
@@ -68,35 +68,30 @@ export type ToggleGroupRootProps<
 export function ToggleGroup<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ToggleGroupRootProps<T>>,
 ) {
-	const [local, others] = splitProps(props as ToggleGroupRootProps, [
-		"value",
-		"defaultValue",
-		"onChange",
-		"multiple",
-	]);
+	const others = omit(props as ToggleGroupRootProps, "value", "defaultValue", "onChange", "multiple");
 
 	const value = createMemo(() => {
-		if (local.value != null) {
-			return local.multiple ? local.value : [local.value];
+		if (props.value != null) {
+			return props.multiple ? props.value : [props.value];
 		}
 
-		return local.value;
+		return props.value;
 	});
 
 	const defaultValue = createMemo(() => {
-		if (local.defaultValue != null) {
-			return local.multiple ? local.defaultValue : [local.defaultValue];
+		if (props.defaultValue != null) {
+			return props.multiple ? props.defaultValue : [props.defaultValue];
 		}
 
-		return local.defaultValue;
+		return props.defaultValue;
 	});
 
 	const onChange = (value: string[]) => {
-		if (local.multiple) {
-			local.onChange?.(value as any);
+		if (props.multiple) {
+			props.onChange?.(value as any);
 		} else {
 			// use `null` as "no value" because `undefined` mean the component is "uncontrolled".
-			local.onChange?.((value[0] ?? null) as any);
+			props.onChange?.((value[0] ?? null) as any);
 		}
 	};
 
@@ -109,7 +104,7 @@ export function ToggleGroup<T extends ValidComponent = "div">(
 			value={value() as any}
 			defaultValue={defaultValue() as any}
 			onChange={onChange}
-			selectionMode={local.multiple ? "multiple" : "single"}
+			selectionMode={props.multiple ? "multiple" : "single"}
 			{...others}
 		/>
 	);

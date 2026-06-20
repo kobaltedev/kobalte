@@ -2,7 +2,7 @@ import {
 	type JSX,
 	type ValidComponent,
 	createSignal,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -48,14 +48,7 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 	const [isDragging, setIsDragging] = createSignal(false);
 	const context = useFileFieldContext();
 
-	const [local, others] = splitProps(props as FileFieldDropzoneProps, [
-		"ref",
-		"onClick",
-		"onKeyDown",
-		"onDragOver",
-		"onDragLeave",
-		"onDrop",
-	]);
+	const others = omit(props as FileFieldDropzoneProps, "ref", "onClick", "onKeyDown", "onDragOver", "onDragLeave", "onDrop");
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// if label is within file dropzone, avoid opening up file dialog
@@ -125,12 +118,12 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 			tabindex="0"
 			aria-disabled={context.disabled()}
 			data-dragging={isDragging()}
-			ref={mergeRefs(context.setDropzoneRef, local.ref)}
-			onClick={composeEventHandlers([local.onClick, onClick])}
-			onKeyDown={composeEventHandlers([local.onKeyDown, onKeyDown])}
-			onDragOver={composeEventHandlers([local.onDragOver, onDragOver])}
-			onDragLeave={composeEventHandlers([local.onDragLeave, onDragLeave])}
-			onDrop={composeEventHandlers([local.onDrop, onDrop])}
+			ref={mergeRefs(context.setDropzoneRef, props.ref)}
+			onClick={composeEventHandlers([props.onClick, onClick])}
+			onKeyDown={composeEventHandlers([props.onKeyDown, onKeyDown])}
+			onDragOver={composeEventHandlers([props.onDragOver, onDragOver])}
+			onDragLeave={composeEventHandlers([props.onDragLeave, onDragLeave])}
+			onDrop={composeEventHandlers([props.onDrop, onDrop])}
 			{...others}
 		/>
 	);

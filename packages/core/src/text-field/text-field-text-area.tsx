@@ -18,7 +18,7 @@ import {
 	type ValidComponent,
 	createEffect,
 	on,
-	splitProps,
+	omit,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
@@ -72,16 +72,11 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 		props as TextFieldTextAreaProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"autoResize",
-		"submitOnEnter",
-		"onKeyPress",
-	]);
+	const others = omit(mergedProps, "ref", "autoResize", "submitOnEnter", "onKeyPress");
 
 	createEffect(
 		on(
-			[() => ref, () => local.autoResize, () => context.value()],
+			[() => ref, () => mergedProps.autoResize, () => context.value()],
 			([ref, autoResize]) => {
 				if (!ref || !autoResize) {
 					return;
@@ -95,7 +90,7 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 	const onKeyPress = (event: KeyboardEvent) => {
 		if (
 			ref &&
-			local.submitOnEnter &&
+			mergedProps.submitOnEnter &&
 			event.key === "Enter" &&
 			!event.shiftKey
 		) {
@@ -113,9 +108,9 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 			>
 		>
 			as="textarea"
-			aria-multiline={local.submitOnEnter ? "false" : undefined}
-			onKeyPress={composeEventHandlers([local.onKeyPress, onKeyPress])}
-			ref={mergeRefs((el) => (ref = el), local.ref) as any}
+			aria-multiline={mergedProps.submitOnEnter ? "false" : undefined}
+			onKeyPress={composeEventHandlers([mergedProps.onKeyPress, onKeyPress])}
+			ref={mergeRefs((el) => (ref = el), mergedProps.ref) as any}
 			{...others}
 		/>
 	);

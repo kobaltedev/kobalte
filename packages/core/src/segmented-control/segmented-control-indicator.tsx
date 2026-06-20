@@ -1,11 +1,10 @@
 import {
 	type JSX,
 	type ValidComponent,
-	batch,
 	createEffect,
 	createSignal,
+	omit,
 	on,
-	splitProps,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -32,7 +31,7 @@ export function SegmentedControlIndicator<T extends ValidComponent = "div">(
 ) {
 	const context = useSegmentedControlContext();
 
-	const [localProps, otherProps] = splitProps(props, ["style"]);
+	const otherProps = omit(props, "style");
 
 	const [style, setStyle] = createSignal<JSX.CSSProperties>();
 	const [resizing, setResizing] = createSignal(false);
@@ -72,18 +71,16 @@ export function SegmentedControlIndicator<T extends ValidComponent = "div">(
 	);
 
 	createResizeObserver(context.root, () => {
-		batch(() => {
-			setResizing(true);
-			computeStyle();
-			setResizing(false);
-		});
+		setResizing(true);
+		computeStyle();
+		setResizing(false);
 	});
 
 	return (
 		<Polymorphic<SegmentedControlIndicatorRenderProps>
 			as="div"
 			role="presentation"
-			style={combineStyle(style(), localProps.style)}
+			style={combineStyle(style(), props.style)}
 			data-resizing={resizing()}
 			data-orientation={context.orientation()}
 			{...otherProps}

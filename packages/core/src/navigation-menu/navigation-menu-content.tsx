@@ -3,13 +3,11 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	batch,
 	createEffect,
 	createSignal,
 	on,
 	onCleanup,
-	onMount,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -54,15 +52,12 @@ export function NavigationMenuContent<T extends ValidComponent = "ul">(
 
 	const [motion, setMotion] = createSignal<Motion>();
 
-	const [local, others] = splitProps(props as NavigationMenuContentProps, [
-		"onPointerEnter",
-		"onPointerLeave",
-	]);
+	const others = omit(props as NavigationMenuContentProps, "onPointerEnter", "onPointerLeave");
 
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerEnter);
+		callHandler(e, props.onPointerEnter);
 
 		context.cancelLeaveTimer();
 	};
@@ -70,44 +65,42 @@ export function NavigationMenuContent<T extends ValidComponent = "ul">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerLeave);
+		callHandler(e, props.onPointerLeave);
 
 		context.startLeaveTimer();
 	};
 
 	createEffect(
 		on(menubarContext.value, (contextValue) => {
-			batch(() => {
-				// When no menu open (or trigger) reset
-				if (!contextValue || contextValue.includes("link-trigger-")) {
-					context.setPreviousMenu(undefined);
-					return;
+			// When no menu open (or trigger) reset
+			if (!contextValue || contextValue.includes("link-trigger-")) {
+				context.setPreviousMenu(undefined);
+				return;
+			}
+
+			// When currently active menu set `from-*` motion if there is a previous then upate previous menu
+			if (contextValue === menuRootContext.value()) {
+				if (context.previousMenu() != null) {
+					const menus = [...menubarContext.menus()];
+					const prevIndex = menus.indexOf(context.previousMenu()!);
+					const nextIndex = menus.indexOf(contextValue);
+
+					if (prevIndex < nextIndex) setMotion("from-end");
+					else setMotion("from-start");
+				} else {
+					setMotion(undefined);
 				}
 
-				// When currently active menu set `from-*` motion if there is a previous then upate previous menu
-				if (contextValue === menuRootContext.value()) {
-					if (context.previousMenu() != null) {
-						const menus = [...menubarContext.menus()];
-						const prevIndex = menus.indexOf(context.previousMenu()!);
-						const nextIndex = menus.indexOf(contextValue);
+				context.setPreviousMenu(contextValue);
+				return;
+			}
 
-						if (prevIndex < nextIndex) setMotion("from-end");
-						else setMotion("from-start");
-					} else {
-						setMotion(undefined);
-					}
+			const menus = [...menubarContext.menus()];
+			const prevIndex = menus.indexOf(context.previousMenu()!);
+			const nextIndex = menus.indexOf(contextValue);
 
-					context.setPreviousMenu(contextValue);
-					return;
-				}
-
-				const menus = [...menubarContext.menus()];
-				const prevIndex = menus.indexOf(context.previousMenu()!);
-				const nextIndex = menus.indexOf(contextValue);
-
-				if (prevIndex > nextIndex) setMotion("to-end");
-				else setMotion("to-start");
-			});
+			if (prevIndex > nextIndex) setMotion("to-end");
+			else setMotion("to-start");
 		}),
 	);
 

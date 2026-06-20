@@ -2,8 +2,8 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import {
@@ -42,14 +42,14 @@ export function MeterLabel<T extends ValidComponent = "span">(
 		props as MeterLabelProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["id"]);
+	const others = omit(mergedProps, "id");
 
-	createEffect(() => onCleanup(context.registerLabelId(local.id)));
+	createEffect(() => onCleanup(context.registerLabelId(mergedProps.id)));
 
 	return (
 		<Polymorphic<MeterLabelRenderProps>
 			as="span"
-			id={local.id}
+			id={mergedProps.id}
 			{...context.dataset()}
 			{...others}
 		/>

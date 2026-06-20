@@ -23,7 +23,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -97,20 +97,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 		props as ListboxItemProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"item",
-		"aria-label",
-		"aria-labelledby",
-		"aria-describedby",
-		"onPointerMove",
-		"onPointerDown",
-		"onPointerUp",
-		"onClick",
-		"onKeyDown",
-		"onMouseDown",
-		"onFocus",
-	]);
+	const others = omit(mergedProps, "ref", "item", "aria-label", "aria-labelledby", "aria-describedby", "onPointerMove", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
 
 	const [labelId, setLabelId] = createSignal<string>();
 	const [descriptionId, setDescriptionId] = createSignal<string>();
@@ -118,11 +105,11 @@ export function ListboxItem<T extends ValidComponent = "li">(
 	const selectionManager = () => listBoxContext.listState().selectionManager();
 
 	const isHighlighted = () =>
-		selectionManager().focusedKey() === local.item.key;
+		selectionManager().focusedKey() === mergedProps.item.key;
 
 	const selectableItem = createSelectableItem(
 		{
-			key: () => local.item.key,
+			key: () => mergedProps.item.key,
 			selectionManager: selectionManager,
 			shouldSelectOnPressUp: listBoxContext.shouldSelectOnPressUp,
 			allowsDifferentPressOrigin: () => {
@@ -132,7 +119,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 				);
 			},
 			shouldUseVirtualFocus: listBoxContext.shouldUseVirtualFocus,
-			disabled: () => local.item.disabled,
+			disabled: () => mergedProps.item.disabled,
 		},
 		() => ref,
 	);
@@ -151,7 +138,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 	const isNotSafariMacOS = createMemo(() => !(isMac() && isWebKit()));
 
 	const ariaLabel = () =>
-		isNotSafariMacOS() ? local["aria-label"] : undefined;
+		isNotSafariMacOS() ? mergedProps["aria-label"] : undefined;
 	const ariaLabelledBy = () => (isNotSafariMacOS() ? labelId() : undefined);
 	const ariaDescribedBy = () =>
 		isNotSafariMacOS() ? descriptionId() : undefined;
@@ -164,7 +151,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 		const index = listBoxContext
 			.listState()
 			.collection()
-			.getItem(local.item.key)?.index;
+			.getItem(mergedProps.item.key)?.index;
 
 		return index != null ? index + 1 : undefined;
 	};
@@ -189,7 +176,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 	 * wiggles. This is to match native select implementation.
 	 */
 	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
 			return;
@@ -198,7 +185,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 		if (!selectableItem.isDisabled() && listBoxContext.shouldFocusOnHover()) {
 			focusWithoutScrolling(e.currentTarget);
 			selectionManager().setFocused(true);
-			selectionManager().setFocusedKey(local.item.key);
+			selectionManager().setFocusedKey(mergedProps.item.key);
 		}
 	};
 
@@ -217,10 +204,10 @@ export function ListboxItem<T extends ValidComponent = "li">(
 	};
 
 	return (
-		<ListboxItemContext.Provider value={context}>
+		<ListboxItemContext value={context}>
 			<Polymorphic<ListboxItemRenderProps>
 				as="li"
-				ref={mergeRefs((el) => (ref = el), local.ref)}
+				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="option"
 				tabIndex={selectableItem.tabIndex()}
 				aria-disabled={selectableItem.isDisabled()}
@@ -232,27 +219,27 @@ export function ListboxItem<T extends ValidComponent = "li">(
 				aria-setsize={ariaSetSize()}
 				data-key={selectableItem.dataKey()}
 				onPointerDown={composeEventHandlers([
-					local.onPointerDown,
+					mergedProps.onPointerDown,
 					selectableItem.onPointerDown,
 				])}
 				onPointerUp={composeEventHandlers([
-					local.onPointerUp,
+					mergedProps.onPointerUp,
 					selectableItem.onPointerUp,
 				])}
-				onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
+				onClick={composeEventHandlers([mergedProps.onClick, selectableItem.onClick])}
 				onKeyDown={composeEventHandlers([
-					local.onKeyDown,
+					mergedProps.onKeyDown,
 					selectableItem.onKeyDown,
 				])}
 				onMouseDown={composeEventHandlers([
-					local.onMouseDown,
+					mergedProps.onMouseDown,
 					selectableItem.onMouseDown,
 				])}
-				onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+				onFocus={composeEventHandlers([mergedProps.onFocus, selectableItem.onFocus])}
 				onPointerMove={onPointerMove}
 				{...dataset()}
 				{...others}
 			/>
-		</ListboxItemContext.Provider>
+		</ListboxItemContext>
 	);
 }

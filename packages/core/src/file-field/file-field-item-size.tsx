@@ -1,4 +1,4 @@
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -51,13 +51,11 @@ export function FileFieldItemSize<T extends ValidComponent = "span">(
 	];
 	const { file } = useFileFieldItemContext();
 
-	const [local, others] = splitProps(props as FileFieldItemSizeProps, [
-		"precision",
-	]);
+	const others = omit(props as FileFieldItemSizeProps, "precision");
 
 	return (
 		<Polymorphic<FileFieldItemSizeRenderProps> as="span" {...others}>
-			{formatBytes(file.size, local.precision ?? 2, size())}
+			{formatBytes(file.size, props.precision ?? 2, size())}
 		</Polymorphic>
 	);
 }

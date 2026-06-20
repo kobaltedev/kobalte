@@ -11,7 +11,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
@@ -121,20 +121,28 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 		props as ColorWheelRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
+	const formControlProps = omit(
 		mergedProps,
-		[
-			"ref",
-			"value",
-			"defaultValue",
-			"thickness",
-			"onChange",
-			"onChangeEnd",
-			"getValueLabel",
-			"translations",
-			"disabled",
-		],
-		FORM_CONTROL_PROP_NAMES,
+		"ref",
+		"value",
+		"defaultValue",
+		"thickness",
+		"onChange",
+		"onChangeEnd",
+		"getValueLabel",
+		"translations",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"thickness",
+		"onChange",
+		"onChangeEnd",
+		"getValueLabel",
+		"translations",
+		...FORM_CONTROL_PROP_NAMES,
 	);
 
 	const { formControlContext } = createFormControl(formControlProps);
@@ -152,14 +160,14 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	});
 
 	const thumbRadius = () =>
-		((139.75 - (local.thickness / 100) * 70) * outerRadius()!) / 140;
+		((139.75 - (mergedProps.thickness / 100) * 70) * outerRadius()!) / 140;
 
 	const state = createColorWheelState({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue,
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue,
 		thumbRadius,
-		onChange: local.onChange,
-		onChangeEnd: local.onChangeEnd,
+		onChange: mergedProps.onChange,
+		onChangeEnd: mergedProps.onChangeEnd,
 		isDisabled: () => formControlContext.isDisabled() ?? false,
 	});
 
@@ -185,7 +193,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 		currentPosition.x += deltaX;
 		currentPosition.y += deltaY;
 		state.setThumbValue(currentPosition.x, currentPosition.y, thumbRadius());
-		local.onChange?.(state.value());
+		mergedProps.onChange?.(state.value());
 	};
 
 	const onDragEnd = () => {
@@ -194,7 +202,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	};
 
 	const getThumbValueLabel = () =>
-		`${state.value().formatChannelValue("hue")}, ${context.state.value().getHueName(local.translations)}`;
+		`${state.value().formatChannelValue("hue")}, ${context.state.value().getHueName(mergedProps.translations)}`;
 
 	const onHomeKeyDown = (event: KeyboardEvent) => {
 		if (!formControlContext.isDisabled()) {
@@ -270,12 +278,12 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	const context: ColorWheelContextValue = {
 		state,
 		outerRadius,
-		thickness: () => local.thickness,
+		thickness: () => mergedProps.thickness,
 		onDragStart,
 		onDrag,
 		onDragEnd,
 		getThumbValueLabel,
-		getValueLabel: local.getValueLabel,
+		getValueLabel: mergedProps.getValueLabel,
 		onStepKeyDown,
 		trackRef,
 		setTrackRef,
@@ -285,17 +293,17 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<ColorWheelContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<ColorWheelContext value={context}>
 				<Polymorphic<ColorWheelRootRenderProps>
 					as="div"
-					ref={mergeRefs(setRef, local.ref)}
+					ref={mergeRefs(setRef, mergedProps.ref)}
 					role="group"
 					id={access(formControlProps.id)!}
 					{...formControlContext.dataset()}
 					{...others}
 				/>
-			</ColorWheelContext.Provider>
-		</FormControlContext.Provider>
+			</ColorWheelContext>
+		</FormControlContext>
 	);
 }

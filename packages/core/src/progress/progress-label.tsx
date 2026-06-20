@@ -3,8 +3,8 @@ import {
 	type Component,
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import {
@@ -44,15 +44,15 @@ export function ProgressLabel<T extends ValidComponent = "span">(
 		},
 		props as ProgressLabelProps,
 	);
-	const [local, others] = splitProps(mergedProps, ["id"]);
+	const others = omit(mergedProps, "id");
 
-	createEffect(() => onCleanup(context.registerLabelId(local.id)));
+	createEffect(() => onCleanup(context.registerLabelId(mergedProps.id)));
 
 	return (
 		<Meter.Label<
 			Component<Omit<ProgressLabelRenderProps, keyof MeterLabelRenderProps>>
 		>
-			id={local.id}
+			id={mergedProps.id}
 			{...context.dataset()}
 			{...others}
 		/>

@@ -13,8 +13,8 @@ import {
 	Show,
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -75,7 +75,7 @@ export function TooltipContent<T extends ValidComponent = "div">(
 		props as TooltipContentProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "style"]);
+	const others = omit(mergedProps, "ref", "style");
 
 	createEffect(() => onCleanup(context.registerContentId(others.id!)));
 
@@ -89,7 +89,7 @@ export function TooltipContent<T extends ValidComponent = "div">(
 				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
-					}, local.ref)}
+					}, mergedProps.ref)}
 					role="tooltip"
 					disableOutsidePointerEvents={false}
 					style={combineStyle(
@@ -98,7 +98,7 @@ export function TooltipContent<T extends ValidComponent = "div">(
 								"var(--kb-popper-content-transform-origin)",
 							position: "relative",
 						},
-						local.style,
+						mergedProps.style,
 					)}
 					onFocusOutside={(e) => e.preventDefault()}
 					onDismiss={() => context.hideTooltip(true)}

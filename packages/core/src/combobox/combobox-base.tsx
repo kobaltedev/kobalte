@@ -26,7 +26,7 @@ import {
 	createSignal,
 	createUniqueId,
 	on,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import createPresence from "solid-presence";
@@ -301,59 +301,78 @@ export function ComboboxBase<
 		props as ComboboxBaseProps<Option, OptGroup>,
 	);
 
-	const [local, popperProps, formControlProps, others] = splitProps(
+	const _rest = omit(
 		mergedProps,
-		[
-			"noResetInputOnBlur",
-			"translations",
-			"itemComponent",
-			"sectionComponent",
-			"open",
-			"defaultOpen",
-			"onOpenChange",
-			"onInputChange",
-			"value",
-			"defaultValue",
-			"onChange",
-			"triggerMode",
-			"placeholder",
-			"options",
-			"optionValue",
-			"optionTextValue",
-			"optionLabel",
-			"optionDisabled",
-			"optionGroupChildren",
-			"keyboardDelegate",
-			"allowDuplicateSelectionEvents",
-			"disallowEmptySelection",
-			"defaultFilter",
-			"shouldFocusWrap",
-			"allowsEmptyCollection",
-			"closeOnSelection",
-			"removeOnBackspace",
-			"selectionBehavior",
-			"selectionMode",
-			"virtualized",
-			"modal",
-			"preventScroll",
-			"forceMount",
-		],
-		[
-			"getAnchorRect",
-			"placement",
-			"gutter",
-			"shift",
-			"flip",
-			"slide",
-			"overlap",
-			"sameWidth",
-			"fitViewport",
-			"hideWhenDetached",
-			"detachedPadding",
-			"arrowPadding",
-			"overflowPadding",
-		],
-		FORM_CONTROL_PROP_NAMES,
+		"noResetInputOnBlur",
+		"translations",
+		"itemComponent",
+		"sectionComponent",
+		"open",
+		"defaultOpen",
+		"onOpenChange",
+		"onInputChange",
+		"value",
+		"defaultValue",
+		"onChange",
+		"triggerMode",
+		"placeholder",
+		"options",
+		"optionValue",
+		"optionTextValue",
+		"optionLabel",
+		"optionDisabled",
+		"optionGroupChildren",
+		"keyboardDelegate",
+		"allowDuplicateSelectionEvents",
+		"disallowEmptySelection",
+		"defaultFilter",
+		"shouldFocusWrap",
+		"allowsEmptyCollection",
+		"closeOnSelection",
+		"removeOnBackspace",
+		"selectionBehavior",
+		"selectionMode",
+		"virtualized",
+		"modal",
+		"preventScroll",
+		"forceMount",
+	);
+	const popperProps = omit(
+		_rest,
+		...FORM_CONTROL_PROP_NAMES,
+	);
+	const formControlProps = omit(
+		_rest,
+		"getAnchorRect",
+		"placement",
+		"gutter",
+		"shift",
+		"flip",
+		"slide",
+		"overlap",
+		"sameWidth",
+		"fitViewport",
+		"hideWhenDetached",
+		"detachedPadding",
+		"arrowPadding",
+		"overflowPadding",
+	);
+	const others = omit(
+		_rest,
+		"getAnchorRect",
+		"placement",
+		"gutter",
+		"shift",
+		"flip",
+		"slide",
+		"overlap",
+		"sameWidth",
+		"fitViewport",
+		"hideWhenDetached",
+		"detachedPadding",
+		"arrowPadding",
+		"overflowPadding",
+		...FORM_CONTROL_PROP_NAMES,
 	);
 
 	const [listboxId, setListboxId] = createSignal<string>();
@@ -373,27 +392,27 @@ export function ComboboxBase<
 	const [showAllOptions, setShowAllOptions] = createSignal(false);
 
 	const [lastDisplayedOptions, setLastDisplayedOptions] = createSignal(
-		local.options!,
+		mergedProps.options!,
 	);
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen, openTriggerMode),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen, openTriggerMode),
 	});
 
 	const [inputValue, setInputValue] = createControllableSignal<string>({
 		defaultValue: () => "",
 		onChange: (value) => {
-			local.onInputChange?.(value);
+			mergedProps.onInputChange?.(value);
 
 			// Remove selection when input is cleared and value is uncontrolled (in single selection mode).
 			// If controlled, this is the application developer's responsibility.
 			if (
 				value === "" &&
-				local.selectionMode === "single" &&
+				mergedProps.selectionMode === "single" &&
 				!listState.selectionManager().isEmpty() &&
-				local.value === undefined
+				mergedProps.value === undefined
 			) {
 				// Bypass `disallowEmptySelection`.
 				listState.selectionManager().setSelectedKeys([]);
@@ -405,7 +424,7 @@ export function ComboboxBase<
 	});
 
 	const getOptionValue = (option: Option) => {
-		const optionValue = local.optionValue;
+		const optionValue = mergedProps.optionValue;
 
 		if (optionValue == null) {
 			// If no `optionValue`, the option itself is the value (ex: string[] of options).
@@ -421,7 +440,7 @@ export function ComboboxBase<
 	};
 
 	const getOptionLabel = (option: Option) => {
-		const optionLabel = local.optionLabel;
+		const optionLabel = mergedProps.optionLabel;
 
 		if (optionLabel == null) {
 			// If no `optionLabel`, the option itself is the label (ex: string[] of options).
@@ -437,7 +456,7 @@ export function ComboboxBase<
 	};
 
 	const getOptionTextValue = (option: Option) => {
-		const optionTextValue = local.optionTextValue;
+		const optionTextValue = mergedProps.optionTextValue;
 
 		if (optionTextValue == null) {
 			// If no `optionTextValue`, the option itself is the label (ex: string[] of options).
@@ -454,14 +473,14 @@ export function ComboboxBase<
 
 	// All options flattened without option groups.
 	const allOptions = createMemo(() => {
-		const optionGroupChildren = local.optionGroupChildren;
+		const optionGroupChildren = mergedProps.optionGroupChildren;
 
 		// The combobox doesn't contains option groups.
 		if (optionGroupChildren == null) {
-			return local.options as Option[];
+			return mergedProps.options as Option[];
 		}
 
-		return local.options!.flatMap(
+		return mergedProps.options!.flatMap(
 			(item) =>
 				((item as any)[optionGroupChildren] as Option[]) ?? (item as Option),
 		);
@@ -470,13 +489,13 @@ export function ComboboxBase<
 	const filterFn = (option: Option) => {
 		const inputVal = inputValue() ?? "";
 
-		if (isFunction(local.defaultFilter)) {
-			return local.defaultFilter?.(option as any, inputVal);
+		if (isFunction(mergedProps.defaultFilter)) {
+			return mergedProps.defaultFilter?.(option as any, inputVal);
 		}
 
 		const textVal = getOptionTextValue(option);
 
-		switch (local.defaultFilter) {
+		switch (mergedProps.defaultFilter) {
 			case "startsWith":
 				return filter.startsWith(textVal, inputVal);
 			case "endsWith":
@@ -486,17 +505,17 @@ export function ComboboxBase<
 		}
 	};
 
-	// Filtered options with same structure as `local.options`
+	// Filtered options with same structure as `mergedProps.options`
 	const filteredOptions = createMemo(() => {
-		const optionGroupChildren = local.optionGroupChildren;
+		const optionGroupChildren = mergedProps.optionGroupChildren;
 
 		// The combobox doesn't contains option groups.
 		if (optionGroupChildren == null) {
-			return (local.options as Option[]).filter(filterFn);
+			return (mergedProps.options as Option[]).filter(filterFn);
 		}
 
 		const filteredGroups: OptGroup[] = [];
-		for (const optGroup of local.options as OptGroup[]) {
+		for (const optGroup of mergedProps.options as OptGroup[]) {
 			// Filter options of the group
 			const filteredChildrenOptions = (
 				(optGroup as any)[optionGroupChildren] as Option[]
@@ -517,7 +536,7 @@ export function ComboboxBase<
 	const displayedOptions = createMemo(() => {
 		if (disclosureState.isOpen()) {
 			if (showAllOptions()) {
-				return local.options!;
+				return mergedProps.options!;
 			}
 			return filteredOptions();
 		}
@@ -537,23 +556,23 @@ export function ComboboxBase<
 
 	const listState = createListState({
 		selectedKeys: () => {
-			if (local.value != null) {
-				return local.value.map(getOptionValue);
+			if (mergedProps.value != null) {
+				return mergedProps.value.map(getOptionValue);
 			}
 
-			return local.value;
+			return mergedProps.value;
 		},
 		defaultSelectedKeys: () => {
-			if (local.defaultValue != null) {
-				return local.defaultValue.map(getOptionValue);
+			if (mergedProps.defaultValue != null) {
+				return mergedProps.defaultValue.map(getOptionValue);
 			}
 
-			return local.defaultValue;
+			return mergedProps.defaultValue;
 		},
 		onSelectionChange: (selectedKeys) => {
-			local.onChange?.(getOptionsFromValues(selectedKeys));
+			mergedProps.onChange?.(getOptionsFromValues(selectedKeys));
 
-			if (local.closeOnSelection) {
+			if (mergedProps.closeOnSelection) {
 				// Only close if an option is selected.
 				// Prevents the combobox to close and reopen when the input is cleared.
 				if (disclosureState.isOpen() && selectedKeys.size > 0) {
@@ -572,15 +591,15 @@ export function ComboboxBase<
 			}
 		},
 		allowDuplicateSelectionEvents: () =>
-			access(local.allowDuplicateSelectionEvents),
-		disallowEmptySelection: () => local.disallowEmptySelection,
-		selectionBehavior: () => access(local.selectionBehavior),
-		selectionMode: () => local.selectionMode,
+			access(mergedProps.allowDuplicateSelectionEvents),
+		disallowEmptySelection: () => mergedProps.disallowEmptySelection,
+		selectionBehavior: () => access(mergedProps.selectionBehavior),
+		selectionMode: () => mergedProps.selectionMode,
 		dataSource: displayedOptions,
-		getKey: () => local.optionValue as any,
-		getTextValue: () => local.optionTextValue as any,
-		getDisabled: () => local.optionDisabled as any,
-		getSectionChildren: () => local.optionGroupChildren as any,
+		getKey: () => mergedProps.optionValue as any,
+		getTextValue: () => mergedProps.optionTextValue as any,
+		getDisabled: () => mergedProps.optionDisabled as any,
+		getSectionChildren: () => mergedProps.optionGroupChildren as any,
 	});
 
 	const selectedOptions = createMemo(() => {
@@ -592,7 +611,7 @@ export function ComboboxBase<
 	};
 
 	const { present: contentPresent } = createPresence({
-		show: () => local.forceMount || disclosureState.isOpen(),
+		show: () => mergedProps.forceMount || disclosureState.isOpen(),
 		element: () => contentRef() ?? null,
 	});
 
@@ -601,7 +620,7 @@ export function ComboboxBase<
 		triggerMode?: ComboboxTriggerMode,
 	) => {
 		// If set to only open manually, ignore other triggers
-		if (local.triggerMode === "manual" && triggerMode !== "manual") {
+		if (mergedProps.triggerMode === "manual" && triggerMode !== "manual") {
 			return;
 		}
 
@@ -609,11 +628,11 @@ export function ComboboxBase<
 		const showAllOptions = setShowAllOptions(triggerMode === "manual");
 
 		const hasOptions = showAllOptions
-			? local.options!.length > 0
+			? mergedProps.options!.length > 0
 			: filteredOptions().length > 0;
 
 		// Don't open if there is no option.
-		if (!hasOptions && !local.allowsEmptyCollection) {
+		if (!hasOptions && !mergedProps.allowsEmptyCollection) {
 			return;
 		}
 
@@ -656,8 +675,8 @@ export function ComboboxBase<
 	const { formControlContext } = createFormControl(formControlProps);
 
 	createFormResetListener(inputRef, () => {
-		const defaultSelectedKeys = local.defaultValue
-			? [...local.defaultValue].map(getOptionValue)
+		const defaultSelectedKeys = mergedProps.defaultValue
+			? [...mergedProps.defaultValue].map(getOptionValue)
 			: new Selection();
 
 		listState.selectionManager().setSelectedKeys(defaultSelectedKeys);
@@ -665,7 +684,7 @@ export function ComboboxBase<
 
 	// By default, a KeyboardDelegate is provided which uses the DOM to query layout information (e.g. for page up/page down).
 	const delegate = createMemo(() => {
-		const keyboardDelegate = access(local.keyboardDelegate);
+		const keyboardDelegate = access(mergedProps.keyboardDelegate);
 
 		if (keyboardDelegate) {
 			return keyboardDelegate;
@@ -685,7 +704,7 @@ export function ComboboxBase<
 			keyboardDelegate: delegate,
 			disallowTypeAhead: true,
 			disallowEmptySelection: true,
-			shouldFocusWrap: () => local.shouldFocusWrap,
+			shouldFocusWrap: () => mergedProps.shouldFocusWrap,
 			// Prevent item scroll behavior from being applied here, handled in the Listbox component.
 			isVirtualized: true,
 		},
@@ -693,7 +712,7 @@ export function ComboboxBase<
 	);
 
 	const setIsInputFocused = (isFocused: boolean) => {
-		if (isFocused && local.triggerMode === "focus") {
+		if (isFocused && mergedProps.triggerMode === "focus") {
 			open(false, "focus");
 		}
 
@@ -712,26 +731,26 @@ export function ComboboxBase<
 	});
 
 	const resetInputValue = (selectedKeys: Set<string>) => {
-		if (local.selectionMode === "single") {
+		if (mergedProps.selectionMode === "single") {
 			const selectedKey = [...selectedKeys][0];
 
 			const selectedOption = allOptions().find(
 				(option) => getOptionValue(option) === selectedKey,
 			);
-			if (local.noResetInputOnBlur && !selectedOption) return;
+			if (mergedProps.noResetInputOnBlur && !selectedOption) return;
 			setInputValue(selectedOption ? getOptionLabel(selectedOption) : "");
 		} else {
-			if (local.noResetInputOnBlur) return;
+			if (mergedProps.noResetInputOnBlur) return;
 			setInputValue("");
 		}
 	};
 
 	const renderItem = (item: CollectionNode) => {
-		return local.itemComponent?.({ item });
+		return mergedProps.itemComponent?.({ item });
 	};
 
 	const renderSection = (section: CollectionNode) => {
-		return local.sectionComponent?.({ section });
+		return mergedProps.sectionComponent?.({ section });
 	};
 
 	// If combobox is going to close, freeze the displayed options
@@ -743,14 +762,14 @@ export function ComboboxBase<
 				const prevShowAllOptions = prevInput[1];
 
 				setLastDisplayedOptions(
-					prevShowAllOptions ? local.options! : prevFilteredOptions,
+					prevShowAllOptions ? mergedProps.options! : prevFilteredOptions,
 				);
 			} else {
 				const filteredOptions = input[0];
 				const showAllOptions = input[1];
 
 				setLastDisplayedOptions(
-					showAllOptions ? local.options! : filteredOptions,
+					showAllOptions ? mergedProps.options! : filteredOptions,
 				);
 			}
 		}),
@@ -786,7 +805,7 @@ export function ComboboxBase<
 			const isSelected = listState.selectionManager().isSelected(focusedKey);
 
 			const announcement =
-				local.translations?.focusAnnouncement(
+				mergedProps.translations?.focusAnnouncement(
 					focusedItem?.textValue || "",
 					isSelected,
 				) ?? "";
@@ -819,7 +838,7 @@ export function ComboboxBase<
 			(didOpenWithoutFocusedItem || optionCount !== lastOptionCount)
 		) {
 			const announcement =
-				local.translations?.countAnnouncement(optionCount) ?? "";
+				mergedProps.translations?.countAnnouncement(optionCount) ?? "";
 			announce(announcement);
 		}
 
@@ -843,7 +862,7 @@ export function ComboboxBase<
 			lastSelectedKey !== lastAnnouncedSelectedKey
 		) {
 			const announcement =
-				local.translations?.selectedAnnouncement(
+				mergedProps.translations?.selectedAnnouncement(
 					lastSelectedItem?.textValue || "",
 				) ?? "";
 
@@ -864,19 +883,19 @@ export function ComboboxBase<
 		dataset,
 		isOpen: disclosureState.isOpen,
 		isDisabled: () => formControlContext.isDisabled() ?? false,
-		isMultiple: () => access(local.selectionMode) === "multiple",
-		isVirtualized: () => local.virtualized ?? false,
-		isModal: () => local.modal ?? false,
-		preventScroll: () => local.preventScroll ?? context.isModal(),
-		allowsEmptyCollection: () => local.allowsEmptyCollection ?? false,
-		shouldFocusWrap: () => local.shouldFocusWrap ?? false,
-		removeOnBackspace: () => local.removeOnBackspace ?? true,
+		isMultiple: () => access(mergedProps.selectionMode) === "multiple",
+		isVirtualized: () => mergedProps.virtualized ?? false,
+		isModal: () => mergedProps.modal ?? false,
+		preventScroll: () => mergedProps.preventScroll ?? context.isModal(),
+		allowsEmptyCollection: () => mergedProps.allowsEmptyCollection ?? false,
+		shouldFocusWrap: () => mergedProps.shouldFocusWrap ?? false,
+		removeOnBackspace: () => mergedProps.removeOnBackspace ?? true,
 		selectedOptions,
 		isInputFocused,
 		contentPresent,
 		autoFocus: focusStrategy,
 		inputValue,
-		triggerMode: () => local.triggerMode!,
+		triggerMode: () => mergedProps.triggerMode!,
 		activeDescendant,
 		controlRef,
 		inputRef,
@@ -885,8 +904,8 @@ export function ComboboxBase<
 		listState: () => listState,
 		keyboardDelegate: delegate,
 		listboxId,
-		triggerAriaLabel: () => local.translations?.triggerLabel,
-		listboxAriaLabel: () => local.translations?.listboxLabel,
+		triggerAriaLabel: () => mergedProps.translations?.triggerLabel,
+		listboxAriaLabel: () => mergedProps.translations?.listboxLabel,
 		setIsInputFocused,
 		resetInputValue,
 		setInputValue,
@@ -898,7 +917,7 @@ export function ComboboxBase<
 		open,
 		close,
 		toggle,
-		placeholder: () => local.placeholder,
+		placeholder: () => mergedProps.placeholder,
 		renderItem,
 		renderSection,
 		removeOptionFromSelection,
@@ -908,8 +927,8 @@ export function ComboboxBase<
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<ComboboxContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<ComboboxContext value={context}>
 				<Popper anchorRef={controlRef} contentRef={contentRef} {...popperProps}>
 					<Polymorphic<ComboboxBaseRenderProps>
 						as="div"
@@ -920,7 +939,7 @@ export function ComboboxBase<
 						{...others}
 					/>
 				</Popper>
-			</ComboboxContext.Provider>
-		</FormControlContext.Provider>
+			</ComboboxContext>
+		</FormControlContext>
 	);
 }

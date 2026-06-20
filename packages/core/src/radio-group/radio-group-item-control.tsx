@@ -1,5 +1,5 @@
 import { EventKey, callHandler, mergeDefaultProps } from "@kobalte/utils";
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import { type JSX, type ValidComponent, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -45,17 +45,17 @@ export function RadioGroupItemControl<T extends ValidComponent = "div">(
 		props as RadioGroupItemControlProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["onClick", "onKeyDown"]);
+	const others = omit(mergedProps, "onClick", "onKeyDown");
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
 		context.select();
 		context.inputRef()?.focus();
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		if (e.key === EventKey.Space) {
 			context.select();

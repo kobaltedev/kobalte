@@ -3,7 +3,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import * as TextField from "../text-field";
@@ -35,7 +35,7 @@ export function ColorFieldInput<T extends ValidComponent = "input">(
 ) {
 	const context = useColorFieldContext();
 
-	const [local, others] = splitProps(props, ["onBlur"]);
+	const others = omit(props, "onBlur");
 
 	return (
 		<TextField.Input<
@@ -49,7 +49,7 @@ export function ColorFieldInput<T extends ValidComponent = "input">(
 			autoComplete="off"
 			autoCorrect="off"
 			spellCheck="false"
-			onBlur={composeEventHandlers([local.onBlur, context.onBlur])}
+			onBlur={composeEventHandlers([props.onBlur, context.onBlur])}
 			{...others}
 		/>
 	);

@@ -120,8 +120,8 @@ export function DialogRoot(props: DialogRootProps) {
 	};
 
 	return (
-		<DialogContext.Provider value={context}>
+		<DialogContext value={context}>
 			{mergedProps.children}
-		</DialogContext.Provider>
+		</DialogContext>
 	);
 }

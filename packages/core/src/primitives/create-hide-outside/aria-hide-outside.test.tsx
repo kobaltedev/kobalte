@@ -7,7 +7,7 @@
  */
 
 import { fireEvent, render, waitFor } from "@solidjs/testing-library";
-import { createSignal, onMount } from "solid-js";
+import { createSignal, onSettled } from "solid-js";
 
 import { ariaHideOutside } from "./create-hide-outside";
 
@@ -150,7 +150,7 @@ describe("ariaHideOutside", () => {
 			const [show, setShow] = createSignal(false);
 			let revert: () => void;
 
-			onMount(() => {
+			onSettled(() => {
 				revert = ariaHideOutside([toggleRef, revertRef]);
 			});
 

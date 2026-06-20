@@ -25,11 +25,11 @@ import {
 	type JSX,
 	type ValidComponent,
 	createEffect,
+	omit,
 	on,
 	onCleanup,
-	splitProps,
 } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer } from "@solidjs/web";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -68,16 +68,10 @@ export function ToastList<T extends ValidComponent = "ol">(
 
 	const context = useToastRegionContext();
 
-	const [local, others] = splitProps(props as ToastListProps, [
-		"ref",
-		"onFocusIn",
-		"onFocusOut",
-		"onPointerMove",
-		"onPointerLeave",
-	]);
+	const others = omit(props as ToastListProps, "ref", "onFocusIn", "onFocusOut", "onPointerMove", "onPointerLeave");
 
 	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocusIn);
+		callHandler(e, props.onFocusIn);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
 			context.pauseAllTimer();
@@ -85,7 +79,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	};
 
 	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocusOut);
+		callHandler(e, props.onFocusOut);
 
 		// The newly focused element isn't inside the toast list.
 		if (!contains(ref, e.relatedTarget as HTMLElement)) {
@@ -96,7 +90,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, props.onPointerMove);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
 			context.pauseAllTimer();
@@ -106,7 +100,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerLeave);
+		callHandler(e, props.onPointerLeave);
 
 		// The current active element isn't inside the toast list.
 		if (!contains(ref, getDocument(ref).activeElement)) {
@@ -161,7 +155,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	return (
 		<Polymorphic<ToastListRenderProps>
 			as="ol"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), props.ref)}
 			tabIndex={-1}
 			onFocusIn={onFocusIn}
 			onFocusOut={onFocusOut}

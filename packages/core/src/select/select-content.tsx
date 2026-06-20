@@ -8,7 +8,7 @@ import {
 	type JSX,
 	Show,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -79,12 +79,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 
 	const context = useSelectContext();
 
-	const [local, others] = splitProps(props as SelectContentProps, [
-		"ref",
-		"style",
-		"onCloseAutoFocus",
-		"onFocusOutside",
-	]);
+	const others = omit(props as SelectContentProps, "ref", "style", "onCloseAutoFocus", "onFocusOutside");
 
 	const onEscapeKeyDown = (e: KeyboardEvent) => {
 		// `createSelectableList` prevent escape key down,
@@ -94,7 +89,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		props.onFocusOutside?.(e);
 
 		// When focus is trapped (in modal mode), a `focusout` event may still happen.
 		// We make sure we don't trigger our `onDismiss` in such case.
@@ -122,7 +117,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 				e.preventDefault();
 			},
 			onUnmountAutoFocus: (e) => {
-				local.onCloseAutoFocus?.(e);
+				props.onCloseAutoFocus?.(e);
 
 				if (!e.defaultPrevented) {
 					focusWithoutScrolling(context.triggerRef());
@@ -144,7 +139,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
 						ref = el;
-					}, local.ref)}
+					}, props.ref)}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.triggerRef]}
 					style={combineStyle(
@@ -153,7 +148,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 								"var(--kb-popper-content-transform-origin)",
 							position: "relative",
 						},
-						local.style,
+						props.style,
 					)}
 					onEscapeKeyDown={onEscapeKeyDown}
 					onFocusOutside={onFocusOutside}

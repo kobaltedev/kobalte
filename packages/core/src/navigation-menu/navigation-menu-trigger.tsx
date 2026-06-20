@@ -3,7 +3,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import type {
@@ -43,16 +43,12 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	const context = useNavigationMenuContext();
 	const menuContext = useOptionalMenuContext();
 
-	const [local, others] = splitProps(props as NavigationMenuTriggerProps, [
-		"onPointerEnter",
-		"onPointerLeave",
-		"onClick",
-	]);
+	const others = omit(props as NavigationMenuTriggerProps, "onPointerEnter", "onPointerLeave", "onClick");
 
 	let timeoutId: number | undefined;
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, props.onClick);
 
 		if (timeoutId) clearTimeout(timeoutId);
 	};
@@ -60,7 +56,7 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerEnter);
+		callHandler(e, props.onPointerEnter);
 
 		if (e.pointerType === "touch") return;
 
@@ -79,7 +75,7 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerLeave);
+		callHandler(e, props.onPointerLeave);
 
 		if (e.pointerType === "touch") return;
 

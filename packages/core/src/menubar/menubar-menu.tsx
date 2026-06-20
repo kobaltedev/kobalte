@@ -1,5 +1,5 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { type ParentProps, createUniqueId, splitProps } from "solid-js";
+import { type ParentProps, createUniqueId, omit } from "solid-js";
 
 import { MenuRoot, type MenuRootOptions } from "../menu";
 import { useMenubarContext } from "./menubar-context";
@@ -21,7 +21,7 @@ export function MenubarMenu(props: MenubarMenuProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["value"]);
+	const others = omit(mergedProps, "value");
 
 	const uniqueid = createUniqueId();
 
@@ -29,5 +29,5 @@ export function MenubarMenu(props: MenubarMenuProps) {
 
 	const mergedPropsWithId = mergeDefaultProps({ id: defaultId }, others);
 
-	return <MenuRoot value={local.value ?? uniqueid} {...mergedPropsWithId} />;
+	return <MenuRoot value={mergedProps.value ?? uniqueid} {...mergedPropsWithId} />;
 }

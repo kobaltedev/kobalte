@@ -19,8 +19,8 @@
  */
 
 import { callHandler, getDocument, mergeRefs } from "@kobalte/utils";
-import { type JSX, type ValidComponent, onCleanup, splitProps } from "solid-js";
-import { isServer } from "solid-js/web";
+import { type JSX, type ValidComponent, omit, onCleanup } from "solid-js";
+import { isServer } from "@solidjs/web";
 
 import {
 	type ElementOf,
@@ -61,15 +61,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 
 	const context = useTooltipContext();
 
-	const [local, others] = splitProps(props as TooltipTriggerProps, [
-		"ref",
-		"onPointerEnter",
-		"onPointerLeave",
-		"onPointerDown",
-		"onClick",
-		"onFocus",
-		"onBlur",
-	]);
+	const others = omit(props as TooltipTriggerProps, "ref", "onPointerEnter", "onPointerLeave", "onPointerDown", "onClick", "onFocus", "onBlur");
 
 	let isPointerDown = false;
 	let isHovered = false;
@@ -94,7 +86,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerEnter);
+		callHandler(e, props.onPointerEnter);
 
 		if (
 			e.pointerType === "touch" ||
@@ -113,7 +105,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerLeave);
+		callHandler(e, props.onPointerLeave);
 
 		if (e.pointerType === "touch") {
 			return;
@@ -133,7 +125,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, props.onPointerDown);
 
 		isPointerDown = true;
 		getDocument(ref).addEventListener("pointerup", handlePointerUp, {
@@ -142,7 +134,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, props.onClick);
 
 		// No matter how the trigger is left, we should close the tooltip.
 		isHovered = false;
@@ -152,7 +144,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, props.onFocus);
 
 		if (context.isDisabled() || e.defaultPrevented || isPointerDown) {
 			return;
@@ -164,7 +156,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, props.onBlur);
 
 		const relatedTarget = e.relatedTarget as Node | null;
 
@@ -195,7 +187,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 			ref={mergeRefs((el) => {
 				context.setTriggerRef(el);
 				ref = el;
-			}, local.ref)}
+			}, props.ref)}
 			aria-describedby={context.isOpen() ? context.contentId() : undefined}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}

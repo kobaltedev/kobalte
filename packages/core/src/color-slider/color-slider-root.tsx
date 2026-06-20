@@ -4,7 +4,7 @@ import {
 	type ValidComponent,
 	createMemo,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
@@ -106,45 +106,36 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 		props as ColorSliderRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"value",
-		"defaultValue",
-		"onChange",
-		"onChangeEnd",
-		"channel",
-		"colorSpace",
-		"getValueLabel",
-		"translations",
-	]);
+	const others = omit(mergedProps, "value", "defaultValue", "onChange", "onChangeEnd", "channel", "colorSpace", "getValueLabel", "translations");
 
 	const [value, setValue] = createControllableSignal<Color>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue,
-		onChange: (value) => local.onChange?.(value),
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue,
+		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
 	const color = createMemo(() => {
-		return local.colorSpace ? value()!.toFormat(local.colorSpace) : value()!;
+		return mergedProps.colorSpace ? value()!.toFormat(mergedProps.colorSpace) : value()!;
 	});
 
 	const onChange = (value: number[]) => {
-		setValue(color()!.withChannelValue(local.channel, value[0]));
+		setValue(color()!.withChannelValue(mergedProps.channel, value[0]));
 	};
 
 	const onChangeEnd = (value: number[]) => {
-		local.onChangeEnd?.(color()!.withChannelValue(local.channel, value[0]));
+		mergedProps.onChangeEnd?.(color()!.withChannelValue(mergedProps.channel, value[0]));
 	};
 
 	const getValueLabel = createMemo(() => {
-		if (local.getValueLabel) {
-			return local.getValueLabel(color()!);
+		if (mergedProps.getValueLabel) {
+			return mergedProps.getValueLabel(color()!);
 		}
 
-		return color()!.formatChannelValue(local.channel);
+		return color()!.formatChannelValue(mergedProps.channel);
 	});
 
 	const getDisplayColor = createMemo(() => {
-		switch (local.channel) {
+		switch (mergedProps.channel) {
 			case "hue":
 				return parseColor(`hsl(${color()!.getChannelValue("hue")}, 100%, 50%)`);
 			case "lightness":
@@ -158,31 +149,31 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 				return color()!;
 			}
 			default:
-				throw new Error(`Unknown color channel: ${local.channel}`);
+				throw new Error(`Unknown color channel: ${mergedProps.channel}`);
 		}
 	});
 
 	const context: ColorSliderContextValue = {
 		value: color,
-		channel: () => local.channel,
+		channel: () => mergedProps.channel,
 		getDisplayColor,
-		translations: () => local.translations,
+		translations: () => mergedProps.translations,
 	};
 
 	return (
-		<ColorSliderContext.Provider value={context}>
+		<ColorSliderContext value={context}>
 			<Slider.Root<
 				Component<
 					Omit<ColorSliderRootRenderProps, keyof Slider.SliderRootRenderProps>
 				>
 			>
-				value={[color()!.getChannelValue(local.channel)]}
+				value={[color()!.getChannelValue(mergedProps.channel)]}
 				onChange={onChange}
 				onChangeEnd={onChangeEnd}
 				getValueLabel={getValueLabel}
-				{...color()!.getChannelRange(local.channel)}
+				{...color()!.getChannelRange(mergedProps.channel)}
 				{...others}
 			/>
-		</ColorSliderContext.Provider>
+		</ColorSliderContext>
 	);
 }

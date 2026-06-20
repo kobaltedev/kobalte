@@ -11,7 +11,7 @@ import {
 	children,
 	createEffect,
 	onCleanup,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -79,7 +79,7 @@ export function SelectValue<Option, T extends ValidComponent = "span">(
 		props as SelectValueProps<Option>,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["id", "children"]);
+	const others = omit(mergedProps, "id", "children");
 
 	const selectionManager = () => context.listState().selectionManager();
 
@@ -95,12 +95,12 @@ export function SelectValue<Option, T extends ValidComponent = "span">(
 		return selectionManager().isEmpty();
 	};
 
-	createEffect(() => onCleanup(context.registerValueId(local.id!)));
+	createEffect(() => onCleanup(context.registerValueId(mergedProps.id!)));
 
 	return (
 		<Polymorphic<SelectValueRenderProps>
 			as="span"
-			id={local.id}
+			id={mergedProps.id}
 			data-placeholder-shown={isSelectionEmpty() ? "" : undefined}
 			{...formControlContext.dataset()}
 			{...others}
@@ -114,7 +114,7 @@ export function SelectValue<Option, T extends ValidComponent = "span">(
 						clear: () => selectionManager().clearSelection(),
 					}}
 				>
-					{local.children}
+					{mergedProps.children}
 				</SelectValueChild>
 			</Show>
 		</Polymorphic>

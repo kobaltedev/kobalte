@@ -3,7 +3,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -36,13 +36,10 @@ export function DialogCloseButton<T extends ValidComponent = "button">(
 ) {
 	const context = useDialogContext();
 
-	const [local, others] = splitProps(props as DialogCloseButtonProps, [
-		"aria-label",
-		"onClick",
-	]);
+	const others = omit(props as DialogCloseButtonProps, "aria-label", "onClick");
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, props.onClick);
 		context.close();
 	};
 
@@ -52,7 +49,7 @@ export function DialogCloseButton<T extends ValidComponent = "button">(
 				Omit<DialogCloseButtonRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-label={local["aria-label"] || context.translations().dismiss}
+			aria-label={props["aria-label"] || context.translations().dismiss}
 			onClick={onClick}
 			{...others}
 		/>

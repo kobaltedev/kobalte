@@ -13,7 +13,7 @@ import {
 	type ValidComponent,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Collapsible from "../collapsible";
@@ -67,7 +67,7 @@ export function AccordionItem<T extends ValidComponent = "div">(
 		props as AccordionItemProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["value", "disabled"]);
+	const others = omit(mergedProps, "value", "disabled");
 
 	const [triggerId, setTriggerId] = createSignal<string>();
 	const [contentId, setContentId] = createSignal<string>();
@@ -76,11 +76,11 @@ export function AccordionItem<T extends ValidComponent = "div">(
 		accordionContext.listState().selectionManager();
 
 	const isExpanded = () => {
-		return selectionManager().isSelected(local.value);
+		return selectionManager().isSelected(mergedProps.value);
 	};
 
 	const context: AccordionItemContextValue = {
-		value: () => local.value,
+		value: () => mergedProps.value,
 		triggerId,
 		contentId,
 		generateId: createGenerateId(() => others.id!),
@@ -89,7 +89,7 @@ export function AccordionItem<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<AccordionItemContext.Provider value={context}>
+		<AccordionItemContext value={context}>
 			<Collapsible.Root<
 				Component<
 					Omit<
@@ -99,9 +99,9 @@ export function AccordionItem<T extends ValidComponent = "div">(
 				>
 			>
 				open={isExpanded()}
-				disabled={local.disabled}
+				disabled={mergedProps.disabled}
 				{...others}
 			/>
-		</AccordionItemContext.Provider>
+		</AccordionItemContext>
 	);
 }

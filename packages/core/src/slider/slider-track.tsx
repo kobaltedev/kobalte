@@ -3,7 +3,7 @@ import {
 	type JSX,
 	type ValidComponent,
 	createSignal,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -39,11 +39,7 @@ export function SliderTrack<T extends ValidComponent = "div">(
 ) {
 	const context = useSliderContext();
 
-	const [local, others] = splitProps(props as SliderTrackProps, [
-		"onPointerDown",
-		"onPointerMove",
-		"onPointerUp",
-	]);
+	const others = omit(props as SliderTrackProps, "onPointerDown", "onPointerMove", "onPointerUp");
 
 	const [sRect, setRect] = createSignal<DOMRect>();
 
@@ -80,7 +76,7 @@ export function SliderTrack<T extends ValidComponent = "div">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, props.onPointerDown);
 
 		const target = e.target as HTMLElement;
 		target.setPointerCapture(e.pointerId);
@@ -98,7 +94,7 @@ export function SliderTrack<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, props.onPointerMove);
 
 		const target = e.target as HTMLElement;
 
@@ -113,7 +109,7 @@ export function SliderTrack<T extends ValidComponent = "div">(
 	};
 
 	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerUp);
+		callHandler(e, props.onPointerUp);
 
 		const target = e.target as HTMLElement;
 

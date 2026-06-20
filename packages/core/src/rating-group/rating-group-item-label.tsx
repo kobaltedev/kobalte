@@ -4,8 +4,8 @@ import {
 	type JSX,
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 import {
 	type ElementOf,
@@ -49,7 +49,7 @@ export function RatingGroupItemLabel<T extends ValidComponent = "label">(
 		props as RatingGroupItemLabelProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["style"]);
+	const others = omit(mergedProps, "style");
 
 	createEffect(() => onCleanup(context.registerLabel(others.id!)));
 
@@ -57,7 +57,7 @@ export function RatingGroupItemLabel<T extends ValidComponent = "label">(
 		<Polymorphic<RatingGroupItemLabelRenderProps>
 			as="label"
 			for={context.itemId()}
-			style={combineStyle(visuallyHiddenStyles, local.style)}
+			style={combineStyle(visuallyHiddenStyles, mergedProps.style)}
 			{...context.dataset()}
 			{...others}
 		/>

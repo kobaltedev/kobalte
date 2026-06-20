@@ -18,7 +18,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -83,11 +83,7 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 		props as RadioGroupItemProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"value",
-		"disabled",
-		"onPointerDown",
-	]);
+	const others = omit(mergedProps, "value", "disabled", "onPointerDown");
 
 	const [inputId, setInputId] = createSignal<string>();
 	const [labelId, setLabelId] = createSignal<string>();
@@ -97,19 +93,19 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 	const [isFocused, setIsFocused] = createSignal(false);
 
 	const isDefault = createMemo(() => {
-		return radioGroupContext.isDefaultValue(local.value);
+		return radioGroupContext.isDefaultValue(mergedProps.value);
 	});
 
 	const isSelected = createMemo(() => {
-		return radioGroupContext.isSelectedValue(local.value);
+		return radioGroupContext.isSelectedValue(mergedProps.value);
 	});
 
 	const isDisabled = createMemo(() => {
-		return local.disabled || formControlContext.isDisabled() || false;
+		return mergedProps.disabled || formControlContext.isDisabled() || false;
 	});
 
 	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		// For consistency with native, prevent the input blurs on pointer down.
 		if (isFocused()) {
@@ -124,7 +120,7 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 	}));
 
 	const context: RadioGroupItemContextValue = {
-		value: () => local.value,
+		value: () => mergedProps.value,
 		dataset,
 		isDefault,
 		isSelected,
@@ -133,7 +129,7 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 		labelId,
 		descriptionId,
 		inputRef,
-		select: () => radioGroupContext.setSelectedValue(local.value),
+		select: () => radioGroupContext.setSelectedValue(mergedProps.value),
 		generateId: createGenerateId(() => others.id!),
 		registerInput: createRegisterId(setInputId),
 		registerLabel: createRegisterId(setLabelId),
@@ -143,7 +139,7 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<RadioGroupItemContext.Provider value={context}>
+		<RadioGroupItemContext value={context}>
 			<Polymorphic<RadioGroupItemRenderProps>
 				as="div"
 				role="group"
@@ -151,6 +147,6 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 				{...dataset()}
 				{...others}
 			/>
-		</RadioGroupItemContext.Provider>
+		</RadioGroupItemContext>
 	);
 }

@@ -13,13 +13,12 @@ import {
 	type JSX,
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import * as Button from "../button";
 import {
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
@@ -71,26 +70,14 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		props as SelectTriggerProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
-		mergedProps,
-		[
-			"ref",
-			"disabled",
-			"onPointerDown",
-			"onClick",
-			"onKeyDown",
-			"onFocus",
-			"onBlur",
-		],
-		FORM_CONTROL_FIELD_PROP_NAMES,
-	);
+	const others = omit(mergedProps, "ref", "disabled", "onPointerDown", "onClick", "onKeyDown", "onFocus", "onBlur", "id", "aria-label", "aria-labelledby", "aria-describedby");
 
 	const selectionManager = () => context.listState().selectionManager();
 	const keyboardDelegate = () => context.keyboardDelegate();
 
-	const isDisabled = () => local.disabled || context.isDisabled();
+	const isDisabled = () => mergedProps.disabled || context.isDisabled();
 
-	const { fieldProps } = createFormControlField(formControlFieldProps);
+	const { fieldProps } = createFormControlField(mergedProps);
 
 	const { typeSelectHandlers } = createTypeSelect({
 		keyboardDelegate: keyboardDelegate,
@@ -109,7 +96,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
 
@@ -123,7 +110,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
 		if (!isDisabled() && e.currentTarget.dataset.pointerType === "touch") {
 			context.toggle(true);
@@ -131,7 +118,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		if (isDisabled()) {
 			return;
@@ -198,7 +185,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 
 		if (selectionManager().isFocused()) {
 			return;
@@ -208,7 +195,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 
 		if (context.isOpen()) {
 			return;
@@ -238,7 +225,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 				Omit<SelectTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
 			id={fieldProps.id()}
 			disabled={isDisabled()}
 			aria-haspopup="listbox"

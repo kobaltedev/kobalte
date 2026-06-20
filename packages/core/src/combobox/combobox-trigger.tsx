@@ -17,7 +17,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -63,17 +63,11 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 		props as ComboboxTriggerProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"disabled",
-		"onPointerDown",
-		"onClick",
-		"aria-labelledby",
-	]);
+	const others = omit(mergedProps, "ref", "disabled", "onPointerDown", "onClick", "aria-labelledby");
 
 	const isDisabled = () => {
 		return (
-			local.disabled ||
+			mergedProps.disabled ||
 			context.isDisabled() ||
 			formControlContext.isDisabled() ||
 			formControlContext.isReadOnly()
@@ -83,7 +77,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
 
@@ -97,7 +91,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
 		if (!isDisabled()) {
 			if (e.currentTarget.dataset.pointerType === "touch") {
@@ -113,7 +107,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 		return formControlContext.getAriaLabelledBy(
 			others.id,
 			context.triggerAriaLabel(),
-			local["aria-labelledby"],
+			mergedProps["aria-labelledby"],
 		);
 	};
 
@@ -123,7 +117,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 				Omit<ComboboxTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
 			disabled={isDisabled()}
 			tabIndex={-1}
 			aria-haspopup="listbox"

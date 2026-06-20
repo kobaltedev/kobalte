@@ -13,7 +13,7 @@
  */
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type ValidComponent, createMemo, splitProps } from "solid-js";
+import { type ValidComponent, createMemo, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -58,7 +58,7 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 		props as ButtonRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "type", "disabled"]);
+	const others = omit(mergedProps, "ref", "type", "disabled");
 
 	const tagName = createTagName(
 		() => ref,
@@ -72,7 +72,7 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 			return false;
 		}
 
-		return isButton({ tagName: elementTagName, type: local.type });
+		return isButton({ tagName: elementTagName, type: mergedProps.type });
 	});
 
 	const isNativeInput = createMemo(() => {
@@ -86,21 +86,21 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 	return (
 		<Polymorphic<ButtonRootRenderProps>
 			as="button"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
-			type={isNativeButton() || isNativeInput() ? local.type : undefined}
+			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+			type={isNativeButton() || isNativeInput() ? mergedProps.type : undefined}
 			role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
 			tabIndex={
-				!isNativeButton() && !isNativeLink() && !local.disabled ? 0 : undefined
+				!isNativeButton() && !isNativeLink() && !mergedProps.disabled ? 0 : undefined
 			}
 			disabled={
-				isNativeButton() || isNativeInput() ? local.disabled : undefined
+				isNativeButton() || isNativeInput() ? mergedProps.disabled : undefined
 			}
 			aria-disabled={
-				!isNativeButton() && !isNativeInput() && local.disabled
+				!isNativeButton() && !isNativeInput() && mergedProps.disabled
 					? true
 					: undefined
 			}
-			data-disabled={local.disabled ? "" : undefined}
+			data-disabled={mergedProps.disabled ? "" : undefined}
 			{...others}
 		/>
 	);

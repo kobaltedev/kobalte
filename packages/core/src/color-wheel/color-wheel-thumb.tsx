@@ -4,7 +4,7 @@ import {
 	type JSX,
 	type ValidComponent,
 	createSignal,
-	splitProps,
+	omit,
 } from "solid-js";
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -60,16 +60,28 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 		props as ColorWheelThumbProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
+	const formControlFieldProps = omit(
 		mergedProps,
-		["style", "onKeyDown", "onPointerDown", "onPointerMove", "onPointerUp"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
+		"style",
+		"onKeyDown",
+		"onPointerDown",
+		"onPointerMove",
+		"onPointerUp",
+	);
+	const others = omit(
+		mergedProps,
+		"style",
+		"onKeyDown",
+		"onPointerDown",
+		"onPointerMove",
+		"onPointerUp",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
 	);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 		context.onStepKeyDown(e);
 	};
 
@@ -88,7 +100,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		const target = e.currentTarget as HTMLElement;
 
@@ -104,7 +116,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 
 	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		e.stopPropagation();
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		const target = e.currentTarget as HTMLElement;
 
@@ -121,7 +133,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 
 	const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		e.stopPropagation();
-		callHandler(e, local.onPointerUp);
+		callHandler(e, mergedProps.onPointerUp);
 
 		const target = e.currentTarget as HTMLElement;
 
@@ -150,7 +162,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 					transition: "opacity .1s linear",
 					"--kb-color-current": context.state.value().toString(),
 				},
-				local.style,
+				mergedProps.style,
 			)}
 			aria-valuetext={context.getThumbValueLabel()}
 			aria-valuemin={context.state.minValue()}

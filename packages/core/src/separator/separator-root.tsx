@@ -7,7 +7,7 @@
  */
 
 import { type Orientation, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type ValidComponent, splitProps } from "solid-js";
+import { type ValidComponent, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -50,7 +50,7 @@ export function SeparatorRoot<T extends ValidComponent = "hr">(
 		props as SeparatorRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "orientation"]);
+	const others = omit(mergedProps, "ref", "orientation");
 
 	const tagName = createTagName(
 		() => ref,
@@ -60,12 +60,12 @@ export function SeparatorRoot<T extends ValidComponent = "hr">(
 	return (
 		<Polymorphic<SeparatorRootRenderProps>
 			as="hr"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 			role={tagName() !== "hr" ? "separator" : undefined}
 			aria-orientation={
-				local.orientation === "vertical" ? "vertical" : undefined
+				mergedProps.orientation === "vertical" ? "vertical" : undefined
 			}
-			data-orientation={local.orientation}
+			data-orientation={mergedProps.orientation}
 			{...others}
 		/>
 	);

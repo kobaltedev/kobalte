@@ -10,8 +10,8 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import {
@@ -54,14 +54,14 @@ export function MenuItemDescription<T extends ValidComponent = "div">(
 		props as MenuItemDescriptionProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["id"]);
+	const others = omit(mergedProps, "id");
 
-	createEffect(() => onCleanup(context.registerDescription(local.id)));
+	createEffect(() => onCleanup(context.registerDescription(mergedProps.id)));
 
 	return (
 		<Polymorphic<MenuItemDescriptionRenderProps>
 			as="div"
-			id={local.id}
+			id={mergedProps.id}
 			{...context.dataset()}
 			{...others}
 		/>

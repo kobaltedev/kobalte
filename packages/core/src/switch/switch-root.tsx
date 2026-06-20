@@ -24,7 +24,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -130,42 +130,40 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 		props as SwitchRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
+	const others = omit(
 		mergedProps,
-		[
-			"ref",
-			"children",
-			"value",
-			"checked",
-			"defaultChecked",
-			"onChange",
-			"onPointerDown",
-		],
-		FORM_CONTROL_PROP_NAMES,
+		"ref",
+		"children",
+		"value",
+		"checked",
+		"defaultChecked",
+		"onChange",
+		"onPointerDown",
+		...FORM_CONTROL_PROP_NAMES,
 	);
 
 	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
 	const [isFocused, setIsFocused] = createSignal(false);
 
-	const { formControlContext } = createFormControl(formControlProps);
+	const { formControlContext } = createFormControl(mergedProps);
 
 	const state = createToggleState({
-		isSelected: () => local.checked,
-		defaultIsSelected: () => local.defaultChecked,
-		onSelectedChange: (selected) => local.onChange?.(selected),
+		isSelected: () => mergedProps.checked,
+		defaultIsSelected: () => mergedProps.defaultChecked,
+		onSelectedChange: (selected) => mergedProps.onChange?.(selected),
 		isDisabled: () => formControlContext.isDisabled(),
 		isReadOnly: () => formControlContext.isReadOnly(),
 	});
 
 	createFormResetListener(
 		() => ref,
-		() => state.setIsSelected(local.defaultChecked ?? false),
+		() => state.setIsSelected(mergedProps.defaultChecked ?? false),
 	);
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		// For consistency with native, prevent the input blurs on pointer down.
 		if (isFocused()) {
@@ -178,11 +176,11 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 	}));
 
 	const context: SwitchContextValue = {
-		value: () => local.value!,
+		value: () => mergedProps.value!,
 		dataset,
 		checked: () => state.isSelected(),
 		inputRef,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: createGenerateId(() => access(mergedProps.id)!),
 		toggle: () => state.toggle(),
 		setIsChecked: (isChecked) => state.setIsSelected(isChecked),
 		setIsFocused,
@@ -190,22 +188,22 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<SwitchContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<SwitchContext value={context}>
 				<Polymorphic<SwitchRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
+					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 					role="group"
-					id={access(formControlProps.id)}
+					id={access(mergedProps.id)}
 					onPointerDown={onPointerDown}
 					{...formControlContext.dataset()}
 					{...dataset()}
 					{...others}
 				>
-					<SwitchRootChild state={context}>{local.children}</SwitchRootChild>
+					<SwitchRootChild state={context}>{mergedProps.children}</SwitchRootChild>
 				</Polymorphic>
-			</SwitchContext.Provider>
-		</FormControlContext.Provider>
+			</SwitchContext>
+		</FormControlContext>
 	);
 }
 

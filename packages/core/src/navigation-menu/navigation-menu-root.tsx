@@ -5,11 +5,10 @@ import {
 	JSX,
 	type Setter,
 	type ValidComponent,
-	batch,
 	createEffect,
 	createMemo,
 	createSignal,
-	splitProps,
+	omit,
 } from "solid-js";
 import createPresence from "solid-presence";
 import type {
@@ -83,47 +82,55 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 		props as NavigationMenuRootProps,
 	);
 
-	const [local, popperProps, others] = splitProps(
+	const popperProps = omit(
 		mergedProps,
-		[
-			"ref",
-			"delayDuration",
-			"skipDelayDuration",
-			"autoFocusMenu",
-			"onAutoFocusMenuChange",
-			"defaultValue",
-			"value",
-			"onValueChange",
-			"forceMount",
-		],
-		[
-			"getAnchorRect",
-			"placement",
-			"gutter",
-			"shift",
-			"flip",
-			"slide",
-			"overlap",
-			"sameWidth",
-			"fitViewport",
-			"hideWhenDetached",
-			"detachedPadding",
-			"arrowPadding",
-			"overflowPadding",
-		],
+		"ref",
+		"delayDuration",
+		"skipDelayDuration",
+		"autoFocusMenu",
+		"onAutoFocusMenuChange",
+		"defaultValue",
+		"value",
+		"onValueChange",
+		"forceMount",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"delayDuration",
+		"skipDelayDuration",
+		"autoFocusMenu",
+		"onAutoFocusMenuChange",
+		"defaultValue",
+		"value",
+		"onValueChange",
+		"forceMount",
+		"getAnchorRect",
+		"placement",
+		"gutter",
+		"shift",
+		"flip",
+		"slide",
+		"overlap",
+		"sameWidth",
+		"fitViewport",
+		"hideWhenDetached",
+		"detachedPadding",
+		"arrowPadding",
+		"overflowPadding",
 	);
 
 	const [value, setValue] = createControllableSignal<string | undefined | null>(
 		{
-			value: () => local.value,
-			defaultValue: () => local.defaultValue,
-			onChange: (value) => local.onValueChange?.(value),
+			value: () => mergedProps.value,
+			defaultValue: () => mergedProps.defaultValue,
+			onChange: (value) => mergedProps.onValueChange?.(value),
 		},
 	);
 	const [autoFocusMenu, setAutoFocusMenu] = createControllableSignal({
-		value: () => local.autoFocusMenu,
+		value: () => mergedProps.autoFocusMenu,
 		defaultValue: () => false,
-		onChange: local.onAutoFocusMenuChange,
+		onChange: mergedProps.onAutoFocusMenuChange,
 	});
 
 	const [viewportRef, setViewportRef] = createSignal<HTMLElement>();
@@ -148,10 +155,8 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 
 	createEffect(() => {
 		if (value() && !value()!.includes("link-trigger-") && autoFocusMenu()) {
-			batch(() => {
-				setExpanded(true);
-				setShow(true);
-			});
+			setExpanded(true);
+			setShow(true);
 		} else {
 			setExpanded(false);
 			setShow(false);
@@ -164,7 +169,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	}));
 
 	const { present: viewportPresent } = createPresence({
-		show: () => local.forceMount || show() || expanded(),
+		show: () => mergedProps.forceMount || show() || expanded(),
 		element: () => viewportRef() ?? null,
 	});
 
@@ -176,8 +181,8 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 
 	const context: NavigationMenuContextValue = {
 		dataset,
-		delayDuration: () => local.delayDuration!,
-		skipDelayDuration: () => local.skipDelayDuration!,
+		delayDuration: () => mergedProps.delayDuration!,
+		skipDelayDuration: () => mergedProps.skipDelayDuration!,
 		autoFocusMenu: autoFocusMenu as Accessor<boolean>,
 		setAutoFocusMenu,
 		startLeaveTimer: () => {
@@ -200,7 +205,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	};
 
 	return (
-		<NavigationMenuContext.Provider value={context}>
+		<NavigationMenuContext value={context}>
 			<Popper
 				anchorRef={rootRef}
 				contentRef={viewportRef}
@@ -215,7 +220,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 						>
 					>
 						as="ul"
-						ref={mergeRefs(context.setRootRef, local.ref)}
+						ref={mergeRefs(context.setRootRef, mergedProps.ref)}
 						value={value() ?? null}
 						onValueChange={setValue}
 						autoFocusMenu={autoFocusMenu()}
@@ -224,6 +229,6 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 					/>
 				</nav>
 			</Popper>
-		</NavigationMenuContext.Provider>
+		</NavigationMenuContext>
 	);
 }

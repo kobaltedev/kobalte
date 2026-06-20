@@ -2,9 +2,9 @@ import { mergeRefs } from "@kobalte/utils";
 import {
 	type Component,
 	type JSX,
+	omit,
 	Show,
 	type ValidComponent,
-	splitProps,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -48,10 +48,7 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 ) {
 	const context = useHoverCardContext();
 
-	const [local, others] = splitProps(props as HoverCardContentProps, [
-		"ref",
-		"style",
-	]);
+	const others = omit(props as HoverCardContentProps, "ref", "style");
 
 	return (
 		<Show when={context.contentPresent()}>
@@ -63,7 +60,7 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
-					}, local.ref)}
+					}, props.ref)}
 					disableOutsidePointerEvents={false}
 					style={combineStyle(
 						{
@@ -71,7 +68,7 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 								"var(--kb-popper-content-transform-origin)",
 							position: "relative",
 						},
-						local.style,
+						props.style,
 					)}
 					onFocusOutside={(e) => e.preventDefault()}
 					onDismiss={context.close}

@@ -3,7 +3,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
@@ -38,10 +38,7 @@ export function NumberFieldVaryTrigger<T extends ValidComponent = "button">(
 	const formControlContext = useFormControlContext();
 	const context = useNumberFieldContext();
 
-	const [local, others] = splitProps(props as NumberFieldVaryTriggerProps, [
-		"numberFieldVaryType",
-		"onClick",
-	]);
+	const others = omit(props as NumberFieldVaryTriggerProps, "numberFieldVaryType", "onClick");
 
 	return (
 		<Button.Root<
@@ -56,16 +53,16 @@ export function NumberFieldVaryTrigger<T extends ValidComponent = "button">(
 			disabled={
 				formControlContext.isDisabled() ||
 				context.rawValue() ===
-					(local.numberFieldVaryType === "increment"
+					(props.numberFieldVaryType === "increment"
 						? context.maxValue()
 						: context.minValue())
 			}
 			aria-controls={formControlContext.fieldId()}
 			onClick={(e) => {
-				callHandler(e, local.onClick);
+				callHandler(e, props.onClick);
 
 				context.varyValue(
-					context.step() * (local.numberFieldVaryType === "increment" ? 1 : -1),
+					context.step() * (props.numberFieldVaryType === "increment" ? 1 : -1),
 				);
 
 				context.inputRef()?.focus();

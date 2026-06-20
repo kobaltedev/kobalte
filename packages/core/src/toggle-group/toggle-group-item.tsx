@@ -10,7 +10,7 @@ import {
 	type JSX,
 	type ValidComponent,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import type { CollectionItemWithRef } from "../primitives";
@@ -69,35 +69,25 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 		props as ToggleGroupItemProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"value",
-		"disabled",
-		"onPointerDown",
-		"onPointerUp",
-		"onClick",
-		"onKeyDown",
-		"onMouseDown",
-		"onFocus",
-	]);
+	const others = omit(mergedProps, "ref", "value", "disabled", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
 
 	const selectionManager = () => rootContext.listState().selectionManager();
 
-	const isDisabled = () => rootContext.isDisabled() || local.disabled;
+	const isDisabled = () => rootContext.isDisabled() || mergedProps.disabled;
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
 			ref: () => ref,
 			type: "item",
-			key: local.value,
+			key: mergedProps.value,
 			textValue: "",
-			disabled: local.disabled! || rootContext.isDisabled(),
+			disabled: mergedProps.disabled! || rootContext.isDisabled(),
 		}),
 	});
 
 	const selectableItem = createSelectableItem(
 		{
-			key: () => local.value,
+			key: () => mergedProps.value,
 			selectionManager: selectionManager,
 			disabled: isDisabled,
 		},
@@ -110,7 +100,7 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 			e.preventDefault();
 		}
 
-		callHandler(e, local.onKeyDown as typeof onKeyDown);
+		callHandler(e, mergedProps.onKeyDown as typeof onKeyDown);
 		callHandler(e, selectableItem.onKeyDown);
 	};
 
@@ -123,26 +113,26 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={mergeRefs((el) => (ref = el), local.ref)}
-			pressed={selectionManager().isSelected(local.value)}
+			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+			pressed={selectionManager().isSelected(mergedProps.value)}
 			tabIndex={selectableItem.tabIndex()}
 			data-orientation={rootContext.orientation()}
 			disabled={isDisabled()}
 			onPointerDown={composeEventHandlers([
-				local.onPointerDown,
+				mergedProps.onPointerDown,
 				selectableItem.onPointerDown,
 			])}
 			onPointerUp={composeEventHandlers([
-				local.onPointerUp,
+				mergedProps.onPointerUp,
 				selectableItem.onPointerUp,
 			])}
-			onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
+			onClick={composeEventHandlers([mergedProps.onClick, selectableItem.onClick])}
 			onKeyDown={onKeyDown}
 			onMouseDown={composeEventHandlers([
-				local.onMouseDown,
+				mergedProps.onMouseDown,
 				selectableItem.onMouseDown,
 			])}
-			onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+			onFocus={composeEventHandlers([mergedProps.onFocus, selectableItem.onFocus])}
 			{...others}
 		/>
 	);

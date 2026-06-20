@@ -17,7 +17,7 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { type Direction, useLocale } from "../i18n";
@@ -69,10 +69,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 	const context = useMenuContext();
 	const rootContext = useMenuRootContext();
 
-	const [local, others] = splitProps(props as MenuSubContentProps, [
-		"onFocusOutside",
-		"onKeyDown",
-	]);
+	const others = omit(props as MenuSubContentProps, "onFocusOutside", "onKeyDown");
 
 	const { direction } = useLocale();
 
@@ -88,7 +85,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		props.onFocusOutside?.(e);
 
 		const target = e.target as HTMLElement | null;
 
@@ -100,7 +97,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, props.onKeyDown);
 
 		// Submenu key events bubble through portals. We only care about keys in this menu.
 		const isKeyDownInside = contains(e.currentTarget, e.target);

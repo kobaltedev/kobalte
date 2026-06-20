@@ -23,7 +23,7 @@ import {
 	type JSX,
 	type ValidComponent,
 	children,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -82,23 +82,17 @@ export type ToggleButtonRootProps<
 export function ToggleButtonRoot<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, ToggleButtonRootProps<T>>,
 ) {
-	const [local, others] = splitProps(props as ToggleButtonRootProps, [
-		"children",
-		"pressed",
-		"defaultPressed",
-		"onChange",
-		"onClick",
-	]);
+	const others = omit(props as ToggleButtonRootProps, "children", "pressed", "defaultPressed", "onChange", "onClick");
 
 	const state = createToggleState({
-		isSelected: () => local.pressed,
-		defaultIsSelected: () => local.defaultPressed,
-		onSelectedChange: (selected) => local.onChange?.(selected),
+		isSelected: () => props.pressed,
+		defaultIsSelected: () => props.defaultPressed,
+		onSelectedChange: (selected) => props.onChange?.(selected),
 		isDisabled: () => others.disabled,
 	});
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, props.onClick);
 		state.toggle();
 	};
 
@@ -114,7 +108,7 @@ export function ToggleButtonRoot<T extends ValidComponent = "button">(
 			{...others}
 		>
 			<ToggleButtonRootChild state={{ pressed: state.isSelected }}>
-				{local.children}
+				{props.children}
 			</ToggleButtonRootChild>
 		</Button.Root>
 	);

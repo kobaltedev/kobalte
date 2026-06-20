@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/38a57d3360268fb0cb55c6b42b9a5f6f13bb57d6/packages/@react-aria/breadcrumbs/src/useBreadcrumbItem.ts
  */
 
-import { type Component, type ValidComponent, splitProps } from "solid-js";
+import { type Component, type ValidComponent, omit } from "solid-js";
 
 import * as Link from "../link";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -38,18 +38,14 @@ export type BreadcrumbsLinkProps<
 export function BreadcrumbsLink<T extends ValidComponent = "a">(
 	props: PolymorphicProps<T, BreadcrumbsLinkProps<T>>,
 ) {
-	const [local, others] = splitProps(props as BreadcrumbsLinkProps, [
-		"current",
-		"disabled",
-		"aria-current",
-	]);
+	const others = omit(props as BreadcrumbsLinkProps, "current", "disabled", "aria-current");
 
 	const ariaCurrent = () => {
-		if (!local.current) {
+		if (!props.current) {
 			return undefined;
 		}
 
-		return local["aria-current"] || "page";
+		return props["aria-current"] || "page";
 	};
 
 	return (
@@ -58,9 +54,9 @@ export function BreadcrumbsLink<T extends ValidComponent = "a">(
 				Omit<BreadcrumbsLinkRenderProps, keyof Link.LinkRootRenderProps>
 			>
 		>
-			disabled={local.disabled || local.current}
+			disabled={props.disabled || props.current}
 			aria-current={ariaCurrent()}
-			data-current={local.current ? "" : undefined}
+			data-current={props.current ? "" : undefined}
 			{...others}
 		/>
 	);

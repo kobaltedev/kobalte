@@ -25,7 +25,7 @@ import {
 	createSignal,
 	createUniqueId,
 	on,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import createPresence from "solid-presence";
@@ -249,53 +249,9 @@ export function SelectBase<
 		props as SelectBaseProps<Option, OptGroup>,
 	);
 
-	const [local, popperProps, formControlProps, others] = splitProps(
-		mergedProps,
-		[
-			"itemComponent",
-			"sectionComponent",
-			"open",
-			"defaultOpen",
-			"onOpenChange",
-			"value",
-			"defaultValue",
-			"onChange",
-			"placeholder",
-			"options",
-			"optionValue",
-			"optionTextValue",
-			"optionDisabled",
-			"optionGroupChildren",
-			"keyboardDelegate",
-			"allowDuplicateSelectionEvents",
-			"disallowEmptySelection",
-			"closeOnSelection",
-			"disallowTypeAhead",
-			"shouldFocusWrap",
-			"selectionBehavior",
-			"selectionMode",
-			"virtualized",
-			"modal",
-			"preventScroll",
-			"forceMount",
-		],
-		[
-			"getAnchorRect",
-			"placement",
-			"gutter",
-			"shift",
-			"flip",
-			"slide",
-			"overlap",
-			"sameWidth",
-			"fitViewport",
-			"hideWhenDetached",
-			"detachedPadding",
-			"arrowPadding",
-			"overflowPadding",
-		],
-		FORM_CONTROL_PROP_NAMES,
-	);
+	const popperProps = omit(mergedProps, "itemComponent", "sectionComponent", "open", "defaultOpen", "onOpenChange", "value", "defaultValue", "onChange", "placeholder", "options", "optionValue", "optionTextValue", "optionDisabled", "optionGroupChildren", "keyboardDelegate", "allowDuplicateSelectionEvents", "disallowEmptySelection", "closeOnSelection", "disallowTypeAhead", "shouldFocusWrap", "selectionBehavior", "selectionMode", "virtualized", "modal", "preventScroll", "forceMount", ...FORM_CONTROL_PROP_NAMES);
+	const formControlProps = omit(mergedProps, "itemComponent", "sectionComponent", "open", "defaultOpen", "onOpenChange", "value", "defaultValue", "onChange", "placeholder", "options", "optionValue", "optionTextValue", "optionDisabled", "optionGroupChildren", "keyboardDelegate", "allowDuplicateSelectionEvents", "disallowEmptySelection", "closeOnSelection", "disallowTypeAhead", "shouldFocusWrap", "selectionBehavior", "selectionMode", "virtualized", "modal", "preventScroll", "forceMount", "getAnchorRect", "placement", "gutter", "shift", "flip", "slide", "overlap", "sameWidth", "fitViewport", "hideWhenDetached", "detachedPadding", "arrowPadding", "overflowPadding");
+	const others = omit(mergedProps, "itemComponent", "sectionComponent", "open", "defaultOpen", "onOpenChange", "value", "defaultValue", "onChange", "placeholder", "options", "optionValue", "optionTextValue", "optionDisabled", "optionGroupChildren", "keyboardDelegate", "allowDuplicateSelectionEvents", "disallowEmptySelection", "closeOnSelection", "disallowTypeAhead", "shouldFocusWrap", "selectionBehavior", "selectionMode", "virtualized", "modal", "preventScroll", "forceMount", "getAnchorRect", "placement", "gutter", "shift", "flip", "slide", "overlap", "sameWidth", "fitViewport", "hideWhenDetached", "detachedPadding", "arrowPadding", "overflowPadding", ...FORM_CONTROL_PROP_NAMES);
 
 	const [triggerId, setTriggerId] = createSignal<string>();
 	const [valueId, setValueId] = createSignal<string>();
@@ -312,7 +268,7 @@ export function SelectBase<
 	>(true);
 
 	const getOptionValue = (option: Option): string => {
-		const optionValue = local.optionValue;
+		const optionValue = mergedProps.optionValue;
 
 		if (optionValue == null) {
 			// If no `optionValue`, the option itself is the value (ex: string[] of options)
@@ -329,14 +285,14 @@ export function SelectBase<
 
 	// Only options without option groups.
 	const flattenOptions = createMemo(() => {
-		const optionGroupChildren = local.optionGroupChildren;
+		const optionGroupChildren = mergedProps.optionGroupChildren;
 
 		// The combobox doesn't contains option groups.
 		if (optionGroupChildren == null) {
-			return local.options as Option[];
+			return mergedProps.options as Option[];
 		}
 
-		return local.options!.flatMap(
+		return mergedProps.options!.flatMap(
 			(item) =>
 				((item as any)[optionGroupChildren] as Option[]) ?? (item as Option),
 		);
@@ -356,43 +312,43 @@ export function SelectBase<
 	};
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
 	const listState = createListState({
 		selectedKeys: () => {
-			if (local.value != null) {
-				return local.value.map(getOptionValue);
+			if (mergedProps.value != null) {
+				return mergedProps.value.map(getOptionValue);
 			}
 
-			return local.value;
+			return mergedProps.value;
 		},
 		defaultSelectedKeys: () => {
-			if (local.defaultValue != null) {
-				return local.defaultValue.map(getOptionValue);
+			if (mergedProps.defaultValue != null) {
+				return mergedProps.defaultValue.map(getOptionValue);
 			}
 
-			return local.defaultValue;
+			return mergedProps.defaultValue;
 		},
 		onSelectionChange: (selectedKeys) => {
-			local.onChange?.(getOptionsFromValues(selectedKeys));
+			mergedProps.onChange?.(getOptionsFromValues(selectedKeys));
 
-			if (local.closeOnSelection) {
+			if (mergedProps.closeOnSelection) {
 				close();
 			}
 		},
 		allowDuplicateSelectionEvents: () =>
-			access(local.allowDuplicateSelectionEvents),
-		disallowEmptySelection: () => access(local.disallowEmptySelection),
-		selectionBehavior: () => access(local.selectionBehavior),
-		selectionMode: () => local.selectionMode,
-		dataSource: () => local.options ?? [],
-		getKey: () => local.optionValue as any,
-		getTextValue: () => local.optionTextValue as any,
-		getDisabled: () => local.optionDisabled as any,
-		getSectionChildren: () => local.optionGroupChildren as any,
+			access(mergedProps.allowDuplicateSelectionEvents),
+		disallowEmptySelection: () => access(mergedProps.disallowEmptySelection),
+		selectionBehavior: () => access(mergedProps.selectionBehavior),
+		selectionMode: () => mergedProps.selectionMode,
+		dataSource: () => mergedProps.options ?? [],
+		getKey: () => mergedProps.optionValue as any,
+		getTextValue: () => mergedProps.optionTextValue as any,
+		getDisabled: () => mergedProps.optionDisabled as any,
+		getSectionChildren: () => mergedProps.optionGroupChildren as any,
 	});
 
 	const selectedOptions = createMemo(() => {
@@ -404,7 +360,7 @@ export function SelectBase<
 	};
 
 	const { present: contentPresent } = createPresence({
-		show: () => local.forceMount || disclosureState.isOpen(),
+		show: () => mergedProps.forceMount || disclosureState.isOpen(),
 		element: () => contentRef() ?? null,
 	});
 
@@ -418,7 +374,7 @@ export function SelectBase<
 
 	const open = (focusStrategy: FocusStrategy | boolean) => {
 		// Don't open if there is no option.
-		if (local.options!.length <= 0) {
+		if (mergedProps.options!.length <= 0) {
 			return;
 		}
 
@@ -458,8 +414,8 @@ export function SelectBase<
 	const { formControlContext } = createFormControl(formControlProps);
 
 	createFormResetListener(triggerRef, () => {
-		const defaultSelectedKeys = local.defaultValue
-			? [...local.defaultValue].map(getOptionValue)
+		const defaultSelectedKeys = mergedProps.defaultValue
+			? [...mergedProps.defaultValue].map(getOptionValue)
 			: new Selection();
 
 		listState.selectionManager().setSelectedKeys(defaultSelectedKeys);
@@ -469,7 +425,7 @@ export function SelectBase<
 
 	// By default, a KeyboardDelegate is provided which uses the DOM to query layout information (e.g. for page up/page down).
 	const delegate = createMemo(() => {
-		const keyboardDelegate = access(local.keyboardDelegate);
+		const keyboardDelegate = access(mergedProps.keyboardDelegate);
 
 		if (keyboardDelegate) {
 			return keyboardDelegate;
@@ -479,11 +435,11 @@ export function SelectBase<
 	});
 
 	const renderItem = (item: CollectionNode) => {
-		return local.itemComponent?.({ item });
+		return mergedProps.itemComponent?.({ item });
 	};
 
 	const renderSection = (section: CollectionNode) => {
-		return local.sectionComponent?.({ section });
+		return mergedProps.sectionComponent?.({ section });
 	};
 
 	// Delete selected keys that do not match any option in the listbox.
@@ -516,12 +472,12 @@ export function SelectBase<
 		dataset,
 		isOpen: disclosureState.isOpen,
 		isDisabled: () => formControlContext.isDisabled() ?? false,
-		isMultiple: () => access(local.selectionMode) === "multiple",
-		isVirtualized: () => local.virtualized ?? false,
-		isModal: () => local.modal ?? false,
-		preventScroll: () => local.preventScroll ?? context.isModal(),
-		disallowTypeAhead: () => local.disallowTypeAhead ?? false,
-		shouldFocusWrap: () => local.shouldFocusWrap ?? false,
+		isMultiple: () => access(mergedProps.selectionMode) === "multiple",
+		isVirtualized: () => mergedProps.virtualized ?? false,
+		isModal: () => mergedProps.modal ?? false,
+		preventScroll: () => mergedProps.preventScroll ?? context.isModal(),
+		disallowTypeAhead: () => mergedProps.disallowTypeAhead ?? false,
+		shouldFocusWrap: () => mergedProps.shouldFocusWrap ?? false,
 		selectedOptions,
 		contentPresent,
 		autoFocus: focusStrategy,
@@ -539,7 +495,7 @@ export function SelectBase<
 		open,
 		close,
 		toggle,
-		placeholder: () => local.placeholder,
+		placeholder: () => mergedProps.placeholder,
 		renderItem,
 		renderSection,
 		removeOptionFromSelection,
@@ -550,8 +506,8 @@ export function SelectBase<
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<SelectContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<SelectContext value={context}>
 				<Popper anchorRef={triggerRef} contentRef={contentRef} {...popperProps}>
 					<Polymorphic<SelectBaseRenderProps>
 						as="div"
@@ -562,7 +518,7 @@ export function SelectBase<
 						{...others}
 					/>
 				</Popper>
-			</SelectContext.Provider>
-		</FormControlContext.Provider>
+			</SelectContext>
+		</FormControlContext>
 	);
 }

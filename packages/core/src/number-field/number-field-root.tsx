@@ -10,13 +10,12 @@ import {
 import {
 	type JSX,
 	type ValidComponent,
-	batch,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	omit,
 	on,
-	splitProps,
 } from "solid-js";
 
 import { NumberFormatter, NumberParser } from "@internationalized/number";
@@ -151,50 +150,29 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		props as NumberFieldRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
-		mergedProps,
-		[
-			"ref",
-			"value",
-			"defaultValue",
-			"onChange",
-			"rawValue",
-			"onRawValueChange",
-			"translations",
-			"format",
-			"formatOptions",
-			"textValue",
-			"minValue",
-			"maxValue",
-			"step",
-			"largeStep",
-			"changeOnWheel",
-			"translations",
-			"allowedInput",
-		],
-		FORM_CONTROL_PROP_NAMES,
-	);
+	const formControlProps = omit(mergedProps, "ref", "value", "defaultValue", "onChange", "rawValue", "onRawValueChange", "translations", "format", "formatOptions", "textValue", "minValue", "maxValue", "step", "largeStep", "changeOnWheel", "allowedInput") as unknown as typeof mergedProps;
+	const others = omit(mergedProps, "ref", "value", "defaultValue", "onChange", "rawValue", "onRawValueChange", "translations", "format", "formatOptions", "textValue", "minValue", "maxValue", "step", "largeStep", "changeOnWheel", "allowedInput", ...FORM_CONTROL_PROP_NAMES);
 
 	const { locale } = useLocale();
 
 	const numberParser = createMemo(() => {
-		return new NumberParser(locale(), local.formatOptions);
+		return new NumberParser(locale(), mergedProps.formatOptions);
 	});
 
 	const numberFormatter = createMemo(() => {
-		return new NumberFormatter(locale(), local.formatOptions);
+		return new NumberFormatter(locale(), mergedProps.formatOptions);
 	});
 
 	const formatNumber = (number: number) =>
-		local.format ? numberFormatter().format(number) : number.toString();
+		mergedProps.format ? numberFormatter().format(number) : number.toString();
 
 	const parseRawValue = (value: string | number | undefined) =>
-		local.format && typeof value !== "number"
+		mergedProps.format && typeof value !== "number"
 			? numberParser().parse(value ?? "")
 			: Number(value ?? "");
 
 	const isValidPartialValue = (value: string | number | undefined) =>
-		local.format && typeof value !== "number"
+		mergedProps.format && typeof value !== "number"
 			? numberParser().isValidPartialNumber(
 					value ?? "",
 					mergedProps.minValue,
@@ -203,18 +181,18 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			: !Number.isNaN(Number(value));
 
 	const [value, setValue] = createControllableSignal({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue ?? local.rawValue,
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue ?? mergedProps.rawValue,
 		onChange: (value) => {
-			local.onChange?.(typeof value === "number" ? formatNumber(value) : value);
-			local.onRawValueChange?.(parseRawValue(value));
+			mergedProps.onChange?.(typeof value === "number" ? formatNumber(value) : value);
+			mergedProps.onRawValueChange?.(parseRawValue(value));
 		},
 	});
 
-	if (value() !== undefined) local.onRawValueChange?.(parseRawValue(value()));
+	if (value() !== undefined) mergedProps.onRawValueChange?.(parseRawValue(value()));
 
 	function isAllowedInput(char: string): boolean {
-		if (local.allowedInput !== undefined) return local.allowedInput.test(char);
+		if (mergedProps.allowedInput !== undefined) return mergedProps.allowedInput.test(char);
 		return true;
 	}
 
@@ -223,7 +201,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 	createFormResetListener(
 		() => ref,
 		() => {
-			setValue(local.defaultValue ?? "");
+			setValue(mergedProps.defaultValue ?? "");
 		},
 	);
 
@@ -270,12 +248,12 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		generateId: createGenerateId(() => access(formControlProps.id)!),
 		formatNumber,
 		format: () => {
-			if (!local.format) return;
+			if (!mergedProps.format) return;
 			let rawValue = context.rawValue();
 
 			if (Number.isNaN(rawValue)) {
 				if (hiddenInputRef()) hiddenInputRef()!.value = "";
-				local.onRawValueChange?.(rawValue);
+				mergedProps.onRawValueChange?.(rawValue);
 				return;
 			}
 
@@ -293,13 +271,13 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			if (hiddenInputRef()) hiddenInputRef()!.value = String(rawValue);
 		},
 		onInput,
-		textValue: () => local.textValue,
-		minValue: () => local.minValue!,
-		maxValue: () => local.maxValue!,
-		step: () => local.step!,
-		largeStep: () => local.largeStep ?? local.step! * 10,
-		changeOnWheel: () => local.changeOnWheel!,
-		translations: () => local.translations,
+		textValue: () => mergedProps.textValue,
+		minValue: () => mergedProps.minValue!,
+		maxValue: () => mergedProps.maxValue!,
+		step: () => mergedProps.step!,
+		largeStep: () => mergedProps.largeStep ?? mergedProps.step! * 10,
+		changeOnWheel: () => mergedProps.changeOnWheel!,
+		translations: () => mergedProps.translations,
 		inputRef,
 		setInputRef,
 		hiddenInputRef,
@@ -308,54 +286,50 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			let rawValue = context.rawValue() ?? 0;
 			if (Number.isNaN(rawValue)) rawValue = 0;
 
-			batch(() => {
-				let newValue = rawValue;
+			let newValue = rawValue;
 
-				const operation = offset > 0 ? "+" : "-";
-				const localStep = Math.abs(offset);
-				// If there was no min or max provided, don't use our default values
-				// use NaN instead to help with the calculation which will use 0
-				// instead for a NaN value
-				const min =
-					props.minValue === undefined ? Number.NaN : context.minValue();
-				const max =
-					props.maxValue === undefined ? Number.NaN : context.maxValue();
+			const operation = offset > 0 ? "+" : "-";
+			const localStep = Math.abs(offset);
+			// If there was no min or max provided, don't use our default values
+			// use NaN instead to help with the calculation which will use 0
+			// instead for a NaN value
+			const min =
+				props.minValue === undefined ? Number.NaN : context.minValue();
+			const max =
+				props.maxValue === undefined ? Number.NaN : context.maxValue();
 
-				// Try to snap the value to the nearest step
-				newValue = snapValueToStep(rawValue, min, max, localStep);
+			// Try to snap the value to the nearest step
+			newValue = snapValueToStep(rawValue, min, max, localStep);
 
-				// If the value didn't change in the direction we wanted to,
-				// then add the step and snap that value
-				if (
-					!(
-						(operation === "+" && newValue > rawValue) ||
-						(operation === "-" && newValue < rawValue)
-					)
-				) {
-					newValue = snapValueToStep(
-						handleDecimalOperation(operation, rawValue, localStep),
-						min,
-						max,
-						localStep,
-					);
-				}
+			// If the value didn't change in the direction we wanted to,
+			// then add the step and snap that value
+			if (
+				!(
+					(operation === "+" && newValue > rawValue) ||
+					(operation === "-" && newValue < rawValue)
+				)
+			) {
+				newValue = snapValueToStep(
+					handleDecimalOperation(operation, rawValue, localStep),
+					min,
+					max,
+					localStep,
+				);
+			}
 
-				context.setValue(newValue);
-				context.format();
-			});
+			context.setValue(newValue);
+			context.format();
 		},
 	};
 
 	createEffect(
 		on(
-			() => local.rawValue,
+			() => mergedProps.rawValue,
 			(rawValue) => {
 				if (rawValue !== context.rawValue()) {
 					if (Number.isNaN(rawValue)) return;
-					batch(() => {
-						setValue(rawValue ?? "");
-						context.format();
-					});
+					setValue(rawValue ?? "");
+					context.format();
 				}
 			},
 			{ defer: true },
@@ -363,18 +337,18 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 	);
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<NumberFieldContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<NumberFieldContext value={context}>
 				<Polymorphic<NumberFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
+					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 					role="group"
 					id={access(formControlProps.id)}
 					{...formControlContext.dataset()}
 					{...others}
 				/>
-			</NumberFieldContext.Provider>
-		</FormControlContext.Provider>
+			</NumberFieldContext>
+		</FormControlContext>
 	);
 }
 

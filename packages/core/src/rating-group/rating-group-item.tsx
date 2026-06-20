@@ -12,8 +12,8 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
-	onMount,
-	splitProps,
+	omit,
+	onSettled,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -80,14 +80,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 		props as RatingGroupItemProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"aria-labelledby",
-		"aria-describedby",
-		"onClick",
-		"onKeyDown",
-		"onPointerMove",
-	]);
+	const others = omit(mergedProps, "ref", "aria-labelledby", "aria-describedby", "onClick", "onKeyDown", "onPointerMove");
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
@@ -102,9 +95,9 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const ariaLabelledBy = () => {
 		return (
 			[
-				local["aria-labelledby"],
+				mergedProps["aria-labelledby"],
 				labelId(),
-				local["aria-labelledby"] != null && others["aria-label"] != null
+				mergedProps["aria-labelledby"] != null && others["aria-label"] != null
 					? others.id
 					: undefined,
 			]
@@ -116,7 +109,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const ariaDescribedBy = () => {
 		return (
 			[
-				local["aria-describedby"],
+				mergedProps["aria-describedby"],
 				descriptionId(),
 				ratingGroupContext.ariaDescribedBy(),
 			]
@@ -142,7 +135,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const highlighted = () => value()! <= newValue()! || equal();
 	const half = () => equal() && Math.abs(newValue()! - value()!) === 0.5;
 
-	onMount(() => {
+	onSettled(() => {
 		setValue(
 			direction() === "ltr"
 				? index() + 1
@@ -180,7 +173,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	};
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
 		const value =
 			ratingGroupContext.hoveredValue() === -1
@@ -194,7 +187,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		if (formControlContext.isDisabled() || formControlContext.isReadOnly())
 			return;
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		const point = getEventPoint(e);
 		const relativePoint = getRelativePoint(point, e.currentTarget);
@@ -209,7 +202,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		switch (e.key) {
 			case EventKey.ArrowLeft:
@@ -262,10 +255,10 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<RatingGroupItemContext.Provider value={context}>
+		<RatingGroupItemContext value={context}>
 			<Polymorphic<RatingGroupItemRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el), local.ref)}
+				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="radio"
 				tabIndex={tabIndex()}
 				aria-checked={equal()}
@@ -280,6 +273,6 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 				{...dataset()}
 				{...others}
 			/>
-		</RatingGroupItemContext.Provider>
+		</RatingGroupItemContext>
 	);
 }

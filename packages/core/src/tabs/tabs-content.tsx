@@ -18,7 +18,7 @@ import {
 	createSignal,
 	on,
 	onCleanup,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import createPresence from "solid-presence";
@@ -67,21 +67,16 @@ export function TabsContent<T extends ValidComponent = "div">(
 
 	const context = useTabsContext();
 
-	const [local, others] = splitProps(props as TabsContentProps, [
-		"ref",
-		"id",
-		"value",
-		"forceMount",
-	]);
+	const others = omit(props as TabsContentProps, "ref", "id", "value", "forceMount");
 
 	const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
 
-	const id = () => local.id ?? context.generateContentId(local.value);
+	const id = () => props.id ?? context.generateContentId(props.value);
 
-	const isSelected = () => context.listState().selectedKey() === local.value;
+	const isSelected = () => context.listState().selectedKey() === props.value;
 
 	const { present } = createPresence({
-		show: () => local.forceMount || isSelected(),
+		show: () => props.forceMount || isSelected(),
 		element: () => ref() ?? null,
 	});
 
@@ -116,7 +111,7 @@ export function TabsContent<T extends ValidComponent = "div">(
 	);
 
 	createEffect(
-		on([() => local.value, id], ([value, id]) => {
+		on([() => props.value, id], ([value, id]) => {
 			context.contentIdsMap().set(value, id);
 		}),
 	);
@@ -125,11 +120,11 @@ export function TabsContent<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<TabsContentRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, local.ref)}
+				ref={mergeRefs(setRef, props.ref)}
 				id={id()}
 				role="tabpanel"
 				tabIndex={tabIndex()}
-				aria-labelledby={context.triggerIdsMap().get(local.value)}
+				aria-labelledby={context.triggerIdsMap().get(props.value)}
 				data-orientation={context.orientation()}
 				data-selected={isSelected() ? "" : undefined}
 				{...others}

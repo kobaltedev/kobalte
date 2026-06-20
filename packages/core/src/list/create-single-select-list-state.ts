@@ -7,7 +7,7 @@
  */
 
 import { access } from "@kobalte/utils";
-import { type Accessor, createMemo, mergeProps, splitProps } from "solid-js";
+import { type Accessor, createMemo, merge, omit } from "solid-js";
 
 import {
 	type CollectionBase,
@@ -57,11 +57,9 @@ export function createSingleSelectListState(
 		return selection != null ? [selection] : [];
 	});
 
-	const [, defaultCreateListStateProps] = splitProps(props, [
-		"onSelectionChange",
-	]);
+	const defaultCreateListStateProps = omit(props, "onSelectionChange");
 
-	const createListStateProps = mergeProps(defaultCreateListStateProps, {
+	const createListStateProps = merge(defaultCreateListStateProps, {
 		selectionMode: "single",
 		disallowEmptySelection: true,
 		allowDuplicateSelectionEvents: true,

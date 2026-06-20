@@ -21,9 +21,9 @@ import {
 	type JSX,
 	createEffect,
 	createMemo,
-	mergeProps,
+	merge,
 	on,
-	onMount,
+	onSettled,
 } from "solid-js";
 
 import { useLocale } from "../i18n";
@@ -98,7 +98,7 @@ export function createSelectableCollection<
 			access(props.selectionManager).selectionBehavior() === "replace",
 	};
 
-	const mergedProps = mergeProps(defaultProps, props);
+	const mergedProps = merge(defaultProps, props);
 
 	const finalScrollRef = () => scrollRef?.() ?? ref();
 
@@ -487,7 +487,7 @@ export function createSelectableCollection<
 		}
 	};
 
-	onMount(() => {
+	onSettled(() => {
 		if (mergedProps.deferAutoFocus) {
 			setTimeout(tryAutoFocus, 0); // TODO: does this work EVERY time ?
 		} else {

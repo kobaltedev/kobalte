@@ -24,7 +24,7 @@ import {
 	type ValidComponent,
 	createMemo,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { type ListState, createListState, createSelectableList } from "../list";
@@ -179,61 +179,27 @@ export function ListboxRoot<
 		props as ListboxRootProps<Option, OptGroup>,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"children",
-		"renderItem",
-		"renderSection",
-		"value",
-		"defaultValue",
-		"onChange",
-		"options",
-		"optionValue",
-		"optionTextValue",
-		"optionDisabled",
-		"optionGroupChildren",
-		"state",
-		"keyboardDelegate",
-		"autoFocus",
-		"selectionMode",
-		"shouldFocusWrap",
-		"shouldUseVirtualFocus",
-		"shouldSelectOnPressUp",
-		"shouldFocusOnHover",
-		"allowDuplicateSelectionEvents",
-		"disallowEmptySelection",
-		"selectionBehavior",
-		"selectOnFocus",
-		"disallowTypeAhead",
-		"allowsTabNavigation",
-		"virtualized",
-		"scrollToItem",
-		"scrollRef",
-		"onKeyDown",
-		"onMouseDown",
-		"onFocusIn",
-		"onFocusOut",
-	]);
+	const others = omit(mergedProps, "ref", "children", "renderItem", "renderSection", "value", "defaultValue", "onChange", "options", "optionValue", "optionTextValue", "optionDisabled", "optionGroupChildren", "state", "keyboardDelegate", "autoFocus", "selectionMode", "shouldFocusWrap", "shouldUseVirtualFocus", "shouldSelectOnPressUp", "shouldFocusOnHover", "allowDuplicateSelectionEvents", "disallowEmptySelection", "selectionBehavior", "selectOnFocus", "disallowTypeAhead", "allowsTabNavigation", "virtualized", "scrollToItem", "scrollRef", "onKeyDown", "onMouseDown", "onFocusIn", "onFocusOut");
 
 	const listState = createMemo(() => {
-		if (local.state) {
-			return local.state;
+		if (mergedProps.state) {
+			return mergedProps.state;
 		}
 
 		return createListState({
-			selectedKeys: () => local.value,
-			defaultSelectedKeys: () => local.defaultValue,
-			onSelectionChange: local.onChange,
+			selectedKeys: () => mergedProps.value,
+			defaultSelectedKeys: () => mergedProps.defaultValue,
+			onSelectionChange: mergedProps.onChange,
 			allowDuplicateSelectionEvents: () =>
-				access(local.allowDuplicateSelectionEvents),
-			disallowEmptySelection: () => access(local.disallowEmptySelection),
-			selectionBehavior: () => access(local.selectionBehavior),
-			selectionMode: () => access(local.selectionMode),
-			dataSource: () => local.options ?? [],
-			getKey: () => local.optionValue as any,
-			getTextValue: () => local.optionTextValue as any,
-			getDisabled: () => local.optionDisabled as any,
-			getSectionChildren: () => local.optionGroupChildren as any,
+				access(mergedProps.allowDuplicateSelectionEvents),
+			disallowEmptySelection: () => access(mergedProps.disallowEmptySelection),
+			selectionBehavior: () => access(mergedProps.selectionBehavior),
+			selectionMode: () => access(mergedProps.selectionMode),
+			dataSource: () => mergedProps.options ?? [],
+			getKey: () => mergedProps.optionValue as any,
+			getTextValue: () => mergedProps.optionTextValue as any,
+			getDisabled: () => mergedProps.optionDisabled as any,
+			getSectionChildren: () => mergedProps.optionGroupChildren as any,
 		});
 	});
 
@@ -241,19 +207,19 @@ export function ListboxRoot<
 		{
 			selectionManager: () => listState().selectionManager(),
 			collection: () => listState().collection(),
-			autoFocus: () => access(local.autoFocus),
-			shouldFocusWrap: () => access(local.shouldFocusWrap),
-			keyboardDelegate: () => local.keyboardDelegate,
-			disallowEmptySelection: () => access(local.disallowEmptySelection),
-			selectOnFocus: () => access(local.selectOnFocus),
-			disallowTypeAhead: () => access(local.disallowTypeAhead),
-			shouldUseVirtualFocus: () => access(local.shouldUseVirtualFocus),
-			allowsTabNavigation: () => access(local.allowsTabNavigation),
-			isVirtualized: () => local.virtualized,
-			scrollToKey: () => local.scrollToItem,
+			autoFocus: () => access(mergedProps.autoFocus),
+			shouldFocusWrap: () => access(mergedProps.shouldFocusWrap),
+			keyboardDelegate: () => mergedProps.keyboardDelegate,
+			disallowEmptySelection: () => access(mergedProps.disallowEmptySelection),
+			selectOnFocus: () => access(mergedProps.selectOnFocus),
+			disallowTypeAhead: () => access(mergedProps.disallowTypeAhead),
+			shouldUseVirtualFocus: () => access(mergedProps.shouldUseVirtualFocus),
+			allowsTabNavigation: () => access(mergedProps.allowsTabNavigation),
+			isVirtualized: () => mergedProps.virtualized,
+			scrollToKey: () => mergedProps.scrollToItem,
 		},
 		() => ref,
-		() => local.scrollRef?.(),
+		() => mergedProps.scrollRef?.(),
 	);
 
 	const context: ListboxContextValue = {
@@ -262,14 +228,14 @@ export function ListboxRoot<
 		shouldUseVirtualFocus: () => mergedProps.shouldUseVirtualFocus,
 		shouldSelectOnPressUp: () => mergedProps.shouldSelectOnPressUp,
 		shouldFocusOnHover: () => mergedProps.shouldFocusOnHover,
-		isVirtualized: () => local.virtualized,
+		isVirtualized: () => mergedProps.virtualized,
 	};
 
 	return (
-		<ListboxContext.Provider value={context}>
+		<ListboxContext value={context}>
 			<Polymorphic<ListboxRootRenderProps>
 				as="ul"
-				ref={mergeRefs((el) => (ref = el), local.ref)}
+				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="listbox"
 				tabIndex={selectableList.tabIndex()}
 				aria-multiselectable={
@@ -278,41 +244,41 @@ export function ListboxRoot<
 						: undefined
 				}
 				onKeyDown={composeEventHandlers([
-					local.onKeyDown,
+					mergedProps.onKeyDown,
 					selectableList.onKeyDown,
 				])}
 				onMouseDown={composeEventHandlers([
-					local.onMouseDown,
+					mergedProps.onMouseDown,
 					selectableList.onMouseDown,
 				])}
 				onFocusIn={composeEventHandlers([
-					local.onFocusIn,
+					mergedProps.onFocusIn,
 					selectableList.onFocusIn,
 				])}
 				onFocusOut={composeEventHandlers([
-					local.onFocusOut,
+					mergedProps.onFocusOut,
 					selectableList.onFocusOut,
 				])}
 				{...others}
 			>
 				<Show
-					when={!local.virtualized}
-					fallback={local.children?.(listState().collection)}
+					when={!mergedProps.virtualized}
+					fallback={mergedProps.children?.(listState().collection)}
 				>
 					<Key each={[...listState().collection()]} by="key">
 						{(item) => (
 							<Switch>
 								<Match when={item().type === "section"}>
-									{local.renderSection?.(item())}
+									{mergedProps.renderSection?.(item())}
 								</Match>
 								<Match when={item().type === "item"}>
-									{local.renderItem?.(item())}
+									{mergedProps.renderItem?.(item())}
 								</Match>
 							</Switch>
 						)}
 					</Key>
 				</Show>
 			</Polymorphic>
-		</ListboxContext.Provider>
+		</ListboxContext>
 	);
 }

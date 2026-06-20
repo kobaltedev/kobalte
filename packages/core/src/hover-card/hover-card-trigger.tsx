@@ -11,8 +11,8 @@ import {
 	type Component,
 	type JSX,
 	type ValidComponent,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import * as Link from "../link";
@@ -53,18 +53,12 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 ) {
 	const context = useHoverCardContext();
 
-	const [local, others] = splitProps(props as HoverCardTriggerProps, [
-		"ref",
-		"onPointerEnter",
-		"onPointerLeave",
-		"onFocus",
-		"onBlur",
-	]);
+	const others = omit(props as HoverCardTriggerProps, "ref", "onPointerEnter", "onPointerLeave", "onFocus", "onBlur");
 
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerEnter);
+		callHandler(e, props.onPointerEnter);
 
 		if (e.pointerType === "touch" || others.disabled || e.defaultPrevented) {
 			return;
@@ -80,7 +74,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerLeave);
+		callHandler(e, props.onPointerLeave);
 
 		if (e.pointerType === "touch") {
 			return;
@@ -90,7 +84,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, props.onFocus);
 
 		if (others.disabled || e.defaultPrevented) {
 			return;
@@ -104,7 +98,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, props.onBlur);
 
 		context.cancelOpening();
 
@@ -125,7 +119,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 				Omit<HoverCardTriggerRenderProps, keyof Link.LinkRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			ref={mergeRefs(context.setTriggerRef, props.ref)}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}
 			onFocus={onFocus}

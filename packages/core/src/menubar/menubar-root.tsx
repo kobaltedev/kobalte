@@ -22,10 +22,10 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer } from "@solidjs/web";
 
 import {
 	type ElementOf,
@@ -91,26 +91,24 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		props as MenubarRootProps,
 	);
 
-	const [local, others] = splitProps(
+	const others = omit(
 		mergedProps as typeof mergedProps & { id: string },
-		[
-			"ref",
-			"value",
-			"defaultValue",
-			"onValueChange",
-			"loop",
-			"focusOnAlt",
-			"autoFocusMenu",
-			"onAutoFocusMenuChange",
-			"orientation",
-		],
+		"ref",
+		"value",
+		"defaultValue",
+		"onValueChange",
+		"loop",
+		"focusOnAlt",
+		"autoFocusMenu",
+		"onAutoFocusMenuChange",
+		"orientation",
 	);
 
 	const [value, setValue] = createControllableSignal<string | null | undefined>(
 		{
-			value: () => local.value,
-			defaultValue: () => local.defaultValue,
-			onChange: (value) => local.onValueChange?.(value),
+			value: () => mergedProps.value,
+			defaultValue: () => mergedProps.defaultValue,
+			onChange: (value) => mergedProps.onValueChange?.(value),
 		},
 	);
 
@@ -121,9 +119,9 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 	);
 
 	const [autoFocusMenu, setAutoFocusMenu] = createControllableSignal({
-		value: () => local.autoFocusMenu,
+		value: () => mergedProps.autoFocusMenu,
 		defaultValue: () => false,
-		onChange: local.onAutoFocusMenuChange,
+		onChange: mergedProps.onAutoFocusMenuChange,
 	});
 
 	const expanded = () => {
@@ -171,7 +169,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			const currentIndex = menusArray.indexOf(value()!);
 
 			if (currentIndex === menusArray.length - 1) {
-				if (local.loop) setValue(menusArray[0]);
+				if (mergedProps.loop) setValue(menusArray[0]);
 				return;
 			}
 
@@ -188,7 +186,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			const currentIndex = menusArray.indexOf(value()!);
 
 			if (currentIndex === 0) {
-				if (local.loop) setValue(menusArray[menusArray.length - 1]);
+				if (mergedProps.loop) setValue(menusArray[menusArray.length - 1]);
 				return;
 			}
 
@@ -201,7 +199,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		autoFocusMenu: () => autoFocusMenu()!,
 		setAutoFocusMenu,
 		generateId: createGenerateId(() => others.id!),
-		orientation: () => local.orientation!,
+		orientation: () => mergedProps.orientation!,
 	};
 
 	createEffect(() => {
@@ -234,7 +232,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 
 	createEffect(() => {
 		if (isServer) return;
-		if (local.focusOnAlt) window.addEventListener("keydown", keydownHandler);
+		if (mergedProps.focusOnAlt) window.addEventListener("keydown", keydownHandler);
 		else window.removeEventListener("keydown", keydownHandler);
 
 		onCleanup(() => {
@@ -247,15 +245,15 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 	});
 
 	return (
-		<MenubarContext.Provider value={context}>
+		<MenubarContext value={context}>
 			<Polymorphic<MenubarRootRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el), local.ref)}
+				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="menubar"
-				data-orientation={local.orientation!}
-				aria-orientation={local.orientation!}
+				data-orientation={mergedProps.orientation!}
+				aria-orientation={mergedProps.orientation!}
 				{...others}
 			/>
-		</MenubarContext.Provider>
+		</MenubarContext>
 	);
 }

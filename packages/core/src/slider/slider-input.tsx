@@ -8,7 +8,7 @@ import {
 	type JSX,
 	createEffect,
 	createSignal,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -39,11 +39,8 @@ export function SliderInput(props: SliderInputProps) {
 		props,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
-		mergedProps,
-		["style", "onChange"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
-	);
+	const formControlFieldProps = omit(mergedProps, "style", "onChange");
+	const others = omit(mergedProps, "style", "onChange", ...FORM_CONTROL_FIELD_PROP_NAMES);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
@@ -52,7 +49,7 @@ export function SliderInput(props: SliderInputProps) {
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e, local.onChange);
+		callHandler(e, mergedProps.onChange);
 
 		const target = e.target as HTMLInputElement;
 
@@ -87,7 +84,7 @@ export function SliderInput(props: SliderInputProps) {
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
+			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
 			aria-orientation={context.state.orientation()}
 			aria-valuetext={valueText()}
 			aria-label={fieldProps.ariaLabel()}

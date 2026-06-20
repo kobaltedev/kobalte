@@ -13,8 +13,8 @@ import {
 	createEffect,
 	createSignal,
 	createUniqueId,
+	omit,
 	on,
-	splitProps,
 } from "solid-js";
 
 import { createSingleSelectListState } from "../list";
@@ -81,14 +81,7 @@ export function TabsRoot<T extends ValidComponent = "div">(
 		props as TabsRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"value",
-		"defaultValue",
-		"onChange",
-		"orientation",
-		"activationMode",
-		"disabled",
-	]);
+	const others = omit(mergedProps, "value", "defaultValue", "onChange", "orientation", "activationMode", "disabled");
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 	const [selectedTab, setSelectedTab] = createSignal<HTMLElement>();
@@ -99,9 +92,9 @@ export function TabsRoot<T extends ValidComponent = "div">(
 	});
 
 	const listState = createSingleSelectListState({
-		selectedKey: () => local.value,
-		defaultSelectedKey: () => local.defaultValue,
-		onSelectionChange: (key) => local.onChange?.(String(key)),
+		selectedKey: () => mergedProps.value,
+		defaultSelectedKey: () => mergedProps.defaultValue,
+		onSelectionChange: (key) => mergedProps.onChange?.(String(key)),
 		dataSource: items,
 	});
 
@@ -173,9 +166,9 @@ export function TabsRoot<T extends ValidComponent = "div">(
 	const contentIdsMap = new Map<string, string>();
 
 	const context: TabsContextValue = {
-		isDisabled: () => local.disabled ?? false,
-		orientation: () => local.orientation!,
-		activationMode: () => local.activationMode!,
+		isDisabled: () => mergedProps.disabled ?? false,
+		orientation: () => mergedProps.orientation!,
+		activationMode: () => mergedProps.activationMode!,
 		triggerIdsMap: () => triggerIdsMap,
 		contentIdsMap: () => contentIdsMap,
 		listState: () => listState,
@@ -187,13 +180,13 @@ export function TabsRoot<T extends ValidComponent = "div">(
 
 	return (
 		<DomCollectionProvider>
-			<TabsContext.Provider value={context}>
+			<TabsContext value={context}>
 				<Polymorphic<TabsRootRenderProps>
 					as="div"
 					data-orientation={context.orientation()}
 					{...others}
 				/>
-			</TabsContext.Provider>
+			</TabsContext>
 		</DomCollectionProvider>
 	);
 }

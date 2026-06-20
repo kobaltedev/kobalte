@@ -3,8 +3,8 @@ import {
 	Show,
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import {
@@ -55,7 +55,7 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 		props as FormControlErrorMessageProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["forceMount"]);
+	const others = omit(mergedProps, "forceMount");
 
 	const isInvalid = () => context.validationState() === "invalid";
 
@@ -68,7 +68,7 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 	});
 
 	return (
-		<Show when={local.forceMount || isInvalid()}>
+		<Show when={mergedProps.forceMount || isInvalid()}>
 			<Polymorphic<FormControlErrorMessageRenderProps>
 				as="div"
 				{...context.dataset()}

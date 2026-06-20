@@ -11,7 +11,7 @@ import {
 	type ParentProps,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { useLocale } from "../i18n";
@@ -46,13 +46,13 @@ export function ContextMenuRoot(props: ContextMenuRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["onOpenChange"]);
+	const others = omit(mergedProps, "onOpenChange");
 
 	const [anchorRect, setAnchorRect] = createSignal({ x: 0, y: 0 });
 
 	const disclosureState = createDisclosureState({
 		defaultOpen: false,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
 	const context: ContextMenuContextValue = {
@@ -60,13 +60,13 @@ export function ContextMenuRoot(props: ContextMenuRootProps) {
 	};
 
 	return (
-		<ContextMenuContext.Provider value={context}>
+		<ContextMenuContext value={context}>
 			<MenuRoot
 				open={disclosureState.isOpen()}
 				onOpenChange={disclosureState.setIsOpen}
 				getAnchorRect={anchorRect}
 				{...others}
 			/>
-		</ContextMenuContext.Provider>
+		</ContextMenuContext>
 	);
 }

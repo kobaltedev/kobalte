@@ -6,7 +6,7 @@
  * https://github.com/chakra-ui/zag/blob/c1e6c7689b22bf58741ded7cf224dd9baec2a046/packages/utilities/form-utils/src/form.ts
  */
 
-import { type Accessor, createEffect, on, onCleanup } from "solid-js";
+import { type Accessor, createEffect } from "solid-js";
 
 /**
  * Listens for `reset` event on the closest `<form>` element and execute the given handler.
@@ -16,7 +16,8 @@ export function createFormResetListener(
 	handler: () => void,
 ) {
 	createEffect(
-		on(element, (element) => {
+		() => element(),
+		(element) => {
 			if (element == null) {
 				return;
 			}
@@ -29,10 +30,10 @@ export function createFormResetListener(
 
 			form.addEventListener("reset", handler, { passive: true });
 
-			onCleanup(() => {
+			return () => {
 				form.removeEventListener("reset", handler);
-			});
-		}),
+			};
+		},
 	);
 }
 

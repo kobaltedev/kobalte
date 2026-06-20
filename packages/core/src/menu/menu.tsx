@@ -18,8 +18,8 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import createPresence from "solid-presence";
@@ -88,11 +88,7 @@ export function Menu(props: MenuProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"open",
-		"defaultOpen",
-		"onOpenChange",
-	]);
+	const others = omit(mergedProps, "open", "defaultOpen", "onOpenChange");
 
 	let pointerGraceTimeoutId = 0;
 	let pointerGraceIntent: GraceIntent | null = null;
@@ -120,9 +116,9 @@ export function Menu(props: MenuProps) {
 	});
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
 	const { present: contentPresent } = createPresence({
@@ -302,7 +298,7 @@ export function Menu(props: MenuProps) {
 
 	return (
 		<DomCollectionProvider>
-			<MenuContext.Provider value={context}>
+			<MenuContext value={context}>
 				<Show
 					when={optionalNavigationMenuContext === undefined}
 					fallback={others.children}
@@ -314,7 +310,7 @@ export function Menu(props: MenuProps) {
 						{...others}
 					/>
 				</Show>
-			</MenuContext.Provider>
+			</MenuContext>
 		</DomCollectionProvider>
 	);
 }

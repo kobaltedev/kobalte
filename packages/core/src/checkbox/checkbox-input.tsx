@@ -20,7 +20,7 @@ import {
 	createEffect,
 	createSignal,
 	on,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -91,18 +91,15 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 		props as CheckboxInputProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
-		mergedProps,
-		["ref", "style", "onChange", "onFocus", "onBlur"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
-	);
+	const formControlFieldProps = omit(mergedProps, "ref", "style", "onChange", "onFocus", "onBlur");
+	const others = omit(mergedProps, "ref", "style", "onChange", "onFocus", "onBlur", "id", "aria-label", "aria-labelledby", "aria-describedby");
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
 	const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
 
 	const onChange: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
-		callHandler(e, local.onChange);
+		callHandler(e, mergedProps.onChange);
 
 		e.stopPropagation();
 
@@ -126,14 +123,14 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 	const onFocus: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 		context.setIsFocused(true);
 	};
 
 	const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 		context.setIsFocused(false);
 	};
 
@@ -178,7 +175,7 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 			ref={mergeRefs((el) => {
 				context.setInputRef(el);
 				ref = el;
-			}, local.ref)}
+			}, mergedProps.ref)}
 			type="checkbox"
 			id={fieldProps.id()}
 			name={formControlContext.name()}
@@ -187,7 +184,7 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle(visuallyHiddenStyles, local.style)}
+			style={combineStyle(visuallyHiddenStyles, mergedProps.style)}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}

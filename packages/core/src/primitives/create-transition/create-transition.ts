@@ -13,11 +13,11 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
-	mergeProps,
+	merge,
 	on,
 	onCleanup,
 } from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer } from "@solidjs/web";
 
 import {
 	type TransitionPhase,
@@ -82,7 +82,7 @@ export function createTransition(
 	shouldMount: MaybeAccessor<boolean>,
 	options: MaybeAccessor<TransitionOptions>,
 ): TransitionResult {
-	const mergedOptions = mergeProps(
+	const mergedOptions = merge(
 		{
 			duration: DEFAULT_DURATION,
 			delay: DEFAULT_DELAY,

@@ -10,7 +10,7 @@ import {
 	type ValidComponent,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 import { useLocale } from "../i18n";
 import { createListState } from "../list";
@@ -88,19 +88,7 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 		props as ToggleGroupBaseProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"value",
-		"defaultValue",
-		"disabled",
-		"orientation",
-		"selectionMode",
-		"onChange",
-		"onKeyDown",
-		"onMouseDown",
-		"onFocusIn",
-		"onFocusOut",
-	]);
+	const others = omit(mergedProps, "ref", "value", "defaultValue", "disabled", "orientation", "selectionMode", "onChange", "onKeyDown", "onMouseDown", "onFocusIn", "onFocusOut");
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
@@ -110,11 +98,11 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 	});
 
 	const listState = createListState({
-		selectedKeys: () => local.value,
-		defaultSelectedKeys: () => local.defaultValue,
-		onSelectionChange: (key) => local.onChange?.(Array.from(key)),
+		selectedKeys: () => mergedProps.value,
+		defaultSelectedKeys: () => mergedProps.defaultValue,
+		onSelectionChange: (key) => mergedProps.onChange?.(Array.from(key)),
 		disallowEmptySelection: false,
-		selectionMode: () => local.selectionMode,
+		selectionMode: () => mergedProps.selectionMode,
 		dataSource: items,
 	});
 
@@ -123,7 +111,7 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 	const delegate = new TabsKeyboardDelegate(
 		() => context.listState().collection(),
 		direction,
-		() => local.orientation!,
+		() => mergedProps.orientation!,
 	);
 
 	const selectableList = createSelectableCollection(
@@ -139,40 +127,40 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 
 	const context: ToggleGroupContextValue = {
 		listState: () => listState,
-		isDisabled: () => local.disabled ?? false,
-		isMultiple: () => local.selectionMode === "multiple",
+		isDisabled: () => mergedProps.disabled ?? false,
+		isMultiple: () => mergedProps.selectionMode === "multiple",
 		generateId: createGenerateId(() => others.id!),
-		orientation: () => local.orientation!,
+		orientation: () => mergedProps.orientation!,
 	};
 
 	return (
 		<DomCollectionProvider>
-			<ToggleGroupContext.Provider value={context}>
+			<ToggleGroupContext value={context}>
 				<Polymorphic<ToggleGroupBaseRenderProps>
 					as="div"
 					role="group"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
-					tabIndex={!local.disabled ? selectableList.tabIndex() : undefined}
-					data-orientation={local.orientation}
+					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					tabIndex={!mergedProps.disabled ? selectableList.tabIndex() : undefined}
+					data-orientation={mergedProps.orientation}
 					onKeyDown={composeEventHandlers([
-						local.onKeyDown,
+						mergedProps.onKeyDown,
 						selectableList.onKeyDown,
 					])}
 					onMouseDown={composeEventHandlers([
-						local.onMouseDown,
+						mergedProps.onMouseDown,
 						selectableList.onMouseDown,
 					])}
 					onFocusIn={composeEventHandlers([
-						local.onFocusIn,
+						mergedProps.onFocusIn,
 						selectableList.onFocusIn,
 					])}
 					onFocusOut={composeEventHandlers([
-						local.onFocusOut,
+						mergedProps.onFocusOut,
 						selectableList.onFocusOut,
 					])}
 					{...(others as { id: string })}
 				/>
-			</ToggleGroupContext.Provider>
+			</ToggleGroupContext>
 		</DomCollectionProvider>
 	);
 }

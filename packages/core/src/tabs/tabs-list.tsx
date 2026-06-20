@@ -15,7 +15,7 @@ import {
 	type JSX,
 	type ValidComponent,
 	createEffect,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { useLocale } from "../i18n";
@@ -58,13 +58,7 @@ export function TabsList<T extends ValidComponent = "div">(
 
 	const context = useTabsContext();
 
-	const [local, others] = splitProps(props as TabsListProps, [
-		"ref",
-		"onKeyDown",
-		"onMouseDown",
-		"onFocusIn",
-		"onFocusOut",
-	]);
+	const others = omit(props as TabsListProps, "ref", "onKeyDown", "onMouseDown", "onFocusIn", "onFocusOut");
 
 	const { direction } = useLocale();
 
@@ -102,24 +96,24 @@ export function TabsList<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<TabsListRenderProps>
 			as="div"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), props.ref)}
 			role="tablist"
 			aria-orientation={context.orientation()}
 			data-orientation={context.orientation()}
 			onKeyDown={composeEventHandlers([
-				local.onKeyDown,
+				props.onKeyDown,
 				selectableCollection.onKeyDown,
 			])}
 			onMouseDown={composeEventHandlers([
-				local.onMouseDown,
+				props.onMouseDown,
 				selectableCollection.onMouseDown,
 			])}
 			onFocusIn={composeEventHandlers([
-				local.onFocusIn,
+				props.onFocusIn,
 				selectableCollection.onFocusIn,
 			])}
 			onFocusOut={composeEventHandlers([
-				local.onFocusOut,
+				props.onFocusOut,
 				selectableCollection.onFocusOut,
 			])}
 			{...others}

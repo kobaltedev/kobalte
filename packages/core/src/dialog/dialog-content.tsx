@@ -17,8 +17,8 @@ import {
 	Show,
 	type ValidComponent,
 	createEffect,
+	omit,
 	onCleanup,
-	splitProps,
 } from "solid-js";
 
 import createPreventScroll from "solid-prevent-scroll";
@@ -108,20 +108,13 @@ export function DialogContent<T extends ValidComponent = "div">(
 		props as DialogContentProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"ref",
-		"onOpenAutoFocus",
-		"onCloseAutoFocus",
-		"onPointerDownOutside",
-		"onFocusOutside",
-		"onInteractOutside",
-	]);
+	const others = omit(mergedProps, "ref", "onOpenAutoFocus", "onCloseAutoFocus", "onPointerDownOutside", "onFocusOutside", "onInteractOutside");
 
 	let hasInteractedOutside = false;
 	let hasPointerDownOutside = false;
 
 	const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
-		local.onPointerDownOutside?.(e);
+		mergedProps.onPointerDownOutside?.(e);
 
 		// If the event is a right-click, we shouldn't close because
 		// it is effectively as if we right-clicked the `Overlay`.
@@ -131,7 +124,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		mergedProps.onFocusOutside?.(e);
 
 		// When focus is trapped, a `focusout` event may still happen.
 		// We make sure we don't trigger our `onDismiss` in such case.
@@ -141,7 +134,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 	};
 
 	const onInteractOutside = (e: InteractOutsideEvent) => {
-		local.onInteractOutside?.(e);
+		mergedProps.onInteractOutside?.(e);
 
 		if (context.modal()) {
 			return;
@@ -174,7 +167,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 	};
 
 	const onCloseAutoFocus = (e: Event) => {
-		local.onCloseAutoFocus?.(e);
+		mergedProps.onCloseAutoFocus?.(e);
 
 		if (context.modal()) {
 			e.preventDefault();
@@ -208,7 +201,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 	createFocusScope(
 		{
 			trapFocus: () => context.isOpen() && context.modal(),
-			onMountAutoFocus: local.onOpenAutoFocus,
+			onMountAutoFocus: mergedProps.onOpenAutoFocus,
 			onUnmountAutoFocus: onCloseAutoFocus,
 		},
 		() => ref,
@@ -226,7 +219,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 				ref={mergeRefs((el) => {
 					context.setContentRef(el);
 					ref = el;
-				}, local.ref)}
+				}, mergedProps.ref)}
 				role="dialog"
 				tabIndex={-1}
 				disableOutsidePointerEvents={context.modal() && context.isOpen()}

@@ -5,7 +5,7 @@ import {
 	createEffect,
 	createSignal,
 	on,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { useMenubarContext } from "../menubar/menubar-context";
@@ -50,7 +50,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 		props as NavigationMenuArrowProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref"]);
+	const others = omit(mergedProps, "ref");
 
 	const [offset, setOffset] = createSignal(0);
 
@@ -92,7 +92,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 				Omit<NavigationMenuArrowRenderProps, keyof PopperArrowRenderProps>
 			>
 		>
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 			style={{
 				transform: `translate${horizontal() ? "X" : "Y"}(${offset()}px)`,
 				color: "red",
