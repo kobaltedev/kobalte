@@ -10,7 +10,6 @@ const meta = preview.meta({
 
 export default meta;
 
-// ─── Native element ───────────────────────────────────────────────────────────
 
 /**
  * Render any HTML element by changing the `as` prop. All forwarded attributes
@@ -26,9 +25,9 @@ export const NativeElement = meta.story({
 		tag: { control: "select", options: ["div", "button", "a", "span", "section", "p", "h3"] },
 		label: { control: "text" },
 	},
-	render: (args: { tag: string; label: string }) => (
+	render: (args) => (
 		<Polymorphic
-			as={args.tag as ValidComponent}
+			as={args.tag as unknown as ValidComponent}
 			class="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium font-sans border border-slate-200 bg-slate-50 text-slate-900 no-underline cursor-pointer"
 		>
 			{args.label}
@@ -39,7 +38,6 @@ export const NativeElement = meta.story({
 	),
 });
 
-// ─── Custom component ─────────────────────────────────────────────────────────
 
 interface CardProps {
 	variant?: "primary" | "secondary";
@@ -69,14 +67,13 @@ export const AsCustomComponent = meta.story({
 	argTypes: {
 		variant: { control: "select", options: ["primary", "secondary"] },
 	},
-	render: (args: { variant: "primary" | "secondary" }) => (
+	render: (args) => (
 		<Polymorphic as={Card} variant={args.variant}>
 			{args.variant === "primary" ? "Primary Card" : "Secondary Card"}
 		</Polymorphic>
 	),
 });
 
-// ─── Prop forwarding ──────────────────────────────────────────────────────────
 
 /** Standard HTML attributes — `id`, `data-*`, `aria-*`, `tabIndex` — all pass
  * through unchanged to the underlying DOM node. Click the button to inspect them. */
@@ -113,7 +110,6 @@ export const PropForwarding = meta.story({
 	},
 });
 
-// ─── Reactive class ───────────────────────────────────────────────────────────
 
 /** In Solid 2.0, `class` accepts a string, object, or array. All forms pass
  * through `Polymorphic` unchanged; signals update the DOM in-place. */
@@ -144,7 +140,6 @@ export const ReactiveClass = meta.story({
 	},
 });
 
-// ─── Ref capture ──────────────────────────────────────────────────────────────
 
 /** The `ref` prop captures the underlying DOM element, giving direct access to
  * imperative APIs like `getBoundingClientRect`. */
@@ -176,7 +171,6 @@ export const RefAccess = meta.story({
 	},
 });
 
-// ─── Reactive as prop ─────────────────────────────────────────────────────────
 
 /** The `as` prop is fully reactive — switch the rendered tag without unmounting. */
 export const DynamicAs = meta.story({
@@ -213,7 +207,6 @@ export const DynamicAs = meta.story({
 	},
 });
 
-// ─── Kobalte Button with as override ─────────────────────────────────────────
 
 /** Kobalte's `Button` defaults to `as="button"`. Override with the control below
  * to switch the rendered element while preserving accessibility semantics. */
@@ -223,9 +216,9 @@ export const ButtonAsElement = meta.story({
 	argTypes: {
 		as: { control: "select", options: ["button", "a", "div"] },
 	},
-	render: (args: { as: string }) => (
+	render: (args) => (
 		<Button
-			as={args.as as ValidComponent}
+			as={args.as as unknown as ValidComponent}
 			href={args.as === "a" ? "https://kobalte.dev" : undefined}
 			target={args.as === "a" ? "_blank" : undefined}
 			rel={args.as === "a" ? "noopener noreferrer" : undefined}
@@ -239,7 +232,6 @@ export const ButtonAsElement = meta.story({
 	),
 });
 
-// ─── TypeScript: typed polymorphic component ──────────────────────────────────
 
 /** A consumer-authored typed polymorphic helper built on top of `PolymorphicProps`.
  * The component accepts its own props alongside the chosen element's native props. */
@@ -249,14 +241,14 @@ export const TypedPolymorphic = meta.story({
 	argTypes: {
 		intent: { control: "select", options: ["default", "action"] },
 	},
-	render: (args: { intent: "default" | "action" }) => {
-		function Block<T extends ValidComponent = "div">(
+	render: (args) => {
+		function Block<T extends ValidComponent>(
 			props: PolymorphicProps<T, { intent?: "default" | "action" }>,
 		) {
 			return (
 				<Polymorphic
 					{...props}
-					as={props.as ?? ("div" as T)}
+					as={props.as!}
 					class={`inline-flex items-center px-4 py-2 rounded-md text-sm font-sans font-medium border transition-colors ${
 						props.intent === "action"
 							? "bg-blue-500 text-white border-blue-500"
@@ -266,21 +258,23 @@ export const TypedPolymorphic = meta.story({
 			);
 		}
 
+		const intentClass = `inline-flex items-center px-4 py-2 rounded-md text-sm font-sans font-medium border transition-colors ${
+			args.intent === "action"
+				? "bg-blue-500 text-white border-blue-500"
+				: "bg-slate-100 text-slate-900 border-slate-200"
+		}`;
+
 		return (
 			<div class="flex gap-3 font-sans flex-wrap">
-				<Block intent={args.intent}>Plain Block</Block>
-				<Block as="button" intent={args.intent} onClick={() => alert("Block button clicked")}>
-					Button Block
-				</Block>
-				<Block as="a" href="#" intent={args.intent}>
-					Link Block
+				<Polymorphic as="div" class={intentClass}>Native div</Polymorphic>
+				<Block as={Button} intent={args.intent} onClick={() => alert("Block button clicked")}>
+					Kobalte Button
 				</Block>
 			</div>
 		);
 	},
 });
 
-// ─── Missing as (error demo) ──────────────────────────────────────────────────
 
 /** `Polymorphic` throws synchronously when `as` is omitted. Toggle the button to
  * mount the broken component and observe the caught error. */
