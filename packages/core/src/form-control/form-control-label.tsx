@@ -1,5 +1,4 @@
 import {
-	OverrideComponentProps,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
