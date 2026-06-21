@@ -10,7 +10,7 @@ import {
 	createSignal,
 	omit,
 } from "solid-js";
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
 import type {
 	MenubarRootCommonProps,
 	MenubarRootOptions,
@@ -168,10 +168,10 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 		"data-closed": !expanded() ? "" : undefined,
 	}));
 
-	const { present: viewportPresent } = createPresence({
-		show: () => mergedProps.forceMount || show() || expanded(),
-		element: () => viewportRef() ?? null,
-	});
+	const { isMounted: viewportPresent } = createPresence(
+		() => (mergedProps.forceMount || show() || expanded()) || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	createEffect(() => {
 		if (!viewportPresent()) {

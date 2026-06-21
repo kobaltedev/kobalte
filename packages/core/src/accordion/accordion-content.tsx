@@ -57,7 +57,10 @@ export function AccordionContent<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "id", "style");
 
-	createEffect(() => onCleanup(itemContext.registerContentId(mergedProps.id)));
+	createEffect(
+		() => mergedProps.id,
+		(id) => itemContext.registerContentId(id),
+	);
 
 	return (
 		<Collapsible.Content<

@@ -22,7 +22,7 @@ import {
 	onCleanup,
 } from "solid-js";
 
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
 import { createListState } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
@@ -121,10 +121,10 @@ export function Menu(props: MenuProps) {
 		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
-	const { present: contentPresent } = createPresence({
-		show: () => rootContext.forceMount() || disclosureState.isOpen(),
-		element: () => contentRef() ?? null,
-	});
+	const { isMounted: contentPresent } = createPresence(
+		() => (rootContext.forceMount() || disclosureState.isOpen()) || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	const listState = createListState({
 		selectionMode: "none",

@@ -7,7 +7,7 @@ import {
 	omit,
 } from "solid-js";
 
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -65,11 +65,10 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "ref", "forceMount");
 
-	const { present } = createPresence({
-		show: () =>
-			mergedProps.forceMount || context.indeterminate() || context.checked(),
-		element: () => ref() ?? null,
-	});
+	const { isMounted: present } = createPresence(
+		() => (mergedProps.forceMount || context.indeterminate() || context.checked()) || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	return (
 		<Show when={present()}>

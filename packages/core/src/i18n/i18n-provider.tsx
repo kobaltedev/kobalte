@@ -8,7 +8,7 @@
 
 import { type Accessor, type JSX, createContext, useContext } from "solid-js";
 
-import { createDefaultLocale } from "./create-default-locale";
+import { createDefaultLocale, getDefaultLocale } from "./create-default-locale";
 import { type Direction, getReadingDirection } from "./utils";
 
 interface I18nProviderProps {
@@ -27,7 +27,10 @@ interface I18nContextValue {
 	direction: Accessor<Direction>;
 }
 
-const I18nContext = createContext<I18nContextValue>();
+const I18nContext = createContext<I18nContextValue>({
+	locale: () => getDefaultLocale().locale,
+	direction: () => getDefaultLocale().direction,
+});
 
 /**
  * Provides the locale for the application to all child components.
@@ -54,9 +57,5 @@ export function I18nProvider(props: I18nProviderProps) {
  * Returns an accessor for the current locale and layout direction.
  */
 export function useLocale() {
-	const defaultLocale = createDefaultLocale();
-
-	const context = useContext(I18nContext);
-
-	return context || defaultLocale;
+	return useContext(I18nContext);
 }

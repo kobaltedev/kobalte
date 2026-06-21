@@ -105,7 +105,10 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 		callHandler(e, selectableItem.onKeyDown);
 	};
 
-	createEffect(() => onCleanup(itemContext.registerTriggerId(others.id!)));
+	createEffect(
+		() => others.id!,
+		(id) => itemContext.registerTriggerId(id),
+	);
 
 	return (
 		<Collapsible.Trigger<

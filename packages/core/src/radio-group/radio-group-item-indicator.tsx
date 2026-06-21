@@ -1,7 +1,7 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { Show, type ValidComponent, createSignal, omit } from "solid-js";
 
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -56,10 +56,10 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 
 	const [ref, setRef] = createSignal<HTMLElement>();
 
-	const { present } = createPresence({
-		show: () => mergedProps.forceMount || context.isSelected(),
-		element: () => ref() ?? null,
-	});
+	const { isMounted: present } = createPresence(
+		() => (mergedProps.forceMount || context.isSelected()) || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	return (
 		<Show when={present()}>

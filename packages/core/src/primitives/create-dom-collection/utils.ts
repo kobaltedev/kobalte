@@ -7,7 +7,7 @@
  */
 
 import { getDocument } from "@kobalte/utils";
-import { type Accessor, createEffect, onCleanup } from "solid-js";
+import { type Accessor, createEffect } from "solid-js";
 
 import type { DomCollectionItem } from "./types";
 
@@ -120,13 +120,15 @@ function createTimeoutObserver<T extends DomCollectionItem = DomCollectionItem>(
 	items: Accessor<T[]>,
 	setItems: (items: T[]) => any,
 ) {
-	createEffect(() => {
-		const timeout = setTimeout(() => {
-			setItemsBasedOnDOMPosition(items(), setItems);
-		});
-
-		onCleanup(() => clearTimeout(timeout));
-	});
+	createEffect(
+		() => {},
+		() => {
+			const timeout = setTimeout(() => {
+				setItemsBasedOnDOMPosition(items(), setItems);
+			});
+			return () => clearTimeout(timeout);
+		},
+	);
 }
 
 export function createSortBasedOnDOMPosition<
@@ -140,30 +142,33 @@ export function createSortBasedOnDOMPosition<
 
 	let previousItems: T[] = [];
 
-	createEffect(() => {
-		const callback = () => {
-			const hasPreviousItems = !!previousItems.length;
-			previousItems = items();
+	createEffect(
+		() => items(),
+		(currentItems) => {
+			const callback = () => {
+				const hasPreviousItems = !!previousItems.length;
+				previousItems = items();
 
-			// We don't want to sort items if items have been just registered.
-			if (!hasPreviousItems) {
-				return;
+				// We don't want to sort items if items have been just registered.
+				if (!hasPreviousItems) {
+					return;
+				}
+
+				setItemsBasedOnDOMPosition(items(), setItems);
+			};
+
+			const root = getCommonParent(currentItems);
+			const observer = new IntersectionObserver(callback, { root });
+
+			for (const item of currentItems) {
+				const itemEl = item.ref();
+
+				if (itemEl) {
+					observer.observe(itemEl);
+				}
 			}
 
-			setItemsBasedOnDOMPosition(items(), setItems);
-		};
-
-		const root = getCommonParent(items());
-		const observer = new IntersectionObserver(callback, { root });
-
-		for (const item of items()) {
-			const itemEl = item.ref();
-
-			if (itemEl) {
-				observer.observe(itemEl);
-			}
-		}
-
-		onCleanup(() => observer.disconnect());
-	});
+			return () => observer.disconnect();
+		},
+	);
 }

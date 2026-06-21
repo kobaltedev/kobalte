@@ -16,7 +16,7 @@ import {
 	omit,
 } from "solid-js";
 
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
 import { Popper, type PopperRootOptions } from "../popper";
 import { createDisclosureState, createRegisterId } from "../primitives";
 import {
@@ -119,10 +119,10 @@ export function PopoverRoot(props: PopoverRootProps) {
 		return mergedProps.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef();
 	};
 
-	const { present: contentPresent } = createPresence({
-		show: () => mergedProps.forceMount || disclosureState.isOpen(),
-		element: () => contentRef() ?? null,
-	});
+	const { isMounted: contentPresent } = createPresence(
+		() => (mergedProps.forceMount || disclosureState.isOpen()) || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	const dataset: Accessor<PopoverDataSet> = createMemo(() => ({
 		"data-expanded": disclosureState.isOpen() ? "" : undefined,

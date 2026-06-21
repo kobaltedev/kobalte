@@ -29,9 +29,12 @@ export function createTagName(
 ) {
 	const [tagName, setTagName] = createSignal(stringOrUndefined(fallback?.()));
 
-	createEffect(() => {
-		setTagName(ref()?.tagName.toLowerCase() || stringOrUndefined(fallback?.()));
-	});
+	createEffect(
+		() => ref()?.tagName.toLowerCase() || stringOrUndefined(fallback?.()),
+		(value) => {
+			setTagName(value);
+		},
+	);
 
 	return tagName;
 }

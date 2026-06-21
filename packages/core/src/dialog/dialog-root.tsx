@@ -1,7 +1,7 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { type ParentProps, createSignal, createUniqueId } from "solid-js";
 
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
 import { createDisclosureState, createRegisterId } from "../primitives";
 import { DialogContext, type DialogContextValue } from "./dialog-context";
 import {
@@ -85,15 +85,15 @@ export function DialogRoot(props: DialogRootProps) {
 
 	const shouldMount = () => mergedProps.forceMount || disclosureState.isOpen();
 
-	const { present: overlayPresent } = createPresence({
-		show: shouldMount,
-		element: () => overlayRef() ?? null,
-	});
+	const { isMounted: overlayPresent } = createPresence(
+		() => shouldMount() || undefined,
+		{ transitionDuration: 0 },
+	);
 
-	const { present: contentPresent } = createPresence({
-		show: shouldMount,
-		element: () => contentRef() ?? null,
-	});
+	const { isMounted: contentPresent } = createPresence(
+		() => shouldMount() || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	const context: DialogContextValue = {
 		translations: () => mergedProps.translations ?? DIALOG_INTL_TRANSLATIONS,
