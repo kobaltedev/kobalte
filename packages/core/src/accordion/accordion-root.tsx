@@ -13,11 +13,10 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	type JSX,
-	type ValidComponent,
 	createUniqueId,
 	omit,
 } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
 
 import { createListState, createSelectableList } from "../list";
 import {

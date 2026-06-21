@@ -14,12 +14,10 @@ import {
 } from "@kobalte/utils";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	omit,
-	onCleanup,
 } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
