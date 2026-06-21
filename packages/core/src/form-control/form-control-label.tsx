@@ -65,7 +65,10 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 		() => "label",
 	);
 
-	createEffect(() => onCleanup(context.registerLabel(others.id)));
+	createEffect(
+		() => others.id,
+		(id) => { onCleanup(context.registerLabel(id)); },
+	);
 
 	return (
 		<Polymorphic<FormControlLabelRenderProps>

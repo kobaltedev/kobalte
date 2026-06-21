@@ -35,7 +35,10 @@ export function createFormControlField(props: CreateFormControlFieldProps) {
 		props,
 	);
 
-	createEffect(() => onCleanup(context.registerField(access(mergedProps.id)!)));
+	createEffect(
+		() => access(mergedProps.id)!,
+		(id) => { onCleanup(context.registerField(id)); },
+	);
 
 	return {
 		fieldProps: {

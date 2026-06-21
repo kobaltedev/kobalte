@@ -59,13 +59,13 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 
 	const isInvalid = () => context.validationState() === "invalid";
 
-	createEffect(() => {
-		if (!isInvalid()) {
-			return;
-		}
-
-		onCleanup(context.registerErrorMessage(others.id!));
-	});
+	createEffect(
+		() => isInvalid() ? others.id! : undefined,
+		(id) => {
+			if (!id) return;
+			onCleanup(context.registerErrorMessage(id));
+		},
+	);
 
 	return (
 		<Show when={mergedProps.forceMount || isInvalid()}>

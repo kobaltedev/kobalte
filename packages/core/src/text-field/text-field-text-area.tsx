@@ -17,7 +17,6 @@ import {
 	type JSX,
 	type ValidComponent,
 	createEffect,
-	on,
 	omit,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -75,16 +74,11 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 	const others = omit(mergedProps, "ref", "autoResize", "submitOnEnter", "onKeyPress");
 
 	createEffect(
-		on(
-			[() => ref, () => mergedProps.autoResize, () => context.value()],
-			([ref, autoResize]) => {
-				if (!ref || !autoResize) {
-					return;
-				}
-
-				adjustHeight(ref);
-			},
-		),
+		() => ({ autoResize: mergedProps.autoResize, value: context.value() }),
+		({ autoResize }) => {
+			if (!ref || !autoResize) return;
+			adjustHeight(ref);
+		},
 	);
 
 	const onKeyPress = (event: KeyboardEvent) => {

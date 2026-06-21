@@ -43,7 +43,10 @@ export function FormControlDescription<T extends ValidComponent = "div">(
 		props as FormControlDescriptionProps,
 	);
 
-	createEffect(() => onCleanup(context.registerDescription(mergedProps.id!)));
+	createEffect(
+		() => mergedProps.id!,
+		(id) => { onCleanup(context.registerDescription(id)); },
+	);
 
 	return (
 		<Polymorphic<FormControlDescriptionRenderProps>
