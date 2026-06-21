@@ -1,4 +1,3 @@
-import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
 	Content as AccordionContent,
@@ -146,71 +145,122 @@ export const DefaultOpen = meta.story({
 	),
 });
 
-/** Individual items accept `disabled`. The keyboard focus order skips them too. */
+/** Use the Controls panel to pick which item is disabled. Keyboard focus order skips it too. */
 export const WithDisabledItem = meta.story({
 	name: "With Disabled Item",
-	render: () => (
+	args: {
+		disabledItem: "item-2",
+	},
+	argTypes: {
+		disabledItem: {
+			control: "select",
+			options: ["none", "item-1", "item-2", "item-3"],
+			description: "Which item is disabled.",
+		},
+	},
+	render: (args) => (
 		<AccordionRoot collapsible class={rootClass}>
-			<Item value="item-1" question="Available item" answer="This item is interactive." />
+			<Item
+				value="item-1"
+				disabled={args.disabledItem === "item-1"}
+				question="First item"
+				answer="Content for the first item."
+			/>
 			<Item
 				value="item-2"
-				disabled
-				question="Disabled item"
-				answer="You will never read this."
+				disabled={args.disabledItem === "item-2"}
+				question="Second item"
+				answer="Content for the second item."
 			/>
-			<Item value="item-3" question="Another available item" answer="This one works too." />
+			<Item
+				value="item-3"
+				disabled={args.disabledItem === "item-3"}
+				question="Third item"
+				answer="Content for the third item."
+			/>
 		</AccordionRoot>
 	),
 });
 
 /**
- * Pass `value` + `onChange` for fully controlled state.
- * The external buttons drive which items are open.
+ * Smooth expand/collapse using the CSS `grid-template-rows` trick.
+ * `forceMount` keeps content in the DOM so the exit animation plays before unmount.
+ * `data-[expanded]` / `data-[closed]` on the content element drive the transition.
+ */
+export const Animated = meta.story({
+	name: "Animated",
+	render: () => (
+		<AccordionRoot collapsible class={rootClass}>
+			<AnimatedItem
+				value="item-1"
+				question="Is it accessible?"
+				answer="Yes. It adheres to the WAI-ARIA Disclosure pattern."
+			/>
+			<AnimatedItem
+				value="item-2"
+				question="Is it unstyled?"
+				answer="Yes. It's unstyled by default, giving you full control over the look and feel."
+			/>
+			<AnimatedItem
+				value="item-3"
+				question="Can it be animated?"
+				answer="Yes! Use forceMount + a CSS grid-template-rows transition on the content element."
+			/>
+		</AccordionRoot>
+	),
+});
+
+function AnimatedItem(props: ItemProps) {
+	return (
+		<AccordionItem value={props.value} forceMount>
+			<AccordionHeader class="flex">
+				<AccordionTrigger class={triggerClass}>
+					<span>{props.question}</span>
+					<Chevron />
+				</AccordionTrigger>
+			</AccordionHeader>
+			<AccordionContent class="grid bg-slate-50 transition-[grid-template-rows] duration-300 ease-out data-[expanded]:grid-rows-[1fr] data-[closed]:grid-rows-[0fr]">
+				<div class="overflow-hidden">
+					<p class="px-4 py-3 text-sm text-slate-600 leading-relaxed m-0">
+						{props.answer}
+					</p>
+				</div>
+			</AccordionContent>
+		</AccordionItem>
+	);
+}
+
+/**
+ * Pass `value` for fully controlled state.
+ * The Controls panel drives which items are open — clicking triggers has no effect
+ * because no `onChange` is wired, demonstrating the controlled contract.
  */
 export const Controlled = meta.story({
 	name: "Controlled",
-	render: () => {
-		const items = [
-			{ value: "item-1", question: "First item", answer: "Content for the first item." },
-			{ value: "item-2", question: "Second item", answer: "Content for the second item." },
-			{ value: "item-3", question: "Third item", answer: "Content for the third item." },
-		] as const;
-
-		const [value, setValue] = createSignal<string[]>([]);
-
-		const toggle = (v: string) =>
-			setValue((prev) =>
-				prev.includes(v) ? prev.filter((x) => x !== v) : [...prev, v],
-			);
-
-		return (
-			<div class="flex flex-col gap-4 font-sans">
-				<div class="flex gap-2">
-					{items.map((item) => (
-						<button
-							type="button"
-							onClick={() => toggle(item.value)}
-							class={`rounded px-3 py-1.5 text-xs font-medium border transition-colors ${
-								value().includes(item.value)
-									? "bg-blue-500 text-white border-blue-500"
-									: "bg-white text-slate-700 border-slate-200 hover:border-blue-300"
-							}`}
-						>
-							{item.question.split(" ")[0]}
-						</button>
-					))}
-				</div>
-				<AccordionRoot value={value()} onChange={setValue} multiple class={rootClass}>
-					{items.map((item) => (
-						<Item
-							value={item.value}
-							question={item.question}
-							answer={item.answer}
-						/>
-					))}
-				</AccordionRoot>
-			</div>
-		);
+	args: {
+		item1: false,
+		item2: false,
+		item3: false,
 	},
+	argTypes: {
+		item1: { control: "boolean", description: "First item open." },
+		item2: { control: "boolean", description: "Second item open." },
+		item3: { control: "boolean", description: "Third item open." },
+	},
+	render: (args) => (
+		<AccordionRoot
+			value={[
+				...(args.item1 ? ["item-1"] : []),
+				...(args.item2 ? ["item-2"] : []),
+				...(args.item3 ? ["item-3"] : []),
+			]}
+			multiple
+			class={rootClass}
+		>
+			<Item value="item-1" question="First item" answer="Content for the first item." />
+			<Item value="item-2" question="Second item" answer="Content for the second item." />
+			<Item value="item-3" question="Third item" answer="Content for the third item." />
+		</AccordionRoot>
+	),
 });
 

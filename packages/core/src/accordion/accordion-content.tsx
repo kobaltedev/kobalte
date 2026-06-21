@@ -12,7 +12,6 @@ import {
 	type ValidComponent,
 	createEffect,
 	omit,
-	onCleanup,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
