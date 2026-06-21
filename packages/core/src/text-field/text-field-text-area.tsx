@@ -12,13 +12,8 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	omit,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import { useTextFieldContext } from "./text-field-context";

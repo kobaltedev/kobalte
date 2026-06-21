@@ -1,5 +1,6 @@
 import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { type ValidComponent, createEffect, onCleanup } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, onCleanup } from "solid-js";
 
 import {
 	type ElementOf,

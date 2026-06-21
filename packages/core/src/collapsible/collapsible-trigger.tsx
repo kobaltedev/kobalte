@@ -7,12 +7,8 @@
  */
 
 import { callHandler } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	omit,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -49,8 +45,8 @@ export function CollapsibleTrigger<T extends ValidComponent = "div">(
 
 	const others = omit(props, "onClick");
 
-	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, props.onClick);
+	const onClick: JSX.EventHandlerUnion<Element, MouseEvent> = (e) => {
+		callHandler(e, props.onClick as JSX.EventHandlerUnion<Element, MouseEvent>);
 		context.toggle();
 	};
 

@@ -5,12 +5,8 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import {
-	type JSX,
-	type ValidComponent,
-	createUniqueId,
-	omit,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createUniqueId, omit } from "solid-js";
 
 import {
 	FORM_CONTROL_PROP_NAMES,
