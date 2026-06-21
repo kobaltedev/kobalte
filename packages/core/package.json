@@ -74,8 +74,8 @@
 		"@internationalized/date": "^3.4.0",
 		"@internationalized/number": "^3.2.1",
 		"@kobalte/utils": "^0.9.1",
-		"@solid-primitives/props": "^3.1.8",
-		"@solid-primitives/resize-observer": "^2.0.26",
+		"@solid-primitives/props": "link:../../../solid-primitives/packages/props",
+		"@solid-primitives/resize-observer": "link:../../../solid-primitives/packages/resize-observer",
 		"@solid-primitives/presence": "link:../../../solid-primitives/packages/presence",
 		"@solid-primitives/scroll": "link:../../../solid-primitives/packages/scroll"
 	},
