@@ -68,11 +68,25 @@ function Item(props: ItemProps) {
 	);
 }
 
-/** Single-select accordion. Click a trigger to expand; click again to collapse (`collapsible`). */
+/** Single-select accordion. Use the Controls panel to toggle `collapsible` and `multiple`. */
 export const Default = meta.story({
 	name: "Default",
-	render: () => (
-		<AccordionRoot collapsible class={rootClass}>
+	args: {
+		collapsible: true,
+		multiple: false,
+	},
+	argTypes: {
+		collapsible: {
+			control: "boolean",
+			description: "When single-select, allow the open item to be closed by clicking its trigger again.",
+		},
+		multiple: {
+			control: "boolean",
+			description: "Allow multiple items to be open simultaneously.",
+		},
+	},
+	render: (args) => (
+		<AccordionRoot collapsible={args.collapsible} multiple={args.multiple} class={rootClass}>
 			<Item
 				value="item-1"
 				question="Is it accessible?"
@@ -200,41 +214,3 @@ export const Controlled = meta.story({
 	},
 });
 
-/** Tweak `multiple` and `collapsible` from the Controls panel. */
-export const Playground = meta.story({
-	name: "Playground",
-	args: {
-		multiple: false,
-		collapsible: true,
-	},
-	argTypes: {
-		multiple: {
-			control: "boolean",
-			description: "Allow multiple items to be open simultaneously.",
-		},
-		collapsible: {
-			control: "boolean",
-			description:
-				"When single-select, allow the open item to be closed by clicking its trigger again.",
-		},
-	},
-	render: (args) => (
-		<AccordionRoot multiple={args.multiple} collapsible={args.collapsible} class={rootClass}>
-			<Item
-				value="item-1"
-				question="Is it accessible?"
-				answer="Yes. It adheres to the WAI-ARIA Disclosure pattern."
-			/>
-			<Item
-				value="item-2"
-				question="Is it unstyled?"
-				answer="Yes. It's unstyled by default, giving you full control over the look and feel."
-			/>
-			<Item
-				value="item-3"
-				question="Can it be animated?"
-				answer="Yes! You can animate the Accordion with CSS using --kb-accordion-content-height."
-			/>
-		</AccordionRoot>
-	),
-});

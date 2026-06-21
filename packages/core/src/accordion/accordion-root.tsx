@@ -15,7 +15,6 @@ import {
 import {
 	type JSX,
 	type ValidComponent,
-	createSignal,
 	createUniqueId,
 	omit,
 } from "solid-js";
@@ -93,12 +92,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "id", "ref", "value", "defaultValue", "onChange", "multiple", "collapsible", "shouldFocusWrap", "onKeyDown", "onMouseDown", "onFocusIn", "onFocusOut");
 
-	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
-
-	const { DomCollectionProvider } = createDomCollection({
-		items,
-		onItemsChange: setItems,
-	});
+	const { DomCollectionProvider, items } = createDomCollection<CollectionItemWithRef>();
 
 	const listState = createListState({
 		selectedKeys: () => mergedProps.value,
@@ -108,8 +102,6 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 		selectionMode: () => (mergedProps.multiple ? "multiple" : "single"),
 		dataSource: items,
 	});
-
-	listState.selectionManager().setFocusedKey("item-1");
 
 	const selectableList = createSelectableList(
 		{

@@ -105,7 +105,7 @@ export function createMultipleSelectionState(
 	// If the selectionBehavior prop changes, update the state as well.
 	createEffect(
 		() => access(mergedProps.selectionBehavior) ?? "toggle",
-		(behavior) => setSelectionBehavior(behavior),
+		(behavior) => { setSelectionBehavior(behavior); },
 	);
 
 	return {
