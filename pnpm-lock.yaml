@@ -50,7 +50,7 @@ importers:
         version: 2.0.0-beta.14(solid-js@2.0.0-beta.14)
       '@storybook/addon-docs':
         specifier: ^10.4.1
-        version: 10.4.6(@types/react@19.2.17)(esbuild@0.18.20)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))
+        version: 10.4.6(@types/react@19.2.17)(esbuild@0.25.12)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))
       '@testing-library/dom':
         specifier: 9.3.4
         version: 9.3.4
@@ -113,7 +113,7 @@ importers:
         version: 10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-solidjs-vite:
         specifier: ^10.1.0
-        version: 10.5.2(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(esbuild@0.18.20)(rollup@3.28.1)(solid-js@2.0.0-beta.14)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3)(vite-plugin-solid@3.0.0-next.5(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.4.2(vitest@1.3.1))(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2)))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))
+        version: 10.5.2(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(esbuild@0.25.12)(rollup@3.28.1)(solid-js@2.0.0-beta.14)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3)(vite-plugin-solid@3.0.0-next.5(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.4.2(vitest@1.3.1))(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2)))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))
       tailwindcss:
         specifier: '3'
         version: 3.3.3(ts-node@10.9.2(@types/node@20.5.4)(typescript@5.9.3))
@@ -253,6 +253,9 @@ importers:
       '@kobalte/utils':
         specifier: ^0.9.1
         version: link:../utils
+      '@solid-primitives/presence':
+        specifier: link:../../../solid-primitives/packages/presence
+        version: link:../../../solid-primitives/packages/presence
       '@solid-primitives/props':
         specifier: link:/Users/ddibiase/Projects/solid-primitives/packages/props
         version: link:../../../solid-primitives/packages/props
@@ -265,9 +268,6 @@ importers:
       solid-js:
         specifier: ^2.0.0-beta.14
         version: 2.0.0-beta.14
-      solid-presence:
-        specifier: ^0.1.8
-        version: 0.1.8(solid-js@2.0.0-beta.14)
       solid-prevent-scroll:
         specifier: ^0.1.4
         version: 0.1.7(solid-js@2.0.0-beta.14)
@@ -277,7 +277,7 @@ importers:
         version: link:../tests
       esbuild-plugin-solid:
         specifier: ^0.5.0
-        version: 0.5.0(esbuild@0.25.12)(solid-js@2.0.0-beta.14)
+        version: 0.5.0(esbuild@0.18.20)(solid-js@2.0.0-beta.14)
       tsup:
         specifier: 7.2.0
         version: 7.2.0(postcss@8.5.15)(ts-node@10.9.2(@types/node@20.5.4)(typescript@5.9.3))(typescript@5.9.3)
@@ -1266,11 +1266,6 @@ packages:
 
   '@corvu/utils@0.2.0':
     resolution: {integrity: sha512-cY0w+SotjOtBX+9oE90vis1Mu2spwGhtcAn4jmrl7JPqQrm68DH/0Rh3R52dN2MbgPVZL06N3mvys18myF5/0Q==}
-    peerDependencies:
-      solid-js: ^1.8
-
-  '@corvu/utils@0.4.1':
-    resolution: {integrity: sha512-swd/2DUJiXTo9PM5GVbBv3jNlEOwmKWvVOJG2l8Cwu1cokoXknKrDkBSZRz+yf0rFXdbhWhRQMWDPMPwuBnWNg==}
     peerDependencies:
       solid-js: ^1.8
 
@@ -6833,11 +6828,6 @@ packages:
       solid-js: ^1.2.6
       vite: '*'
 
-  solid-presence@0.1.8:
-    resolution: {integrity: sha512-pWGtXUFWYYUZNbg5YpG5vkQJyOtzn2KXhxYaMx/4I+lylTLYkITOLevaCwMRN+liCVk0pqB6EayLWojNqBFECA==}
-    peerDependencies:
-      solid-js: ^1.8
-
   solid-prevent-scroll@0.1.7:
     resolution: {integrity: sha512-DLafct98/nCX9l54MQ+mPbUgmmskSvVr/qxtFEt89SpSvYQkjyX4uviy91TFmzslhSyiVNNBlChpVzRO8eAwzA==}
     peerDependencies:
@@ -9339,11 +9329,6 @@ snapshots:
       '@floating-ui/dom': 1.6.10
       solid-js: 2.0.0-beta.14
 
-  '@corvu/utils@0.4.1(solid-js@2.0.0-beta.14)':
-    dependencies:
-      '@floating-ui/dom': 1.6.10
-      solid-js: 2.0.0-beta.14
-
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
@@ -10607,10 +10592,10 @@ snapshots:
       seroval-plugins: 1.5.4(seroval@1.5.4)
       solid-js: 2.0.0-beta.14
 
-  '@storybook/addon-docs@10.4.6(@types/react@19.2.17)(esbuild@0.18.20)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))':
+  '@storybook/addon-docs@10.4.6(@types/react@19.2.17)(esbuild@0.25.12)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))':
     dependencies:
       '@mdx-js/react': 3.1.1(@types/react@19.2.17)(react@19.2.7)
-      '@storybook/csf-plugin': 10.4.6(esbuild@0.18.20)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))
+      '@storybook/csf-plugin': 10.4.6(esbuild@0.25.12)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))
       '@storybook/icons': 2.0.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@storybook/react-dom-shim': 10.4.6(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       react: 19.2.7
@@ -10626,9 +10611,9 @@ snapshots:
       - vite
       - webpack
 
-  '@storybook/builder-vite@10.4.4(esbuild@0.18.20)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))':
+  '@storybook/builder-vite@10.4.4(esbuild@0.25.12)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))':
     dependencies:
-      '@storybook/csf-plugin': 10.4.4(esbuild@0.18.20)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))
+      '@storybook/csf-plugin': 10.4.4(esbuild@0.25.12)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))
       storybook: 10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       ts-dedent: 2.3.0
       vite: 6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2)
@@ -10637,21 +10622,21 @@ snapshots:
       - rollup
       - webpack
 
-  '@storybook/csf-plugin@10.4.4(esbuild@0.18.20)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))':
+  '@storybook/csf-plugin@10.4.4(esbuild@0.25.12)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))':
     dependencies:
       storybook: 10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       unplugin: 2.3.11
     optionalDependencies:
-      esbuild: 0.18.20
+      esbuild: 0.25.12
       rollup: 3.28.1
       vite: 6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2)
 
-  '@storybook/csf-plugin@10.4.6(esbuild@0.18.20)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))':
+  '@storybook/csf-plugin@10.4.6(esbuild@0.25.12)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))':
     dependencies:
       storybook: 10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       unplugin: 2.3.11
     optionalDependencies:
-      esbuild: 0.18.20
+      esbuild: 0.25.12
       rollup: 3.28.1
       vite: 6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2)
 
@@ -12284,12 +12269,12 @@ snapshots:
   esbuild-openbsd-64@0.15.18:
     optional: true
 
-  esbuild-plugin-solid@0.5.0(esbuild@0.25.12)(solid-js@2.0.0-beta.14):
+  esbuild-plugin-solid@0.5.0(esbuild@0.18.20)(solid-js@2.0.0-beta.14):
     dependencies:
       '@babel/core': 7.22.10
       '@babel/preset-typescript': 7.24.6(@babel/core@7.22.10)
       babel-preset-solid: 1.7.7(@babel/core@7.22.10)
-      esbuild: 0.25.12
+      esbuild: 0.18.20
       solid-js: 2.0.0-beta.14
     transitivePeerDependencies:
       - supports-color
@@ -15358,11 +15343,6 @@ snapshots:
       solid-js: 1.8.15
       vite: 5.1.4(@types/node@20.5.4)(terser@5.31.0)
 
-  solid-presence@0.1.8(solid-js@2.0.0-beta.14):
-    dependencies:
-      '@corvu/utils': 0.4.1(solid-js@2.0.0-beta.14)
-      solid-js: 2.0.0-beta.14
-
   solid-prevent-scroll@0.1.7(solid-js@2.0.0-beta.14):
     dependencies:
       '@corvu/utils': 0.2.0(solid-js@2.0.0-beta.14)
@@ -15474,9 +15454,9 @@ snapshots:
     dependencies:
       internal-slot: 1.0.7
 
-  storybook-solidjs-vite@10.5.2(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(esbuild@0.18.20)(rollup@3.28.1)(solid-js@2.0.0-beta.14)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3)(vite-plugin-solid@3.0.0-next.5(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.4.2(vitest@1.3.1))(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2)))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2)):
+  storybook-solidjs-vite@10.5.2(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(esbuild@0.25.12)(rollup@3.28.1)(solid-js@2.0.0-beta.14)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@5.9.3)(vite-plugin-solid@3.0.0-next.5(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.4.2(vitest@1.3.1))(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2)))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2)):
     dependencies:
-      '@storybook/builder-vite': 10.4.4(esbuild@0.18.20)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))
+      '@storybook/builder-vite': 10.4.4(esbuild@0.25.12)(rollup@3.28.1)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@1.21.0)(terser@5.31.0)(yaml@2.4.2))
       '@storybook/global': 5.0.0
       '@volar/language-core': 2.4.28
       '@volar/typescript': 2.4.28

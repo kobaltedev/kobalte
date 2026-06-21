@@ -16,12 +16,10 @@ import {
 	type ValidComponent,
 	createEffect,
 	createSignal,
-	on,
-	onCleanup,
 	omit,
 } from "solid-js";
 
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -75,20 +73,21 @@ export function TabsContent<T extends ValidComponent = "div">(
 
 	const isSelected = () => context.listState().selectedKey() === props.value;
 
-	const { present } = createPresence({
-		show: () => props.forceMount || isSelected(),
-		element: () => ref() ?? null,
-	});
+	const { isMounted: present } = createPresence(
+		() => (props.forceMount || isSelected()) || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	createEffect(
-		on([() => ref(), () => present()], ([ref, isPresent]) => {
-			if (ref == null || !isPresent) {
+		() => [ref(), present()] as const,
+		([refEl, isPresent]) => {
+			if (refEl == null || !isPresent) {
 				return;
 			}
 
 			const updateTabIndex = () => {
 				// Detect if there are any tabbable elements and update the tabIndex accordingly.
-				const walker = getFocusableTreeWalker(ref, { tabbable: true });
+				const walker = getFocusableTreeWalker(refEl, { tabbable: true });
 				setTabIndex(walker.nextNode() ? undefined : 0);
 			};
 
@@ -97,23 +96,22 @@ export function TabsContent<T extends ValidComponent = "div">(
 			const observer = new MutationObserver(updateTabIndex);
 
 			// Update when new elements are inserted, or the tabindex/disabled attribute updates.
-			observer.observe(ref, {
+			observer.observe(refEl, {
 				subtree: true,
 				childList: true,
 				attributes: true,
 				attributeFilter: ["tabindex", "disabled"],
 			});
 
-			onCleanup(() => {
-				observer.disconnect();
-			});
-		}),
+			return () => observer.disconnect();
+		},
 	);
 
 	createEffect(
-		on([() => props.value, id], ([value, id]) => {
-			context.contentIdsMap().set(value, id);
-		}),
+		() => [props.value, id()] as const,
+		([value, contentId]) => {
+			context.contentIdsMap().set(value, contentId);
+		},
 	);
 
 	return (

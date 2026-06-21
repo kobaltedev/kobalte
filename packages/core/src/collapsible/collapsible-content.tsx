@@ -14,13 +14,11 @@ import {
 	createEffect,
 	createSignal,
 	omit,
-	on,
-	onCleanup,
 	onSettled,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -67,10 +65,10 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "ref", "id", "style");
 
-	const { present } = createPresence({
-		show: context.shouldMount,
-		element: () => ref() ?? null,
-	});
+	const { isMounted: present } = createPresence(
+		() => context.shouldMount() || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	const [height, setHeight] = createSignal(0);
 	const [width, setWidth] = createSignal(0);
@@ -91,50 +89,48 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 	});
 
 	createEffect(
-		on(
-			/**
-			 * depends on `present` because it will be `false` on
-			 * animation end (so when close finishes). This allows us to
-			 * retrieve the dimensions *before* closing.
-			 */
-			present,
-			() => {
-				if (!ref()) {
-					return;
-				}
+		/**
+		 * depends on `present` because it will be `false` on
+		 * animation end (so when close finishes). This allows us to
+		 * retrieve the dimensions *before* closing.
+		 */
+		() => present(),
+		() => {
+			if (!ref()) {
+				return;
+			}
 
-				// block any animations/transitions so the element renders at its full dimensions
-				ref()!.style.transitionDuration = "0s";
-				ref()!.style.animationName = "none";
+			// block any animations/transitions so the element renders at its full dimensions
+			ref()!.style.transitionDuration = "0s";
+			ref()!.style.animationName = "none";
 
-				// get width and height from full dimensions
-				const rect = ref()!.getBoundingClientRect();
-				setHeight(rect.height);
-				setWidth(rect.width);
+			// get width and height from full dimensions
+			const rect = ref()!.getBoundingClientRect();
+			setHeight(rect.height);
+			setWidth(rect.width);
 
-				// kick off any animations/transitions that were originally set up if it isn't the initial mount
-				if (!isMountAnimationPrevented) {
-					ref()!.style.transitionDuration = "";
-					ref()!.style.animationName = "";
-				}
-			},
-		),
+			// kick off any animations/transitions that were originally set up if it isn't the initial mount
+			if (!isMountAnimationPrevented) {
+				ref()!.style.transitionDuration = "";
+				ref()!.style.animationName = "";
+			}
+		},
 	);
 
 	createEffect(
-		on(
-			context.isOpen,
-			(open) => {
-				if (!open && ref()) {
-					ref()!.style.transitionDuration = "";
-					ref()!.style.animationName = "";
-				}
-			},
-			{ defer: true },
-		),
+		() => context.isOpen(),
+		(open) => {
+			if (!open && ref()) {
+				ref()!.style.transitionDuration = "";
+				ref()!.style.animationName = "";
+			}
+		},
 	);
 
-	createEffect(() => onCleanup(context.registerContentId(mergedProps.id)));
+	createEffect(
+		() => mergedProps.id,
+		(id) => context.registerContentId(id),
+	);
 
 	return (
 		<Show when={present()}>

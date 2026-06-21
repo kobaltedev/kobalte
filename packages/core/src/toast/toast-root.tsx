@@ -26,7 +26,6 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
-	on,
 	omit,
 	onSettled,
 } from "solid-js";
@@ -37,7 +36,7 @@ import {
 } from "../polymorphic";
 
 import { combineStyle } from "@solid-primitives/props";
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
 import { createRegisterId } from "../primitives";
 import { ToastContext, type ToastContextValue } from "./toast-context";
 import { useToastRegionContext } from "./toast-region-context";
@@ -173,10 +172,10 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
 	const [ref, setRef] = createSignal<HTMLElement>();
 
-	const { present } = createPresence({
-		show: isOpen,
-		element: () => ref() ?? null,
-	});
+	const { isMounted: present } = createPresence(
+		() => isOpen() || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	const duration = createMemo(() => mergedProps.duration || rootContext.duration());
 
@@ -385,44 +384,36 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	});
 
 	createEffect(
-		on(
-			() => rootContext.isPaused(),
-			(isPaused) => {
-				if (isPaused) {
-					pauseTimer();
-				} else {
-					resumeTimer();
-				}
-			},
-			{
-				defer: true,
-			},
-		),
+		() => rootContext.isPaused(),
+		(isPaused) => {
+			if (isPaused) {
+				pauseTimer();
+			} else {
+				resumeTimer();
+			}
+		},
 	);
 
 	// start timer when toast opens or duration changes.
 	// we include `open` in deps because closed !== unmounted when animating,
 	// so it could reopen before being completely unmounted
 	createEffect(
-		on([isOpen, duration], ([isOpen, duration]) => {
-			if (isOpen && !rootContext.isPaused()) {
-				startTimer(duration);
+		() => [isOpen(), duration()] as const,
+		([isOpenVal, durationVal]) => {
+			if (isOpenVal && !rootContext.isPaused()) {
+				startTimer(durationVal);
 			}
-		}),
+		},
 	);
 
 	createEffect(
-		on(
-			() => toastStore.get(mergedProps.toastId)?.dismiss,
-			(dismiss) => dismiss && close(),
-		),
+		() => toastStore.get(mergedProps.toastId)?.dismiss,
+		(dismiss) => dismiss && close(),
 	);
 
 	createEffect(
-		on(
-			() => present(),
-			(isPresent) => !isPresent && deleteToast(),
-		),
+		() => present(),
+		(isPresent) => !isPresent && deleteToast(),
 	);
 
 	const context: ToastContextValue = {
