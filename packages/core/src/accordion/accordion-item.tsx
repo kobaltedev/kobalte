@@ -9,15 +9,14 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Component,
-	JSX,
-	type ValidComponent,
 	createSignal,
 	createUniqueId,
 	omit,
 } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
 
 import * as Collapsible from "../collapsible";
-import { ElementOf, type PolymorphicProps } from "../polymorphic";
+import { type PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { useAccordionContext } from "./accordion-context";
 import {
@@ -46,15 +45,13 @@ export interface AccordionItemRenderProps
 	extends AccordionItemCommonProps,
 		Collapsible.CollapsibleRootRenderProps {}
 
-export type AccordionItemProps<
-	T extends ValidComponent | HTMLElement = HTMLElement,
-> = AccordionItemOptions & Partial<AccordionItemRenderProps>;
+export type AccordionItemProps = AccordionItemOptions & Partial<AccordionItemRenderProps>;
 
 /**
  * An item of the accordion, contains all the parts of a collapsible section.
  */
 export function AccordionItem<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, AccordionItemProps<T>>,
+	props: PolymorphicProps<T, AccordionItemProps>,
 ) {
 	const accordionContext = useAccordionContext();
 

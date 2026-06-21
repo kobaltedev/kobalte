@@ -9,10 +9,10 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Component,
-	type ValidComponent,
 	createEffect,
 	omit,
 } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
 
 import { combineStyle } from "@solid-primitives/props";
 import * as Collapsible from "../collapsible";
