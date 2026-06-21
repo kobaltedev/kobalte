@@ -12,7 +12,7 @@ import {
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
-import createPreventScroll from "solid-prevent-scroll";
+import { createPreventScroll } from "@solid-primitives/scroll";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -105,7 +105,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 	});
 
 	createPreventScroll({
-		element: () => ref ?? null,
+		element: () => ref ?? undefined,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 

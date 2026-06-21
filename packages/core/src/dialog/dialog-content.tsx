@@ -21,7 +21,7 @@ import {
 	onCleanup,
 } from "solid-js";
 
-import createPreventScroll from "solid-prevent-scroll";
+import { createPreventScroll } from "@solid-primitives/scroll";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -194,7 +194,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 	});
 
 	createPreventScroll({
-		element: () => ref ?? null,
+		element: () => ref ?? undefined,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 

@@ -262,15 +262,15 @@ importers:
       '@solid-primitives/resize-observer':
         specifier: link:/Users/ddibiase/Projects/solid-primitives/packages/resize-observer
         version: link:../../../solid-primitives/packages/resize-observer
+      '@solid-primitives/scroll':
+        specifier: link:../../../solid-primitives/packages/scroll
+        version: link:../../../solid-primitives/packages/scroll
       '@solidjs/web':
         specifier: ^2.0.0-beta.14
         version: 2.0.0-beta.14(solid-js@2.0.0-beta.14)
       solid-js:
         specifier: ^2.0.0-beta.14
         version: 2.0.0-beta.14
-      solid-prevent-scroll:
-        specifier: ^0.1.4
-        version: 0.1.7(solid-js@2.0.0-beta.14)
     devDependencies:
       '@kobalte/tests':
         specifier: workspace:*
@@ -1264,11 +1264,6 @@ packages:
     resolution: {integrity: sha512-tpyc+7i6bPG9mvaBbtKUeghfyZSDgWquIDfMgqYtTbmZ9Y9VzEm2je9EYcQ0aoz5o7NvGS+rcDec93yO08MHYA==}
     engines: {node: '>=v18'}
 
-  '@corvu/utils@0.2.0':
-    resolution: {integrity: sha512-cY0w+SotjOtBX+9oE90vis1Mu2spwGhtcAn4jmrl7JPqQrm68DH/0Rh3R52dN2MbgPVZL06N3mvys18myF5/0Q==}
-    peerDependencies:
-      solid-js: ^1.8
-
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -2038,17 +2033,11 @@ packages:
   '@floating-ui/core@1.6.2':
     resolution: {integrity: sha512-+2XpQV9LLZeanU4ZevzRnGFg2neDeKHgFLjP6YLW+tly0IvrhqT4u8enLGjLH3qeh85g19xY5rsAusfwTdn5lg==}
 
-  '@floating-ui/dom@1.6.10':
-    resolution: {integrity: sha512-fskgCFv8J8OamCmyun8MfjB1Olfn+uZKjOKZ0vhYF3gRmEUXcGOjxWL8bBr7i4kIuPZ2KD2S3EUIOxnjC8kl2A==}
-
   '@floating-ui/dom@1.6.5':
     resolution: {integrity: sha512-Nsdud2X65Dz+1RHjAIP0t8z5e2ff/IRbei6BqFrl1urT8sDVzM1HMQ+R0XcU5ceRfyO3I6ayeqIfh+6Wb8LGTw==}
 
   '@floating-ui/utils@0.2.2':
     resolution: {integrity: sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==}
-
-  '@floating-ui/utils@0.2.7':
-    resolution: {integrity: sha512-X8R8Oj771YRl/w+c1HqAC1szL8zWQRwFvgDwT129k9ACdBoud/+/rX9V0qiMl6LWUdP9voC2nDVZYPMQQsb6eA==}
 
   '@iarna/toml@2.2.5':
     resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
@@ -6828,11 +6817,6 @@ packages:
       solid-js: ^1.2.6
       vite: '*'
 
-  solid-prevent-scroll@0.1.7:
-    resolution: {integrity: sha512-DLafct98/nCX9l54MQ+mPbUgmmskSvVr/qxtFEt89SpSvYQkjyX4uviy91TFmzslhSyiVNNBlChpVzRO8eAwzA==}
-    peerDependencies:
-      solid-js: ^1.8
-
   solid-refresh@0.6.3:
     resolution: {integrity: sha512-F3aPsX6hVw9ttm5LYlth8Q15x6MlI/J3Dn+o3EQyRTtTxidepSTwAYdozt01/YA+7ObcciagGEyXIopGZzQtbA==}
     peerDependencies:
@@ -9324,11 +9308,6 @@ snapshots:
       chalk: 5.3.0
     optional: true
 
-  '@corvu/utils@0.2.0(solid-js@2.0.0-beta.14)':
-    dependencies:
-      '@floating-ui/dom': 1.6.10
-      solid-js: 2.0.0-beta.14
-
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
@@ -9761,19 +9740,12 @@ snapshots:
     dependencies:
       '@floating-ui/utils': 0.2.2
 
-  '@floating-ui/dom@1.6.10':
-    dependencies:
-      '@floating-ui/core': 1.6.2
-      '@floating-ui/utils': 0.2.7
-
   '@floating-ui/dom@1.6.5':
     dependencies:
       '@floating-ui/core': 1.6.2
       '@floating-ui/utils': 0.2.2
 
   '@floating-ui/utils@0.2.2': {}
-
-  '@floating-ui/utils@0.2.7': {}
 
   '@iarna/toml@2.2.5': {}
 
@@ -15342,11 +15314,6 @@ snapshots:
     dependencies:
       solid-js: 1.8.15
       vite: 5.1.4(@types/node@20.5.4)(terser@5.31.0)
-
-  solid-prevent-scroll@0.1.7(solid-js@2.0.0-beta.14):
-    dependencies:
-      '@corvu/utils': 0.2.0(solid-js@2.0.0-beta.14)
-      solid-js: 2.0.0-beta.14
 
   solid-refresh@0.6.3(solid-js@1.8.15):
     dependencies:

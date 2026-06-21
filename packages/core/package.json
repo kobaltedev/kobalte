@@ -77,7 +77,7 @@
 		"@solid-primitives/props": "^3.1.8",
 		"@solid-primitives/resize-observer": "^2.0.26",
 		"@solid-primitives/presence": "link:../../../solid-primitives/packages/presence",
-		"solid-prevent-scroll": "^0.1.4"
+		"@solid-primitives/scroll": "link:../../../solid-primitives/packages/scroll"
 	},
 	"devDependencies": {
 		"@kobalte/tests": "workspace:*",
