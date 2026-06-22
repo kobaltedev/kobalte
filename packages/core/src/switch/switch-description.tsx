@@ -12,9 +12,8 @@ import { type SwitchDataSet, useSwitchContext } from "./switch-context";
 export interface SwitchDescriptionOptions
 	extends FormControlDescriptionOptions {}
 
-export interface SwitchDescriptionCommonProps<
-	T extends HTMLElement = HTMLElement,
-> extends FormControlDescriptionCommonProps<T> {}
+export interface SwitchDescriptionCommonProps
+	extends FormControlDescriptionCommonProps {}
 
 export interface SwitchDescriptionRenderProps
 	extends SwitchDescriptionCommonProps,
@@ -23,8 +22,7 @@ export interface SwitchDescriptionRenderProps
 
 export type SwitchDescriptionProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = SwitchDescriptionOptions &
-	Partial<SwitchDescriptionCommonProps<ElementOf<T>>>;
+> = SwitchDescriptionOptions & Partial<SwitchDescriptionCommonProps>;
 
 /**
  * The description that gives the user more information on the switch.
