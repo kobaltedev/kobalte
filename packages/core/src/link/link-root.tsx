@@ -7,7 +7,8 @@
  */
 
 import { mergeRefs } from "@kobalte/utils";
-import { type ValidComponent, omit } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -55,7 +56,7 @@ export function LinkRoot<T extends ValidComponent = "a">(
 	return (
 		<Polymorphic<LinkRootRenderProps>
 			as="a"
-			ref={mergeRefs((el) => (ref = el), props.ref)}
+			ref={mergeRefs((el) => (ref = el), (props as LinkRootProps).ref)}
 			role={tagName() !== "a" || props.disabled ? "link" : undefined}
 			tabIndex={tagName() !== "a" && !props.disabled ? 0 : undefined}
 			href={!props.disabled ? props.href : undefined}
