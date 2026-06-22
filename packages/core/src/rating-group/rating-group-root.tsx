@@ -5,12 +5,8 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import {
-	type ValidComponent,
-	createSignal,
-	createUniqueId,
-	omit,
-} from "solid-js";
+import { type ValidComponent } from "@solidjs/web";
+import { createSignal, createUniqueId, omit } from "solid-js";
 
 import {
 	FORM_CONTROL_PROP_NAMES,

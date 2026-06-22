@@ -7,12 +7,8 @@
  */
 import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import {
-	type JSX,
-	type ValidComponent,
-	createUniqueId,
-	omit,
-} from "solid-js";
+import { type JSX, type ValidComponent } from "@solidjs/web";
+import { createUniqueId, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,

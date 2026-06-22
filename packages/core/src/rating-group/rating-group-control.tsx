@@ -1,5 +1,6 @@
 import { callHandler, mergeDefaultProps } from "@kobalte/utils";
-import { type JSX, type ValidComponent, omit } from "solid-js";
+import { type JSX, type ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 import { useFormControlContext } from "../form-control";
 import {
 	type ElementOf,

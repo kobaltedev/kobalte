@@ -1,5 +1,6 @@
 import { callHandler, isFunction, mergeDefaultProps } from "@kobalte/utils";
-import { type JSX, type ValidComponent, children, omit } from "solid-js";
+import { type JSX, type ValidComponent } from "@solidjs/web";
+import { children, omit } from "solid-js";
 
 import {
 	type ElementOf,

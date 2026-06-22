@@ -5,15 +5,13 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
-	onSettled,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -126,22 +124,27 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 
 	const index = () =>
 		ref ? ratingGroupContext.items().findIndex((v) => v.ref() === ref) : -1;
-	const [value, setValue] = createSignal<number>();
+
+	// Always read items() so the memo re-runs when the collection registers.
+	// onSettled fired before createDomCollectionItem effects flushed in Solid 2.0,
+	// leaving index() === -1 and value === 0 for every item — all stars highlighted.
+	const value = createMemo((): number | undefined => {
+		const items = ratingGroupContext.items();
+		if (!ref) return undefined;
+		const i = items.findIndex((v) => v.ref() === ref);
+		if (i === -1) return undefined;
+		return direction() === "ltr" ? i + 1 : items.length - i;
+	});
 	const newValue = () =>
 		ratingGroupContext.isHovering()
 			? ratingGroupContext.hoveredValue()!
 			: ratingGroupContext.value()!;
 	const equal = () => Math.ceil(newValue()!) === value();
-	const highlighted = () => value()! <= newValue()! || equal();
+	const highlighted = () => {
+		const v = value();
+		return v !== undefined && (v <= newValue()! || equal());
+	};
 	const half = () => equal() && Math.abs(newValue()! - value()!) === 0.5;
-
-	onSettled(() => {
-		setValue(
-			direction() === "ltr"
-				? index() + 1
-				: ratingGroupContext.items().length - index(),
-		);
-	});
 
 	const tabIndex = () => {
 		if (formControlContext.isDisabled()) return undefined;
