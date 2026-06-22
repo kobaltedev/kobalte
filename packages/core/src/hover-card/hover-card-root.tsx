@@ -201,19 +201,18 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 		closeWithDelay();
 	};
 
-	createEffect(() => {
-		if (!disclosureState.isOpen()) {
-			return;
-		}
+	createEffect(
+		() => disclosureState.isOpen(),
+		(isOpen) => {
+			if (!isOpen) return;
 
-		// Checks whether the mouse is moving outside the hovercard.
-		// If yes, hide the card after the close delay.
-		addGlobalListener(document, "pointermove", onHoverOutside, true);
+			// Checks whether the mouse is moving outside the hovercard.
+			// If yes, hide the card after the close delay.
+			addGlobalListener(document, "pointermove", onHoverOutside, true);
 
-		onCleanup(() => {
-			removeGlobalListener(document, "pointermove", onHoverOutside, true);
-		});
-	});
+			return () => removeGlobalListener(document, "pointermove", onHoverOutside, true);
+		},
+	);
 
 	// cleanup all timeout on unmount.
 	onCleanup(() => {

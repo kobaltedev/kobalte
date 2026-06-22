@@ -1,5 +1,6 @@
 import { mergeRefs } from "@kobalte/utils";
-import { type ValidComponent, omit } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -36,7 +37,7 @@ export function PopoverAnchor<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<PopoverAnchorRenderProps>
 			as="div"
-			ref={mergeRefs(context.setDefaultAnchorRef, props.ref)}
+			ref={mergeRefs(context.setDefaultAnchorRef, (props as PopoverAnchorProps).ref)}
 			{...context.dataset()}
 			{...others}
 		/>

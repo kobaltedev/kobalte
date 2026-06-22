@@ -1,9 +1,8 @@
 import { mergeDefaultProps } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
-	type ValidComponent,
 	createEffect,
 	omit,
-	onCleanup,
 } from "solid-js";
 
 import {
@@ -44,7 +43,7 @@ export function PopoverTitle<T extends ValidComponent = "h2">(
 
 	const others = omit(mergedProps, "id");
 
-	createEffect(() => onCleanup(context.registerTitleId(mergedProps.id)));
+	createEffect(() => mergedProps.id, (id) => context.registerTitleId(id));
 
 	return (
 		<Polymorphic<PopoverTitleRenderProps>

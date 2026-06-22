@@ -6,14 +6,11 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/avatar/src/Avatar.tsx
  */
 
+import type { ValidComponent } from "@solidjs/web";
 import {
-	ComponentProps,
 	Show,
-	type ValidComponent,
 	createEffect,
 	createSignal,
-	on,
-	onCleanup,
 } from "solid-js";
 import {
 	type ElementOf,
@@ -48,50 +45,49 @@ export function ImageImg<T extends ValidComponent = "img">(
 		createSignal<ImageLoadingStatus>("idle");
 
 	createEffect(
-		on(
-			() => props.src,
-			(src) => {
-				if (!src) {
-					setLoadingStatus("error");
+		() => props.src,
+		(src) => {
+			if (!src) {
+				setLoadingStatus("error");
+				return;
+			}
+
+			let isMounted = true;
+			const image = new window.Image();
+
+			const updateStatus = (status: ImageLoadingStatus) => () => {
+				if (!isMounted) {
 					return;
 				}
 
-				let isMounted = true;
-				const image = new window.Image();
+				setLoadingStatus(status);
+			};
 
-				const updateStatus = (status: ImageLoadingStatus) => () => {
-					if (!isMounted) {
-						return;
-					}
+			setLoadingStatus("loading");
+			if (props.crossOrigin !== undefined) {
+				image.crossOrigin = props.crossOrigin;
+			}
+			if (props.referrerPolicy !== undefined) {
+				image.referrerPolicy = props.referrerPolicy;
+			}
+			image.onload = updateStatus("loaded");
+			image.onerror = updateStatus("error");
+			image.src = src;
 
-					setLoadingStatus(status);
-				};
-
-				setLoadingStatus("loading");
-				if (props.crossOrigin !== undefined) {
-					image.crossOrigin = props.crossOrigin;
-				}
-				if (props.referrerPolicy !== undefined) {
-					image.referrerPolicy = props.referrerPolicy;
-				}
-				image.onload = updateStatus("loaded");
-				image.onerror = updateStatus("error");
-				image.src = src;
-
-				onCleanup(() => {
-					isMounted = false;
-				});
-			},
-		),
+			return () => {
+				isMounted = false;
+			};
+		},
 	);
 
-	createEffect(() => {
-		const imageLoadingStatus = loadingStatus();
-
-		if (imageLoadingStatus !== "idle") {
-			context.onImageLoadingStatusChange(imageLoadingStatus);
-		}
-	});
+	createEffect(
+		() => loadingStatus(),
+		(imageLoadingStatus) => {
+			if (imageLoadingStatus !== "idle") {
+				context.onImageLoadingStatusChange(imageLoadingStatus);
+			}
+		},
+	);
 
 	return (
 		<Show when={loadingStatus() === "loaded"}>

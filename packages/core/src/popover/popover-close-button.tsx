@@ -1,8 +1,7 @@
 import { callHandler } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	omit,
 } from "solid-js";
 
@@ -37,10 +36,11 @@ export function PopoverCloseButton<T extends ValidComponent = "button">(
 ) {
 	const context = usePopoverContext();
 
-	const others = omit(props as PopoverCloseButtonProps, "aria-label", "onClick");
+	const p = props as PopoverCloseButtonProps;
+	const others = omit(p, "aria-label", "onClick");
 
-	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, props.onClick);
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+		callHandler(e, p.onClick);
 		context.close();
 	};
 
@@ -50,7 +50,7 @@ export function PopoverCloseButton<T extends ValidComponent = "button">(
 				Omit<PopoverCloseButtonRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-label={props["aria-label"] || context.translations().dismiss}
+			aria-label={p["aria-label"] || context.translations().dismiss}
 			onClick={onClick}
 			{...context.dataset()}
 			{...others}

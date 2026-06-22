@@ -7,10 +7,9 @@
  */
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	omit,
 	onCleanup,
 } from "solid-js";
@@ -53,12 +52,13 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 ) {
 	const context = useHoverCardContext();
 
-	const others = omit(props as HoverCardTriggerProps, "ref", "onPointerEnter", "onPointerLeave", "onFocus", "onBlur");
+	const p = props as HoverCardTriggerProps;
+	const others = omit(p, "ref", "onPointerEnter", "onPointerLeave", "onFocus", "onBlur");
 
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerEnter);
+		callHandler(e, p.onPointerEnter);
 
 		if (e.pointerType === "touch" || others.disabled || e.defaultPrevented) {
 			return;
@@ -74,7 +74,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerLeave);
+		callHandler(e, p.onPointerLeave);
 
 		if (e.pointerType === "touch") {
 			return;
@@ -84,7 +84,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, props.onFocus);
+		callHandler(e, p.onFocus);
 
 		if (others.disabled || e.defaultPrevented) {
 			return;
@@ -98,7 +98,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, props.onBlur);
+		callHandler(e, p.onBlur);
 
 		context.cancelOpening();
 
@@ -119,7 +119,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 				Omit<HoverCardTriggerRenderProps, keyof Link.LinkRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, props.ref)}
+			ref={mergeRefs(context.setTriggerRef, p.ref)}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}
 			onFocus={onFocus}

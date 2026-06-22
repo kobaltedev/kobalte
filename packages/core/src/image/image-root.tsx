@@ -7,7 +7,8 @@
  */
 
 import { OverrideComponentProps } from "@kobalte/utils";
-import { type ValidComponent, createSignal, omit } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createSignal, omit } from "solid-js";
 
 import {
 	type ElementOf,

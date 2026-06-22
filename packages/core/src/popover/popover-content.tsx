@@ -5,14 +5,12 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
 	Show,
-	type ValidComponent,
 	createEffect,
 	omit,
-	onCleanup,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -209,7 +207,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 		onFinalFocus: onCloseAutoFocus,
 	});
 
-	createEffect(() => onCleanup(context.registerContentId(others.id!)));
+	createEffect(() => others.id, (id) => context.registerContentId(id!));
 
 	return (
 		<Show when={context.contentPresent()}>
