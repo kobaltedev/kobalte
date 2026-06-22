@@ -16,10 +16,9 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -175,7 +174,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 	 * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
 	 * wiggles. This is to match native select implementation.
 	 */
-	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
 		callHandler(e, mergedProps.onPointerMove);
 
 		if (e.pointerType !== "mouse") {

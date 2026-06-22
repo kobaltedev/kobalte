@@ -13,7 +13,8 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { type JSX, type ValidComponent, omit } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,

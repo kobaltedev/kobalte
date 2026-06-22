@@ -16,16 +16,14 @@ import {
 	isFunction,
 	mergeDefaultProps,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	on,
 	omit,
 } from "solid-js";
 
@@ -756,37 +754,33 @@ export function ComboboxBase<
 	// If combobox is going to close, freeze the displayed options
 	// Prevents the popover contents from updating as the combobox closes.
 	createEffect(
-		on([filteredOptions, showAllOptions], (input, prevInput) => {
+		() => [filteredOptions(), showAllOptions()] as const,
+		(input, prevInput) => {
 			if (disclosureState.isOpen() && prevInput != null) {
-				const prevFilteredOptions = prevInput[0];
-				const prevShowAllOptions = prevInput[1];
-
+				const [prevFilteredOptions, prevShowAllOptions] = prevInput;
 				setLastDisplayedOptions(
 					prevShowAllOptions ? mergedProps.options! : prevFilteredOptions,
 				);
 			} else {
-				const filteredOptions = input[0];
-				const showAllOptions = input[1];
-
+				const [curFilteredOptions, curShowAllOptions] = input;
 				setLastDisplayedOptions(
-					showAllOptions ? mergedProps.options! : filteredOptions,
+					curShowAllOptions ? mergedProps.options! : curFilteredOptions,
 				);
 			}
-		}),
+		},
 	);
 
 	// Display filtered collection again when input value changes.
-	createEffect(
-		on(inputValue, () => {
-			if (showAllOptions()) {
-				setShowAllOptions(false);
-			}
-		}),
-	);
+	createEffect(inputValue, () => {
+		if (showAllOptions()) {
+			setShowAllOptions(false);
+		}
+	});
 
 	// Reset input value when selection change
 	createEffect(
-		on(() => listState.selectionManager().selectedKeys(), resetInputValue),
+		() => listState.selectionManager().selectedKeys(),
+		resetInputValue,
 	);
 
 	// VoiceOver has issues with announcing aria-activedescendant properly on change.

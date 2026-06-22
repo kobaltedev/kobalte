@@ -32,7 +32,7 @@ import {
 	type PointerDownOutsideEvent,
 	interactOutside,
 } from "@solid-primitives/interaction";
-import { createKeyDown } from "@solid-primitives/keyboard";
+import { createShortcut } from "@solid-primitives/keyboard";
 import {
 	DismissableLayerContext,
 	type DismissableLayerContextValue,
@@ -159,8 +159,8 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 		onPointerDownOutside,
 		onFocusOutside,
 	});
-	createKeyDown("Escape", (e) => {
-		if (!ref || !layerStack.isTopMostLayer(ref)) {
+	createShortcut(["Escape"], (e) => {
+		if (!e || !ref || !layerStack.isTopMostLayer(ref)) {
 			return;
 		}
 
@@ -170,9 +170,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 			e.preventDefault();
 			props.onDismiss();
 		}
-	}, {
-		ownerDocument: () => getDocument(ref),
-	});
+	}, { preventDefault: false });
 
 	onSettled(() => {
 		if (!ref) {
@@ -241,7 +239,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	return (
 		<DismissableLayerContext value={context}>
 			<div
-				ref={mergeRefs(el => { ref = el; }, interactOutsideRef, props.ref as any)}
+				ref={mergeRefs(el => { ref = el; }, interactOutsideRef as (el: HTMLElement) => void, props.ref as any)}
 				{...(others as any)}
 			>
 				{(others as any).children}

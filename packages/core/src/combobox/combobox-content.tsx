@@ -1,9 +1,8 @@
 import { focusWithoutScrolling, mergeRefs } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
 	Show,
-	type ValidComponent,
 	omit,
 } from "solid-js";
 

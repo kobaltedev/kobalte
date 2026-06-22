@@ -1,7 +1,7 @@
 import { OverrideComponentProps } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type ValidComponent,
 	createMemo,
 	omit,
 } from "solid-js";
