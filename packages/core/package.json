@@ -75,6 +75,8 @@
 		"@internationalized/number": "^3.2.1",
 		"@kobalte/utils": "^0.9.1",
 		"@solid-primitives/a11y": "link:../../../solid-primitives/packages/a11y",
+		"@solid-primitives/focus": "link:../../../solid-primitives/packages/focus",
+		"@solid-primitives/interaction": "link:../../../solid-primitives/packages/interaction",
 		"@solid-primitives/props": "link:../../../solid-primitives/packages/props",
 		"@solid-primitives/resize-observer": "link:../../../solid-primitives/packages/resize-observer",
 		"@solid-primitives/presence": "link:../../../solid-primitives/packages/presence",

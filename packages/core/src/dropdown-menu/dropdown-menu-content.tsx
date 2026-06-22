@@ -10,7 +10,7 @@ import {
 import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import type { InteractOutsideEvent } from "../primitives";
+import type { InteractOutsideEvent } from "@solid-primitives/interaction";
 
 export interface DropdownMenuContentOptions extends MenuContentOptions {}
 

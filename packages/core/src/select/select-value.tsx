@@ -3,14 +3,12 @@ import {
 	isFunction,
 	mergeDefaultProps,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
 	Show,
-	type ValidComponent,
 	children,
 	createEffect,
-	onCleanup,
 	omit,
 } from "solid-js";
 
@@ -95,7 +93,10 @@ export function SelectValue<Option, T extends ValidComponent = "span">(
 		return selectionManager().isEmpty();
 	};
 
-	createEffect(() => onCleanup(context.registerValueId(mergedProps.id!)));
+	createEffect(
+		() => mergedProps.id!,
+		(id) => context.registerValueId(id),
+	);
 
 	return (
 		<Polymorphic<SelectValueRenderProps>

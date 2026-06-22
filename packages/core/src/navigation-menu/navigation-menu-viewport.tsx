@@ -29,7 +29,7 @@ import type {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
 	PointerDownOutsideEvent,
-} from "../primitives/create-interact-outside";
+} from "@solid-primitives/interaction";
 import { createSize } from "../primitives/create-size";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 

@@ -132,10 +132,12 @@ export function PopperArrow<T extends ValidComponent = "div">(
 function createComputedStyle(element: Accessor<Element | undefined>) {
 	const [style, setStyle] = createSignal<CSSStyleDeclaration>();
 
-	createEffect(() => {
-		const el = element();
-		el && setStyle(getWindow(el).getComputedStyle(el));
-	});
+	createEffect(
+		() => element(),
+		(el) => {
+			if (el) setStyle(getWindow(el).getComputedStyle(el));
+		},
+	);
 
 	return style;
 }

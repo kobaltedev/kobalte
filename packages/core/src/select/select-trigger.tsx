@@ -8,13 +8,11 @@
  */
 
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	omit,
-	onCleanup,
 } from "solid-js";
 
 import * as Button from "../button";
@@ -204,10 +202,13 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		selectionManager().setFocused(false);
 	};
 
-	createEffect(() => onCleanup(context.registerTriggerId(fieldProps.id()!)));
+	createEffect(
+		() => fieldProps.id()!,
+		(id) => context.registerTriggerId(id),
+	);
 
-	createEffect(() => {
-		context.setListboxAriaLabelledBy(
+	createEffect(
+		() =>
 			[
 				fieldProps.ariaLabelledBy(),
 				fieldProps.ariaLabel() && !fieldProps.ariaLabelledBy()
@@ -216,8 +217,10 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 			]
 				.filter(Boolean)
 				.join(" ") || undefined,
-		);
-	});
+		(value) => {
+			context.setListboxAriaLabelledBy(value);
+		},
+	);
 
 	return (
 		<Button.Root<

@@ -7,14 +7,13 @@
  */
 
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
+import type { ComponentProps } from "@solidjs/web";
 import {
-	type ComponentProps,
 	For,
 	Show,
 	createEffect,
 	createSignal,
 	omit,
-	on,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -77,26 +76,22 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 
 	// Dispatch native event on selection change for form libraries.
 	createEffect(
-		on(
-			() => props.selectionManager.selectedKeys(),
-			(keys, prevKeys) => {
-				if (prevKeys && isSameSelection(keys, prevKeys)) {
-					return;
-				}
+		() => props.selectionManager.selectedKeys(),
+		(keys, prevKeys) => {
+			if (prevKeys && isSameSelection(keys, prevKeys)) {
+				return;
+			}
 
-				setIsInternalChangeEvent(true);
+			setIsInternalChangeEvent(true);
 
-				ref?.dispatchEvent(
-					new Event("input", { bubbles: true, cancelable: true }),
-				);
-				ref?.dispatchEvent(
-					new Event("change", { bubbles: true, cancelable: true }),
-				);
-			},
-			{
-				defer: true,
-			},
-		),
+			ref?.dispatchEvent(
+				new Event("input", { bubbles: true, cancelable: true }),
+			);
+			ref?.dispatchEvent(
+				new Event("change", { bubbles: true, cancelable: true }),
+			);
+		},
+		{ defer: true },
 	);
 
 	// If virtualized, only render the selected options in the hidden <select> so the value can be submitted to a server.

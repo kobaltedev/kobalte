@@ -22,9 +22,8 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Accessor,
 	type ParentProps,
-	createEffect,
 	createSignal,
-	onCleanup,
+	createTrackedEffect,
 } from "solid-js";
 
 import { useLocale } from "../i18n";
@@ -328,7 +327,7 @@ export function PopperRoot(props: PopperRootProps) {
 		}
 	}
 
-	createEffect(() => {
+	createTrackedEffect(() => {
 		const referenceEl = anchorRef();
 		const floatingEl = positionerRef();
 
@@ -337,29 +336,18 @@ export function PopperRoot(props: PopperRootProps) {
 		}
 
 		// https://floating-ui.com/docs/autoUpdate
-		const cleanupAutoUpdate = autoUpdate(
-			referenceEl,
-			floatingEl,
-			updatePosition,
-			{
-				// JSDOM doesn't support ResizeObserver
-				elementResize: typeof ResizeObserver === "function",
-			},
-		);
-
-		onCleanup(cleanupAutoUpdate);
+		return autoUpdate(referenceEl, floatingEl, updatePosition, {
+			// JSDOM doesn't support ResizeObserver
+			elementResize: typeof ResizeObserver === "function",
+		});
 	});
 
 	// Makes sure the positioner element has the same z-index as the popper content element,
 	// so users only need to set the z-index once.
-	createEffect(() => {
+	createTrackedEffect(() => {
 		const positioner = positionerRef();
 		const content = mergedProps.contentRef?.();
-
-		if (!positioner || !content) {
-			return;
-		}
-
+		if (!positioner || !content) return;
 		queueMicrotask(() => {
 			positioner.style.zIndex = getComputedStyle(content).zIndex;
 		});

@@ -5,8 +5,8 @@ export interface DismissableLayerContextValue {
 }
 
 export const DismissableLayerContext =
-	createContext<DismissableLayerContextValue>();
+	createContext<DismissableLayerContextValue | null>(null);
 
-export function useOptionalDismissableLayerContext() {
-	return useContext(DismissableLayerContext);
+export function useOptionalDismissableLayerContext(): DismissableLayerContextValue | undefined {
+	return useContext(DismissableLayerContext) ?? undefined;
 }

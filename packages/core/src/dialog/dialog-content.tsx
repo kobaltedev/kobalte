@@ -28,13 +28,13 @@ import {
 	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
 	type PointerDownOutsideEvent,
-	createFocusScope,
 	createHideOutside,
-} from "../primitives";
+} from "@solid-primitives/interaction";
 import { useDialogContext } from "./dialog-context";
 
 export interface DialogContentOptions {
@@ -189,8 +189,9 @@ export function DialogContent<T extends ValidComponent = "div">(
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
-		isDisabled: () => !(context.isOpen() && context.modal()),
+		disabled: () => !(context.isOpen() && context.modal()),
 		targets: () => (ref ? [ref] : []),
+		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createPreventScroll({
@@ -198,14 +199,12 @@ export function DialogContent<T extends ValidComponent = "div">(
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
-	createFocusScope(
-		{
-			trapFocus: () => context.isOpen() && context.modal(),
-			onMountAutoFocus: mergedProps.onOpenAutoFocus,
-			onUnmountAutoFocus: onCloseAutoFocus,
-		},
-		() => ref,
-	);
+	createFocusTrap({
+		element: () => ref,
+		enabled: () => context.isOpen() && context.modal(),
+		onInitialFocus: mergedProps.onOpenAutoFocus,
+		onFinalFocus: onCloseAutoFocus,
+	});
 
 	createEffect(() => onCleanup(context.registerContentId(others.id!)));
 

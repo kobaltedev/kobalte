@@ -41,12 +41,12 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { Popper } from "../popper";
+import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
 	type PointerDownOutsideEvent,
-	createFocusScope,
-} from "../primitives";
+} from "@solid-primitives/interaction";
 import { type MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { MENUBAR_KEYS } from "./menu-trigger";
@@ -164,17 +164,15 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		() => ref,
 	);
 
-	createFocusScope(
-		{
-			trapFocus: () => isRootModalContent() && context.isOpen(),
-			onMountAutoFocus: (event) => {
-				if (optionalMenubarContext === undefined)
-					mergedProps.onOpenAutoFocus?.(event);
-			},
-			onUnmountAutoFocus: mergedProps.onCloseAutoFocus,
+	createFocusTrap({
+		element: () => ref,
+		enabled: () => isRootModalContent() && context.isOpen(),
+		onInitialFocus: (event) => {
+			if (optionalMenubarContext === undefined)
+				mergedProps.onOpenAutoFocus?.(event);
 		},
-		() => ref,
-	);
+		onFinalFocus: mergedProps.onCloseAutoFocus,
+	});
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		// Submenu key events bubble through portals. We only care about keys in this menu.

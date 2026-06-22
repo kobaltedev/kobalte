@@ -7,14 +7,13 @@
  */
 
 import { type MaybeAccessor, access, createMediaQuery } from "@kobalte/utils";
+import { type JSX } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
 	createEffect,
 	createMemo,
 	createSignal,
 	merge,
-	on,
 	onCleanup,
 } from "solid-js";
 import { isServer } from "@solidjs/web";
@@ -177,11 +176,9 @@ export function createTransition(
 	const keepMounted = createMemo(() => phase() !== "afterExit");
 
 	createEffect(
-		on(
-			() => access(shouldMount),
-			(shouldMount) => handleStateChange(shouldMount),
-			{ defer: true },
-		),
+		() => access(shouldMount),
+		(shouldMount) => handleStateChange(shouldMount),
+		{ defer: true },
 	);
 
 	onCleanup(() => {

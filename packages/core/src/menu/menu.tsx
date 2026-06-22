@@ -28,10 +28,10 @@ import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
 import { Popper, type PopperRootOptions } from "../popper";
 import type { Placement } from "../popper/utils";
+import { createHideOutside } from "@solid-primitives/interaction";
 import {
 	type CollectionItemWithRef,
 	createDisclosureState,
-	createHideOutside,
 	createRegisterId,
 } from "../primitives";
 import {
@@ -203,16 +203,11 @@ export function Menu(props: MenuProps) {
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
-		isDisabled: () => {
-			// Apply only on root menu when opened and modal.
-			return !(
-				parentMenuContext == null &&
-				disclosureState.isOpen() &&
-				rootContext.isModal()
-			);
-		},
+		disabled: () =>
+			!(parentMenuContext == null && disclosureState.isOpen() && rootContext.isModal()),
 		targets: () =>
 			[contentRef(), ...nestedMenus()].filter(Boolean) as Element[],
+		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createEffect(() => {

@@ -10,7 +10,6 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type ValidComponent,
 	createEffect,
-	onCleanup,
 } from "solid-js";
 
 import {
@@ -56,7 +55,10 @@ export function ListboxItemLabel<T extends ValidComponent = "div">(
 		props as ListboxItemLabelProps,
 	);
 
-	createEffect(() => onCleanup(context.registerLabelId(mergedProps.id)));
+	createEffect(
+		() => mergedProps.id,
+		(id) => context.registerLabelId(id),
+	);
 
 	return (
 		<Polymorphic<ListboxItemLabelRenderProps>

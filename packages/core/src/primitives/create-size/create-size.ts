@@ -6,24 +6,22 @@
  * https://github.com/corvudev/corvu/blob/main/packages%2Futils%2Fsrc%2Fcreate%2Fsize.ts
  */
 
-import { type Accessor, createEffect, createSignal, onCleanup } from "solid-js";
+import { type Accessor, createEffect, createSignal } from "solid-js";
 
 export function createSize(ref: Accessor<HTMLElement | undefined>) {
 	const [height, setHeight] = createSignal(0);
 	const [width, setWidth] = createSignal(0);
 
-	createEffect(() => {
-		const element = ref();
-		if (!element) return;
-
-		syncSize(element);
-
-		const observer = new ResizeObserver(resizeObserverCallback);
-		observer.observe(element);
-		onCleanup(() => {
-			observer.disconnect();
-		});
-	});
+	createEffect(
+		() => ref(),
+		(element) => {
+			if (!element) return;
+			syncSize(element);
+			const observer = new ResizeObserver(resizeObserverCallback);
+			observer.observe(element);
+			return () => observer.disconnect();
+		},
+	);
 
 	const resizeObserverCallback = (entries: ResizeObserverEntry[]) => {
 		for (const entry of entries) {

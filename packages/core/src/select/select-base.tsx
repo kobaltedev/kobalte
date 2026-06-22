@@ -15,16 +15,14 @@ import {
 	isFunction,
 	mergeDefaultProps,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	on,
 	omit,
 } from "solid-js";
 
@@ -444,23 +442,19 @@ export function SelectBase<
 
 	// Delete selected keys that do not match any option in the listbox.
 	createEffect(
-		on(
-			[flattenOptionKeys],
-			([flattenOptionKeys]) => {
-				const currentSelectedKeys = [
-					...listState.selectionManager().selectedKeys(),
-				];
+		() => flattenOptionKeys(),
+		(keys) => {
+			const currentSelectedKeys = [
+				...listState.selectionManager().selectedKeys(),
+			];
 
-				const keysToKeep = currentSelectedKeys.filter((key) =>
-					flattenOptionKeys.includes(key),
-				);
+			const keysToKeep = currentSelectedKeys.filter((key) =>
+				keys.includes(key),
+			);
 
-				listState.selectionManager().setSelectedKeys(keysToKeep);
-			},
-			{
-				defer: true,
-			},
-		),
+			listState.selectionManager().setSelectedKeys(keysToKeep);
+		},
+		{ defer: true },
 	);
 
 	const dataset: Accessor<SelectDataSet> = createMemo(() => ({

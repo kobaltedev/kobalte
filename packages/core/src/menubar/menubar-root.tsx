@@ -32,7 +32,8 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createControllableSignal, createInteractOutside } from "../primitives";
+import { interactOutside } from "@solid-primitives/interaction";
+import { createControllableSignal } from "../primitives";
 import {
 	MenubarContext,
 	type MenubarContextValue,
@@ -206,20 +207,17 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		if (value() == null) setAutoFocusMenu(false);
 	});
 
-	createInteractOutside(
-		{
-			onInteractOutside: () => {
-				context.closeMenu();
-				setTimeout(() => context.closeMenu());
-			},
-			shouldExcludeElement: (element) => {
-				return [ref, ...menuRefs().values()]
-					.flat()
-					.some((ref) => contains(ref, element));
-			},
+	const interactOutsideRef = interactOutside({
+		onInteractOutside: () => {
+			context.closeMenu();
+			setTimeout(() => context.closeMenu());
 		},
-		() => ref,
-	);
+		shouldExcludeElement: (element) => {
+			return [ref, ...menuRefs().values()]
+				.flat()
+				.some((ref) => contains(ref, element));
+		},
+	});
 
 	const keydownHandler = (e: KeyboardEvent) => {
 		if (e.key === "Alt") {
@@ -248,7 +246,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		<MenubarContext value={context}>
 			<Polymorphic<MenubarRootRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+				ref={mergeRefs(interactOutsideRef, (el) => (ref = el), mergedProps.ref)}
 				role="menubar"
 				data-orientation={mergedProps.orientation!}
 				aria-orientation={mergedProps.orientation!}

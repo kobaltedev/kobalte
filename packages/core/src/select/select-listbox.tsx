@@ -1,10 +1,8 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	createEffect,
-	onCleanup,
 	omit,
 } from "solid-js";
 
@@ -57,7 +55,10 @@ export function SelectListbox<
 
 	const others = omit(mergedProps, "ref", "id", "onKeyDown");
 
-	createEffect(() => onCleanup(context.registerListboxId(mergedProps.id)));
+	createEffect(
+		() => mergedProps.id,
+		(id) => context.registerListboxId(id),
+	);
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, mergedProps.onKeyDown);

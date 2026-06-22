@@ -3,11 +3,10 @@ import {
 	focusWithoutScrolling,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
 	Show,
-	type ValidComponent,
 	omit,
 } from "solid-js";
 
@@ -20,13 +19,13 @@ import {
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
+import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
 	type PointerDownOutsideEvent,
-	createFocusScope,
 	createHideOutside,
-} from "../primitives";
+} from "@solid-primitives/interaction";
 import { type SelectDataSet, useSelectContext } from "./select-context";
 
 export interface SelectContentOptions {
@@ -100,8 +99,9 @@ export function SelectContent<T extends ValidComponent = "div">(
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
-		isDisabled: () => !(context.isOpen() && context.isModal()),
+		disabled: () => !(context.isOpen() && context.isModal()),
 		targets: () => (ref ? [ref] : []),
+		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createPreventScroll({
@@ -109,24 +109,22 @@ export function SelectContent<T extends ValidComponent = "div">(
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
-	createFocusScope(
-		{
-			trapFocus: () => context.isOpen() && context.isModal(),
-			onMountAutoFocus: (e) => {
-				// We prevent open autofocus because it's handled by the `Listbox`.
-				e.preventDefault();
-			},
-			onUnmountAutoFocus: (e) => {
-				props.onCloseAutoFocus?.(e);
-
-				if (!e.defaultPrevented) {
-					focusWithoutScrolling(context.triggerRef());
-					e.preventDefault();
-				}
-			},
+	createFocusTrap({
+		element: () => ref,
+		enabled: () => context.isOpen() && context.isModal(),
+		onInitialFocus: (e) => {
+			// We prevent open autofocus because it's handled by the `Listbox`.
+			e.preventDefault();
 		},
-		() => ref,
-	);
+		onFinalFocus: (e) => {
+			props.onCloseAutoFocus?.(e);
+
+			if (!e.defaultPrevented) {
+				focusWithoutScrolling(context.triggerRef());
+				e.preventDefault();
+			}
+		},
+	});
 
 	return (
 		<Show when={context.contentPresent()}>

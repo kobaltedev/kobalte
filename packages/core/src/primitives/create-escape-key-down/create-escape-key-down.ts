@@ -4,7 +4,7 @@ import {
 	access,
 	getDocument,
 } from "@kobalte/utils";
-import { type Accessor, createEffect, onCleanup } from "solid-js";
+import { type Accessor, createEffect } from "solid-js";
 import { isServer } from "@solidjs/web";
 
 export interface CreateEscapeKeyDownProps {
@@ -28,21 +28,15 @@ export function createEscapeKeyDown(props: CreateEscapeKeyDownProps) {
 		}
 	};
 
-	createEffect(() => {
-		if (isServer) {
-			return;
-		}
-
-		if (access(props.isDisabled)) {
-			return;
-		}
-
-		const document = props.ownerDocument?.() ?? getDocument();
-
-		document.addEventListener("keydown", handleKeyDown);
-
-		onCleanup(() => {
-			document.removeEventListener("keydown", handleKeyDown);
-		});
-	});
+	createEffect(
+		() => ({
+			disabled: isServer || !!access(props.isDisabled),
+			document: props.ownerDocument?.() ?? getDocument(),
+		}),
+		({ disabled, document }) => {
+			if (disabled) return;
+			document.addEventListener("keydown", handleKeyDown);
+			return () => document.removeEventListener("keydown", handleKeyDown);
+		},
+	);
 }

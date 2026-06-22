@@ -1,5 +1,3 @@
-/* @refresh reload */
-
 import type { OverrideProps } from "@kobalte/utils";
 import { omit, untrack } from "solid-js";
 import { type ComponentProps, type JSX, type ValidComponent, Dynamic } from "@solidjs/web";

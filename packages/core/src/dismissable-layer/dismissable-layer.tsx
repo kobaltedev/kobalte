@@ -13,13 +13,11 @@
  */
 
 import { contains, getDocument, mergeRefs } from "@kobalte/utils";
+import { type ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type ValidComponent,
 	createEffect,
 	omit,
-	on,
-	onCleanup,
 	onSettled,
 } from "solid-js";
 
@@ -32,9 +30,9 @@ import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
 	type PointerDownOutsideEvent,
-	createEscapeKeyDown,
-	createInteractOutside,
-} from "../primitives";
+	interactOutside,
+} from "@solid-primitives/interaction";
+import { createEscapeKeyDown } from "../primitives";
 import {
 	DismissableLayerContext,
 	type DismissableLayerContextValue,
@@ -105,9 +103,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	let ref: HTMLElement | undefined;
 
 	const parentContext = useOptionalDismissableLayerContext();
-
 	const others = omit(props as DismissableLayerProps, "ref", "disableOutsidePointerEvents", "excludedElements", "onEscapeKeyDown", "onPointerDownOutside", "onFocusOutside", "onInteractOutside", "onDismiss", "bypassTopMostLayerCheck");
-
 	const nestedLayers = new Set<Element>([]);
 
 	const registerNestedLayer = (element: Element) => {
@@ -158,15 +154,11 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 		}
 	};
 
-	createInteractOutside(
-		{
-			shouldExcludeElement,
-			onPointerDownOutside,
-			onFocusOutside,
-		},
-		() => ref,
-	);
-
+	const interactOutsideRef = interactOutside({
+		shouldExcludeElement,
+		onPointerDownOutside,
+		onFocusOutside,
+	});
 	createEscapeKeyDown({
 		ownerDocument: () => getDocument(ref),
 		onEscapeKeyDown: (e) => {
@@ -217,48 +209,44 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	});
 
 	createEffect(
-		on(
-			[() => ref, () => props.disableOutsidePointerEvents],
-			([ref, disableOutsidePointerEvents]) => {
-				if (!ref) {
-					return;
-				}
+		() => ({ ref, disabled: props.disableOutsidePointerEvents }),
+		({ ref, disabled: disableOutsidePointerEvents }) => {
+			if (!ref) return;
 
-				const layer = layerStack.find(ref);
+			const layer = layerStack.find(ref);
 
-				if (layer && layer.isPointerBlocking !== disableOutsidePointerEvents) {
-					// Keep layer in sync with the prop.
-					layer.isPointerBlocking = disableOutsidePointerEvents;
+			if (layer && layer.isPointerBlocking !== disableOutsidePointerEvents) {
+				// Keep layer in sync with the prop.
+				layer.isPointerBlocking = disableOutsidePointerEvents;
 
-					// Update layers pointer-events since this layer "isPointerBlocking" has changed.
-					layerStack.assignPointerEventToLayers();
-				}
+				// Update layers pointer-events since this layer "isPointerBlocking" has changed.
+				layerStack.assignPointerEventToLayers();
+			}
 
-				if (disableOutsidePointerEvents) {
-					layerStack.disableBodyPointerEvents(ref);
-				}
+			if (disableOutsidePointerEvents) {
+				layerStack.disableBodyPointerEvents(ref);
+			}
 
-				onCleanup(() => {
-					layerStack.restoreBodyPointerEvents(ref);
-				});
-			},
-			{
-				defer: true,
-			},
-		),
+			return () => {
+				layerStack.restoreBodyPointerEvents(ref);
+			};
+		},
+		{ defer: true },
 	);
 
 	const context: DismissableLayerContextValue = {
 		registerNestedLayer,
 	};
 
+	// TODO: restore <Polymorphic> once @solidjs/web Dynamic/spread passes ref callbacks correctly
 	return (
 		<DismissableLayerContext value={context}>
-			<Polymorphic<DismissableLayerRenderProps>
-				as="div"
-				ref={mergeRefs((el) => (ref = el), props.ref)}
-				{...others}
-			/>
+			<div
+				ref={mergeRefs(el => { ref = el; }, interactOutsideRef, props.ref as any)}
+				{...(others as any)}
+			>
+				{(others as any).children}
+			</div>
 		</DismissableLayerContext>
 	);
 }

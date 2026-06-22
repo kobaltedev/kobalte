@@ -256,6 +256,12 @@ importers:
       '@solid-primitives/a11y':
         specifier: link:../../../solid-primitives/packages/a11y
         version: link:../../../solid-primitives/packages/a11y
+      '@solid-primitives/focus':
+        specifier: link:../../../solid-primitives/packages/focus
+        version: link:../../../solid-primitives/packages/focus
+      '@solid-primitives/interaction':
+        specifier: link:../../../solid-primitives/packages/interaction
+        version: link:../../../solid-primitives/packages/interaction
       '@solid-primitives/presence':
         specifier: link:../../../solid-primitives/packages/presence
         version: link:../../../solid-primitives/packages/presence
