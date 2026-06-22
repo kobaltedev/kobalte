@@ -1,5 +1,5 @@
+import { type ValidComponent } from "@solidjs/web";
 import {
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -75,13 +75,18 @@ export function SearchRoot<
 		createSignal<NodeJS.Timeout>();
 
 	const inputChangeDebouncer = DebouncerTimeout();
-	createEffect(() =>
-		inputChangeDebouncer.setDebounceMillisecond(
-			props.debounceOptionsMillisecond,
-		),
+	createEffect(
+		() => props.debounceOptionsMillisecond,
+		(value) => inputChangeDebouncer.setDebounceMillisecond(value),
 	);
 	const onInputChange = (value: string) => {
 		if (props.onInputChange === undefined) return;
+		// Synchronous path: no debounce configured, call immediately so the signal
+		// write is batched with Solid's current flush cycle (no async gap).
+		if (!props.debounceOptionsMillisecond) {
+			props.onInputChange(value);
+			return;
+		}
 		setIsLoadingSuggestions(true);
 		const timeout = inputChangeDebouncer.debounce(async () => {
 			await props.onInputChange!(value);

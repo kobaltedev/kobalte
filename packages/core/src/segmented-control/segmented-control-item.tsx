@@ -1,7 +1,7 @@
 import { mergeRefs } from "@kobalte/utils";
+import { type ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type ValidComponent,
 	createEffect,
 	createSignal,
 	omit,
@@ -42,14 +42,15 @@ export const SegmentedControlItem = <T extends ValidComponent = "div">(
 
 	const [ref, setRef] = createSignal<HTMLElement>();
 
-	createEffect(() => {
-		const element = ref();
-		if (!element) return;
-
-		if (radioGroupContext.isSelectedValue(props.value)) {
-			segmentedControlContext.setSelectedItem(element);
-		}
-	});
+	createEffect(
+		() => {
+			const element = ref();
+			return element && radioGroupContext.isSelectedValue(props.value) ? element : undefined;
+		},
+		(element) => {
+			if (element) segmentedControlContext.setSelectedItem(element);
+		},
+	);
 
 	return (
 		<RadioGroup.Item<

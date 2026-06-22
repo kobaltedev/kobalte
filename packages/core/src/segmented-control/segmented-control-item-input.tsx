@@ -1,7 +1,7 @@
 import { mergeRefs } from "@kobalte/utils";
+import { type ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type ValidComponent,
 	createSignal,
 	omit,
 } from "solid-js";

@@ -1,6 +1,6 @@
 import { mergeRefs } from "@kobalte/utils";
+import { type ValidComponent } from "@solidjs/web";
 import {
-	type ValidComponent,
 	createEffect,
 	createSignal,
 	merge,
@@ -40,11 +40,15 @@ export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 		setSelectedItem: setSelectedItem,
 	};
 
-	createEffect(() => {
-		if (context.value()) return;
-
-		setSelectedItem(undefined);
-	});
+	createEffect(
+		() => context.value(),
+		(value, prev) => {
+			// Only clear the visual selection when a controlled value transitions to nothing.
+			// Skipping the first run (prev === undefined) prevents racing with item effects
+			// that establish the initial selection from defaultValue.
+			if (prev !== undefined && !value) setSelectedItem(undefined);
+		},
+	);
 
 	return (
 		<SegmentedControlContext value={context}>

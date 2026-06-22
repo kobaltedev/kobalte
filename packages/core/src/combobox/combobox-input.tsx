@@ -123,13 +123,6 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 
 		context.setInputValue(target.value);
 
-		// Unlike in React, inputs `value` can be out of sync with our value state.
-		// even if an input is controlled (ex: `<input value="foo" />`,
-		// typing on the input will change its internal `value`.
-		//
-		// To prevent this, we need to force the input `value` to be in sync with the input value state.
-		target.value = context.inputValue() ?? "";
-
 		if (context.isOpen()) {
 			if (collection().getSize() <= 0 && !context.allowsEmptyCollection()) {
 				context.close();

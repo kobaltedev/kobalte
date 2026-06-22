@@ -484,28 +484,32 @@ export function ComboboxBase<
 		);
 	});
 
-	const filterFn = (option: Option) => {
-		const inputVal = inputValue() ?? "";
-
-		if (isFunction(mergedProps.defaultFilter)) {
-			return mergedProps.defaultFilter?.(option as any, inputVal);
-		}
-
-		const textVal = getOptionTextValue(option);
-
-		switch (mergedProps.defaultFilter) {
-			case "startsWith":
-				return filter.startsWith(textVal, inputVal);
-			case "endsWith":
-				return filter.endsWith(textVal, inputVal);
-			case "contains":
-				return filter.contains(textVal, inputVal);
-		}
-	};
-
 	// Filtered options with same structure as `mergedProps.options`
 	const filteredOptions = createMemo(() => {
+		// Read inputValue() directly here so the memo tracks it as a dependency.
+		// Reading it only inside a .filter() callback is unreliable in Solid 2.0.
+		const inputVal = inputValue() ?? "";
+		const defaultFilter = mergedProps.defaultFilter;
 		const optionGroupChildren = mergedProps.optionGroupChildren;
+
+		const filterFn = (option: Option): boolean => {
+			if (isFunction(defaultFilter)) {
+				return defaultFilter(option as any, inputVal) ?? false;
+			}
+
+			const textVal = getOptionTextValue(option);
+
+			switch (defaultFilter) {
+				case "startsWith":
+					return filter.startsWith(textVal, inputVal);
+				case "endsWith":
+					return filter.endsWith(textVal, inputVal);
+				case "contains":
+					return filter.contains(textVal, inputVal);
+				default:
+					return true;
+			}
+		};
 
 		// The combobox doesn't contains option groups.
 		if (optionGroupChildren == null) {
@@ -514,14 +518,11 @@ export function ComboboxBase<
 
 		const filteredGroups: OptGroup[] = [];
 		for (const optGroup of mergedProps.options as OptGroup[]) {
-			// Filter options of the group
 			const filteredChildrenOptions = (
 				(optGroup as any)[optionGroupChildren] as Option[]
 			).filter(filterFn);
-			// Don't add any groups that are empty
 			if (filteredChildrenOptions.length === 0) continue;
 
-			// Add the group with the filtered options
 			filteredGroups.push({
 				...optGroup,
 				[optionGroupChildren]: filteredChildrenOptions,
@@ -594,8 +595,8 @@ export function ComboboxBase<
 		selectionBehavior: () => access(mergedProps.selectionBehavior),
 		selectionMode: () => mergedProps.selectionMode,
 		dataSource: displayedOptions,
-		getKey: () => mergedProps.optionValue as any,
-		getTextValue: () => mergedProps.optionTextValue as any,
+		getKey: () => (mergedProps.optionValue ?? ((item: any) => String(item))) as any,
+		getTextValue: () => (mergedProps.optionTextValue ?? ((item: any) => String(item))) as any,
 		getDisabled: () => mergedProps.optionDisabled as any,
 		getSectionChildren: () => mergedProps.optionGroupChildren as any,
 	});
@@ -787,86 +788,95 @@ export function ComboboxBase<
 	// We use a live region announcer to announce focus changes manually.
 	let lastAnnouncedFocusedKey = "";
 
-	createEffect(() => {
-		const focusedKey = listState.selectionManager().focusedKey() ?? "";
-		const focusedItem = listState.collection().getItem(focusedKey);
-
-		if (
-			isAppleDevice() &&
-			focusedItem != null &&
-			focusedKey !== lastAnnouncedFocusedKey
-		) {
-			const isSelected = listState.selectionManager().isSelected(focusedKey);
-
-			const announcement =
-				mergedProps.translations?.focusAnnouncement(
-					focusedItem?.textValue || "",
-					isSelected,
-				) ?? "";
-
-			announce(announcement);
-		}
-
-		if (focusedKey) {
-			lastAnnouncedFocusedKey = focusedKey;
-		}
-	});
+	createEffect(
+		() => {
+			const focusedKey = listState.selectionManager().focusedKey() ?? "";
+			const focusedItem = listState.collection().getItem(focusedKey);
+			const isSelected = focusedKey
+				? listState.selectionManager().isSelected(focusedKey)
+				: false;
+			return { focusedKey, focusedItem, isSelected };
+		},
+		({ focusedKey, focusedItem, isSelected }) => {
+			if (
+				isAppleDevice() &&
+				focusedItem != null &&
+				focusedKey !== lastAnnouncedFocusedKey
+			) {
+				const announcement =
+					mergedProps.translations?.focusAnnouncement(
+						focusedItem?.textValue || "",
+						isSelected,
+					) ?? "";
+				announce(announcement);
+			}
+			if (focusedKey) {
+				lastAnnouncedFocusedKey = focusedKey;
+			}
+		},
+	);
 
 	// Announce the number of available suggestions when it changes.
 	let lastOptionCount = getItemCount(listState.collection());
 	let lastOpen = disclosureState.isOpen();
 
-	createEffect(() => {
-		const optionCount = getItemCount(listState.collection());
-		const isOpen = disclosureState.isOpen();
+	createEffect(
+		() => {
+			const optionCount = getItemCount(listState.collection());
+			const isOpen = disclosureState.isOpen();
+			const focusedKey = listState.selectionManager().focusedKey();
+			return { optionCount, isOpen, focusedKey };
+		},
+		({ optionCount, isOpen, focusedKey }) => {
+			// Only announce the number of options available when the menu opens if there is no
+			// focused item, otherwise screen readers will typically read e.g. "1 of 6".
+			// The exception is VoiceOver since this isn't included in the message above.
+			const didOpenWithoutFocusedItem =
+				isOpen !== lastOpen && (focusedKey == null || isAppleDevice());
 
-		// Only announce the number of options available when the menu opens if there is no
-		// focused item, otherwise screen readers will typically read e.g. "1 of 6".
-		// The exception is VoiceOver since this isn't included in the message above.
-		const didOpenWithoutFocusedItem =
-			isOpen !== lastOpen &&
-			(listState.selectionManager().focusedKey() == null || isAppleDevice());
+			if (
+				isOpen &&
+				(didOpenWithoutFocusedItem || optionCount !== lastOptionCount)
+			) {
+				const announcement =
+					mergedProps.translations?.countAnnouncement(optionCount) ?? "";
+				announce(announcement);
+			}
 
-		if (
-			isOpen &&
-			(didOpenWithoutFocusedItem || optionCount !== lastOptionCount)
-		) {
-			const announcement =
-				mergedProps.translations?.countAnnouncement(optionCount) ?? "";
-			announce(announcement);
-		}
-
-		lastOptionCount = optionCount;
-		lastOpen = isOpen;
-	});
+			lastOptionCount = optionCount;
+			lastOpen = isOpen;
+		},
+	);
 
 	// Announce when a selection occurs for VoiceOver.
 	// Other screen readers typically do this automatically.
 	let lastAnnouncedSelectedKey = "";
 
-	createEffect(() => {
-		const lastSelectedKey =
-			[...listState.selectionManager().selectedKeys()].pop() ?? "";
-		const lastSelectedItem = listState.collection().getItem(lastSelectedKey);
-
-		if (
-			isAppleDevice() &&
-			isInputFocused() &&
-			lastSelectedItem &&
-			lastSelectedKey !== lastAnnouncedSelectedKey
-		) {
-			const announcement =
-				mergedProps.translations?.selectedAnnouncement(
-					lastSelectedItem?.textValue || "",
-				) ?? "";
-
-			announce(announcement);
-		}
-
-		if (lastSelectedKey) {
-			lastAnnouncedSelectedKey = lastSelectedKey;
-		}
-	});
+	createEffect(
+		() => {
+			const lastSelectedKey =
+				[...listState.selectionManager().selectedKeys()].pop() ?? "";
+			const lastSelectedItem = listState.collection().getItem(lastSelectedKey);
+			return { lastSelectedKey, lastSelectedItem };
+		},
+		({ lastSelectedKey, lastSelectedItem }) => {
+			if (
+				isAppleDevice() &&
+				isInputFocused() &&
+				lastSelectedItem &&
+				lastSelectedKey !== lastAnnouncedSelectedKey
+			) {
+				const announcement =
+					mergedProps.translations?.selectedAnnouncement(
+						lastSelectedItem?.textValue || "",
+					) ?? "";
+				announce(announcement);
+			}
+			if (lastSelectedKey) {
+				lastAnnouncedSelectedKey = lastSelectedKey;
+			}
+		},
+	);
 
 	const dataset: Accessor<ComboboxDataSet> = createMemo(() => ({
 		"data-expanded": disclosureState.isOpen() ? "" : undefined,

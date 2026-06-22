@@ -1,10 +1,9 @@
 import { mergeDefaultProps } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	type JSX,
 	type Setter,
-	type ValidComponent,
 	createUniqueId,
 	omit,
 } from "solid-js";

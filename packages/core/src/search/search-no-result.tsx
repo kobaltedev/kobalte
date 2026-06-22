@@ -1,4 +1,5 @@
-import { Show, type ValidComponent } from "solid-js";
+import { type ValidComponent } from "@solidjs/web";
+import { Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,

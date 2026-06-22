@@ -7,7 +7,6 @@
  */
 
 import {
-	Key,
 	OverrideComponentProps,
 	access,
 	composeEventHandlers,
@@ -18,6 +17,7 @@ import {
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
+	For,
 	Match,
 	Show,
 	Switch,
@@ -264,7 +264,7 @@ export function ListboxRoot<
 					when={!mergedProps.virtualized}
 					fallback={mergedProps.children?.(listState().collection)}
 				>
-					<Key each={[...listState().collection()]} by="key">
+					<For each={[...listState().collection()]} keyed={(item) => item.key}>
 						{(item) => (
 							<Switch>
 								<Match when={item().type === "section"}>
@@ -275,7 +275,7 @@ export function ListboxRoot<
 								</Match>
 							</Switch>
 						)}
-					</Key>
+					</For>
 				</Show>
 			</Polymorphic>
 		</ListboxContext>

@@ -67,7 +67,10 @@ export function ComboboxListbox<
 		);
 	};
 
-	createEffect(() => onCleanup(context.registerListboxId(others.id!)));
+	createEffect(
+		() => others.id!,
+		(id) => context.registerListboxId(id),
+	);
 
 	return (
 		<Listbox.Root<

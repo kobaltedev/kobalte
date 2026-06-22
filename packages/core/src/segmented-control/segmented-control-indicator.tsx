@@ -1,10 +1,8 @@
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createSignal,
 	omit,
-	on,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -36,38 +34,44 @@ export function SegmentedControlIndicator<T extends ValidComponent = "div">(
 	const [style, setStyle] = createSignal<JSX.CSSProperties>();
 	const [resizing, setResizing] = createSignal(false);
 
-	const computeStyle = () => {
-		const element = context.selectedItem();
+	const computeStyle = (element?: HTMLElement) => {
+		const el = element ?? context.selectedItem();
 
-		if (!element) {
+		if (!el) {
 			// TODO: Listen for transition to end here before removing the style.
 			setStyle(undefined);
 			return;
 		}
 
+		const rect = el.getBoundingClientRect();
 		setStyle({
-			width: `${element.offsetWidth}px`,
-			height: `${element.offsetHeight}px`,
-			transform: computeTransform(element),
+			width: `${rect.width}px`,
+			height: `${rect.height}px`,
+			transform: computeTransform(el),
 			"transition-duration": resizing() ? "0ms" : undefined,
 		});
 	};
 
 	const computeTransform = (element: HTMLElement): string | undefined => {
-		const style = getComputedStyle(element.parentElement as HTMLElement);
+		const rootEl = context.root();
+		if (!rootEl) return undefined;
 
-		const x = element.offsetLeft - Number.parseFloat(style.paddingLeft);
-		const y = element.offsetTop - Number.parseFloat(style.paddingTop);
+		const rootRect = rootEl.getBoundingClientRect();
+		const itemRect = element.getBoundingClientRect();
+
+		const x = itemRect.left - rootRect.left;
+		const y = itemRect.top - rootRect.top;
 
 		return `translate(${x}px, ${y}px)`;
 	};
 
 	createEffect(
-		on(context.selectedItem, () => {
+		() => context.selectedItem(),
+		(element) => {
 			setResizing(!style());
-			computeStyle();
+			computeStyle(element);
 			setResizing(false);
-		}),
+		},
 	);
 
 	createResizeObserver(context.root, () => {
