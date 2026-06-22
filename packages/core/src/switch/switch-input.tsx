@@ -14,12 +14,8 @@ import {
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import {
-	ComponentProps,
-	type JSX,
-	type ValidComponent,
-	omit,
-} from "solid-js";
+import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
 import {
