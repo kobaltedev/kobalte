@@ -17,11 +17,10 @@ import {
 	callHandler,
 	isFunction,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	type JSX,
-	type ValidComponent,
 	children,
 	omit,
 } from "solid-js";
@@ -82,7 +81,8 @@ export type ToggleButtonRootProps<
 export function ToggleButtonRoot<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, ToggleButtonRootProps<T>>,
 ) {
-	const others = omit(props as ToggleButtonRootProps, "children", "pressed", "defaultPressed", "onChange", "onClick");
+	const p = props as ToggleButtonRootProps;
+	const others = omit(p, "children", "pressed", "defaultPressed", "onChange", "onClick");
 
 	const state = createToggleState({
 		isSelected: () => props.pressed,
@@ -91,8 +91,8 @@ export function ToggleButtonRoot<T extends ValidComponent = "button">(
 		isDisabled: () => others.disabled,
 	});
 
-	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, props.onClick);
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+		callHandler(e, p.onClick);
 		state.toggle();
 	};
 

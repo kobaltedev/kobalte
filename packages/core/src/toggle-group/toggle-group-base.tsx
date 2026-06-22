@@ -5,9 +5,8 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createSignal,
 	createUniqueId,
 	omit,
