@@ -12,13 +12,12 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Component,
 	Show,
-	type ValidComponent,
 	createEffect,
 	omit,
-	onCleanup,
 } from "solid-js";
 
 import { createPreventScroll } from "@solid-primitives/scroll";
@@ -206,7 +205,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 		onFinalFocus: onCloseAutoFocus,
 	});
 
-	createEffect(() => onCleanup(context.registerContentId(others.id!)));
+	createEffect(() => others.id, (id) => context.registerContentId(id!));
 
 	return (
 		<Show when={context.contentPresent()}>

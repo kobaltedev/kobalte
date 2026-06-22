@@ -7,10 +7,9 @@
  */
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	omit,
 } from "solid-js";
 
@@ -47,10 +46,11 @@ export function DialogTrigger<T extends ValidComponent = "button">(
 ) {
 	const context = useDialogContext();
 
-	const others = omit(props as DialogTriggerProps, "ref", "onClick");
+	const p = props as DialogTriggerProps;
+	const others = omit(p, "ref", "onClick");
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, props.onClick);
+		callHandler(e, p.onClick);
 		context.toggle();
 	};
 
@@ -60,7 +60,7 @@ export function DialogTrigger<T extends ValidComponent = "button">(
 				Omit<DialogTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, props.ref)}
+			ref={mergeRefs(context.setTriggerRef, p.ref)}
 			aria-haspopup="dialog"
 			aria-expanded={context.isOpen()}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}

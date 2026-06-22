@@ -1,8 +1,7 @@
 import { callHandler } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	omit,
 } from "solid-js";
 
@@ -36,10 +35,11 @@ export function DialogCloseButton<T extends ValidComponent = "button">(
 ) {
 	const context = useDialogContext();
 
-	const others = omit(props as DialogCloseButtonProps, "aria-label", "onClick");
+	const p = props as DialogCloseButtonProps;
+	const others = omit(p, "aria-label", "onClick");
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, props.onClick);
+		callHandler(e, p.onClick);
 		context.close();
 	};
 
@@ -49,7 +49,7 @@ export function DialogCloseButton<T extends ValidComponent = "button">(
 				Omit<DialogCloseButtonRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-label={props["aria-label"] || context.translations().dismiss}
+			aria-label={p["aria-label"] || context.translations().dismiss}
 			onClick={onClick}
 			{...others}
 		/>
