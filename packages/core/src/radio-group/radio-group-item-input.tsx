@@ -12,13 +12,11 @@ import {
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createSignal,
 	omit,
-	on,
 	onCleanup,
 } from "solid-js";
 
@@ -149,26 +147,25 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	};
 
 	createEffect(
-		on(
-			[() => radioContext.isSelected(), () => radioContext.value()],
-			(c) => {
-				if (!c[0] && c[1] === radioContext.value()) return;
-				setIsInternalChangeEvent(true);
+		() => [radioContext.isSelected(), radioContext.value()] as const,
+		([isSelected]) => {
+			if (!isSelected) return;
+			setIsInternalChangeEvent(true);
 
-				const ref = radioContext.inputRef();
-				ref?.dispatchEvent(
-					new Event("input", { bubbles: true, cancelable: true }),
-				);
-				ref?.dispatchEvent(
-					new Event("change", { bubbles: true, cancelable: true }),
-				);
-			},
-			{
-				defer: true,
-			},
-		),
+			const ref = radioContext.inputRef();
+			ref?.dispatchEvent(
+				new Event("input", { bubbles: true, cancelable: true }),
+			);
+			ref?.dispatchEvent(
+				new Event("change", { bubbles: true, cancelable: true }),
+			);
+		},
+		{ defer: true },
 	);
-	createEffect(() => onCleanup(radioContext.registerInput(others.id!)));
+	createEffect(
+		() => others.id,
+		(id) => { onCleanup(radioContext.registerInput(id!)); },
+	);
 
 	return (
 		<Polymorphic<RadioGroupItemInputRenderProps>
