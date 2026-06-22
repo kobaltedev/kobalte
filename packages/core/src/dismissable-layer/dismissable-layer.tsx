@@ -32,7 +32,7 @@ import {
 	type PointerDownOutsideEvent,
 	interactOutside,
 } from "@solid-primitives/interaction";
-import { createEscapeKeyDown } from "../primitives";
+import { createKeyDown } from "@solid-primitives/keyboard";
 import {
 	DismissableLayerContext,
 	type DismissableLayerContextValue,
@@ -159,20 +159,19 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 		onPointerDownOutside,
 		onFocusOutside,
 	});
-	createEscapeKeyDown({
+	createKeyDown("Escape", (e) => {
+		if (!ref || !layerStack.isTopMostLayer(ref)) {
+			return;
+		}
+
+		props.onEscapeKeyDown?.(e);
+
+		if (!e.defaultPrevented && props.onDismiss) {
+			e.preventDefault();
+			props.onDismiss();
+		}
+	}, {
 		ownerDocument: () => getDocument(ref),
-		onEscapeKeyDown: (e) => {
-			if (!ref || !layerStack.isTopMostLayer(ref)) {
-				return;
-			}
-
-			props.onEscapeKeyDown?.(e);
-
-			if (!e.defaultPrevented && props.onDismiss) {
-				e.preventDefault();
-				props.onDismiss();
-			}
-		},
 	});
 
 	onSettled(() => {

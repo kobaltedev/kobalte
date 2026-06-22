@@ -1,7 +1,6 @@
 export * from "./create-collection";
 export * from "./create-controllable-signal";
 export * from "./create-disclosure-state";
-export * from "./create-escape-key-down";
 export * from "./create-form-reset-listener";
 export * from "./create-register-id";
 export * from "./create-tag-name";
