@@ -7,10 +7,10 @@
  */
 
 import { clamp, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,

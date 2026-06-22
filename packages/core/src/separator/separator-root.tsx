@@ -7,7 +7,8 @@
  */
 
 import { type Orientation, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type ValidComponent, omit } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 
 import {
 	type ElementOf,

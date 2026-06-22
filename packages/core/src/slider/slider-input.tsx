@@ -3,9 +3,8 @@ import {
 	mergeDefaultProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
+import type { ComponentProps, JSX } from "@solidjs/web";
 import {
-	type ComponentProps,
-	type JSX,
 	createEffect,
 	createSignal,
 	omit,
@@ -63,13 +62,10 @@ export function SliderInput(props: SliderInputProps) {
 		target.value = String(context.state.values()[thumb.index()]) ?? "";
 	};
 
-	createEffect(() => {
-		setValueText(
-			thumb.index() === -1
-				? ""
-				: context.state.getThumbValueLabel(thumb.index()),
-		);
-	});
+	createEffect(
+		() => thumb.index() === -1 ? "" : context.state.getThumbValueLabel(thumb.index()),
+		(value) => setValueText(value),
+	);
 
 	return (
 		<input

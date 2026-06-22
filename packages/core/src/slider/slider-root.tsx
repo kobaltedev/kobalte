@@ -14,9 +14,9 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -211,11 +211,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		onChangeEnd: mergedProps.onChangeEnd,
 	});
 
-	const [thumbs, setThumbs] = createSignal<CollectionItemWithRef[]>([]);
-	const { DomCollectionProvider } = createDomCollection({
-		items: thumbs,
-		onItemsChange: setThumbs,
-	});
+	const { DomCollectionProvider, items: thumbs } = createDomCollection<CollectionItemWithRef>();
 
 	createFormResetListener(
 		() => ref,
@@ -394,7 +390,6 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		dataset,
 		state,
 		thumbs,
-		setThumbs,
 		onSlideStart,
 		onSlideMove,
 		onSlideEnd,
