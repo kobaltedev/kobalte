@@ -14,12 +14,10 @@ import {
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createSignal,
-	on,
 	omit,
 } from "solid-js";
 
@@ -45,8 +43,8 @@ export interface CheckboxInputCommonProps<
 	ref: T | ((el: T) => void);
 	style: JSX.CSSProperties | string;
 	onChange: JSX.EventHandlerUnion<T, InputEvent>;
-	onFocus: JSX.FocusEventHandlerUnion<T, FocusEvent>;
-	onBlur: JSX.FocusEventHandlerUnion<T, FocusEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
@@ -120,14 +118,14 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 		setIsInternalChangeEvent(false);
 	};
 
-	const onFocus: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
+	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (
 		e,
 	) => {
 		callHandler(e, mergedProps.onFocus);
 		context.setIsFocused(true);
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (
 		e,
 	) => {
 		callHandler(e, mergedProps.onBlur);
@@ -135,22 +133,18 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 	};
 
 	createEffect(
-		on(
-			[() => context.checked(), () => context.value()],
-			() => {
-				setIsInternalChangeEvent(true);
+		() => [context.checked(), context.value()],
+		() => {
+			setIsInternalChangeEvent(true);
 
-				ref?.dispatchEvent(
-					new Event("input", { bubbles: true, cancelable: true }),
-				);
-				ref?.dispatchEvent(
-					new Event("change", { bubbles: true, cancelable: true }),
-				);
-			},
-			{
-				defer: true,
-			},
-		),
+			ref?.dispatchEvent(
+				new Event("input", { bubbles: true, cancelable: true }),
+			);
+			ref?.dispatchEvent(
+				new Event("change", { bubbles: true, cancelable: true }),
+			);
+		},
+		{ defer: true },
 	);
 
 	// indeterminate is a property, but it can only be set via javascript
@@ -159,14 +153,12 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 	// Clicking on the input will change its internal `indeterminate` state.
 	// To prevent this, we need to force the input `indeterminate` state to be in sync with our.
 	createEffect(
-		on(
-			[() => ref, () => context.indeterminate(), () => context.checked()],
-			([ref, indeterminate]) => {
-				if (ref) {
-					ref.indeterminate = indeterminate;
-				}
-			},
-		),
+		() => [ref, context.indeterminate(), context.checked()] as const,
+		([elRef, indeterminate]) => {
+			if (elRef) {
+				elRef.indeterminate = indeterminate;
+			}
+		},
 	);
 
 	return (
