@@ -25,7 +25,6 @@ const meta = preview.meta({
 
 export default meta;
 
-// ── Shared styles ──────────────────────────────────────────────────────────
 
 const wrapClass = "flex flex-col gap-1.5 font-sans w-64";
 
@@ -54,7 +53,6 @@ const sectionLabelClass =
 const descriptionClass = "text-xs text-slate-500";
 const errorClass = "text-xs text-red-600";
 
-// ── Shared components ──────────────────────────────────────────────────────
 
 function CheckIcon() {
 	return (
@@ -95,7 +93,6 @@ function ChevronIcon() {
 	);
 }
 
-// ── Stories ────────────────────────────────────────────────────────────────
 
 const fruits = ["Apple", "Banana", "Blueberry", "Cherry", "Grape", "Mango", "Peach", "Strawberry"];
 

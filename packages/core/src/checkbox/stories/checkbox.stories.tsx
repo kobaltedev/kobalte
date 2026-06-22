@@ -17,7 +17,6 @@ const meta = preview.meta({
 
 export default meta;
 
-// ── Shared styles ──────────────────────────────────────────────────────────
 
 const rootClass = "flex items-center gap-3 font-sans";
 
@@ -30,7 +29,6 @@ const labelClass =
 const descriptionClass = "text-xs text-slate-500 mt-0.5";
 const errorClass = "text-xs text-red-600 mt-0.5";
 
-// ── Icons ──────────────────────────────────────────────────────────────────
 
 function CheckIcon() {
 	return (
@@ -71,7 +69,6 @@ function DashIcon() {
 	);
 }
 
-// ── Stories ────────────────────────────────────────────────────────────────
 
 /** A minimal checkbox with a label. */
 export const Default = meta.story({

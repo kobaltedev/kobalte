@@ -20,7 +20,6 @@ const meta = preview.meta({
 
 export default meta;
 
-// ── Shared styles ──────────────────────────────────────────────────────────
 
 const groupClass = "flex flex-col gap-3 font-sans";
 
@@ -41,7 +40,6 @@ const groupLabelClass =
 const descriptionClass = "text-xs text-slate-500 mt-0.5";
 const errorClass = "text-xs text-red-600 mt-0.5";
 
-// ── Stories ────────────────────────────────────────────────────────────────
 
 /** A basic radio group with three options. */
 export const Default = meta.story({

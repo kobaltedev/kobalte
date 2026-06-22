@@ -9,7 +9,6 @@ const meta = preview.meta({
 
 export default meta;
 
-// ── Shared styles ──────────────────────────────────────────────────────────
 
 const rootClass = "relative font-sans w-96";
 
@@ -25,7 +24,6 @@ const contentClass =
 const indicatorClass =
 	"absolute bottom-0 h-0.5 bg-blue-500 transition-transform duration-200";
 
-// ── Stories ────────────────────────────────────────────────────────────────
 
 /** A basic tab set with three panels. */
 export const Default = meta.story({

@@ -7,14 +7,12 @@
  */
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
 	Show,
-	type ValidComponent,
 	createEffect,
 	omit,
-	onCleanup,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -24,7 +22,7 @@ import {
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import type { PointerDownOutsideEvent } from "../primitives";
+import type { PointerDownOutsideEvent } from "@solid-primitives/interaction";
 import { type TooltipDataSet, useTooltipContext } from "./tooltip-context";
 
 export interface TooltipContentOptions {
@@ -77,7 +75,10 @@ export function TooltipContent<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "ref", "style");
 
-	createEffect(() => onCleanup(context.registerContentId(others.id!)));
+	createEffect(
+		() => others.id,
+		(id) => context.registerContentId(id!),
+	);
 
 	return (
 		<Show when={context.contentPresent()}>

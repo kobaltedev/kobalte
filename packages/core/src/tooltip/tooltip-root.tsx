@@ -319,50 +319,41 @@ export function TooltipRoot(props: TooltipRootProps) {
 		hideTooltip();
 	};
 
-	createEffect(() => {
-		if (isServer) {
-			return;
-		}
+	// Checks whether the mouse is moving outside the tooltip.
+	// If yes, hide the tooltip after the close delay.
+	createEffect(
+		() => disclosureState.isOpen(),
+		(isOpen) => {
+			if (isServer || !isOpen) return;
 
-		if (!disclosureState.isOpen()) {
-			return;
-		}
-
-		const doc = getDocument();
-
-		// Checks whether the mouse is moving outside the tooltip.
-		// If yes, hide the tooltip after the close delay.
-		doc.addEventListener("pointermove", onHoverOutside, true);
-
-		onCleanup(() => {
-			doc.removeEventListener("pointermove", onHoverOutside, true);
-		});
-	});
+			const doc = getDocument();
+			doc.addEventListener("pointermove", onHoverOutside, true);
+			return () => {
+				doc.removeEventListener("pointermove", onHoverOutside, true);
+			};
+		},
+	);
 
 	// Close the tooltip if the trigger is scrolled.
-	createEffect(() => {
-		const trigger = triggerRef();
+	createEffect(
+		() => ({ trigger: triggerRef(), isOpen: disclosureState.isOpen() }),
+		({ trigger, isOpen }) => {
+			if (!trigger || !isOpen) return;
 
-		if (!trigger || !disclosureState.isOpen()) {
-			return;
-		}
+			const handleScroll = (event: Event) => {
+				const target = event.target as HTMLElement;
+				if (contains(target, trigger)) {
+					hideTooltip(true);
+				}
+			};
 
-		const handleScroll = (event: Event) => {
-			const target = event.target as HTMLElement;
-
-			if (contains(target, trigger)) {
-				hideTooltip(true);
-			}
-		};
-
-		const win = getWindow();
-
-		win.addEventListener("scroll", handleScroll, { capture: true });
-
-		onCleanup(() => {
-			win.removeEventListener("scroll", handleScroll, { capture: true });
-		});
-	});
+			const win = getWindow();
+			win.addEventListener("scroll", handleScroll, { capture: true });
+			return () => {
+				win.removeEventListener("scroll", handleScroll, { capture: true });
+			};
+		},
+	);
 
 	onCleanup(() => {
 		clearTimeout(closeTimeoutId);

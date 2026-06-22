@@ -17,7 +17,6 @@ const meta = preview.meta({
 
 export default meta;
 
-// ── Shared styles ──────────────────────────────────────────────────────────
 
 const rootClass = "flex items-center gap-3 font-sans";
 
@@ -34,7 +33,6 @@ const errorClass = "text-xs text-red-600 mt-0.5";
 
 const wrapClass = "flex flex-col gap-0.5 font-sans";
 
-// ── Stories ────────────────────────────────────────────────────────────────
 
 /** A minimal switch with a label. */
 export const Default = meta.story({
