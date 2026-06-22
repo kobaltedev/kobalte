@@ -11,9 +11,9 @@ import {
 	getFocusableTreeWalker,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	Show,
-	type ValidComponent,
 	createEffect,
 	createSignal,
 	omit,
@@ -118,7 +118,7 @@ export function TabsContent<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<TabsContentRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, props.ref)}
+				ref={mergeRefs(setRef, (props as TabsContentProps).ref)}
 				id={id()}
 				role="tabpanel"
 				tabIndex={tabIndex()}

@@ -11,9 +11,8 @@ import {
 	composeEventHandlers,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	omit,
 } from "solid-js";
@@ -79,24 +78,24 @@ export function TabsList<T extends ValidComponent = "div">(
 		() => ref,
 	);
 
-	createEffect(() => {
-		if (ref == null) {
-			return;
-		}
-
-		const selectedTab = ref.querySelector(
-			`[data-key="${context.listState().selectedKey()}"]`,
-		) as HTMLElement | null;
-
-		if (selectedTab != null) {
-			context.setSelectedTab(selectedTab);
-		}
-	});
+	createEffect(
+		() => {
+			if (ref == null) return null;
+			return ref.querySelector(
+				`[data-key="${context.listState().selectedKey()}"]`,
+			) as HTMLElement | null;
+		},
+		(selectedTab) => {
+			if (selectedTab != null) {
+				context.setSelectedTab(selectedTab);
+			}
+		},
+	);
 
 	return (
 		<Polymorphic<TabsListRenderProps>
 			as="div"
-			ref={mergeRefs((el) => (ref = el), props.ref)}
+			ref={mergeRefs((el) => (ref = el), (props as TabsListProps).ref)}
 			role="tablist"
 			aria-orientation={context.orientation()}
 			data-orientation={context.orientation()}

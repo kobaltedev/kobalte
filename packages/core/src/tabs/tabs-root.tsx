@@ -8,13 +8,12 @@
  */
 
 import { type Orientation, mergeDefaultProps } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
-	type ValidComponent,
 	createEffect,
 	createSignal,
 	createUniqueId,
 	omit,
-	on,
 } from "solid-js";
 
 import { createSingleSelectListState } from "../list";
@@ -101,62 +100,60 @@ export function TabsRoot<T extends ValidComponent = "div">(
 	let lastSelectedKey = listState.selectedKey();
 
 	createEffect(
-		on(
-			[
-				() => listState.selectionManager(),
-				() => listState.collection(),
-				() => listState.selectedKey(),
-			],
-			([selectionManager, collection, currentSelectedKey]) => {
-				let selectedKey = currentSelectedKey;
+		() => ({
+			selectionManager: listState.selectionManager(),
+			collection: listState.collection(),
+			currentSelectedKey: listState.selectedKey(),
+		}),
+		({ selectionManager, collection, currentSelectedKey }) => {
+			let selectedKey = currentSelectedKey;
 
-				// Ensure a tab is always selected (in case no selected key was specified or if selected item was deleted from collection)
+			// Ensure a tab is always selected (in case no selected key was specified or if selected item was deleted from collection)
+			if (
+				selectionManager.isEmpty() ||
+				selectedKey == null ||
+				!collection.getItem(selectedKey)
+			) {
+				selectedKey = collection.getFirstKey();
+
+				let selectedItem =
+					selectedKey != null ? collection.getItem(selectedKey) : undefined;
+
+				// loop over tabs until we find one that isn't disabled and select that
+				while (
+					selectedItem?.disabled &&
+					selectedItem.key !== collection.getLastKey()
+				) {
+					selectedKey = collection.getKeyAfter(selectedItem.key);
+					selectedItem =
+						selectedKey != null ? collection.getItem(selectedKey) : undefined;
+				}
+
+				// if this check is true, then every item is disabled, it makes more sense to default to the first key than the last
 				if (
-					selectionManager.isEmpty() ||
-					selectedKey == null ||
-					!collection.getItem(selectedKey)
+					selectedItem?.disabled &&
+					selectedKey === collection.getLastKey()
 				) {
 					selectedKey = collection.getFirstKey();
-
-					let selectedItem =
-						selectedKey != null ? collection.getItem(selectedKey) : undefined;
-
-					// loop over tabs until we find one that isn't disabled and select that
-					while (
-						selectedItem?.disabled &&
-						selectedItem.key !== collection.getLastKey()
-					) {
-						selectedKey = collection.getKeyAfter(selectedItem.key);
-						selectedItem =
-							selectedKey != null ? collection.getItem(selectedKey) : undefined;
-					}
-
-					// if this check is true, then every item is disabled, it makes more sense to default to the first key than the last
-					if (
-						selectedItem?.disabled &&
-						selectedKey === collection.getLastKey()
-					) {
-						selectedKey = collection.getFirstKey();
-					}
-
-					// directly set selection because replace/toggle selection won't consider disabled keys
-					if (selectedKey != null) {
-						selectionManager.setSelectedKeys([selectedKey]);
-					}
 				}
 
-				// If there isn't a focused key yet or the tabs doesn't have focus and the selected key changes,
-				// change focused key to the selected key if it exists.
-				if (
-					selectionManager.focusedKey() == null ||
-					(!selectionManager.isFocused() && selectedKey !== lastSelectedKey)
-				) {
-					selectionManager.setFocusedKey(selectedKey);
+				// directly set selection because replace/toggle selection won't consider disabled keys
+				if (selectedKey != null) {
+					selectionManager.setSelectedKeys([selectedKey]);
 				}
+			}
 
-				lastSelectedKey = selectedKey;
-			},
-		),
+			// If there isn't a focused key yet or the tabs doesn't have focus and the selected key changes,
+			// change focused key to the selected key if it exists.
+			if (
+				selectionManager.focusedKey() == null ||
+				(!selectionManager.isFocused() && selectedKey !== lastSelectedKey)
+			) {
+				selectionManager.setFocusedKey(selectedKey);
+			}
+
+			lastSelectedKey = selectedKey;
+		},
 	);
 
 	// associated value/trigger ids

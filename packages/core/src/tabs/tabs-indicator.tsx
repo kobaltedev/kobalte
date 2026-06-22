@@ -5,13 +5,11 @@
  * Credits to the React Spectrum team:
  * https://github.com/adobe/react-spectrum/blob/703ab7b4559ecd4fc611e7f2c0e758867990fe01/packages/@react-spectrum/tabs/src/Tabs.tsx
  */
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createSignal,
 	omit,
-	on,
 	onSettled,
 } from "solid-js";
 
@@ -106,13 +104,11 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 
 	// Compute style normally for subsequent runs.
 	createEffect(
-		on(
-			[context.selectedTab, context.orientation, direction],
-			() => {
-				computeStyle();
-			},
-			{ defer: true },
-		),
+		() => [context.selectedTab(), context.orientation(), direction()] as const,
+		() => {
+			computeStyle();
+		},
+		{ defer: true },
 	);
 
 	const [resizing, setResizing] = createSignal(false);

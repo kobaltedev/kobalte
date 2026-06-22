@@ -14,12 +14,10 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	omit,
-	on,
 } from "solid-js";
 
 import {
@@ -125,9 +123,10 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 	};
 
 	createEffect(
-		on([() => mergedProps.value, id], ([value, id]) => {
-			context.triggerIdsMap().set(value, id);
-		}),
+		() => [mergedProps.value, id()] as const,
+		([value, triggerId]) => {
+			context.triggerIdsMap().set(value, triggerId);
+		},
 	);
 
 	return (
