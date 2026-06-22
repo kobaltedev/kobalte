@@ -24,42 +24,39 @@ export const Playground = meta.story({
 			description: "Current meter value (0–100)",
 		},
 	},
-	render: (args) => {
-		const pct = args.value / 100;
-		return (
-			<Root
-				value={args.value}
-				class="flex flex-col gap-2 w-72 font-sans"
-				getValueLabel={({ value }) => `${value} / 100`}
-			>
-				<div class="flex justify-between items-baseline">
-					<Label class="text-sm font-medium text-slate-700">Resource usage</Label>
-					<ValueLabel class="text-sm font-mono font-semibold" style={{ color: meterColor(pct) }} />
+	render: (args) => (
+		<Root
+			value={args.value}
+			class="flex flex-col gap-2 w-72 font-sans"
+			getValueLabel={({ value }) => `${value} / 100`}
+		>
+			<div class="flex justify-between items-baseline">
+				<Label class="text-sm font-medium text-slate-700">Resource usage</Label>
+				<ValueLabel class="text-sm font-mono font-semibold" style={{ color: meterColor(args.value / 100) }} />
+			</div>
+			<Track class="relative h-6 w-full rounded bg-slate-100 border border-slate-200 overflow-hidden">
+				<Fill
+					class="h-full transition-all duration-300 [width:var(--kb-meter-fill-width)]"
+					style={{ "background-color": meterColor(args.value / 100) }}
+				/>
+				<div class="absolute inset-0 flex pointer-events-none">
+					{([25, 50, 75] as const).map((tick) => (
+						<div
+							class="absolute top-0 bottom-0 w-px bg-white/50"
+							style={{ left: `${tick}%` }}
+						/>
+					))}
 				</div>
-				<Track class="relative h-6 w-full rounded bg-slate-100 border border-slate-200 overflow-hidden">
-					<Fill
-						class="h-full transition-all duration-300 [width:var(--kb-meter-fill-width)]"
-						style={{ "background-color": meterColor(pct) }}
-					/>
-					<div class="absolute inset-0 flex pointer-events-none">
-						{([25, 50, 75] as const).map((tick) => (
-							<div
-								class="absolute top-0 bottom-0 w-px bg-white/50"
-								style={{ left: `${tick}%` }}
-							/>
-						))}
-					</div>
-				</Track>
-				<div class="flex justify-between text-xs text-slate-400">
-					<span>0</span>
-					<span>25</span>
-					<span>50</span>
-					<span>75</span>
-					<span>100</span>
-				</div>
-			</Root>
-		);
-	},
+			</Track>
+			<div class="flex justify-between text-xs text-slate-400">
+				<span>0</span>
+				<span>25</span>
+				<span>50</span>
+				<span>75</span>
+				<span>100</span>
+			</div>
+		</Root>
+	),
 });
 
 /** Disk usage — a real-world meter with custom byte label and color zones. */
@@ -72,39 +69,36 @@ export const DiskUsage = meta.story({
 			description: "GB used out of 100 GB",
 		},
 	},
-	render: (args) => {
-		const pct = args.used / 100;
-		return (
-			<Root
-				value={args.used}
-				minValue={0}
-				maxValue={100}
-				getValueLabel={({ value, max }) => `${value} GB / ${max} GB`}
-				class="flex flex-col gap-2 w-72 font-sans"
-			>
-				<div class="flex justify-between items-baseline">
-					<Label class="text-sm font-medium text-slate-700">Disk</Label>
-					<ValueLabel class="text-xs font-mono text-slate-500" />
+	render: (args) => (
+		<Root
+			value={args.used}
+			minValue={0}
+			maxValue={100}
+			getValueLabel={({ value, max }) => `${value} GB / ${max} GB`}
+			class="flex flex-col gap-2 w-72 font-sans"
+		>
+			<div class="flex justify-between items-baseline">
+				<Label class="text-sm font-medium text-slate-700">Disk</Label>
+				<ValueLabel class="text-xs font-mono text-slate-500" />
+			</div>
+			<Track class="relative h-5 rounded bg-slate-100 border border-slate-200 overflow-hidden">
+				<Fill
+					class="h-full transition-all duration-300 [width:var(--kb-meter-fill-width)]"
+					style={{ "background-color": meterColor(args.used / 100) }}
+				/>
+				<div class="absolute inset-y-0 flex items-center" style={{ left: `${args.used}%` }}>
+					<div class="w-0.5 h-full bg-white/70" />
 				</div>
-				<Track class="relative h-5 rounded bg-slate-100 border border-slate-200 overflow-hidden">
-					<Fill
-						class="h-full transition-all duration-300 [width:var(--kb-meter-fill-width)]"
-						style={{ "background-color": meterColor(pct) }}
-					/>
-					<div class="absolute inset-y-0 flex items-center" style={{ left: `${args.used}%` }}>
-						<div class="w-0.5 h-full bg-white/70" />
-					</div>
-				</Track>
-				<p class="text-xs text-slate-400">
-					{args.used >= 80
-						? "Critical — clean up files"
-						: args.used >= 60
-							? "Running low"
-							: "Healthy"}
-				</p>
-			</Root>
-		);
-	},
+			</Track>
+			<p class="text-xs text-slate-400">
+				{args.used >= 80
+					? "Critical — clean up files"
+					: args.used >= 60
+						? "Running low"
+						: "Healthy"}
+			</p>
+		</Root>
+	),
 });
 
 /** System resources — multiple meters reading simultaneously. */
