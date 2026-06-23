@@ -52,7 +52,7 @@ export interface TabsTriggerCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface TabsTriggerRenderProps extends TabsTriggerCommonProps {
 	role: "tab";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	disabled: boolean;
 	"aria-selected": boolean;
 	"aria-disabled": boolean | undefined;
@@ -115,7 +115,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 		() => ref,
 	);
 
-	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// Force focusing the trigger on click on safari.
 		if (isWebKit()) {
 			focusWithoutScrolling(e.currentTarget);
@@ -135,7 +135,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 			id={id()}
 			role="tab"
-			tabIndex={!isDisabled() ? selectableItem.tabIndex() : undefined}
+			tabindex={!isDisabled() ? selectableItem.tabIndex() : undefined}
 			disabled={isDisabled()}
 			aria-selected={selectableItem.isSelected()}
 			aria-disabled={isDisabled() || undefined}

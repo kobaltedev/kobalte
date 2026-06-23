@@ -81,7 +81,7 @@ export interface PopoverContentRenderProps
 		DismissableLayerRenderProps,
 		PopoverDataSet {
 	role: "dialog";
-	tabIndex: -1;
+	tabindex: -1;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 }
@@ -222,7 +222,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 						ref = el;
 					}, mergedProps.ref)}
 					role="dialog"
-					tabIndex={-1}
+					tabindex={-1}
 					disableOutsidePointerEvents={context.isOpen() && context.isModal()}
 					excludedElements={[context.triggerRef]}
 					style={combineStyle(

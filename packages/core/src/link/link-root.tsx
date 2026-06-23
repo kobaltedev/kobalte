@@ -29,7 +29,7 @@ export interface LinkRootCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface LinkRootRenderProps extends LinkRootCommonProps {
 	role: "link" | undefined;
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"aria-disabled": boolean | undefined;
 	"data-disabled": string | undefined;
 }
@@ -58,7 +58,7 @@ export function LinkRoot<T extends ValidComponent = "a">(
 			as="a"
 			ref={mergeRefs((el) => (ref = el), (props as LinkRootProps).ref)}
 			role={tagName() !== "a" || props.disabled ? "link" : undefined}
-			tabIndex={tagName() !== "a" && !props.disabled ? 0 : undefined}
+			tabindex={tagName() !== "a" && !props.disabled ? 0 : undefined}
 			href={!props.disabled ? props.href : undefined}
 			aria-disabled={props.disabled ? true : undefined}
 			data-disabled={props.disabled ? "" : undefined}

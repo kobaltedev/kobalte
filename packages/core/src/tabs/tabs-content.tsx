@@ -45,7 +45,7 @@ export interface TabsContentCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface TabsContentRenderProps extends TabsContentCommonProps {
 	role: "tabpanel";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"aria-labelledby": string | undefined;
 	"data-orientation": Orientation;
 	"data-selected": string | undefined;
@@ -121,7 +121,7 @@ export function TabsContent<T extends ValidComponent = "div">(
 				ref={mergeRefs(setRef, (props as TabsContentProps).ref)}
 				id={id()}
 				role="tabpanel"
-				tabIndex={tabIndex()}
+				tabindex={tabIndex()}
 				aria-labelledby={context.triggerIdsMap().get(props.value)}
 				data-orientation={context.orientation()}
 				data-selected={isSelected() ? "" : undefined}

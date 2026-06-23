@@ -44,7 +44,7 @@ export interface ToggleGroupItemCommonProps<
 export interface ToggleGroupItemRenderProps
 	extends ToggleGroupItemCommonProps,
 		ToggleButton.ToggleButtonRootRenderProps {
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"data-orientation": Orientation;
 }
 
@@ -108,13 +108,13 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 			Component<
 				Omit<
 					ToggleGroupItemRenderProps,
-					Exclude<keyof ToggleButton.ToggleButtonRootRenderProps, "tabIndex">
+					Exclude<keyof ToggleButton.ToggleButtonRootRenderProps, "tabindex">
 				>
 			>
 		>
 			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 			pressed={selectionManager().isSelected(mergedProps.value)}
-			tabIndex={selectableItem.tabIndex()}
+			tabindex={selectableItem.tabIndex()}
 			data-orientation={rootContext.orientation()}
 			disabled={isDisabled()}
 			onPointerDown={composeEventHandlers([

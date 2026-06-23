@@ -11,9 +11,9 @@ import {
 	access,
 	focusWithoutScrolling,
 } from "@kobalte/utils";
+import type { JSX } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
 	createEffect,
 	createMemo,
 } from "solid-js";

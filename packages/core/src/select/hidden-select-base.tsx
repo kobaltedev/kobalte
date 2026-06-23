@@ -100,16 +100,16 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 		<div style={visuallyHiddenStyles} aria-hidden="true">
 			<input
 				type="text"
-				tabIndex={props.selectionManager.isFocused() || props.isOpen ? -1 : 0}
+				tabindex={props.selectionManager.isFocused() || props.isOpen ? -1 : 0}
 				style={{ "font-size": "16px" }}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
-				readOnly={formControlContext.isReadOnly()}
+				readonly={formControlContext.isReadOnly()}
 				onFocus={() => props.focusTrigger()}
 			/>
 			<select
 				ref={mergeRefs((el) => (ref = el), props.ref)}
-				tabIndex={-1}
+				tabindex={-1}
 				multiple={props.isMultiple}
 				name={formControlContext.name()}
 				required={formControlContext.isRequired()}

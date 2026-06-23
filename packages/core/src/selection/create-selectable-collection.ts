@@ -16,9 +16,9 @@ import {
 	getFocusableTreeWalker,
 	scrollIntoView,
 } from "@kobalte/utils";
+import type { JSX } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
 	createEffect,
 	createMemo,
 	merge,

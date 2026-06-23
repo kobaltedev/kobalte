@@ -83,7 +83,7 @@ export interface DialogContentRenderProps
 	extends DialogContentCommonProps,
 		DismissableLayerRenderProps {
 	role: "dialog" | "alertdialog";
-	tabIndex: -1;
+	tabindex: -1;
 }
 
 export type DialogContentProps<
@@ -219,7 +219,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 					ref = el;
 				}, mergedProps.ref)}
 				role="dialog"
-				tabIndex={-1}
+				tabindex={-1}
 				disableOutsidePointerEvents={context.modal() && context.isOpen()}
 				excludedElements={[context.triggerRef]}
 				aria-labelledby={context.titleId()}

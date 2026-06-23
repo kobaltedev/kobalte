@@ -295,7 +295,6 @@ export const MissingAsProp = meta.story({
 				{show() &&
 					(() => {
 						try {
-							// @ts-expect-error: intentionally missing as to demo error
 							return <Polymorphic>broken</Polymorphic>;
 						} catch (e: unknown) {
 							return (

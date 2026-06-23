@@ -57,7 +57,6 @@ export function Polymorphic<RenderProps>(
 	}
 
 	return (
-		// @ts-expect-error: Props are valid but not worth calculating
 		<Dynamic {...others} component={props.as} />
 	);
 }

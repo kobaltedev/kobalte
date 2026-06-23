@@ -63,7 +63,7 @@ export interface ToggleGroupBaseCommonProps<
 
 export interface ToggleGroupBaseRenderProps extends ToggleGroupBaseCommonProps {
 	role: "group";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"data-orientation": Orientation | undefined;
 }
 
@@ -139,7 +139,7 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 					as="div"
 					role="group"
 					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
-					tabIndex={!mergedProps.disabled ? selectableList.tabIndex() : undefined}
+					tabindex={!mergedProps.disabled ? selectableList.tabIndex() : undefined}
 					data-orientation={mergedProps.orientation}
 					onKeyDown={composeEventHandlers([
 						mergedProps.onKeyDown,

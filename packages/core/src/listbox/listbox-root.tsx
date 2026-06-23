@@ -147,7 +147,7 @@ export interface ListboxRootCommonProps<T extends HTMLElement = HTMLElement> {
 export interface ListboxRootRenderProps extends ListboxRootCommonProps {
 	role: "listbox";
 	children: JSX.Element;
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 }
 
 export type ListboxRootProps<
@@ -236,7 +236,7 @@ export function ListboxRoot<
 				as="ul"
 				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="listbox"
-				tabIndex={selectableList.tabIndex()}
+				tabindex={selectableList.tabIndex()}
 				aria-multiselectable={
 					listState().selectionManager().selectionMode() === "multiple"
 						? true

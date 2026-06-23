@@ -67,7 +67,7 @@ export interface ListboxItemRenderProps
 	extends ListboxItemCommonProps,
 		ListboxItemDataSet {
 	role: "option";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"aria-disabled": boolean;
 	"aria-selected": boolean | undefined;
 	"aria-posinset": number | undefined;
@@ -208,7 +208,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 				as="li"
 				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="option"
-				tabIndex={selectableItem.tabIndex()}
+				tabindex={selectableItem.tabIndex()}
 				aria-disabled={selectableItem.isDisabled()}
 				aria-selected={ariaSelected()}
 				aria-label={ariaLabel()}
