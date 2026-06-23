@@ -1,6 +1,5 @@
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createSignal,
 	omit,
 } from "solid-js";
@@ -106,7 +105,7 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 			return;
 		}
 		const files = e.dataTransfer?.files;
-		const fileList = Array.from(files ?? []);
+		const fileList = Array.from(files ?? []) as File[];
 		context.processFiles(fileList);
 	};
 
@@ -118,7 +117,7 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 			tabindex="0"
 			aria-disabled={context.disabled()}
 			data-dragging={isDragging()}
-			ref={mergeRefs(context.setDropzoneRef, props.ref)}
+			ref={mergeRefs((el: HTMLElement) => context.setDropzoneRef(el), props.ref as (el: HTMLElement) => void)}
 			onClick={composeEventHandlers([props.onClick, onClick])}
 			onKeyDown={composeEventHandlers([props.onKeyDown, onKeyDown])}
 			onDragOver={composeEventHandlers([props.onDragOver, onDragOver])}

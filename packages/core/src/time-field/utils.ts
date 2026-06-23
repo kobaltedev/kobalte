@@ -42,16 +42,16 @@ export function createDefaultProps(props: {
 		return props.granularity() || "minute";
 	});
 
-	createEffect(() => {
-		const resolvedValue = value();
-		const resolvedGranularity = granularity();
-
-		if (resolvedValue && !(resolvedGranularity in resolvedValue)) {
-			throw new Error(
-				`Invalid granularity ${resolvedGranularity} for value ${resolvedValue.toString()}`,
-			);
-		}
-	});
+	createEffect(
+		() => ({ resolvedValue: value(), resolvedGranularity: granularity() }),
+		({ resolvedValue, resolvedGranularity }) => {
+			if (resolvedValue && !(resolvedGranularity in resolvedValue)) {
+				throw new Error(
+					`Invalid granularity ${resolvedGranularity} for value ${resolvedValue.toString()}`,
+				);
+			}
+		},
+	);
 
 	return { granularity, defaultTimeZone };
 }

@@ -1,11 +1,12 @@
+import { type ValidComponent } from "@solidjs/web";
 import {
-	type ValidComponent,
 	createSignal,
 	createUniqueId,
 	omit,
 	snapshot,
 	createStore,
 } from "solid-js";
+import type { UploadFile } from "@solid-primitives/upload";
 
 import { type ValidationState, mergeDefaultProps } from "@kobalte/utils";
 import {
@@ -88,7 +89,14 @@ export function FileField<T extends ValidComponent = "div">(
 	const [fileInputRef, setFileInputRef] = createSignal<HTMLInputElement>();
 	const [dropzoneRef, setDropzoneRef] = createSignal<HTMLElement>();
 
-	const [acceptedFilesState, setAcceptedFilesState] = createStore<File[]>([]);
+	const toUploadFile = (file: File): UploadFile => ({
+		source: URL.createObjectURL(file),
+		name: file.name,
+		size: file.size,
+		file,
+	});
+
+	const [acceptedFilesState, setAcceptedFilesState] = createStore<UploadFile[]>([]);
 	const [rejectedFilesState, setRejectedFilesState] = createStore<
 		FileRejection[]
 	>([]);
@@ -119,18 +127,20 @@ export function FileField<T extends ValidComponent = "div">(
 			mergedProps.validate,
 		);
 
+		const uploadAcceptedFiles = acceptedFiles.map(toUploadFile);
+
 		if (mergedProps.multiple) {
 			setAcceptedFilesState((prevAcceptedFiles) => [
 				...prevAcceptedFiles,
-				...acceptedFiles,
+				...uploadAcceptedFiles,
 			]);
-			setRejectedFilesState(rejectedFiles);
+			setRejectedFilesState(() => rejectedFiles);
 		} else {
 			if (acceptedFiles.length > 0 && acceptedFiles.length === 1) {
-				setAcceptedFilesState([acceptedFiles[0]]);
-				setRejectedFilesState(rejectedFiles);
+				setAcceptedFilesState(() => [uploadAcceptedFiles[0]]);
+				setRejectedFilesState(() => rejectedFiles);
 			} else if (rejectedFiles.length > 0 && rejectedFiles.length === 1) {
-				setRejectedFilesState(rejectedFiles);
+				setRejectedFilesState(() => rejectedFiles);
 			}
 		}
 
@@ -146,14 +156,15 @@ export function FileField<T extends ValidComponent = "div">(
 		mergedProps.onFileChange?.({ acceptedFiles, rejectedFiles });
 	};
 
-	const removeFile = (file: File) => {
+	const removeFile = (file: UploadFile) => {
+		URL.revokeObjectURL(file.source);
 		setAcceptedFilesState((prevAcceptedFiles) =>
-			prevAcceptedFiles.filter((f) => f !== file),
+			prevAcceptedFiles.filter((f) => f.source !== file.source),
 		);
 		// trigger on change
 		mergedProps.onFileChange?.({
-			acceptedFiles: snapshot(acceptedFilesState),
-			rejectedFiles: snapshot(rejectedFilesState),
+			acceptedFiles: [...snapshot(acceptedFilesState)].map((f) => f.file),
+			rejectedFiles: [...snapshot(rejectedFilesState)],
 		});
 	};
 

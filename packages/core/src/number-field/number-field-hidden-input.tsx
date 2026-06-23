@@ -1,5 +1,6 @@
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
-import { type ComponentProps, omit } from "solid-js";
+import { type ComponentProps } from "@solidjs/web";
+import { omit } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useNumberFieldContext } from "./number-field-context";
@@ -16,17 +17,20 @@ export function NumberFieldHiddenInput(props: NumberFieldHiddenInputProps) {
 	return (
 		<div style={visuallyHiddenStyles} aria-hidden="true">
 			<input
-				ref={mergeRefs(context.setHiddenInputRef, props.ref)}
+				ref={(el: HTMLInputElement) => {
+					context.setHiddenInputRef(el);
+					if (typeof props.ref === "function") (props.ref as (el: HTMLInputElement) => void)(el);
+				}}
 				type="text"
-				tabIndex={-1}
+				tabindex={-1}
 				style={{ "font-size": "16px" }}
 				name={formControlContext.name()}
 				value={Number.isNaN(context.rawValue()) ? "" : context.rawValue()}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
-				readOnly={formControlContext.isReadOnly()}
+				readonly={formControlContext.isReadOnly()}
 				onChange={(e) => {
-					callHandler(e, props.onChange);
+					callHandler(e, props.onChange as any);
 					// enable form autofill
 					context.setValue((e.target as HTMLInputElement).value);
 					context.format();

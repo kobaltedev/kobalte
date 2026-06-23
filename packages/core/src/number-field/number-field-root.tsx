@@ -7,15 +7,13 @@ import {
 	mergeRefs,
 	snapValueToStep,
 } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
-	on,
 } from "solid-js";
 
 import { NumberFormatter, NumberParser } from "@internationalized/number";
@@ -323,17 +321,15 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 	};
 
 	createEffect(
-		on(
-			() => mergedProps.rawValue,
-			(rawValue) => {
-				if (rawValue !== context.rawValue()) {
-					if (Number.isNaN(rawValue)) return;
-					setValue(rawValue ?? "");
-					context.format();
-				}
-			},
-			{ defer: true },
-		),
+		() => mergedProps.rawValue,
+		(rawValue) => {
+			if (rawValue !== context.rawValue()) {
+				if (Number.isNaN(rawValue)) return;
+				setValue(rawValue ?? "");
+				context.format();
+			}
+		},
+		{ defer: true },
 	);
 
 	return (

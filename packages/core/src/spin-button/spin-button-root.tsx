@@ -8,13 +8,11 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import { type ValidationState, callHandler } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	omit,
-	on,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -79,7 +77,7 @@ export interface SpinButtonRootOptions {
 export interface SpinButtonRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	style?: JSX.CSSProperties | string;
+	style?: JSX.CSSProperties | string | false;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -193,12 +191,14 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 	};
 
 	createEffect(
-		on(textValue, (textValue) => {
+		() => textValue(),
+		(textValue) => {
 			if (isFocused) {
 				clearAnnouncer("assertive");
 				announce(textValue ?? "", "assertive");
 			}
-		}),
+		},
+		{ defer: true },
 	);
 
 	return (
@@ -209,7 +209,7 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 				{
 					"touch-action": "none",
 				},
-				mergedProps.style,
+				mergedProps.style || undefined,
 			)}
 			aria-valuenow={
 				mergedProps.value != null && !Number.isNaN(mergedProps.value)

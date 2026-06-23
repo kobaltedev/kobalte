@@ -14,11 +14,10 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	For,
-	type JSX,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	omit,

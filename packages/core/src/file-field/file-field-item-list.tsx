@@ -1,4 +1,6 @@
-import { For, type JSX, type ValidComponent, omit } from "solid-js";
+import { type JSX, type ValidComponent } from "@solidjs/web";
+import { For, omit } from "solid-js";
+import type { UploadFile } from "@solid-primitives/upload";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -8,7 +10,7 @@ import { useFileFieldContext } from "./file-field-context";
 import { FileFieldItemContext } from "./file-field-item-context";
 
 export interface FileFieldItemListOptions {
-	children: (file: File) => JSX.Element;
+	children: (file: UploadFile) => JSX.Element;
 }
 
 export interface FileFieldItemListCommonProps<

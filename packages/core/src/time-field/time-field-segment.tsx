@@ -18,20 +18,15 @@ import {
 	mergeRefs,
 	scrollIntoViewport,
 } from "@kobalte/utils";
+import { type ComponentProps, type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type Component,
-	type ComponentProps,
-	type JSX,
 	Show,
-	type ValidComponent,
 	children,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	on,
 	omit,
-	onCleanup,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -64,7 +59,20 @@ export interface TimeFieldSegmentCommonProps<
 
 export interface TimeFieldSegmentRenderProps
 	extends TimeFieldSegmentCommonProps,
-		SpinButton.SpinButtonRootRenderProps {}
+		SpinButton.SpinButtonRootRenderProps {
+	tabindex: string | number | false | undefined;
+	contentEditable: boolean | undefined;
+	inputMode: string | false | undefined;
+	autocorrect: string | false | undefined;
+	autoCapitalize: string | false | undefined;
+	spellcheck: boolean | "" | "false" | "true" | undefined;
+	enterkeyhint: string | false | undefined;
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+	"data-placeholder": string | undefined;
+	"data-type": string;
+}
 
 export type TimeFieldSegmentProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -456,32 +464,33 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		fieldContext.setSegment(mergedProps.segment.type, mergedProps.segment.maxValue);
 	};
 
-	createEffect(() => {
-		const resolvedDateValue = fieldContext.dateValue();
-
-		if (resolvedDateValue) {
+	createEffect(
+		() => {
+			const resolvedDateValue = fieldContext.dateValue();
+			if (!resolvedDateValue) return undefined;
 			if (mergedProps.segment.type === "hour" && !mergedProps.segment.isPlaceholder) {
-				setTextValue(hourDateFormatter().format(resolvedDateValue));
-			} else {
-				setTextValue(mergedProps.segment.isPlaceholder ? "" : mergedProps.segment.text);
+				return hourDateFormatter().format(resolvedDateValue);
 			}
-		}
-	});
+			return mergedProps.segment.isPlaceholder ? "" : mergedProps.segment.text;
+		},
+		(value) => {
+			if (value !== undefined) setTextValue(value);
+		},
+	);
 
 	createEffect(
-		on([() => ref, () => context.focusManager()], ([ref, focusManager]) => {
+		() => context.focusManager(),
+		(focusManager) => {
 			const element = ref;
-
-			onCleanup(() => {
+			return () => {
 				if (getActiveElement(element) === element) {
 					const prev = focusManager.focusPrevious();
-
 					if (!prev) {
 						focusManager.focusNext();
 					}
 				}
-			});
-		}),
+			};
+		},
 	);
 
 	return (
@@ -499,19 +508,9 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				</Polymorphic>
 			}
 		>
-			<SpinButton.Root<
-				Component<
-					Omit<
-						TimeFieldSegmentRenderProps,
-						| keyof SpinButton.SpinButtonRootRenderProps
-						| "ref"
-						| "onBeforeInput"
-						| "onInput"
-					>
-				>
-			>
+			<SpinButton.Root
 				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
-				tabIndex={
+				tabindex={
 					formControlContext.isDisabled() || !mergedProps.segment.isEditable
 						? undefined
 						: 0
@@ -526,7 +525,6 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				readOnly={formControlContext.isReadOnly() || !mergedProps.segment.isEditable}
 				contentEditable={isEditable()}
 				inputMode={inputMode()}
-				// @ts-ignore
 				autocorrect={isEditable() ? "off" : undefined}
 				autoCapitalize={isEditable() ? "off" : undefined}
 				spellcheck={isEditable() ? false : undefined}

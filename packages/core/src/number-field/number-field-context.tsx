@@ -1,6 +1,6 @@
+import { type JSX } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
 	Setter,
 	createContext,
 	useContext,

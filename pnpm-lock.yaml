@@ -262,6 +262,9 @@ importers:
       '@solid-primitives/interaction':
         specifier: link:../../../solid-primitives/packages/interaction
         version: link:../../../solid-primitives/packages/interaction
+      '@solid-primitives/keyboard':
+        specifier: link:../../../solid-primitives/packages/keyboard
+        version: link:../../../solid-primitives/packages/keyboard
       '@solid-primitives/presence':
         specifier: link:../../../solid-primitives/packages/presence
         version: link:../../../solid-primitives/packages/presence
@@ -274,6 +277,9 @@ importers:
       '@solid-primitives/scroll':
         specifier: link:../../../solid-primitives/packages/scroll
         version: link:../../../solid-primitives/packages/scroll
+      '@solid-primitives/upload':
+        specifier: link:../../../solid-primitives/packages/upload
+        version: link:../../../solid-primitives/packages/upload
       '@solidjs/web':
         specifier: ^2.0.0-beta.14
         version: 2.0.0-beta.14(solid-js@2.0.0-beta.14)

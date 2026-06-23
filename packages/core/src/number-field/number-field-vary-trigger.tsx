@@ -1,8 +1,7 @@
 import { callHandler } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	omit,
 } from "solid-js";
 import * as Button from "../button";
@@ -59,7 +58,7 @@ export function NumberFieldVaryTrigger<T extends ValidComponent = "button">(
 			}
 			aria-controls={formControlContext.fieldId()}
 			onClick={(e) => {
-				callHandler(e, props.onClick);
+				callHandler(e as any, props.onClick);
 
 				context.varyValue(
 					context.step() * (props.numberFieldVaryType === "increment" ? 1 : -1),
