@@ -25,6 +25,7 @@ import {
 	For,
 	createEffect,
 	omit,
+	untrack,
 } from "solid-js";
 import {
 	type ElementOf,
@@ -156,13 +157,11 @@ export function ToastList<T extends ValidComponent = "ol">(
 			{...others}
 		>
 			<For each={context.toasts()}>
-				{(toast) =>
-					toast.toastComponent({
-						get toastId() {
-							return toast.id;
-						},
-					})
-				}
+				{(toast) => {
+					const Component = untrack(() => toast.toastComponent);
+					const id = untrack(() => toast.id);
+					return Component({ toastId: id });
+				}}
 			</For>
 		</Polymorphic>
 	);

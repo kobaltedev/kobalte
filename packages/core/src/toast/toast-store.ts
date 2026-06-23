@@ -24,7 +24,11 @@ function update(id: number, toast: ToastConfig) {
 function dismiss(id: number) {
 	setState(s => {
 		const index = s.toasts.findIndex((t) => t.id === id);
-		if (index !== -1) s.toasts[index].dismiss = true;
+		if (index !== -1) {
+			const t = s.toasts[index];
+			// Replace item (not just mutate property) to ensure array-level reactivity
+			s.toasts[index] = { id: t.id, dismiss: true, update: t.update, toastComponent: t.toastComponent, region: t.region };
+		}
 	});
 }
 

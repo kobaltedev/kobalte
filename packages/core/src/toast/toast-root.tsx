@@ -27,6 +27,7 @@ import {
 	createUniqueId,
 	omit,
 	onSettled,
+	untrack,
 } from "solid-js";
 import {
 	type ElementOf,
@@ -166,10 +167,10 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	);
 
 	const [isOpen, setIsOpen] = createSignal(true);
-	const [titleId, setTitleId] = createSignal<string>();
-	const [descriptionId, setDescriptionId] = createSignal<string>();
+	const [titleId, setTitleId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 	const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
-	const [ref, setRef] = createSignal<HTMLElement>();
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
 
 	const { isMounted: present } = createPresence(
 		() => isOpen() || undefined,
@@ -180,7 +181,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 	let closeTimerId: number;
 	let closeTimerStartTime = 0;
-	let closeTimerRemainingTime = duration();
+	let closeTimerRemainingTime = untrack(duration);
 
 	let pointerStart: { x: number; y: number } | null = null;
 	let swipeDelta: { x: number; y: number } | null = null;
@@ -397,9 +398,9 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	// we include `open` in deps because closed !== unmounted when animating,
 	// so it could reopen before being completely unmounted
 	createEffect(
-		() => [isOpen(), duration()] as const,
-		([isOpenVal, durationVal]) => {
-			if (isOpenVal && !rootContext.isPaused()) {
+		() => [isOpen(), duration(), rootContext.isPaused()] as const,
+		([isOpenVal, durationVal, isPaused]) => {
+			if (isOpenVal && !isPaused) {
 				startTimer(durationVal);
 			}
 		},
