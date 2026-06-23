@@ -118,7 +118,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 		>
 			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
 			disabled={isDisabled()}
-			tabIndex={-1}
+			tabindex={-1}
 			aria-haspopup="listbox"
 			aria-expanded={context.isOpen()}
 			aria-controls={context.isOpen() ? context.listboxId() : undefined}

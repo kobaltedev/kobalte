@@ -13,7 +13,8 @@
  */
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type ValidComponent, createMemo, omit } from "solid-js";
+import { type ValidComponent } from "@solidjs/web";
+import { createMemo, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -30,7 +31,7 @@ export interface ButtonRootCommonProps<T extends HTMLElement = HTMLElement> {
 	disabled: boolean | undefined;
 	type: string | undefined;
 	ref: T | ((el: T) => void);
-	tabIndex: number | string | undefined;
+	tabindex: number | string | undefined;
 }
 
 export interface ButtonRootRenderProps extends ButtonRootCommonProps {
@@ -89,7 +90,7 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 			type={isNativeButton() || isNativeInput() ? mergedProps.type : undefined}
 			role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
-			tabIndex={
+			tabindex={
 				!isNativeButton() && !isNativeLink() && !mergedProps.disabled ? 0 : undefined
 			}
 			disabled={

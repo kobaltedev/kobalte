@@ -50,7 +50,7 @@ export interface RatingGroupItemRenderProps
 	extends RatingGroupItemCommonProps,
 		RatingGroupItemDataSet {
 	role: "radio";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"aria-required": boolean | undefined;
 	"aria-disabled": boolean | undefined;
 	"aria-readonly": boolean | undefined;
@@ -263,7 +263,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 				as="div"
 				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="radio"
-				tabIndex={tabIndex()}
+				tabindex={tabIndex()}
 				aria-checked={equal()}
 				aria-required={formControlContext.isRequired() || undefined}
 				aria-disabled={formControlContext.isDisabled() || undefined}

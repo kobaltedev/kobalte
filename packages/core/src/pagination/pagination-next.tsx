@@ -45,7 +45,7 @@ export function PaginationNext<T extends ValidComponent = "button">(
 					Omit<PaginationNextRenderProps, keyof Button.ButtonRootRenderProps>
 				>
 			>
-				tabIndex={
+				tabindex={
 					isDisabled() || context.page() === context.count() ? -1 : undefined
 				}
 				disabled={isDisabled()}

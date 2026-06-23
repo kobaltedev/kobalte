@@ -63,7 +63,7 @@ export interface SliderThumbRenderProps
 	extends SliderThumbCommonProps,
 		SliderDataSet {
 	role: "slider";
-	tabIndex: 0 | undefined;
+	tabindex: 0 | undefined;
 	"aria-valuetext": string;
 	"aria-valuemin": number;
 	"aria-valuenow": number | undefined;
@@ -220,7 +220,7 @@ export function SliderThumb<T extends ValidComponent = "span">(
 				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="slider"
 				id={fieldProps.id()}
-				tabIndex={context.state.isDisabled() ? undefined : 0}
+				tabindex={context.state.isDisabled() ? undefined : 0}
 				style={combineStyle(
 					{
 						display: value() === undefined ? "none" : undefined,

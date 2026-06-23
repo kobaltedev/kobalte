@@ -60,7 +60,7 @@ export interface NumberFieldInputRenderProps extends NumberFieldInputCommonProps
 	role: "spinbutton";
 	required: boolean | undefined;
 	disabled: boolean | undefined;
-	readOnly: boolean | undefined;
+	readonly: boolean | undefined;
 	"aria-valuenow": number | string | undefined;
 	"aria-valuetext": string | undefined;
 	"aria-valuemin": number | undefined;
@@ -196,7 +196,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			}
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
-			readOnly={formControlContext.isReadOnly()}
+			readonly={formControlContext.isReadOnly()}
 			aria-valuenow={
 				context.rawValue() != null && !Number.isNaN(context.rawValue())
 					? context.rawValue()

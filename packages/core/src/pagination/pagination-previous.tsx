@@ -49,7 +49,7 @@ export function PaginationPrevious<T extends ValidComponent = "button">(
 					>
 				>
 			>
-				tabIndex={isDisabled() || context.page() === 1 ? -1 : undefined}
+				tabindex={isDisabled() || context.page() === 1 ? -1 : undefined}
 				disabled={isDisabled()}
 				aria-disabled={isDisabled() || undefined}
 				data-disabled={isDisabled() ? "" : undefined}

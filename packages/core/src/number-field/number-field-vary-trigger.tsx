@@ -48,7 +48,7 @@ export function NumberFieldVaryTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			tabIndex={-1}
+			tabindex={-1}
 			disabled={
 				formControlContext.isDisabled() ||
 				context.rawValue() ===

@@ -255,7 +255,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 					? true
 					: undefined
 			}
-			tabIndex={
+			tabindex={
 				optionalMenubarContext !== undefined
 					? optionalMenubarContext.value() === key() ||
 						optionalMenubarContext.lastValue() === key()

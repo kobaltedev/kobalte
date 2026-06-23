@@ -84,7 +84,7 @@ export interface MenuItemBaseCommonProps<T extends HTMLElement = HTMLElement> {
 export interface MenuItemBaseRenderProps
 	extends MenuItemBaseCommonProps,
 		MenuItemDataSet {
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"aria-checked": boolean | "mixed" | undefined;
 	"aria-disabled": boolean | undefined;
 	"aria-labelledby": string | undefined;
@@ -271,7 +271,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			<Polymorphic<MenuItemBaseRenderProps>
 				as="div"
 				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
-				tabIndex={selectableItem.tabIndex()}
+				tabindex={selectableItem.tabIndex()}
 				aria-checked={ariaChecked()}
 				aria-disabled={mergedProps.disabled}
 				aria-labelledby={labelId()}

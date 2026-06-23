@@ -72,7 +72,7 @@ export function SliderInput(props: SliderInputProps) {
 			type="range"
 			id={fieldProps.id()}
 			name={formControlContext.name()}
-			tabIndex={context.state.isDisabled() ? undefined : -1}
+			tabindex={context.state.isDisabled() ? undefined : -1}
 			min={context.state.getThumbMinValue(thumb.index())}
 			max={context.state.getThumbMaxValue(thumb.index())}
 			step={context.state.step()}
