@@ -3,7 +3,8 @@ import {
 	mergeDefaultProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { type ComponentProps, type JSX, omit } from "solid-js";
+import { type ComponentProps, type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
 import {
@@ -55,7 +56,7 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 			type="range"
 			id={fieldProps.id()}
 			name={formControlContext.name()}
-			tabIndex={context.state.isDisabled() ? undefined : -1}
+			tabindex={context.state.isDisabled() ? undefined : -1}
 			min={context.state.minValue()}
 			max={context.state.maxValue()}
 			step={context.state.step()}

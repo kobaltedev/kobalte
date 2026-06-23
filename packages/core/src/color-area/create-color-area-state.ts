@@ -5,7 +5,7 @@ import {
 	type ColorChannel,
 	type ColorSpace,
 	parseColor,
-} from "../colors";
+} from "@solid-primitives/utils/colors";
 import { createControllableSignal } from "../primitives";
 
 export interface ColorAreaState {

@@ -1,8 +1,7 @@
 import { composeEventHandlers } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	omit,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -21,9 +20,9 @@ export interface ColorFieldInputCommonProps<
 export interface ColorFieldInputRenderProps
 	extends ColorFieldInputCommonProps,
 		TextField.TextFieldInputRenderProps {
-	autoComplete: "off";
-	autoCorrect: "off";
-	spellCheck: "false";
+	autocomplete: "off";
+	autocorrect: "off";
+	spellcheck: "false";
 }
 
 export type ColorFieldInputProps<
@@ -46,9 +45,9 @@ export function ColorFieldInput<T extends ValidComponent = "input">(
 				>
 			>
 		>
-			autoComplete="off"
-			autoCorrect="off"
-			spellCheck="false"
+			autocomplete="off"
+			autocorrect="off"
+			spellcheck="false"
 			onBlur={composeEventHandlers([props.onBlur, context.onBlur])}
 			{...others}
 		/>

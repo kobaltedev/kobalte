@@ -1,8 +1,7 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createSignal,
 	omit,
 } from "solid-js";
@@ -36,7 +35,7 @@ export interface ColorWheelThumbCommonProps<
 
 export interface ColorWheelThumbRenderProps extends ColorWheelThumbCommonProps {
 	role: "slider";
-	tabIndex: 0 | undefined;
+	tabindex: 0 | undefined;
 	"aria-valuetext": string;
 	"aria-valuemin": number;
 	"aria-valuenow": number | undefined;
@@ -149,7 +148,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 			ref={mergeRefs(context.setThumbRef, props.ref)}
 			role="slider"
 			id={fieldProps.id()}
-			tabIndex={context.state.isDisabled() ? undefined : 0}
+			tabindex={context.state.isDisabled() ? undefined : 0}
 			style={combineStyle(
 				{
 					position: "absolute",

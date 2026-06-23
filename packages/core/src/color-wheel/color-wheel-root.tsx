@@ -5,17 +5,19 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import { type ValidComponent } from "@solidjs/web";
 import {
-	type ValidComponent,
-	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
 } from "solid-js";
 
-import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
-import type { Color } from "../colors";
+import {
+	COLOR_INTL_TRANSLATIONS,
+	type Color,
+	type ColorIntlTranslations,
+} from "@solid-primitives/utils/colors";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,

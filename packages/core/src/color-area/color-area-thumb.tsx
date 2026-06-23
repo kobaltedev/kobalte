@@ -1,7 +1,8 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent, omit } from "solid-js";
-import { COLOR_INTL_TRANSLATIONS } from "../colors";
+import { type JSX, type ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
+import { COLOR_INTL_TRANSLATIONS } from "@solid-primitives/utils/colors";
 import { useFormControlContext } from "../form-control";
 import {
 	type ElementOf,
@@ -112,7 +113,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 			as="span"
 			ref={mergeRefs(context.setThumbRef, props.ref)}
 			role="presentation"
-			tabIndex={context.state.isDisabled() ? undefined : 0}
+			tabindex={context.state.isDisabled() ? undefined : 0}
 			style={combineStyle(
 				{
 					position: "absolute",

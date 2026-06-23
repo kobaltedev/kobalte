@@ -1,15 +1,20 @@
 import { type ValidationState, mergeDefaultProps } from "@kobalte/utils";
+import { type ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type ValidComponent,
 	createMemo,
 	createUniqueId,
 	omit,
 } from "solid-js";
 
-import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
-import type { Color, ColorChannel, ColorSpace } from "../colors";
-import { parseColor } from "../colors";
+import {
+	COLOR_INTL_TRANSLATIONS,
+	parseColor,
+	type Color,
+	type ColorChannel,
+	type ColorIntlTranslations,
+	type ColorSpace,
+} from "@solid-primitives/utils/colors";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives/create-controllable-signal";
 import * as Slider from "../slider";

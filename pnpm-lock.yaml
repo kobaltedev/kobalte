@@ -280,6 +280,9 @@ importers:
       '@solid-primitives/upload':
         specifier: link:../../../solid-primitives/packages/upload
         version: link:../../../solid-primitives/packages/upload
+      '@solid-primitives/utils':
+        specifier: link:/Users/ddibiase/Projects/solid-primitives/packages/utils
+        version: link:../../../solid-primitives/packages/utils
       '@solidjs/web':
         specifier: ^2.0.0-beta.14
         version: 2.0.0-beta.14(solid-js@2.0.0-beta.14)

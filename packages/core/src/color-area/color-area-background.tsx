@@ -1,14 +1,12 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	omit,
 } from "solid-js";
-import type { Color, ColorChannel } from "../colors";
-import { parseColor } from "../colors";
+import { parseColor, type Color, type ColorChannel } from "@solid-primitives/utils/colors";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -151,9 +149,9 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 				const bg = context.state
 					.value()
 					.getColorChannels()
-					.filter((c) => c !== context.state.channels().zChannel)
+					.filter((c: ColorChannel) => c !== context.state.channels().zChannel)
 					.map(
-						(c) =>
+						(c: ColorChannel) =>
 							`linear-gradient(to ${c === context.state.channels().xChannel ? end : "top"}, ${hslChannels[c as Exclude<ColorChannel, "brightness" | "red" | "green" | "blue" | "alpha">](value)})`,
 					)
 					.reverse();
@@ -174,9 +172,9 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 				const bg = context.state
 					.value()
 					.getColorChannels()
-					.filter((c) => c !== context.state.channels().zChannel)
+					.filter((c: ColorChannel) => c !== context.state.channels().zChannel)
 					.map(
-						(c) =>
+						(c: ColorChannel) =>
 							`linear-gradient(to ${c === context.state.channels().xChannel ? end : "top"}, ${hsbChannels[c as Exclude<ColorChannel, "lightness" | "red" | "green" | "blue" | "alpha">](value)})`,
 					)
 					.reverse();

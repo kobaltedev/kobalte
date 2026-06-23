@@ -1,7 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { type Accessor, createMemo, createSignal } from "solid-js";
-import type { Color } from "../colors";
-import { parseColor } from "../colors";
+import { parseColor, type Color } from "@solid-primitives/utils/colors";
 import { createControllableSignal } from "../primitives";
 import {
 	angleToCartesian,

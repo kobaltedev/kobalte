@@ -4,13 +4,12 @@ import {
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import { type ComponentProps, type JSX } from "@solidjs/web";
 import {
-	type ComponentProps,
-	type JSX,
 	createMemo,
 	omit,
 } from "solid-js";
-import { COLOR_INTL_TRANSLATIONS } from "../colors";
+import { COLOR_INTL_TRANSLATIONS } from "@solid-primitives/utils/colors";
 import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
@@ -88,7 +87,7 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 				(isVertical() ? context.yName() : context.xName()) ||
 				formControlContext.name()
 			}
-			tabIndex={context.state.isDisabled() ? undefined : -1}
+			tabindex={context.state.isDisabled() ? undefined : -1}
 			min={isVertical() ? context.state.yMinValue() : context.state.xMinValue()}
 			max={isVertical() ? context.state.yMaxValue() : context.state.xMaxValue()}
 			step={isVertical() ? context.state.yStep() : context.state.xStep()}

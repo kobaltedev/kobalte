@@ -82,7 +82,8 @@
 		"@solid-primitives/resize-observer": "link:../../../solid-primitives/packages/resize-observer",
 		"@solid-primitives/presence": "link:../../../solid-primitives/packages/presence",
 		"@solid-primitives/scroll": "link:../../../solid-primitives/packages/scroll",
-		"@solid-primitives/upload": "link:../../../solid-primitives/packages/upload"
+		"@solid-primitives/upload": "link:../../../solid-primitives/packages/upload",
+		"@solid-primitives/utils": "link:../../../solid-primitives/packages/utils"
 	},
 	"devDependencies": {
 		"@kobalte/tests": "workspace:*",

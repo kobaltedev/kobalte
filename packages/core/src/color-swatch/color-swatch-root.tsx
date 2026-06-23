@@ -1,13 +1,11 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createUniqueId,
 	omit,
 } from "solid-js";
-import { COLOR_INTL_TRANSLATIONS } from "../colors";
-import type { Color } from "../colors";
+import { COLOR_INTL_TRANSLATIONS, type Color } from "@solid-primitives/utils/colors";
 import {
 	type ElementOf,
 	Polymorphic,

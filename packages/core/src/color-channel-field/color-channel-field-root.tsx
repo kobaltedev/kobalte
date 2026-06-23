@@ -1,13 +1,12 @@
 import { clamp, mergeDefaultProps } from "@kobalte/utils";
+import { type ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type ValidComponent,
 	createMemo,
 	createUniqueId,
 	omit,
 } from "solid-js";
-import type { Color, ColorChannel, ColorSpace } from "../colors";
-import { parseColor } from "../colors";
+import { parseColor, type Color, type ColorChannel, type ColorSpace } from "@solid-primitives/utils/colors";
 import * as NumberField from "../number-field";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
