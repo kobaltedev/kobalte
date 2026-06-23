@@ -4,16 +4,14 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
 	Show,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
 	omit,
-	on,
 } from "solid-js";
 import {
 	DismissableLayer,
@@ -100,16 +98,14 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 	const size = createSize(ref);
 
 	createEffect(
-		on(
-			() =>
-				menubarContext.value()
-					? menubarContext.menuRefMap().get(menubarContext.value()!)
-					: undefined,
-			(menu) => {
-				if (menu === undefined || menu[0] === undefined) return;
-				setRef(menu[0]);
-			},
-		),
+		() =>
+			menubarContext.value()
+				? menubarContext.menuRefMap().get(menubarContext.value()!)
+				: undefined,
+		(menu) => {
+			if (menu === undefined || menu[0] === undefined) return;
+			setRef(menu[0]);
+		},
 	);
 
 	const height = createMemo((prev) => {

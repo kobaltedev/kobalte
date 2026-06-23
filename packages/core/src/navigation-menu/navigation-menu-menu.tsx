@@ -1,11 +1,9 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	batch,
 	createEffect,
 	createSignal,
 	createUniqueId,
 	omit,
-	on,
 } from "solid-js";
 import type { MenubarMenuOptions, MenubarMenuProps } from "../menubar";
 import { useMenubarContext } from "../menubar/menubar-context";
@@ -47,7 +45,8 @@ export function NavigationMenuMenu(props: NavigationMenuMenuProps) {
 	};
 
 	createEffect(
-		on(menubarContext.value, (contextValue) => {
+		() => menubarContext.value(),
+		(contextValue) => {
 			if (contextValue === value()) {
 				setForceMount(true);
 			} else {
@@ -65,7 +64,7 @@ export function NavigationMenuMenu(props: NavigationMenuMenuProps) {
 
 				viewportRef.addEventListener("animationend", animationEnd);
 			}
-		}),
+		},
 	);
 
 	return (

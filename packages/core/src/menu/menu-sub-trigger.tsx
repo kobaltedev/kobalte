@@ -21,15 +21,12 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import {
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createUniqueId,
 	omit,
-	on,
 	onCleanup,
 } from "solid-js";
-import { isServer } from "@solidjs/web";
+import { type JSX, type ValidComponent, isServer } from "@solidjs/web";
 
 import { type Direction, useLocale } from "../i18n";
 import {
@@ -73,7 +70,7 @@ export interface MenuSubTriggerRenderProps
 	extends MenuSubTriggerCommonProps,
 		MenuDataSet {
 	role: "menuitem";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"aria-haspopup": "true";
 	"aria-expanded": boolean;
 	"aria-controls": string | undefined;
@@ -304,40 +301,40 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	createEffect(() => {
-		// Not able to register the trigger as a menu item on parent menu means
-		// `Menu.SubTrigger` is not used in the correct place, so throw an error.
-		if (context.registerItemToParentDomCollection == null) {
-			throw new Error(
-				"[kobalte]: `Menu.SubTrigger` must be used within a `Menu.Sub` component",
-			);
-		}
-
-		// Register the item trigger on the parent menu that contains it.
-		const unregister = context.registerItemToParentDomCollection({
-			ref: () => ref,
-			type: "item",
-			key: key(),
+	createEffect(
+		() => ({
 			textValue: mergedProps.textValue ?? ref?.textContent ?? "",
 			disabled: mergedProps.disabled ?? false,
-		});
-
-		onCleanup(unregister);
-	});
-
-	createEffect(
-		on(
-			() => context.parentMenuContext()?.pointerGraceTimeoutId(),
-			(pointerGraceTimer) => {
-				onCleanup(() => {
-					window.clearTimeout(pointerGraceTimer);
-					context.parentMenuContext()?.setPointerGraceIntent(null);
-				});
-			},
-		),
+			key: key(),
+		}),
+		(data) => {
+			// Not able to register the trigger as a menu item on parent menu means
+			// `Menu.SubTrigger` is not used in the correct place, so throw an error.
+			if (context.registerItemToParentDomCollection == null) {
+				throw new Error(
+					"[kobalte]: `Menu.SubTrigger` must be used within a `Menu.Sub` component",
+				);
+			}
+			// Register the item trigger on the parent menu that contains it.
+			return context.registerItemToParentDomCollection({
+				ref: () => ref,
+				type: "item",
+				...data,
+			});
+		},
 	);
 
-	createEffect(() => onCleanup(context.registerTriggerId(mergedProps.id!)));
+	createEffect(
+		() => context.parentMenuContext()?.pointerGraceTimeoutId(),
+		(pointerGraceTimer) => {
+			return () => {
+				window.clearTimeout(pointerGraceTimer);
+				context.parentMenuContext()?.setPointerGraceIntent(null);
+			};
+		},
+	);
+
+	createEffect(() => mergedProps.id!, (id) => context.registerTriggerId(id));
 
 	onCleanup(() => {
 		clearOpenTimeout();
@@ -352,7 +349,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			}, mergedProps.ref)}
 			id={mergedProps.id}
 			role="menuitem"
-			tabIndex={selectableItem.tabIndex()}
+			tabindex={selectableItem.tabIndex()}
 			aria-haspopup="true"
 			aria-expanded={context.isOpen()}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}

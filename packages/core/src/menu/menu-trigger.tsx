@@ -15,14 +15,11 @@ import {
 } from "@kobalte/utils";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	omit,
-	on,
-	onCleanup,
 } from "solid-js";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 
 import * as Button from "../button";
 import { useLocale } from "../i18n/i18n-provider";
@@ -119,13 +116,11 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 
 	// When native link focus the trigger instead of the content when current menu is active.
 	createEffect(
-		on(
-			() => optionalMenubarContext?.value(),
-			(value) => {
-				if (!isNativeLink()) return;
-				if (value === key()) context.triggerRef()?.focus();
-			},
-		),
+		() => optionalMenubarContext?.value(),
+		(value) => {
+			if (!isNativeLink()) return;
+			if (value === key()) context.triggerRef()?.focus();
+		},
 	);
 
 	const handleClick = () => {
@@ -237,7 +232,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			optionalMenubarContext.setValue(key);
 	};
 
-	createEffect(() => onCleanup(context.registerTriggerId(mergedProps.id!)));
+	createEffect(() => mergedProps.id!, (id) => context.registerTriggerId(id));
 
 	return (
 		<Button.Root<

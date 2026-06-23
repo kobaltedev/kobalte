@@ -18,10 +18,9 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
 	Show,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
@@ -123,7 +122,7 @@ export interface ToastRootCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface ToastRootRenderProps extends ToastRootCommonProps {
 	role: "status";
-	tabIndex: 0;
+	tabindex: 0;
 }
 
 export type ToastRootProps<
@@ -194,7 +193,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	};
 
 	const deleteToast = () => {
-		toastStore.remove(mergedProps.toastId);
+		toastStore.remove(mergedProps.toastId!);
 	};
 
 	const startTimer = (duration: number) => {
@@ -407,13 +406,13 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	);
 
 	createEffect(
-		() => toastStore.get(mergedProps.toastId)?.dismiss,
-		(dismiss) => dismiss && close(),
+		() => toastStore.get(mergedProps.toastId!)?.dismiss,
+		(dismiss) => { if (dismiss) close(); },
 	);
 
 	createEffect(
 		() => present(),
-		(isPresent) => !isPresent && deleteToast(),
+		(isPresent) => { if (!isPresent) deleteToast(); },
 	);
 
 	const context: ToastContextValue = {
@@ -434,7 +433,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 					as="li"
 					ref={mergeRefs(setRef, mergedProps.ref)}
 					role="status"
-					tabIndex={0}
+					tabindex={0}
 					style={combineStyle(
 						{
 							animation: isAnimationEnabled() ? undefined : "none",

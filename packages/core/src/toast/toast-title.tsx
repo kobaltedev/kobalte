@@ -1,9 +1,8 @@
 import { mergeDefaultProps } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
-	type ValidComponent,
 	createEffect,
 	omit,
-	onCleanup,
 } from "solid-js";
 
 import {
@@ -42,7 +41,7 @@ export function ToastTitle<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "id");
 
-	createEffect(() => onCleanup(context.registerTitleId(mergedProps.id)));
+	createEffect(() => mergedProps.id, id => context.registerTitleId(id));
 
 	return (
 		<Polymorphic<ToastTitleRenderProps> as="div" id={mergedProps.id} {...others} />

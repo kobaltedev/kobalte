@@ -210,43 +210,56 @@ export function Menu(props: MenuProps) {
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
-	createEffect(() => {
-		const contentEl = contentRef();
+	createEffect(
+		() => contentRef(),
+		(contentEl) => {
+			if (!contentEl || !parentMenuContext) return;
+			const parentUnregister = parentMenuContext.registerNestedMenu(contentEl);
+			return () => parentUnregister();
+		},
+	);
 
-		if (!contentEl || !parentMenuContext) {
-			return;
-		}
+	createEffect(
+		() => [rootContext.value(), contentRef(), nestedMenus()] as const,
+		([rootValue, contentEl, menus]) => {
+			if (parentMenuContext !== undefined) return;
+			optionalMenubarContext?.registerMenu(rootValue!, [contentEl!, ...menus]);
+		},
+	);
 
-		const parentUnregister = parentMenuContext.registerNestedMenu(contentEl);
+	createEffect(
+		() => {
+			if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
+				return undefined;
+			return {
+				menubarValue: optionalMenubarContext.value(),
+				rootValue: rootContext.value()!,
+				trigger: triggerRef(),
+				autoFocus: optionalMenubarContext.autoFocusMenu(),
+			};
+		},
+		(state) => {
+			if (!state) return;
+			if (state.menubarValue === state.rootValue) {
+				state.trigger?.focus();
+				if (state.autoFocus) open(true);
+			} else {
+				close();
+			}
+		},
+	);
 
-		onCleanup(() => {
-			parentUnregister();
-		});
-	});
-
-	createEffect(() => {
-		if (parentMenuContext !== undefined) return;
-		optionalMenubarContext?.registerMenu(rootContext.value()!, [
-			contentRef()!,
-			...nestedMenus(),
-		]);
-	});
-
-	createEffect(() => {
-		if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
-			return;
-		if (optionalMenubarContext.value() === rootContext.value()!) {
-			triggerRef()?.focus();
-			if (optionalMenubarContext.autoFocusMenu()) open(true);
-		} else close();
-	});
-
-	createEffect(() => {
-		if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
-			return;
-		if (disclosureState.isOpen())
-			optionalMenubarContext.setValue(rootContext.value()!);
-	});
+	createEffect(
+		() => {
+			if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
+				return undefined;
+			return { isOpen: disclosureState.isOpen(), rootValue: rootContext.value()! };
+		},
+		(state) => {
+			if (!state) return;
+			if (state.isOpen) optionalMenubarContext!.setValue(state.rootValue);
+		},
+	);
 
 	onCleanup(() => {
 		if (parentMenuContext !== undefined) return;

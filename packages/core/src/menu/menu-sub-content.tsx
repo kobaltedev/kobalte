@@ -15,10 +15,9 @@ import {
 } from "@kobalte/utils";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	omit,
 } from "solid-js";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 
 import { type Direction, useLocale } from "../i18n";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";

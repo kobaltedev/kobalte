@@ -16,13 +16,12 @@ import {
 } from "@kobalte/utils";
 import {
 	type Accessor,
-	type JSX,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
 } from "solid-js";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 
 import {
 	type ElementOf,

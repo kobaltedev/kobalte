@@ -1,12 +1,9 @@
 import { callHandler } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createSignal,
-	on,
-	onCleanup,
 	omit,
 } from "solid-js";
 
@@ -71,7 +68,8 @@ export function NavigationMenuContent<T extends ValidComponent = "ul">(
 	};
 
 	createEffect(
-		on(menubarContext.value, (contextValue) => {
+		() => menubarContext.value(),
+		(contextValue) => {
 			// When no menu open (or trigger) reset
 			if (!contextValue || contextValue.includes("link-trigger-")) {
 				context.setPreviousMenu(undefined);
@@ -101,7 +99,7 @@ export function NavigationMenuContent<T extends ValidComponent = "ul">(
 
 			if (prevIndex > nextIndex) setMotion("to-end");
 			else setMotion("to-start");
-		}),
+		},
 	);
 
 	return (

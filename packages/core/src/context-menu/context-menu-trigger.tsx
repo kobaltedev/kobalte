@@ -7,8 +7,8 @@
  */
 
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type JSX, type ValidComponent, omit, onCleanup } from "solid-js";
-import { isServer } from "@solidjs/web";
+import { type JSX, type ValidComponent, isServer } from "@solidjs/web";
+import { omit, onCleanup } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
 import { type MenuDataSet, useMenuContext } from "../menu/menu-context";

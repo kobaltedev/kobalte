@@ -17,14 +17,13 @@ import {
 import {
 	type Accessor,
 	type Setter,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
-	onCleanup,
 } from "solid-js";
+import { type ValidComponent } from "@solidjs/web";
 import { isServer } from "@solidjs/web";
 
 import {
@@ -203,9 +202,10 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		orientation: () => mergedProps.orientation!,
 	};
 
-	createEffect(() => {
-		if (value() == null) setAutoFocusMenu(false);
-	});
+	createEffect(
+		() => value(),
+		(val) => { if (val == null) setAutoFocusMenu(false); },
+	);
 
 	const interactOutsideRef = interactOutside({
 		onInteractOutside: () => {
@@ -228,19 +228,20 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		}
 	};
 
-	createEffect(() => {
-		if (isServer) return;
-		if (mergedProps.focusOnAlt) window.addEventListener("keydown", keydownHandler);
-		else window.removeEventListener("keydown", keydownHandler);
+	createEffect(
+		() => mergedProps.focusOnAlt,
+		(focusOnAlt) => {
+			if (isServer) return;
+			if (focusOnAlt) window.addEventListener("keydown", keydownHandler);
+			else window.removeEventListener("keydown", keydownHandler);
+			return () => window.removeEventListener("keydown", keydownHandler);
+		},
+	);
 
-		onCleanup(() => {
-			window.removeEventListener("keydown", keydownHandler);
-		});
-	});
-
-	createEffect(() => {
-		if (value() != null) setLastValue(value()!);
-	});
+	createEffect(
+		() => value(),
+		(val) => { if (val != null) setLastValue(val!); },
+	);
 
 	return (
 		<MenubarContext value={context}>

@@ -1,10 +1,8 @@
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	createSignal,
 	omit,
-	onCleanup,
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
@@ -47,24 +45,25 @@ export function ToastProgressFill<T extends ValidComponent = "div">(
 	const [lifeTime, setLifeTime] = createSignal(100);
 	let totalElapsedTime = 0;
 
-	createEffect(() => {
-		if (rootContext.isPaused() || context.isPersistent()) {
-			return;
-		}
+	createEffect(
+		() => [rootContext.isPaused(), context.isPersistent()] as const,
+		([isPaused, isPersistent]) => {
+			if (isPaused || isPersistent) return;
 
-		const intervalId = setInterval(() => {
-			const elapsedTime =
-				new Date().getTime() - context.closeTimerStartTime() + totalElapsedTime;
+			const intervalId = setInterval(() => {
+				const elapsedTime =
+					new Date().getTime() - context.closeTimerStartTime() + totalElapsedTime;
 
-			const life = Math.trunc(100 - (elapsedTime / context.duration()) * 100);
-			setLifeTime(life < 0 ? 0 : life);
-		});
+				const life = Math.trunc(100 - (elapsedTime / context.duration()) * 100);
+				setLifeTime(life < 0 ? 0 : life);
+			});
 
-		onCleanup(() => {
-			totalElapsedTime += new Date().getTime() - context.closeTimerStartTime();
-			clearInterval(intervalId);
-		});
-	});
+			return () => {
+				totalElapsedTime += new Date().getTime() - context.closeTimerStartTime();
+				clearInterval(intervalId);
+			};
+		},
+	);
 
 	return (
 		<Polymorphic<ToastProgressFillRenderProps>

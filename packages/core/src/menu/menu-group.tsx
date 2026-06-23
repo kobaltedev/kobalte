@@ -7,7 +7,8 @@
  */
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { type ValidComponent, createSignal, createUniqueId } from "solid-js";
+import { createSignal, createUniqueId } from "solid-js";
+import { type ValidComponent } from "@solidjs/web";
 
 import {
 	type ElementOf,

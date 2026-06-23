@@ -1,10 +1,9 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { type ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type ValidComponent,
 	createEffect,
 	createSignal,
-	on,
 	omit,
 } from "solid-js";
 
@@ -57,7 +56,8 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 	const horizontal = () => menubarContext.orientation() === "horizontal";
 
 	createEffect(
-		on(menubarContext.value, (value) => {
+		() => menubarContext.value(),
+		(value) => {
 			setTimeout(() => {
 				if (!value || (value as string).includes("link-trigger-")) return;
 				const triggerRef = document.querySelector(
@@ -83,7 +83,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 
 				setOffset(middle - initalArrowPos);
 			});
-		}),
+		},
 	);
 
 	return (

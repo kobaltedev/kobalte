@@ -16,15 +16,14 @@ import {
 } from "@kobalte/utils";
 import {
 	type Component,
-	type JSX,
 	Show,
-	type ValidComponent,
 	createEffect,
 	createUniqueId,
 	onCleanup,
 	omit,
 	onSettled,
 } from "solid-js";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 
 import { combineStyle } from "@solid-primitives/props";
 import {
@@ -108,7 +107,7 @@ export interface MenuContentBaseRenderProps
 		DismissableLayerRenderProps,
 		MenuDataSet {
 	role: "menu";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"aria-labelledby": string | undefined;
 	"data-orientation": Orientation;
 }
@@ -272,7 +271,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	createEffect(() => onCleanup(context.registerContentId(mergedProps.id!)));
+	createEffect(() => mergedProps.id!, (id) => context.registerContentId(id));
 
 	onCleanup(() => context.setContentRef(undefined));
 
@@ -286,7 +285,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			get id() {
 				return mergedProps.id;
 			},
-			get tabIndex() {
+			get tabindex() {
 				return selectableList.tabIndex();
 			},
 			get "aria-labelledby"() {

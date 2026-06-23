@@ -8,11 +8,10 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	type ValidComponent,
 	createEffect,
 	omit,
-	onCleanup,
 } from "solid-js";
+import { type ValidComponent } from "@solidjs/web";
 
 import {
 	type ElementOf,
@@ -55,7 +54,7 @@ export function MenuGroupLabel<T extends ValidComponent = "span">(
 
 	const others = omit(mergedProps, "id");
 
-	createEffect(() => onCleanup(context.registerLabelId(mergedProps.id!)));
+	createEffect(() => mergedProps.id!, (id) => context.registerLabelId(id));
 
 	return (
 		<Polymorphic<MenuGroupLabelRenderProps>

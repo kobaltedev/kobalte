@@ -17,9 +17,8 @@ import {
 	createGenerateId,
 	mergeDefaultProps,
 } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
@@ -104,7 +103,7 @@ export interface ToastRegionCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface ToastRegionRenderProps extends ToastRegionCommonProps {
 	role: "region";
-	tabIndex: -1;
+	tabindex: -1;
 	"aria-label": string;
 	"data-kb-top-layer": string | undefined;
 }
@@ -200,7 +199,7 @@ export function ToastRegion<T extends ValidComponent = "div">(
 			<Polymorphic<ToastRegionRenderProps>
 				as="div"
 				role="region"
-				tabIndex={-1}
+				tabindex={-1}
 				aria-label={ariaLabel()}
 				// In case it has size when empty (e.g. padding), we remove pointer events,
 				// so it doesn't prevent interactions with page elements that it overlays.

@@ -1,14 +1,14 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	JSX,
 	type Setter,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
 	omit,
+	untrack,
 } from "solid-js";
 import { createPresence } from "@solid-primitives/presence";
 import type {
@@ -137,14 +137,13 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	const [rootRef, setRootRef] = createSignal<HTMLElement>();
 
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
-		popperProps.placement ?? others.orientation === "vertical"
-			? "right"
-			: "bottom",
+		untrack(() => popperProps.placement ?? (others.orientation === "vertical" ? "right" : "bottom")),
 	);
 
-	createEffect(() => {
-		setCurrentPlacement(others.orientation === "vertical" ? "right" : "bottom");
-	});
+	createEffect(
+		() => (others.orientation === "vertical" ? "right" : "bottom") as Placement,
+		(placement) => { setCurrentPlacement(placement); },
+	);
 
 	let timeoutId: number | undefined;
 
@@ -153,15 +152,13 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	const [show, setShow] = createSignal(false);
 	const [expanded, setExpanded] = createSignal(false);
 
-	createEffect(() => {
-		if (value() && !value()!.includes("link-trigger-") && autoFocusMenu()) {
-			setExpanded(true);
-			setShow(true);
-		} else {
-			setExpanded(false);
-			setShow(false);
-		}
-	});
+	createEffect(
+		() => !!(value() && !value()!.includes("link-trigger-") && autoFocusMenu()),
+		(isVisible) => {
+			setExpanded(isVisible);
+			setShow(isVisible);
+		},
+	);
 
 	const dataset: Accessor<NavigationMenuDataSet> = createMemo(() => ({
 		"data-expanded": expanded() ? "" : undefined,
@@ -173,11 +170,12 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 		{ transitionDuration: 0 },
 	);
 
-	createEffect(() => {
-		if (!viewportPresent()) {
-			context.setPreviousMenu(undefined);
-		}
-	});
+	createEffect(
+		() => viewportPresent(),
+		(isPresent) => {
+			if (!isPresent) context.setPreviousMenu(undefined);
+		},
+	);
 
 	const context: NavigationMenuContextValue = {
 		dataset,

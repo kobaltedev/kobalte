@@ -8,11 +8,10 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
-	type ValidComponent,
 	createEffect,
 	omit,
-	onCleanup,
 } from "solid-js";
+import { type ValidComponent } from "@solidjs/web";
 
 import {
 	type ElementOf,
@@ -56,7 +55,7 @@ export function MenuItemDescription<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "id");
 
-	createEffect(() => onCleanup(context.registerDescription(mergedProps.id)));
+	createEffect(() => mergedProps.id, (id) => context.registerDescription(id));
 
 	return (
 		<Polymorphic<MenuItemDescriptionRenderProps>

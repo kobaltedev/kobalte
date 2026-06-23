@@ -20,16 +20,12 @@ import {
 	getWindow,
 	mergeRefs,
 } from "@kobalte/utils";
+import { type JSX, type ValidComponent, isServer } from "@solidjs/web";
 import {
 	For,
-	type JSX,
-	type ValidComponent,
 	createEffect,
 	omit,
-	on,
-	onCleanup,
 } from "solid-js";
-import { isServer } from "@solidjs/web";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -50,7 +46,7 @@ export interface ToastListCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface ToastListRenderProps extends ToastListCommonProps {
 	children: JSX.Element;
-	tabIndex: -1;
+	tabindex: -1;
 }
 
 export type ToastListProps<
@@ -109,14 +105,9 @@ export function ToastList<T extends ValidComponent = "ol">(
 	};
 
 	createEffect(
-		on([() => ref, () => context.hotkey()], ([ref, hotkey]) => {
-			if (isServer) {
-				return;
-			}
-
-			if (!ref) {
-				return;
-			}
+		() => context.hotkey(),
+		(hotkey) => {
+			if (isServer || !ref) return;
 
 			const doc = getDocument(ref);
 
@@ -132,31 +123,32 @@ export function ToastList<T extends ValidComponent = "ol">(
 
 			doc.addEventListener("keydown", onKeyDown);
 
-			onCleanup(() => doc.removeEventListener("keydown", onKeyDown));
-		}),
+			return () => doc.removeEventListener("keydown", onKeyDown);
+		},
 	);
 
-	createEffect(() => {
-		if (!context.pauseOnPageIdle()) {
-			return;
-		}
+	createEffect(
+		() => context.pauseOnPageIdle(),
+		(pauseOnPageIdle) => {
+			if (!pauseOnPageIdle) return;
 
-		const win = getWindow(ref);
+			const win = getWindow(ref);
 
-		win.addEventListener("blur", context.pauseAllTimer);
-		win.addEventListener("focus", context.resumeAllTimer);
+			win.addEventListener("blur", context.pauseAllTimer);
+			win.addEventListener("focus", context.resumeAllTimer);
 
-		onCleanup(() => {
-			win.removeEventListener("blur", context.pauseAllTimer);
-			win.removeEventListener("focus", context.resumeAllTimer);
-		});
-	});
+			return () => {
+				win.removeEventListener("blur", context.pauseAllTimer);
+				win.removeEventListener("focus", context.resumeAllTimer);
+			};
+		},
+	);
 
 	return (
 		<Polymorphic<ToastListRenderProps>
 			as="ol"
 			ref={mergeRefs((el) => (ref = el), props.ref)}
-			tabIndex={-1}
+			tabindex={-1}
 			onFocusIn={onFocusIn}
 			onFocusOut={onFocusOut}
 			onPointerMove={onPointerMove}
