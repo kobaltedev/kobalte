@@ -89,10 +89,10 @@ export interface SpinButtonRootRenderProps extends SpinButtonRootCommonProps {
 	"aria-valuetext": string | undefined;
 	"aria-valuemin": number | undefined;
 	"aria-valuemax": number | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
-	"aria-invalid": boolean | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
+	"aria-invalid": "true" | undefined;
 }
 
 export type SpinButtonRootProps<
@@ -219,10 +219,10 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 			aria-valuetext={textValue()}
 			aria-valuemin={mergedProps.minValue}
 			aria-valuemax={mergedProps.maxValue}
-			aria-required={props.required || undefined}
-			aria-disabled={props.disabled || undefined}
-			aria-readonly={props.readOnly || undefined}
-			aria-invalid={mergedProps.validationState === "invalid" || undefined}
+			aria-required={props.required ? "true" : undefined}
+			aria-disabled={props.disabled ? "true" : undefined}
+			aria-readonly={props.readOnly ? "true" : undefined}
+			aria-invalid={mergedProps.validationState === "invalid" ? "true" : undefined}
 			onKeyDown={onKeyDown}
 			onFocus={onFocus}
 			onBlur={onBlur}

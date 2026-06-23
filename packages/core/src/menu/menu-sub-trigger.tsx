@@ -72,9 +72,9 @@ export interface MenuSubTriggerRenderProps
 	role: "menuitem";
 	tabindex: number | undefined;
 	"aria-haspopup": "true";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
-	"aria-disabled": boolean | undefined;
+	"aria-disabled": "true" | undefined;
 	"data-key": string | undefined;
 	"data-highlighted": "" | undefined;
 	"data-disabled": "" | undefined;
@@ -351,9 +351,9 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			role="menuitem"
 			tabindex={selectableItem.tabIndex()}
 			aria-haspopup="true"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
-			aria-disabled={mergedProps.disabled}
+			aria-disabled={mergedProps.disabled ? "true" : undefined}
 			data-key={selectableItem.dataKey()}
 			data-highlighted={isHighlighted() ? "" : undefined}
 			data-disabled={mergedProps.disabled ? "" : undefined}

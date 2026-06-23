@@ -87,6 +87,7 @@ describe("ToggleGroup", () => {
 
 		expect(selectedItem).toHaveAttribute("tabindex", "-1");
 		selectedItem.focus();
+		await Promise.resolve();
 
 		fireEvent.keyDown(selectedItem, {
 			key: "ArrowRight",
@@ -146,6 +147,7 @@ describe("ToggleGroup", () => {
 
 		expect(selectedItem).toHaveAttribute("tabindex", "-1");
 		selectedItem.focus();
+		await Promise.resolve();
 
 		fireEvent.keyDown(selectedItem, {
 			key: "ArrowDown",
@@ -206,6 +208,7 @@ describe("ToggleGroup", () => {
 		const firstItem = toggles[0];
 
 		firstItem.focus();
+		await Promise.resolve();
 
 		expect(toggleGroup).toHaveAttribute("data-orientation", "horizontal");
 

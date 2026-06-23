@@ -50,10 +50,10 @@
 		"@solidjs/web": "2.0.0-beta.14",
 		"@storybook/addon-docs": "^10.4.1",
 		"@testing-library/dom": "9.3.4",
-		"@testing-library/jest-dom": "6.4.2",
+		"@testing-library/jest-dom": "6.9.1",
 		"@testing-library/user-event": "14.5.2",
 		"@types/node": "20.5.4",
-		"@vitest/ui": "^1.5.2",
+		"@vitest/ui": "^2.1.9",
 		"autoprefixer": "10.4.15",
 		"babel-preset-solid": "2.0.0-beta.14",
 		"commitizen": "4.3.0",
@@ -76,7 +76,7 @@
 		"typescript": "5.9.3",
 		"vite": "^6.3.5",
 		"vite-plugin-solid": "3.0.0-next.5",
-		"vitest": "1.3.1"
+		"vitest": "2.1.9"
 	},
 	"pnpm": {
 		"overrides": {
@@ -91,6 +91,9 @@
 			"@solid-primitives/trigger": "link:/Users/ddibiase/Projects/solid-primitives/packages/trigger",
 			"@solid-primitives/rootless": "link:/Users/ddibiase/Projects/solid-primitives/packages/rootless",
 			"@solid-primitives/static-store": "link:/Users/ddibiase/Projects/solid-primitives/packages/static-store"
+		},
+		"patchedDependencies": {
+			"@solidjs/testing-library@0.8.6": "patches/@solidjs__testing-library@0.8.6.patch"
 		}
 	},
 	"packageManager": "pnpm@9.12.3"

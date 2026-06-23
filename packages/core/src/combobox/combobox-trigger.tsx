@@ -41,7 +41,7 @@ export interface ComboboxTriggerRenderProps
 		Button.ButtonRootRenderProps {
 	"aria-label": string | undefined;
 	"aria-haspopup": "listbox";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 }
 
@@ -120,7 +120,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 			disabled={isDisabled()}
 			tabindex={-1}
 			aria-haspopup="listbox"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.listboxId() : undefined}
 			aria-label={context.triggerAriaLabel()}
 			aria-labelledby={ariaLabelledBy()}

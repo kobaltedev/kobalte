@@ -20,7 +20,7 @@ export function createControllableSignal<T>(
 	props: CreateControllableSignalProps<T>,
 ) {
 	// Internal uncontrolled value
-	const [_value, _setValue] = createSignal(props.defaultValue?.());
+	const [_value, _setValue] = createSignal(props.defaultValue?.(), { ownedWrite: true });
 
 	const isControlled = createMemo(() => props.value?.() !== undefined);
 

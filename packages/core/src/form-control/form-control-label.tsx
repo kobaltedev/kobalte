@@ -3,7 +3,7 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit, onCleanup } from "solid-js";
+import { createEffect, createSignal, omit, onCleanup } from "solid-js";
 
 import {
 	type ElementOf,
@@ -42,7 +42,7 @@ export type FormControlLabelProps<
 export function FormControlLabel<T extends ValidComponent = "label">(
 	props: PolymorphicProps<T, FormControlLabelProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
 
 	const context = useFormControlContext();
 
@@ -56,7 +56,7 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 	const others = omit(mergedProps, "ref");
 
 	const tagName = createTagName(
-		() => ref,
+		ref,
 		() => "label",
 	);
 
@@ -68,7 +68,7 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 	return (
 		<Polymorphic<FormControlLabelRenderProps>
 			as="label"
-			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+			ref={mergeRefs(setRef, mergedProps.ref)}
 			for={tagName() === "label" ? context.fieldId() : undefined}
 			{...context.dataset()}
 			{...others}

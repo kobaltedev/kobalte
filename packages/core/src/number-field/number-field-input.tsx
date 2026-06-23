@@ -65,10 +65,10 @@ export interface NumberFieldInputRenderProps extends NumberFieldInputCommonProps
 	"aria-valuetext": string | undefined;
 	"aria-valuemin": number | undefined;
 	"aria-valuemax": number | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
-	"aria-invalid": boolean | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
+	"aria-invalid": "true" | undefined;
 }
 
 export type NumberFieldInputProps<
@@ -149,12 +149,10 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			case "Home":
 				e.preventDefault();
 				context.setValue(context.minValue());
-				context.format();
 				break;
 			case "End":
 				e.preventDefault();
 				context.setValue(context.maxValue());
-				context.format();
 				break;
 		}
 	};
@@ -205,10 +203,10 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			aria-valuetext={textValue()}
 			aria-valuemin={context.minValue()}
 			aria-valuemax={context.maxValue()}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
-			aria-invalid={formControlContext.validationState() === "invalid" || undefined}
+			aria-required={formControlContext.isRequired() ? "true" : undefined}
+			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
+			aria-invalid={formControlContext.validationState() === "invalid" ? "true" : undefined}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}

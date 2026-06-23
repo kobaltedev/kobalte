@@ -28,7 +28,7 @@ export interface DialogTriggerRenderProps
 	extends DialogTriggerCommonProps,
 		Button.ButtonRootRenderProps {
 	"aria-haspopup": "dialog";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 	"data-expanded": string | undefined;
 	"data-closed": string | undefined;
@@ -62,7 +62,7 @@ export function DialogTrigger<T extends ValidComponent = "button">(
 		>
 			ref={mergeRefs(context.setTriggerRef, p.ref)}
 			aria-haspopup="dialog"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			data-expanded={context.isOpen() ? "" : undefined}
 			data-closed={!context.isOpen() ? "" : undefined}

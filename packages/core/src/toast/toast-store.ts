@@ -23,8 +23,8 @@ function update(id: number, toast: ToastConfig) {
 
 function dismiss(id: number) {
 	setState(s => {
-		const toast = s.toasts.find((t) => t.id === id);
-		if (toast) toast.dismiss = true;
+		const index = s.toasts.findIndex((t) => t.id === id);
+		if (index !== -1) s.toasts[index].dismiss = true;
 	});
 }
 

@@ -7,54 +7,36 @@
  */
 
 import { render } from "@solidjs/testing-library";
-import { createEffect } from "solid-js";
+import { createSignal, type Accessor } from "solid-js";
 
 import { createTagName } from "./create-tag-name";
 
 describe("createTagName", () => {
 	it("should use 'tagName' from ref", () => {
-		let tagNameVal: string | undefined;
+		let tagName: Accessor<string | undefined>;
 
 		const TestComponent = () => {
-			let ref: HTMLDivElement | undefined;
-
-			const tagName = createTagName(
-				() => ref,
-				() => "button",
-			);
-
-			createEffect(() => {
-				tagNameVal = tagName();
-			});
-
-			return <div ref={ref} />;
+			const [ref, setRef] = createSignal<HTMLDivElement | undefined>(undefined, { ownedWrite: true });
+			tagName = createTagName(ref, () => "button");
+			return <div ref={setRef} />;
 		};
 
 		render(() => <TestComponent />);
 
-		expect(tagNameVal).toBe("div");
+		expect(tagName!()).toBe("div");
 	});
 
 	it("should use type as 'tagName' when ref is undefined", () => {
-		let tagNameVal: string | undefined;
+		let tagName: Accessor<string | undefined>;
 
 		const TestComponent = () => {
-			let ref: HTMLDivElement | undefined;
-
-			const tagName = createTagName(
-				() => ref,
-				() => "button",
-			);
-
-			createEffect(() => {
-				tagNameVal = tagName();
-			});
-
+			const [ref] = createSignal<HTMLDivElement | undefined>(undefined);
+			tagName = createTagName(ref, () => "button");
 			return <div />;
 		};
 
 		render(() => <TestComponent />);
 
-		expect(tagNameVal).toBe("button");
+		expect(tagName!()).toBe("button");
 	});
 });

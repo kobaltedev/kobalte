@@ -61,10 +61,10 @@ export interface CheckboxInputRenderProps
 	required: boolean | undefined;
 	disabled: boolean | undefined;
 	readonly: boolean | undefined;
-	"aria-invalid": boolean | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
+	"aria-invalid": "true" | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
 }
 
 export type CheckboxInputProps<
@@ -77,7 +77,7 @@ export type CheckboxInputProps<
 export function CheckboxInput<T extends ValidComponent = "input">(
 	props: PolymorphicProps<T, CheckboxInputProps<T>>,
 ) {
-	let ref: HTMLInputElement | undefined;
+	const [ref, setRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
 
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
@@ -137,10 +137,10 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 		() => {
 			setIsInternalChangeEvent(true);
 
-			ref?.dispatchEvent(
+			ref()?.dispatchEvent(
 				new Event("input", { bubbles: true, cancelable: true }),
 			);
-			ref?.dispatchEvent(
+			ref()?.dispatchEvent(
 				new Event("change", { bubbles: true, cancelable: true }),
 			);
 		},
@@ -153,7 +153,7 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 	// Clicking on the input will change its internal `indeterminate` state.
 	// To prevent this, we need to force the input `indeterminate` state to be in sync with our.
 	createEffect(
-		() => [ref, context.indeterminate(), context.checked()] as const,
+		() => [ref(), context.indeterminate(), context.checked()] as const,
 		([elRef, indeterminate]) => {
 			if (elRef) {
 				elRef.indeterminate = indeterminate;
@@ -166,7 +166,7 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 			as="input"
 			ref={mergeRefs((el) => {
 				context.setInputRef(el);
-				ref = el;
+				setRef(el);
 			}, mergedProps.ref)}
 			type="checkbox"
 			id={fieldProps.id()}
@@ -181,11 +181,11 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
 			aria-invalid={
-				formControlContext.validationState() === "invalid" || undefined
+				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired()}
-			aria-disabled={formControlContext.isDisabled()}
-			aria-readonly={formControlContext.isReadOnly()}
+			aria-required={formControlContext.isRequired() ? "true" : undefined}
+			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onChange={onChange}
 			onFocus={onFocus}
 			onBlur={onBlur}

@@ -239,7 +239,7 @@ export function ListboxRoot<
 				tabindex={selectableList.tabIndex()}
 				aria-multiselectable={
 					listState().selectionManager().selectionMode() === "multiple"
-						? true
+						? "true"
 						: undefined
 				}
 				onKeyDown={composeEventHandlers([

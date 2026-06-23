@@ -51,7 +51,7 @@ export function PaginationPrevious<T extends ValidComponent = "button">(
 			>
 				tabindex={isDisabled() || context.page() === 1 ? -1 : undefined}
 				disabled={isDisabled()}
-				aria-disabled={isDisabled() || undefined}
+				aria-disabled={isDisabled() ? "true" : undefined}
 				data-disabled={isDisabled() ? "" : undefined}
 				onClick={composeEventHandlers([props.onClick, onClick])}
 				{...others}

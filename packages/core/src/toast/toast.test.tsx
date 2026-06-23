@@ -56,6 +56,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -79,6 +80,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -102,6 +104,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -121,6 +124,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -140,6 +144,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -161,6 +166,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -184,6 +190,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -213,6 +220,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -242,6 +250,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -265,6 +274,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -288,6 +298,7 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		const toast = getByRole("status");
 
@@ -332,10 +343,12 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		expect(getByRole("status")).toHaveTextContent("Initial");
 
 		fireEvent.click(getByTestId("update-trigger"));
+		await Promise.resolve();
 
 		expect(getByRole("status")).toHaveTextContent("Updated");
 	});
@@ -372,11 +385,13 @@ describe("Toast", () => {
 			));
 
 			fireEvent.click(getByTestId("trigger"));
+			await Promise.resolve();
 
 			expect(getByRole("status")).toHaveTextContent("pending");
 
 			vi.advanceTimersByTime(timeout);
-			await Promise.resolve();
+			await Promise.resolve(); // let .then() callback run
+			await Promise.resolve(); // let toastStore.update flush
 
 			expect(getByRole("status")).toHaveTextContent("fulfilled - data");
 		},
@@ -501,6 +516,7 @@ describe("Toast", () => {
 			));
 
 			fireEvent.click(getByTestId("trigger"));
+			await Promise.resolve();
 
 			const toasts = getAllByRole("status");
 
@@ -539,14 +555,18 @@ describe("Toast", () => {
 			));
 
 			fireEvent.click(getByTestId("trigger"));
+			await Promise.resolve();
 
 			fireEvent.click(getByTestId("dismiss-toast"));
+			await Promise.resolve();
+			await Promise.resolve();
 
 			let toasts =
 				getByTestId("custom-region").querySelectorAll('[role="status"]');
 			expect(toasts.length).toBe(0);
 
 			fireEvent.click(getByTestId("trigger"));
+			await Promise.resolve();
 
 			toasts = getByTestId("custom-region").querySelectorAll('[role="status"]');
 
@@ -589,6 +609,7 @@ describe("Toast", () => {
 			));
 
 			fireEvent.click(getByTestId("trigger"));
+			await Promise.resolve();
 
 			const defaultRegionToasts =
 				getByTestId("default-region").querySelectorAll('[role="status"]');
@@ -622,6 +643,7 @@ describe("Toast", () => {
 				));
 
 				fireEvent.click(getByTestId("trigger"));
+				await Promise.resolve();
 
 				const toast = getByRole("status");
 
@@ -678,6 +700,7 @@ describe("Toast", () => {
 				));
 
 				fireEvent.click(getByTestId("trigger"));
+				await Promise.resolve();
 
 				const toast = getByRole("status");
 

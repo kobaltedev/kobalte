@@ -59,10 +59,10 @@ export interface SwitchInputRenderProps
 	required: boolean | undefined;
 	disabled: boolean | undefined;
 	readonly: boolean | undefined;
-	"aria-invalid": boolean | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
+	"aria-invalid": "true" | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
 }
 
 export type SwitchInputProps<
@@ -131,16 +131,16 @@ export function SwitchInput<T extends ValidComponent = "input">(
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
 			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
-			aria-checked={context.checked()}
+			aria-checked={context.checked() ? "true" : "false"}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
 			aria-invalid={
-				formControlContext.validationState() === "invalid" || undefined
+				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
+			aria-required={formControlContext.isRequired() ? "true" : undefined}
+			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onChange={onChange}
 			onFocus={onFocus}
 			onBlur={onBlur}

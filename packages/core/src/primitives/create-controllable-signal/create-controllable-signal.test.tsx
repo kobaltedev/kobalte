@@ -156,7 +156,7 @@ describe("createControllableSignal", () => {
 			};
 
 			const TestComponentWrapper = (props: any) => {
-				const [state, setState] = createSignal(props.value);
+				const [state, setState] = createSignal(props.value, { ownedWrite: true });
 				return (
 					<>
 						<TestComponent value={state} onChange={onChangeSpy} />

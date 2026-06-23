@@ -248,7 +248,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			id={mergedProps.id}
 			disabled={mergedProps.disabled}
 			aria-haspopup="true"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			data-highlighted={
 				key() !== undefined && optionalMenubarContext?.value() === key()

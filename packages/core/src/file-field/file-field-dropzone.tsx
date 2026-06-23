@@ -32,7 +32,7 @@ export interface FileFieldDropzoneRenderProps
 	"aria-label": "dropzone";
 	role: "button";
 	tabindex: "0";
-	"aria-disabled": boolean | undefined;
+	"aria-disabled": "true" | undefined;
 	"data-dragging": boolean;
 }
 
@@ -115,7 +115,7 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 			aria-label="dropzone"
 			role="button"
 			tabindex="0"
-			aria-disabled={context.disabled()}
+			aria-disabled={context.disabled() ? "true" : undefined}
 			data-dragging={isDragging()}
 			ref={mergeRefs((el: HTMLElement) => context.setDropzoneRef(el), props.ref as (el: HTMLElement) => void)}
 			onClick={composeEventHandlers([props.onClick, onClick])}

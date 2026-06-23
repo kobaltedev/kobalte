@@ -93,10 +93,10 @@ export interface RadioGroupRootRenderProps
 	extends RadioGroupRootCommonProps,
 		FormControlDataSet {
 	role: "radiogroup";
-	"aria-invalid": boolean | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
+	"aria-invalid": "true" | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
 	"aria-orientation": Orientation | undefined;
 }
 
@@ -192,11 +192,11 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 					role="radiogroup"
 					id={access(formControlProps.id)!}
 					aria-invalid={
-						formControlContext.validationState() === "invalid" || undefined
+						formControlContext.validationState() === "invalid" ? "true" : undefined
 					}
-					aria-required={formControlContext.isRequired() || undefined}
-					aria-disabled={formControlContext.isDisabled() || undefined}
-					aria-readonly={formControlContext.isReadOnly() || undefined}
+					aria-required={formControlContext.isRequired() ? "true" : undefined}
+					aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+					aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 					aria-orientation={mergedProps.orientation}
 					aria-labelledby={ariaLabelledBy()}
 					aria-describedby={ariaDescribedBy()}

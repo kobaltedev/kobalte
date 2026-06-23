@@ -255,7 +255,7 @@ describe("Search", () => {
 			const hiddenInput = getByRole("textbox", { hidden: true }); // get the hidden ones
 
 			expect(hiddenInput).toHaveAttribute("tabIndex", "0");
-			expect(hiddenInput).toHaveAttribute("style", "font-size: 16px;");
+			expect(hiddenInput).toHaveAttribute("style", "font-size:16px");
 			expect(hiddenInput.parentElement).toHaveAttribute("aria-hidden", "true");
 
 			hiddenInput.focus();

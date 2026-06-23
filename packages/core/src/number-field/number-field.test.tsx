@@ -624,6 +624,7 @@ describe("NumberField", () => {
 		expect(input.value).toBe("0");
 
 		trigger.click();
+		await Promise.resolve();
 
 		expect(input.value).toBe("4");
 	});
@@ -642,6 +643,7 @@ describe("NumberField", () => {
 		expect(input.value).toBe("4");
 
 		trigger.click();
+		await Promise.resolve();
 
 		expect(input.value).toBe("0");
 	});
@@ -704,6 +706,7 @@ describe("NumberField", () => {
 		const trigger = getByTestId("trigger") as HTMLButtonElement;
 
 		trigger.click();
+		await Promise.resolve();
 
 		expect(input.value).toBe("2");
 	});
@@ -722,6 +725,7 @@ describe("NumberField", () => {
 		const trigger = getByTestId("trigger") as HTMLButtonElement;
 
 		trigger.click();
+		await Promise.resolve();
 
 		expect(input.value).toBe("1");
 	});

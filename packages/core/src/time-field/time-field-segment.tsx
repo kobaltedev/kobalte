@@ -499,7 +499,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			fallback={
 				<Polymorphic
 					as="div"
-					aria-hidden={true}
+					aria-hidden="true"
 					data-separator=""
 					data-type="literal"
 					{...others}

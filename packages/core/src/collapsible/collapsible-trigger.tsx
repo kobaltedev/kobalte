@@ -26,7 +26,7 @@ export interface CollapsibleTriggerCommonProps<
 export interface CollapsibleTriggerRenderProps
 	extends CollapsibleTriggerCommonProps,
 		Button.ButtonRootRenderProps {
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 }
 
@@ -56,7 +56,7 @@ export function CollapsibleTrigger<T extends ValidComponent = "div">(
 				Omit<CollapsibleTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			disabled={context.disabled()}
 			onClick={onClick}

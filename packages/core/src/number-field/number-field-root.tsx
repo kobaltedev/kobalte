@@ -316,7 +316,6 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			}
 
 			context.setValue(newValue);
-			context.format();
 		},
 	};
 

@@ -65,7 +65,7 @@ export interface ToggleButtonRootRenderProps
 	extends ToggleButtonRootCommonProps,
 		Button.ButtonRootRenderProps {
 	children: JSX.Element;
-	"aria-pressed": boolean;
+	"aria-pressed": "true" | "false";
 	"data-pressed": "" | undefined;
 }
 
@@ -102,7 +102,7 @@ export function ToggleButtonRoot<T extends ValidComponent = "button">(
 				Omit<ToggleButtonRootRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-pressed={state.isSelected()}
+			aria-pressed={state.isSelected() ? "true" : "false"}
 			data-pressed={state.isSelected() ? "" : undefined}
 			onClick={onClick}
 			{...others}

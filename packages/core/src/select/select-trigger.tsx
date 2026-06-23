@@ -47,7 +47,7 @@ export interface SelectTriggerRenderProps
 		FormControlDataSet,
 		Button.ButtonRootRenderProps {
 	"aria-haspopup": "listbox";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 }
 
@@ -232,7 +232,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 			id={fieldProps.id()}
 			disabled={isDisabled()}
 			aria-haspopup="listbox"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.listboxId() : undefined}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={ariaLabelledBy()}

@@ -68,8 +68,8 @@ export interface ListboxItemRenderProps
 		ListboxItemDataSet {
 	role: "option";
 	tabindex: number | undefined;
-	"aria-disabled": boolean;
-	"aria-selected": boolean | undefined;
+	"aria-disabled": "true" | "false";
+	"aria-selected": "true" | "false" | undefined;
 	"aria-posinset": number | undefined;
 	"aria-setsize": number | undefined;
 	"data-key": string | undefined;
@@ -128,7 +128,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 			return undefined;
 		}
 
-		return selectableItem.isSelected();
+		return selectableItem.isSelected() ? "true" : "false";
 	};
 
 	// Safari with VoiceOver on macOS misreads options with aria-labelledby or aria-label as simply "text".
@@ -209,7 +209,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="option"
 				tabindex={selectableItem.tabIndex()}
-				aria-disabled={selectableItem.isDisabled()}
+				aria-disabled={selectableItem.isDisabled() ? "true" : "false"}
 				aria-selected={ariaSelected()}
 				aria-label={ariaLabel()}
 				aria-labelledby={ariaLabelledBy()}

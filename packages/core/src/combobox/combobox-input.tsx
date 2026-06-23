@@ -55,10 +55,10 @@ export interface ComboboxInputRenderProps
 	required: boolean | undefined;
 	readonly: boolean | undefined;
 	placeholder: JSX.Element;
-	"aria-invalid": boolean | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
+	"aria-invalid": "true" | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
 	type: "text";
 	role: "combobox";
 	autoComplete: "off";
@@ -66,7 +66,7 @@ export interface ComboboxInputRenderProps
 	spellCheck: "false";
 	"aria-haspopup": "listbox";
 	"aria-autocomplete": "list";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 	"aria-activedescendant": string | undefined;
 }
@@ -295,18 +295,18 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 			spellCheck="false"
 			aria-haspopup="listbox"
 			aria-autocomplete="list"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.listboxId() : undefined}
 			aria-activedescendant={context.activeDescendant()}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
 			aria-invalid={
-				formControlContext.validationState() === "invalid" || undefined
+				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
+			aria-required={formControlContext.isRequired() ? "true" : undefined}
+			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onClick={onClick}
 			onInput={onInput}
 			onKeyDown={onKeyDown}

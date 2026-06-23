@@ -49,7 +49,7 @@ export function PaginationNext<T extends ValidComponent = "button">(
 					isDisabled() || context.page() === context.count() ? -1 : undefined
 				}
 				disabled={isDisabled()}
-				aria-disabled={isDisabled() || undefined}
+				aria-disabled={isDisabled() ? "true" : undefined}
 				data-disabled={isDisabled() ? "" : undefined}
 				onClick={composeEventHandlers([props.onClick, onClick])}
 				{...others}

@@ -14,7 +14,7 @@
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { type ValidComponent } from "@solidjs/web";
-import { createMemo, omit } from "solid-js";
+import { createMemo, createSignal, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -36,7 +36,7 @@ export interface ButtonRootCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface ButtonRootRenderProps extends ButtonRootCommonProps {
 	role: "menuitem" | "button" | undefined;
-	"aria-disabled": boolean | undefined;
+	"aria-disabled": "true" | undefined;
 	"data-disabled": string | undefined;
 }
 
@@ -52,7 +52,7 @@ export type ButtonRootProps<
 export function ButtonRoot<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, ButtonRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
 
 	const mergedProps = mergeDefaultProps(
 		{ type: "button" },
@@ -62,7 +62,7 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 	const others = omit(mergedProps, "ref", "type", "disabled");
 
 	const tagName = createTagName(
-		() => ref,
+		ref,
 		() => "button",
 	);
 
@@ -81,13 +81,13 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 	});
 
 	const isNativeLink = createMemo(() => {
-		return tagName() === "a" && ref?.getAttribute("href") != null;
+		return tagName() === "a" && ref()?.getAttribute("href") != null;
 	});
 
 	return (
 		<Polymorphic<ButtonRootRenderProps>
 			as="button"
-			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+			ref={mergeRefs(setRef, mergedProps.ref)}
 			type={isNativeButton() || isNativeInput() ? mergedProps.type : undefined}
 			role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
 			tabindex={
@@ -98,7 +98,7 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 			}
 			aria-disabled={
 				!isNativeButton() && !isNativeInput() && mergedProps.disabled
-					? true
+					? "true"
 					: undefined
 			}
 			data-disabled={mergedProps.disabled ? "" : undefined}

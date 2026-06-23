@@ -12,7 +12,6 @@ import {
 	For,
 	Show,
 	createEffect,
-	createSignal,
 	omit,
 } from "solid-js";
 
@@ -60,7 +59,7 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 
 	const formControlContext = useFormControlContext();
 
-	const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
+	let isInternalChangeEvent = false;
 
 	const renderOption = (key: string) => {
 		const item = props.collection.getItem(key);
@@ -82,7 +81,7 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 				return;
 			}
 
-			setIsInternalChangeEvent(true);
+			isInternalChangeEvent = true;
 
 			ref?.dispatchEvent(
 				new Event("input", { bubbles: true, cancelable: true }),
@@ -121,14 +120,14 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 
 					// Prevent internally fired change event to update the selection
 					// which would result in an infinite loop.
-					if (!isInternalChangeEvent()) {
+					if (!isInternalChangeEvent) {
 						// enable form autofill
 						props.selectionManager.setSelectedKeys(
 							new Set([(e.target as HTMLSelectElement).value]),
 						);
 					}
 
-					setIsInternalChangeEvent(false);
+					isInternalChangeEvent = false;
 				}}
 				{...others}
 			>

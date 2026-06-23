@@ -85,8 +85,8 @@ export interface MenuItemBaseRenderProps
 	extends MenuItemBaseCommonProps,
 		MenuItemDataSet {
 	tabindex: number | undefined;
-	"aria-checked": boolean | "mixed" | undefined;
-	"aria-disabled": boolean | undefined;
+	"aria-checked": "true" | "false" | "mixed" | undefined;
+	"aria-disabled": "true" | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	"data-key": string | undefined;
@@ -247,7 +247,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			return undefined;
 		}
 
-		return mergedProps.checked;
+		return mergedProps.checked ? "true" : "false";
 	});
 
 	const dataset: Accessor<MenuItemDataSet> = createMemo(() => ({
@@ -273,7 +273,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				tabindex={selectableItem.tabIndex()}
 				aria-checked={ariaChecked()}
-				aria-disabled={mergedProps.disabled}
+				aria-disabled={mergedProps.disabled ? "true" : undefined}
 				aria-labelledby={labelId()}
 				aria-describedby={descriptionId()}
 				data-key={selectableItem.dataKey()}

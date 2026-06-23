@@ -32,7 +32,7 @@ export interface PopoverTriggerRenderProps
 		Button.ButtonRootRenderProps,
 		PopoverDataSet {
 	"aria-haspopup": "dialog";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 }
 
@@ -73,7 +73,7 @@ export function PopoverTrigger<T extends ValidComponent = "button">(
 		>
 			ref={mergeRefs(context.setTriggerRef, p.ref)}
 			aria-haspopup="dialog"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			onPointerDown={onPointerDown}
 			onClick={onClick}

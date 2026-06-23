@@ -43,10 +43,10 @@ export interface TextFieldInputRenderProps
 	required: boolean | undefined;
 	disabled: boolean | undefined;
 	readonly: boolean | undefined;
-	"aria-invalid": boolean | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
+	"aria-invalid": "true" | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
 }
 
 export type TextFieldInputProps<
@@ -90,11 +90,11 @@ export function TextFieldInputBase<T extends ValidComponent = "input">(
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
 			aria-invalid={
-				formControlContext.validationState() === "invalid" || undefined
+				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
+			aria-required={formControlContext.isRequired() ? "true" : undefined}
+			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onInput={composeEventHandlers([mergedProps.onInput, context.onInput as JSX.EventHandlerUnion<HTMLElement, InputEvent>])}
 			{...formControlContext.dataset()}
 			{...others}
