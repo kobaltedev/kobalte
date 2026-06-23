@@ -20,7 +20,7 @@ import { MenubarRoot } from "../menubar/menubar-root";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper, type PopperRootOptions } from "../popper";
 import type { Placement } from "../popper/utils";
-import { createControllableSignal } from "../primitives/create-controllable-signal";
+import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import {
 	NavigationMenuContext,
 	type NavigationMenuContextValue,

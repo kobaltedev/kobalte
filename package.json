@@ -58,7 +58,7 @@
 		"babel-preset-solid": "2.0.0-beta.14",
 		"commitizen": "4.3.0",
 		"inquirer": "8.2.5",
-		"jsdom": "19.0.0",
+		"jsdom": "25.0.1",
 		"postcss": "8.4.28",
 		"prettier": "4.0.0-alpha.10",
 		"prettier-plugin-tailwindcss": "0.5.3",
@@ -80,7 +80,8 @@
 	},
 	"pnpm": {
 		"overrides": {
-			"@solid-primitives/utils": "link:/Users/ddibiase/Projects/solid-primitives/packages/utils",
+			"@solid-primitives/controlled-signal": "link:/Users/ddibiase/Projects/solid-primitives/packages/controlled-signal",
+		  "@solid-primitives/utils": "link:/Users/ddibiase/Projects/solid-primitives/packages/utils",
 			"@solid-primitives/event-listener": "link:/Users/ddibiase/Projects/solid-primitives/packages/event-listener",
 			"@solid-primitives/keyed": "link:/Users/ddibiase/Projects/solid-primitives/packages/keyed",
 			"@solid-primitives/map": "link:/Users/ddibiase/Projects/solid-primitives/packages/map",

@@ -1,7 +1,7 @@
 import { type MaybeAccessor, access } from "@kobalte/utils";
 import type { Accessor } from "solid-js";
 
-import { createControllableBooleanSignal } from "../create-controllable-signal";
+import { createControllableBooleanSignal } from "@solid-primitives/controlled-signal";
 
 export interface CreateDisclosureStateProps {
 	/** The value to be used, in controlled mode. */

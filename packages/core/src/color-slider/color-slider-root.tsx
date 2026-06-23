@@ -16,7 +16,7 @@ import {
 	type ColorSpace,
 } from "@solid-primitives/utils/colors";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createControllableSignal } from "../primitives/create-controllable-signal";
+import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import * as Slider from "../slider";
 import {
 	ColorSliderContext,
