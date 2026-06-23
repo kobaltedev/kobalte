@@ -6,14 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/i18n/src/context.tsx
  */
 
-import { type Accessor, type JSX, createContext, useContext } from "solid-js";
+import { type Accessor, type Element, createContext, useContext } from "solid-js";
 
 import { createDefaultLocale, getDefaultLocale } from "./create-default-locale";
 import { type Direction, getReadingDirection } from "./utils";
 
 interface I18nProviderProps {
 	/** Contents that should have the locale applied. */
-	children?: JSX.Element;
+	children?: Element;
 
 	/** The locale to apply to the children. */
 	locale?: string;

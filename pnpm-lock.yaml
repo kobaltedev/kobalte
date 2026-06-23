@@ -259,6 +259,9 @@ importers:
       '@solid-primitives/focus':
         specifier: link:../../../solid-primitives/packages/focus
         version: link:../../../solid-primitives/packages/focus
+      '@solid-primitives/i18n':
+        specifier: link:../../../solid-primitives/packages/i18n
+        version: link:../../../solid-primitives/packages/i18n
       '@solid-primitives/interaction':
         specifier: link:../../../solid-primitives/packages/interaction
         version: link:../../../solid-primitives/packages/interaction
@@ -9239,7 +9242,7 @@ snapshots:
       '@types/node': 20.5.1
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@5.9.3)
-      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.9.3))(typescript@5.9.3)
+      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@20.5.4)(typescript@5.9.3))(typescript@5.9.3)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -11772,7 +11775,7 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.9.3))(typescript@5.9.3):
+  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@20.5.4)(typescript@5.9.3))(typescript@5.9.3):
     dependencies:
       '@types/node': 20.5.1
       cosmiconfig: 8.3.6(typescript@5.9.3)
@@ -14642,7 +14645,7 @@ snapshots:
       yaml: 2.4.2
     optionalDependencies:
       postcss: 8.4.28
-      ts-node: 10.9.2(@types/node@20.5.4)(typescript@5.9.3)
+      ts-node: 10.9.2(@types/node@20.5.1)(typescript@5.9.3)
 
   postcss-load-config@4.0.2(postcss@8.5.15)(ts-node@10.9.2(@types/node@20.5.4)(typescript@5.9.3)):
     dependencies:
