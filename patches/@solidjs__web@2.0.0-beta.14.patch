@@ -1,0 +1,46 @@
+diff --git a/dist/dev.js b/dist/dev.js
+index 87c21afd0f850673ad8c3a42249ceb2c3c71e5e0..701294a0e5055eb2c2902e053c16c65ef083bce1 100644
+--- a/dist/dev.js
++++ b/dist/dev.js
+@@ -896,7 +896,8 @@ function Portal(props) {
+   const treeMarker = document.createTextNode(""),
+     startMarker = document.createTextNode(""),
+     endMarker = document.createTextNode(""),
+-    mount = () => createElementProxy(props.mount || document.body, treeMarker),
++    mountTarget = () => props.mount || document.body,
++    mount = () => createElementProxy(mountTarget(), treeMarker),
+     content = createMemo(() => [startMarker, props.children]);
+   createRenderEffect(() => [mount(), content()], ([m, c]) => {
+     m.appendChild(endMarker);
+@@ -912,7 +913,7 @@ function Portal(props) {
+   });
+   createEffect(mount, m => {
+     const ownerRoot = getDelegatedRoot(treeMarker);
+-    if (!ownerRoot || ownerRoot.contains(m)) return;
++    if (!ownerRoot || ownerRoot.contains(mountTarget())) return;
+     registerDelegatedContainer(m, ownerRoot);
+     return () => unregisterDelegatedContainer(m, ownerRoot);
+   });
+diff --git a/dist/web.js b/dist/web.js
+index 7b14f53019c28e4e9b9f5b3ec49dce5d142be737..ed77caf09687b729dd55dc13a152b578c02255ac 100644
+--- a/dist/web.js
++++ b/dist/web.js
+@@ -837,7 +837,8 @@ function Portal(props) {
+   const treeMarker = document.createTextNode(""),
+     startMarker = document.createTextNode(""),
+     endMarker = document.createTextNode(""),
+-    mount = () => createElementProxy(props.mount || document.body, treeMarker),
++    mountTarget = () => props.mount || document.body,
++    mount = () => createElementProxy(mountTarget(), treeMarker),
+     content = createMemo(() => [startMarker, props.children]);
+   createRenderEffect(() => [mount(), content()], ([m, c]) => {
+     m.appendChild(endMarker);
+@@ -853,7 +854,7 @@ function Portal(props) {
+   });
+   createEffect(mount, m => {
+     const ownerRoot = getDelegatedRoot(treeMarker);
+-    if (!ownerRoot || ownerRoot.contains(m)) return;
++    if (!ownerRoot || ownerRoot.contains(mountTarget())) return;
+     registerDelegatedContainer(m, ownerRoot);
+     return () => unregisterDelegatedContainer(m, ownerRoot);
+   });

@@ -96,7 +96,8 @@
 			"@solid-primitives/static-store": "link:/Users/ddibiase/Projects/solid-primitives/packages/static-store"
 		},
 		"patchedDependencies": {
-			"@solidjs/testing-library@1.0.0-beta.1": "patches/@solidjs__testing-library@1.0.0-beta.1.patch"
+			"@solidjs/testing-library@1.0.0-beta.1": "patches/@solidjs__testing-library@1.0.0-beta.1.patch",
+			"@solidjs/web@2.0.0-beta.14": "patches/@solidjs__web@2.0.0-beta.14.patch"
 		}
 	},
 	"packageManager": "pnpm@9.12.3"

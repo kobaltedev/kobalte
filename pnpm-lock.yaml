@@ -23,6 +23,9 @@ patchedDependencies:
   '@solidjs/testing-library@1.0.0-beta.1':
     hash: duwt2qii7pyyjj6ksoajwcs7ki
     path: patches/@solidjs__testing-library@1.0.0-beta.1.patch
+  '@solidjs/web@2.0.0-beta.14':
+    hash: ckg7mz7bxzxyii3olrimfh76vi
+    path: patches/@solidjs__web@2.0.0-beta.14.patch
 
 importers:
 
@@ -54,7 +57,7 @@ importers:
         version: 1.0.0-beta.1(patch_hash=duwt2qii7pyyjj6ksoajwcs7ki)(solid-js@2.0.0-beta.14)
       '@solidjs/web':
         specifier: 2.0.0-beta.14
-        version: 2.0.0-beta.14(solid-js@2.0.0-beta.14)
+        version: 2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14)
       '@storybook/addon-docs':
         specifier: ^10.4.1
         version: 10.4.6(@types/react@19.2.17)(esbuild@0.27.7)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2))
@@ -120,7 +123,7 @@ importers:
         version: 10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       storybook-solidjs-vite:
         specifier: ^10.1.0
-        version: 10.5.2(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(esbuild@0.27.7)(rollup@4.62.2)(solid-js@2.0.0-beta.14)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite-plugin-solid@3.0.0-next.5(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.9.1)(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2)))(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2))
+        version: 10.5.2(@solidjs/web@2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14))(esbuild@0.27.7)(rollup@4.62.2)(solid-js@2.0.0-beta.14)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite-plugin-solid@3.0.0-next.5(@solidjs/web@2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.9.1)(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2)))(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2))
       tailwindcss:
         specifier: ^4.3.1
         version: 4.3.1
@@ -138,7 +141,7 @@ importers:
         version: 6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2)
       vite-plugin-solid:
         specifier: 3.0.0-next.5
-        version: 3.0.0-next.5(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.9.1)(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2))
+        version: 3.0.0-next.5(@solidjs/web@2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.9.1)(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2))
       vitest:
         specifier: 2.1.9
         version: 2.1.9(@types/node@20.5.4)(@vitest/ui@2.1.9)(jsdom@25.0.1)(lightningcss@1.32.0)(terser@5.31.0)
@@ -301,7 +304,7 @@ importers:
         version: link:../../../solid-primitives/packages/utils
       '@solidjs/web':
         specifier: ^2.0.0-beta.14
-        version: 2.0.0-beta.14(solid-js@2.0.0-beta.14)
+        version: 2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14)
       solid-js:
         specifier: ^2.0.0-beta.14
         version: 2.0.0-beta.14
@@ -359,7 +362,7 @@ importers:
         version: link:../../../solid-primitives/packages/utils
       '@solidjs/web':
         specifier: ^2.0.0-beta.14
-        version: 2.0.0-beta.14(solid-js@2.0.0-beta.14)
+        version: 2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14)
       solid-js:
         specifier: ^2.0.0-beta.14
         version: 2.0.0-beta.14
@@ -10910,7 +10913,7 @@ snapshots:
       '@testing-library/dom': 10.4.1
       solid-js: 2.0.0-beta.14
 
-  '@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14)':
+  '@solidjs/web@2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14)':
     dependencies:
       seroval: 1.5.4
       seroval-plugins: 1.5.4(seroval@1.5.4)
@@ -15822,7 +15825,7 @@ snapshots:
     dependencies:
       internal-slot: 1.0.7
 
-  storybook-solidjs-vite@10.5.2(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(esbuild@0.27.7)(rollup@4.62.2)(solid-js@2.0.0-beta.14)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite-plugin-solid@3.0.0-next.5(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.9.1)(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2)))(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2)):
+  storybook-solidjs-vite@10.5.2(@solidjs/web@2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14))(esbuild@0.27.7)(rollup@4.62.2)(solid-js@2.0.0-beta.14)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(typescript@6.0.3)(vite-plugin-solid@3.0.0-next.5(@solidjs/web@2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.9.1)(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2)))(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2)):
     dependencies:
       '@storybook/builder-vite': 10.4.4(esbuild@0.27.7)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2))
       '@storybook/global': 5.0.0
@@ -15832,9 +15835,9 @@ snapshots:
       solid-js: 2.0.0-beta.14
       storybook: 10.4.6(@testing-library/dom@9.3.4)(@types/react@19.2.17)(prettier@4.0.0-alpha.10)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       vite: 6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2)
-      vite-plugin-solid: 3.0.0-next.5(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.9.1)(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2))
+      vite-plugin-solid: 3.0.0-next.5(@solidjs/web@2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.9.1)(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2))
     optionalDependencies:
-      '@solidjs/web': 2.0.0-beta.14(solid-js@2.0.0-beta.14)
+      '@solidjs/web': 2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14)
       typescript: 6.0.3
     transitivePeerDependencies:
       - esbuild
@@ -16720,10 +16723,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-solid@3.0.0-next.5(@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.9.1)(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2)):
+  vite-plugin-solid@3.0.0-next.5(@solidjs/web@2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14))(@testing-library/jest-dom@6.9.1)(solid-js@2.0.0-beta.14)(vite@6.4.3(@types/node@20.5.4)(jiti@2.7.0)(lightningcss@1.32.0)(terser@5.31.0)(yaml@2.4.2)):
     dependencies:
       '@babel/core': 7.24.6
-      '@solidjs/web': 2.0.0-beta.14(solid-js@2.0.0-beta.14)
+      '@solidjs/web': 2.0.0-beta.14(patch_hash=ckg7mz7bxzxyii3olrimfh76vi)(solid-js@2.0.0-beta.14)
       '@types/babel__core': 7.20.5
       babel-preset-solid: 2.0.0-beta.14(@babel/core@7.24.6)(solid-js@2.0.0-beta.14)
       merge-anything: 5.1.7
