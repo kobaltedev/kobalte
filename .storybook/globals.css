@@ -1,3 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@source "./.storybook/**/*.{ts,tsx}";
+@source "./packages/core/src/**/*.{ts,tsx}";
