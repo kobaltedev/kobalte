@@ -187,9 +187,10 @@ export function DialogContent<T extends ValidComponent = "div">(
 	};
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
+	// Use context.contentRef (a signal) so the effect re-runs when the element mounts.
 	createHideOutside({
 		disabled: () => !(context.isOpen() && context.modal()),
-		targets: () => (ref ? [ref] : []),
+		targets: () => { const el = context.contentRef(); return el ? [el] : []; },
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 

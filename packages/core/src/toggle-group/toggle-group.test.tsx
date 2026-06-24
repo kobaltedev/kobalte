@@ -1,20 +1,23 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, within } from "@solidjs/testing-library";
+import { cleanup, fireEvent, render, within } from "@solidjs/testing-library";
 import { vi } from "vitest";
 
 import userEvent from "@testing-library/user-event";
 import * as ToggleGroup from ".";
 
 describe("ToggleGroup", () => {
-	const user = userEvent.setup({ delay: null });
+	let user: ReturnType<typeof userEvent.setup>;
 
 	beforeEach(() => {
 		vi.useFakeTimers();
+		user = userEvent.setup({ delay: null });
 	});
 
 	afterEach(() => {
+		cleanup();
 		vi.clearAllMocks();
 		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	afterAll(() => {

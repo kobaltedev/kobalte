@@ -42,6 +42,7 @@ describe("Search", () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	it("debounce", () => {

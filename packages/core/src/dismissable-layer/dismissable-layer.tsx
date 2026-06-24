@@ -17,6 +17,7 @@ import { type ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createEffect,
+	createMemo,
 	omit,
 	onSettled,
 } from "solid-js";
@@ -104,6 +105,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 
 	const parentContext = useOptionalDismissableLayerContext();
 	const others = omit(props as DismissableLayerProps, "ref", "disableOutsidePointerEvents", "excludedElements", "onEscapeKeyDown", "onPointerDownOutside", "onFocusOutside", "onInteractOutside", "onDismiss", "bypassTopMostLayerCheck");
+	const isPointerBlocking = createMemo(() => props.disableOutsidePointerEvents);
 	const nestedLayers = new Set<Element>([]);
 
 	const registerNestedLayer = (element: Element) => {
@@ -179,7 +181,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 
 		layerStack.addLayer({
 			node: ref,
-			isPointerBlocking: props.disableOutsidePointerEvents,
+			isPointerBlocking: isPointerBlocking(),
 			dismiss: props.onDismiss,
 		});
 
@@ -206,7 +208,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	});
 
 	createEffect(
-		() => ({ ref, disabled: props.disableOutsidePointerEvents }),
+		() => ({ ref, disabled: isPointerBlocking() }),
 		({ ref, disabled: disableOutsidePointerEvents }) => {
 			if (!ref) return;
 
