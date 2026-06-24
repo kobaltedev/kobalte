@@ -7,7 +7,7 @@
  */
 
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
-import type { ComponentProps } from "@solidjs/web";
+import type { ComponentProps, JSX } from "@solidjs/web";
 import {
 	For,
 	Show,
@@ -107,7 +107,7 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 				onFocus={() => props.focusTrigger()}
 			/>
 			<select
-				ref={mergeRefs((el) => (ref = el), props.ref)}
+				ref={mergeRefs((el) => (ref = el), props.ref as any)}
 				tabindex={-1}
 				multiple={props.isMultiple}
 				name={formControlContext.name()}
@@ -116,7 +116,7 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 				size={props.collection.getSize()}
 				value={props.selectionManager.firstSelectedKey() ?? ""}
 				onChange={(e) => {
-					callHandler(e, props.onChange);
+					callHandler(e as Event & { currentTarget: HTMLSelectElement; target: Element }, props.onChange as JSX.EventHandlerUnion<HTMLSelectElement, Event> | undefined);
 
 					// Prevent internally fired change event to update the selection
 					// which would result in an infinite loop.

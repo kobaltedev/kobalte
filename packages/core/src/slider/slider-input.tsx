@@ -41,14 +41,14 @@ export function SliderInput(props: SliderInputProps) {
 	const formControlFieldProps = omit(mergedProps, "style", "onChange");
 	const others = omit(mergedProps, "style", "onChange", ...FORM_CONTROL_FIELD_PROP_NAMES);
 
-	const { fieldProps } = createFormControlField(formControlFieldProps);
+	const { fieldProps } = createFormControlField(formControlFieldProps as any);
 
 	const [valueText, setValueText] = createSignal("");
 
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e, mergedProps.onChange);
+		callHandler(e as Event & { currentTarget: HTMLInputElement; target: Element }, mergedProps.onChange as JSX.EventHandlerUnion<HTMLInputElement, Event> | undefined);
 
 		const target = e.target as HTMLInputElement;
 
@@ -64,7 +64,7 @@ export function SliderInput(props: SliderInputProps) {
 
 	createEffect(
 		() => thumb.index() === -1 ? "" : context.state.getThumbValueLabel(thumb.index()),
-		(value) => setValueText(value),
+		(value) => { setValueText(value); },
 	);
 
 	return (

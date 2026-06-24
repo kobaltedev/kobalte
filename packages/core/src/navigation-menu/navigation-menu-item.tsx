@@ -1,4 +1,4 @@
-import type { ValidComponent } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
 import type { PolymorphicProps } from "../polymorphic";
 
 import { MenuItem, type MenuItemProps } from "../menu/menu-item";

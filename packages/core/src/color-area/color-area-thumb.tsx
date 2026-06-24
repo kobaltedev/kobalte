@@ -63,7 +63,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerDown);
+		callHandler(e, props.onPointerDown as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
 
 		const target = e.currentTarget as HTMLElement;
 

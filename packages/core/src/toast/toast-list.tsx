@@ -68,7 +68,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	const others = omit(props as ToastListProps, "ref", "onFocusIn", "onFocusOut", "onPointerMove", "onPointerLeave");
 
 	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, props.onFocusIn);
+		callHandler(e, props.onFocusIn as JSX.EventHandlerUnion<HTMLElement, FocusEvent> | undefined);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
 			context.pauseAllTimer();
@@ -76,7 +76,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	};
 
 	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, props.onFocusOut);
+		callHandler(e, props.onFocusOut as JSX.EventHandlerUnion<HTMLElement, FocusEvent> | undefined);
 
 		// The newly focused element isn't inside the toast list.
 		if (!contains(ref, e.relatedTarget as HTMLElement)) {
@@ -87,7 +87,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerMove);
+		callHandler(e, props.onPointerMove as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
 			context.pauseAllTimer();
@@ -97,7 +97,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerLeave);
+		callHandler(e, props.onPointerLeave as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
 
 		// The current active element isn't inside the toast list.
 		if (!contains(ref, getDocument(ref).activeElement)) {
@@ -148,7 +148,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	return (
 		<Polymorphic<ToastListRenderProps>
 			as="ol"
-			ref={mergeRefs((el) => (ref = el), props.ref)}
+			ref={mergeRefs((el) => (ref = el), props.ref as any)}
 			tabindex={-1}
 			onFocusIn={onFocusIn}
 			onFocusOut={onFocusOut}

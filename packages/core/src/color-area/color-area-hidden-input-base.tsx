@@ -42,7 +42,7 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 	const formControlFieldProps = omit(mergedProps, "style", "orientation", "onChange", "onFocus", "onBlur");
 	const others = omit(mergedProps, "style", "orientation", "onChange", "onFocus", "onBlur", ...FORM_CONTROL_FIELD_PROP_NAMES);
 
-	const { fieldProps } = createFormControlField(formControlFieldProps);
+	const { fieldProps } = createFormControlField(formControlFieldProps as any);
 
 	const isVertical = () => mergedProps.orientation === "vertical";
 
@@ -55,7 +55,7 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e, mergedProps.onChange);
+		callHandler(e as Event & { currentTarget: HTMLInputElement; target: Element }, mergedProps.onChange as JSX.EventHandlerUnion<HTMLInputElement, Event> | undefined);
 		const target = e.target as HTMLInputElement;
 
 		isVertical()

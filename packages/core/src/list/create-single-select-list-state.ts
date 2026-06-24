@@ -65,7 +65,7 @@ export function createSingleSelectListState(
 		allowDuplicateSelectionEvents: true,
 		selectedKeys,
 		onSelectionChange: (keys: Set<string>) => {
-			const key = (keys as Set<string>).values().next().value;
+			const key = (keys as Set<string>).values().next().value as string;
 
 			// Always fire onSelectionChange, even if the key is the same
 			// as the current key (createControllableSignal does not).

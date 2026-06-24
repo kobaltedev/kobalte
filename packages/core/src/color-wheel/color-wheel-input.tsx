@@ -32,12 +32,12 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 	const formControlFieldProps = omit(mergedProps, "style", "onChange");
 	const others = omit(mergedProps, "style", "onChange", ...FORM_CONTROL_FIELD_PROP_NAMES);
 
-	const { fieldProps } = createFormControlField(formControlFieldProps);
+	const { fieldProps } = createFormControlField(formControlFieldProps as any);
 
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e, mergedProps.onChange);
+		callHandler(e as Event & { currentTarget: HTMLInputElement; target: Element }, mergedProps.onChange as JSX.EventHandlerUnion<HTMLInputElement, Event> | undefined);
 
 		const target = e.target as HTMLInputElement;
 

@@ -1,7 +1,6 @@
-import type { ComponentProps } from "@solidjs/web";
-import { ColorAreaHiddenInputBase } from "./color-area-hidden-input-base";
+import { type ColorAreaHiddenInputBaseProps, ColorAreaHiddenInputBase } from "./color-area-hidden-input-base";
 
-export type ColorAreaHiddenInputXProps = ComponentProps<"input">;
+export type ColorAreaHiddenInputXProps = ColorAreaHiddenInputBaseProps;
 
 export function ColorAreaHiddenInputX(props: ColorAreaHiddenInputXProps) {
 	return <ColorAreaHiddenInputBase {...props} />;

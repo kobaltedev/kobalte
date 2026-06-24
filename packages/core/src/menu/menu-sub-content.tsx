@@ -21,7 +21,7 @@ import { type JSX, type ValidComponent } from "@solidjs/web";
 
 import { type Direction, useLocale } from "../i18n";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import type { FocusOutsideEvent } from "../primitives";
+import type { FocusOutsideEvent } from "@solid-primitives/interaction";
 import {
 	MenuContentBase,
 	type MenuContentBaseCommonProps,
@@ -96,7 +96,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, props.onKeyDown);
+		callHandler(e, props.onKeyDown as JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> | undefined);
 
 		// Submenu key events bubble through portals. We only care about keys in this menu.
 		const isKeyDownInside = contains(e.currentTarget, e.target);

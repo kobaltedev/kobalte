@@ -54,7 +54,7 @@ export function NavigationMenuContent<T extends ValidComponent = "ul">(
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerEnter);
+		callHandler(e, props.onPointerEnter as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
 
 		context.cancelLeaveTimer();
 	};
@@ -62,7 +62,7 @@ export function NavigationMenuContent<T extends ValidComponent = "ul">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerLeave);
+		callHandler(e, props.onPointerLeave as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
 
 		context.startLeaveTimer();
 	};

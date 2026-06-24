@@ -415,7 +415,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 						as="div"
 						ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 						role="group"
-						id={access(mergedProps.id)}
+						id={access(mergedProps.id)!}
 						{...dataset()}
 						{...others}
 					/>

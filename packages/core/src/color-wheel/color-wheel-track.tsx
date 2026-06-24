@@ -60,7 +60,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerDown);
+		callHandler(e, props.onPointerDown as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
 
 		const target = e.target as HTMLElement;
 		target.setPointerCapture(e.pointerId);
@@ -74,7 +74,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerMove);
+		callHandler(e, props.onPointerMove as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
 
 		const target = e.target as HTMLElement;
 
@@ -88,7 +88,7 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
 	};
 
 	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, props.onPointerUp);
+		callHandler(e, props.onPointerUp as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
 
 		const target = e.target as HTMLElement;
 

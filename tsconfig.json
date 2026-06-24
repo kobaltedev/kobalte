@@ -21,6 +21,7 @@
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,
+		"ignoreDeprecations": "6.0",
 		"sourceMap": true,
 		"types": [
 			"vite/client",

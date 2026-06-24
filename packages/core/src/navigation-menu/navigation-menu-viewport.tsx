@@ -68,6 +68,7 @@ export interface NavigationMenuViewportRenderProps
 	extends NavigationMenuViewportCommonProps,
 		DismissableLayerRenderProps,
 		MenubarDataSet {
+	role: "presentation";
 	"data-orientation": Orientation;
 }
 
@@ -131,6 +132,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 					>
 				>
 					as="li"
+					role="presentation"
 					ref={mergeRefs(context.setViewportRef, props.ref)}
 					excludedElements={[context.rootRef]}
 					bypassTopMostLayerCheck
