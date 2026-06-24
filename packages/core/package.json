@@ -78,6 +78,7 @@
 		"@solid-primitives/controlled-signal": "link:../../../solid-primitives/packages/controlled-signal",
 		"@solid-primitives/i18n": "link:../../../solid-primitives/packages/i18n",
 		"@solid-primitives/focus": "link:../../../solid-primitives/packages/focus",
+		"@solid-primitives/form": "link:../../../solid-primitives/packages/form",
 		"@solid-primitives/interaction": "link:../../../solid-primitives/packages/interaction",
 		"@solid-primitives/keyboard": "link:../../../solid-primitives/packages/keyboard",
 		"@solid-primitives/props": "link:../../../solid-primitives/packages/props",

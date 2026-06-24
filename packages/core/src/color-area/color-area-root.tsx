@@ -26,7 +26,7 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "../primitives";
+import { createFormResetListener } from "@solid-primitives/form";
 import {
 	ColorAreaContext,
 	type ColorAreaContextValue,

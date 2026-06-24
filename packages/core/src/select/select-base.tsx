@@ -41,10 +41,10 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { Popper, type PopperRootOptions } from "../popper";
+import { createFormResetListener } from "@solid-primitives/form";
 import {
 	type CollectionNode,
 	createDisclosureState,
-	createFormResetListener,
 	createRegisterId,
 } from "../primitives";
 import {

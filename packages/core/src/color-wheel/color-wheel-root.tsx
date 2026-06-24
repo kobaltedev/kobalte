@@ -30,7 +30,7 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "../primitives";
+import { createFormResetListener } from "@solid-primitives/form";
 import { createElementSize } from "@solid-primitives/resize-observer";
 import {
 	ColorWheelContext,

@@ -34,9 +34,9 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
+import { createFormResetListener } from "@solid-primitives/form";
 import {
 	type CollectionItemWithRef,
-	createFormResetListener,
 } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "./create-slider-state";

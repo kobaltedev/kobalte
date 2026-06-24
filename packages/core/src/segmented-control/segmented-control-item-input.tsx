@@ -7,7 +7,7 @@ import {
 } from "solid-js";
 
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createFormResetListener } from "../primitives";
+import { createFormResetListener } from "@solid-primitives/form";
 import {
 	RadioGroup,
 	type RadioGroupItemInputCommonProps,

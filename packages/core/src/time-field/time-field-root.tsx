@@ -27,9 +27,9 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
+import { createFormResetListener } from "@solid-primitives/form";
 import {
 	createControllableSignal,
-	createFormResetListener,
 	createRegisterId,
 } from "../primitives";
 import {

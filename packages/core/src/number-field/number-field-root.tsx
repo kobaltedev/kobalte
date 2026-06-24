@@ -29,9 +29,9 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
+import { createFormResetListener } from "@solid-primitives/form";
 import {
 	createControllableSignal,
-	createFormResetListener,
 } from "../primitives";
 import type { SpinButtonRootOptions } from "../spin-button";
 import {

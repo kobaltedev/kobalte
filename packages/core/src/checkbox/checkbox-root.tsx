@@ -37,7 +37,8 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener, createToggleState } from "../primitives";
+import { createFormResetListener } from "@solid-primitives/form";
+import { createToggleState } from "../primitives";
 import {
 	CheckboxContext,
 	type CheckboxContextValue,
