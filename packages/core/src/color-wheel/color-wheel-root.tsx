@@ -31,7 +31,7 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { createFormResetListener } from "../primitives";
-import { createSize } from "../primitives/create-size";
+import { createElementSize } from "@solid-primitives/resize-observer";
 import {
 	ColorWheelContext,
 	type ColorWheelContextValue,
@@ -153,12 +153,12 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 	const [trackRef, setTrackRef] = createSignal<HTMLElement>();
 	const [thumbRef, setThumbRef] = createSignal<HTMLElement>();
 
-	const size = createSize(trackRef);
+	const size = createElementSize(trackRef);
 
 	const outerRadius = createMemo(() => {
-		if (size.width() === 0) return undefined;
+		if (size.width === null) return undefined;
 
-		return size.width() / 2;
+		return size.width / 2;
 	});
 
 	const thumbRadius = () =>

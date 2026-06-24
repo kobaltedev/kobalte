@@ -28,7 +28,7 @@ import type {
 	InteractOutsideEvent,
 	PointerDownOutsideEvent,
 } from "@solid-primitives/interaction";
-import { createSize } from "../primitives/create-size";
+import { createElementSize } from "@solid-primitives/resize-observer";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuViewportOptions {
@@ -95,7 +95,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 		close();
 	};
 
-	const size = createSize(ref);
+	const size = createElementSize(ref);
 
 	createEffect(
 		() =>
@@ -110,13 +110,13 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 
 	const height = createMemo((prev) => {
 		if (ref() === undefined || !context.viewportPresent()) return undefined;
-		if (size.height() === 0) return prev;
-		return size.height();
+		if (size.height === null) return prev;
+		return size.height;
 	});
 	const width = createMemo((prev) => {
 		if (ref() === undefined || !context.viewportPresent()) return undefined;
-		if (size.width() === 0) return prev;
-		return size.width();
+		if (size.width === null) return prev;
+		return size.width;
 	});
 
 	return (
