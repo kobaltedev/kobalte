@@ -10,7 +10,8 @@
 	"license": "MIT",
 	"author": "jer3m01 <jer3m01@jer3m01.com>",
 	"contributors": [
-		"Fabien Marie-Louise <fabienml.dev@gmail.com>"
+		"Fabien Marie-Louise <fabienml.dev@gmail.com>",
+		"David Di Biase <dave@solidjs.com"
 	],
 	"workspaces": [
 		"apps/*",
@@ -46,15 +47,15 @@
 		"@commitlint/cli": "17.7.1",
 		"@commitlint/config-conventional": "17.7.0",
 		"@commitlint/cz-commitlint": "17.7.1",
-		"@solidjs/testing-library": "0.8.6",
+		"@solidjs/testing-library": "1.0.0-beta.1",
 		"@solidjs/web": "2.0.0-beta.14",
 		"@storybook/addon-docs": "^10.4.1",
+		"@tailwindcss/postcss": "^4.3.1",
 		"@testing-library/dom": "9.3.4",
 		"@testing-library/jest-dom": "6.9.1",
 		"@testing-library/user-event": "14.5.2",
 		"@types/node": "20.5.4",
 		"@vitest/ui": "^2.1.9",
-		"@tailwindcss/postcss": "^4.3.1",
 		"babel-preset-solid": "2.0.0-beta.14",
 		"commitizen": "4.3.0",
 		"inquirer": "8.2.5",
@@ -71,7 +72,7 @@
 		"storybook": "^10.4.1",
 		"storybook-solidjs-vite": "^10.1.0",
 		"tailwindcss": "^4.3.1",
-		"tsup": "7.2.0",
+		"tsup": "8.5.1",
 		"turbo": "1.10.13",
 		"typescript": "6.0.3",
 		"vite": "^6.3.5",
@@ -80,8 +81,9 @@
 	},
 	"pnpm": {
 		"overrides": {
+			"@solidjs/testing-library": "1.0.0-beta.1",
 			"@solid-primitives/controlled-signal": "link:/Users/ddibiase/Projects/solid-primitives/packages/controlled-signal",
-		  "@solid-primitives/utils": "link:/Users/ddibiase/Projects/solid-primitives/packages/utils",
+			"@solid-primitives/utils": "link:/Users/ddibiase/Projects/solid-primitives/packages/utils",
 			"@solid-primitives/event-listener": "link:/Users/ddibiase/Projects/solid-primitives/packages/event-listener",
 			"@solid-primitives/keyed": "link:/Users/ddibiase/Projects/solid-primitives/packages/keyed",
 			"@solid-primitives/map": "link:/Users/ddibiase/Projects/solid-primitives/packages/map",
@@ -94,7 +96,7 @@
 			"@solid-primitives/static-store": "link:/Users/ddibiase/Projects/solid-primitives/packages/static-store"
 		},
 		"patchedDependencies": {
-			"@solidjs/testing-library@0.8.6": "patches/@solidjs__testing-library@0.8.6.patch"
+			"@solidjs/testing-library@1.0.0-beta.1": "patches/@solidjs__testing-library@1.0.0-beta.1.patch"
 		}
 	},
 	"packageManager": "pnpm@9.12.3"

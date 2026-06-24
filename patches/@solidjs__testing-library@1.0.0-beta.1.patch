@@ -1,0 +1,59 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index 18533b717b45a5b54def7c40f1f7889a8d00585b..51be2e6609e64d3c574eed6f43a3b9fd06f174a4 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -30,6 +30,7 @@ __export(index_exports, {
+ });
+ module.exports = __toCommonJS(index_exports);
+ var import_dom = require("@testing-library/dom");
++var import_solidjs_web = require("@solidjs/web");
+ var import_solid_js3 = require("solid-js");
+ 
+ // node_modules/.pnpm/@solidjs+web@2.0.0-beta.14_solid-js@2.0.0-beta.14/node_modules/@solidjs/web/dist/server.js
+@@ -492,7 +493,7 @@ function render(ui, options = {}) {
+       return (0, import_solid_js3.createComponent)(ui, {});
+     }
+   }) : ui;
+-  const dispose = hydrate ? notSup(wrappedUi, container) : notSup(wrappedUi, container);
++  const dispose = hydrate ? import_solidjs_web.hydrate(wrappedUi, container) : import_solidjs_web.render(wrappedUi, container);
+   mountedContainers.add({ container, dispose });
+   const queryHelpers = (0, import_dom.getQueriesForElement)(container, queries);
+   return {
+@@ -521,7 +522,7 @@ function renderHook(hook, options = []) {
+   const wrapped = wrapper ? () => (0, import_solid_js3.createComponent)(wrapper, { get children() {
+     return (0, import_solid_js3.createComponent)(Comp, {});
+   } }) : () => (0, import_solid_js3.createComponent)(Comp, {});
+-  const dispose = notSup(wrapped, container);
++  const dispose = import_solidjs_web.render(wrapped, container);
+   mountedContainers.add({ container, dispose });
+   (0, import_solid_js3.flush)();
+   return { result, cleanup: dispose, owner };
+diff --git a/dist/index.js b/dist/index.js
+index 0cdbfb60d7d028a39ae2cac701f9ce3f917d90ef..ab6d51fde9972480bb3a8e775942a103542dca2a 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -1,5 +1,6 @@
+ // src/index.ts
+ import { getQueriesForElement, prettyDOM } from "@testing-library/dom";
++import { render as _render, hydrate as _hydrate } from "@solidjs/web";
+ import {
+   createComponent as createComponent3,
+   createErrorBoundary,
+@@ -470,7 +471,7 @@ function render(ui, options = {}) {
+       return createComponent3(ui, {});
+     }
+   }) : ui;
+-  const dispose = hydrate ? notSup(wrappedUi, container) : notSup(wrappedUi, container);
++  const dispose = hydrate ? _hydrate(wrappedUi, container) : _render(wrappedUi, container);
+   mountedContainers.add({ container, dispose });
+   const queryHelpers = getQueriesForElement(container, queries);
+   return {
+@@ -499,7 +500,7 @@ function renderHook(hook, options = []) {
+   const wrapped = wrapper ? () => createComponent3(wrapper, { get children() {
+     return createComponent3(Comp, {});
+   } }) : () => createComponent3(Comp, {});
+-  const dispose = notSup(wrapped, container);
++  const dispose = _render(wrapped, container);
+   mountedContainers.add({ container, dispose });
+   flush();
+   return { result, cleanup: dispose, owner };

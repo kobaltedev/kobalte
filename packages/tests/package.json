@@ -48,7 +48,7 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"peerDependencies": {
-		"@solidjs/testing-library": "^0.8.6",
+		"@solidjs/testing-library": ">=0.8.6",
 		"solid-js": "^2.0.0-beta.14",
 		"vitest": "^2.1.9"
 	}
