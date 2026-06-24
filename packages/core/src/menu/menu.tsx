@@ -94,11 +94,11 @@ export function Menu(props: MenuProps) {
 	let pointerGraceIntent: GraceIntent | null = null;
 	let pointerDir: Side = "right";
 
-	const [triggerId, setTriggerId] = createSignal<string>();
-	const [contentId, setContentId] = createSignal<string>();
+	const [triggerId, setTriggerId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [contentId, setContentId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-	const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [contentRef, setContentRef] = createSignal<HTMLDivElement | undefined>(undefined, { ownedWrite: true });
 
 	const [focusStrategy, setFocusStrategy] = createSignal<
 		FocusStrategy | boolean

@@ -116,9 +116,9 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "ref", "textValue", "disabled", "closeOnSelect", "checked", "indeterminate", "onSelect", "onPointerMove", "onPointerLeave", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
 
-	const [labelId, setLabelId] = createSignal<string>();
-	const [descriptionId, setDescriptionId] = createSignal<string>();
-	const [labelRef, setLabelRef] = createSignal<HTMLElement>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [labelRef, setLabelRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
 
 	const selectionManager = () => menuContext.listState().selectionManager();
 

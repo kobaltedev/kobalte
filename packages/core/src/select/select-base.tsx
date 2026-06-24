@@ -251,16 +251,16 @@ export function SelectBase<
 	const formControlProps = omit(mergedProps, "itemComponent", "sectionComponent", "open", "defaultOpen", "onOpenChange", "value", "defaultValue", "onChange", "placeholder", "options", "optionValue", "optionTextValue", "optionDisabled", "optionGroupChildren", "keyboardDelegate", "allowDuplicateSelectionEvents", "disallowEmptySelection", "closeOnSelection", "disallowTypeAhead", "shouldFocusWrap", "selectionBehavior", "selectionMode", "virtualized", "modal", "preventScroll", "forceMount", "getAnchorRect", "placement", "gutter", "shift", "flip", "slide", "overlap", "sameWidth", "fitViewport", "hideWhenDetached", "detachedPadding", "arrowPadding", "overflowPadding");
 	const others = omit(mergedProps, "itemComponent", "sectionComponent", "open", "defaultOpen", "onOpenChange", "value", "defaultValue", "onChange", "placeholder", "options", "optionValue", "optionTextValue", "optionDisabled", "optionGroupChildren", "keyboardDelegate", "allowDuplicateSelectionEvents", "disallowEmptySelection", "closeOnSelection", "disallowTypeAhead", "shouldFocusWrap", "selectionBehavior", "selectionMode", "virtualized", "modal", "preventScroll", "forceMount", "getAnchorRect", "placement", "gutter", "shift", "flip", "slide", "overlap", "sameWidth", "fitViewport", "hideWhenDetached", "detachedPadding", "arrowPadding", "overflowPadding", ...FORM_CONTROL_PROP_NAMES);
 
-	const [triggerId, setTriggerId] = createSignal<string>();
-	const [valueId, setValueId] = createSignal<string>();
-	const [listboxId, setListboxId] = createSignal<string>();
+	const [triggerId, setTriggerId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [valueId, setValueId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [listboxId, setListboxId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
-	const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement>();
-	const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
-	const [listboxRef, setListboxRef] = createSignal<HTMLUListElement>();
+	const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement | undefined>(undefined, { ownedWrite: true });
+	const [contentRef, setContentRef] = createSignal<HTMLDivElement | undefined>(undefined, { ownedWrite: true });
+	const [listboxRef, setListboxRef] = createSignal<HTMLUListElement | undefined>(undefined, { ownedWrite: true });
 
 	const [listboxAriaLabelledBy, setListboxAriaLabelledBy] =
-		createSignal<string>();
+		createSignal<string | undefined>(undefined, { ownedWrite: true });
 	const [focusStrategy, setFocusStrategy] = createSignal<
 		FocusStrategy | boolean
 	>(true);

@@ -203,8 +203,8 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		},
 	);
 
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
-	const [hiddenInputRef, setHiddenInputRef] = createSignal<HTMLInputElement>();
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
+	const [hiddenInputRef, setHiddenInputRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
 	const onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
 		if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
 			return;

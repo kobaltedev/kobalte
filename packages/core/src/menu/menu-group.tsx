@@ -52,7 +52,7 @@ export function MenuGroup<T extends ValidComponent = "div">(
 		props as MenuGroupProps,
 	);
 
-	const [labelId, setLabelId] = createSignal<string>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const context: MenuGroupContextValue = {
 		generateId: createGenerateId(() => mergedProps.id!),

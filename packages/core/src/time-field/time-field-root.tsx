@@ -168,8 +168,8 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 	const { locale } = useLocale();
 
-	const [inputRef, setInputRef] = createSignal<HTMLDivElement>();
-	const [valueDescriptionId, setValueDescriptionId] = createSignal<string>();
+	const [inputRef, setInputRef] = createSignal<HTMLDivElement | undefined>(undefined, { ownedWrite: true });
+	const [valueDescriptionId, setValueDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const focusManager = createFocusManager(inputRef);
 

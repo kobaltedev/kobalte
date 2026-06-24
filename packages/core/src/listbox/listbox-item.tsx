@@ -98,8 +98,8 @@ export function ListboxItem<T extends ValidComponent = "li">(
 
 	const others = omit(mergedProps, "ref", "item", "aria-label", "aria-labelledby", "aria-describedby", "onPointerMove", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
 
-	const [labelId, setLabelId] = createSignal<string>();
-	const [descriptionId, setDescriptionId] = createSignal<string>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const selectionManager = () => listBoxContext.listState().selectionManager();
 

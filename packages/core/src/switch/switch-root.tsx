@@ -141,7 +141,7 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 		...FORM_CONTROL_PROP_NAMES,
 	);
 
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
 	const [isFocused, setIsFocused] = createSignal(false);
 
 	const { formControlContext } = createFormControl(mergedProps);

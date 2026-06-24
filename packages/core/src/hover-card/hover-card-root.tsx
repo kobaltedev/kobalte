@@ -98,8 +98,8 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 	let openTimeoutId: number | undefined;
 	let closeTimeoutId: number | undefined;
 
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-	const [contentRef, setContentRef] = createSignal<HTMLElement>();
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
 
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
 		others.placement!,

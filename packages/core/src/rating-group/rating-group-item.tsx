@@ -119,8 +119,8 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const { direction } = useLocale();
 	const isLTR = () => direction() === "ltr";
 
-	const [labelId, setLabelId] = createSignal<string>();
-	const [descriptionId, setDescriptionId] = createSignal<string>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const index = () =>
 		ref ? ratingGroupContext.items().findIndex((v) => v.ref() === ref) : -1;

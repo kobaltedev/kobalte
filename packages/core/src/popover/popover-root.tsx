@@ -101,13 +101,13 @@ export function PopoverRoot(props: PopoverRootProps) {
 
 	const others = omit(mergedProps, "translations", "id", "open", "defaultOpen", "onOpenChange", "modal", "preventScroll", "forceMount", "anchorRef");
 
-	const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<HTMLElement>();
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-	const [contentRef, setContentRef] = createSignal<HTMLElement>();
+	const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
 
-	const [contentId, setContentId] = createSignal<string>();
-	const [titleId, setTitleId] = createSignal<string>();
-	const [descriptionId, setDescriptionId] = createSignal<string>();
+	const [contentId, setContentId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [titleId, setTitleId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const disclosureState = createDisclosureState({
 		open: () => mergedProps.open,

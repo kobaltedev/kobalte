@@ -168,7 +168,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		"readOnly",
 	);
 
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
 	const [isFocused, setIsFocused] = createSignal(false);
 
 	const { formControlContext } = createFormControl(formControlProps);

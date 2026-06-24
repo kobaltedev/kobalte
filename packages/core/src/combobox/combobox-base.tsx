@@ -373,13 +373,13 @@ export function ComboboxBase<
 		...FORM_CONTROL_PROP_NAMES,
 	);
 
-	const [listboxId, setListboxId] = createSignal<string>();
+	const [listboxId, setListboxId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
-	const [controlRef, setControlRef] = createSignal<HTMLElement>();
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-	const [contentRef, setContentRef] = createSignal<HTMLElement>();
-	const [listboxRef, setListboxRef] = createSignal<HTMLElement>();
+	const [controlRef, setControlRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [listboxRef, setListboxRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
 
 	const [focusStrategy, setFocusStrategy] = createSignal<
 		FocusStrategy | boolean

@@ -100,7 +100,7 @@ export function MeterRoot<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "value", "minValue", "maxValue", "getValueLabel", "role", "aria-valuetext", "aria-labelledby", "aria-valuemax", "aria-valuemin", "aria-valuenow", "indeterminate");
 
-	const [labelId, setLabelId] = createSignal<string>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const defaultFormatter = createNumberFormatter(() => ({ style: "percent" }));
 

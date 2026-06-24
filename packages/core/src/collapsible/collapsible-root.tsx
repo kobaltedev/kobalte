@@ -83,7 +83,7 @@ export function CollapsibleRoot<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "open", "defaultOpen", "onOpenChange", "disabled", "forceMount");
 
-	const [contentId, setContentId] = createSignal<string>();
+	const [contentId, setContentId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const disclosureState = createDisclosureState({
 		open: () => mergedProps.open,

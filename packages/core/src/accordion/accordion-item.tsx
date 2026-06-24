@@ -66,8 +66,8 @@ export function AccordionItem<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "value", "disabled");
 
-	const [triggerId, setTriggerId] = createSignal<string>();
-	const [contentId, setContentId] = createSignal<string>();
+	const [triggerId, setTriggerId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [contentId, setContentId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const selectionManager = () =>
 		accordionContext.listState().selectionManager();

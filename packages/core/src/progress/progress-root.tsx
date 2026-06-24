@@ -71,7 +71,7 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "value", "minValue", "maxValue", "indeterminate", "getValueLabel");
 
-	const [labelId, setLabelId] = createSignal<string>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const defaultFormatter = createNumberFormatter(() => ({ style: "percent" }));
 
