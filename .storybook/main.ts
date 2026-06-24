@@ -4,7 +4,7 @@ import { mergeConfig } from "vite";
 const SOLID_PRIMITIVES_ROOT = new URL("../../solid-primitives/packages", import.meta.url).pathname;
 
 const config: StorybookConfig = {
-	stories: ["../packages/core/src/*/stories/*.stories.{ts,tsx}"],
+	stories: ["../packages/core/src/**/stories/*.stories.{ts,tsx}"],
 	staticDirs: ["./public"],
 	addons: ["@storybook/addon-docs"],
 	framework: {
