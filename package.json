@@ -47,7 +47,7 @@
 		"@commitlint/cli": "17.7.1",
 		"@commitlint/config-conventional": "17.7.0",
 		"@commitlint/cz-commitlint": "17.7.1",
-		"@solidjs/testing-library": "1.0.0-beta.1",
+		"@solidjs/testing-library": "1.0.0-beta.2",
 		"@solidjs/web": "2.0.0-beta.15",
 		"@storybook/addon-docs": "^10.4.1",
 		"@tailwindcss/postcss": "^4.3.1",
@@ -81,7 +81,7 @@
 	},
 	"pnpm": {
 		"overrides": {
-			"@solidjs/testing-library": "1.0.0-beta.1",
+			"@solidjs/testing-library": "1.0.0-beta.2",
 			"@solid-primitives/controlled-signal": "link:/Users/ddibiase/Projects/solid-primitives/packages/controlled-signal",
 			"@solid-primitives/utils": "link:/Users/ddibiase/Projects/solid-primitives/packages/utils",
 			"@solid-primitives/event-listener": "link:/Users/ddibiase/Projects/solid-primitives/packages/event-listener",
@@ -94,9 +94,6 @@
 			"@solid-primitives/trigger": "link:/Users/ddibiase/Projects/solid-primitives/packages/trigger",
 			"@solid-primitives/rootless": "link:/Users/ddibiase/Projects/solid-primitives/packages/rootless",
 			"@solid-primitives/static-store": "link:/Users/ddibiase/Projects/solid-primitives/packages/static-store"
-		},
-		"patchedDependencies": {
-			"@solidjs/testing-library@1.0.0-beta.1": "patches/@solidjs__testing-library@1.0.0-beta.1.patch"
 		}
 	},
 	"packageManager": "pnpm@9.12.3"

@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@solidjs/testing-library': 1.0.0-beta.1
+  '@solidjs/testing-library': 1.0.0-beta.2
   '@solid-primitives/controlled-signal': link:/Users/ddibiase/Projects/solid-primitives/packages/controlled-signal
   '@solid-primitives/utils': link:/Users/ddibiase/Projects/solid-primitives/packages/utils
   '@solid-primitives/event-listener': link:/Users/ddibiase/Projects/solid-primitives/packages/event-listener
@@ -18,11 +18,6 @@ overrides:
   '@solid-primitives/trigger': link:/Users/ddibiase/Projects/solid-primitives/packages/trigger
   '@solid-primitives/rootless': link:/Users/ddibiase/Projects/solid-primitives/packages/rootless
   '@solid-primitives/static-store': link:/Users/ddibiase/Projects/solid-primitives/packages/static-store
-
-patchedDependencies:
-  '@solidjs/testing-library@1.0.0-beta.1':
-    hash: duwt2qii7pyyjj6ksoajwcs7ki
-    path: patches/@solidjs__testing-library@1.0.0-beta.1.patch
 
 importers:
 
@@ -50,8 +45,8 @@ importers:
         specifier: 17.7.1
         version: 17.7.1(commitizen@4.3.0(@types/node@20.5.4)(typescript@6.0.3))(inquirer@8.2.5)
       '@solidjs/testing-library':
-        specifier: 1.0.0-beta.1
-        version: 1.0.0-beta.1(patch_hash=duwt2qii7pyyjj6ksoajwcs7ki)(solid-js@2.0.0-beta.15)
+        specifier: 1.0.0-beta.2
+        version: 1.0.0-beta.2(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
       '@solidjs/web':
         specifier: 2.0.0-beta.15
         version: 2.0.0-beta.15(solid-js@2.0.0-beta.15)
@@ -325,8 +320,8 @@ importers:
   packages/tests:
     dependencies:
       '@solidjs/testing-library':
-        specifier: 1.0.0-beta.1
-        version: 1.0.0-beta.1(patch_hash=duwt2qii7pyyjj6ksoajwcs7ki)(solid-js@2.0.0-beta.14)
+        specifier: 1.0.0-beta.2
+        version: 1.0.0-beta.2(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.14))(solid-js@2.0.0-beta.14)
       solid-js:
         specifier: ^2.0.0-beta.14
         version: 2.0.0-beta.14
@@ -3109,10 +3104,11 @@ packages:
   '@solidjs/start@0.6.1':
     resolution: {integrity: sha512-e5kj37jTVCfKhTg14ozvJr7ksZUd8FedRlbJlkPsO+Mbi04fyZ5i+41I5RjLYPF1WukLLuJKUGz9He7NJv6e7A==}
 
-  '@solidjs/testing-library@1.0.0-beta.1':
-    resolution: {integrity: sha512-TMm0E1XMrVrkvyGmkRgCk+79EKqv1m1vYpYougeqsxKSd9s4t+MsbdN3MyF6hioPCTueXH9Ppl4dNOt6qsHGeA==}
+  '@solidjs/testing-library@1.0.0-beta.2':
+    resolution: {integrity: sha512-TLhQ5IUT/fdDfqa4X2rkQWB28Y+zEwi6mK/TVTeiQlEHG63eK2jfgwNYf2NtQoPh2c3ihLilsCzxABiSTP3JoQ==}
     engines: {node: '>= 14'}
     peerDependencies:
+      '@solidjs/web': '>=2.0.0'
       solid-js: '>=2.0.0'
 
   '@solidjs/web@2.0.0-beta.14':
@@ -10918,17 +10914,25 @@ snapshots:
       - vinxi
       - vite
 
-  '@solidjs/testing-library@1.0.0-beta.1(patch_hash=duwt2qii7pyyjj6ksoajwcs7ki)(solid-js@2.0.0-beta.14)':
+  '@solidjs/testing-library@1.0.0-beta.2(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.14))(solid-js@2.0.0-beta.14)':
     dependencies:
+      '@solidjs/web': 2.0.0-beta.15(solid-js@2.0.0-beta.14)
       '@testing-library/dom': 10.4.1
       solid-js: 2.0.0-beta.14
 
-  '@solidjs/testing-library@1.0.0-beta.1(patch_hash=duwt2qii7pyyjj6ksoajwcs7ki)(solid-js@2.0.0-beta.15)':
+  '@solidjs/testing-library@1.0.0-beta.2(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)':
     dependencies:
+      '@solidjs/web': 2.0.0-beta.15(solid-js@2.0.0-beta.15)
       '@testing-library/dom': 10.4.1
       solid-js: 2.0.0-beta.15
 
   '@solidjs/web@2.0.0-beta.14(solid-js@2.0.0-beta.14)':
+    dependencies:
+      seroval: 1.5.4
+      seroval-plugins: 1.5.4(seroval@1.5.4)
+      solid-js: 2.0.0-beta.14
+
+  '@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.14)':
     dependencies:
       seroval: 1.5.4
       seroval-plugins: 1.5.4(seroval@1.5.4)
