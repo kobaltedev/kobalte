@@ -4,4 +4,3 @@ export * from "./create-disclosure-state";
 export * from "./create-register-id";
 export * from "./create-tag-name";
 export * from "./create-toggle-state";
-export * from "./create-transition";
