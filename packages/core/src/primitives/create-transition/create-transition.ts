@@ -6,7 +6,8 @@
  * https://github.com/mantinedev/mantine/blob/8546c580fdcaa9653edc6f4813103349a96cfb09/src/mantine-core/src/Transition/use-transition.ts
  */
 
-import { type MaybeAccessor, access, createMediaQuery } from "@kobalte/utils";
+import { type MaybeAccessor, access } from "@kobalte/utils";
+import { createReducedMotion } from "@solid-primitives/a11y";
 import { type JSX } from "@solidjs/web";
 import {
 	type Accessor,
@@ -99,7 +100,7 @@ export function createTransition(
 		options,
 	);
 
-	const reduceMotion = createMediaQuery("(prefers-reduced-motion: reduce)");
+	const reduceMotion = createReducedMotion();
 
 	const [duration, setDuration] = createSignal(
 		reduceMotion() ? 0 : access(mergedOptions).duration!,
