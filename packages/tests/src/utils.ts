@@ -15,7 +15,6 @@ import { afterAll, beforeAll, vi } from "vitest";
 
 export function installPointerEvent() {
 	beforeAll(() => {
-		// @ts-expect-error
 		vi.stubGlobal(
 			"PointerEvent",
 			class FakePointerEvent extends MouseEvent {
