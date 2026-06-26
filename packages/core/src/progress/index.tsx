@@ -35,26 +35,26 @@ import {
 } from "./progress-value-label";
 
 export type {
-	ProgressFillOptions,
 	ProgressFillCommonProps,
-	ProgressFillRenderProps,
+	ProgressFillOptions,
 	ProgressFillProps,
-	ProgressLabelOptions,
+	ProgressFillRenderProps,
 	ProgressLabelCommonProps,
-	ProgressLabelRenderProps,
+	ProgressLabelOptions,
 	ProgressLabelProps,
-	ProgressRootOptions,
+	ProgressLabelRenderProps,
 	ProgressRootCommonProps,
-	ProgressRootRenderProps,
+	ProgressRootOptions,
 	ProgressRootProps,
-	ProgressTrackOptions,
+	ProgressRootRenderProps,
 	ProgressTrackCommonProps,
-	ProgressTrackRenderProps,
+	ProgressTrackOptions,
 	ProgressTrackProps,
-	ProgressValueLabelOptions,
+	ProgressTrackRenderProps,
 	ProgressValueLabelCommonProps,
-	ProgressValueLabelRenderProps,
+	ProgressValueLabelOptions,
 	ProgressValueLabelProps,
+	ProgressValueLabelRenderProps,
 };
 export { Fill, Label, Root, Track, ValueLabel };
 
@@ -69,6 +69,6 @@ export const Progress = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useProgressContext,
 	type ProgressContextValue,
+	useProgressContext,
 } from "./progress-context";

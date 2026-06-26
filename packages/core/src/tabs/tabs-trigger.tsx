@@ -7,18 +7,15 @@
  */
 
 import {
-	type Orientation,
 	composeEventHandlers,
 	focusWithoutScrolling,
 	isWebKit,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	omit,
-} from "solid-js";
+import { createEffect, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -85,9 +82,22 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 		props as TabsTriggerProps,
 	);
 
-	const others = omit(mergedProps, "ref", "id", "value", "disabled", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"id",
+		"value",
+		"disabled",
+		"onPointerDown",
+		"onPointerUp",
+		"onClick",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocus",
+	);
 
-	const id = () => mergedProps.id ?? context.generateTriggerId(mergedProps.value);
+	const id = () =>
+		mergedProps.id ?? context.generateTriggerId(mergedProps.value);
 
 	const isHighlighted = () =>
 		context.listState().selectionManager().focusedKey() === mergedProps.value;
@@ -166,7 +176,10 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 				mergedProps.onMouseDown,
 				selectableItem.onMouseDown,
 			])}
-			onFocus={composeEventHandlers([mergedProps.onFocus, selectableItem.onFocus])}
+			onFocus={composeEventHandlers([
+				mergedProps.onFocus,
+				selectableItem.onFocus,
+			])}
 			{...others}
 		/>
 	);

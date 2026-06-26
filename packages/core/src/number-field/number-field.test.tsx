@@ -1,9 +1,8 @@
 import { fireEvent, render } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
 import { expect, vi } from "vitest";
-
-import * as NumberField from ".";
 import { I18nProvider } from "../i18n";
+import * as NumberField from ".";
 
 describe("NumberField", () => {
 	it("can have a default value", async () => {

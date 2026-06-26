@@ -1,12 +1,7 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import type { ValidComponent } from "@solidjs/web";
-import {
-	Show,
-	createSignal,
-	omit,
-} from "solid-js";
-
 import { createPresence } from "@solid-primitives/presence";
+import type { ValidComponent } from "@solidjs/web";
+import { createSignal, omit, Show } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -65,7 +60,11 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 	const others = omit(mergedProps, "ref", "forceMount");
 
 	const { isMounted: present } = createPresence(
-		() => (mergedProps.forceMount || context.indeterminate() || context.checked()) || undefined,
+		() =>
+			mergedProps.forceMount ||
+			context.indeterminate() ||
+			context.checked() ||
+			undefined,
 		{ transitionDuration: 0 },
 	);
 

@@ -1,6 +1,6 @@
-import { createSignal } from "solid-js";
-import { parseColor } from "@solid-primitives/utils/colors";
 import type { Color } from "@solid-primitives/utils/colors";
+import { parseColor } from "@solid-primitives/utils/colors";
+import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
 	Background,
@@ -69,11 +69,7 @@ function ControlledDemo() {
 	);
 	return (
 		<div class="flex flex-col gap-4 font-sans">
-			<Root
-				class={rootClass}
-				value={color()}
-				onChange={setColor}
-			>
+			<Root class={rootClass} value={color()} onChange={setColor}>
 				<Label class={labelClass}>Controlled</Label>
 				<Background class={backgroundClass}>
 					<Thumb
@@ -101,10 +97,7 @@ export const Controlled = meta.story({
 export const DefaultValue = meta.story({
 	name: "Default Value",
 	render: () => (
-		<Root
-			class={rootClass}
-			defaultValue={parseColor("hsl(270, 80%, 60%)")}
-		>
+		<Root class={rootClass} defaultValue={parseColor("hsl(270, 80%, 60%)")}>
 			<Label class={labelClass}>Purple tones</Label>
 			<Background class={backgroundClass}>
 				<Thumb
@@ -186,7 +179,9 @@ export const WithValidation = meta.story({
 					<HiddenInputY />
 				</Thumb>
 			</Background>
-			<Description class={descClass}>Select a hue between 180–260°.</Description>
+			<Description class={descClass}>
+				Select a hue between 180–260°.
+			</Description>
 			<ErrorMessage class={errorClass}>
 				Please select a blue or purple hue.
 			</ErrorMessage>

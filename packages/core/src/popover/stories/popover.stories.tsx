@@ -1,6 +1,15 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Arrow, CloseButton, Content, Description, Portal, Root, Title, Trigger } from "../index";
+import {
+	Arrow,
+	CloseButton,
+	Content,
+	Description,
+	Portal,
+	Root,
+	Title,
+	Trigger,
+} from "../index";
 
 const meta = preview.meta({
 	title: "Components/Popover",
@@ -26,8 +35,12 @@ export const Default = meta.story({
 			<Trigger class={triggerClass}>Open</Trigger>
 			<Portal>
 				<Content class={contentClass}>
-					<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-					<Title class="mb-1 text-sm font-semibold text-slate-900">Popover title</Title>
+					<CloseButton class={closeClass} aria-label="Close">
+						✕
+					</CloseButton>
+					<Title class="mb-1 text-sm font-semibold text-slate-900">
+						Popover title
+					</Title>
 					<Description class="text-xs text-slate-500">
 						This is the popover description providing additional context.
 					</Description>
@@ -46,8 +59,12 @@ export const WithArrow = meta.story({
 			<Portal>
 				<Content class={contentClass}>
 					<Arrow class="fill-white [filter:drop-shadow(0_1px_0_rgb(226_232_240))]" />
-					<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-					<Title class="mb-1 text-sm font-semibold text-slate-900">With arrow</Title>
+					<CloseButton class={closeClass} aria-label="Close">
+						✕
+					</CloseButton>
+					<Title class="mb-1 text-sm font-semibold text-slate-900">
+						With arrow
+					</Title>
 					<Description class="text-xs text-slate-500">
 						The arrow points to the trigger element.
 					</Description>
@@ -68,7 +85,9 @@ export const Placements = meta.story({
 					<Portal>
 						<Content class={contentClass}>
 							<Title class="text-sm font-semibold text-slate-900">{side}</Title>
-							<Description class="text-xs text-slate-500 mt-1">Placed at {side}.</Description>
+							<Description class="text-xs text-slate-500 mt-1">
+								Placed at {side}.
+							</Description>
 						</Content>
 					</Portal>
 				</Root>
@@ -85,8 +104,12 @@ export const Modal = meta.story({
 			<Trigger class={triggerClass}>Modal</Trigger>
 			<Portal>
 				<Content class={contentClass}>
-					<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-					<Title class="mb-1 text-sm font-semibold text-slate-900">Modal popover</Title>
+					<CloseButton class={closeClass} aria-label="Close">
+						✕
+					</CloseButton>
+					<Title class="mb-1 text-sm font-semibold text-slate-900">
+						Modal popover
+					</Title>
 					<Description class="text-xs text-slate-500">
 						Focus is trapped and outside content is hidden from assistive tech.
 					</Description>
@@ -106,18 +129,19 @@ function ControlledDemo() {
 					<Trigger class={triggerClass}>Controlled</Trigger>
 					<Portal>
 						<Content class={contentClass}>
-							<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-							<Title class="mb-1 text-sm font-semibold text-slate-900">Controlled</Title>
+							<CloseButton class={closeClass} aria-label="Close">
+								✕
+							</CloseButton>
+							<Title class="mb-1 text-sm font-semibold text-slate-900">
+								Controlled
+							</Title>
 							<Description class="text-xs text-slate-500">
 								Open state is managed externally.
 							</Description>
 						</Content>
 					</Portal>
 				</Root>
-				<button
-					class={triggerClass}
-					onClick={() => setOpen((o) => !o)}
-				>
+				<button class={triggerClass} onClick={() => setOpen((o) => !o)}>
 					{open() ? "Force close" : "Force open"}
 				</button>
 			</div>
@@ -141,17 +165,25 @@ export const WithForm = meta.story({
 			<Trigger class={triggerClass}>Edit profile</Trigger>
 			<Portal>
 				<Content class={`${contentClass} w-80`}>
-					<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-					<Title class="mb-3 text-sm font-semibold text-slate-900">Edit profile</Title>
+					<CloseButton class={closeClass} aria-label="Close">
+						✕
+					</CloseButton>
+					<Title class="mb-3 text-sm font-semibold text-slate-900">
+						Edit profile
+					</Title>
 					<div class="flex flex-col gap-2">
-						<label class="text-xs text-slate-600" for="pop-name">Display name</label>
+						<label class="text-xs text-slate-600" for="pop-name">
+							Display name
+						</label>
 						<input
 							id="pop-name"
 							type="text"
 							placeholder="Jane Doe"
 							class="rounded-md border border-slate-200 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
 						/>
-						<label class="text-xs text-slate-600" for="pop-bio">Bio</label>
+						<label class="text-xs text-slate-600" for="pop-bio">
+							Bio
+						</label>
 						<textarea
 							id="pop-bio"
 							rows={2}

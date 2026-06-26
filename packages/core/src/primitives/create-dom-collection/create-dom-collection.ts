@@ -8,12 +8,12 @@
  * https://github.com/ariakit/ariakit/blob/da142672eddefa99365773ced72171facc06fdcb/packages/ariakit/src/collection/collection-item.ts
  */
 
-import { type MaybeAccessor, addItemToArray } from "@kobalte/utils";
+import { addItemToArray, type MaybeAccessor } from "@kobalte/utils";
 import {
-	type FlowComponent,
 	createComponent,
 	createEffect,
 	createSignal,
+	type FlowComponent,
 } from "solid-js";
 
 import {

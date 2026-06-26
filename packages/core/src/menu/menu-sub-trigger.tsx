@@ -13,20 +13,15 @@
  */
 
 import {
-	type Orientation,
 	callHandler,
 	composeEventHandlers,
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
-import {
-	createEffect,
-	createUniqueId,
-	omit,
-	onCleanup,
-} from "solid-js";
-import { type JSX, type ValidComponent, isServer } from "@solidjs/web";
+import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
+import { createEffect, createUniqueId, omit, onCleanup } from "solid-js";
 
 import { type Direction, useLocale } from "../i18n";
 import {
@@ -37,7 +32,7 @@ import {
 import { createSelectableItem } from "../selection";
 import { type MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { type Side, getPointerGraceArea } from "./utils";
+import { getPointerGraceArea, type Side } from "./utils";
 
 export interface MenuSubTriggerOptions {
 	/**
@@ -118,7 +113,21 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		props as MenuSubTriggerProps,
 	);
 
-	const others = omit(mergedProps, "ref", "id", "textValue", "disabled", "onPointerMove", "onPointerLeave", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"id",
+		"textValue",
+		"disabled",
+		"onPointerMove",
+		"onPointerLeave",
+		"onPointerDown",
+		"onPointerUp",
+		"onClick",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocus",
+	);
 
 	let openTimeoutId: number | null = null;
 
@@ -334,7 +343,10 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		},
 	);
 
-	createEffect(() => mergedProps.id!, (id) => context.registerTriggerId(id));
+	createEffect(
+		() => mergedProps.id!,
+		(id) => context.registerTriggerId(id),
+	);
 
 	onCleanup(() => {
 		clearOpenTimeout();
@@ -371,7 +383,10 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 				mergedProps.onMouseDown,
 				selectableItem.onMouseDown,
 			])}
-			onFocus={composeEventHandlers([mergedProps.onFocus, selectableItem.onFocus])}
+			onFocus={composeEventHandlers([
+				mergedProps.onFocus,
+				selectableItem.onFocus,
+			])}
 			onPointerMove={onPointerMove}
 			onPointerLeave={onPointerLeave}
 			{...context.dataset()}

@@ -8,11 +8,7 @@
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	omit,
-	onCleanup,
-} from "solid-js";
+import { type Component, omit, onCleanup } from "solid-js";
 
 import * as Link from "../link";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -53,7 +49,14 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 	const context = useHoverCardContext();
 
 	const p = props as HoverCardTriggerProps;
-	const others = omit(p, "ref", "onPointerEnter", "onPointerLeave", "onFocus", "onBlur");
+	const others = omit(
+		p,
+		"ref",
+		"onPointerEnter",
+		"onPointerLeave",
+		"onFocus",
+		"onBlur",
+	);
 
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,

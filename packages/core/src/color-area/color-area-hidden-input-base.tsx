@@ -4,15 +4,12 @@ import {
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type ComponentProps, type JSX } from "@solidjs/web";
-import {
-	createMemo,
-	omit,
-} from "solid-js";
 import { COLOR_INTL_TRANSLATIONS } from "@solid-primitives/utils/colors";
+import type { ComponentProps, JSX } from "@solidjs/web";
+import { createMemo, omit } from "solid-js";
 import {
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
+	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
 } from "../form-control";
 import { useColorAreaContext } from "./color-area-context";
@@ -39,8 +36,23 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 		props,
 	);
 
-	const formControlFieldProps = omit(mergedProps, "style", "orientation", "onChange", "onFocus", "onBlur");
-	const others = omit(mergedProps, "style", "orientation", "onChange", "onFocus", "onBlur", ...FORM_CONTROL_FIELD_PROP_NAMES);
+	const formControlFieldProps = omit(
+		mergedProps,
+		"style",
+		"orientation",
+		"onChange",
+		"onFocus",
+		"onBlur",
+	);
+	const others = omit(
+		mergedProps,
+		"style",
+		"orientation",
+		"onChange",
+		"onFocus",
+		"onBlur",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
+	);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps as any);
 
@@ -55,7 +67,12 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e as Event & { currentTarget: HTMLInputElement; target: Element }, mergedProps.onChange as JSX.EventHandlerUnion<HTMLInputElement, Event> | undefined);
+		callHandler(
+			e as Event & { currentTarget: HTMLInputElement; target: Element },
+			mergedProps.onChange as
+				| JSX.EventHandlerUnion<HTMLInputElement, Event>
+				| undefined,
+		);
 		const target = e.target as HTMLInputElement;
 
 		isVertical()

@@ -1,8 +1,7 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { cleanup, fireEvent, render, within } from "@solidjs/testing-library";
-import { vi } from "vitest";
-
 import userEvent from "@testing-library/user-event";
+import { vi } from "vitest";
 import * as ToggleGroup from ".";
 
 describe("ToggleGroup", () => {

@@ -7,13 +7,13 @@
  */
 
 import {
-	type OverrideComponentProps,
 	callHandler,
 	createFocusManager,
 	getFocusableTreeWalker,
 	getWindow,
 	mergeDefaultProps,
 	mergeRefs,
+	type OverrideComponentProps,
 } from "@kobalte/utils";
 import { type JSX, splitProps } from "solid-js";
 

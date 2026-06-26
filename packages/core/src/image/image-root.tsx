@@ -47,7 +47,11 @@ export type ImageRootProps<
 export function ImageRoot<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, ImageRootProps<T>>,
 ) {
-	const others = omit(props as ImageRootProps, "fallbackDelay", "onLoadingStatusChange");
+	const others = omit(
+		props as ImageRootProps,
+		"fallbackDelay",
+		"onLoadingStatusChange",
+	);
 
 	const [imageLoadingStatus, setImageLoadingStatus] =
 		createSignal<ImageLoadingStatus>("idle");

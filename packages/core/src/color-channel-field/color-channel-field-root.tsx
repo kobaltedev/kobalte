@@ -1,12 +1,12 @@
 import { clamp, mergeDefaultProps } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
 import {
-	type Component,
-	createMemo,
-	createUniqueId,
-	omit,
-} from "solid-js";
-import { parseColor, type Color, type ColorChannel, type ColorSpace } from "@solid-primitives/utils/colors";
+	type Color,
+	type ColorChannel,
+	type ColorSpace,
+	parseColor,
+} from "@solid-primitives/utils/colors";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createMemo, createUniqueId, omit } from "solid-js";
 import * as NumberField from "../number-field";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
@@ -66,16 +66,26 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 		props as ColorChannelFieldRootProps,
 	);
 
-	const others = omit(mergedProps, "value", "defaultValue", "onChange", "channel", "colorSpace");
+	const others = omit(
+		mergedProps,
+		"value",
+		"defaultValue",
+		"onChange",
+		"channel",
+		"colorSpace",
+	);
 
 	const [value, setValue] = createControllableSignal<Color>({
 		value: () => mergedProps.value,
-		defaultValue: () => mergedProps.defaultValue ?? parseColor("hsl(0, 100%, 50%)"),
+		defaultValue: () =>
+			mergedProps.defaultValue ?? parseColor("hsl(0, 100%, 50%)"),
 		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
 	const color = createMemo(() =>
-		mergedProps.colorSpace ? value()!.toFormat(mergedProps.colorSpace) : value(),
+		mergedProps.colorSpace
+			? value()!.toFormat(mergedProps.colorSpace)
+			: value(),
 	);
 
 	const range = createMemo(() => color()!.getChannelRange(mergedProps.channel));

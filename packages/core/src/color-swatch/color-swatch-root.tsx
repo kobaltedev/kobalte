@@ -1,11 +1,11 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	createUniqueId,
-	omit,
-} from "solid-js";
-import { COLOR_INTL_TRANSLATIONS, type Color } from "@solid-primitives/utils/colors";
+	COLOR_INTL_TRANSLATIONS,
+	type Color,
+} from "@solid-primitives/utils/colors";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createUniqueId, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -58,7 +58,14 @@ export function ColorSwatchRoot<T extends ValidComponent = "div">(
 		props as ColorSwatchRootProps,
 	);
 
-	const others = omit(mergedProps, "style", "value", "colorName", "aria-label", "translations");
+	const others = omit(
+		mergedProps,
+		"style",
+		"value",
+		"colorName",
+		"aria-label",
+		"translations",
+	);
 
 	const ariaLabel = () => {
 		const colorName =

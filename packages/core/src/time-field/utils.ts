@@ -2,8 +2,8 @@ import {
 	type DateValue,
 	getLocalTimeZone,
 	toCalendarDateTime,
-	toZoned,
 	today,
+	toZoned,
 } from "@internationalized/date";
 import { type Accessor, createEffect, createMemo } from "solid-js";
 import type {
@@ -108,7 +108,7 @@ export function getTimeFieldFormatOptions(
 	const opts: Intl.DateTimeFormatOptions = keys
 		.slice(startIdx, endIdx + 1)
 		.reduce((opts, key) => {
-			//@ts-ignore
+			//@ts-expect-error
 			opts[key] = defaultFieldOptions[key];
 			return opts;
 		}, {});

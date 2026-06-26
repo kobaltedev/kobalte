@@ -7,7 +7,7 @@
  */
 import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import { createUniqueId, omit } from "solid-js";
 import {
 	type ElementOf,
@@ -64,7 +64,16 @@ export function Skeleton<T extends ValidComponent = "div">(
 		props as SkeletonRootProps,
 	);
 
-	const others = omit(mergedProps, "style", "radius", "animate", "height", "width", "visible", "circle");
+	const others = omit(
+		mergedProps,
+		"style",
+		"radius",
+		"animate",
+		"height",
+		"width",
+		"visible",
+		"circle",
+	);
 
 	return (
 		<Polymorphic<SkeletonRootRenderProps>

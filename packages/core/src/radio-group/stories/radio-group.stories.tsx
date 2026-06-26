@@ -20,7 +20,6 @@ const meta = preview.meta({
 
 export default meta;
 
-
 const groupClass = "flex flex-col gap-3 font-sans";
 
 const itemClass = "flex items-center gap-3";
@@ -28,18 +27,15 @@ const itemClass = "flex items-center gap-3";
 const controlClass =
 	"relative flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-full border-2 border-slate-300 bg-white transition-colors duration-150 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 data-[checked]:border-blue-500 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50";
 
-const indicatorClass =
-	"h-2.5 w-2.5 rounded-full bg-blue-500";
+const indicatorClass = "h-2.5 w-2.5 rounded-full bg-blue-500";
 
 const labelClass =
 	"text-sm font-medium text-slate-700 select-none cursor-pointer";
 
-const groupLabelClass =
-	"text-sm font-semibold text-slate-800 mb-1";
+const groupLabelClass = "text-sm font-semibold text-slate-800 mb-1";
 
 const descriptionClass = "text-xs text-slate-500 mt-0.5";
 const errorClass = "text-xs text-red-600 mt-0.5";
-
 
 /** A basic radio group with three options. */
 export const Default = meta.story({
@@ -88,8 +84,16 @@ export const WithDescriptions = meta.story({
 			{(
 				[
 					{ value: "realtime", label: "Real-time", desc: "As events happen." },
-					{ value: "daily", label: "Daily digest", desc: "Once a day summary." },
-					{ value: "weekly", label: "Weekly recap", desc: "Every Monday morning." },
+					{
+						value: "daily",
+						label: "Daily digest",
+						desc: "Once a day summary.",
+					},
+					{
+						value: "weekly",
+						label: "Weekly recap",
+						desc: "Every Monday morning.",
+					},
 				] as const
 			).map(({ value, label, desc }) => (
 				<Item class={itemClass} value={value}>
@@ -138,7 +142,9 @@ export const Disabled = meta.story({
 						<ItemIndicator class={indicatorClass} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel class={`${labelClass} opacity-50 cursor-not-allowed`}>{plan}</ItemLabel>
+					<ItemLabel class={`${labelClass} opacity-50 cursor-not-allowed`}>
+						{plan}
+					</ItemLabel>
 				</Item>
 			))}
 		</Root>
@@ -186,7 +192,9 @@ export const ReadOnly = meta.story({
 						<ItemIndicator class={indicatorClass} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel class={`${labelClass} cursor-not-allowed`}>{plan}</ItemLabel>
+					<ItemLabel class={`${labelClass} cursor-not-allowed`}>
+						{plan}
+					</ItemLabel>
 				</Item>
 			))}
 		</Root>

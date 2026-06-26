@@ -1,7 +1,7 @@
 import {
 	type Accessor,
-	type Setter,
 	createContext,
+	type Setter,
 	useContext,
 } from "solid-js";
 

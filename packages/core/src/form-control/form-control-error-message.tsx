@@ -1,6 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { Show, createEffect, omit, onCleanup } from "solid-js";
+import { createEffect, omit, onCleanup, Show } from "solid-js";
 
 import {
 	type ElementOf,
@@ -55,7 +55,7 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 	const isInvalid = () => context.validationState() === "invalid";
 
 	createEffect(
-		() => isInvalid() ? others.id! : undefined,
+		() => (isInvalid() ? others.id! : undefined),
 		(id) => {
 			if (!id) return;
 			onCleanup(context.registerErrorMessage(id));

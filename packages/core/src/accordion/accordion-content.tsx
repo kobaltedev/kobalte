@@ -7,14 +7,9 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import {
-	type Component,
-	createEffect,
-	omit,
-} from "solid-js";
-import type { ValidComponent } from "@solidjs/web";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit } from "solid-js";
 import * as Collapsible from "../collapsible";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useAccordionItemContext } from "./accordion-item-context";

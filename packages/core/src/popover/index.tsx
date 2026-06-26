@@ -58,37 +58,37 @@ import {
 } from "./popover-trigger";
 
 export type {
-	PopoverAnchorOptions,
 	PopoverAnchorCommonProps,
-	PopoverAnchorRenderProps,
+	PopoverAnchorOptions,
 	PopoverAnchorProps,
-	PopoverArrowOptions,
+	PopoverAnchorRenderProps,
 	PopoverArrowCommonProps,
-	PopoverArrowRenderProps,
+	PopoverArrowOptions,
 	PopoverArrowProps,
-	PopoverCloseButtonOptions,
+	PopoverArrowRenderProps,
 	PopoverCloseButtonCommonProps,
-	PopoverCloseButtonRenderProps,
+	PopoverCloseButtonOptions,
 	PopoverCloseButtonProps,
-	PopoverContentOptions,
+	PopoverCloseButtonRenderProps,
 	PopoverContentCommonProps,
-	PopoverContentRenderProps,
+	PopoverContentOptions,
 	PopoverContentProps,
-	PopoverDescriptionOptions,
+	PopoverContentRenderProps,
 	PopoverDescriptionCommonProps,
-	PopoverDescriptionRenderProps,
+	PopoverDescriptionOptions,
 	PopoverDescriptionProps,
+	PopoverDescriptionRenderProps,
 	PopoverPortalProps,
 	PopoverRootOptions,
 	PopoverRootProps,
-	PopoverTitleOptions,
 	PopoverTitleCommonProps,
-	PopoverTitleRenderProps,
+	PopoverTitleOptions,
 	PopoverTitleProps,
-	PopoverTriggerOptions,
+	PopoverTitleRenderProps,
 	PopoverTriggerCommonProps,
-	PopoverTriggerRenderProps,
+	PopoverTriggerOptions,
 	PopoverTriggerProps,
+	PopoverTriggerRenderProps,
 };
 
 export {
@@ -117,4 +117,4 @@ export const Popover = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { usePopoverContext, type PopoverContextValue } from "./popover-context";
+export { type PopoverContextValue, usePopoverContext } from "./popover-context";

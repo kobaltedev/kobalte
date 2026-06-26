@@ -44,14 +44,13 @@ export type LinkRootProps<
 export function LinkRoot<T extends ValidComponent = "a">(
 	props: PolymorphicProps<T, LinkRootProps<T>>,
 ) {
-	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const others = omit(props as LinkRootProps, "ref", "href", "disabled");
 
-	const tagName = createTagName(
-		ref,
-		() => "a",
-	);
+	const tagName = createTagName(ref, () => "a");
 
 	return (
 		<Polymorphic<LinkRootRenderProps>

@@ -1,18 +1,18 @@
-import { createMemo, createSignal, For } from "solid-js";
 import {
 	flatten,
 	resolveTemplate,
-	translator,
 	scopedTranslator,
+	translator,
 } from "@solid-primitives/i18n";
+import { createMemo, createSignal, For } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
-	I18nProvider,
-	useLocale,
 	createCollator,
+	createDateFormatter,
 	createFilter,
 	createNumberFormatter,
-	createDateFormatter,
+	I18nProvider,
+	useLocale,
 } from "../index";
 
 const meta = preview.meta({
@@ -26,8 +26,10 @@ export default meta;
 // Shared styles
 // ---------------------------------------------------------------------------
 
-const panel = "font-sans text-sm rounded-lg border border-slate-200 overflow-hidden";
-const row = "flex items-center gap-3 px-4 py-2.5 border-b border-slate-100 last:border-0";
+const panel =
+	"font-sans text-sm rounded-lg border border-slate-200 overflow-hidden";
+const row =
+	"flex items-center gap-3 px-4 py-2.5 border-b border-slate-100 last:border-0";
 const label = "text-slate-500 w-36 shrink-0";
 const value = "font-mono text-slate-800";
 
@@ -95,7 +97,10 @@ function NumberFormatterDisplay() {
 		currency: "USD",
 		maximumFractionDigits: 2,
 	}));
-	const percent = createNumberFormatter(() => ({ style: "percent", maximumFractionDigits: 1 }));
+	const percent = createNumberFormatter(() => ({
+		style: "percent",
+		maximumFractionDigits: 1,
+	}));
 	const compact = createNumberFormatter(() => ({ notation: "compact" }));
 
 	const amount = 12345.67;
@@ -210,13 +215,36 @@ export const DateFormatterStory = meta.story({
 // ---------------------------------------------------------------------------
 
 const FRUITS = [
-	"Apple", "Apricot", "Avocado", "Banana", "Blueberry", "Cherry",
-	"Coconut", "Date", "Fig", "Grape", "Guava", "Kiwi", "Lemon",
-	"Lime", "Mango", "Melon", "Orange", "Papaya", "Peach", "Pear",
-	"Pineapple", "Plum", "Raspberry", "Strawberry", "Watermelon",
+	"Apple",
+	"Apricot",
+	"Avocado",
+	"Banana",
+	"Blueberry",
+	"Cherry",
+	"Coconut",
+	"Date",
+	"Fig",
+	"Grape",
+	"Guava",
+	"Kiwi",
+	"Lemon",
+	"Lime",
+	"Mango",
+	"Melon",
+	"Orange",
+	"Papaya",
+	"Peach",
+	"Pear",
+	"Pineapple",
+	"Plum",
+	"Raspberry",
+	"Strawberry",
+	"Watermelon",
 ];
 
-function FilterDisplay(props: { mode: "startsWith" | "endsWith" | "contains" }) {
+function FilterDisplay(props: {
+	mode: "startsWith" | "endsWith" | "contains";
+}) {
 	const [query, setQuery] = createSignal("a");
 	const filter = createFilter({ sensitivity: "base" });
 
@@ -281,7 +309,15 @@ export const FilterStory = meta.story({
 // Story: Collator (string sorting)
 // ---------------------------------------------------------------------------
 
-const WORDS_EN = ["résumé", "Zebra", "apple", "éclair", "Banana", "café", "date"];
+const WORDS_EN = [
+	"résumé",
+	"Zebra",
+	"apple",
+	"éclair",
+	"Banana",
+	"café",
+	"date",
+];
 const WORDS_DE = ["Straße", "straße", "Strasse", "strasse", "Äpfel", "apfel"];
 
 function CollatorDisplay(props: { words: string[] }) {
@@ -324,7 +360,8 @@ export const CollatorStory = meta.story({
 		wordSet: {
 			control: "select",
 			options: ["english", "german"],
-			description: "Word list to sort — German set highlights umlaut collation.",
+			description:
+				"Word list to sort — German set highlights umlaut collation.",
 		},
 		locale: {
 			control: "select",
@@ -333,7 +370,9 @@ export const CollatorStory = meta.story({
 	},
 	render: (args) => (
 		<I18nProvider locale={args.locale}>
-			<CollatorDisplay words={args.wordSet === "german" ? WORDS_DE : WORDS_EN} />
+			<CollatorDisplay
+				words={args.wordSet === "german" ? WORDS_DE : WORDS_EN}
+			/>
 		</I18nProvider>
 	),
 });
@@ -379,7 +418,11 @@ const DICTS = { "en-US": enDict, "fr-FR": frDict, "de-DE": deDict } as const;
 
 type DictKey = keyof typeof DICTS;
 
-function TranslatorDisplay(props: { dictKey: DictKey; name: string; count: number }) {
+function TranslatorDisplay(props: {
+	dictKey: DictKey;
+	name: string;
+	count: number;
+}) {
 	const dict = createMemo(() => DICTS[props.dictKey] ?? enDict);
 	const t = translator(dict, resolveTemplate);
 	const nav = scopedTranslator(t, "nav");
@@ -439,6 +482,10 @@ export const TranslatorStory = meta.story({
 		},
 	},
 	render: (args) => (
-		<TranslatorDisplay dictKey={args.locale} name={args.name} count={args.count} />
+		<TranslatorDisplay
+			dictKey={args.locale}
+			name={args.name}
+			count={args.count}
+		/>
 	),
 });

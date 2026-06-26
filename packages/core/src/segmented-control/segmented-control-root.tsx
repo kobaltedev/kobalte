@@ -1,11 +1,6 @@
 import { mergeRefs } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	createSignal,
-	merge,
-	omit,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, merge, omit } from "solid-js";
 import type { PolymorphicProps } from "../polymorphic";
 import { RadioGroup, type RadioGroupRootProps } from "../radio-group";
 import {

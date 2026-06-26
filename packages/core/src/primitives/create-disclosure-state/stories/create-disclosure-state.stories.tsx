@@ -26,9 +26,15 @@ export const Default = meta.story({
 		return (
 			<div class="flex flex-col gap-3">
 				<div class="flex gap-2">
-					<button class={btnClass} onClick={state.toggle}>Toggle</button>
-					<button class={btnClass} onClick={state.open}>Open</button>
-					<button class={btnClass} onClick={state.close}>Close</button>
+					<button class={btnClass} onClick={state.toggle}>
+						Toggle
+					</button>
+					<button class={btnClass} onClick={state.open}>
+						Open
+					</button>
+					<button class={btnClass} onClick={state.close}>
+						Close
+					</button>
 				</div>
 				<p class="text-xs text-slate-500 font-sans">
 					State: <strong>{state.isOpen() ? "open" : "closed"}</strong>
@@ -48,13 +54,13 @@ export const DefaultOpen = meta.story({
 		const state = createDisclosureState({ defaultOpen: true });
 		return (
 			<div class="flex flex-col gap-3">
-				<button class={btnClass} onClick={state.toggle}>Toggle</button>
+				<button class={btnClass} onClick={state.toggle}>
+					Toggle
+				</button>
 				<p class="text-xs text-slate-500 font-sans">
 					State: <strong>{state.isOpen() ? "open" : "closed"}</strong>
 				</p>
-				{state.isOpen() && (
-					<div class={panelClass}>Opened by default.</div>
-				)}
+				{state.isOpen() && <div class={panelClass}>Opened by default.</div>}
 			</div>
 		);
 	},
@@ -72,9 +78,15 @@ export const Controlled = meta.story({
 		return (
 			<div class="flex flex-col gap-3">
 				<div class="flex gap-2">
-					<button class={btnClass} onClick={state.toggle}>Toggle (internal)</button>
-					<button class={btnClass} onClick={() => setOpen(true)}>Force open (external)</button>
-					<button class={btnClass} onClick={() => setOpen(false)}>Force close (external)</button>
+					<button class={btnClass} onClick={state.toggle}>
+						Toggle (internal)
+					</button>
+					<button class={btnClass} onClick={() => setOpen(true)}>
+						Force open (external)
+					</button>
+					<button class={btnClass} onClick={() => setOpen(false)}>
+						Force close (external)
+					</button>
 				</div>
 				<p class="text-xs text-slate-500 font-sans">
 					Signal: <strong>{open() ? "open" : "closed"}</strong>
@@ -106,7 +118,9 @@ export const Multiple = meta.story({
 							onClick={state.toggle}
 						>
 							{label}
-							<span class="text-slate-400 text-xs">{state.isOpen() ? "▲" : "▼"}</span>
+							<span class="text-slate-400 text-xs">
+								{state.isOpen() ? "▲" : "▼"}
+							</span>
 						</button>
 						{state.isOpen() && (
 							<div class="px-4 py-3 text-sm text-slate-600 bg-slate-50 border-t border-slate-200">

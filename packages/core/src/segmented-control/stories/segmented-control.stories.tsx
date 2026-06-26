@@ -66,7 +66,9 @@ export const WithLabel = meta.story({
 	render: () => (
 		<div class="flex flex-col gap-2 font-sans">
 			<Root class={rootClass} defaultValue="grid">
-				<Label class="text-sm font-medium text-slate-700 mb-1 block">View</Label>
+				<Label class="text-sm font-medium text-slate-700 mb-1 block">
+					View
+				</Label>
 				<Indicator class={indicatorClass} />
 				{(["List", "Grid", "Kanban"] as const).map((label) => (
 					<Item class={itemClass} value={label.toLowerCase()}>
@@ -84,10 +86,17 @@ export const WithLabel = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root class={`${rootClass} opacity-50 cursor-not-allowed`} defaultValue="month" disabled>
+		<Root
+			class={`${rootClass} opacity-50 cursor-not-allowed`}
+			defaultValue="month"
+			disabled
+		>
 			<Indicator class={indicatorClass} />
 			{(["Day", "Month", "Year"] as const).map((label) => (
-				<Item class={`${itemClass} pointer-events-none`} value={label.toLowerCase()}>
+				<Item
+					class={`${itemClass} pointer-events-none`}
+					value={label.toLowerCase()}
+				>
 					<ItemInput />
 					<ItemControl class="absolute inset-0" />
 					<ItemLabel class="pointer-events-none">{label}</ItemLabel>
@@ -141,7 +150,9 @@ export const ManySegments = meta.story({
 				<Item class={`${itemClass} px-3`} value={label.toLowerCase()}>
 					<ItemInput />
 					<ItemControl class="absolute inset-0 cursor-pointer" />
-					<ItemLabel class="pointer-events-none font-mono text-xs">{label}</ItemLabel>
+					<ItemLabel class="pointer-events-none font-mono text-xs">
+						{label}
+					</ItemLabel>
 				</Item>
 			))}
 		</Root>

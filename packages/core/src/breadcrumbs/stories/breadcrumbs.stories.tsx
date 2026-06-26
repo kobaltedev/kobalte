@@ -21,15 +21,21 @@ export const Default = meta.story({
 		<Root class={navClass}>
 			<ol class={listClass}>
 				<li>
-					<Link class={linkClass} href="#">Home</Link>
+					<Link class={linkClass} href="#">
+						Home
+					</Link>
 				</li>
 				<Separator as="li" class={separatorClass} />
 				<li>
-					<Link class={linkClass} href="#">Library</Link>
+					<Link class={linkClass} href="#">
+						Library
+					</Link>
 				</li>
 				<Separator as="li" class={separatorClass} />
 				<li>
-					<Link class={linkClass} current>Data</Link>
+					<Link class={linkClass} current>
+						Data
+					</Link>
 				</li>
 			</ol>
 		</Root>
@@ -43,15 +49,21 @@ export const ChevronSeparator = meta.story({
 		<Root class={navClass} separator="›">
 			<ol class={listClass}>
 				<li>
-					<Link class={linkClass} href="#">Home</Link>
+					<Link class={linkClass} href="#">
+						Home
+					</Link>
 				</li>
 				<Separator as="li" class={separatorClass} />
 				<li>
-					<Link class={linkClass} href="#">Products</Link>
+					<Link class={linkClass} href="#">
+						Products
+					</Link>
 				</li>
 				<Separator as="li" class={separatorClass} />
 				<li>
-					<Link class={linkClass} current>Shoes</Link>
+					<Link class={linkClass} current>
+						Shoes
+					</Link>
 				</li>
 			</ol>
 		</Root>
@@ -65,15 +77,21 @@ export const DotSeparator = meta.story({
 		<Root class={navClass} separator="·">
 			<ol class={listClass}>
 				<li>
-					<Link class={linkClass} href="#">Home</Link>
+					<Link class={linkClass} href="#">
+						Home
+					</Link>
 				</li>
 				<Separator as="li" class={separatorClass} />
 				<li>
-					<Link class={linkClass} href="#">Docs</Link>
+					<Link class={linkClass} href="#">
+						Docs
+					</Link>
 				</li>
 				<Separator as="li" class={separatorClass} />
 				<li>
-					<Link class={linkClass} current>Getting started</Link>
+					<Link class={linkClass} current>
+						Getting started
+					</Link>
 				</li>
 			</ol>
 		</Root>
@@ -87,15 +105,21 @@ export const WithDisabledLink = meta.story({
 		<Root class={navClass}>
 			<ol class={listClass}>
 				<li>
-					<Link class={linkClass} href="#">Home</Link>
+					<Link class={linkClass} href="#">
+						Home
+					</Link>
 				</li>
 				<Separator as="li" class={separatorClass} />
 				<li>
-					<Link class={linkClass} disabled>Restricted</Link>
+					<Link class={linkClass} disabled>
+						Restricted
+					</Link>
 				</li>
 				<Separator as="li" class={separatorClass} />
 				<li>
-					<Link class={linkClass} current>Report</Link>
+					<Link class={linkClass} current>
+						Report
+					</Link>
 				</li>
 			</ol>
 		</Root>

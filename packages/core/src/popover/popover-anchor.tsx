@@ -37,7 +37,10 @@ export function PopoverAnchor<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<PopoverAnchorRenderProps>
 			as="div"
-			ref={mergeRefs(context.setDefaultAnchorRef, (props as PopoverAnchorProps).ref)}
+			ref={mergeRefs(
+				context.setDefaultAnchorRef,
+				(props as PopoverAnchorProps).ref,
+			)}
 			{...context.dataset()}
 			{...others}
 		/>

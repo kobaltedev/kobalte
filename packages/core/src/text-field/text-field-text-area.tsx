@@ -66,7 +66,13 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 		props as TextFieldTextAreaProps,
 	);
 
-	const others = omit(mergedProps, "ref", "autoResize", "submitOnEnter", "onKeyPress");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"autoResize",
+		"submitOnEnter",
+		"onKeyPress",
+	);
 
 	createEffect(
 		() => ({ autoResize: mergedProps.autoResize, value: context.value() }),

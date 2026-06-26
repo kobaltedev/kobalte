@@ -1,6 +1,6 @@
-import { type JSX, type ValidComponent } from "@solidjs/web";
-import { For, omit } from "solid-js";
 import type { UploadFile } from "@solid-primitives/upload";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { For, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,

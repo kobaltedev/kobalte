@@ -1,11 +1,11 @@
 import { clamp, mergeDefaultProps, snapValueToStep } from "@kobalte/utils";
-import { type Accessor, createMemo, createSignal } from "solid-js";
 import {
 	type Color,
 	type ColorChannel,
 	type ColorSpace,
 	parseColor,
 } from "@solid-primitives/utils/colors";
+import { type Accessor, createMemo, createSignal } from "solid-js";
 import { createControllableSignal } from "../primitives";
 
 export interface ColorAreaState {

@@ -1,9 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	omit,
-} from "solid-js";
+import { createEffect, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -45,7 +42,10 @@ export function ToastDescription<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "id");
 
-	createEffect(() => mergedProps.id, id => context.registerDescriptionId(id!));
+	createEffect(
+		() => mergedProps.id,
+		(id) => context.registerDescriptionId(id!),
+	);
 
 	return (
 		<Polymorphic<ToastDescriptionRenderProps>

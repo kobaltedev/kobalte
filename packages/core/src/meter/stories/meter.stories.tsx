@@ -32,7 +32,10 @@ export const Playground = meta.story({
 		>
 			<div class="flex justify-between items-baseline">
 				<Label class="text-sm font-medium text-slate-700">Resource usage</Label>
-				<ValueLabel class="text-sm font-mono font-semibold" style={{ color: meterColor(args.value / 100) }} />
+				<ValueLabel
+					class="text-sm font-mono font-semibold"
+					style={{ color: meterColor(args.value / 100) }}
+				/>
 			</div>
 			<Track class="relative h-6 w-full rounded bg-slate-100 border border-slate-200 overflow-hidden">
 				<Fill
@@ -86,7 +89,10 @@ export const DiskUsage = meta.story({
 					class="h-full transition-all duration-300 [width:var(--kb-meter-fill-width)]"
 					style={{ "background-color": meterColor(args.used / 100) }}
 				/>
-				<div class="absolute inset-y-0 flex items-center" style={{ left: `${args.used}%` }}>
+				<div
+					class="absolute inset-y-0 flex items-center"
+					style={{ left: `${args.used}%` }}
+				>
 					<div class="w-0.5 h-full bg-white/70" />
 				</div>
 			</Track>
@@ -122,14 +128,19 @@ export const SystemResources = meta.story({
 							getValueLabel={({ value }) => `${value}%`}
 							class="flex items-center gap-3"
 						>
-							<Label class="w-16 text-xs text-slate-400 shrink-0">{r.label}</Label>
+							<Label class="w-16 text-xs text-slate-400 shrink-0">
+								{r.label}
+							</Label>
 							<Track class="relative flex-1 h-3 rounded-sm bg-slate-700 overflow-hidden">
 								<Fill
 									class="h-full [width:var(--kb-meter-fill-width)]"
 									style={{ "background-color": color }}
 								/>
 							</Track>
-							<ValueLabel class="w-9 text-right text-xs font-mono shrink-0" style={{ color }} />
+							<ValueLabel
+								class="w-9 text-right text-xs font-mono shrink-0"
+								style={{ color }}
+							/>
 						</Root>
 					);
 				})}

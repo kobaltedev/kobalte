@@ -1,10 +1,5 @@
-import { type ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	createMemo,
-	createSignal,
-	omit,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, createMemo, createSignal, omit } from "solid-js";
 import {
 	ComboboxBase,
 	type ComboboxBaseOptions,
@@ -18,7 +13,7 @@ import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { SearchContext, type SearchContextValue } from "./search-context";
 import { DebouncerTimeout } from "./utils";
 
-export type { SearchSingleSelectionOptions, SearchMultipleSelectionOptions };
+export type { SearchMultipleSelectionOptions, SearchSingleSelectionOptions };
 
 // SearchBase wraps Combobox without `defaultFilter` as filtering is handled externally - eg: on database
 export interface SearchBaseOptions<Option, OptGroup = never>

@@ -26,7 +26,10 @@ export const Default = meta.story({
 		);
 		return (
 			<div class="flex flex-col gap-2 font-sans">
-				<div ref={ref} class="rounded-md border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+				<div
+					ref={ref}
+					class="rounded-md border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
+				>
 					I am a <code class={badgeClass}>div</code>
 				</div>
 				<p class="text-xs text-slate-500">
@@ -72,9 +75,15 @@ export const FallbackVsResolved = meta.story({
 		let ref: HTMLButtonElement | undefined;
 
 		// No ref — only the fallback "span" is used
-		const fallbackOnly = createTagName(() => undefined, () => "span");
+		const fallbackOnly = createTagName(
+			() => undefined,
+			() => "span",
+		);
 		// Ref attached to a <button> — resolves to "button", ignoring the "span" fallback
-		const resolved = createTagName(() => ref, () => "span");
+		const resolved = createTagName(
+			() => ref,
+			() => "span",
+		);
 
 		return (
 			<div class="flex flex-col gap-3 font-sans text-sm">
@@ -108,16 +117,33 @@ export const Multiple = meta.story({
 		return (
 			<div class="flex flex-col gap-2 font-sans text-sm">
 				<div class="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2">
-					<div ref={divRef} class="text-slate-700">Section</div>
-					<span class="text-xs text-slate-400">tag: <span class={badgeClass}>{divTag() ?? "—"}</span></span>
+					<div ref={divRef} class="text-slate-700">
+						Section
+					</div>
+					<span class="text-xs text-slate-400">
+						tag: <span class={badgeClass}>{divTag() ?? "—"}</span>
+					</span>
 				</div>
 				<div class="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2">
-					<button ref={btnRef} class="text-slate-700 outline-none bg-transparent">Action</button>
-					<span class="text-xs text-slate-400">tag: <span class={badgeClass}>{btnTag() ?? "—"}</span></span>
+					<button
+						ref={btnRef}
+						class="text-slate-700 outline-none bg-transparent"
+					>
+						Action
+					</button>
+					<span class="text-xs text-slate-400">
+						tag: <span class={badgeClass}>{btnTag() ?? "—"}</span>
+					</span>
 				</div>
 				<div class="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2">
-					<input ref={inputRef} placeholder="Field" class="text-slate-700 outline-none bg-transparent" />
-					<span class="text-xs text-slate-400">tag: <span class={badgeClass}>{inputTag() ?? "—"}</span></span>
+					<input
+						ref={inputRef}
+						placeholder="Field"
+						class="text-slate-700 outline-none bg-transparent"
+					/>
+					<span class="text-xs text-slate-400">
+						tag: <span class={badgeClass}>{inputTag() ?? "—"}</span>
+					</span>
 				</div>
 			</div>
 		);

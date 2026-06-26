@@ -35,26 +35,26 @@ import {
 } from "./accordion-trigger";
 
 export type {
-	AccordionContentOptions,
 	AccordionContentCommonProps,
-	AccordionContentRenderProps,
+	AccordionContentOptions,
 	AccordionContentProps,
-	AccordionHeaderOptions,
+	AccordionContentRenderProps,
 	AccordionHeaderCommonProps,
-	AccordionHeaderRenderProps,
+	AccordionHeaderOptions,
 	AccordionHeaderProps,
-	AccordionItemOptions,
+	AccordionHeaderRenderProps,
 	AccordionItemCommonProps,
-	AccordionItemRenderProps,
+	AccordionItemOptions,
 	AccordionItemProps,
-	AccordionRootOptions,
+	AccordionItemRenderProps,
 	AccordionRootCommonProps,
-	AccordionRootRenderProps,
+	AccordionRootOptions,
 	AccordionRootProps,
-	AccordionTriggerOptions,
+	AccordionRootRenderProps,
 	AccordionTriggerCommonProps,
-	AccordionTriggerRenderProps,
+	AccordionTriggerOptions,
 	AccordionTriggerProps,
+	AccordionTriggerRenderProps,
 };
 export { Content, Header, Item, Root, Trigger };
 
@@ -69,6 +69,6 @@ export const Accordion = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useAccordionContext,
 	type AccordionContextValue,
+	useAccordionContext,
 } from "./accordion-context";

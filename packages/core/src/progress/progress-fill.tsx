@@ -1,7 +1,6 @@
+import { combineStyle } from "@solid-primitives/props";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
-
-import { combineStyle } from "@solid-primitives/props";
 import {
 	Meter,
 	type MeterFillCommonProps,

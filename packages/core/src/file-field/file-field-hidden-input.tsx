@@ -1,9 +1,6 @@
-import {
-	composeEventHandlers,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { composeEventHandlers, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type ComponentProps, type JSX } from "@solidjs/web";
+import type { ComponentProps, JSX } from "@solidjs/web";
 import { omit } from "solid-js";
 import { useFormControlContext } from "../form-control";
 import { useFileFieldContext } from "./file-field-context";
@@ -16,12 +13,16 @@ export function FileFieldHiddenInput(props: FileFieldHiddenInputProps) {
 	const context = useFileFieldContext();
 	const formControlContext = useFormControlContext();
 
-	const onChange: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (event) => {
+	const onChange: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (
+		event,
+	) => {
 		if (context.disabled()) {
 			return;
 		}
 
-		const { files } = (event as InputEvent & { currentTarget: HTMLInputElement }).currentTarget;
+		const { files } = (
+			event as InputEvent & { currentTarget: HTMLInputElement }
+		).currentTarget;
 		context.processFiles(Array.from(files ?? []) as File[]);
 	};
 
@@ -33,9 +34,13 @@ export function FileFieldHiddenInput(props: FileFieldHiddenInputProps) {
 			multiple={context.multiple()}
 			ref={(el: HTMLInputElement) => {
 				context.setFileInputRef(el);
-				if (typeof props.ref === "function") (props.ref as (el: HTMLInputElement) => void)(el);
+				if (typeof props.ref === "function")
+					(props.ref as (el: HTMLInputElement) => void)(el);
 			}}
-			style={combineStyle({ ...visuallyHiddenStyles }, props.style || undefined)}
+			style={combineStyle(
+				{ ...visuallyHiddenStyles },
+				props.style || undefined,
+			)}
 			onChange={composeEventHandlers([props.onChange, onChange])}
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}

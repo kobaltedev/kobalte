@@ -1,22 +1,16 @@
-import { type ValidationState, mergeDefaultProps } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createMemo,
-	createUniqueId,
-	omit,
-} from "solid-js";
-
+import { mergeDefaultProps, type ValidationState } from "@kobalte/utils";
+import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import {
 	COLOR_INTL_TRANSLATIONS,
-	parseColor,
 	type Color,
 	type ColorChannel,
 	type ColorIntlTranslations,
 	type ColorSpace,
+	parseColor,
 } from "@solid-primitives/utils/colors";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createMemo, createUniqueId, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import * as Slider from "../slider";
 import {
 	ColorSliderContext,
@@ -111,7 +105,17 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 		props as ColorSliderRootProps,
 	);
 
-	const others = omit(mergedProps, "value", "defaultValue", "onChange", "onChangeEnd", "channel", "colorSpace", "getValueLabel", "translations");
+	const others = omit(
+		mergedProps,
+		"value",
+		"defaultValue",
+		"onChange",
+		"onChangeEnd",
+		"channel",
+		"colorSpace",
+		"getValueLabel",
+		"translations",
+	);
 
 	const [value, setValue] = createControllableSignal<Color>({
 		value: () => mergedProps.value,
@@ -120,7 +124,9 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 	});
 
 	const color = createMemo(() => {
-		return mergedProps.colorSpace ? value()!.toFormat(mergedProps.colorSpace) : value()!;
+		return mergedProps.colorSpace
+			? value()!.toFormat(mergedProps.colorSpace)
+			: value()!;
 	});
 
 	const onChange = (value: number[]) => {
@@ -128,7 +134,9 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 	};
 
 	const onChangeEnd = (value: number[]) => {
-		mergedProps.onChangeEnd?.(color()!.withChannelValue(mergedProps.channel, value[0]));
+		mergedProps.onChangeEnd?.(
+			color()!.withChannelValue(mergedProps.channel, value[0]),
+		);
 	};
 
 	const getValueLabel = createMemo(() => {

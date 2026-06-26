@@ -7,10 +7,10 @@ import {
 } from "./alert-root";
 
 export type {
-	AlertRootOptions,
 	AlertRootCommonProps,
-	AlertRootRenderProps,
+	AlertRootOptions,
 	AlertRootProps,
+	AlertRootRenderProps,
 };
 export { Root };
 

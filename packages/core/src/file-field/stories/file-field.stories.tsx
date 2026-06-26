@@ -1,4 +1,4 @@
-import { For, Show, createSignal } from "solid-js";
+import { createSignal, For, Show } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
 	Description,
@@ -74,7 +74,12 @@ export const WithDropzone = meta.story({
 export const ImagePreview = meta.story({
 	name: "Image Preview",
 	render: () => (
-		<Root class="flex flex-col gap-3 font-sans w-80" multiple accept="image/*" maxFiles={6}>
+		<Root
+			class="flex flex-col gap-3 font-sans w-80"
+			multiple
+			accept="image/*"
+			maxFiles={6}
+		>
 			<Label class="text-sm font-medium text-slate-700">Photos</Label>
 			<Dropzone class={dropzoneClass}>
 				<span class="text-2xl">🖼️</span>
@@ -130,7 +135,9 @@ export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
 		<Root class="flex flex-col gap-2 font-sans w-72" disabled>
-			<Label class="text-sm font-medium text-slate-400">Attachment (disabled)</Label>
+			<Label class="text-sm font-medium text-slate-400">
+				Attachment (disabled)
+			</Label>
 			<Trigger class={triggerClass}>Choose file</Trigger>
 			<HiddenInput />
 		</Root>
@@ -141,11 +148,19 @@ export const Disabled = meta.story({
 export const Invalid = meta.story({
 	name: "Invalid",
 	render: () => (
-		<Root class="flex flex-col gap-2 font-sans w-72" validationState="invalid" required>
+		<Root
+			class="flex flex-col gap-2 font-sans w-72"
+			validationState="invalid"
+			required
+		>
 			<Label class="text-sm font-medium text-slate-700">Contract</Label>
 			<Trigger class={triggerClass}>Choose file</Trigger>
-			<Description class="text-xs text-slate-500">PDF or Word document required.</Description>
-			<ErrorMessage class="text-xs text-red-600">A file is required.</ErrorMessage>
+			<Description class="text-xs text-slate-500">
+				PDF or Word document required.
+			</Description>
+			<ErrorMessage class="text-xs text-red-600">
+				A file is required.
+			</ErrorMessage>
 			<HiddenInput />
 		</Root>
 	),

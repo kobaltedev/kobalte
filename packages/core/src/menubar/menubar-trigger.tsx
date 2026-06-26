@@ -1,5 +1,5 @@
+import type { ValidComponent } from "@solidjs/web";
 import { createUniqueId } from "solid-js";
-import { type ValidComponent } from "@solidjs/web";
 
 import { MenuTrigger, type MenuTriggerProps } from "../menu";
 import { useOptionalMenuContext } from "../menu/menu-context";

@@ -54,40 +54,40 @@ import {
 } from "./slider-value-label";
 
 export type {
-	SliderDescriptionProps,
-	SliderDescriptionOptions,
 	SliderDescriptionCommonProps,
+	SliderDescriptionOptions,
+	SliderDescriptionProps,
 	SliderDescriptionRenderProps,
-	SliderErrorMessageOptions,
 	SliderErrorMessageCommonProps,
-	SliderErrorMessageRenderProps,
+	SliderErrorMessageOptions,
 	SliderErrorMessageProps,
-	SliderFillOptions,
+	SliderErrorMessageRenderProps,
 	SliderFillCommonProps,
-	SliderFillRenderProps,
+	SliderFillOptions,
 	SliderFillProps,
+	SliderFillRenderProps,
 	SliderGetValueLabelParams,
 	SliderInputProps,
-	SliderLabelOptions,
 	SliderLabelCommonProps,
-	SliderLabelRenderProps,
+	SliderLabelOptions,
 	SliderLabelProps,
-	SliderRootOptions,
+	SliderLabelRenderProps,
 	SliderRootCommonProps,
-	SliderRootRenderProps,
+	SliderRootOptions,
 	SliderRootProps,
-	SliderThumbOptions,
+	SliderRootRenderProps,
 	SliderThumbCommonProps,
-	SliderThumbRenderProps,
+	SliderThumbOptions,
 	SliderThumbProps,
-	SliderTrackOptions,
+	SliderThumbRenderProps,
 	SliderTrackCommonProps,
-	SliderTrackRenderProps,
+	SliderTrackOptions,
 	SliderTrackProps,
-	SliderValueLabelOptions,
+	SliderTrackRenderProps,
 	SliderValueLabelCommonProps,
-	SliderValueLabelRenderProps,
+	SliderValueLabelOptions,
 	SliderValueLabelProps,
+	SliderValueLabelRenderProps,
 };
 export {
 	Description,
@@ -115,4 +115,4 @@ export const Slider = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useSliderContext, type SliderContextValue } from "./slider-context";
+export { type SliderContextValue, useSliderContext } from "./slider-context";

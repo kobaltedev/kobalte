@@ -1,5 +1,5 @@
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
-import { type ComponentProps } from "@solidjs/web";
+import type { ComponentProps } from "@solidjs/web";
 import { omit } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -19,7 +19,8 @@ export function NumberFieldHiddenInput(props: NumberFieldHiddenInputProps) {
 			<input
 				ref={(el: HTMLInputElement) => {
 					context.setHiddenInputRef(el);
-					if (typeof props.ref === "function") (props.ref as (el: HTMLInputElement) => void)(el);
+					if (typeof props.ref === "function")
+						(props.ref as (el: HTMLInputElement) => void)(el);
 				}}
 				type="text"
 				tabindex={-1}

@@ -7,7 +7,7 @@
  */
 
 import { render } from "@solidjs/testing-library";
-import { createSignal, type Accessor } from "solid-js";
+import { type Accessor, createSignal } from "solid-js";
 
 import { createTagName } from "./create-tag-name";
 
@@ -16,7 +16,10 @@ describe("createTagName", () => {
 		let tagName: Accessor<string | undefined>;
 
 		const TestComponent = () => {
-			const [ref, setRef] = createSignal<HTMLDivElement | undefined>(undefined, { ownedWrite: true });
+			const [ref, setRef] = createSignal<HTMLDivElement | undefined>(
+				undefined,
+				{ ownedWrite: true },
+			);
 			tagName = createTagName(ref, () => "button");
 			return <div ref={setRef} />;
 		};

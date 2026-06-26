@@ -1,7 +1,4 @@
-import {
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { createEffect, createSignal, omit, onCleanup } from "solid-js";
 
@@ -42,7 +39,9 @@ export type FormControlLabelProps<
 export function FormControlLabel<T extends ValidComponent = "label">(
 	props: PolymorphicProps<T, FormControlLabelProps<T>>,
 ) {
-	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useFormControlContext();
 
@@ -55,14 +54,13 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 
 	const others = omit(mergedProps, "ref");
 
-	const tagName = createTagName(
-		ref,
-		() => "label",
-	);
+	const tagName = createTagName(ref, () => "label");
 
 	createEffect(
 		() => others.id,
-		(id) => { onCleanup(context.registerLabel(id)); },
+		(id) => {
+			onCleanup(context.registerLabel(id));
+		},
 	);
 
 	return (

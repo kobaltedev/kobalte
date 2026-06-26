@@ -37,14 +37,16 @@ const contentClass =
 const itemClass =
 	"relative flex cursor-default select-none items-center rounded px-3 py-1.5 text-slate-700 outline-none hover:bg-slate-100 hover:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50";
 
-const labelClass = "px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400";
+const labelClass =
+	"px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400";
 
 const separatorClass = "my-1 h-px bg-slate-200";
 
 const checkboxItemClass =
 	"relative flex cursor-default select-none items-center pl-8 pr-3 py-1.5 text-slate-700 outline-none hover:bg-slate-100 data-[disabled]:opacity-50";
 
-const itemIndicatorClass = "absolute left-2 flex h-4 w-4 items-center justify-center";
+const itemIndicatorClass =
+	"absolute left-2 flex h-4 w-4 items-center justify-center";
 
 /** Basic dropdown with a list of items. */
 export const Default = meta.story({
@@ -106,15 +108,27 @@ function CheckboxDemo() {
 			<Trigger class={triggerClass}>View ▾</Trigger>
 			<Portal>
 				<Content class={contentClass}>
-					<CheckboxItem class={checkboxItemClass} checked={spell()} onChange={setSpell}>
+					<CheckboxItem
+						class={checkboxItemClass}
+						checked={spell()}
+						onChange={setSpell}
+					>
 						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
 						<ItemLabel>Spell check</ItemLabel>
 					</CheckboxItem>
-					<CheckboxItem class={checkboxItemClass} checked={wrap()} onChange={setWrap}>
+					<CheckboxItem
+						class={checkboxItemClass}
+						checked={wrap()}
+						onChange={setWrap}
+					>
 						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
 						<ItemLabel>Word wrap</ItemLabel>
 					</CheckboxItem>
-					<CheckboxItem class={checkboxItemClass} checked={lineNum()} onChange={setLineNum}>
+					<CheckboxItem
+						class={checkboxItemClass}
+						checked={lineNum()}
+						onChange={setLineNum}
+					>
 						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
 						<ItemLabel>Line numbers</ItemLabel>
 					</CheckboxItem>
@@ -168,9 +182,7 @@ export const WithSubMenu = meta.story({
 				<Content class={contentClass}>
 					<Item class={itemClass}>New file</Item>
 					<Sub>
-						<SubTrigger class={itemClass}>
-							Open recent ▸
-						</SubTrigger>
+						<SubTrigger class={itemClass}>Open recent ▸</SubTrigger>
 						<Portal>
 							<SubContent class={contentClass}>
 								<Item class={itemClass}>project.tsx</Item>
@@ -197,11 +209,15 @@ export const WithDescriptions = meta.story({
 				<Content class={contentClass}>
 					<Item class={itemClass + " flex-col items-start"}>
 						<ItemLabel class="font-medium">Publish</ItemLabel>
-						<ItemDescription class="text-xs text-slate-400">Deploy to production</ItemDescription>
+						<ItemDescription class="text-xs text-slate-400">
+							Deploy to production
+						</ItemDescription>
 					</Item>
 					<Item class={itemClass + " flex-col items-start"}>
 						<ItemLabel class="font-medium">Preview</ItemLabel>
-						<ItemDescription class="text-xs text-slate-400">Build a preview deployment</ItemDescription>
+						<ItemDescription class="text-xs text-slate-400">
+							Build a preview deployment
+						</ItemDescription>
 					</Item>
 					<Separator class={separatorClass} />
 					<Item class={itemClass + " text-red-600 hover:bg-red-50"}>

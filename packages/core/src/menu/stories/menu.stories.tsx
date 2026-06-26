@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
+import { Separator } from "../../separator";
 import {
 	MenuCheckboxItem as CheckboxItem,
 	MenuContent as Content,
@@ -18,7 +19,6 @@ import {
 	MenuSubTrigger as SubTrigger,
 	MenuTrigger as Trigger,
 } from "../index";
-import { Separator } from "../../separator";
 
 const meta = preview.meta({
 	title: "Primitives/Menu",
@@ -39,9 +39,11 @@ const itemClass =
 const checkboxItemClass =
 	"relative flex cursor-default select-none items-center pl-8 pr-3 py-1.5 text-slate-700 outline-none hover:bg-slate-100 data-[disabled]:opacity-50";
 
-const itemIndicatorClass = "absolute left-2 flex h-4 w-4 items-center justify-center";
+const itemIndicatorClass =
+	"absolute left-2 flex h-4 w-4 items-center justify-center";
 
-const labelClass = "px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400";
+const labelClass =
+	"px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400";
 
 const separatorClass = "my-1 h-px bg-slate-200";
 
@@ -108,11 +110,19 @@ function CheckboxDemo() {
 			<Trigger class={triggerClass}>View ▾</Trigger>
 			<Portal>
 				<Content class={contentClass}>
-					<CheckboxItem class={checkboxItemClass} checked={spell()} onChange={setSpell}>
+					<CheckboxItem
+						class={checkboxItemClass}
+						checked={spell()}
+						onChange={setSpell}
+					>
 						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
 						<ItemLabel>Spell check</ItemLabel>
 					</CheckboxItem>
-					<CheckboxItem class={checkboxItemClass} checked={wrap()} onChange={setWrap}>
+					<CheckboxItem
+						class={checkboxItemClass}
+						checked={wrap()}
+						onChange={setWrap}
+					>
 						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
 						<ItemLabel>Word wrap</ItemLabel>
 					</CheckboxItem>
@@ -193,11 +203,15 @@ export const WithDescriptions = meta.story({
 				<Content class={contentClass}>
 					<Item class={`${itemClass} flex-col items-start`}>
 						<ItemLabel class="font-medium">Publish</ItemLabel>
-						<ItemDescription class="text-xs text-slate-400">Deploy to production</ItemDescription>
+						<ItemDescription class="text-xs text-slate-400">
+							Deploy to production
+						</ItemDescription>
 					</Item>
 					<Item class={`${itemClass} flex-col items-start`}>
 						<ItemLabel class="font-medium">Preview</ItemLabel>
-						<ItemDescription class="text-xs text-slate-400">Build a preview deployment</ItemDescription>
+						<ItemDescription class="text-xs text-slate-400">
+							Build a preview deployment
+						</ItemDescription>
 					</Item>
 					<Separator class={separatorClass} />
 					<Item class={`${itemClass} text-red-600 hover:bg-red-50`}>

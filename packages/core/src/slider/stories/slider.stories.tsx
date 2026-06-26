@@ -1,6 +1,16 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Description, ErrorMessage, Fill, Input, Label, Root, Thumb, Track, ValueLabel } from "../index";
+import {
+	Description,
+	ErrorMessage,
+	Fill,
+	Input,
+	Label,
+	Root,
+	Thumb,
+	Track,
+	ValueLabel,
+} from "../index";
 
 const meta = preview.meta({
 	title: "Components/Slider",
@@ -44,7 +54,11 @@ function ControlledDemo() {
 	const [value, setValue] = createSignal([25]);
 	return (
 		<div class="flex flex-col gap-3 font-sans">
-			<Root value={value()} onChange={setValue} class="flex flex-col gap-2 w-64">
+			<Root
+				value={value()}
+				onChange={setValue}
+				class="flex flex-col gap-2 w-64"
+			>
 				<div class="flex justify-between text-sm text-slate-600">
 					<Label>Brightness</Label>
 					<ValueLabel />
@@ -72,10 +86,16 @@ export const Controlled = meta.story({
 export const RangeSlider = meta.story({
 	name: "Range Slider",
 	render: () => (
-		<Root defaultValue={[20, 80]} minStepsBetweenThumbs={5} class="flex flex-col gap-2 w-64 font-sans">
+		<Root
+			defaultValue={[20, 80]}
+			minStepsBetweenThumbs={5}
+			class="flex flex-col gap-2 w-64 font-sans"
+		>
 			<div class="flex justify-between text-sm text-slate-600">
 				<Label>Price range</Label>
-				<ValueLabel getValueLabel={({ values }) => `$${values[0]} – $${values[1]}`} />
+				<ValueLabel
+					getValueLabel={({ values }) => `$${values[0]} – $${values[1]}`}
+				/>
 			</div>
 			<Track class={trackClass}>
 				<Fill class={fillClass} />
@@ -94,7 +114,11 @@ export const RangeSlider = meta.story({
 export const StepSize = meta.story({
 	name: "Step Size",
 	render: () => (
-		<Root defaultValue={[50]} step={10} class="flex flex-col gap-2 w-64 font-sans">
+		<Root
+			defaultValue={[50]}
+			step={10}
+			class="flex flex-col gap-2 w-64 font-sans"
+		>
 			<div class="flex justify-between text-sm text-slate-600">
 				<Label>Opacity</Label>
 				<ValueLabel />
@@ -113,7 +137,11 @@ export const StepSize = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root defaultValue={[60]} disabled class="flex flex-col gap-2 w-64 font-sans">
+		<Root
+			defaultValue={[60]}
+			disabled
+			class="flex flex-col gap-2 w-64 font-sans"
+		>
 			<div class="flex justify-between text-sm text-slate-600">
 				<Label>Locked</Label>
 				<ValueLabel />
@@ -168,8 +196,12 @@ export const WithValidation = meta.story({
 					<Input />
 				</Thumb>
 			</Track>
-			<Description class="text-xs text-slate-500">Set a value above 20.</Description>
-			<ErrorMessage class="text-xs text-red-600">Value must be at least 20.</ErrorMessage>
+			<Description class="text-xs text-slate-500">
+				Set a value above 20.
+			</Description>
+			<ErrorMessage class="text-xs text-red-600">
+				Value must be at least 20.
+			</ErrorMessage>
 		</Root>
 	),
 });

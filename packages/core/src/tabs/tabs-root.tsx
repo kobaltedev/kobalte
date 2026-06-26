@@ -7,14 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import { type Orientation, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, type Orientation } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	createSignal,
-	createUniqueId,
-	omit,
-} from "solid-js";
+import { createEffect, createSignal, createUniqueId, omit } from "solid-js";
 
 import { createSingleSelectListState } from "../list";
 import {
@@ -80,7 +75,15 @@ export function TabsRoot<T extends ValidComponent = "div">(
 		props as TabsRootProps,
 	);
 
-	const others = omit(mergedProps, "value", "defaultValue", "onChange", "orientation", "activationMode", "disabled");
+	const others = omit(
+		mergedProps,
+		"value",
+		"defaultValue",
+		"onChange",
+		"orientation",
+		"activationMode",
+		"disabled",
+	);
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 	const [selectedTab, setSelectedTab] = createSignal<HTMLElement>();
@@ -130,10 +133,7 @@ export function TabsRoot<T extends ValidComponent = "div">(
 				}
 
 				// if this check is true, then every item is disabled, it makes more sense to default to the first key than the last
-				if (
-					selectedItem?.disabled &&
-					selectedKey === collection.getLastKey()
-				) {
+				if (selectedItem?.disabled && selectedKey === collection.getLastKey()) {
 					selectedKey = collection.getFirstKey();
 				}
 

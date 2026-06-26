@@ -1,5 +1,5 @@
-import { Show } from "solid-js";
 import { type ComponentProps, Portal } from "@solidjs/web";
+import { Show } from "solid-js";
 
 import { useMenuContext } from "./menu-context";
 

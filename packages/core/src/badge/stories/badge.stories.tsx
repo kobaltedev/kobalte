@@ -8,10 +8,8 @@ const meta = preview.meta({
 
 export default meta;
 
-
 const baseClass =
 	"inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-semibold";
-
 
 /** A basic badge with text content. */
 export const Default = meta.story({

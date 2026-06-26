@@ -28,7 +28,16 @@ const itemIndicatorClass =
 const sectionLabelClass =
 	"px-2 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400";
 
-const fruits = ["Apple", "Banana", "Blueberry", "Cherry", "Grape", "Mango", "Peach", "Strawberry"];
+const fruits = [
+	"Apple",
+	"Banana",
+	"Blueberry",
+	"Cherry",
+	"Grape",
+	"Mango",
+	"Peach",
+	"Strawberry",
+];
 
 function CheckIcon() {
 	return (

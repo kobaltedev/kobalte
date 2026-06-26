@@ -1,8 +1,7 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import type { ValidComponent } from "@solidjs/web";
-import { Show, createSignal, omit } from "solid-js";
-
 import { createPresence } from "@solid-primitives/presence";
+import type { ValidComponent } from "@solidjs/web";
+import { createSignal, omit, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -58,7 +57,7 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 	const [ref, setRef] = createSignal<HTMLElement>();
 
 	const { isMounted: present } = createPresence(
-		() => (mergedProps.forceMount || context.isSelected()) || undefined,
+		() => mergedProps.forceMount || context.isSelected() || undefined,
 		{ transitionDuration: 0 },
 	);
 

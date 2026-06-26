@@ -1,9 +1,6 @@
 import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	omit,
-} from "solid-js";
+import { type Component, omit } from "solid-js";
 
 import {
 	FormControlLabel,

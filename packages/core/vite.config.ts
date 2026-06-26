@@ -5,7 +5,11 @@ export default defineConfig({
 	plugins: [
 		solidPlugin({
 			hot: false,
-			solid: { generate: "dom", omitNestedClosingTags: false, moduleName: "@solidjs/web" },
+			solid: {
+				generate: "dom",
+				omitNestedClosingTags: false,
+				moduleName: "@solidjs/web",
+			},
 		}),
 	],
 	test: {

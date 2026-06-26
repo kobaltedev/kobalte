@@ -98,18 +98,40 @@ export function MeterRoot<T extends ValidComponent = "div">(
 		props as MeterRootProps,
 	);
 
-	const others = omit(mergedProps, "value", "minValue", "maxValue", "getValueLabel", "role", "aria-valuetext", "aria-labelledby", "aria-valuemax", "aria-valuemin", "aria-valuenow", "indeterminate");
+	const others = omit(
+		mergedProps,
+		"value",
+		"minValue",
+		"maxValue",
+		"getValueLabel",
+		"role",
+		"aria-valuetext",
+		"aria-labelledby",
+		"aria-valuemax",
+		"aria-valuemin",
+		"aria-valuenow",
+		"indeterminate",
+	);
 
-	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultFormatter = createNumberFormatter(() => ({ style: "percent" }));
 
 	const value = () => {
-		return clamp(mergedProps.value!, mergedProps.minValue!, mergedProps.maxValue!);
+		return clamp(
+			mergedProps.value!,
+			mergedProps.minValue!,
+			mergedProps.maxValue!,
+		);
 	};
 
 	const valuePercent = () => {
-		return (value() - mergedProps.minValue!) / (mergedProps.maxValue! - mergedProps.minValue!);
+		return (
+			(value() - mergedProps.minValue!) /
+			(mergedProps.maxValue! - mergedProps.minValue!)
+		);
 	};
 
 	const valueLabel = () => {

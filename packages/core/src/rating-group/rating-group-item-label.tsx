@@ -1,6 +1,6 @@
 import { mergeDefaultProps, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import { createEffect, omit } from "solid-js";
 import {
 	type ElementOf,
@@ -46,7 +46,10 @@ export function RatingGroupItemLabel<T extends ValidComponent = "label">(
 
 	const others = omit(mergedProps, "style");
 
-	createEffect(() => others.id, id => context.registerLabel(id!));
+	createEffect(
+		() => others.id,
+		(id) => context.registerLabel(id!),
+	);
 
 	return (
 		<Polymorphic<RatingGroupItemLabelRenderProps>

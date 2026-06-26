@@ -1,8 +1,7 @@
 import type { RouteProps } from "@solidjs/router";
-
-import { CORE_VERSIONS } from "../../VERSIONS";
 import { Layout } from "../../components";
 import type { NavSection } from "../../model/navigation";
+import { CORE_VERSIONS } from "../../VERSIONS";
 
 const CHANGELOG_NAV_SECTIONS: NavSection[] = [
 	{

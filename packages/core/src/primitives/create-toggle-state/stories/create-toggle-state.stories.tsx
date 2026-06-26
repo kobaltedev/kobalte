@@ -34,13 +34,16 @@ function ToggleButton(props: {
 			class="inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium font-sans transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 			classList={{
 				"border-blue-500 bg-blue-50 text-blue-700": state.isSelected(),
-				"border-slate-200 bg-white text-slate-700 hover:bg-slate-50": !state.isSelected(),
+				"border-slate-200 bg-white text-slate-700 hover:bg-slate-50":
+					!state.isSelected(),
 				"opacity-50 cursor-not-allowed": !!props.isDisabled,
 				"cursor-default": !!props.isReadOnly,
 			}}
 		>
 			{props.label}
-			<span class="text-xs opacity-60">{state.isSelected() ? "on" : "off"}</span>
+			<span class="text-xs opacity-60">
+				{state.isSelected() ? "on" : "off"}
+			</span>
 		</button>
 	);
 }
@@ -63,7 +66,11 @@ export const Disabled = meta.story({
 	render: () => (
 		<div class="flex gap-2">
 			<ToggleButton label="Bold (off, disabled)" isDisabled />
-			<ToggleButton label="Italic (on, disabled)" defaultIsSelected isDisabled />
+			<ToggleButton
+				label="Italic (on, disabled)"
+				defaultIsSelected
+				isDisabled
+			/>
 		</div>
 	),
 });
@@ -117,10 +124,12 @@ export const Controlled = meta.story({
 export const Toolbar = meta.story({
 	name: "Toolbar",
 	render: () => {
-		const tools = ["Bold", "Italic", "Underline", "Strikethrough"].map((label) => ({
-			label,
-			state: createToggleState(),
-		}));
+		const tools = ["Bold", "Italic", "Underline", "Strikethrough"].map(
+			(label) => ({
+				label,
+				state: createToggleState(),
+			}),
+		);
 		return (
 			<div class="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white p-1 font-sans">
 				{tools.map(({ label, state }) => (

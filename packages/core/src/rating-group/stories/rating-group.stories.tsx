@@ -116,7 +116,9 @@ export const WithDescription = meta.story({
 			required
 			validationState="invalid"
 		>
-			<Label class="text-sm font-medium text-slate-700">Rate your experience</Label>
+			<Label class="text-sm font-medium text-slate-700">
+				Rate your experience
+			</Label>
 			<Control class="flex gap-1">
 				{FIVE_STARS.map(() => (
 					<Item class={itemClass}>
@@ -127,8 +129,12 @@ export const WithDescription = meta.story({
 					</Item>
 				))}
 			</Control>
-			<Description class="text-xs text-slate-500">1 = poor · 5 = excellent</Description>
-			<ErrorMessage class="text-xs text-red-600">A rating is required.</ErrorMessage>
+			<Description class="text-xs text-slate-500">
+				1 = poor · 5 = excellent
+			</Description>
+			<ErrorMessage class="text-xs text-red-600">
+				A rating is required.
+			</ErrorMessage>
 			<HiddenInput />
 		</Root>
 	),
@@ -146,7 +152,10 @@ export const HalfRating = meta.story({
 						<ItemLabel />
 						<ItemControl>
 							{(state) => (
-								<HalfStar highlighted={state.highlighted()} half={state.half()} />
+								<HalfStar
+									highlighted={state.highlighted()}
+									half={state.half()}
+								/>
 							)}
 						</ItemControl>
 					</Item>
@@ -162,7 +171,9 @@ export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
 		<Root class="flex flex-col gap-2 font-sans" defaultValue={3} disabled>
-			<Label class="text-sm font-medium text-slate-400">Rating (disabled)</Label>
+			<Label class="text-sm font-medium text-slate-400">
+				Rating (disabled)
+			</Label>
 			<Control class="flex gap-1">
 				{FIVE_STARS.map(() => (
 					<Item class={itemClass}>
@@ -203,11 +214,7 @@ function ControlledDemo() {
 	const labels = ["", "Terrible", "Bad", "OK", "Good", "Great"] as const;
 	return (
 		<div class="flex flex-col gap-3 font-sans">
-			<Root
-				class="flex flex-col gap-1"
-				value={value()}
-				onChange={setValue}
-			>
+			<Root class="flex flex-col gap-1" value={value()} onChange={setValue}>
 				<Label class="text-sm font-medium text-slate-700">Leave a review</Label>
 				<Control class="flex gap-1">
 					{FIVE_STARS.map(() => (

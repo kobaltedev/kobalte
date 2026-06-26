@@ -1,16 +1,12 @@
 import {
-	type Orientation,
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	createSignal,
-	createUniqueId,
-	omit,
-} from "solid-js";
+import { createSignal, createUniqueId, omit } from "solid-js";
 import { useLocale } from "../i18n";
 import { createListState } from "../list";
 import {
@@ -20,7 +16,7 @@ import {
 } from "../polymorphic";
 import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
-import { type SelectionMode, createSelectableCollection } from "../selection";
+import { createSelectableCollection, type SelectionMode } from "../selection";
 import { TabsKeyboardDelegate } from "../tabs/tabs-keyboard-delegate";
 import {
 	ToggleGroupContext,
@@ -87,7 +83,20 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 		props as ToggleGroupBaseProps,
 	);
 
-	const others = omit(mergedProps, "ref", "value", "defaultValue", "disabled", "orientation", "selectionMode", "onChange", "onKeyDown", "onMouseDown", "onFocusIn", "onFocusOut");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"disabled",
+		"orientation",
+		"selectionMode",
+		"onChange",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocusIn",
+		"onFocusOut",
+	);
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
@@ -139,7 +148,9 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 					as="div"
 					role="group"
 					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
-					tabindex={!mergedProps.disabled ? selectableList.tabIndex() : undefined}
+					tabindex={
+						!mergedProps.disabled ? selectableList.tabIndex() : undefined
+					}
 					data-orientation={mergedProps.orientation}
 					onKeyDown={composeEventHandlers([
 						mergedProps.onKeyDown,

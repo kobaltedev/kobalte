@@ -12,28 +12,23 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import type { ValidComponent } from "@solidjs/web";
+import { createFocusTrap } from "@solid-primitives/focus";
 import {
-	type Component,
-	Show,
-	createEffect,
-	omit,
-} from "solid-js";
+	createHideOutside,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 
 import { createPreventScroll } from "@solid-primitives/scroll";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
 	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createFocusTrap } from "@solid-primitives/focus";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-	createHideOutside,
-} from "@solid-primitives/interaction";
 import { useDialogContext } from "./dialog-context";
 
 export interface DialogContentOptions {
@@ -107,7 +102,15 @@ export function DialogContent<T extends ValidComponent = "div">(
 		props as DialogContentProps,
 	);
 
-	const others = omit(mergedProps, "ref", "onOpenAutoFocus", "onCloseAutoFocus", "onPointerDownOutside", "onFocusOutside", "onInteractOutside");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"onOpenAutoFocus",
+		"onCloseAutoFocus",
+		"onPointerDownOutside",
+		"onFocusOutside",
+		"onInteractOutside",
+	);
 
 	let hasInteractedOutside = false;
 	let hasPointerDownOutside = false;
@@ -190,7 +193,10 @@ export function DialogContent<T extends ValidComponent = "div">(
 	// Use context.contentRef (a signal) so the effect re-runs when the element mounts.
 	createHideOutside({
 		disabled: () => !(context.isOpen() && context.modal()),
-		targets: () => { const el = context.contentRef(); return el ? [el] : []; },
+		targets: () => {
+			const el = context.contentRef();
+			return el ? [el] : [];
+		},
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
@@ -206,7 +212,10 @@ export function DialogContent<T extends ValidComponent = "div">(
 		onFinalFocus: onCloseAutoFocus,
 	});
 
-	createEffect(() => others.id, (id) => context.registerContentId(id!));
+	createEffect(
+		() => others.id,
+		(id) => context.registerContentId(id!),
+	);
 
 	return (
 		<Show when={context.contentPresent()}>

@@ -69,10 +69,25 @@ function SpinnerIcon() {
 }
 
 const fruits = [
-	"Apple", "Apricot", "Avocado", "Banana", "Blueberry",
-	"Cherry", "Grape", "Kiwi", "Lemon", "Mango",
-	"Orange", "Papaya", "Peach", "Pear", "Pineapple",
-	"Plum", "Raspberry", "Strawberry", "Watermelon",
+	"Apple",
+	"Apricot",
+	"Avocado",
+	"Banana",
+	"Blueberry",
+	"Cherry",
+	"Grape",
+	"Kiwi",
+	"Lemon",
+	"Mango",
+	"Orange",
+	"Papaya",
+	"Peach",
+	"Pear",
+	"Pineapple",
+	"Plum",
+	"Raspberry",
+	"Strawberry",
+	"Watermelon",
 ];
 
 function BasicSearch() {
@@ -99,7 +114,10 @@ function BasicSearch() {
 		>
 			<Label class={labelClass}>Fruit</Label>
 			<Control class={controlClass}>
-				<Indicator class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5" loadingComponent={<SpinnerIcon />}>
+				<Indicator
+					class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5"
+					loadingComponent={<SpinnerIcon />}
+				>
 					<SearchIcon />
 				</Indicator>
 				<Input class={inputClass} placeholder="Search fruits…" />
@@ -146,7 +164,10 @@ function DebouncedSearch() {
 		>
 			<Label class={labelClass}>Fruit (debounced 300 ms)</Label>
 			<Control class={controlClass}>
-				<Indicator class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5" loadingComponent={<SpinnerIcon />}>
+				<Indicator
+					class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5"
+					loadingComponent={<SpinnerIcon />}
+				>
 					<SearchIcon />
 				</Indicator>
 				<Input class={inputClass} placeholder="Search fruits…" />
@@ -244,7 +265,9 @@ function ObjectSearch() {
 		setOptions(
 			query.length === 0
 				? people
-				: people.filter((p) => p.name.toLowerCase().includes(query.toLowerCase())),
+				: people.filter((p) =>
+						p.name.toLowerCase().includes(query.toLowerCase()),
+					),
 		);
 	};
 
@@ -259,7 +282,9 @@ function ObjectSearch() {
 				<Item item={props.item} class={itemClass}>
 					<div class="flex flex-col">
 						<ItemLabel>{(props.item.rawValue as Person).name}</ItemLabel>
-						<span class="text-xs text-slate-400">{(props.item.rawValue as Person).role}</span>
+						<span class="text-xs text-slate-400">
+							{(props.item.rawValue as Person).role}
+						</span>
 					</div>
 				</Item>
 			)}

@@ -7,17 +7,10 @@
  */
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	Show,
-	createEffect,
-	createSignal,
-	omit,
-	onSettled,
-} from "solid-js";
-
-import { combineStyle } from "@solid-primitives/props";
 import { createPresence } from "@solid-primitives/presence";
+import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, omit, onSettled, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,

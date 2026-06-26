@@ -7,7 +7,7 @@
  */
 
 import { DateFormatter } from "@internationalized/date";
-import { type MaybeAccessor, access } from "@kobalte/utils";
+import { access, type MaybeAccessor } from "@kobalte/utils";
 import { type Accessor, createMemo } from "solid-js";
 
 import { useLocale } from "./i18n-provider";

@@ -46,7 +46,9 @@ export function RadioGroupItemDescription<T extends ValidComponent = "div">(
 
 	createEffect(
 		() => mergedProps.id,
-		(id) => { onCleanup(context.registerDescription(id)); },
+		(id) => {
+			onCleanup(context.registerDescription(id));
+		},
 	);
 
 	return (

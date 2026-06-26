@@ -20,8 +20,8 @@
 
 import { callHandler, getDocument, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit, onCleanup } from "solid-js";
 import { isServer } from "@solidjs/web";
+import { omit, onCleanup } from "solid-js";
 
 import {
 	type ElementOf,
@@ -63,7 +63,16 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 	const context = useTooltipContext();
 
 	const p = props as TooltipTriggerProps;
-	const others = omit(p, "ref", "onPointerEnter", "onPointerLeave", "onPointerDown", "onClick", "onFocus", "onBlur");
+	const others = omit(
+		p,
+		"ref",
+		"onPointerEnter",
+		"onPointerLeave",
+		"onPointerDown",
+		"onClick",
+		"onFocus",
+		"onBlur",
+	);
 
 	let isPointerDown = false;
 	let isHovered = false;

@@ -7,8 +7,8 @@
  * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-aria/calendar/src/useCalendarBase.ts
  */
 
-import { type OverrideComponentProps, callHandler } from "@kobalte/utils";
-import { type JSX, createEffect, createMemo, splitProps } from "solid-js";
+import { callHandler, type OverrideComponentProps } from "@kobalte/utils";
+import { createEffect, createMemo, type JSX, splitProps } from "solid-js";
 
 import * as Button from "../button";
 import { useCalendarContext } from "./calendar-context";

@@ -7,14 +7,16 @@
  */
 
 import {
-	OverrideComponentProps,
-	type ValidationState,
 	access,
 	createGenerateId,
 	focusWithoutScrolling,
 	isFunction,
 	mergeDefaultProps,
+	OverrideComponentProps,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
+import { createPresence } from "@solid-primitives/presence";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -25,23 +27,20 @@ import {
 	createUniqueId,
 	omit,
 } from "solid-js";
-
-import { createPresence } from "@solid-primitives/presence";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import { createCollator } from "../i18n";
-import { ListKeyboardDelegate, createListState } from "../list";
+import { createListState, ListKeyboardDelegate } from "../list";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
 import { Popper, type PopperRootOptions } from "../popper";
-import { createFormResetListener } from "@solid-primitives/form";
 import {
 	type CollectionNode,
 	createDisclosureState,
@@ -247,20 +246,148 @@ export function SelectBase<
 		props as SelectBaseProps<Option, OptGroup>,
 	);
 
-	const popperProps = omit(mergedProps, "itemComponent", "sectionComponent", "open", "defaultOpen", "onOpenChange", "value", "defaultValue", "onChange", "placeholder", "options", "optionValue", "optionTextValue", "optionDisabled", "optionGroupChildren", "keyboardDelegate", "allowDuplicateSelectionEvents", "disallowEmptySelection", "closeOnSelection", "disallowTypeAhead", "shouldFocusWrap", "selectionBehavior", "selectionMode", "virtualized", "modal", "preventScroll", "forceMount", ...FORM_CONTROL_PROP_NAMES);
-	const formControlProps = omit(mergedProps, "itemComponent", "sectionComponent", "open", "defaultOpen", "onOpenChange", "value", "defaultValue", "onChange", "placeholder", "options", "optionValue", "optionTextValue", "optionDisabled", "optionGroupChildren", "keyboardDelegate", "allowDuplicateSelectionEvents", "disallowEmptySelection", "closeOnSelection", "disallowTypeAhead", "shouldFocusWrap", "selectionBehavior", "selectionMode", "virtualized", "modal", "preventScroll", "forceMount", "getAnchorRect", "placement", "gutter", "shift", "flip", "slide", "overlap", "sameWidth", "fitViewport", "hideWhenDetached", "detachedPadding", "arrowPadding", "overflowPadding");
-	const others = omit(mergedProps, "itemComponent", "sectionComponent", "open", "defaultOpen", "onOpenChange", "value", "defaultValue", "onChange", "placeholder", "options", "optionValue", "optionTextValue", "optionDisabled", "optionGroupChildren", "keyboardDelegate", "allowDuplicateSelectionEvents", "disallowEmptySelection", "closeOnSelection", "disallowTypeAhead", "shouldFocusWrap", "selectionBehavior", "selectionMode", "virtualized", "modal", "preventScroll", "forceMount", "getAnchorRect", "placement", "gutter", "shift", "flip", "slide", "overlap", "sameWidth", "fitViewport", "hideWhenDetached", "detachedPadding", "arrowPadding", "overflowPadding", ...FORM_CONTROL_PROP_NAMES);
+	const popperProps = omit(
+		mergedProps,
+		"itemComponent",
+		"sectionComponent",
+		"open",
+		"defaultOpen",
+		"onOpenChange",
+		"value",
+		"defaultValue",
+		"onChange",
+		"placeholder",
+		"options",
+		"optionValue",
+		"optionTextValue",
+		"optionDisabled",
+		"optionGroupChildren",
+		"keyboardDelegate",
+		"allowDuplicateSelectionEvents",
+		"disallowEmptySelection",
+		"closeOnSelection",
+		"disallowTypeAhead",
+		"shouldFocusWrap",
+		"selectionBehavior",
+		"selectionMode",
+		"virtualized",
+		"modal",
+		"preventScroll",
+		"forceMount",
+		...FORM_CONTROL_PROP_NAMES,
+	);
+	const formControlProps = omit(
+		mergedProps,
+		"itemComponent",
+		"sectionComponent",
+		"open",
+		"defaultOpen",
+		"onOpenChange",
+		"value",
+		"defaultValue",
+		"onChange",
+		"placeholder",
+		"options",
+		"optionValue",
+		"optionTextValue",
+		"optionDisabled",
+		"optionGroupChildren",
+		"keyboardDelegate",
+		"allowDuplicateSelectionEvents",
+		"disallowEmptySelection",
+		"closeOnSelection",
+		"disallowTypeAhead",
+		"shouldFocusWrap",
+		"selectionBehavior",
+		"selectionMode",
+		"virtualized",
+		"modal",
+		"preventScroll",
+		"forceMount",
+		"getAnchorRect",
+		"placement",
+		"gutter",
+		"shift",
+		"flip",
+		"slide",
+		"overlap",
+		"sameWidth",
+		"fitViewport",
+		"hideWhenDetached",
+		"detachedPadding",
+		"arrowPadding",
+		"overflowPadding",
+	);
+	const others = omit(
+		mergedProps,
+		"itemComponent",
+		"sectionComponent",
+		"open",
+		"defaultOpen",
+		"onOpenChange",
+		"value",
+		"defaultValue",
+		"onChange",
+		"placeholder",
+		"options",
+		"optionValue",
+		"optionTextValue",
+		"optionDisabled",
+		"optionGroupChildren",
+		"keyboardDelegate",
+		"allowDuplicateSelectionEvents",
+		"disallowEmptySelection",
+		"closeOnSelection",
+		"disallowTypeAhead",
+		"shouldFocusWrap",
+		"selectionBehavior",
+		"selectionMode",
+		"virtualized",
+		"modal",
+		"preventScroll",
+		"forceMount",
+		"getAnchorRect",
+		"placement",
+		"gutter",
+		"shift",
+		"flip",
+		"slide",
+		"overlap",
+		"sameWidth",
+		"fitViewport",
+		"hideWhenDetached",
+		"detachedPadding",
+		"arrowPadding",
+		"overflowPadding",
+		...FORM_CONTROL_PROP_NAMES,
+	);
 
-	const [triggerId, setTriggerId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [valueId, setValueId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [listboxId, setListboxId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [triggerId, setTriggerId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [valueId, setValueId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [listboxId, setListboxId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
-	const [triggerRef, setTriggerRef] = createSignal<HTMLButtonElement | undefined>(undefined, { ownedWrite: true });
-	const [contentRef, setContentRef] = createSignal<HTMLDivElement | undefined>(undefined, { ownedWrite: true });
-	const [listboxRef, setListboxRef] = createSignal<HTMLUListElement | undefined>(undefined, { ownedWrite: true });
+	const [triggerRef, setTriggerRef] = createSignal<
+		HTMLButtonElement | undefined
+	>(undefined, { ownedWrite: true });
+	const [contentRef, setContentRef] = createSignal<HTMLDivElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [listboxRef, setListboxRef] = createSignal<
+		HTMLUListElement | undefined
+	>(undefined, { ownedWrite: true });
 
-	const [listboxAriaLabelledBy, setListboxAriaLabelledBy] =
-		createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [listboxAriaLabelledBy, setListboxAriaLabelledBy] = createSignal<
+		string | undefined
+	>(undefined, { ownedWrite: true });
 	const [focusStrategy, setFocusStrategy] = createSignal<
 		FocusStrategy | boolean
 	>(true);
@@ -358,7 +485,7 @@ export function SelectBase<
 	};
 
 	const { isMounted: contentPresent } = createPresence(
-		() => (mergedProps.forceMount || disclosureState.isOpen()) || undefined,
+		() => mergedProps.forceMount || disclosureState.isOpen() || undefined,
 		{ transitionDuration: 0 },
 	);
 

@@ -14,14 +14,8 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
-import {
-	type Accessor,
-	For,
-	createMemo,
-	createSignal,
-	omit,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Accessor, createMemo, createSignal, For, omit } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useLocale } from "../i18n";
@@ -87,7 +81,15 @@ export function TimeFieldField<T extends ValidComponent = "div">(
 		props as TimeFieldFieldProps,
 	);
 
-	const others = omit(mergedProps, "ref", "children", "onKeyDown", "onFocusOut", "aria-labelledby", "aria-describedby");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"children",
+		"onKeyDown",
+		"onFocusOut",
+		"aria-labelledby",
+		"aria-describedby",
+	);
 
 	const { locale, direction } = useLocale();
 

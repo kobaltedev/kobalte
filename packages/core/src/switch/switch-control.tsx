@@ -1,4 +1,4 @@
-import { EventKey, callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler, EventKey, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
 

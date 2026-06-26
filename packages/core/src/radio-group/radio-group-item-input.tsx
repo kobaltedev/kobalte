@@ -12,15 +12,9 @@ import {
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	createSignal,
-	omit,
-	onCleanup,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, omit, onCleanup } from "solid-js";
 import { useFormControlContext } from "../form-control";
 import {
 	type ElementOf,
@@ -83,7 +77,16 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 		props as RadioGroupItemInputProps,
 	);
 
-	const others = omit(mergedProps, "ref", "style", "aria-labelledby", "aria-describedby", "onChange", "onFocus", "onBlur");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"style",
+		"aria-labelledby",
+		"aria-describedby",
+		"onChange",
+		"onFocus",
+		"onBlur",
+	);
 
 	const ariaLabelledBy = () => {
 		return (
@@ -164,7 +167,9 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	);
 	createEffect(
 		() => others.id,
-		(id) => { onCleanup(radioContext.registerInput(id!)); },
+		(id) => {
+			onCleanup(radioContext.registerInput(id!));
+		},
 	);
 
 	return (

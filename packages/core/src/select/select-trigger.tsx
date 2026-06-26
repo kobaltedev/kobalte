@@ -9,16 +9,12 @@
 
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createEffect,
-	omit,
-} from "solid-js";
+import { type Component, createEffect, omit } from "solid-js";
 
 import * as Button from "../button";
 import {
-	type FormControlDataSet,
 	createFormControlField,
+	type FormControlDataSet,
 	useFormControlContext,
 } from "../form-control";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -68,7 +64,20 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		props as SelectTriggerProps,
 	);
 
-	const others = omit(mergedProps, "ref", "disabled", "onPointerDown", "onClick", "onKeyDown", "onFocus", "onBlur", "id", "aria-label", "aria-labelledby", "aria-describedby");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"disabled",
+		"onPointerDown",
+		"onClick",
+		"onKeyDown",
+		"onFocus",
+		"onBlur",
+		"id",
+		"aria-label",
+		"aria-labelledby",
+		"aria-describedby",
+	);
 
 	const selectionManager = () => context.listState().selectionManager();
 	const keyboardDelegate = () => context.keyboardDelegate();

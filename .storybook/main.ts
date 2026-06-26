@@ -18,7 +18,10 @@ const config: StorybookConfig = {
 				{
 					name: "solid-addEventListener-compat",
 					transform(code: string, id: string) {
-						if (/\.(tsx?|jsx?)$/.test(id) && code.includes("addEventListener as _$addEventListener")) {
+						if (
+							/\.(tsx?|jsx?)$/.test(id) &&
+							code.includes("addEventListener as _$addEventListener")
+						) {
 							return {
 								code: code.replace(
 									/\{ addEventListener as _\$addEventListener \}/g,
@@ -35,17 +38,30 @@ const config: StorybookConfig = {
 				{
 					name: "solid-on-shim",
 					transform(code: string, id: string) {
-						if (code.includes("from 'solid-js'") || code.includes('from "solid-js"')) {
+						if (
+							code.includes("from 'solid-js'") ||
+							code.includes('from "solid-js"')
+						) {
 							if (/\bon\b/.test(code)) {
-								const hasOnImport = /import\s*\{[^}]*\bon\b[^}]*\}\s*from\s*['"]solid-js['"]/.test(code);
+								const hasOnImport =
+									/import\s*\{[^}]*\bon\b[^}]*\}\s*from\s*['"]solid-js['"]/.test(
+										code,
+									);
 								if (hasOnImport) {
-									console.warn(`[solid-on-shim] Found legacy 'on' import in: ${id}`);
+									console.warn(
+										`[solid-on-shim] Found legacy 'on' import in: ${id}`,
+									);
 									// Remove 'on' from the import and inject a no-op shim after the import
 									const patched = code
 										.replace(/,\s*\bon\b/g, "")
 										.replace(/\bon\b\s*,/g, "")
 										.replace(/\{\s*\bon\b\s*\}/g, "{ createEffect }");
-									return { code: patched + "\nconst on = (deps, fn) => { createEffect(deps, fn); };\n", map: null };
+									return {
+										code:
+											patched +
+											"\nconst on = (deps, fn) => { createEffect(deps, fn); };\n",
+										map: null,
+									};
 								}
 							}
 						}
@@ -57,7 +73,10 @@ const config: StorybookConfig = {
 					{ find: "solid-js/web", replacement: "@solidjs/web" },
 					{
 						find: "@kobalte/utils",
-						replacement: new URL("../packages/utils/src/index.ts", import.meta.url).pathname,
+						replacement: new URL(
+							"../packages/utils/src/index.ts",
+							import.meta.url,
+						).pathname,
 					},
 				],
 				dedupe: ["react", "react-dom"],

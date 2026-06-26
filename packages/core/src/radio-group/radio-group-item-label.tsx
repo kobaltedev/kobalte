@@ -48,7 +48,9 @@ export function RadioGroupItemLabel<T extends ValidComponent = "label">(
 
 	createEffect(
 		() => mergedProps.id,
-		(id) => { onCleanup(context.registerLabel(id!)); },
+		(id) => {
+			onCleanup(context.registerLabel(id!));
+		},
 	);
 
 	return (

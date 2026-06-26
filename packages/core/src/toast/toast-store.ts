@@ -7,7 +7,9 @@ const [state, setState] = createStore({
 });
 
 function add(toast: ToastConfig) {
-	setState(s => { s.toasts.push(toast); });
+	setState((s) => {
+		s.toasts.push(toast);
+	});
 }
 
 function get(id: number) {
@@ -15,29 +17,39 @@ function get(id: number) {
 }
 
 function update(id: number, toast: ToastConfig) {
-	setState(s => {
+	setState((s) => {
 		const index = s.toasts.findIndex((t) => t.id === id);
 		if (index !== -1) s.toasts[index] = toast;
 	});
 }
 
 function dismiss(id: number) {
-	setState(s => {
+	setState((s) => {
 		const index = s.toasts.findIndex((t) => t.id === id);
 		if (index !== -1) {
 			const t = s.toasts[index];
 			// Replace item (not just mutate property) to ensure array-level reactivity
-			s.toasts[index] = { id: t.id, dismiss: true, update: t.update, toastComponent: t.toastComponent, region: t.region };
+			s.toasts[index] = {
+				id: t.id,
+				dismiss: true,
+				update: t.update,
+				toastComponent: t.toastComponent,
+				region: t.region,
+			};
 		}
 	});
 }
 
 function remove(id: number) {
-	setState(s => { s.toasts = s.toasts.filter((t) => t.id !== id); });
+	setState((s) => {
+		s.toasts = s.toasts.filter((t) => t.id !== id);
+	});
 }
 
 function clear() {
-	setState(s => { s.toasts = []; });
+	setState((s) => {
+		s.toasts = [];
+	});
 }
 
 export const toastStore = {

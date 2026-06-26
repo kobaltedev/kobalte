@@ -9,7 +9,6 @@ const meta = preview.meta({
 
 export default meta;
 
-
 const triggerClass =
 	"inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 focus-visible:ring-offset-2 transition-colors";
 
@@ -17,7 +16,6 @@ const contentClass =
 	"z-50 rounded-md bg-white border border-slate-200 px-3 py-1.5 text-xs text-slate-700 shadow-sm animate-in fade-in-0 zoom-in-95 data-[closed]:animate-out data-[closed]:fade-out-0 data-[closed]:zoom-out-95";
 
 const arrowClass = "fill-white";
-
 
 /** A basic tooltip that appears on hover and focus. */
 export const Default = meta.story({

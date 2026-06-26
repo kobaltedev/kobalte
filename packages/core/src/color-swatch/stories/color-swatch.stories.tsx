@@ -1,6 +1,10 @@
-import { createSignal, For } from "solid-js";
-import { parseColor, colorScale, perceptualColorScale } from "@solid-primitives/utils/colors";
 import type { Color } from "@solid-primitives/utils/colors";
+import {
+	colorScale,
+	parseColor,
+	perceptualColorScale,
+} from "@solid-primitives/utils/colors";
+import { createSignal, For } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import { Root } from "../index";
 
@@ -107,8 +111,14 @@ export const Transparent = meta.story({
 /** Interactive swatch grid — click to select. */
 function SelectableSwatchDemo() {
 	const palette: Color[] = [
-		"#ef4444", "#f97316", "#eab308", "#22c55e",
-		"#3b82f6", "#a855f7", "#ec4899", "#64748b",
+		"#ef4444",
+		"#f97316",
+		"#eab308",
+		"#22c55e",
+		"#3b82f6",
+		"#a855f7",
+		"#ec4899",
+		"#64748b",
 	].map(parseColor);
 
 	const [selected, setSelected] = createSignal<Color>(palette[4]);

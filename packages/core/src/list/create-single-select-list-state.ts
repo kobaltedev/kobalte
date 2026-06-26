@@ -17,8 +17,8 @@ import {
 import type { SingleSelection } from "../selection";
 import {
 	type CreateListStateProps,
-	type ListState,
 	createListState,
+	type ListState,
 } from "./create-list-state";
 
 export interface CreateSingleSelectListStateProps

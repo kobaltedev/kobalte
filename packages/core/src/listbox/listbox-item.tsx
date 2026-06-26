@@ -96,10 +96,29 @@ export function ListboxItem<T extends ValidComponent = "li">(
 		props as ListboxItemProps,
 	);
 
-	const others = omit(mergedProps, "ref", "item", "aria-label", "aria-labelledby", "aria-describedby", "onPointerMove", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"item",
+		"aria-label",
+		"aria-labelledby",
+		"aria-describedby",
+		"onPointerMove",
+		"onPointerDown",
+		"onPointerUp",
+		"onClick",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocus",
+	);
 
-	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const selectionManager = () => listBoxContext.listState().selectionManager();
 
@@ -174,7 +193,9 @@ export function ListboxItem<T extends ValidComponent = "li">(
 	 * If we used `mouseOver`/`mouseEnter` it would not re-focus when the mouse
 	 * wiggles. This is to match native select implementation.
 	 */
-	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
+	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		e,
+	) => {
 		callHandler(e, mergedProps.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
@@ -225,7 +246,10 @@ export function ListboxItem<T extends ValidComponent = "li">(
 					mergedProps.onPointerUp,
 					selectableItem.onPointerUp,
 				])}
-				onClick={composeEventHandlers([mergedProps.onClick, selectableItem.onClick])}
+				onClick={composeEventHandlers([
+					mergedProps.onClick,
+					selectableItem.onClick,
+				])}
 				onKeyDown={composeEventHandlers([
 					mergedProps.onKeyDown,
 					selectableItem.onKeyDown,
@@ -234,7 +258,10 @@ export function ListboxItem<T extends ValidComponent = "li">(
 					mergedProps.onMouseDown,
 					selectableItem.onMouseDown,
 				])}
-				onFocus={composeEventHandlers([mergedProps.onFocus, selectableItem.onFocus])}
+				onFocus={composeEventHandlers([
+					mergedProps.onFocus,
+					selectableItem.onFocus,
+				])}
 				onPointerMove={onPointerMove}
 				{...dataset()}
 				{...others}

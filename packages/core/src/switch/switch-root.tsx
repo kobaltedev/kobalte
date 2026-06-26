@@ -7,15 +7,16 @@
  */
 
 import {
-	OverrideComponentProps,
-	type ValidationState,
 	access,
 	callHandler,
 	createGenerateId,
 	isFunction,
 	mergeDefaultProps,
 	mergeRefs,
+	OverrideComponentProps,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -25,19 +26,17 @@ import {
 	createUniqueId,
 	omit,
 } from "solid-js";
-
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "@solid-primitives/form";
 import { createToggleState } from "../primitives";
 import {
 	SwitchContext,
@@ -142,7 +141,10 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 		...FORM_CONTROL_PROP_NAMES,
 	);
 
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 	const [isFocused, setIsFocused] = createSignal(false);
 
 	const { formControlContext } = createFormControl(mergedProps);
@@ -200,7 +202,9 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 					{...dataset()}
 					{...others}
 				>
-					<SwitchRootChild state={context}>{mergedProps.children}</SwitchRootChild>
+					<SwitchRootChild state={context}>
+						{mergedProps.children}
+					</SwitchRootChild>
 				</Polymorphic>
 			</SwitchContext>
 		</FormControlContext>

@@ -7,16 +7,11 @@
  */
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import {
-	type Component,
-	createSignal,
-	createUniqueId,
-	omit,
-} from "solid-js";
 import type { ValidComponent } from "@solidjs/web";
+import { type Component, createSignal, createUniqueId, omit } from "solid-js";
 
 import * as Collapsible from "../collapsible";
-import { type PolymorphicProps } from "../polymorphic";
+import type { PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { useAccordionContext } from "./accordion-context";
 import {
@@ -45,7 +40,8 @@ export interface AccordionItemRenderProps
 	extends AccordionItemCommonProps,
 		Collapsible.CollapsibleRootRenderProps {}
 
-export type AccordionItemProps = AccordionItemOptions & Partial<AccordionItemRenderProps>;
+export type AccordionItemProps = AccordionItemOptions &
+	Partial<AccordionItemRenderProps>;
 
 /**
  * An item of the accordion, contains all the parts of a collapsible section.
@@ -66,8 +62,14 @@ export function AccordionItem<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "value", "disabled");
 
-	const [triggerId, setTriggerId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [contentId, setContentId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [triggerId, setTriggerId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const selectionManager = () =>
 		accordionContext.listState().selectionManager();

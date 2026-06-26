@@ -7,31 +7,29 @@
  */
 
 import {
-	type Orientation,
-	OverrideComponentProps,
 	contains,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
+	OverrideComponentProps,
 } from "@kobalte/utils";
+import { interactOutside } from "@solid-primitives/interaction";
+import { isServer, type ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type Setter,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
+	type Setter,
 } from "solid-js";
-import { type ValidComponent } from "@solidjs/web";
-import { isServer } from "@solidjs/web";
-
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { interactOutside } from "@solid-primitives/interaction";
 import { createControllableSignal } from "../primitives";
 import {
 	MenubarContext,
@@ -204,7 +202,9 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 
 	createEffect(
 		() => value(),
-		(val) => { if (val == null) setAutoFocusMenu(false); },
+		(val) => {
+			if (val == null) setAutoFocusMenu(false);
+		},
 	);
 
 	const interactOutsideRef = interactOutside({
@@ -240,7 +240,9 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 
 	createEffect(
 		() => value(),
-		(val) => { if (val != null) setLastValue(val!); },
+		(val) => {
+			if (val != null) setLastValue(val!);
+		},
 	);
 
 	return (

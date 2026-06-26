@@ -8,20 +8,19 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	OverrideComponentProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
+import { combineStyle } from "@solid-primitives/props";
 import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
-
-import { combineStyle } from "@solid-primitives/props";
 import {
+	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
-	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import {
@@ -83,8 +82,23 @@ export function SwitchInput<T extends ValidComponent = "input">(
 		props as SwitchInputProps,
 	);
 
-	const formControlFieldProps = omit(mergedProps, "ref", "style", "onChange", "onFocus", "onBlur");
-	const others = omit(mergedProps, "ref", "style", "onChange", "onFocus", "onBlur", ...FORM_CONTROL_FIELD_PROP_NAMES);
+	const formControlFieldProps = omit(
+		mergedProps,
+		"ref",
+		"style",
+		"onChange",
+		"onFocus",
+		"onBlur",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"style",
+		"onChange",
+		"onFocus",
+		"onBlur",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
+	);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 

@@ -25,7 +25,6 @@ const meta = preview.meta({
 
 export default meta;
 
-
 const wrapClass = "flex flex-col gap-1.5 font-sans w-64";
 
 const labelClass = "text-sm font-medium text-slate-700";
@@ -52,7 +51,6 @@ const sectionLabelClass =
 
 const descriptionClass = "text-xs text-slate-500";
 const errorClass = "text-xs text-red-600";
-
 
 function CheckIcon() {
 	return (
@@ -93,8 +91,16 @@ function ChevronIcon() {
 	);
 }
 
-
-const fruits = ["Apple", "Banana", "Blueberry", "Cherry", "Grape", "Mango", "Peach", "Strawberry"];
+const fruits = [
+	"Apple",
+	"Banana",
+	"Blueberry",
+	"Cherry",
+	"Grape",
+	"Mango",
+	"Peach",
+	"Strawberry",
+];
 
 /** Single-select from a plain string array. */
 export const Default = meta.story({
@@ -493,7 +499,9 @@ function ValidationDemo() {
 			)}
 		>
 			<Label class={labelClass}>Favorite fruit</Label>
-			<Trigger class={`${triggerClass} data-[invalid]:border-red-500 data-[invalid]:ring-red-500`}>
+			<Trigger
+				class={`${triggerClass} data-[invalid]:border-red-500 data-[invalid]:ring-red-500`}
+			>
 				<Value<string> placeholder="Pick a fruit…">
 					{(state) => state.selectedOption()}
 				</Value>
@@ -501,7 +509,9 @@ function ValidationDemo() {
 					<ChevronIcon />
 				</Icon>
 			</Trigger>
-			<Description class={descriptionClass}>The only correct answer is Apple.</Description>
+			<Description class={descriptionClass}>
+				The only correct answer is Apple.
+			</Description>
 			<ErrorMessage class={errorClass}>Please select Apple.</ErrorMessage>
 			<Portal>
 				<Content class={contentClass}>

@@ -1,6 +1,6 @@
-import { createSignal } from "solid-js";
-import { parseColor } from "@solid-primitives/utils/colors";
 import type { Color, ColorChannel } from "@solid-primitives/utils/colors";
+import { parseColor } from "@solid-primitives/utils/colors";
+import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
 	Description,
@@ -19,7 +19,16 @@ const meta = preview.meta({
 	argTypes: {
 		channel: {
 			control: "select",
-			options: ["hue", "saturation", "lightness", "brightness", "red", "green", "blue", "alpha"],
+			options: [
+				"hue",
+				"saturation",
+				"lightness",
+				"brightness",
+				"red",
+				"green",
+				"blue",
+				"alpha",
+			],
 		},
 		orientation: {
 			control: "radio",
@@ -63,7 +72,10 @@ export const Default = meta.story({
 					<Label class={labelClass}>{String(args.channel)}</Label>
 					<ValueLabel class="text-sm text-slate-500" />
 				</div>
-				<Track class={trackClass} style={{ "--kb-color-current": "transparent" }}>
+				<Track
+					class={trackClass}
+					style={{ "--kb-color-current": "transparent" }}
+				>
 					<Thumb
 						class={thumbClass}
 						style={{ background: "var(--kb-color-current)" }}
@@ -136,7 +148,9 @@ export const Alpha = meta.story({
 
 /** Controlled slider — all changes reflected in a signal. */
 function ControlledDemo() {
-	const [color, setColor] = createSignal<Color>(parseColor("hsl(120, 80%, 50%)"));
+	const [color, setColor] = createSignal<Color>(
+		parseColor("hsl(120, 80%, 50%)"),
+	);
 	return (
 		<div class="flex flex-col gap-4 font-sans">
 			<Root
@@ -213,7 +227,10 @@ export const Disabled = meta.story({
 				<ValueLabel class="text-sm text-slate-400" />
 			</div>
 			<Track class={`${trackClass} opacity-50 cursor-not-allowed`}>
-				<Thumb class={`${thumbClass} cursor-not-allowed`} style={{ background: "var(--kb-color-current)" }}>
+				<Thumb
+					class={`${thumbClass} cursor-not-allowed`}
+					style={{ background: "var(--kb-color-current)" }}
+				>
 					<Input />
 				</Thumb>
 			</Track>
@@ -236,11 +253,16 @@ export const WithValidation = meta.story({
 				<ValueLabel class="text-sm text-slate-500" />
 			</div>
 			<Track class={trackClass}>
-				<Thumb class={`${thumbClass} border-red-400`} style={{ background: "var(--kb-color-current)" }}>
+				<Thumb
+					class={`${thumbClass} border-red-400`}
+					style={{ background: "var(--kb-color-current)" }}
+				>
 					<Input />
 				</Thumb>
 			</Track>
-			<Description class={descClass}>Pick a value above 30% for readability.</Description>
+			<Description class={descClass}>
+				Pick a value above 30% for readability.
+			</Description>
 			<ErrorMessage class={errorClass}>Lightness is too low.</ErrorMessage>
 		</Root>
 	),

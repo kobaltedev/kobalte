@@ -1,28 +1,25 @@
 import {
-	type ValidationState,
 	access,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type ValidationState,
 } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
-import {
-	createMemo,
-	createSignal,
-	createUniqueId,
-	omit,
-} from "solid-js";
+import { createFormResetListener } from "@solid-primitives/form";
+import { createElementSize } from "@solid-primitives/resize-observer";
 
 import {
 	COLOR_INTL_TRANSLATIONS,
 	type Color,
 	type ColorIntlTranslations,
 } from "@solid-primitives/utils/colors";
+import type { ValidComponent } from "@solidjs/web";
+import { createMemo, createSignal, createUniqueId, omit } from "solid-js";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import { useLocale } from "../i18n";
 import {
@@ -30,8 +27,6 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "@solid-primitives/form";
-import { createElementSize } from "@solid-primitives/resize-observer";
 import {
 	ColorWheelContext,
 	type ColorWheelContextValue,

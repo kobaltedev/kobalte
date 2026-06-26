@@ -18,15 +18,15 @@ import {
 	mergeRefs,
 	scrollIntoViewport,
 } from "@kobalte/utils";
-import { type ComponentProps, type JSX, type ValidComponent } from "@solidjs/web";
+import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
 import {
-	Show,
 	children,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
+	Show,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -95,7 +95,16 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		props as TimeFieldSegmentProps,
 	);
 
-	const others = omit(mergedProps, "ref", "segment", "onKeyDown", "onBeforeInput", "onInput", "onFocus", "children");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"segment",
+		"onKeyDown",
+		"onBeforeInput",
+		"onInput",
+		"onFocus",
+		"children",
+	);
 
 	const { locale } = useLocale();
 
@@ -452,7 +461,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		}
 
 		enteredKeys = "";
-		fieldContext.setSegment(mergedProps.segment.type, mergedProps.segment.minValue);
+		fieldContext.setSegment(
+			mergedProps.segment.type,
+			mergedProps.segment.minValue,
+		);
 	};
 
 	const onIncrementToMax = () => {
@@ -461,14 +473,20 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		}
 
 		enteredKeys = "";
-		fieldContext.setSegment(mergedProps.segment.type, mergedProps.segment.maxValue);
+		fieldContext.setSegment(
+			mergedProps.segment.type,
+			mergedProps.segment.maxValue,
+		);
 	};
 
 	createEffect(
 		() => {
 			const resolvedDateValue = fieldContext.dateValue();
 			if (!resolvedDateValue) return undefined;
-			if (mergedProps.segment.type === "hour" && !mergedProps.segment.isPlaceholder) {
+			if (
+				mergedProps.segment.type === "hour" &&
+				!mergedProps.segment.isPlaceholder
+			) {
 				return hourDateFormatter().format(resolvedDateValue);
 			}
 			return mergedProps.segment.isPlaceholder ? "" : mergedProps.segment.text;
@@ -522,7 +540,9 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				validationState={formControlContext.validationState()}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
-				readOnly={formControlContext.isReadOnly() || !mergedProps.segment.isEditable}
+				readOnly={
+					formControlContext.isReadOnly() || !mergedProps.segment.isEditable
+				}
 				contentEditable={isEditable()}
 				inputMode={inputMode()}
 				autocorrect={isEditable() ? "off" : undefined}

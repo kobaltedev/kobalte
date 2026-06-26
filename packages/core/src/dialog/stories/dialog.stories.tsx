@@ -1,6 +1,15 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { CloseButton, Content, Description, Overlay, Portal, Root, Title, Trigger } from "../index";
+import {
+	CloseButton,
+	Content,
+	Description,
+	Overlay,
+	Portal,
+	Root,
+	Title,
+	Trigger,
+} from "../index";
 
 const meta = preview.meta({
 	title: "Components/Dialog",
@@ -12,8 +21,7 @@ export default meta;
 const triggerClass =
 	"inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2";
 
-const overlayClass =
-	"fixed inset-0 z-50 bg-black/40 backdrop-blur-sm";
+const overlayClass = "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm";
 
 const contentClass =
 	"fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg border border-slate-200 bg-white p-6 shadow-xl outline-none font-sans";
@@ -36,10 +44,15 @@ export const Default = meta.story({
 			<Portal>
 				<Overlay class={overlayClass} />
 				<Content class={contentClass}>
-					<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-					<Title class="mb-1 text-base font-semibold text-slate-900">Dialog title</Title>
+					<CloseButton class={closeClass} aria-label="Close">
+						✕
+					</CloseButton>
+					<Title class="mb-1 text-base font-semibold text-slate-900">
+						Dialog title
+					</Title>
 					<Description class="text-sm text-slate-500 mb-4">
-						This is the dialog description providing additional context for the user.
+						This is the dialog description providing additional context for the
+						user.
 					</Description>
 					<div class="flex justify-end gap-2">
 						<CloseButton class={cancelBtnClass}>Cancel</CloseButton>
@@ -59,8 +72,12 @@ export const NonModal = meta.story({
 			<Trigger class={triggerClass}>Open non-modal</Trigger>
 			<Portal>
 				<Content class={contentClass}>
-					<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-					<Title class="mb-1 text-base font-semibold text-slate-900">Non-modal dialog</Title>
+					<CloseButton class={closeClass} aria-label="Close">
+						✕
+					</CloseButton>
+					<Title class="mb-1 text-base font-semibold text-slate-900">
+						Non-modal dialog
+					</Title>
 					<Description class="text-sm text-slate-500">
 						Background content is still interactive — no overlay is used.
 					</Description>
@@ -81,8 +98,12 @@ function ControlledDemo() {
 					<Portal>
 						<Overlay class={overlayClass} />
 						<Content class={contentClass}>
-							<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-							<Title class="mb-1 text-base font-semibold text-slate-900">Controlled</Title>
+							<CloseButton class={closeClass} aria-label="Close">
+								✕
+							</CloseButton>
+							<Title class="mb-1 text-base font-semibold text-slate-900">
+								Controlled
+							</Title>
 							<Description class="text-sm text-slate-500 mb-4">
 								Open state is managed by an external signal.
 							</Description>
@@ -119,8 +140,12 @@ export const WithForm = meta.story({
 			<Portal>
 				<Overlay class={overlayClass} />
 				<Content class={`${contentClass} max-w-sm`}>
-					<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-					<Title class="mb-1 text-base font-semibold text-slate-900">Edit profile</Title>
+					<CloseButton class={closeClass} aria-label="Close">
+						✕
+					</CloseButton>
+					<Title class="mb-1 text-base font-semibold text-slate-900">
+						Edit profile
+					</Title>
 					<Description class="text-sm text-slate-500 mb-4">
 						Update your display name and bio.
 					</Description>
@@ -169,10 +194,15 @@ export const Destructive = meta.story({
 			<Portal>
 				<Overlay class={overlayClass} />
 				<Content class={contentClass}>
-					<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-					<Title class="mb-1 text-base font-semibold text-slate-900">Delete account</Title>
+					<CloseButton class={closeClass} aria-label="Close">
+						✕
+					</CloseButton>
+					<Title class="mb-1 text-base font-semibold text-slate-900">
+						Delete account
+					</Title>
 					<Description class="text-sm text-slate-500 mb-4">
-						This action cannot be undone. Your account and all associated data will be permanently deleted.
+						This action cannot be undone. Your account and all associated data
+						will be permanently deleted.
 					</Description>
 					<div class="flex justify-end gap-2">
 						<button class={cancelBtnClass}>Cancel</button>
@@ -194,7 +224,10 @@ export const DefaultOpen = meta.story({
 	name: "Default Open",
 	args: { defaultOpen: false },
 	argTypes: {
-		defaultOpen: { control: "boolean", description: "Open on initial mount. Refresh the story after toggling." },
+		defaultOpen: {
+			control: "boolean",
+			description: "Open on initial mount. Refresh the story after toggling.",
+		},
 	},
 	render: (args) => (
 		<Root defaultOpen={args.defaultOpen}>
@@ -202,10 +235,15 @@ export const DefaultOpen = meta.story({
 			<Portal>
 				<Overlay class={overlayClass} />
 				<Content class={contentClass}>
-					<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-					<Title class="mb-1 text-base font-semibold text-slate-900">Starts open</Title>
+					<CloseButton class={closeClass} aria-label="Close">
+						✕
+					</CloseButton>
+					<Title class="mb-1 text-base font-semibold text-slate-900">
+						Starts open
+					</Title>
 					<Description class="text-sm text-slate-500">
-						Enable <strong>defaultOpen</strong> in the Controls panel and refresh to see the dialog open on load.
+						Enable <strong>defaultOpen</strong> in the Controls panel and
+						refresh to see the dialog open on load.
 					</Description>
 				</Content>
 			</Portal>

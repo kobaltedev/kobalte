@@ -1,13 +1,8 @@
 import { mergeRefs } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createSignal,
-	omit,
-} from "solid-js";
-
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createFormResetListener } from "@solid-primitives/form";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createSignal, omit } from "solid-js";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	RadioGroup,
 	type RadioGroupItemInputCommonProps,

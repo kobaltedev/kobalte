@@ -8,12 +8,7 @@
 
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import {
-	For,
-	Show,
-	createEffect,
-	omit,
-} from "solid-js";
+import { createEffect, For, omit, Show } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import type { Collection, CollectionNode } from "../primitives";
@@ -55,7 +50,17 @@ export interface HiddenSelectBaseProps extends ComponentProps<"select"> {
 export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 	let ref: HTMLSelectElement | undefined;
 
-	const others = omit(props, "ref", "onChange", "collection", "selectionManager", "isOpen", "isMultiple", "isVirtualized", "focusTrigger");
+	const others = omit(
+		props,
+		"ref",
+		"onChange",
+		"collection",
+		"selectionManager",
+		"isOpen",
+		"isMultiple",
+		"isVirtualized",
+		"focusTrigger",
+	);
 
 	const formControlContext = useFormControlContext();
 
@@ -116,7 +121,12 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 				size={props.collection.getSize()}
 				value={props.selectionManager.firstSelectedKey() ?? ""}
 				onChange={(e) => {
-					callHandler(e as Event & { currentTarget: HTMLSelectElement; target: Element }, props.onChange as JSX.EventHandlerUnion<HTMLSelectElement, Event> | undefined);
+					callHandler(
+						e as Event & { currentTarget: HTMLSelectElement; target: Element },
+						props.onChange as
+							| JSX.EventHandlerUnion<HTMLSelectElement, Event>
+							| undefined,
+					);
 
 					// Prevent internally fired change event to update the selection
 					// which would result in an infinite loop.

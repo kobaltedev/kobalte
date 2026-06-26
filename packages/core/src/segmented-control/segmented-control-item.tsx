@@ -1,11 +1,6 @@
 import { mergeRefs } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createEffect,
-	createSignal,
-	omit,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, createSignal, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	RadioGroup,
@@ -45,7 +40,9 @@ export const SegmentedControlItem = <T extends ValidComponent = "div">(
 	createEffect(
 		() => {
 			const element = ref();
-			return element && radioGroupContext.isSelectedValue(props.value) ? element : undefined;
+			return element && radioGroupContext.isSelectedValue(props.value)
+				? element
+				: undefined;
 		},
 		(element) => {
 			if (element) segmentedControlContext.setSelectedItem(element);

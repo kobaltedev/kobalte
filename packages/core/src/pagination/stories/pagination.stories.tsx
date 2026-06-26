@@ -17,7 +17,17 @@ const navClass =
 
 function ChevronLeft() {
 	return (
-		<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+		<svg
+			width="16"
+			height="16"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
 			<path d="M15 18l-6-6 6-6" />
 		</svg>
 	);
@@ -25,7 +35,17 @@ function ChevronLeft() {
 
 function ChevronRight() {
 	return (
-		<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+		<svg
+			width="16"
+			height="16"
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+			aria-hidden="true"
+		>
 			<path d="M9 18l6-6-6-6" />
 		</svg>
 	);
@@ -54,9 +74,13 @@ export const Default = meta.story({
 			)}
 		>
 			<ul class="flex items-center gap-1">
-				<Previous class={navClass}><ChevronLeft /></Previous>
+				<Previous class={navClass}>
+					<ChevronLeft />
+				</Previous>
 				<Items />
-				<Next class={navClass}><ChevronRight /></Next>
+				<Next class={navClass}>
+					<ChevronRight />
+				</Next>
 			</ul>
 		</Root>
 	),
@@ -82,9 +106,13 @@ export const DefaultPage = meta.story({
 			)}
 		>
 			<ul class="flex items-center gap-1">
-				<Previous class={navClass}><ChevronLeft /></Previous>
+				<Previous class={navClass}>
+					<ChevronLeft />
+				</Previous>
 				<Items />
-				<Next class={navClass}><ChevronRight /></Next>
+				<Next class={navClass}>
+					<ChevronRight />
+				</Next>
 			</ul>
 		</Root>
 	),
@@ -111,9 +139,13 @@ export const SiblingCount = meta.story({
 			)}
 		>
 			<ul class="flex items-center gap-1">
-				<Previous class={navClass}><ChevronLeft /></Previous>
+				<Previous class={navClass}>
+					<ChevronLeft />
+				</Previous>
 				<Items />
-				<Next class={navClass}><ChevronRight /></Next>
+				<Next class={navClass}>
+					<ChevronRight />
+				</Next>
 			</ul>
 		</Root>
 	),
@@ -140,9 +172,13 @@ export const FixedItems = meta.story({
 			)}
 		>
 			<ul class="flex items-center gap-1">
-				<Previous class={navClass}><ChevronLeft /></Previous>
+				<Previous class={navClass}>
+					<ChevronLeft />
+				</Previous>
 				<Items />
-				<Next class={navClass}><ChevronRight /></Next>
+				<Next class={navClass}>
+					<ChevronRight />
+				</Next>
 			</ul>
 		</Root>
 	),
@@ -169,9 +205,13 @@ export const Disabled = meta.story({
 			)}
 		>
 			<ul class="flex items-center gap-1">
-				<Previous class={navClass}><ChevronLeft /></Previous>
+				<Previous class={navClass}>
+					<ChevronLeft />
+				</Previous>
 				<Items />
-				<Next class={navClass}><ChevronRight /></Next>
+				<Next class={navClass}>
+					<ChevronRight />
+				</Next>
 			</ul>
 		</Root>
 	),
@@ -197,9 +237,13 @@ function ControlledDemo() {
 				)}
 			>
 				<ul class="flex items-center gap-1">
-					<Previous class={navClass}><ChevronLeft /></Previous>
+					<Previous class={navClass}>
+						<ChevronLeft />
+					</Previous>
 					<Items />
-					<Next class={navClass}><ChevronRight /></Next>
+					<Next class={navClass}>
+						<ChevronRight />
+					</Next>
 				</ul>
 			</Root>
 			<p class="text-xs text-slate-500">

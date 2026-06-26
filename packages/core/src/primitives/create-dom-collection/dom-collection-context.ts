@@ -8,9 +8,12 @@ export interface DomCollectionContextValue<
 	registerItem: (item: T) => () => void;
 }
 
-export const DomCollectionContext = createContext<DomCollectionContextValue | null>(null);
+export const DomCollectionContext =
+	createContext<DomCollectionContextValue | null>(null);
 
-export function useOptionalDomCollectionContext(): DomCollectionContextValue | undefined {
+export function useOptionalDomCollectionContext():
+	| DomCollectionContextValue
+	| undefined {
 	return useContext(DomCollectionContext) ?? undefined;
 }
 

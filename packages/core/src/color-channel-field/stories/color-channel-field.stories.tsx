@@ -1,6 +1,6 @@
-import { createSignal } from "solid-js";
-import { parseColor } from "@solid-primitives/utils/colors";
 import type { Color, ColorChannel } from "@solid-primitives/utils/colors";
+import { parseColor } from "@solid-primitives/utils/colors";
+import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
 	DecrementTrigger,
@@ -18,7 +18,15 @@ const meta = preview.meta({
 	argTypes: {
 		channel: {
 			control: "select",
-			options: ["hue", "saturation", "lightness", "red", "green", "blue", "alpha"],
+			options: [
+				"hue",
+				"saturation",
+				"lightness",
+				"red",
+				"green",
+				"blue",
+				"alpha",
+			],
 		},
 		disabled: { control: "boolean" },
 	},
@@ -67,15 +75,12 @@ export const Default = meta.story({
 
 /** Controlled — hue channel synced to a signal. */
 function ControlledDemo() {
-	const [color, setColor] = createSignal<Color>(parseColor("hsl(200, 70%, 50%)"));
+	const [color, setColor] = createSignal<Color>(
+		parseColor("hsl(200, 70%, 50%)"),
+	);
 	return (
 		<div class="flex flex-col gap-4 font-sans">
-			<Root
-				class={rootClass}
-				channel="hue"
-				value={color()}
-				onChange={setColor}
-			>
+			<Root class={rootClass} channel="hue" value={color()} onChange={setColor}>
 				<Label class={labelClass}>Hue</Label>
 				<div class={inputWrapClass}>
 					<DecrementTrigger class={btnClass}>−</DecrementTrigger>
@@ -97,13 +102,22 @@ export const Controlled = meta.story({
 
 /** All HSL channels as a combined editor. */
 function HSLEditorDemo() {
-	const [color, setColor] = createSignal<Color>(parseColor("hsl(200, 70%, 50%)"));
+	const [color, setColor] = createSignal<Color>(
+		parseColor("hsl(200, 70%, 50%)"),
+	);
 	const channels: ColorChannel[] = ["hue", "saturation", "lightness"];
 	return (
 		<div class="flex flex-col gap-3 font-sans">
 			{channels.map((ch) => (
-				<Root class={rootClass} channel={ch} value={color()} onChange={setColor}>
-					<Label class={labelClass}>{ch.charAt(0).toUpperCase() + ch.slice(1)}</Label>
+				<Root
+					class={rootClass}
+					channel={ch}
+					value={color()}
+					onChange={setColor}
+				>
+					<Label class={labelClass}>
+						{ch.charAt(0).toUpperCase() + ch.slice(1)}
+					</Label>
 					<div class={inputWrapClass}>
 						<DecrementTrigger class={btnClass}>−</DecrementTrigger>
 						<Input class={inputClass} />

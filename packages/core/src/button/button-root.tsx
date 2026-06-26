@@ -13,7 +13,7 @@
  */
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
+import type { ValidComponent } from "@solidjs/web";
 import { createMemo, createSignal, omit } from "solid-js";
 
 import {
@@ -52,7 +52,9 @@ export type ButtonRootProps<
 export function ButtonRoot<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, ButtonRootProps<T>>,
 ) {
-	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const mergedProps = mergeDefaultProps(
 		{ type: "button" },
@@ -61,10 +63,7 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 
 	const others = omit(mergedProps, "ref", "type", "disabled");
 
-	const tagName = createTagName(
-		ref,
-		() => "button",
-	);
+	const tagName = createTagName(ref, () => "button");
 
 	const isNativeButton = createMemo(() => {
 		const elementTagName = tagName();
@@ -91,7 +90,9 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 			type={isNativeButton() || isNativeInput() ? mergedProps.type : undefined}
 			role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
 			tabindex={
-				!isNativeButton() && !isNativeLink() && !mergedProps.disabled ? 0 : undefined
+				!isNativeButton() && !isNativeLink() && !mergedProps.disabled
+					? 0
+					: undefined
 			}
 			disabled={
 				isNativeButton() || isNativeInput() ? mergedProps.disabled : undefined

@@ -7,19 +7,14 @@
  */
 
 import {
-	type Orientation,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 	scrollIntoViewport,
 } from "@kobalte/utils";
-import {
-	type Component,
-	createEffect,
-	createMemo,
-	omit,
-} from "solid-js";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, createMemo, omit } from "solid-js";
 
 import * as Button from "../button";
 import { useLocale } from "../i18n/i18n-provider";
@@ -93,7 +88,17 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		props as MenuTriggerProps,
 	);
 
-	const others = omit(mergedProps, "ref", "id", "disabled", "onPointerDown", "onClick", "onKeyDown", "onMouseOver", "onFocus");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"id",
+		"disabled",
+		"onPointerDown",
+		"onClick",
+		"onKeyDown",
+		"onMouseOver",
+		"onFocus",
+	);
 
 	let key = () => rootContext.value();
 
@@ -232,7 +237,10 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			optionalMenubarContext.setValue(key);
 	};
 
-	createEffect(() => mergedProps.id!, (id) => context.registerTriggerId(id));
+	createEffect(
+		() => mergedProps.id!,
+		(id) => context.registerTriggerId(id),
+	);
 
 	return (
 		<Button.Root<

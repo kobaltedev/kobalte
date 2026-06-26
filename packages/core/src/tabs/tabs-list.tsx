@@ -7,15 +7,12 @@
  */
 
 import {
-	type Orientation,
 	composeEventHandlers,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	omit,
-} from "solid-js";
+import { createEffect, omit } from "solid-js";
 
 import { useLocale } from "../i18n";
 import {
@@ -57,7 +54,14 @@ export function TabsList<T extends ValidComponent = "div">(
 
 	const context = useTabsContext();
 
-	const others = omit(props as TabsListProps, "ref", "onKeyDown", "onMouseDown", "onFocusIn", "onFocusOut");
+	const others = omit(
+		props as TabsListProps,
+		"ref",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocusIn",
+		"onFocusOut",
+	);
 
 	const { direction } = useLocale();
 

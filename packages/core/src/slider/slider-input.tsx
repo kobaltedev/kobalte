@@ -3,17 +3,12 @@ import {
 	mergeDefaultProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import type { ComponentProps, JSX } from "@solidjs/web";
-import {
-	createEffect,
-	createSignal,
-	omit,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { ComponentProps, JSX } from "@solidjs/web";
+import { createEffect, createSignal, omit } from "solid-js";
 import {
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
+	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
 } from "../form-control";
 import { useSliderContext } from "./slider-context";
@@ -39,7 +34,12 @@ export function SliderInput(props: SliderInputProps) {
 	);
 
 	const formControlFieldProps = omit(mergedProps, "style", "onChange");
-	const others = omit(mergedProps, "style", "onChange", ...FORM_CONTROL_FIELD_PROP_NAMES);
+	const others = omit(
+		mergedProps,
+		"style",
+		"onChange",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
+	);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps as any);
 
@@ -48,7 +48,12 @@ export function SliderInput(props: SliderInputProps) {
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e as Event & { currentTarget: HTMLInputElement; target: Element }, mergedProps.onChange as JSX.EventHandlerUnion<HTMLInputElement, Event> | undefined);
+		callHandler(
+			e as Event & { currentTarget: HTMLInputElement; target: Element },
+			mergedProps.onChange as
+				| JSX.EventHandlerUnion<HTMLInputElement, Event>
+				| undefined,
+		);
 
 		const target = e.target as HTMLInputElement;
 
@@ -63,8 +68,13 @@ export function SliderInput(props: SliderInputProps) {
 	};
 
 	createEffect(
-		() => thumb.index() === -1 ? "" : context.state.getThumbValueLabel(thumb.index()),
-		(value) => { setValueText(value); },
+		() =>
+			thumb.index() === -1
+				? ""
+				: context.state.getThumbValueLabel(thumb.index()),
+		(value) => {
+			setValueText(value);
+		},
 	);
 
 	return (

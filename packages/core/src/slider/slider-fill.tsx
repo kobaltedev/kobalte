@@ -1,7 +1,6 @@
+import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
-
-import { combineStyle } from "@solid-primitives/props";
 import {
 	type ElementOf,
 	Polymorphic,

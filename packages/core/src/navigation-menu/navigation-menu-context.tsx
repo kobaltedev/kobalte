@@ -1,7 +1,7 @@
 import {
 	type Accessor,
-	type Setter,
 	createContext,
+	type Setter,
 	useContext,
 } from "solid-js";
 import type { Placement } from "../popper/utils";
@@ -32,7 +32,9 @@ export interface NavigationMenuContextValue {
 export const NavigationMenuContext =
 	createContext<NavigationMenuContextValue | null>(null);
 
-export function useOptionalNavigationMenuContext(): NavigationMenuContextValue | undefined {
+export function useOptionalNavigationMenuContext():
+	| NavigationMenuContextValue
+	| undefined {
 	return useContext(NavigationMenuContext) ?? undefined;
 }
 

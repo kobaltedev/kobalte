@@ -1,6 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import type { Element } from "solid-js";
 import type { ValidComponent } from "@solidjs/web";
+import type { Element } from "solid-js";
 
 import {
 	type ElementOf,

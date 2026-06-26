@@ -1,11 +1,6 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createEffect,
-	createSignal,
-	omit,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, createSignal, omit } from "solid-js";
 
 import { useMenubarContext } from "../menubar/menubar-context";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";

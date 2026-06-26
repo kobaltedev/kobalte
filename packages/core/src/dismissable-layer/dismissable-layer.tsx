@@ -13,7 +13,14 @@
  */
 
 import { contains, getDocument, mergeRefs } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
+import {
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	interactOutside,
+	type PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
+import { createShortcut } from "@solid-primitives/keyboard";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createEffect,
@@ -21,19 +28,11 @@ import {
 	omit,
 	onSettled,
 } from "solid-js";
-
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-	interactOutside,
-} from "@solid-primitives/interaction";
-import { createShortcut } from "@solid-primitives/keyboard";
 import {
 	DismissableLayerContext,
 	type DismissableLayerContextValue,
@@ -104,7 +103,18 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	let ref: HTMLElement | undefined;
 
 	const parentContext = useOptionalDismissableLayerContext();
-	const others = omit(props as DismissableLayerProps, "ref", "disableOutsidePointerEvents", "excludedElements", "onEscapeKeyDown", "onPointerDownOutside", "onFocusOutside", "onInteractOutside", "onDismiss", "bypassTopMostLayerCheck");
+	const others = omit(
+		props as DismissableLayerProps,
+		"ref",
+		"disableOutsidePointerEvents",
+		"excludedElements",
+		"onEscapeKeyDown",
+		"onPointerDownOutside",
+		"onFocusOutside",
+		"onInteractOutside",
+		"onDismiss",
+		"bypassTopMostLayerCheck",
+	);
 	const isPointerBlocking = createMemo(() => props.disableOutsidePointerEvents);
 	const nestedLayers = new Set<Element>([]);
 
@@ -161,18 +171,22 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 		onPointerDownOutside,
 		onFocusOutside,
 	});
-	createShortcut(["Escape"], (e) => {
-		if (!e || !ref || !layerStack.isTopMostLayer(ref)) {
-			return;
-		}
+	createShortcut(
+		["Escape"],
+		(e) => {
+			if (!e || !ref || !layerStack.isTopMostLayer(ref)) {
+				return;
+			}
 
-		props.onEscapeKeyDown?.(e);
+			props.onEscapeKeyDown?.(e);
 
-		if (!e.defaultPrevented && props.onDismiss) {
-			e.preventDefault();
-			props.onDismiss();
-		}
-	}, { preventDefault: false });
+			if (!e.defaultPrevented && props.onDismiss) {
+				e.preventDefault();
+				props.onDismiss();
+			}
+		},
+		{ preventDefault: false },
+	);
 
 	onSettled(() => {
 		if (!ref) {
@@ -241,7 +255,13 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	return (
 		<DismissableLayerContext value={context}>
 			<div
-				ref={mergeRefs(el => { ref = el; }, interactOutsideRef as (el: HTMLElement) => void, props.ref as any)}
+				ref={mergeRefs(
+					(el) => {
+						ref = el;
+					},
+					interactOutsideRef as (el: HTMLElement) => void,
+					props.ref as any,
+				)}
 				{...(others as any)}
 			>
 				{(others as any).children}

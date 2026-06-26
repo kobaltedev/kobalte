@@ -8,12 +8,8 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import {
-	type Component,
-	createUniqueId,
-	omit,
-} from "solid-js";
-import { type ValidComponent } from "@solidjs/web";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createUniqueId, omit } from "solid-js";
 
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
@@ -78,7 +74,13 @@ export function MenuRadioGroup<
 		props as MenuRadioGroupProps<T, TValue>,
 	);
 
-	const others = omit(mergedProps, "value", "defaultValue", "onChange", "disabled");
+	const others = omit(
+		mergedProps,
+		"value",
+		"defaultValue",
+		"onChange",
+		"disabled",
+	);
 
 	const [selected, setSelected] = createControllableSignal<TValue>({
 		value: () => mergedProps.value,

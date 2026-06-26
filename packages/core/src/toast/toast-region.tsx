@@ -13,19 +13,13 @@
  */
 
 import {
-	OverrideComponentProps,
 	createGenerateId,
 	mergeDefaultProps,
+	OverrideComponentProps,
 } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
-import {
-	createMemo,
-	createSignal,
-	createUniqueId,
-	omit,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createMemo, createSignal, createUniqueId, omit } from "solid-js";
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
 import {
 	type ElementOf,
@@ -33,15 +27,15 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import {
-	ToastRegionContext,
-	type ToastRegionContextValue,
-} from "./toast-region-context";
-import { toastStore } from "./toast-store";
-import {
 	TOAST_HOTKEY_PLACEHOLDER,
 	TOAST_REGION_INTL_TRANSLATIONS,
 	type ToastRegionIntlTranslations,
 } from "./toast.intl";
+import {
+	ToastRegionContext,
+	type ToastRegionContextValue,
+} from "./toast-region-context";
+import { toastStore } from "./toast-store";
 import type { ToastSwipeDirection } from "./types";
 
 export interface ToastRegionOptions {
@@ -155,7 +149,8 @@ export function ToastRegion<T extends ValidComponent = "div">(
 		toastStore
 			.toasts()
 			.filter(
-				(toast) => toast.region === mergedProps.regionId && toast.dismiss === false,
+				(toast) =>
+					toast.region === mergedProps.regionId && toast.dismiss === false,
 			)
 			.slice(0, mergedProps.limit!),
 	);
@@ -165,7 +160,10 @@ export function ToastRegion<T extends ValidComponent = "div">(
 	const hasToasts = () => toasts().length > 0;
 
 	const hotkeyLabel = () => {
-		return mergedProps.hotkey!.join("+").replace(/Key/g, "").replace(/Digit/g, "");
+		return mergedProps
+			.hotkey!.join("+")
+			.replace(/Key/g, "")
+			.replace(/Digit/g, "");
 	};
 
 	const ariaLabel = () => {

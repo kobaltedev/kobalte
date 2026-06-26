@@ -7,13 +7,13 @@
  */
 
 import {
-	type MaybeAccessor,
-	type Orientation,
 	access,
 	callHandler,
 	createEventListener,
 	focusWithoutScrolling,
 	getFocusableTreeWalker,
+	type MaybeAccessor,
+	type Orientation,
 	scrollIntoView,
 } from "@kobalte/utils";
 import type { JSX } from "@solidjs/web";
@@ -508,9 +508,7 @@ export function createSelectableCollection<
 				focusedKey && mergedProps.scrollToKey?.(focusedKey);
 			} else {
 				if (focusedKey && scrollEl) {
-					const element = scrollEl.querySelector(
-						`[data-key="${focusedKey}"]`,
-					);
+					const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
 
 					if (element) {
 						scrollIntoView(scrollEl, element as HTMLElement);

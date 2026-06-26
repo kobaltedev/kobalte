@@ -1,5 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import { parseColor } from "@solid-primitives/utils/colors";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
 	createMemo,
@@ -7,7 +8,6 @@ import {
 	createUniqueId,
 	omit,
 } from "solid-js";
-import { parseColor } from "@solid-primitives/utils/colors";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import * as TextField from "../text-field";

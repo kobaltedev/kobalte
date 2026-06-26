@@ -48,35 +48,35 @@ import {
 } from "./color-slider-track";
 
 export type {
-	ColorSliderDescriptionProps,
-	ColorSliderDescriptionOptions,
 	ColorSliderDescriptionCommonProps,
+	ColorSliderDescriptionOptions,
+	ColorSliderDescriptionProps,
 	ColorSliderDescriptionRenderProps,
-	ColorSliderErrorMessageOptions,
 	ColorSliderErrorMessageCommonProps,
-	ColorSliderErrorMessageRenderProps,
+	ColorSliderErrorMessageOptions,
 	ColorSliderErrorMessageProps,
+	ColorSliderErrorMessageRenderProps,
 	ColorSliderInputProps,
-	ColorSliderLabelOptions,
 	ColorSliderLabelCommonProps,
-	ColorSliderLabelRenderProps,
+	ColorSliderLabelOptions,
 	ColorSliderLabelProps,
-	ColorSliderRootOptions,
+	ColorSliderLabelRenderProps,
 	ColorSliderRootCommonProps,
-	ColorSliderRootRenderProps,
+	ColorSliderRootOptions,
 	ColorSliderRootProps,
-	ColorSliderThumbOptions,
+	ColorSliderRootRenderProps,
 	ColorSliderThumbCommonProps,
-	ColorSliderThumbRenderProps,
+	ColorSliderThumbOptions,
 	ColorSliderThumbProps,
-	ColorSliderTrackOptions,
+	ColorSliderThumbRenderProps,
 	ColorSliderTrackCommonProps,
-	ColorSliderTrackRenderProps,
+	ColorSliderTrackOptions,
 	ColorSliderTrackProps,
-	ColorSliderValueLabelOptions,
+	ColorSliderTrackRenderProps,
 	ColorSliderValueLabelCommonProps,
-	ColorSliderValueLabelRenderProps,
+	ColorSliderValueLabelOptions,
 	ColorSliderValueLabelProps,
+	ColorSliderValueLabelRenderProps,
 };
 export {
 	Description,
@@ -103,6 +103,6 @@ export const ColorSlider = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useColorSliderContext,
 	type ColorSliderContextValue,
+	useColorSliderContext,
 } from "./color-slider-context";

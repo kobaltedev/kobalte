@@ -1,24 +1,25 @@
 import {
-	type ValidationState,
 	access,
 	clamp,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type ValidationState,
 } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
+import { createFormResetListener } from "@solid-primitives/form";
 import {
-	createSignal,
-	createUniqueId,
-	omit,
-} from "solid-js";
-
-import { parseColor, type Color, type ColorChannel, type ColorSpace } from "@solid-primitives/utils/colors";
+	type Color,
+	type ColorChannel,
+	type ColorSpace,
+	parseColor,
+} from "@solid-primitives/utils/colors";
+import type { ValidComponent } from "@solidjs/web";
+import { createSignal, createUniqueId, omit } from "solid-js";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import { useLocale } from "../i18n";
 import {
@@ -26,15 +27,14 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "@solid-primitives/form";
-import {
-	ColorAreaContext,
-	type ColorAreaContextValue,
-} from "./color-area-context";
 import {
 	COLOR_AREA_INTL_TRANSLATIONS,
 	type ColorAreaIntlTranslations,
 } from "./color-area.intl";
+import {
+	ColorAreaContext,
+	type ColorAreaContextValue,
+} from "./color-area-context";
 import { createColorAreaState } from "./create-color-area-state";
 
 export interface ColorAreaRootOptions {
@@ -132,7 +132,22 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 		props as ColorAreaRootProps,
 	);
 
-	const others = omit(mergedProps, "ref", "value", "defaultValue", "colorSpace", "xChannel", "yChannel", "onChange", "onChangeEnd", "translations", "xName", "yName", "disabled", ...FORM_CONTROL_PROP_NAMES);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"colorSpace",
+		"xChannel",
+		"yChannel",
+		"onChange",
+		"onChangeEnd",
+		"translations",
+		"xName",
+		"yName",
+		"disabled",
+		...FORM_CONTROL_PROP_NAMES,
+	);
 
 	const { formControlContext } = createFormControl(mergedProps);
 	const { direction } = useLocale();

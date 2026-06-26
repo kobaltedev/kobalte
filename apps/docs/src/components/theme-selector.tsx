@@ -4,7 +4,7 @@ import {
 	useColorMode,
 } from "@kobalte/core/color-mode";
 import { Select } from "@kobalte/core/select";
-import { type JSX, createSignal, onMount } from "solid-js";
+import { createSignal, type JSX, onMount } from "solid-js";
 
 import { DesktopIcon, MoonIcon, SunIcon } from "./icons";
 

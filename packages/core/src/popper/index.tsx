@@ -20,14 +20,14 @@ import {
 } from "./popper-root";
 
 export type {
-	PopperArrowOptions,
 	PopperArrowCommonProps,
-	PopperArrowRenderProps,
+	PopperArrowOptions,
 	PopperArrowProps,
-	PopperPositionerOptions,
+	PopperArrowRenderProps,
 	PopperPositionerCommonProps,
-	PopperPositionerRenderProps,
+	PopperPositionerOptions,
 	PopperPositionerProps,
+	PopperPositionerRenderProps,
 	PopperRootOptions,
 	PopperRootProps,
 };
@@ -43,4 +43,4 @@ export const Popper = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { usePopperContext, type PopperContextValue } from "./popper-context";
+export { type PopperContextValue, usePopperContext } from "./popper-context";

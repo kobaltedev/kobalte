@@ -1,10 +1,6 @@
-import { OverrideComponentProps, isFunction, mergeRefs } from "@kobalte/utils";
+import { isFunction, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Accessor,
-	children,
-	omit,
-} from "solid-js";
+import { type Accessor, children, omit } from "solid-js";
 
 import {
 	type FormControlDataSet,
@@ -73,7 +69,10 @@ export function ComboboxControl<Option, T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<ComboboxControlRenderProps>
 			as="div"
-			ref={mergeRefs(context.setControlRef, props.ref as (el: HTMLElement) => void)}
+			ref={mergeRefs(
+				context.setControlRef,
+				props.ref as (el: HTMLElement) => void,
+			)}
 			{...context.dataset()}
 			{...formControlContext.dataset()}
 			{...others}

@@ -22,14 +22,14 @@ import {
 	today,
 } from "@internationalized/date";
 import {
-	type OverrideComponentProps,
-	type RangeValue,
-	type ValidationState,
 	contains,
 	getDocument,
 	getWindow,
 	mergeDefaultProps,
 	mergeRefs,
+	type OverrideComponentProps,
+	type RangeValue,
+	type ValidationState,
 } from "@kobalte/utils";
 import {
 	type Accessor,
@@ -47,14 +47,14 @@ import { announce } from "../live-announcer";
 import { type AsChildProp, Polymorphic } from "../polymorphic";
 import { createControllableSignal, createInteractOutside } from "../primitives";
 import {
+	CALENDAR_INTL_MESSAGES,
+	type CalendarIntlTranslations,
+} from "./calendar.intl";
+import {
 	CalendarContext,
 	type CalendarContextValue,
 	type CalendarDataSet,
 } from "./calendar-context";
-import {
-	CALENDAR_INTL_MESSAGES,
-	type CalendarIntlTranslations,
-} from "./calendar.intl";
 import type { DateAlignment, DateValue } from "./types";
 import {
 	alignCenter,
@@ -271,7 +271,7 @@ export function CalendarRoot(props: CalendarRootProps) {
 	>({
 		value: () => local.value,
 		defaultValue: () => local.defaultValue,
-		// @ts-ignore: TS cant understand polymorphic component
+		// @ts-expect-error: TS cant understand polymorphic component
 		onChange: (value) => local.onChange?.(value),
 	});
 

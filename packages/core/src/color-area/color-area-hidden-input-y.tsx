@@ -1,4 +1,7 @@
-import { type ColorAreaHiddenInputBaseProps, ColorAreaHiddenInputBase } from "./color-area-hidden-input-base";
+import {
+	ColorAreaHiddenInputBase,
+	type ColorAreaHiddenInputBaseProps,
+} from "./color-area-hidden-input-base";
 
 export type ColorAreaHiddenInputYProps = ColorAreaHiddenInputBaseProps;
 

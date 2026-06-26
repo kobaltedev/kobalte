@@ -1,13 +1,15 @@
+import { NumberFormatter, NumberParser } from "@internationalized/number";
 import {
-	type ValidationState,
 	access,
 	createGenerateId,
 	getPrecision,
 	mergeDefaultProps,
 	mergeRefs,
 	snapValueToStep,
+	type ValidationState,
 } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import { createFormResetListener } from "@solid-primitives/form";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
 	createMemo,
@@ -15,13 +17,11 @@ import {
 	createUniqueId,
 	omit,
 } from "solid-js";
-
-import { NumberFormatter, NumberParser } from "@internationalized/number";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import { useLocale } from "../i18n";
 import {
@@ -29,10 +29,7 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "@solid-primitives/form";
-import {
-	createControllableSignal,
-} from "../primitives";
+import { createControllableSignal } from "../primitives";
 import type { SpinButtonRootOptions } from "../spin-button";
 import {
 	NumberFieldContext,
@@ -148,8 +145,45 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		props as NumberFieldRootProps,
 	);
 
-	const formControlProps = omit(mergedProps, "ref", "value", "defaultValue", "onChange", "rawValue", "onRawValueChange", "translations", "format", "formatOptions", "textValue", "minValue", "maxValue", "step", "largeStep", "changeOnWheel", "allowedInput") as unknown as typeof mergedProps;
-	const others = omit(mergedProps, "ref", "value", "defaultValue", "onChange", "rawValue", "onRawValueChange", "translations", "format", "formatOptions", "textValue", "minValue", "maxValue", "step", "largeStep", "changeOnWheel", "allowedInput", ...FORM_CONTROL_PROP_NAMES);
+	const formControlProps = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"rawValue",
+		"onRawValueChange",
+		"translations",
+		"format",
+		"formatOptions",
+		"textValue",
+		"minValue",
+		"maxValue",
+		"step",
+		"largeStep",
+		"changeOnWheel",
+		"allowedInput",
+	) as unknown as typeof mergedProps;
+	const others = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"rawValue",
+		"onRawValueChange",
+		"translations",
+		"format",
+		"formatOptions",
+		"textValue",
+		"minValue",
+		"maxValue",
+		"step",
+		"largeStep",
+		"changeOnWheel",
+		"allowedInput",
+		...FORM_CONTROL_PROP_NAMES,
+	);
 
 	const { locale } = useLocale();
 
@@ -182,15 +216,19 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		value: () => mergedProps.value,
 		defaultValue: () => mergedProps.defaultValue ?? mergedProps.rawValue,
 		onChange: (value) => {
-			mergedProps.onChange?.(typeof value === "number" ? formatNumber(value) : value);
+			mergedProps.onChange?.(
+				typeof value === "number" ? formatNumber(value) : value,
+			);
 			mergedProps.onRawValueChange?.(parseRawValue(value));
 		},
 	});
 
-	if (value() !== undefined) mergedProps.onRawValueChange?.(parseRawValue(value()));
+	if (value() !== undefined)
+		mergedProps.onRawValueChange?.(parseRawValue(value()));
 
 	function isAllowedInput(char: string): boolean {
-		if (mergedProps.allowedInput !== undefined) return mergedProps.allowedInput.test(char);
+		if (mergedProps.allowedInput !== undefined)
+			return mergedProps.allowedInput.test(char);
 		return true;
 	}
 
@@ -203,8 +241,13 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		},
 	);
 
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
-	const [hiddenInputRef, setHiddenInputRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [hiddenInputRef, setHiddenInputRef] = createSignal<
+		HTMLInputElement | undefined
+	>(undefined, { ownedWrite: true });
 	const onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
 		if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
 			return;

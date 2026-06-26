@@ -15,16 +15,12 @@ import {
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	createSignal,
-	omit,
-} from "solid-js";
+import { createEffect, createSignal, omit } from "solid-js";
 
 import {
+	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
-	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import {
@@ -77,7 +73,9 @@ export type CheckboxInputProps<
 export function CheckboxInput<T extends ValidComponent = "input">(
 	props: PolymorphicProps<T, CheckboxInputProps<T>>,
 ) {
-	const [ref, setRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
+	const [ref, setRef] = createSignal<HTMLInputElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
@@ -89,8 +87,26 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 		props as CheckboxInputProps,
 	);
 
-	const formControlFieldProps = omit(mergedProps, "ref", "style", "onChange", "onFocus", "onBlur");
-	const others = omit(mergedProps, "ref", "style", "onChange", "onFocus", "onBlur", "id", "aria-label", "aria-labelledby", "aria-describedby");
+	const formControlFieldProps = omit(
+		mergedProps,
+		"ref",
+		"style",
+		"onChange",
+		"onFocus",
+		"onBlur",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"style",
+		"onChange",
+		"onFocus",
+		"onBlur",
+		"id",
+		"aria-label",
+		"aria-labelledby",
+		"aria-describedby",
+	);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
@@ -118,16 +134,12 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 		setIsInternalChangeEvent(false);
 	};
 
-	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (
-		e,
-	) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, mergedProps.onFocus);
 		context.setIsFocused(true);
 	};
 
-	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (
-		e,
-	) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, mergedProps.onBlur);
 		context.setIsFocused(false);
 	};

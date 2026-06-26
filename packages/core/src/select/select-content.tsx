@@ -1,17 +1,20 @@
 import {
-	OverrideComponentProps,
 	focusWithoutScrolling,
 	mergeRefs,
+	OverrideComponentProps,
 } from "@kobalte/utils";
-import type { JSX, ValidComponent } from "@solidjs/web";
+import { createFocusTrap } from "@solid-primitives/focus";
 import {
-	type Component,
-	Show,
-	omit,
-} from "solid-js";
+	createHideOutside,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -19,13 +22,6 @@ import {
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import { createFocusTrap } from "@solid-primitives/focus";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-	createHideOutside,
-} from "@solid-primitives/interaction";
 import { type SelectDataSet, useSelectContext } from "./select-context";
 
 export interface SelectContentOptions {
@@ -78,7 +74,13 @@ export function SelectContent<T extends ValidComponent = "div">(
 
 	const context = useSelectContext();
 
-	const others = omit(props as SelectContentProps, "ref", "style", "onCloseAutoFocus", "onFocusOutside");
+	const others = omit(
+		props as SelectContentProps,
+		"ref",
+		"style",
+		"onCloseAutoFocus",
+		"onFocusOutside",
+	);
 
 	const onEscapeKeyDown = (e: KeyboardEvent) => {
 		// `createSelectableList` prevent escape key down,

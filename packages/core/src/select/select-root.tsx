@@ -1,9 +1,5 @@
 import type { ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createMemo,
-	omit,
-} from "solid-js";
+import { type Component, createMemo, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import {
@@ -80,7 +76,10 @@ export function SelectRoot<
 >(props: PolymorphicProps<T, SelectRootProps<Option, OptGroup, T>>) {
 	const others = omit(
 		props as SelectRootProps<Option, OptGroup>,
-		"value", "defaultValue", "onChange", "multiple",
+		"value",
+		"defaultValue",
+		"onChange",
+		"multiple",
 	);
 
 	const _props = props as SelectRootProps<Option, OptGroup>;

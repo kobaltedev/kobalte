@@ -27,7 +27,9 @@ export function createTagName(
 	ref: Accessor<HTMLElement | undefined>,
 	fallback?: Accessor<string | Component | undefined>,
 ) {
-	const [tagName, setTagName] = createSignal(stringOrUndefined(fallback?.()), { ownedWrite: true });
+	const [tagName, setTagName] = createSignal(stringOrUndefined(fallback?.()), {
+		ownedWrite: true,
+	});
 
 	createEffect(
 		() => ref()?.tagName.toLowerCase() || stringOrUndefined(fallback?.()),

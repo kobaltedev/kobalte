@@ -7,7 +7,7 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
 
 import {
@@ -16,13 +16,13 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import {
-	BreadcrumbsContext,
-	type BreadcrumbsContextValue,
-} from "./breadcrumbs-context";
-import {
 	BREADCRUMBS_INTL_TRANSLATIONS,
 	type BreadcrumbsIntlTranslations,
 } from "./breadcrumbs.intl";
+import {
+	BreadcrumbsContext,
+	type BreadcrumbsContextValue,
+} from "./breadcrumbs-context";
 
 export interface BreadcrumbsRootOptions {
 	/**

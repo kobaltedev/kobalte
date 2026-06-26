@@ -8,14 +8,16 @@
  */
 
 import {
-	type ValidationState,
 	access,
 	createGenerateId,
 	focusWithoutScrolling,
 	isAppleDevice,
 	isFunction,
 	mergeDefaultProps,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
+import { createPresence } from "@solid-primitives/presence";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -26,16 +28,14 @@ import {
 	createUniqueId,
 	omit,
 } from "solid-js";
-
-import { createPresence } from "@solid-primitives/presence";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import { createFilter } from "../i18n";
-import { ListKeyboardDelegate, createListState } from "../list";
+import { createListState, ListKeyboardDelegate } from "../list";
 import { announce } from "../live-announcer";
 import {
 	type ElementOf,
@@ -43,7 +43,6 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { Popper, type PopperRootOptions } from "../popper";
-import { createFormResetListener } from "@solid-primitives/form";
 import {
 	type CollectionNode,
 	createControllableSignal,
@@ -52,22 +51,22 @@ import {
 	getItemCount,
 } from "../primitives";
 import {
+	createSelectableCollection,
 	type FocusStrategy,
 	type KeyboardDelegate,
 	Selection,
 	type SelectionBehavior,
 	type SelectionMode,
-	createSelectableCollection,
 } from "../selection";
+import {
+	COMBOBOX_INTL_TRANSLATIONS,
+	type ComboboxIntlTranslations,
+} from "./combobox.intl";
 import {
 	ComboboxContext,
 	type ComboboxContextValue,
 	type ComboboxDataSet,
 } from "./combobox-context";
-import {
-	COMBOBOX_INTL_TRANSLATIONS,
-	type ComboboxIntlTranslations,
-} from "./combobox.intl";
 import type { ComboboxTriggerMode } from "./types";
 
 export interface ComboboxBaseItemComponentProps<Option> {
@@ -335,10 +334,7 @@ export function ComboboxBase<
 		"preventScroll",
 		"forceMount",
 	);
-	const popperProps = omit(
-		_rest,
-		...FORM_CONTROL_PROP_NAMES,
-	);
+	const popperProps = omit(_rest, ...FORM_CONTROL_PROP_NAMES);
 	const formControlProps = omit(
 		_rest,
 		"getAnchorRect",
@@ -373,13 +369,31 @@ export function ComboboxBase<
 		...FORM_CONTROL_PROP_NAMES,
 	);
 
-	const [listboxId, setListboxId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [listboxId, setListboxId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
-	const [controlRef, setControlRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
-	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
-	const [listboxRef, setListboxRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [controlRef, setControlRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [listboxRef, setListboxRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const [focusStrategy, setFocusStrategy] = createSignal<
 		FocusStrategy | boolean
@@ -396,7 +410,8 @@ export function ComboboxBase<
 	const disclosureState = createDisclosureState({
 		open: () => mergedProps.open,
 		defaultOpen: () => mergedProps.defaultOpen,
-		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen, openTriggerMode),
+		onOpenChange: (isOpen) =>
+			mergedProps.onOpenChange?.(isOpen, openTriggerMode),
 	});
 
 	const [inputValue, setInputValue] = createControllableSignal<string>({
@@ -595,8 +610,10 @@ export function ComboboxBase<
 		selectionBehavior: () => access(mergedProps.selectionBehavior),
 		selectionMode: () => mergedProps.selectionMode,
 		dataSource: displayedOptions,
-		getKey: () => (mergedProps.optionValue ?? ((item: any) => String(item))) as any,
-		getTextValue: () => (mergedProps.optionTextValue ?? ((item: any) => String(item))) as any,
+		getKey: () =>
+			(mergedProps.optionValue ?? ((item: any) => String(item))) as any,
+		getTextValue: () =>
+			(mergedProps.optionTextValue ?? ((item: any) => String(item))) as any,
 		getDisabled: () => mergedProps.optionDisabled as any,
 		getSectionChildren: () => mergedProps.optionGroupChildren as any,
 	});
@@ -610,7 +627,7 @@ export function ComboboxBase<
 	};
 
 	const { isMounted: contentPresent } = createPresence(
-		() => (mergedProps.forceMount || disclosureState.isOpen()) || undefined,
+		() => mergedProps.forceMount || disclosureState.isOpen() || undefined,
 		{ transitionDuration: 0 },
 	);
 

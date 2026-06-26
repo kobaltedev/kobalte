@@ -1,9 +1,6 @@
 import { composeEventHandlers } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	omit,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";

@@ -1,11 +1,11 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	type Setter,
 	createUniqueId,
 	omit,
+	type Setter,
 } from "solid-js";
 
 import {
@@ -90,7 +90,21 @@ export function PaginationRoot<T extends ValidComponent = "nav">(
 		props as PaginationRootProps,
 	);
 
-	const others = omit(mergedProps, "page", "defaultPage", "onPageChange", "count", "siblingCount", "showFirst", "showLast", "fixedItems", "itemComponent", "ellipsisComponent", "disabled", "children");
+	const others = omit(
+		mergedProps,
+		"page",
+		"defaultPage",
+		"onPageChange",
+		"count",
+		"siblingCount",
+		"showFirst",
+		"showLast",
+		"fixedItems",
+		"itemComponent",
+		"ellipsisComponent",
+		"disabled",
+		"children",
+	);
 
 	const state = createControllableSignal({
 		defaultValue: () => mergedProps.defaultPage ?? 1,

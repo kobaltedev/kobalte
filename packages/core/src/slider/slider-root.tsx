@@ -7,13 +7,14 @@
  */
 
 import {
-	type ValidationState,
 	access,
 	clamp,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -22,11 +23,10 @@ import {
 	createUniqueId,
 	omit,
 } from "solid-js";
-
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
-	createFormControl,
 } from "../form-control";
 import { createNumberFormatter, useLocale } from "../i18n";
 import {
@@ -34,10 +34,7 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "@solid-primitives/form";
-import {
-	type CollectionItemWithRef,
-} from "../primitives";
+import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "./create-slider-state";
 import {
@@ -192,7 +189,9 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		...FORM_CONTROL_PROP_NAMES,
 	);
 
-	const { formControlContext } = createFormControl(mergedProps as typeof mergedProps & { id: string });
+	const { formControlContext } = createFormControl(
+		mergedProps as typeof mergedProps & { id: string },
+	);
 
 	const defaultFormatter = createNumberFormatter(() => ({ style: "decimal" }));
 	const { direction } = useLocale();
@@ -211,7 +210,8 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		onChangeEnd: mergedProps.onChangeEnd,
 	});
 
-	const { DomCollectionProvider, items: thumbs } = createDomCollection<CollectionItemWithRef>();
+	const { DomCollectionProvider, items: thumbs } =
+		createDomCollection<CollectionItemWithRef>();
 
 	createFormResetListener(
 		() => ref,
@@ -221,7 +221,9 @@ export function SliderRoot<T extends ValidComponent = "div">(
 	const isLTR = () => direction() === "ltr";
 
 	const isSlidingFromLeft = () => {
-		return (isLTR() && !mergedProps.inverted!) || (!isLTR() && mergedProps.inverted!);
+		return (
+			(isLTR() && !mergedProps.inverted!) || (!isLTR() && mergedProps.inverted!)
+		);
 	};
 	const isSlidingFromBottom = () => !mergedProps.inverted!;
 
@@ -247,7 +249,10 @@ export function SliderRoot<T extends ValidComponent = "div">(
 	const onSlideMove = ({
 		deltaX,
 		deltaY,
-	}: { deltaX: number; deltaY: number }) => {
+	}: {
+		deltaX: number;
+		deltaY: number;
+	}) => {
 		const active = state.focusedThumb();
 
 		if (active === undefined) {

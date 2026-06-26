@@ -1,8 +1,7 @@
-import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
-import { type Component, omit } from "solid-js";
-import { type ValidComponent } from "@solidjs/web";
-
+import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createPreventScroll } from "@solid-primitives/scroll";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	MenuContentBase,

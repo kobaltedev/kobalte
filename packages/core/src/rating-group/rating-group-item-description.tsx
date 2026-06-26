@@ -1,5 +1,5 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
+import type { ValidComponent } from "@solidjs/web";
 import { createEffect } from "solid-js";
 
 import {
@@ -41,7 +41,10 @@ export function RatingGroupItemDescription<T extends ValidComponent = "div">(
 		props as RatingGroupItemDescriptionProps,
 	);
 
-	createEffect(() => mergedProps.id, id => context.registerDescription(id));
+	createEffect(
+		() => mergedProps.id,
+		(id) => context.registerDescription(id),
+	);
 
 	return (
 		<Polymorphic<RatingGroupItemDescriptionRenderProps>

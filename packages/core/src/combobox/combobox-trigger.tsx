@@ -8,16 +8,13 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	OverrideComponentProps,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	omit,
-} from "solid-js";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
@@ -62,7 +59,14 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 		props as ComboboxTriggerProps,
 	);
 
-	const others = omit(mergedProps, "ref", "disabled", "onPointerDown", "onClick", "aria-labelledby");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"disabled",
+		"onPointerDown",
+		"onClick",
+		"aria-labelledby",
+	);
 
 	const isDisabled = () => {
 		return (

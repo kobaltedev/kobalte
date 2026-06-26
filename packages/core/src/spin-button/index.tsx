@@ -7,10 +7,10 @@ import {
 } from "./spin-button-root";
 
 export type {
-	SpinButtonRootOptions,
 	SpinButtonRootCommonProps,
-	SpinButtonRootRenderProps,
+	SpinButtonRootOptions,
 	SpinButtonRootProps,
+	SpinButtonRootRenderProps,
 };
 
 export { Root };

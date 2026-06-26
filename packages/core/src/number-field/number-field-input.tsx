@@ -5,18 +5,10 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	createMemo,
-	omit,
-} from "solid-js";
-
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, createMemo, omit } from "solid-js";
+import { createFormControlField, useFormControlContext } from "../form-control";
 import { announce, clearAnnouncer } from "../live-announcer";
-import {
-	createFormControlField,
-	useFormControlContext,
-} from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -54,7 +46,8 @@ export interface NumberFieldInputCommonProps<
 	spellcheck?: boolean;
 }
 
-export interface NumberFieldInputRenderProps extends NumberFieldInputCommonProps {
+export interface NumberFieldInputRenderProps
+	extends NumberFieldInputCommonProps {
 	type: "text";
 	value: string;
 	role: "spinbutton";
@@ -96,13 +89,36 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 
 	const formControlFieldProps = omit(
 		mergedProps as typeof mergedProps & { as: ValidComponent },
-		"ref", "onInput", "onChange", "onWheel", "onKeyDown", "onFocus", "onBlur",
-		"as", "inputMode", "autocomplete", "autocorrect", "spellcheck", "translations",
+		"ref",
+		"onInput",
+		"onChange",
+		"onWheel",
+		"onKeyDown",
+		"onFocus",
+		"onBlur",
+		"as",
+		"inputMode",
+		"autocomplete",
+		"autocorrect",
+		"spellcheck",
+		"translations",
 	);
 	const others = omit(
 		mergedProps as typeof mergedProps & { as: ValidComponent },
-		"ref", "style", "onInput", "onChange", "onWheel", "onKeyDown", "onFocus", "onBlur",
-		"as", "id", "aria-label", "aria-labelledby", "aria-describedby", "translations",
+		"ref",
+		"style",
+		"onInput",
+		"onChange",
+		"onWheel",
+		"onKeyDown",
+		"onFocus",
+		"onBlur",
+		"as",
+		"id",
+		"aria-label",
+		"aria-labelledby",
+		"aria-describedby",
+		"translations",
 	);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
@@ -118,10 +134,18 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 		return (tv || `${context.value()}`).replace("-", "−");
 	});
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (
+		e,
+	) => {
 		callHandler(e, mergedProps.onKeyDown);
 
-		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || formControlContext.isReadOnly()) {
+		if (
+			e.ctrlKey ||
+			e.metaKey ||
+			e.shiftKey ||
+			e.altKey ||
+			formControlContext.isReadOnly()
+		) {
 			return;
 		}
 
@@ -206,22 +230,27 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			aria-required={formControlContext.isRequired() ? "true" : undefined}
 			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
 			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
-			aria-invalid={formControlContext.validationState() === "invalid" ? "true" : undefined}
+			aria-invalid={
+				formControlContext.validationState() === "invalid" ? "true" : undefined
+			}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
-			style={combineStyle({ "touch-action": "none" }, (mergedProps as any).style || undefined)}
+			style={combineStyle(
+				{ "touch-action": "none" },
+				(mergedProps as any).style || undefined,
+			)}
 			onKeyDown={onKeyDown}
 			onFocus={onFocus}
 			onBlur={onBlur}
 			onChange={(e) => {
-				// @ts-ignore: Polymorphic event type
+				// @ts-expect-error: Polymorphic event type
 				callHandler(e, mergedProps.onChange);
 				context.format();
 			}}
-			// @ts-ignore: Polymorphic event type
+			// @ts-expect-error: Polymorphic event type
 			onWheel={(e) => {
-				// @ts-ignore: Polymorphic event type
+				// @ts-expect-error: Polymorphic event type
 				callHandler(e, mergedProps.onWheel);
 				if (
 					!context.changeOnWheel() ||

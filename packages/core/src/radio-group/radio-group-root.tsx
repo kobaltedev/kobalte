@@ -8,30 +8,27 @@
  */
 
 import {
-	type Orientation,
-	type ValidationState,
 	access,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
 import type { ValidComponent } from "@solidjs/web";
 import { createUniqueId, omit } from "solid-js";
-
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "@solid-primitives/form";
-import {
-	createControllableSignal,
-} from "../primitives";
+import { createControllableSignal } from "../primitives";
 import {
 	RadioGroupContext,
 	type RadioGroupContextValue,
@@ -123,8 +120,27 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 		props as RadioGroupRootProps,
 	);
 
-	const formControlProps = omit(mergedProps, "ref", "value", "defaultValue", "onChange", "orientation", "aria-labelledby", "aria-describedby") as unknown as typeof mergedProps;
-	const others = omit(mergedProps, "ref", "value", "defaultValue", "onChange", "orientation", "aria-labelledby", "aria-describedby", ...FORM_CONTROL_PROP_NAMES);
+	const formControlProps = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"orientation",
+		"aria-labelledby",
+		"aria-describedby",
+	) as unknown as typeof mergedProps;
+	const others = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"orientation",
+		"aria-labelledby",
+		"aria-describedby",
+		...FORM_CONTROL_PROP_NAMES,
+	);
 
 	const [selected, setSelected] = createControllableSignal<string>({
 		value: () => mergedProps.value,
@@ -148,7 +164,9 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 	};
 
 	const ariaDescribedBy = () => {
-		return formControlContext.getAriaDescribedBy(mergedProps["aria-describedby"]);
+		return formControlContext.getAriaDescribedBy(
+			mergedProps["aria-describedby"],
+		);
 	};
 
 	const isDefaultValue = (value: string) => {
@@ -192,7 +210,9 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 					role="radiogroup"
 					id={access(formControlProps.id)!}
 					aria-invalid={
-						formControlContext.validationState() === "invalid" ? "true" : undefined
+						formControlContext.validationState() === "invalid"
+							? "true"
+							: undefined
 					}
 					aria-required={formControlContext.isRequired() ? "true" : undefined}
 					aria-disabled={formControlContext.isDisabled() ? "true" : undefined}

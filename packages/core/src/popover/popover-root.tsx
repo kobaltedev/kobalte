@@ -7,27 +7,26 @@
  */
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { createPresence } from "@solid-primitives/presence";
 import {
 	type Accessor,
-	type ParentProps,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
+	type ParentProps,
 } from "solid-js";
-
-import { createPresence } from "@solid-primitives/presence";
 import { Popper, type PopperRootOptions } from "../popper";
 import { createDisclosureState, createRegisterId } from "../primitives";
+import {
+	POPOVER_INTL_TRANSLATIONS,
+	type PopoverIntlTranslations,
+} from "./popover.intl";
 import {
 	PopoverContext,
 	type PopoverContextValue,
 	type PopoverDataSet,
 } from "./popover-context";
-import {
-	POPOVER_INTL_TRANSLATIONS,
-	type PopoverIntlTranslations,
-} from "./popover.intl";
 
 export interface PopoverRootOptions
 	extends Omit<
@@ -99,15 +98,42 @@ export function PopoverRoot(props: PopoverRootProps) {
 		props,
 	);
 
-	const others = omit(mergedProps, "translations", "id", "open", "defaultOpen", "onOpenChange", "modal", "preventScroll", "forceMount", "anchorRef");
+	const others = omit(
+		mergedProps,
+		"translations",
+		"id",
+		"open",
+		"defaultOpen",
+		"onOpenChange",
+		"modal",
+		"preventScroll",
+		"forceMount",
+		"anchorRef",
+	);
 
-	const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
-	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<
+		HTMLElement | undefined
+	>(undefined, { ownedWrite: true });
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
-	const [contentId, setContentId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [titleId, setTitleId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [titleId, setTitleId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const disclosureState = createDisclosureState({
 		open: () => mergedProps.open,
@@ -120,7 +146,7 @@ export function PopoverRoot(props: PopoverRootProps) {
 	};
 
 	const { isMounted: contentPresent } = createPresence(
-		() => (mergedProps.forceMount || disclosureState.isOpen()) || undefined,
+		() => mergedProps.forceMount || disclosureState.isOpen() || undefined,
 		{ transitionDuration: 0 },
 	);
 

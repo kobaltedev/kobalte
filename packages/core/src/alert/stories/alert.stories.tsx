@@ -41,7 +41,9 @@ export const Success = meta.story({
 	name: "Success",
 	render: () => (
 		<Root class={`${baseClass} border-green-200 bg-green-50 text-green-900`}>
-			<span class="text-green-500 mt-0.5 shrink-0" aria-hidden="true">✓</span>
+			<span class="text-green-500 mt-0.5 shrink-0" aria-hidden="true">
+				✓
+			</span>
 			<div class="flex flex-col gap-0.5">
 				<p class="font-semibold leading-tight">Payment confirmed</p>
 				<p class="text-green-700 text-xs">Your order has been placed.</p>
@@ -55,7 +57,9 @@ export const Warning = meta.story({
 	name: "Warning",
 	render: () => (
 		<Root class={`${baseClass} border-yellow-200 bg-yellow-50 text-yellow-900`}>
-			<span class="text-yellow-500 mt-0.5 shrink-0" aria-hidden="true">⚠</span>
+			<span class="text-yellow-500 mt-0.5 shrink-0" aria-hidden="true">
+				⚠
+			</span>
 			<div class="flex flex-col gap-0.5">
 				<p class="font-semibold leading-tight">Storage nearly full</p>
 				<p class="text-yellow-700 text-xs">You have used 90% of your quota.</p>
@@ -69,7 +73,9 @@ export const Error = meta.story({
 	name: "Error",
 	render: () => (
 		<Root class={`${baseClass} border-red-200 bg-red-50 text-red-900`}>
-			<span class="text-red-500 mt-0.5 shrink-0" aria-hidden="true">✕</span>
+			<span class="text-red-500 mt-0.5 shrink-0" aria-hidden="true">
+				✕
+			</span>
 			<div class="flex flex-col gap-0.5">
 				<p class="font-semibold leading-tight">Upload failed</p>
 				<p class="text-red-700 text-xs">

@@ -16,7 +16,9 @@ const meta = preview.meta({
 	tags: ["autodocs"],
 	argTypes: {
 		delayDuration: { control: { type: "number", min: 0, max: 1000, step: 50 } },
-		skipDelayDuration: { control: { type: "number", min: 0, max: 1000, step: 50 } },
+		skipDelayDuration: {
+			control: { type: "number", min: 0, max: 1000, step: 50 },
+		},
 	},
 	args: {
 		delayDuration: 200,
@@ -62,25 +64,33 @@ export const Default = meta.story({
 							<li>
 								<a class={linkClass} href="#">
 									<span class={itemTitleClass}>Analytics</span>
-									<span class={itemDescClass}>Understand your data with rich dashboards.</span>
+									<span class={itemDescClass}>
+										Understand your data with rich dashboards.
+									</span>
 								</a>
 							</li>
 							<li>
 								<a class={linkClass} href="#">
 									<span class={itemTitleClass}>Monitoring</span>
-									<span class={itemDescClass}>Keep tabs on your service health.</span>
+									<span class={itemDescClass}>
+										Keep tabs on your service health.
+									</span>
 								</a>
 							</li>
 							<li>
 								<a class={linkClass} href="#">
 									<span class={itemTitleClass}>Alerts</span>
-									<span class={itemDescClass}>Get notified before things go wrong.</span>
+									<span class={itemDescClass}>
+										Get notified before things go wrong.
+									</span>
 								</a>
 							</li>
 							<li>
 								<a class={linkClass} href="#">
 									<span class={itemTitleClass}>Logs</span>
-									<span class={itemDescClass}>Search and filter all log events.</span>
+									<span class={itemDescClass}>
+										Search and filter all log events.
+									</span>
 								</a>
 							</li>
 						</ul>
@@ -96,19 +106,25 @@ export const Default = meta.story({
 							<li>
 								<a class={linkClass} href="#">
 									<span class={itemTitleClass}>Getting started</span>
-									<span class={itemDescClass}>Quick-start guide for new users.</span>
+									<span class={itemDescClass}>
+										Quick-start guide for new users.
+									</span>
 								</a>
 							</li>
 							<li>
 								<a class={linkClass} href="#">
 									<span class={itemTitleClass}>API reference</span>
-									<span class={itemDescClass}>Detailed endpoint documentation.</span>
+									<span class={itemDescClass}>
+										Detailed endpoint documentation.
+									</span>
 								</a>
 							</li>
 							<li>
 								<a class={linkClass} href="#">
 									<span class={itemTitleClass}>Examples</span>
-									<span class={itemDescClass}>Real-world integration patterns.</span>
+									<span class={itemDescClass}>
+										Real-world integration patterns.
+									</span>
 								</a>
 							</li>
 						</ul>
@@ -116,8 +132,22 @@ export const Default = meta.story({
 				</Portal>
 			</Menu>
 
-			<li><a href="#" class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block">Pricing</a></li>
-			<li><a href="#" class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block">Blog</a></li>
+			<li>
+				<a
+					href="#"
+					class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block"
+				>
+					Pricing
+				</a>
+			</li>
+			<li>
+				<a
+					href="#"
+					class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block"
+				>
+					Blog
+				</a>
+			</li>
 
 			<Viewport class={viewportClass} />
 		</Root>
@@ -205,25 +235,33 @@ export const Animated = meta.story({
 								<li>
 									<a class={linkClass} href="#">
 										<span class={itemTitleClass}>Analytics</span>
-										<span class={itemDescClass}>Rich dashboards and real-time insights.</span>
+										<span class={itemDescClass}>
+											Rich dashboards and real-time insights.
+										</span>
 									</a>
 								</li>
 								<li>
 									<a class={linkClass} href="#">
 										<span class={itemTitleClass}>Infrastructure</span>
-										<span class={itemDescClass}>Scale your cloud resources.</span>
+										<span class={itemDescClass}>
+											Scale your cloud resources.
+										</span>
 									</a>
 								</li>
 								<li>
 									<a class={linkClass} href="#">
 										<span class={itemTitleClass}>Security</span>
-										<span class={itemDescClass}>Protect your users and data.</span>
+										<span class={itemDescClass}>
+											Protect your users and data.
+										</span>
 									</a>
 								</li>
 								<li>
 									<a class={linkClass} href="#">
 										<span class={itemTitleClass}>Integrations</span>
-										<span class={itemDescClass}>Connect with 200+ services.</span>
+										<span class={itemDescClass}>
+											Connect with 200+ services.
+										</span>
 									</a>
 								</li>
 							</ul>
@@ -245,13 +283,17 @@ export const Animated = meta.story({
 								<li>
 									<a class={linkClass} href="#">
 										<span class={itemTitleClass}>Blog</span>
-										<span class={itemDescClass}>News and engineering deep-dives.</span>
+										<span class={itemDescClass}>
+											News and engineering deep-dives.
+										</span>
 									</a>
 								</li>
 								<li>
 									<a class={linkClass} href="#">
 										<span class={itemTitleClass}>Community</span>
-										<span class={itemDescClass}>Forum, Discord, and GitHub.</span>
+										<span class={itemDescClass}>
+											Forum, Discord, and GitHub.
+										</span>
 									</a>
 								</li>
 							</ul>
@@ -259,7 +301,14 @@ export const Animated = meta.story({
 					</Portal>
 				</Menu>
 
-				<li><a href="#" class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block">Pricing</a></li>
+				<li>
+					<a
+						href="#"
+						class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block"
+					>
+						Pricing
+					</a>
+				</li>
 
 				<Viewport class="nm-viewport">
 					<Arrow class="fill-white stroke-slate-200" />
@@ -279,10 +328,26 @@ export const WithArrow = meta.story({
 				<Portal>
 					<Content class={contentClass}>
 						<ul class="grid grid-cols-2 gap-2">
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Deployment</span></a></li>
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>CI/CD</span></a></li>
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Scaling</span></a></li>
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Security</span></a></li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Deployment</span>
+								</a>
+							</li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>CI/CD</span>
+								</a>
+							</li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Scaling</span>
+								</a>
+							</li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Security</span>
+								</a>
+							</li>
 						</ul>
 					</Content>
 				</Portal>
@@ -293,15 +358,34 @@ export const WithArrow = meta.story({
 				<Portal>
 					<Content class={contentClass}>
 						<ul class="flex flex-col gap-1">
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>About</span></a></li>
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Team</span></a></li>
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Careers</span></a></li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>About</span>
+								</a>
+							</li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Team</span>
+								</a>
+							</li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Careers</span>
+								</a>
+							</li>
 						</ul>
 					</Content>
 				</Portal>
 			</Menu>
 
-			<li><a href="#" class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block">Contact</a></li>
+			<li>
+				<a
+					href="#"
+					class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block"
+				>
+					Contact
+				</a>
+			</li>
 
 			<Viewport class={viewportClass}>
 				<Arrow class="fill-white stroke-slate-200" />
@@ -322,8 +406,16 @@ function ControlledDemo() {
 					<Portal>
 						<Content class={contentClass}>
 							<ul class="flex flex-col gap-1">
-								<li><a class={linkClass} href="#"><span class={itemTitleClass}>Enterprise</span></a></li>
-								<li><a class={linkClass} href="#"><span class={itemTitleClass}>Startups</span></a></li>
+								<li>
+									<a class={linkClass} href="#">
+										<span class={itemTitleClass}>Enterprise</span>
+									</a>
+								</li>
+								<li>
+									<a class={linkClass} href="#">
+										<span class={itemTitleClass}>Startups</span>
+									</a>
+								</li>
 							</ul>
 						</Content>
 					</Portal>
@@ -334,9 +426,21 @@ function ControlledDemo() {
 					<Portal>
 						<Content class={contentClass}>
 							<ul class="flex flex-col gap-1">
-								<li><a class={linkClass} href="#"><span class={itemTitleClass}>Blog</span></a></li>
-								<li><a class={linkClass} href="#"><span class={itemTitleClass}>Videos</span></a></li>
-								<li><a class={linkClass} href="#"><span class={itemTitleClass}>Community</span></a></li>
+								<li>
+									<a class={linkClass} href="#">
+										<span class={itemTitleClass}>Blog</span>
+									</a>
+								</li>
+								<li>
+									<a class={linkClass} href="#">
+										<span class={itemTitleClass}>Videos</span>
+									</a>
+								</li>
+								<li>
+									<a class={linkClass} href="#">
+										<span class={itemTitleClass}>Community</span>
+									</a>
+								</li>
 							</ul>
 						</Content>
 					</Portal>
@@ -369,15 +473,30 @@ export const Controlled = meta.story({
 export const Vertical = meta.story({
 	name: "Vertical",
 	render: () => (
-		<Root class="relative flex flex-col gap-0.5 rounded-lg bg-white border border-slate-200 px-1.5 py-2 shadow-sm font-sans text-sm w-40" orientation="vertical">
+		<Root
+			class="relative flex flex-col gap-0.5 rounded-lg bg-white border border-slate-200 px-1.5 py-2 shadow-sm font-sans text-sm w-40"
+			orientation="vertical"
+		>
 			<Menu>
 				<Trigger class={triggerClass + " justify-between"}>Analytics ▸</Trigger>
 				<Portal>
 					<Content class="w-48 rounded-lg border border-slate-200 bg-white p-3 shadow-lg outline-none">
 						<ul class="flex flex-col gap-1">
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Dashboard</span></a></li>
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Reports</span></a></li>
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Exports</span></a></li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Dashboard</span>
+								</a>
+							</li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Reports</span>
+								</a>
+							</li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Exports</span>
+								</a>
+							</li>
 						</ul>
 					</Content>
 				</Portal>
@@ -388,9 +507,21 @@ export const Vertical = meta.story({
 				<Portal>
 					<Content class="w-48 rounded-lg border border-slate-200 bg-white p-3 shadow-lg outline-none">
 						<ul class="flex flex-col gap-1">
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Account</span></a></li>
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Billing</span></a></li>
-							<li><a class={linkClass} href="#"><span class={itemTitleClass}>Security</span></a></li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Account</span>
+								</a>
+							</li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Billing</span>
+								</a>
+							</li>
+							<li>
+								<a class={linkClass} href="#">
+									<span class={itemTitleClass}>Security</span>
+								</a>
+							</li>
 						</ul>
 					</Content>
 				</Portal>
@@ -398,7 +529,14 @@ export const Vertical = meta.story({
 
 			<Separator class="my-1 h-px bg-slate-200" />
 
-			<li><a href="#" class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block">Help</a></li>
+			<li>
+				<a
+					href="#"
+					class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block"
+				>
+					Help
+				</a>
+			</li>
 
 			<Viewport class={viewportClass} />
 		</Root>

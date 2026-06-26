@@ -7,26 +7,26 @@
  */
 
 import {
-	OverrideComponentProps,
 	access,
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	OverrideComponentProps,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	For,
-	Match,
-	Show,
-	Switch,
 	createMemo,
 	createUniqueId,
+	For,
+	Match,
 	omit,
+	Show,
+	Switch,
 } from "solid-js";
 
-import { type ListState, createListState, createSelectableList } from "../list";
+import { createListState, createSelectableList, type ListState } from "../list";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -178,7 +178,42 @@ export function ListboxRoot<
 		props as ListboxRootProps<Option, OptGroup>,
 	);
 
-	const others = omit(mergedProps, "ref", "children", "renderItem", "renderSection", "value", "defaultValue", "onChange", "options", "optionValue", "optionTextValue", "optionDisabled", "optionGroupChildren", "state", "keyboardDelegate", "autoFocus", "selectionMode", "shouldFocusWrap", "shouldUseVirtualFocus", "shouldSelectOnPressUp", "shouldFocusOnHover", "allowDuplicateSelectionEvents", "disallowEmptySelection", "selectionBehavior", "selectOnFocus", "disallowTypeAhead", "allowsTabNavigation", "virtualized", "scrollToItem", "scrollRef", "onKeyDown", "onMouseDown", "onFocusIn", "onFocusOut");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"children",
+		"renderItem",
+		"renderSection",
+		"value",
+		"defaultValue",
+		"onChange",
+		"options",
+		"optionValue",
+		"optionTextValue",
+		"optionDisabled",
+		"optionGroupChildren",
+		"state",
+		"keyboardDelegate",
+		"autoFocus",
+		"selectionMode",
+		"shouldFocusWrap",
+		"shouldUseVirtualFocus",
+		"shouldSelectOnPressUp",
+		"shouldFocusOnHover",
+		"allowDuplicateSelectionEvents",
+		"disallowEmptySelection",
+		"selectionBehavior",
+		"selectOnFocus",
+		"disallowTypeAhead",
+		"allowsTabNavigation",
+		"virtualized",
+		"scrollToItem",
+		"scrollRef",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocusIn",
+		"onFocusOut",
+	);
 
 	const listState = createMemo(() => {
 		if (mergedProps.state) {

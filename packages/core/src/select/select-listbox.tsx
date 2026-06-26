@@ -1,16 +1,11 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createEffect,
-	omit,
-} from "solid-js";
-
-import * as Listbox from "../listbox";
+import { type Component, createEffect, omit } from "solid-js";
 import type {
 	ListboxRootCommonProps,
 	ListboxRootRenderProps,
 } from "../listbox";
+import * as Listbox from "../listbox";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 

@@ -1,4 +1,4 @@
-import { Index, createSignal } from "solid-js";
+import { createSignal, Index } from "solid-js";
 import { RatingGroup } from "../../../../packages/core/src/rating-group";
 
 import style from "./rating-group.module.css";

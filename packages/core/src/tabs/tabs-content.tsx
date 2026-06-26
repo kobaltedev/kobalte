@@ -7,19 +7,13 @@
  */
 
 import {
-	type Orientation,
 	getFocusableTreeWalker,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
-import type { ValidComponent } from "@solidjs/web";
-import {
-	Show,
-	createEffect,
-	createSignal,
-	omit,
-} from "solid-js";
-
 import { createPresence } from "@solid-primitives/presence";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, omit, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -65,7 +59,13 @@ export function TabsContent<T extends ValidComponent = "div">(
 
 	const context = useTabsContext();
 
-	const others = omit(props as TabsContentProps, "ref", "id", "value", "forceMount");
+	const others = omit(
+		props as TabsContentProps,
+		"ref",
+		"id",
+		"value",
+		"forceMount",
+	);
 
 	const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
 
@@ -74,7 +74,7 @@ export function TabsContent<T extends ValidComponent = "div">(
 	const isSelected = () => context.listState().selectedKey() === props.value;
 
 	const { isMounted: present } = createPresence(
-		() => (props.forceMount || isSelected()) || undefined,
+		() => props.forceMount || isSelected() || undefined,
 		{ transitionDuration: 0 },
 	);
 

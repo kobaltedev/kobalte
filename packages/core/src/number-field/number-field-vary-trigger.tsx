@@ -1,9 +1,6 @@
 import { callHandler } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	omit,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 import * as Button from "../button";
 import { useFormControlContext } from "../form-control";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -37,7 +34,11 @@ export function NumberFieldVaryTrigger<T extends ValidComponent = "button">(
 	const formControlContext = useFormControlContext();
 	const context = useNumberFieldContext();
 
-	const others = omit(props as NumberFieldVaryTriggerProps, "numberFieldVaryType", "onClick");
+	const others = omit(
+		props as NumberFieldVaryTriggerProps,
+		"numberFieldVaryType",
+		"onClick",
+	);
 
 	return (
 		<Button.Root<

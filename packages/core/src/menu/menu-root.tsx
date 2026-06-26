@@ -1,9 +1,9 @@
 import {
-	type Orientation,
 	createGenerateId,
 	mergeDefaultProps,
+	type Orientation,
 } from "@kobalte/utils";
-import { type ParentProps, createUniqueId, omit } from "solid-js";
+import { createUniqueId, omit, type ParentProps } from "solid-js";
 
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { createDisclosureState } from "../primitives";
@@ -71,7 +71,18 @@ export function MenuRoot(props: MenuRootProps) {
 		props,
 	);
 
-	const others = omit(mergedProps, "id", "modal", "preventScroll", "forceMount", "open", "defaultOpen", "onOpenChange", "value", "orientation");
+	const others = omit(
+		mergedProps,
+		"id",
+		"modal",
+		"preventScroll",
+		"forceMount",
+		"open",
+		"defaultOpen",
+		"onOpenChange",
+		"value",
+		"orientation",
+	);
 
 	const disclosureState = createDisclosureState({
 		open: () => mergedProps.open,

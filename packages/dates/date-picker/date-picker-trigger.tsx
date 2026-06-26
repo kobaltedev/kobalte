@@ -1,13 +1,13 @@
 import {
-	type OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	type OverrideComponentProps,
 } from "@kobalte/utils";
 import {
-	type JSX,
 	createEffect,
 	createMemo,
+	type JSX,
 	onCleanup,
 	splitProps,
 } from "solid-js";

@@ -84,11 +84,21 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "value", "disabled", "onPointerDown");
 
-	const [inputId, setInputId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [inputId, setInputId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(undefined, { ownedWrite: true });
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 	const [isFocused, setIsFocused] = createSignal(false);
 
 	const isDefault = createMemo(() => {

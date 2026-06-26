@@ -32,14 +32,16 @@ const contentClass =
 const itemClass =
 	"relative flex cursor-default select-none items-center rounded px-3 py-1.5 text-slate-700 outline-none hover:bg-slate-100 hover:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50";
 
-const labelClass = "px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400";
+const labelClass =
+	"px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400";
 
 const separatorClass = "my-1 h-px bg-slate-200";
 
 const checkboxItemClass =
 	"relative flex cursor-default select-none items-center pl-8 pr-3 py-1.5 text-slate-700 outline-none hover:bg-slate-100";
 
-const itemIndicatorClass = "absolute left-2 flex h-4 w-4 items-center justify-center";
+const itemIndicatorClass =
+	"absolute left-2 flex h-4 w-4 items-center justify-center";
 
 const triggerAreaClass =
 	"flex h-32 w-64 select-none items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 text-sm text-slate-400 font-sans";
@@ -107,15 +109,27 @@ function CheckboxDemo() {
 			<Portal>
 				<Content class={contentClass}>
 					<GroupLabel class={labelClass}>View</GroupLabel>
-					<CheckboxItem class={checkboxItemClass} checked={rulers()} onChange={setRulers}>
+					<CheckboxItem
+						class={checkboxItemClass}
+						checked={rulers()}
+						onChange={setRulers}
+					>
 						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
 						<ItemLabel>Rulers</ItemLabel>
 					</CheckboxItem>
-					<CheckboxItem class={checkboxItemClass} checked={grid()} onChange={setGrid}>
+					<CheckboxItem
+						class={checkboxItemClass}
+						checked={grid()}
+						onChange={setGrid}
+					>
 						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
 						<ItemLabel>Grid</ItemLabel>
 					</CheckboxItem>
-					<CheckboxItem class={checkboxItemClass} checked={snap()} onChange={setSnap}>
+					<CheckboxItem
+						class={checkboxItemClass}
+						checked={snap()}
+						onChange={setSnap}
+					>
 						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
 						<ItemLabel>Snap to grid</ItemLabel>
 					</CheckboxItem>
@@ -172,9 +186,7 @@ export const WithSubMenu = meta.story({
 					<Item class={itemClass}>Paste</Item>
 					<Separator class={separatorClass} />
 					<Sub>
-						<SubTrigger class={itemClass}>
-							Share ▸
-						</SubTrigger>
+						<SubTrigger class={itemClass}>Share ▸</SubTrigger>
 						<Portal>
 							<SubContent class={contentClass}>
 								<Item class={itemClass}>Email link</Item>

@@ -26,15 +26,9 @@ export const Vertical = meta.story({
 	render: () => (
 		<div class="flex items-center gap-3 font-sans text-sm text-slate-700">
 			<span>Home</span>
-			<Root
-				orientation="vertical"
-				class="h-4 border-l border-slate-300"
-			/>
+			<Root orientation="vertical" class="h-4 border-l border-slate-300" />
 			<span>About</span>
-			<Root
-				orientation="vertical"
-				class="h-4 border-l border-slate-300"
-			/>
+			<Root orientation="vertical" class="h-4 border-l border-slate-300" />
 			<span>Contact</span>
 		</div>
 	),

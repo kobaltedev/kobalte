@@ -1,13 +1,14 @@
 import { DateFormatter, Time } from "@internationalized/date";
 import {
-	type ValidationState,
 	access,
 	createFocusManager,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type ValidationState,
 } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import { createFormResetListener } from "@solid-primitives/form";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createMemo,
 	createSignal,
@@ -16,10 +17,10 @@ import {
 	omit,
 } from "solid-js";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import { useLocale } from "../i18n";
 import {
@@ -27,20 +28,16 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "@solid-primitives/form";
+import { createControllableSignal, createRegisterId } from "../primitives";
 import {
-	createControllableSignal,
-	createRegisterId,
-} from "../primitives";
+	TIME_FIELD_INTL_MESSAGES,
+	type TimeFieldIntlTranslations,
+} from "./time-field.intl";
 import {
 	TimeFieldContext,
 	type TimeFieldContextValue,
 } from "./time-field-context";
 import { TimeFieldValueDescription } from "./time-field-value-description";
-import {
-	TIME_FIELD_INTL_MESSAGES,
-	type TimeFieldIntlTranslations,
-} from "./time-field.intl";
 import type {
 	MappedTimeValue,
 	TimeFieldGranularity,
@@ -164,12 +161,36 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		props as TimeFieldRootProps,
 	);
 
-	const others = omit(mergedProps, "ref", "translations", "minValue", "maxValue", "placeholderValue", "hourCycle", "granularity", "hideTimeZone", "shouldForceLeadingZeros", "validationState", "value", "defaultValue", "onChange", "aria-labelledby", "aria-describedby", "children", ...FORM_CONTROL_PROP_NAMES);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"translations",
+		"minValue",
+		"maxValue",
+		"placeholderValue",
+		"hourCycle",
+		"granularity",
+		"hideTimeZone",
+		"shouldForceLeadingZeros",
+		"validationState",
+		"value",
+		"defaultValue",
+		"onChange",
+		"aria-labelledby",
+		"aria-describedby",
+		"children",
+		...FORM_CONTROL_PROP_NAMES,
+	);
 
 	const { locale } = useLocale();
 
-	const [inputRef, setInputRef] = createSignal<HTMLDivElement | undefined>(undefined, { ownedWrite: true });
-	const [valueDescriptionId, setValueDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [inputRef, setInputRef] = createSignal<HTMLDivElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [valueDescriptionId, setValueDescriptionId] = createSignal<
+		string | undefined
+	>(undefined, { ownedWrite: true });
 
 	const focusManager = createFocusManager(inputRef);
 
@@ -269,7 +290,8 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		granularity,
 		hideTimeZone: () => mergedProps.hideTimeZone ?? false,
 		shouldForceLeadingZeros: () => mergedProps.shouldForceLeadingZeros ?? false,
-		placeholderTime: () => value() || (mergedProps.placeholderValue ?? new Time()),
+		placeholderTime: () =>
+			value() || (mergedProps.placeholderValue ?? new Time()),
 		placeholderValue: () => mergedProps.placeholderValue,
 		defaultTimeZone,
 		formattedValue,
@@ -292,7 +314,9 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 					role="group"
 					id={access(mergedProps.id)!}
 					aria-invalid={
-						formControlContext.validationState() === "invalid" ? "true" : undefined
+						formControlContext.validationState() === "invalid"
+							? "true"
+							: undefined
 					}
 					aria-required={formControlContext.isRequired() ? "true" : undefined}
 					aria-disabled={formControlContext.isDisabled() ? "true" : undefined}

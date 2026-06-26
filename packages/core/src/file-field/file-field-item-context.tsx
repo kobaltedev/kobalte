@@ -1,5 +1,5 @@
-import { createContext, useContext } from "solid-js";
 import type { UploadFile } from "@solid-primitives/upload";
+import { createContext, useContext } from "solid-js";
 
 export interface FileFieldItemContextValue {
 	file: UploadFile;

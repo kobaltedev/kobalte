@@ -21,19 +21,18 @@ import {
 	isPointInPolygon,
 	mergeDefaultProps,
 } from "@kobalte/utils";
+import { createPresence } from "@solid-primitives/presence";
+import { isServer } from "@solidjs/web";
 import {
 	type Accessor,
-	type ParentProps,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
 	onCleanup,
+	type ParentProps,
 } from "solid-js";
-import { isServer } from "@solidjs/web";
-
-import { createPresence } from "@solid-primitives/presence";
 import { Popper, type PopperRootOptions } from "../popper";
 import type { Placement } from "../popper/utils";
 import { createDisclosureState, createRegisterId } from "../primitives";
@@ -52,10 +51,7 @@ let globalCoolDownTimeout: number | undefined;
 let globalSkipDelayTimeout: number | undefined;
 
 export interface TooltipRootOptions
-	extends Omit<
-		PopperRootOptions,
-		"anchorRef" | "contentRef"
-	> {
+	extends Omit<PopperRootOptions, "anchorRef" | "contentRef"> {
 	/** The controlled open state of the tooltip. */
 	open?: boolean;
 
@@ -125,13 +121,36 @@ export function TooltipRoot(props: TooltipRootProps) {
 		props,
 	);
 
-	const others = omit(mergedProps, "id", "open", "defaultOpen", "onOpenChange", "disabled", "triggerOnFocusOnly", "openDelay", "closeDelay", "skipDelayDuration", "ignoreSafeArea", "forceMount", "onCurrentPlacementChange");
+	const others = omit(
+		mergedProps,
+		"id",
+		"open",
+		"defaultOpen",
+		"onOpenChange",
+		"disabled",
+		"triggerOnFocusOnly",
+		"openDelay",
+		"closeDelay",
+		"skipDelayDuration",
+		"ignoreSafeArea",
+		"forceMount",
+		"onCurrentPlacementChange",
+	);
 
 	let closeTimeoutId: number | undefined;
 
-	const [contentId, setContentId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
-	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
 		others.placement!,
@@ -144,7 +163,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 	});
 
 	const { isMounted: contentPresent } = createPresence(
-		() => (mergedProps.forceMount || disclosureState.isOpen()) || undefined,
+		() => mergedProps.forceMount || disclosureState.isOpen() || undefined,
 		{ transitionDuration: 0 },
 	);
 

@@ -7,22 +7,16 @@
  */
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	Show,
-	createEffect,
-	omit,
-} from "solid-js";
-
+import type { PointerDownOutsideEvent } from "@solid-primitives/interaction";
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import type { PointerDownOutsideEvent } from "@solid-primitives/interaction";
 import { type TooltipDataSet, useTooltipContext } from "./tooltip-context";
 
 export interface TooltipContentOptions {

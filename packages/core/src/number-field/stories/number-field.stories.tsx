@@ -42,8 +42,12 @@ export const Default = meta.story({
 			<Label class={labelClass}>Quantity</Label>
 			<div class={inputWrapperClass}>
 				<Input class={inputClass} />
-				<DecrementTrigger class={triggerClass} aria-label="Decrement">−</DecrementTrigger>
-				<IncrementTrigger class={triggerClass} aria-label="Increment">+</IncrementTrigger>
+				<DecrementTrigger class={triggerClass} aria-label="Decrement">
+					−
+				</DecrementTrigger>
+				<IncrementTrigger class={triggerClass} aria-label="Increment">
+					+
+				</IncrementTrigger>
 			</div>
 			<HiddenInput />
 		</Root>
@@ -58,8 +62,12 @@ export const DefaultValue = meta.story({
 			<Label class={labelClass}>Items</Label>
 			<div class={inputWrapperClass}>
 				<Input class={inputClass} />
-				<DecrementTrigger class={triggerClass} aria-label="Decrement">−</DecrementTrigger>
-				<IncrementTrigger class={triggerClass} aria-label="Increment">+</IncrementTrigger>
+				<DecrementTrigger class={triggerClass} aria-label="Decrement">
+					−
+				</DecrementTrigger>
+				<IncrementTrigger class={triggerClass} aria-label="Increment">
+					+
+				</IncrementTrigger>
 			</div>
 			<HiddenInput />
 		</Root>
@@ -74,8 +82,12 @@ export const MinMax = meta.story({
 			<Label class={labelClass}>Rating (1–10)</Label>
 			<div class={inputWrapperClass}>
 				<Input class={inputClass} />
-				<DecrementTrigger class={triggerClass} aria-label="Decrement">−</DecrementTrigger>
-				<IncrementTrigger class={triggerClass} aria-label="Increment">+</IncrementTrigger>
+				<DecrementTrigger class={triggerClass} aria-label="Decrement">
+					−
+				</DecrementTrigger>
+				<IncrementTrigger class={triggerClass} aria-label="Increment">
+					+
+				</IncrementTrigger>
 			</div>
 			<Description class={descClass}>Between 1 and 10</Description>
 			<HiddenInput />
@@ -87,12 +99,21 @@ export const MinMax = meta.story({
 export const CustomStep = meta.story({
 	name: "Custom Step",
 	render: () => (
-		<Root class={rootClass} defaultValue={0} step={0.5} formatOptions={{ minimumFractionDigits: 1 }}>
+		<Root
+			class={rootClass}
+			defaultValue={0}
+			step={0.5}
+			formatOptions={{ minimumFractionDigits: 1 }}
+		>
 			<Label class={labelClass}>Price offset</Label>
 			<div class={inputWrapperClass}>
 				<Input class={inputClass} />
-				<DecrementTrigger class={triggerClass} aria-label="Decrement">−</DecrementTrigger>
-				<IncrementTrigger class={triggerClass} aria-label="Increment">+</IncrementTrigger>
+				<DecrementTrigger class={triggerClass} aria-label="Decrement">
+					−
+				</DecrementTrigger>
+				<IncrementTrigger class={triggerClass} aria-label="Increment">
+					+
+				</IncrementTrigger>
 			</div>
 			<Description class={descClass}>Steps of 0.5</Description>
 			<HiddenInput />
@@ -112,8 +133,12 @@ export const Currency = meta.story({
 			<Label class={labelClass}>Budget</Label>
 			<div class={inputWrapperClass}>
 				<Input class={inputClass} />
-				<DecrementTrigger class={triggerClass} aria-label="Decrement">−</DecrementTrigger>
-				<IncrementTrigger class={triggerClass} aria-label="Increment">+</IncrementTrigger>
+				<DecrementTrigger class={triggerClass} aria-label="Decrement">
+					−
+				</DecrementTrigger>
+				<IncrementTrigger class={triggerClass} aria-label="Increment">
+					+
+				</IncrementTrigger>
 			</div>
 			<HiddenInput />
 		</Root>
@@ -124,12 +149,21 @@ export const Currency = meta.story({
 export const Invalid = meta.story({
 	name: "Invalid",
 	render: () => (
-		<Root class={rootClass} defaultValue={0} minValue={1} validationState="invalid">
+		<Root
+			class={rootClass}
+			defaultValue={0}
+			minValue={1}
+			validationState="invalid"
+		>
 			<Label class={labelClass}>Seats</Label>
 			<div class={inputWrapperClass}>
 				<Input class={inputClass} />
-				<DecrementTrigger class={triggerClass} aria-label="Decrement">−</DecrementTrigger>
-				<IncrementTrigger class={triggerClass} aria-label="Increment">+</IncrementTrigger>
+				<DecrementTrigger class={triggerClass} aria-label="Decrement">
+					−
+				</DecrementTrigger>
+				<IncrementTrigger class={triggerClass} aria-label="Increment">
+					+
+				</IncrementTrigger>
 			</div>
 			<ErrorMessage class={errClass}>Must be at least 1.</ErrorMessage>
 			<HiddenInput />
@@ -145,8 +179,12 @@ export const Disabled = meta.story({
 			<Label class={labelClass}>Count (disabled)</Label>
 			<div class={inputWrapperClass}>
 				<Input class={inputClass} />
-				<DecrementTrigger class={triggerClass} aria-label="Decrement">−</DecrementTrigger>
-				<IncrementTrigger class={triggerClass} aria-label="Increment">+</IncrementTrigger>
+				<DecrementTrigger class={triggerClass} aria-label="Decrement">
+					−
+				</DecrementTrigger>
+				<IncrementTrigger class={triggerClass} aria-label="Increment">
+					+
+				</IncrementTrigger>
 			</div>
 			<HiddenInput />
 		</Root>
@@ -158,12 +196,20 @@ function ControlledDemo() {
 	const [value, setValue] = createSignal(0);
 	return (
 		<div class="flex flex-col gap-3 font-sans">
-			<Root class={rootClass} value={value()} onChange={(v) => setValue(Number(v))}>
+			<Root
+				class={rootClass}
+				value={value()}
+				onChange={(v) => setValue(Number(v))}
+			>
 				<Label class={labelClass}>Controlled</Label>
 				<div class={inputWrapperClass}>
 					<Input class={inputClass} />
-					<DecrementTrigger class={triggerClass} aria-label="Decrement">−</DecrementTrigger>
-					<IncrementTrigger class={triggerClass} aria-label="Increment">+</IncrementTrigger>
+					<DecrementTrigger class={triggerClass} aria-label="Decrement">
+						−
+					</DecrementTrigger>
+					<IncrementTrigger class={triggerClass} aria-label="Increment">
+						+
+					</IncrementTrigger>
 				</div>
 				<HiddenInput />
 			</Root>

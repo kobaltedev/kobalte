@@ -1,16 +1,12 @@
 import {
-	type Orientation,
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createUniqueId,
-	omit,
-} from "solid-js";
+import { type Component, createUniqueId, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
@@ -68,7 +64,18 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 		props as ToggleGroupItemProps,
 	);
 
-	const others = omit(mergedProps, "ref", "value", "disabled", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"disabled",
+		"onPointerDown",
+		"onPointerUp",
+		"onClick",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocus",
+	);
 
 	const selectionManager = () => rootContext.listState().selectionManager();
 
@@ -125,13 +132,19 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 				mergedProps.onPointerUp,
 				selectableItem.onPointerUp,
 			])}
-			onClick={composeEventHandlers([mergedProps.onClick, selectableItem.onClick])}
+			onClick={composeEventHandlers([
+				mergedProps.onClick,
+				selectableItem.onClick,
+			])}
 			onKeyDown={onKeyDown}
 			onMouseDown={composeEventHandlers([
 				mergedProps.onMouseDown,
 				selectableItem.onMouseDown,
 			])}
-			onFocus={composeEventHandlers([mergedProps.onFocus, selectableItem.onFocus])}
+			onFocus={composeEventHandlers([
+				mergedProps.onFocus,
+				selectableItem.onFocus,
+			])}
 			{...others}
 		/>
 	);

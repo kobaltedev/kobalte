@@ -6,8 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/i18n/src/useDefaultLocale.ts
  */
 
-import { createMemo, createSignal, onSettled } from "solid-js";
 import { isServer } from "@solidjs/web";
+import { createMemo, createSignal, onSettled } from "solid-js";
 
 import { type Direction, getReadingDirection } from "./utils";
 
@@ -25,7 +25,7 @@ interface Locale {
 export function getDefaultLocale(): Locale {
 	let locale =
 		(typeof navigator !== "undefined" &&
-			// @ts-ignore
+			// @ts-expect-error
 			(navigator.language || navigator.userLanguage)) ||
 		"en-US";
 

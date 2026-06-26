@@ -1,8 +1,8 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
 import { COLOR_INTL_TRANSLATIONS } from "@solid-primitives/utils/colors";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 import { useFormControlContext } from "../form-control";
 import {
 	type ElementOf,
@@ -38,7 +38,15 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 	const context = useColorAreaContext();
 	const formControlContext = useFormControlContext();
 
-	const others = omit(props, "style", "aria-label", "onKeyDown", "onPointerDown", "onPointerMove", "onPointerUp");
+	const others = omit(
+		props,
+		"style",
+		"aria-label",
+		"onKeyDown",
+		"onPointerDown",
+		"onPointerMove",
+		"onPointerUp",
+	);
 
 	const ariaLabel = () => {
 		const xChannel = context.state.channels().xChannel;
@@ -63,7 +71,12 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerDown as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
+		callHandler(
+			e,
+			props.onPointerDown as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		const target = e.currentTarget as HTMLElement;
 

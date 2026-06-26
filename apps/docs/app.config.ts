@@ -1,9 +1,9 @@
 import { nodeTypes } from "@mdx-js/mdx";
 import { defineConfig } from "@solidjs/start/config";
-// @ts-ignore missing types
+// @ts-expect-error missing types
 import pkg from "@vinxi/plugin-mdx";
 import { type Options as AcornOptions, parse } from "acorn";
-// @ts-ignore
+// @ts-expect-error
 import Slugger from "github-slugger";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeRaw from "rehype-raw";
@@ -94,7 +94,7 @@ function rehypeCollectHeadings() {
 		headingsCache.set(file.path, headings);
 
 		tree.children.unshift(
-			// @ts-ignore
+			// @ts-expect-error
 			jsToTreeNode(
 				`export function getHeadings() { return ${JSON.stringify(headings)} }`,
 			),
@@ -118,7 +118,7 @@ export default defineConfig({
 	},
 
 	extensions: ["mdx", "md"],
-	// @ts-ignore: type should be optional, bugged in @solidjs/start@0.6.1
+	// @ts-expect-error: type should be optional, bugged in @solidjs/start@0.6.1
 	solid: {
 		extensions: ["mdx", "md"],
 	},
@@ -138,7 +138,7 @@ export default defineConfig({
 					remarkPlugins: [
 						remarkGfm,
 						[
-							// @ts-ignore
+							// @ts-expect-error
 							remarkShikiTwoslash.default,
 							{
 								disableImplicitReactImport: true,

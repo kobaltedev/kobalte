@@ -12,12 +12,8 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import {
-	type Component,
-	createEffect,
-	omit,
-} from "solid-js";
 import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
@@ -71,7 +67,16 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 		props as AccordionTriggerProps,
 	);
 
-	const others = omit(mergedProps, "ref", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"onPointerDown",
+		"onPointerUp",
+		"onClick",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocus",
+	);
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
@@ -127,13 +132,19 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 				mergedProps.onPointerUp,
 				selectableItem.onPointerUp,
 			])}
-			onClick={composeEventHandlers([mergedProps.onClick, selectableItem.onClick])}
+			onClick={composeEventHandlers([
+				mergedProps.onClick,
+				selectableItem.onClick,
+			])}
 			onKeyDown={onKeyDown}
 			onMouseDown={composeEventHandlers([
 				mergedProps.onMouseDown,
 				selectableItem.onMouseDown,
 			])}
-			onFocus={composeEventHandlers([mergedProps.onFocus, selectableItem.onFocus])}
+			onFocus={composeEventHandlers([
+				mergedProps.onFocus,
+				selectableItem.onFocus,
+			])}
 			{...others}
 		/>
 	);

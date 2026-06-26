@@ -1,7 +1,7 @@
-import { OverrideComponentProps, focusWithoutScrolling } from "@kobalte/utils";
+import { focusWithoutScrolling, OverrideComponentProps } from "@kobalte/utils";
+import type { InteractOutsideEvent } from "@solid-primitives/interaction";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
-
 import {
 	MenuContent,
 	type MenuContentCommonProps,
@@ -11,7 +11,6 @@ import {
 import { useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import type { InteractOutsideEvent } from "@solid-primitives/interaction";
 
 export interface DropdownMenuContentOptions extends MenuContentOptions {}
 

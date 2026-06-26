@@ -7,25 +7,31 @@
  */
 
 import {
-	type Orientation,
 	callHandler,
 	composeEventHandlers,
 	contains,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
-import {
-	type Component,
-	Show,
-	createEffect,
-	createUniqueId,
-	onCleanup,
-	omit,
-	onSettled,
-} from "solid-js";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import { createFocusTrap } from "@solid-primitives/focus";
+import type {
+	FocusOutsideEvent,
+	InteractOutsideEvent,
+	PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import {
+	type Component,
+	createEffect,
+	createUniqueId,
+	omit,
+	onCleanup,
+	onSettled,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
@@ -40,12 +46,6 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { Popper } from "../popper";
-import { createFocusTrap } from "@solid-primitives/focus";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-} from "@solid-primitives/interaction";
 import { type MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { MENUBAR_KEYS } from "./menu-trigger";
@@ -135,7 +135,22 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		props as MenuContentBaseProps,
 	);
 
-	const others = omit(mergedProps, "ref", "id", "style", "onOpenAutoFocus", "onCloseAutoFocus", "onEscapeKeyDown", "onFocusOutside", "onPointerEnter", "onPointerMove", "onKeyDown", "onMouseDown", "onFocusIn", "onFocusOut");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"id",
+		"style",
+		"onOpenAutoFocus",
+		"onCloseAutoFocus",
+		"onEscapeKeyDown",
+		"onFocusOutside",
+		"onPointerEnter",
+		"onPointerMove",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocusIn",
+		"onFocusOut",
+	);
 
 	let lastPointerX = 0;
 
@@ -271,7 +286,10 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	createEffect(() => mergedProps.id!, (id) => context.registerContentId(id));
+	createEffect(
+		() => mergedProps.id!,
+		(id) => context.registerContentId(id),
+	);
 
 	onCleanup(() => context.setContentRef(undefined));
 

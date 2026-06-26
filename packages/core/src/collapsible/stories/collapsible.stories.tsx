@@ -1,10 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import {
-	Content,
-	Root,
-	Trigger,
-} from "../index";
+import { Content, Root, Trigger } from "../index";
 
 const meta = preview.meta({
 	title: "Components/Collapsible",
@@ -33,7 +29,8 @@ function Chevron() {
 	);
 }
 
-const rootClass = "w-80 rounded-lg border border-slate-200 overflow-hidden font-sans";
+const rootClass =
+	"w-80 rounded-lg border border-slate-200 overflow-hidden font-sans";
 
 const triggerClass =
 	"flex w-full items-center justify-between bg-white px-4 py-3.5 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition-colors data-[expanded]:text-blue-600 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 cursor-pointer";
@@ -55,7 +52,8 @@ export const Default = meta.story({
 				<p class={contentTextClass}>
 					Kobalte is a UI toolkit for building accessible web apps and design
 					systems with SolidJS. It provides a set of low-level UI components and
-					primitives which can be the foundation for your design system implementation.
+					primitives which can be the foundation for your design system
+					implementation.
 				</p>
 			</Content>
 		</Root>
@@ -73,8 +71,8 @@ export const DefaultOpen = meta.story({
 			</Trigger>
 			<Content class={contentClass}>
 				<p class={contentTextClass}>
-					This panel was open on mount via the <code>defaultOpen</code> prop.
-					It is still uncontrolled — clicking the trigger toggles it normally.
+					This panel was open on mount via the <code>defaultOpen</code> prop. It
+					is still uncontrolled — clicking the trigger toggles it normally.
 				</p>
 			</Content>
 		</Root>
@@ -91,7 +89,9 @@ export const Disabled = meta.story({
 				<Chevron />
 			</Trigger>
 			<Content class={contentClass}>
-				<p class={contentTextClass}>This content is not reachable when disabled.</p>
+				<p class={contentTextClass}>
+					This content is not reachable when disabled.
+				</p>
 			</Content>
 		</Root>
 	),

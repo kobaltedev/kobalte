@@ -15,9 +15,7 @@ const btnClass =
 /** A basic toggle that flips between pressed and unpressed. */
 export const Default = meta.story({
 	name: "Default",
-	render: () => (
-		<Root class={btnClass}>Bold</Root>
-	),
+	render: () => <Root class={btnClass}>Bold</Root>,
 });
 
 /** `defaultPressed` starts the button in the pressed state. */
@@ -35,8 +33,12 @@ export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
 		<div class="flex gap-2 font-sans">
-			<Root class={btnClass} disabled>Off</Root>
-			<Root class={btnClass} disabled defaultPressed>On</Root>
+			<Root class={btnClass} disabled>
+				Off
+			</Root>
+			<Root class={btnClass} disabled defaultPressed>
+				On
+			</Root>
 		</div>
 	),
 });
@@ -84,7 +86,9 @@ export const Toolbar = meta.story({
 			{(["B", "I", "U"] as const).map((label) => (
 				<Root
 					class="inline-flex h-8 w-8 items-center justify-center rounded text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 data-[pressed]:bg-slate-900 data-[pressed]:text-white"
-					aria-label={label === "B" ? "Bold" : label === "I" ? "Italic" : "Underline"}
+					aria-label={
+						label === "B" ? "Bold" : label === "I" ? "Italic" : "Underline"
+					}
 				>
 					{label}
 				</Root>

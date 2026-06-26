@@ -11,24 +11,24 @@ import {
 	mergeDefaultProps,
 	removeItemFromArray,
 } from "@kobalte/utils";
+import { createHideOutside } from "@solid-primitives/interaction";
+
+import { createPresence } from "@solid-primitives/presence";
 import {
 	type Accessor,
-	type ParentProps,
-	Show,
 	createEffect,
 	createMemo,
 	createSignal,
 	omit,
 	onCleanup,
+	type ParentProps,
+	Show,
 } from "solid-js";
-
-import { createPresence } from "@solid-primitives/presence";
 import { createListState } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
 import { Popper, type PopperRootOptions } from "../popper";
 import type { Placement } from "../popper/utils";
-import { createHideOutside } from "@solid-primitives/interaction";
 import {
 	type CollectionItemWithRef,
 	createDisclosureState,
@@ -46,7 +46,7 @@ import {
 	useOptionalMenuContext,
 } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { type GraceIntent, type Side, isPointerInGraceArea } from "./utils";
+import { type GraceIntent, isPointerInGraceArea, type Side } from "./utils";
 
 export interface MenuOptions
 	extends Omit<
@@ -94,11 +94,23 @@ export function Menu(props: MenuProps) {
 	let pointerGraceIntent: GraceIntent | null = null;
 	let pointerDir: Side = "right";
 
-	const [triggerId, setTriggerId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [contentId, setContentId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [triggerId, setTriggerId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
-	const [contentRef, setContentRef] = createSignal<HTMLDivElement | undefined>(undefined, { ownedWrite: true });
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentRef, setContentRef] = createSignal<HTMLDivElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const [focusStrategy, setFocusStrategy] = createSignal<
 		FocusStrategy | boolean
@@ -122,7 +134,7 @@ export function Menu(props: MenuProps) {
 	});
 
 	const { isMounted: contentPresent } = createPresence(
-		() => (rootContext.forceMount() || disclosureState.isOpen()) || undefined,
+		() => rootContext.forceMount() || disclosureState.isOpen() || undefined,
 		{ transitionDuration: 0 },
 	);
 
@@ -204,7 +216,11 @@ export function Menu(props: MenuProps) {
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
 		disabled: () =>
-			!(parentMenuContext == null && disclosureState.isOpen() && rootContext.isModal()),
+			!(
+				parentMenuContext == null &&
+				disclosureState.isOpen() &&
+				rootContext.isModal()
+			),
 		targets: () =>
 			[contentRef(), ...nestedMenus()].filter(Boolean) as Element[],
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
@@ -229,7 +245,10 @@ export function Menu(props: MenuProps) {
 
 	createEffect(
 		() => {
-			if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
+			if (
+				parentMenuContext !== undefined ||
+				optionalMenubarContext === undefined
+			)
 				return undefined;
 			return {
 				menubarValue: optionalMenubarContext.value(),
@@ -251,9 +270,15 @@ export function Menu(props: MenuProps) {
 
 	createEffect(
 		() => {
-			if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
+			if (
+				parentMenuContext !== undefined ||
+				optionalMenubarContext === undefined
+			)
 				return undefined;
-			return { isOpen: disclosureState.isOpen(), rootValue: rootContext.value()! };
+			return {
+				isOpen: disclosureState.isOpen(),
+				rootValue: rootContext.value()!,
+			};
 		},
 		(state) => {
 			if (!state) return;

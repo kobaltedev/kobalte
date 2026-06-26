@@ -72,7 +72,8 @@ export const Default = meta.story({
 			</label>
 			<Counter />
 			<p class="text-xs text-slate-500">
-				Click to focus, then use keyboard: ↑↓ step by 1, PgUp/PgDn step by 5, Home/End jump to min/max.
+				Click to focus, then use keyboard: ↑↓ step by 1, PgUp/PgDn step by 5,
+				Home/End jump to min/max.
 			</p>
 		</div>
 	),
@@ -120,7 +121,8 @@ export const CustomWidget = meta.story({
 			<label class="text-sm font-medium text-slate-700">Rating</label>
 			<RatingWidget />
 			<p class="text-xs text-slate-500">
-				Click a star or focus and use ↑↓ to change rating. Screen readers hear the text label.
+				Click a star or focus and use ↑↓ to change rating. Screen readers hear
+				the text label.
 			</p>
 		</div>
 	),

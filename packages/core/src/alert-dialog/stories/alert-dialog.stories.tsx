@@ -1,6 +1,15 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { CloseButton, Content, Description, Overlay, Portal, Root, Title, Trigger } from "../index";
+import {
+	CloseButton,
+	Content,
+	Description,
+	Overlay,
+	Portal,
+	Root,
+	Title,
+	Trigger,
+} from "../index";
 
 const meta = preview.meta({
 	title: "Components/AlertDialog",
@@ -12,8 +21,7 @@ export default meta;
 const triggerClass =
 	"inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2";
 
-const overlayClass =
-	"fixed inset-0 z-50 bg-black/40 backdrop-blur-sm";
+const overlayClass = "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm";
 
 const contentClass =
 	"fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg border border-slate-200 bg-white p-6 shadow-xl outline-none font-sans";
@@ -33,10 +41,15 @@ export const Default = meta.story({
 			<Portal>
 				<Overlay class={overlayClass} />
 				<Content class={contentClass}>
-					<CloseButton class={closeClass} aria-label="Close">✕</CloseButton>
-					<Title class="mb-1 text-base font-semibold text-slate-900">Session timeout</Title>
+					<CloseButton class={closeClass} aria-label="Close">
+						✕
+					</CloseButton>
+					<Title class="mb-1 text-base font-semibold text-slate-900">
+						Session timeout
+					</Title>
 					<Description class="text-sm text-slate-500 mb-4">
-						Your session is about to expire. You will be logged out in 2 minutes.
+						Your session is about to expire. You will be logged out in 2
+						minutes.
 					</Description>
 					<div class="flex justify-end gap-2">
 						<CloseButton class={cancelBtnClass}>Dismiss</CloseButton>
@@ -61,9 +74,12 @@ export const Destructive = meta.story({
 			<Portal>
 				<Overlay class={overlayClass} />
 				<Content class={contentClass}>
-					<Title class="mb-1 text-base font-semibold text-slate-900">Delete account</Title>
+					<Title class="mb-1 text-base font-semibold text-slate-900">
+						Delete account
+					</Title>
 					<Description class="text-sm text-slate-500 mb-4">
-						This action cannot be undone. Your account and all associated data will be permanently deleted.
+						This action cannot be undone. Your account and all associated data
+						will be permanently deleted.
 					</Description>
 					<div class="flex justify-end gap-2">
 						<CloseButton class={cancelBtnClass}>Cancel</CloseButton>
@@ -88,7 +104,9 @@ function ControlledDemo() {
 					<Portal>
 						<Overlay class={overlayClass} />
 						<Content class={contentClass}>
-							<Title class="mb-1 text-base font-semibold text-slate-900">Controlled alert</Title>
+							<Title class="mb-1 text-base font-semibold text-slate-900">
+								Controlled alert
+							</Title>
 							<Description class="text-sm text-slate-500 mb-4">
 								Open state is managed externally.
 							</Description>

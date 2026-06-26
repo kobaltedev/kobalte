@@ -7,10 +7,9 @@
  */
 
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type JSX, type ValidComponent, isServer } from "@solidjs/web";
-import { omit, onCleanup } from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
+import { omit, onCleanup } from "solid-js";
 import { type MenuDataSet, useMenuContext } from "../menu/menu-context";
 import { useMenuRootContext } from "../menu/menu-root-context";
 import {
@@ -61,7 +60,17 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 		props as ContextMenuTriggerProps,
 	);
 
-	const others = omit(mergedProps, "ref", "style", "disabled", "onContextMenu", "onPointerDown", "onPointerMove", "onPointerCancel", "onPointerUp");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"style",
+		"disabled",
+		"onContextMenu",
+		"onPointerDown",
+		"onPointerMove",
+		"onPointerCancel",
+		"onPointerUp",
+	);
 
 	let longPressTimoutId = 0;
 

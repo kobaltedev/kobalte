@@ -7,10 +7,10 @@ import {
 } from "./separator-root";
 
 export type {
-	SeparatorRootOptions,
 	SeparatorRootCommonProps,
-	SeparatorRootRenderProps,
+	SeparatorRootOptions,
 	SeparatorRootProps,
+	SeparatorRootRenderProps,
 };
 export { Root };
 

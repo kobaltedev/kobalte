@@ -13,8 +13,7 @@ function buttonClass(variant = "primary", size = "md") {
 	const variants: Record<string, string> = {
 		primary:
 			"bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700",
-		secondary:
-			"bg-white text-slate-900 border-slate-200 hover:bg-slate-50",
+		secondary: "bg-white text-slate-900 border-slate-200 hover:bg-slate-50",
 		ghost:
 			"bg-transparent text-slate-700 border-transparent hover:bg-slate-100",
 		destructive:
@@ -56,7 +55,8 @@ export const Playground = meta.story({
 		type: {
 			control: "select",
 			options: ["button", "submit", "reset"],
-			description: "Native `type` attribute — only applied to `<button>` and `<input>` elements.",
+			description:
+				"Native `type` attribute — only applied to `<button>` and `<input>` elements.",
 		},
 		variant: {
 			control: "select",
@@ -87,13 +87,11 @@ export const Variants = meta.story({
 	},
 	render: (args) => (
 		<div class="flex flex-wrap items-center gap-3 font-sans">
-			{(["primary", "secondary", "ghost", "destructive"] as const).map(
-				(v) => (
-					<Button class={buttonClass(v, args.size)}>
-						{v[0].toUpperCase() + v.slice(1)}
-					</Button>
-				),
-			)}
+			{(["primary", "secondary", "ghost", "destructive"] as const).map((v) => (
+				<Button class={buttonClass(v, args.size)}>
+					{v[0].toUpperCase() + v.slice(1)}
+				</Button>
+			))}
 		</div>
 	),
 });
@@ -136,7 +134,11 @@ export const DisabledState = meta.story({
 			</div>
 			<p class="text-xs text-slate-500 m-0">
 				Top row: <code class="font-mono">&lt;button disabled&gt;</code>. Bottom
-				row: <code class="font-mono">&lt;div aria-disabled="true" data-disabled=""&gt;</code>.
+				row:{" "}
+				<code class="font-mono">
+					&lt;div aria-disabled="true" data-disabled=""&gt;
+				</code>
+				.
 			</p>
 		</div>
 	),

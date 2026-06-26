@@ -1,5 +1,5 @@
 import { callHandler } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
 
 import type {
@@ -39,12 +39,22 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	const context = useNavigationMenuContext();
 	const menuContext = useOptionalMenuContext();
 
-	const others = omit(props as NavigationMenuTriggerProps, "onPointerEnter", "onPointerLeave", "onClick");
+	const others = omit(
+		props as NavigationMenuTriggerProps,
+		"onPointerEnter",
+		"onPointerLeave",
+		"onClick",
+	);
 
 	let timeoutId: number | undefined;
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, props.onClick as JSX.EventHandlerUnion<HTMLElement, MouseEvent> | undefined);
+		callHandler(
+			e,
+			props.onClick as
+				| JSX.EventHandlerUnion<HTMLElement, MouseEvent>
+				| undefined,
+		);
 
 		if (timeoutId) clearTimeout(timeoutId);
 	};
@@ -52,7 +62,12 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerEnter as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
+		callHandler(
+			e,
+			props.onPointerEnter as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		if (e.pointerType === "touch") return;
 
@@ -71,7 +86,12 @@ export function NavigationMenuTrigger<T extends ValidComponent = "button">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerLeave as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
+		callHandler(
+			e,
+			props.onPointerLeave as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		if (e.pointerType === "touch") return;
 

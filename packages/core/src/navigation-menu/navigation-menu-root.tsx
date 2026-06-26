@@ -1,16 +1,17 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import { createControllableSignal } from "@solid-primitives/controlled-signal";
+import { createPresence } from "@solid-primitives/presence";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	type Setter,
 	createEffect,
 	createMemo,
 	createSignal,
 	omit,
+	type Setter,
 	untrack,
 } from "solid-js";
-import { createPresence } from "@solid-primitives/presence";
 import type {
 	MenubarRootCommonProps,
 	MenubarRootOptions,
@@ -20,7 +21,6 @@ import { MenubarRoot } from "../menubar/menubar-root";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper, type PopperRootOptions } from "../popper";
 import type { Placement } from "../popper/utils";
-import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import {
 	NavigationMenuContext,
 	type NavigationMenuContextValue,
@@ -137,12 +137,18 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	const [rootRef, setRootRef] = createSignal<HTMLElement>();
 
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
-		untrack(() => popperProps.placement ?? (others.orientation === "vertical" ? "right" : "bottom")),
+		untrack(
+			() =>
+				popperProps.placement ??
+				(others.orientation === "vertical" ? "right" : "bottom"),
+		),
 	);
 
 	createEffect(
 		() => (others.orientation === "vertical" ? "right" : "bottom") as Placement,
-		(placement) => { setCurrentPlacement(placement); },
+		(placement) => {
+			setCurrentPlacement(placement);
+		},
 	);
 
 	let timeoutId: number | undefined;
@@ -166,7 +172,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	}));
 
 	const { isMounted: viewportPresent } = createPresence(
-		() => (mergedProps.forceMount || show() || expanded()) || undefined,
+		() => mergedProps.forceMount || show() || expanded() || undefined,
 		{ transitionDuration: 0 },
 	);
 

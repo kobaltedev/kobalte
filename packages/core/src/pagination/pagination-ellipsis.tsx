@@ -1,4 +1,4 @@
-import { type ValidComponent } from "@solidjs/web";
+import type { ValidComponent } from "@solidjs/web";
 
 import {
 	type ElementOf,

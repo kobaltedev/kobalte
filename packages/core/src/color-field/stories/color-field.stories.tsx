@@ -1,13 +1,7 @@
-import { createSignal } from "solid-js";
 import { isValidColor } from "@solid-primitives/utils/colors";
+import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import {
-	Description,
-	ErrorMessage,
-	Input,
-	Label,
-	Root,
-} from "../index";
+import { Description, ErrorMessage, Input, Label, Root } from "../index";
 
 const meta = preview.meta({
 	title: "Components/ColorField",
@@ -46,10 +40,7 @@ export const Default = meta.story({
 			readOnly={args.readOnly as boolean}
 		>
 			<Label class={labelClass}>Color</Label>
-			<Input
-				class={inputClass}
-				placeholder={args.placeholder as string}
-			/>
+			<Input class={inputClass} placeholder={args.placeholder as string} />
 		</Root>
 	),
 });
@@ -57,7 +48,8 @@ export const Default = meta.story({
 /** Controlled color field synced to a signal. */
 function ControlledDemo() {
 	const [hex, setHex] = createSignal("#3b82f6");
-	const valid = () => !hex() || isValidColor(hex().startsWith("#") ? hex() : `#${hex()}`);
+	const valid = () =>
+		!hex() || isValidColor(hex().startsWith("#") ? hex() : `#${hex()}`);
 	return (
 		<div class="flex flex-col gap-4 font-sans">
 			<Root
@@ -72,7 +64,9 @@ function ControlledDemo() {
 						class="h-9 w-9 shrink-0 rounded-md border border-slate-300"
 						style={{
 							"background-color": valid()
-								? (hex().startsWith("#") ? hex() : `#${hex()}`)
+								? hex().startsWith("#")
+									? hex()
+									: `#${hex()}`
 								: "transparent",
 						}}
 					/>

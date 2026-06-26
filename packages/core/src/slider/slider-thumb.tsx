@@ -13,11 +13,12 @@
  */
 
 import {
-	type Orientation,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
+import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -27,11 +28,9 @@ import {
 	onSettled,
 	useContext,
 } from "solid-js";
-
-import { combineStyle } from "@solid-primitives/props";
 import {
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
+	FORM_CONTROL_FIELD_PROP_NAMES,
 } from "../form-control";
 import {
 	type ElementOf,

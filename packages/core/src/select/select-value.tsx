@@ -1,16 +1,10 @@
 import {
-	OverrideComponentProps,
 	isFunction,
 	mergeDefaultProps,
+	OverrideComponentProps,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Accessor,
-	Show,
-	children,
-	createEffect,
-	omit,
-} from "solid-js";
+import { type Accessor, children, createEffect, omit, Show } from "solid-js";
 
 import {
 	type FormControlDataSet,

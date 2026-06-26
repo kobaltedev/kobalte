@@ -1,11 +1,11 @@
 import {
-	EventKey,
 	callHandler,
 	createGenerateId,
+	EventKey,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
@@ -78,7 +78,15 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 		props as RatingGroupItemProps,
 	);
 
-	const others = omit(mergedProps, "ref", "aria-labelledby", "aria-describedby", "onClick", "onKeyDown", "onPointerMove");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"aria-labelledby",
+		"aria-describedby",
+		"onClick",
+		"onKeyDown",
+		"onPointerMove",
+	);
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
@@ -119,8 +127,13 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const { direction } = useLocale();
 	const isLTR = () => direction() === "ltr";
 
-	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const index = () =>
 		ref ? ratingGroupContext.items().findIndex((v) => v.ref() === ref) : -1;

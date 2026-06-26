@@ -7,12 +7,12 @@
  */
 
 import {
-	type Middleware,
 	arrow,
 	autoUpdate,
 	computePosition,
 	flip,
 	hide,
+	type Middleware,
 	offset,
 	platform,
 	shift,
@@ -21,9 +21,9 @@ import {
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Accessor,
-	type ParentProps,
 	createSignal,
 	createTrackedEffect,
+	type ParentProps,
 } from "solid-js";
 
 import { useLocale } from "../i18n";
@@ -31,10 +31,10 @@ import { PopperContext, type PopperContextValue } from "./popper-context";
 import {
 	type AnchorRect,
 	type BasePlacement,
-	type Placement,
 	getAnchorElement,
 	getTransformOrigin,
 	isValidPlacement,
+	type Placement,
 } from "./utils";
 
 export interface PopperRootOptions {
@@ -164,7 +164,7 @@ export function PopperRoot(props: PopperRootProps) {
 		const finalGutter =
 			typeof mergedProps.gutter === "number"
 				? mergedProps.gutter + arrowOffset
-				: mergedProps.gutter ?? arrowOffset;
+				: (mergedProps.gutter ?? arrowOffset);
 
 		floatingEl.style.setProperty(
 			"--kb-popper-content-overflow-padding",
@@ -360,9 +360,5 @@ export function PopperRoot(props: PopperRootProps) {
 		setArrowRef,
 	};
 
-	return (
-		<PopperContext value={context}>
-			{mergedProps.children}
-		</PopperContext>
-	);
+	return <PopperContext value={context}>{mergedProps.children}</PopperContext>;
 }

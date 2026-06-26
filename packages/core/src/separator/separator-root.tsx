@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/separator/src/useSeparator.ts
  */
 
-import { type Orientation, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps, mergeRefs, type Orientation } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { createSignal, omit } from "solid-js";
 
@@ -42,7 +42,9 @@ export type SeparatorRootProps<
 export function SeparatorRoot<T extends ValidComponent = "hr">(
 	props: PolymorphicProps<T, SeparatorRootProps<T>>,
 ) {
-	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const mergedProps = mergeDefaultProps(
 		{
@@ -53,10 +55,7 @@ export function SeparatorRoot<T extends ValidComponent = "hr">(
 
 	const others = omit(mergedProps, "ref", "orientation");
 
-	const tagName = createTagName(
-		ref,
-		() => "hr",
-	);
+	const tagName = createTagName(ref, () => "hr");
 
 	return (
 		<Polymorphic<SeparatorRootRenderProps>

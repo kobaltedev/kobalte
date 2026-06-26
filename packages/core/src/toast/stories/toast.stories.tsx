@@ -9,8 +9,8 @@ import {
 	Region,
 	Root,
 	Title,
-	toaster,
 	type ToastSwipeDirection,
+	toaster,
 } from "../index";
 
 const meta = preview.meta({
@@ -53,7 +53,11 @@ export const Default = meta.story({
 		const swipeDirection = args.swipeDirection as ToastSwipeDirection;
 		return (
 			<div class="font-sans">
-				<Region class={regionClass} duration={duration} swipeDirection={swipeDirection}>
+				<Region
+					class={regionClass}
+					duration={duration}
+					swipeDirection={swipeDirection}
+				>
 					<List />
 				</Region>
 				<button
@@ -62,8 +66,12 @@ export const Default = meta.story({
 						toaster.show((props) => (
 							<Root toastId={props.toastId} class={toastClass}>
 								<Title class={titleClass}>Notification</Title>
-								<Description class={descClass}>Your changes have been saved.</Description>
-								<CloseButton class={closeClass} aria-label="Dismiss">✕</CloseButton>
+								<Description class={descClass}>
+									Your changes have been saved.
+								</Description>
+								<CloseButton class={closeClass} aria-label="Dismiss">
+									✕
+								</CloseButton>
 							</Root>
 						))
 					}
@@ -81,10 +89,30 @@ export const Variants = meta.story({
 	render: () => {
 		type Variant = { label: string; icon: string; color: string; bg: string };
 		const variants: Variant[] = [
-			{ label: "Success", icon: "✓", color: "text-green-600", bg: "bg-green-50 border-green-200" },
-			{ label: "Error", icon: "✗", color: "text-red-600", bg: "bg-red-50 border-red-200" },
-			{ label: "Warning", icon: "⚠", color: "text-amber-600", bg: "bg-amber-50 border-amber-200" },
-			{ label: "Info", icon: "ℹ", color: "text-blue-600", bg: "bg-blue-50 border-blue-200" },
+			{
+				label: "Success",
+				icon: "✓",
+				color: "text-green-600",
+				bg: "bg-green-50 border-green-200",
+			},
+			{
+				label: "Error",
+				icon: "✗",
+				color: "text-red-600",
+				bg: "bg-red-50 border-red-200",
+			},
+			{
+				label: "Warning",
+				icon: "⚠",
+				color: "text-amber-600",
+				bg: "bg-amber-50 border-amber-200",
+			},
+			{
+				label: "Info",
+				icon: "ℹ",
+				color: "text-blue-600",
+				bg: "bg-blue-50 border-blue-200",
+			},
 		];
 
 		return (
@@ -104,12 +132,16 @@ export const Variants = meta.story({
 									>
 										<span class={`text-lg font-bold ${v.color}`}>{v.icon}</span>
 										<div class="flex flex-col gap-0.5 min-w-0">
-											<Title class={`text-sm font-semibold ${v.color}`}>{v.label}</Title>
+											<Title class={`text-sm font-semibold ${v.color}`}>
+												{v.label}
+											</Title>
 											<Description class="text-xs text-slate-600">
 												This is a {v.label.toLowerCase()} message.
 											</Description>
 										</div>
-										<CloseButton class={closeClass} aria-label="Dismiss">✕</CloseButton>
+										<CloseButton class={closeClass} aria-label="Dismiss">
+											✕
+										</CloseButton>
 									</Root>
 								))
 							}
@@ -140,8 +172,12 @@ export const WithProgress = meta.story({
 						toaster.show((props) => (
 							<Root toastId={props.toastId} class={toastClass}>
 								<Title class={titleClass}>Uploading…</Title>
-								<Description class={descClass}>Your file is being uploaded.</Description>
-								<CloseButton class={closeClass} aria-label="Dismiss">✕</CloseButton>
+								<Description class={descClass}>
+									Your file is being uploaded.
+								</Description>
+								<CloseButton class={closeClass} aria-label="Dismiss">
+									✕
+								</CloseButton>
 								<ProgressTrack class="mt-2 h-1 w-full rounded-full bg-slate-100 overflow-hidden">
 									<ProgressFill
 										class="h-full rounded-full bg-blue-500 transition-[width]"
@@ -176,7 +212,9 @@ export const Persistent = meta.story({
 							<Description class={descClass}>
 								This toast will not auto-dismiss. Close it manually.
 							</Description>
-							<CloseButton class={closeClass} aria-label="Dismiss">✕</CloseButton>
+							<CloseButton class={closeClass} aria-label="Dismiss">
+								✕
+							</CloseButton>
 						</Root>
 					))
 				}
@@ -225,10 +263,12 @@ export const PromiseBased = meta.story({
 										{props.state === "pending"
 											? "Uploading…"
 											: props.state === "fulfilled"
-											? `Done — ${props.data as string}`
-											: `Error — ${(props.error as Error)?.message}`}
+												? `Done — ${props.data as string}`
+												: `Error — ${(props.error as Error)?.message}`}
 									</Title>
-									<CloseButton class={closeClass} aria-label="Dismiss">✕</CloseButton>
+									<CloseButton class={closeClass} aria-label="Dismiss">
+										✕
+									</CloseButton>
 								</Root>
 							));
 						}}
@@ -260,8 +300,12 @@ export const Stacking = meta.story({
 						toaster.show((props) => (
 							<Root toastId={props.toastId} class={toastClass}>
 								<Title class={titleClass}>Toast #{n}</Title>
-								<Description class={descClass}>Visible up to {limit} at a time.</Description>
-								<CloseButton class={closeClass} aria-label="Dismiss">✕</CloseButton>
+								<Description class={descClass}>
+									Visible up to {limit} at a time.
+								</Description>
+								<CloseButton class={closeClass} aria-label="Dismiss">
+									✕
+								</CloseButton>
 							</Root>
 						));
 					}}

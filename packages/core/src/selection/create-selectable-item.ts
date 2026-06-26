@@ -7,16 +7,12 @@
  */
 
 import {
-	type MaybeAccessor,
 	access,
 	focusWithoutScrolling,
+	type MaybeAccessor,
 } from "@kobalte/utils";
 import type { JSX } from "@solidjs/web";
-import {
-	type Accessor,
-	createEffect,
-	createMemo,
-} from "solid-js";
+import { type Accessor, createEffect, createMemo } from "solid-js";
 
 import type { MultipleSelectionManager } from "./types";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";

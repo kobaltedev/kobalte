@@ -1,12 +1,12 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	createMemo,
-	createSignal,
-	omit,
-} from "solid-js";
-import { parseColor, type Color, type ColorChannel } from "@solid-primitives/utils/colors";
+	type Color,
+	type ColorChannel,
+	parseColor,
+} from "@solid-primitives/utils/colors";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createMemo, createSignal, omit } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -46,7 +46,13 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 	const context = useColorAreaContext();
 	const formControlContext = useFormControlContext();
 
-	const others = omit(props, "style", "onPointerDown", "onPointerMove", "onPointerUp");
+	const others = omit(
+		props,
+		"style",
+		"onPointerDown",
+		"onPointerMove",
+		"onPointerUp",
+	);
 
 	const { direction } = useLocale();
 
@@ -85,7 +91,12 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerDown as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
+		callHandler(
+			e,
+			props.onPointerDown as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		const target = e.target as HTMLElement;
 		target.setPointerCapture(e.pointerId);
@@ -99,7 +110,12 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerMove as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
+		callHandler(
+			e,
+			props.onPointerMove as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		const target = e.target as HTMLElement;
 
@@ -113,7 +129,12 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 	};
 
 	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, props.onPointerUp as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
+		callHandler(
+			e,
+			props.onPointerUp as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		const target = e.target as HTMLElement;
 

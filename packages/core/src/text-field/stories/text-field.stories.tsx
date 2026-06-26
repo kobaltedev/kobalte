@@ -86,7 +86,9 @@ export const Disabled = meta.story({
 		<Root class={rootClass} disabled defaultValue="Mango">
 			<Label class={labelClass}>Favorite fruit</Label>
 			<Input class={inputClass} />
-			<Description class={descriptionClass}>You cannot change this.</Description>
+			<Description class={descriptionClass}>
+				You cannot change this.
+			</Description>
 		</Root>
 	),
 });
@@ -127,7 +129,9 @@ export const AutoResizeTextArea = meta.story({
 				class={`${inputClass} resize-none`}
 				placeholder="This textarea grows as you type…"
 			/>
-			<Description class={descriptionClass}>The textarea expands with the content.</Description>
+			<Description class={descriptionClass}>
+				The textarea expands with the content.
+			</Description>
 		</Root>
 	),
 });
@@ -141,7 +145,10 @@ export const Controlled = meta.story({
 		value: "Apple",
 	},
 	argTypes: {
-		value: { control: "text", description: "Set the field value from the Controls panel." },
+		value: {
+			control: "text",
+			description: "Set the field value from the Controls panel.",
+		},
 	},
 	render: (args) => (
 		<Root class={rootClass} value={args.value ?? ""}>
@@ -160,7 +167,8 @@ export const FullForm = meta.story({
 		const [name, setName] = createSignal("");
 		const [email, setEmail] = createSignal("");
 
-		const emailValid = () => !email() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email());
+		const emailValid = () =>
+			!email() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email());
 
 		return (
 			<form
@@ -170,7 +178,9 @@ export const FullForm = meta.story({
 				<Root class={formRootClass} value={name()} onChange={setName} required>
 					<Label class={labelClass}>Full name</Label>
 					<Input class={inputClass} placeholder="Jane Doe" />
-					<Description class={descriptionClass}>As it appears on your ID.</Description>
+					<Description class={descriptionClass}>
+						As it appears on your ID.
+					</Description>
 				</Root>
 
 				<Root
@@ -182,7 +192,9 @@ export const FullForm = meta.story({
 				>
 					<Label class={labelClass}>Email address</Label>
 					<Input class={inputClass} placeholder="jane@example.com" />
-					<ErrorMessage class={errorClass}>Please enter a valid email address.</ErrorMessage>
+					<ErrorMessage class={errorClass}>
+						Please enter a valid email address.
+					</ErrorMessage>
 				</Root>
 
 				<button

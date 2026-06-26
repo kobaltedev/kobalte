@@ -1,33 +1,28 @@
 import {
-	OverrideComponentProps,
 	contains,
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
+	OverrideComponentProps,
 } from "@kobalte/utils";
-import type { JSX, ValidComponent } from "@solidjs/web";
+import { createFocusTrap } from "@solid-primitives/focus";
 import {
-	type Component,
-	Show,
-	createEffect,
-	omit,
-} from "solid-js";
+	createHideOutside,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import { createFocusTrap } from "@solid-primitives/focus";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-	createHideOutside,
-} from "@solid-primitives/interaction";
 import { type PopoverDataSet, usePopoverContext } from "./popover-context";
 
 export interface PopoverContentOptions {
@@ -107,7 +102,16 @@ export function PopoverContent<T extends ValidComponent = "div">(
 		props as PopoverContentProps,
 	);
 
-	const others = omit(mergedProps, "ref", "style", "onOpenAutoFocus", "onCloseAutoFocus", "onPointerDownOutside", "onFocusOutside", "onInteractOutside");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"style",
+		"onOpenAutoFocus",
+		"onCloseAutoFocus",
+		"onPointerDownOutside",
+		"onFocusOutside",
+		"onInteractOutside",
+	);
 
 	let isRightClickOutside = false;
 	let hasInteractedOutside = false;
@@ -207,7 +211,10 @@ export function PopoverContent<T extends ValidComponent = "div">(
 		onFinalFocus: onCloseAutoFocus,
 	});
 
-	createEffect(() => others.id, (id) => context.registerContentId(id!));
+	createEffect(
+		() => others.id,
+		(id) => context.registerContentId(id!),
+	);
 
 	return (
 		<Show when={context.contentPresent()}>

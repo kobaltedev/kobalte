@@ -30,21 +30,21 @@ import {
 } from "./hover-card-trigger";
 
 export type {
-	HoverCardArrowOptions,
 	HoverCardArrowCommonProps,
-	HoverCardArrowRenderProps,
+	HoverCardArrowOptions,
 	HoverCardArrowProps,
-	HoverCardContentOptions,
+	HoverCardArrowRenderProps,
 	HoverCardContentCommonProps,
-	HoverCardContentRenderProps,
+	HoverCardContentOptions,
 	HoverCardContentProps,
+	HoverCardContentRenderProps,
 	HoverCardPortalProps,
 	HoverCardRootOptions,
 	HoverCardRootProps,
-	HoverCardTriggerOptions,
 	HoverCardTriggerCommonProps,
-	HoverCardTriggerRenderProps,
+	HoverCardTriggerOptions,
 	HoverCardTriggerProps,
+	HoverCardTriggerRenderProps,
 };
 
 export { Arrow, Content, Portal, Root, Trigger };
@@ -60,6 +60,6 @@ export const HoverCard = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useHoverCardContext,
 	type HoverCardContextValue,
+	useHoverCardContext,
 } from "./hover-card-context";

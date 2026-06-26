@@ -57,7 +57,11 @@ export const DefaultValue = meta.story({
 export const WithSeconds = meta.story({
 	name: "With Seconds",
 	render: () => (
-		<Root class={rootClass} granularity="second" defaultValue={new Time(12, 0, 0)}>
+		<Root
+			class={rootClass}
+			granularity="second"
+			defaultValue={new Time(12, 0, 0)}
+		>
 			<Label class={labelClass}>Duration</Label>
 			<Field class={fieldClass}>
 				{(segment) => <Segment segment={segment()} class={segmentClass} />}
@@ -90,7 +94,9 @@ export const Invalid = meta.story({
 			<Field class={fieldClass}>
 				{(segment) => <Segment segment={segment()} class={segmentClass} />}
 			</Field>
-			<ErrorMessage class="text-xs text-red-600">A time is required.</ErrorMessage>
+			<ErrorMessage class="text-xs text-red-600">
+				A time is required.
+			</ErrorMessage>
 			<HiddenInput />
 		</Root>
 	),
@@ -129,7 +135,11 @@ function ControlledDemo() {
 	const [value, setValue] = createSignal<Time | undefined>(new Time(10, 0));
 	return (
 		<div class="flex flex-col gap-3 font-sans">
-			<Root class={rootClass} value={value()} onChange={(v) => setValue(v as Time)}>
+			<Root
+				class={rootClass}
+				value={value()}
+				onChange={(v) => setValue(v as Time)}
+			>
 				<Label class={labelClass}>Event time</Label>
 				<Field class={fieldClass}>
 					{(segment) => <Segment segment={segment()} class={segmentClass} />}
@@ -140,7 +150,12 @@ function ControlledDemo() {
 				<HiddenInput />
 			</Root>
 			<p class="text-xs text-slate-500">
-				Value: <strong>{value() ? `${value()!.hour}:${String(value()!.minute).padStart(2, "0")}` : "—"}</strong>
+				Value:{" "}
+				<strong>
+					{value()
+						? `${value()!.hour}:${String(value()!.minute).padStart(2, "0")}`
+						: "—"}
+				</strong>
 			</p>
 			<button
 				type="button"

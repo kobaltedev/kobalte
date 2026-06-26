@@ -6,16 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/99ca82e87ba2d7fdd54f5b49326fd242320b4b51/packages/%40react-aria/spinbutton/src/useSpinButton.ts
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
-import { type ValidationState, callHandler } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
 import {
-	createEffect,
-	createMemo,
-	omit,
-} from "solid-js";
-
+	callHandler,
+	mergeDefaultProps,
+	type ValidationState,
+} from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, createMemo, omit } from "solid-js";
 import { announce, clearAnnouncer } from "../live-announcer";
 import {
 	type ElementOf,
@@ -109,7 +107,25 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		props as SpinButtonRootProps,
 	);
 
-	const others = omit(mergedProps, "style", "translations", "value", "textValue", "minValue", "maxValue", "validationState", "onIncrement", "onIncrementPage", "onDecrement", "onDecrementPage", "onDecrementToMin", "onIncrementToMax", "onKeyDown", "onFocus", "onBlur");
+	const others = omit(
+		mergedProps,
+		"style",
+		"translations",
+		"value",
+		"textValue",
+		"minValue",
+		"maxValue",
+		"validationState",
+		"onIncrement",
+		"onIncrementPage",
+		"onDecrement",
+		"onDecrementPage",
+		"onDecrementToMin",
+		"onIncrementToMax",
+		"onKeyDown",
+		"onFocus",
+		"onBlur",
+	);
 
 	let isFocused = false;
 
@@ -122,7 +138,10 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 			return mergedProps.translations?.empty;
 		}
 
-		return (mergedProps.textValue || `${mergedProps.value}`).replace("-", "\u2212");
+		return (mergedProps.textValue || `${mergedProps.value}`).replace(
+			"-",
+			"\u2212",
+		);
 	});
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
@@ -222,7 +241,9 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 			aria-required={props.required ? "true" : undefined}
 			aria-disabled={props.disabled ? "true" : undefined}
 			aria-readonly={props.readOnly ? "true" : undefined}
-			aria-invalid={mergedProps.validationState === "invalid" ? "true" : undefined}
+			aria-invalid={
+				mergedProps.validationState === "invalid" ? "true" : undefined
+			}
 			onKeyDown={onKeyDown}
 			onFocus={onFocus}
 			onBlur={onBlur}

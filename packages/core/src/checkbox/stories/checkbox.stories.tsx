@@ -17,7 +17,6 @@ const meta = preview.meta({
 
 export default meta;
 
-
 const rootClass = "flex items-center gap-3 font-sans";
 
 const controlClass =
@@ -28,7 +27,6 @@ const labelClass =
 
 const descriptionClass = "text-xs text-slate-500 mt-0.5";
 const errorClass = "text-xs text-red-600 mt-0.5";
-
 
 function CheckIcon() {
 	return (
@@ -68,7 +66,6 @@ function DashIcon() {
 		</svg>
 	);
 }
-
 
 /** A minimal checkbox with a label. */
 export const Default = meta.story({
@@ -331,9 +328,7 @@ function SelectAllDemo() {
 				onChange={toggleAll}
 			>
 				<Control class={controlClass}>
-					<Indicator>
-						{someChecked() ? <DashIcon /> : <CheckIcon />}
-					</Indicator>
+					<Indicator>{someChecked() ? <DashIcon /> : <CheckIcon />}</Indicator>
 					<Input />
 				</Control>
 				<Label class={`${labelClass} font-semibold`}>Notifications</Label>

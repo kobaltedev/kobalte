@@ -1,10 +1,6 @@
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createMemo,
-	omit,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createMemo, omit } from "solid-js";
 import { useLocale } from "../i18n";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import * as Slider from "../slider";

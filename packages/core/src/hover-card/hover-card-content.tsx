@@ -1,12 +1,7 @@
 import { mergeRefs } from "@kobalte/utils";
-import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	omit,
-	Show,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,

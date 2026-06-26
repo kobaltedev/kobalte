@@ -12,11 +12,8 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import {
-	createUniqueId,
-	omit,
-} from "solid-js";
 import type { JSX, ValidComponent } from "@solidjs/web";
+import { createUniqueId, omit } from "solid-js";
 
 import { createListState, createSelectableList } from "../list";
 import {
@@ -89,15 +86,31 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 		props as AccordionRootProps,
 	);
 
-	const others = omit(mergedProps, "id", "ref", "value", "defaultValue", "onChange", "multiple", "collapsible", "shouldFocusWrap", "onKeyDown", "onMouseDown", "onFocusIn", "onFocusOut");
+	const others = omit(
+		mergedProps,
+		"id",
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"multiple",
+		"collapsible",
+		"shouldFocusWrap",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocusIn",
+		"onFocusOut",
+	);
 
-	const { DomCollectionProvider, items } = createDomCollection<CollectionItemWithRef>();
+	const { DomCollectionProvider, items } =
+		createDomCollection<CollectionItemWithRef>();
 
 	const listState = createListState({
 		selectedKeys: () => mergedProps.value,
 		defaultSelectedKeys: () => mergedProps.defaultValue,
 		onSelectionChange: (value) => mergedProps.onChange?.(Array.from(value)),
-		disallowEmptySelection: () => !mergedProps.multiple && !mergedProps.collapsible,
+		disallowEmptySelection: () =>
+			!mergedProps.multiple && !mergedProps.collapsible,
 		selectionMode: () => (mergedProps.multiple ? "multiple" : "single"),
 		dataSource: items,
 	});

@@ -6,10 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import {
-	createGenerateId,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -81,9 +78,19 @@ export function CollapsibleRoot<T extends ValidComponent = "div">(
 		props as CollapsibleRootProps,
 	);
 
-	const others = omit(mergedProps, "open", "defaultOpen", "onOpenChange", "disabled", "forceMount");
+	const others = omit(
+		mergedProps,
+		"open",
+		"defaultOpen",
+		"onOpenChange",
+		"disabled",
+		"forceMount",
+	);
 
-	const [contentId, setContentId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const disclosureState = createDisclosureState({
 		open: () => mergedProps.open,

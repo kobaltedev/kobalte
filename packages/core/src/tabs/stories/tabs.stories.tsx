@@ -9,21 +9,17 @@ const meta = preview.meta({
 
 export default meta;
 
-
 const rootClass = "relative font-sans w-96";
 
-const listClass =
-	"relative flex border-b border-slate-200";
+const listClass = "relative flex border-b border-slate-200";
 
 const triggerClass =
 	"relative px-4 py-2 text-sm font-medium text-slate-600 transition-colors duration-150 hover:text-slate-900 data-[selected]:text-blue-600 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset";
 
-const contentClass =
-	"pt-4 text-sm text-slate-700 focus-visible:outline-none";
+const contentClass = "pt-4 text-sm text-slate-700 focus-visible:outline-none";
 
 const indicatorClass =
 	"absolute bottom-0 h-0.5 bg-blue-500 transition-transform duration-200";
-
 
 /** A basic tab set with three panels. */
 export const Default = meta.story({
@@ -31,9 +27,15 @@ export const Default = meta.story({
 	render: () => (
 		<Root class={rootClass} defaultValue="account">
 			<List class={listClass}>
-				<Trigger class={triggerClass} value="account">Account</Trigger>
-				<Trigger class={triggerClass} value="password">Password</Trigger>
-				<Trigger class={triggerClass} value="settings">Settings</Trigger>
+				<Trigger class={triggerClass} value="account">
+					Account
+				</Trigger>
+				<Trigger class={triggerClass} value="password">
+					Password
+				</Trigger>
+				<Trigger class={triggerClass} value="settings">
+					Settings
+				</Trigger>
 				<Indicator class={indicatorClass} />
 			</List>
 			<Content class={contentClass} value="account">
@@ -56,9 +58,15 @@ function ControlledDemo() {
 		<div class="flex flex-col gap-4 font-sans">
 			<Root class={rootClass} value={tab()} onChange={setTab}>
 				<List class={listClass}>
-					<Trigger class={triggerClass} value="account">Account</Trigger>
-					<Trigger class={triggerClass} value="password">Password</Trigger>
-					<Trigger class={triggerClass} value="settings">Settings</Trigger>
+					<Trigger class={triggerClass} value="account">
+						Account
+					</Trigger>
+					<Trigger class={triggerClass} value="password">
+						Password
+					</Trigger>
+					<Trigger class={triggerClass} value="settings">
+						Settings
+					</Trigger>
 					<Indicator class={indicatorClass} />
 				</List>
 				<Content class={contentClass} value="account">
@@ -96,9 +104,15 @@ export const ManualActivation = meta.story({
 	render: () => (
 		<Root class={rootClass} defaultValue="account" activationMode="manual">
 			<List class={listClass}>
-				<Trigger class={triggerClass} value="account">Account</Trigger>
-				<Trigger class={triggerClass} value="password">Password</Trigger>
-				<Trigger class={triggerClass} value="settings">Settings</Trigger>
+				<Trigger class={triggerClass} value="account">
+					Account
+				</Trigger>
+				<Trigger class={triggerClass} value="password">
+					Password
+				</Trigger>
+				<Trigger class={triggerClass} value="settings">
+					Settings
+				</Trigger>
 				<Indicator class={indicatorClass} />
 			</List>
 			<Content class={contentClass} value="account">
@@ -165,11 +179,15 @@ export const DisabledTab = meta.story({
 	render: () => (
 		<Root class={rootClass} defaultValue="account">
 			<List class={listClass}>
-				<Trigger class={triggerClass} value="account">Account</Trigger>
+				<Trigger class={triggerClass} value="account">
+					Account
+				</Trigger>
 				<Trigger class={triggerClass} value="password" disabled>
 					Password
 				</Trigger>
-				<Trigger class={triggerClass} value="settings">Settings</Trigger>
+				<Trigger class={triggerClass} value="settings">
+					Settings
+				</Trigger>
 				<Indicator class={indicatorClass} />
 			</List>
 			<Content class={contentClass} value="account">
@@ -191,9 +209,15 @@ export const DisabledRoot = meta.story({
 	render: () => (
 		<Root class={rootClass} defaultValue="account" disabled>
 			<List class={listClass}>
-				<Trigger class={triggerClass} value="account">Account</Trigger>
-				<Trigger class={triggerClass} value="password">Password</Trigger>
-				<Trigger class={triggerClass} value="settings">Settings</Trigger>
+				<Trigger class={triggerClass} value="account">
+					Account
+				</Trigger>
+				<Trigger class={triggerClass} value="password">
+					Password
+				</Trigger>
+				<Trigger class={triggerClass} value="settings">
+					Settings
+				</Trigger>
 				<Indicator class={indicatorClass} />
 			</List>
 			<Content class={contentClass} value="account">
@@ -215,18 +239,36 @@ export const ForceMount = meta.story({
 	render: () => (
 		<Root class={rootClass} defaultValue="account">
 			<List class={listClass}>
-				<Trigger class={triggerClass} value="account">Account</Trigger>
-				<Trigger class={triggerClass} value="password">Password</Trigger>
-				<Trigger class={triggerClass} value="settings">Settings</Trigger>
+				<Trigger class={triggerClass} value="account">
+					Account
+				</Trigger>
+				<Trigger class={triggerClass} value="password">
+					Password
+				</Trigger>
+				<Trigger class={triggerClass} value="settings">
+					Settings
+				</Trigger>
 				<Indicator class={indicatorClass} />
 			</List>
-			<Content class={[contentClass, "data-[selected]:block hidden"].join(" ")} value="account" forceMount>
+			<Content
+				class={[contentClass, "data-[selected]:block hidden"].join(" ")}
+				value="account"
+				forceMount
+			>
 				Always in the DOM — useful for CSS-only transitions.
 			</Content>
-			<Content class={[contentClass, "data-[selected]:block hidden"].join(" ")} value="password" forceMount>
+			<Content
+				class={[contentClass, "data-[selected]:block hidden"].join(" ")}
+				value="password"
+				forceMount
+			>
 				Change your password and security settings.
 			</Content>
-			<Content class={[contentClass, "data-[selected]:block hidden"].join(" ")} value="settings" forceMount>
+			<Content
+				class={[contentClass, "data-[selected]:block hidden"].join(" ")}
+				value="settings"
+				forceMount
+			>
 				Configure application-wide settings.
 			</Content>
 		</Root>

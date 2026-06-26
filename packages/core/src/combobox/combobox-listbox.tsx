@@ -1,11 +1,6 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createEffect,
-	omit,
-	onCleanup,
-} from "solid-js";
+import { type Component, createEffect, omit, onCleanup } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import * as Listbox from "../listbox";

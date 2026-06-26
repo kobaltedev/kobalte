@@ -17,8 +17,8 @@ import {
 } from "../primitives";
 import {
 	type CreateMultipleSelectionStateProps,
-	SelectionManager,
 	createMultipleSelectionState,
+	SelectionManager,
 } from "../selection";
 import { ListCollection } from "./list-collection";
 

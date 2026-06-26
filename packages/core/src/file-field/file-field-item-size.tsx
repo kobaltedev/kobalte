@@ -1,4 +1,4 @@
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
 
 import {

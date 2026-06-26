@@ -1,13 +1,10 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createSignal, omit } from "solid-js";
 import {
-	createSignal,
-	omit,
-} from "solid-js";
-import {
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
+	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
 } from "../form-control";
 import {

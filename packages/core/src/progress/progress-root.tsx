@@ -69,18 +69,34 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 		props as ProgressRootProps,
 	);
 
-	const others = omit(mergedProps, "value", "minValue", "maxValue", "indeterminate", "getValueLabel");
+	const others = omit(
+		mergedProps,
+		"value",
+		"minValue",
+		"maxValue",
+		"indeterminate",
+		"getValueLabel",
+	);
 
-	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultFormatter = createNumberFormatter(() => ({ style: "percent" }));
 
 	const value = () => {
-		return clamp(mergedProps.value!, mergedProps.minValue!, mergedProps.maxValue!);
+		return clamp(
+			mergedProps.value!,
+			mergedProps.minValue!,
+			mergedProps.maxValue!,
+		);
 	};
 
 	const valuePercent = () => {
-		return (value() - mergedProps.minValue!) / (mergedProps.maxValue! - mergedProps.minValue!);
+		return (
+			(value() - mergedProps.minValue!) /
+			(mergedProps.maxValue! - mergedProps.minValue!)
+		);
 	};
 
 	const valueLabel = () => {
@@ -104,7 +120,7 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 	};
 
 	const dataset: Accessor<ProgressDataSet> = createMemo(() => {
-		let dataProgress: ProgressDataSet["data-progress"] = undefined;
+		let dataProgress: ProgressDataSet["data-progress"];
 
 		if (!mergedProps.indeterminate) {
 			dataProgress = valuePercent() === 1 ? "complete" : "loading";

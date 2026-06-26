@@ -3,6 +3,8 @@ import preview from "../../../../../.storybook/preview.js";
 import {
 	Content,
 	Control,
+	Description,
+	ErrorMessage,
 	Icon,
 	Input,
 	Item,
@@ -14,8 +16,6 @@ import {
 	Root,
 	Section,
 	Trigger,
-	Description,
-	ErrorMessage,
 } from "../index";
 
 const meta = preview.meta({
@@ -46,7 +46,8 @@ const itemClass =
 const itemIndicatorClass = "mr-2 flex items-center";
 const itemWithIndicatorClass =
 	"flex items-center rounded-sm px-3 py-2 text-sm text-slate-900 cursor-default select-none outline-none data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-900 data-[disabled]:opacity-50";
-const sectionClass = "px-3 pt-3 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider";
+const sectionClass =
+	"px-3 pt-3 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider";
 
 function ChevronDown() {
 	return (
@@ -87,10 +88,25 @@ function CheckIcon() {
 // ─── data ────────────────────────────────────────────────────────────────────
 
 const fruits = [
-	"Apple", "Apricot", "Avocado", "Banana", "Blueberry",
-	"Cherry", "Grape", "Kiwi", "Lemon", "Mango",
-	"Orange", "Papaya", "Peach", "Pear", "Pineapple",
-	"Plum", "Raspberry", "Strawberry", "Watermelon",
+	"Apple",
+	"Apricot",
+	"Avocado",
+	"Banana",
+	"Blueberry",
+	"Cherry",
+	"Grape",
+	"Kiwi",
+	"Lemon",
+	"Mango",
+	"Orange",
+	"Papaya",
+	"Peach",
+	"Pear",
+	"Pineapple",
+	"Plum",
+	"Raspberry",
+	"Strawberry",
+	"Watermelon",
 ];
 
 type Person = { id: string; name: string; role: string; disabled?: boolean };
@@ -244,7 +260,9 @@ export const ObjectOptions = meta.story({
 				<Item item={props.item} class={itemClass}>
 					<div class="flex flex-col">
 						<ItemLabel>{(props.item.rawValue as Person).name}</ItemLabel>
-						<span class="text-xs text-slate-400">{(props.item.rawValue as Person).role}</span>
+						<span class="text-xs text-slate-400">
+							{(props.item.rawValue as Person).role}
+						</span>
 					</div>
 				</Item>
 			)}
@@ -389,7 +407,9 @@ export const MultiSelect = meta.story({
 								<button
 									type="button"
 									class="ml-0.5 text-blue-500 hover:text-blue-700 focus:outline-none"
-									onClick={() => setValues((prev) => prev.filter((x) => x !== v))}
+									onClick={() =>
+										setValues((prev) => prev.filter((x) => x !== v))
+									}
 									aria-label={`Remove ${v}`}
 								>
 									×

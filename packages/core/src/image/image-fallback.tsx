@@ -7,11 +7,7 @@
  */
 
 import type { ValidComponent } from "@solidjs/web";
-import {
-	Show,
-	createEffect,
-	createSignal,
-} from "solid-js";
+import { createEffect, createSignal, Show } from "solid-js";
 
 import {
 	type ElementOf,

@@ -1,10 +1,6 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createMemo,
-	omit,
-} from "solid-js";
+import { type Component, createMemo, omit } from "solid-js";
 
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
@@ -79,7 +75,10 @@ export function ComboboxRoot<
 >(props: PolymorphicProps<T, ComboboxRootProps<Option, OptGroup, T>>) {
 	const others = omit(
 		props as ComboboxRootProps<Option, OptGroup>,
-		"value", "defaultValue", "onChange", "multiple",
+		"value",
+		"defaultValue",
+		"onChange",
+		"multiple",
 	);
 
 	const value = createMemo(() => {

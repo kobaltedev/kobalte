@@ -8,10 +8,7 @@
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	omit,
-} from "solid-js";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";

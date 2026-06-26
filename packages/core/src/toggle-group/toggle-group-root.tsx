@@ -1,9 +1,5 @@
 import type { ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createMemo,
-	omit,
-} from "solid-js";
+import { type Component, createMemo, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	ToggleGroupBase,
@@ -68,7 +64,13 @@ export type ToggleGroupRootProps<
 export function ToggleGroup<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ToggleGroupRootProps<T>>,
 ) {
-	const others = omit(props as ToggleGroupRootProps, "value", "defaultValue", "onChange", "multiple");
+	const others = omit(
+		props as ToggleGroupRootProps,
+		"value",
+		"defaultValue",
+		"onChange",
+		"multiple",
+	);
 
 	const value = createMemo(() => {
 		if (props.value != null) {

@@ -1,17 +1,23 @@
 import {
-	type Orientation,
 	composeEventHandlers,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
+import type {
+	FocusOutsideEvent,
+	InteractOutsideEvent,
+	PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 import { combineStyle } from "@solid-primitives/props";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import { createElementSize } from "@solid-primitives/resize-observer";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	Show,
 	createEffect,
 	createMemo,
 	createSignal,
 	omit,
+	Show,
 } from "solid-js";
 import {
 	DismissableLayer,
@@ -23,12 +29,6 @@ import {
 } from "../menubar/menubar-context";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import type {
-	FocusOutsideEvent,
-	InteractOutsideEvent,
-	PointerDownOutsideEvent,
-} from "@solid-primitives/interaction";
-import { createElementSize } from "@solid-primitives/resize-observer";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuViewportOptions {
@@ -85,7 +85,12 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 
 	const [ref, setRef] = createSignal<HTMLElement>();
 
-	const others = omit(props as NavigationMenuViewportProps, "ref", "style", "onEscapeKeyDown");
+	const others = omit(
+		props as NavigationMenuViewportProps,
+		"ref",
+		"style",
+		"onEscapeKeyDown",
+	);
 
 	const close = () => {
 		menubarContext.setAutoFocusMenu(false);

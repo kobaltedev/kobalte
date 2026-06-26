@@ -1,25 +1,24 @@
 import {
-	type Orientation,
-	type ValidationState,
 	access,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
+	type ValidationState,
 } from "@kobalte/utils";
-import { type ValidComponent } from "@solidjs/web";
+import { createFormResetListener } from "@solid-primitives/form";
+import type { ValidComponent } from "@solidjs/web";
 import { createSignal, createUniqueId, omit } from "solid-js";
-
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "@solid-primitives/form";
 import {
 	type CollectionItemWithRef,
 	createControllableSignal,
@@ -115,8 +114,29 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 		props as RatingGroupRootProps,
 	);
 
-	const formControlProps = omit(mergedProps, "ref", "value", "defaultValue", "onChange", "allowHalf", "orientation", "aria-labelledby", "aria-describedby");
-	const others = omit(mergedProps, "ref", "value", "defaultValue", "onChange", "allowHalf", "orientation", "aria-labelledby", "aria-describedby", ...FORM_CONTROL_PROP_NAMES);
+	const formControlProps = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"allowHalf",
+		"orientation",
+		"aria-labelledby",
+		"aria-describedby",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"allowHalf",
+		"orientation",
+		"aria-labelledby",
+		"aria-describedby",
+		...FORM_CONTROL_PROP_NAMES,
+	);
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 	const { DomCollectionProvider } = createDomCollection({
@@ -148,7 +168,9 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 	};
 
 	const ariaDescribedBy = () => {
-		return formControlContext.getAriaDescribedBy(mergedProps["aria-describedby"]);
+		return formControlContext.getAriaDescribedBy(
+			mergedProps["aria-describedby"],
+		);
 	};
 
 	const context: RatingGroupContextValue = {
@@ -180,7 +202,9 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 						role="radiogroup"
 						id={access(mergedProps.id)!}
 						aria-invalid={
-							formControlContext.validationState() === "invalid" ? "true" : undefined
+							formControlContext.validationState() === "invalid"
+								? "true"
+								: undefined
 						}
 						aria-required={formControlContext.isRequired() ? "true" : undefined}
 						aria-disabled={formControlContext.isDisabled() ? "true" : undefined}

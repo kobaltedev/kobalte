@@ -77,7 +77,8 @@ export const Default = meta.story({
 	argTypes: {
 		collapsible: {
 			control: "boolean",
-			description: "When single-select, allow the open item to be closed by clicking its trigger again.",
+			description:
+				"When single-select, allow the open item to be closed by clicking its trigger again.",
 		},
 		multiple: {
 			control: "boolean",
@@ -85,7 +86,11 @@ export const Default = meta.story({
 		},
 	},
 	render: (args) => (
-		<AccordionRoot collapsible={args.collapsible} multiple={args.multiple} class={rootClass}>
+		<AccordionRoot
+			collapsible={args.collapsible}
+			multiple={args.multiple}
+			class={rootClass}
+		>
 			<Item
 				value="item-1"
 				question="Is it accessible?"
@@ -134,13 +139,21 @@ export const DefaultOpen = meta.story({
 	name: "Default Open",
 	render: () => (
 		<AccordionRoot defaultValue={["item-2"]} collapsible class={rootClass}>
-			<Item value="item-1" question="First item" answer="Content for the first item." />
+			<Item
+				value="item-1"
+				question="First item"
+				answer="Content for the first item."
+			/>
 			<Item
 				value="item-2"
 				question="Second item (pre-opened)"
 				answer="This item was open on mount via defaultValue."
 			/>
-			<Item value="item-3" question="Third item" answer="Content for the third item." />
+			<Item
+				value="item-3"
+				question="Third item"
+				answer="Content for the third item."
+			/>
 		</AccordionRoot>
 	),
 });
@@ -257,10 +270,21 @@ export const Controlled = meta.story({
 			multiple
 			class={rootClass}
 		>
-			<Item value="item-1" question="First item" answer="Content for the first item." />
-			<Item value="item-2" question="Second item" answer="Content for the second item." />
-			<Item value="item-3" question="Third item" answer="Content for the third item." />
+			<Item
+				value="item-1"
+				question="First item"
+				answer="Content for the first item."
+			/>
+			<Item
+				value="item-2"
+				question="Second item"
+				answer="Content for the second item."
+			/>
+			<Item
+				value="item-3"
+				question="Third item"
+				answer="Content for the third item."
+			/>
 		</AccordionRoot>
 	),
 });
-

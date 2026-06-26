@@ -77,7 +77,11 @@ export const AvatarGroup = meta.story({
 			<div class="flex -space-x-2 font-sans">
 				{users.map((u) => (
 					<Root class="inline-flex h-10 w-10 rounded-full overflow-hidden ring-2 ring-white">
-						<Img class="h-full w-full object-cover" src={u.src} alt={u.initials} />
+						<Img
+							class="h-full w-full object-cover"
+							src={u.src}
+							alt={u.initials}
+						/>
 						<Fallback class="flex h-full w-full items-center justify-center bg-slate-300 text-slate-700 text-xs font-semibold">
 							{u.initials}
 						</Fallback>

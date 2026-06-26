@@ -13,17 +13,12 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	isFunction,
+	OverrideComponentProps,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Accessor,
-	type Component,
-	children,
-	omit,
-} from "solid-js";
+import { type Accessor, type Component, children, omit } from "solid-js";
 
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -82,7 +77,14 @@ export function ToggleButtonRoot<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, ToggleButtonRootProps<T>>,
 ) {
 	const p = props as ToggleButtonRootProps;
-	const others = omit(p, "children", "pressed", "defaultPressed", "onChange", "onClick");
+	const others = omit(
+		p,
+		"children",
+		"pressed",
+		"defaultPressed",
+		"onChange",
+		"onClick",
+	);
 
 	const state = createToggleState({
 		isSelected: () => props.pressed,

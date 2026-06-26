@@ -17,9 +17,15 @@ export const Single = meta.story({
 	name: "Single",
 	render: () => (
 		<Root class="inline-flex font-sans" defaultValue="center">
-			<Item class={itemClass} value="left">Left</Item>
-			<Item class={itemClass} value="center">Center</Item>
-			<Item class={itemClass} value="right">Right</Item>
+			<Item class={itemClass} value="left">
+				Left
+			</Item>
+			<Item class={itemClass} value="center">
+				Center
+			</Item>
+			<Item class={itemClass} value="right">
+				Right
+			</Item>
 		</Root>
 	),
 });
@@ -28,11 +34,23 @@ export const Single = meta.story({
 export const Multiple = meta.story({
 	name: "Multiple",
 	render: () => (
-		<Root class="inline-flex font-sans" multiple defaultValue={["bold", "underline"]}>
-			<Item class={itemClass} value="bold">B</Item>
-			<Item class={itemClass} value="italic">I</Item>
-			<Item class={itemClass} value="underline">U</Item>
-			<Item class={itemClass} value="strikethrough">S</Item>
+		<Root
+			class="inline-flex font-sans"
+			multiple
+			defaultValue={["bold", "underline"]}
+		>
+			<Item class={itemClass} value="bold">
+				B
+			</Item>
+			<Item class={itemClass} value="italic">
+				I
+			</Item>
+			<Item class={itemClass} value="underline">
+				U
+			</Item>
+			<Item class={itemClass} value="strikethrough">
+				S
+			</Item>
 		</Root>
 	),
 });
@@ -63,9 +81,15 @@ export const DisabledRoot = meta.story({
 	name: "Disabled Root",
 	render: () => (
 		<Root class="inline-flex font-sans" defaultValue="center" disabled>
-			<Item class={itemClass} value="left">Left</Item>
-			<Item class={itemClass} value="center">Center</Item>
-			<Item class={itemClass} value="right">Right</Item>
+			<Item class={itemClass} value="left">
+				Left
+			</Item>
+			<Item class={itemClass} value="center">
+				Center
+			</Item>
+			<Item class={itemClass} value="right">
+				Right
+			</Item>
 		</Root>
 	),
 });
@@ -75,9 +99,15 @@ export const DisabledItem = meta.story({
 	name: "Disabled Item",
 	render: () => (
 		<Root class="inline-flex font-sans" defaultValue="left">
-			<Item class={itemClass} value="left">Left</Item>
-			<Item class={itemClass} value="center" disabled>Center</Item>
-			<Item class={itemClass} value="right">Right</Item>
+			<Item class={itemClass} value="left">
+				Left
+			</Item>
+			<Item class={itemClass} value="center" disabled>
+				Center
+			</Item>
+			<Item class={itemClass} value="right">
+				Right
+			</Item>
 		</Root>
 	),
 });
@@ -88,10 +118,18 @@ function ControlledSingleDemo() {
 	return (
 		<div class="flex flex-col gap-3 font-sans">
 			<Root class="inline-flex" value={value()} onChange={setValue}>
-				<Item class={itemClass} value="day">Day</Item>
-				<Item class={itemClass} value="week">Week</Item>
-				<Item class={itemClass} value="month">Month</Item>
-				<Item class={itemClass} value="year">Year</Item>
+				<Item class={itemClass} value="day">
+					Day
+				</Item>
+				<Item class={itemClass} value="week">
+					Week
+				</Item>
+				<Item class={itemClass} value="month">
+					Month
+				</Item>
+				<Item class={itemClass} value="year">
+					Year
+				</Item>
 			</Root>
 			<p class="text-xs text-slate-500">
 				Selected: <strong>{value() ?? "none"}</strong>
@@ -111,9 +149,15 @@ function ControlledMultipleDemo() {
 	return (
 		<div class="flex flex-col gap-3 font-sans">
 			<Root class="inline-flex" multiple value={value()} onChange={setValue}>
-				<Item class={itemClass} value="bold">Bold</Item>
-				<Item class={itemClass} value="italic">Italic</Item>
-				<Item class={itemClass} value="underline">Underline</Item>
+				<Item class={itemClass} value="bold">
+					Bold
+				</Item>
+				<Item class={itemClass} value="italic">
+					Italic
+				</Item>
+				<Item class={itemClass} value="underline">
+					Underline
+				</Item>
 			</Root>
 			<p class="text-xs text-slate-500">
 				Active: <strong>{value().join(", ") || "none"}</strong>

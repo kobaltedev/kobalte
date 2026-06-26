@@ -11,9 +11,9 @@ import type { JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
 
 import {
+	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
-	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import {
@@ -95,7 +95,10 @@ export function TextFieldInputBase<T extends ValidComponent = "input">(
 			aria-required={formControlContext.isRequired() ? "true" : undefined}
 			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
 			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
-			onInput={composeEventHandlers([mergedProps.onInput, context.onInput as JSX.EventHandlerUnion<HTMLElement, InputEvent>])}
+			onInput={composeEventHandlers([
+				mergedProps.onInput,
+				context.onInput as JSX.EventHandlerUnion<HTMLElement, InputEvent>,
+			])}
 			{...formControlContext.dataset()}
 			{...others}
 		/>

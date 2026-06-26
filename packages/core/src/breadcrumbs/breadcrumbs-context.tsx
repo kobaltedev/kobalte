@@ -1,4 +1,4 @@
-import { type JSX } from "@solidjs/web";
+import type { JSX } from "@solidjs/web";
 import { createContext, useContext } from "solid-js";
 
 export interface BreadcrumbsContextValue {

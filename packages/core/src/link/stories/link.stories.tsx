@@ -8,13 +8,11 @@ const meta = preview.meta({
 
 export default meta;
 
-
 const baseClass =
 	"font-sans text-sm text-blue-600 underline underline-offset-2 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 rounded-sm";
 
 const disabledClass =
 	"font-sans text-sm text-slate-400 underline underline-offset-2 cursor-not-allowed data-[disabled]:pointer-events-none";
-
 
 /** A standard anchor link. */
 export const Default = meta.story({

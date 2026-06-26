@@ -1,11 +1,6 @@
 import { callHandler } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createEffect,
-	createSignal,
-	omit,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, createSignal, omit } from "solid-js";
 
 import {
 	MenuContent,
@@ -49,12 +44,21 @@ export function NavigationMenuContent<T extends ValidComponent = "ul">(
 
 	const [motion, setMotion] = createSignal<Motion>();
 
-	const others = omit(props as NavigationMenuContentProps, "onPointerEnter", "onPointerLeave");
+	const others = omit(
+		props as NavigationMenuContentProps,
+		"onPointerEnter",
+		"onPointerLeave",
+	);
 
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerEnter as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
+		callHandler(
+			e,
+			props.onPointerEnter as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		context.cancelLeaveTimer();
 	};
@@ -62,7 +66,12 @@ export function NavigationMenuContent<T extends ValidComponent = "ul">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerLeave as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
+		callHandler(
+			e,
+			props.onPointerLeave as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		context.startLeaveTimer();
 	};

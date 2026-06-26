@@ -1,6 +1,6 @@
-import { createSignal } from "solid-js";
-import { parseColor } from "@solid-primitives/utils/colors";
 import type { Color } from "@solid-primitives/utils/colors";
+import { parseColor } from "@solid-primitives/utils/colors";
+import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
 	Description,
@@ -65,7 +65,9 @@ export const Default = meta.story({
 
 /** Controlled wheel — hue synced to a signal. */
 function ControlledDemo() {
-	const [color, setColor] = createSignal<Color>(parseColor("hsl(120, 80%, 50%)"));
+	const [color, setColor] = createSignal<Color>(
+		parseColor("hsl(120, 80%, 50%)"),
+	);
 	return (
 		<div class="flex flex-col items-center gap-4 font-sans">
 			<Root
@@ -152,7 +154,10 @@ export const Disabled = meta.story({
 			disabled
 		>
 			<Track class="block w-48 h-48 opacity-50 cursor-not-allowed">
-				<Thumb class={`${thumbClass} cursor-not-allowed`} style={{ background: "var(--kb-color-current)" }}>
+				<Thumb
+					class={`${thumbClass} cursor-not-allowed`}
+					style={{ background: "var(--kb-color-current)" }}
+				>
 					<Input />
 				</Thumb>
 			</Track>
@@ -180,7 +185,9 @@ export const WithValidation = meta.story({
 						<Input />
 					</Thumb>
 				</Track>
-				<Description class={descClass}>Select a cool hue (180–270°).</Description>
+				<Description class={descClass}>
+					Select a cool hue (180–270°).
+				</Description>
 				<ErrorMessage class={errorClass}>
 					Please select a blue or purple hue.
 				</ErrorMessage>

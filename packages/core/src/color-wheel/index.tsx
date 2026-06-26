@@ -50,35 +50,35 @@ import {
 } from "./color-wheel-value-label";
 
 export type {
-	ColorWheelDescriptionProps,
-	ColorWheelDescriptionOptions,
 	ColorWheelDescriptionCommonProps,
+	ColorWheelDescriptionOptions,
+	ColorWheelDescriptionProps,
 	ColorWheelDescriptionRenderProps,
-	ColorWheelErrorMessageOptions,
 	ColorWheelErrorMessageCommonProps,
-	ColorWheelErrorMessageRenderProps,
+	ColorWheelErrorMessageOptions,
 	ColorWheelErrorMessageProps,
+	ColorWheelErrorMessageRenderProps,
 	ColorWheelInputProps,
-	ColorWheelLabelOptions,
 	ColorWheelLabelCommonProps,
-	ColorWheelLabelRenderProps,
+	ColorWheelLabelOptions,
 	ColorWheelLabelProps,
-	ColorWheelRootOptions,
+	ColorWheelLabelRenderProps,
 	ColorWheelRootCommonProps,
-	ColorWheelRootRenderProps,
+	ColorWheelRootOptions,
 	ColorWheelRootProps,
-	ColorWheelThumbOptions,
+	ColorWheelRootRenderProps,
 	ColorWheelThumbCommonProps,
-	ColorWheelThumbRenderProps,
+	ColorWheelThumbOptions,
 	ColorWheelThumbProps,
-	ColorWheelTrackOptions,
+	ColorWheelThumbRenderProps,
 	ColorWheelTrackCommonProps,
-	ColorWheelTrackRenderProps,
+	ColorWheelTrackOptions,
 	ColorWheelTrackProps,
-	ColorWheelValueLabelOptions,
+	ColorWheelTrackRenderProps,
 	ColorWheelValueLabelCommonProps,
-	ColorWheelValueLabelRenderProps,
+	ColorWheelValueLabelOptions,
 	ColorWheelValueLabelProps,
+	ColorWheelValueLabelRenderProps,
 };
 export {
 	Description,
@@ -105,6 +105,6 @@ export const ColorWheel = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useColorWheelContext,
 	type ColorWheelContextValue,
+	useColorWheelContext,
 } from "./color-wheel-context";

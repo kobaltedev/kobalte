@@ -7,12 +7,7 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import {
-	type ParentProps,
-	createSignal,
-	createUniqueId,
-	omit,
-} from "solid-js";
+import { createSignal, createUniqueId, omit, type ParentProps } from "solid-js";
 
 import { useLocale } from "../i18n";
 import { MenuRoot, type MenuRootOptions } from "../menu";

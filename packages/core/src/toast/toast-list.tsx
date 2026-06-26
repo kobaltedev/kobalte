@@ -20,13 +20,8 @@ import {
 	getWindow,
 	mergeRefs,
 } from "@kobalte/utils";
-import { type JSX, type ValidComponent, isServer } from "@solidjs/web";
-import {
-	For,
-	createEffect,
-	omit,
-	untrack,
-} from "solid-js";
+import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
+import { createEffect, For, omit, untrack } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -65,10 +60,22 @@ export function ToastList<T extends ValidComponent = "ol">(
 
 	const context = useToastRegionContext();
 
-	const others = omit(props as ToastListProps, "ref", "onFocusIn", "onFocusOut", "onPointerMove", "onPointerLeave");
+	const others = omit(
+		props as ToastListProps,
+		"ref",
+		"onFocusIn",
+		"onFocusOut",
+		"onPointerMove",
+		"onPointerLeave",
+	);
 
 	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, props.onFocusIn as JSX.EventHandlerUnion<HTMLElement, FocusEvent> | undefined);
+		callHandler(
+			e,
+			props.onFocusIn as
+				| JSX.EventHandlerUnion<HTMLElement, FocusEvent>
+				| undefined,
+		);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
 			context.pauseAllTimer();
@@ -76,7 +83,12 @@ export function ToastList<T extends ValidComponent = "ol">(
 	};
 
 	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, props.onFocusOut as JSX.EventHandlerUnion<HTMLElement, FocusEvent> | undefined);
+		callHandler(
+			e,
+			props.onFocusOut as
+				| JSX.EventHandlerUnion<HTMLElement, FocusEvent>
+				| undefined,
+		);
 
 		// The newly focused element isn't inside the toast list.
 		if (!contains(ref, e.relatedTarget as HTMLElement)) {
@@ -87,7 +99,12 @@ export function ToastList<T extends ValidComponent = "ol">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerMove as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
+		callHandler(
+			e,
+			props.onPointerMove as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
 			context.pauseAllTimer();
@@ -97,7 +114,12 @@ export function ToastList<T extends ValidComponent = "ol">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, props.onPointerLeave as JSX.EventHandlerUnion<HTMLElement, PointerEvent> | undefined);
+		callHandler(
+			e,
+			props.onPointerLeave as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		// The current active element isn't inside the toast list.
 		if (!contains(ref, getDocument(ref).activeElement)) {

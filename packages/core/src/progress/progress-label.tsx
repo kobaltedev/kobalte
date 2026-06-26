@@ -1,10 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createEffect,
-	omit,
-} from "solid-js";
+import { type Component, createEffect, omit } from "solid-js";
 
 import {
 	Meter,
@@ -45,7 +41,10 @@ export function ProgressLabel<T extends ValidComponent = "span">(
 	);
 	const others = omit(mergedProps, "id");
 
-	createEffect(() => mergedProps.id, (id) => context.registerLabelId(id));
+	createEffect(
+		() => mergedProps.id,
+		(id) => context.registerLabelId(id),
+	);
 
 	return (
 		<Meter.Label<

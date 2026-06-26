@@ -18,15 +18,17 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { type JSX, type ValidComponent } from "@solidjs/web";
+import { createPresence } from "@solid-primitives/presence";
+import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
-	Show,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
 	onSettled,
+	Show,
 	untrack,
 } from "solid-js";
 import {
@@ -34,17 +36,14 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-
-import { combineStyle } from "@solid-primitives/props";
-import { createPresence } from "@solid-primitives/presence";
 import { createRegisterId } from "../primitives";
-import { ToastContext, type ToastContextValue } from "./toast-context";
-import { useToastRegionContext } from "./toast-region-context";
-import { toastStore } from "./toast-store";
 import {
 	TOAST_INTL_TRANSLATIONS,
 	type ToastIntlTranslations,
 } from "./toast.intl";
+import { ToastContext, type ToastContextValue } from "./toast-context";
+import { useToastRegionContext } from "./toast-region-context";
+import { toastStore } from "./toast-store";
 import type { ToastSwipeDirection } from "./types";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
@@ -167,17 +166,25 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	);
 
 	const [isOpen, setIsOpen] = createSignal(true);
-	const [titleId, setTitleId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
-	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
-
-	const { isMounted: present } = createPresence(
-		() => isOpen() || undefined,
-		{ transitionDuration: 0 },
+	const [titleId, setTitleId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
 	);
+	const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
-	const duration = createMemo(() => mergedProps.duration || rootContext.duration());
+	const { isMounted: present } = createPresence(() => isOpen() || undefined, {
+		transitionDuration: 0,
+	});
+
+	const duration = createMemo(
+		() => mergedProps.duration || rootContext.duration(),
+	);
 
 	let closeTimerId: number;
 	let closeTimerStartTime = 0;
@@ -408,12 +415,16 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 	createEffect(
 		() => toastStore.get(mergedProps.toastId!)?.dismiss,
-		(dismiss) => { if (dismiss) close(); },
+		(dismiss) => {
+			if (dismiss) close();
+		},
 	);
 
 	createEffect(
 		() => present(),
-		(isPresent) => { if (!isPresent) deleteToast(); },
+		(isPresent) => {
+			if (!isPresent) deleteToast();
+		},
 	);
 
 	const context: ToastContextValue = {

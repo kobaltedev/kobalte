@@ -9,7 +9,6 @@
 import { CalendarDate, toCalendar } from "@internationalized/date";
 import { NumberParser } from "@internationalized/number";
 import {
-	type OverrideComponentProps,
 	callHandler,
 	getActiveElement,
 	getScrollParent,
@@ -17,18 +16,19 @@ import {
 	isIOS,
 	isMac,
 	mergeRefs,
+	type OverrideComponentProps,
 	scrollIntoViewport,
 } from "@kobalte/utils";
 import {
 	type ComponentProps,
-	type JSX,
-	Show,
 	children,
 	createEffect,
 	createMemo,
 	createSignal,
+	type JSX,
 	on,
 	onCleanup,
+	Show,
 	splitProps,
 } from "solid-js";
 
@@ -542,7 +542,7 @@ export function DatePickerSegment(props: DatePickerSegmentProps) {
 				readOnly={formControlContext.isReadOnly() || !local.segment.isEditable}
 				contentEditable={isEditable()}
 				inputMode={inputMode()}
-				// @ts-ignore
+				// @ts-expect-error
 				autocorrect={isEditable() ? "off" : undefined}
 				autoCapitalize={isEditable() ? "off" : undefined}
 				spellcheck={isEditable() ? false : undefined}

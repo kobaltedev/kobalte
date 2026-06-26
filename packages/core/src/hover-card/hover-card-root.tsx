@@ -13,19 +13,18 @@ import {
 	isPointInPolygon,
 	mergeDefaultProps,
 } from "@kobalte/utils";
+import { createPresence } from "@solid-primitives/presence";
+import { isServer } from "@solidjs/web";
 import {
 	type Accessor,
-	type ParentProps,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
 	omit,
 	onCleanup,
+	type ParentProps,
 } from "solid-js";
-import { isServer } from "@solidjs/web";
-
-import { createPresence } from "@solid-primitives/presence";
 import { Popper, type PopperRootOptions } from "../popper";
 import type { Placement } from "../popper/utils";
 import { createDisclosureState } from "../primitives";
@@ -93,13 +92,29 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 		props,
 	);
 
-	const others = omit(mergedProps, "id", "open", "defaultOpen", "onOpenChange", "openDelay", "closeDelay", "ignoreSafeArea", "forceMount");
+	const others = omit(
+		mergedProps,
+		"id",
+		"open",
+		"defaultOpen",
+		"onOpenChange",
+		"openDelay",
+		"closeDelay",
+		"ignoreSafeArea",
+		"forceMount",
+	);
 
 	let openTimeoutId: number | undefined;
 	let closeTimeoutId: number | undefined;
 
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
-	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
 		others.placement!,
@@ -112,7 +127,7 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 	});
 
 	const { isMounted: contentPresent } = createPresence(
-		() => (mergedProps.forceMount || disclosureState.isOpen()) || undefined,
+		() => mergedProps.forceMount || disclosureState.isOpen() || undefined,
 		{ transitionDuration: 0 },
 	);
 
@@ -210,7 +225,8 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 			// If yes, hide the card after the close delay.
 			addGlobalListener(document, "pointermove", onHoverOutside, true);
 
-			return () => removeGlobalListener(document, "pointermove", onHoverOutside, true);
+			return () =>
+				removeGlobalListener(document, "pointermove", onHoverOutside, true);
 		},
 	);
 

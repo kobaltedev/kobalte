@@ -14,6 +14,7 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
@@ -21,7 +22,6 @@ import {
 	createUniqueId,
 	omit,
 } from "solid-js";
-import { type JSX, type ValidComponent } from "@solidjs/web";
 
 import {
 	type ElementOf,
@@ -114,11 +114,36 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		props as MenuItemBaseProps,
 	);
 
-	const others = omit(mergedProps, "ref", "textValue", "disabled", "closeOnSelect", "checked", "indeterminate", "onSelect", "onPointerMove", "onPointerLeave", "onPointerDown", "onPointerUp", "onClick", "onKeyDown", "onMouseDown", "onFocus");
+	const others = omit(
+		mergedProps,
+		"ref",
+		"textValue",
+		"disabled",
+		"closeOnSelect",
+		"checked",
+		"indeterminate",
+		"onSelect",
+		"onPointerMove",
+		"onPointerLeave",
+		"onPointerDown",
+		"onPointerUp",
+		"onClick",
+		"onKeyDown",
+		"onMouseDown",
+		"onFocus",
+	);
 
-	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(undefined, { ownedWrite: true });
-	const [labelRef, setLabelRef] = createSignal<HTMLElement | undefined>(undefined, { ownedWrite: true });
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [labelRef, setLabelRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const selectionManager = () => menuContext.listState().selectionManager();
 
@@ -147,7 +172,10 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			type: "item",
 			key: key(),
 			textValue:
-				mergedProps.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
+				mergedProps.textValue ??
+				labelRef()?.textContent ??
+				ref?.textContent ??
+				"",
 			disabled: mergedProps.disabled ?? false,
 		}),
 	});
@@ -252,7 +280,8 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 
 	const dataset: Accessor<MenuItemDataSet> = createMemo(() => ({
 		"data-indeterminate": mergedProps.indeterminate ? "" : undefined,
-		"data-checked": mergedProps.checked && !mergedProps.indeterminate ? "" : undefined,
+		"data-checked":
+			mergedProps.checked && !mergedProps.indeterminate ? "" : undefined,
 		"data-disabled": mergedProps.disabled ? "" : undefined,
 		"data-highlighted": isHighlighted() ? "" : undefined,
 	}));
@@ -285,13 +314,19 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 					onPointerUp,
 					selectableItem.onPointerUp,
 				])}
-				onClick={composeEventHandlers([mergedProps.onClick, selectableItem.onClick])}
+				onClick={composeEventHandlers([
+					mergedProps.onClick,
+					selectableItem.onClick,
+				])}
 				onKeyDown={composeEventHandlers([onKeyDown, selectableItem.onKeyDown])}
 				onMouseDown={composeEventHandlers([
 					mergedProps.onMouseDown,
 					selectableItem.onMouseDown,
 				])}
-				onFocus={composeEventHandlers([mergedProps.onFocus, selectableItem.onFocus])}
+				onFocus={composeEventHandlers([
+					mergedProps.onFocus,
+					selectableItem.onFocus,
+				])}
 				onPointerMove={onPointerMove}
 				onPointerLeave={onPointerLeave}
 				{...dataset()}

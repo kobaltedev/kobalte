@@ -1,28 +1,25 @@
 import {
-	type ValidationState,
 	access,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createUniqueId, omit } from "solid-js";
-
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener } from "@solid-primitives/form";
-import {
-	createControllableSignal,
-} from "../primitives";
+import { createControllableSignal } from "../primitives";
 import {
 	TextFieldContext,
 	type TextFieldContextValue,
@@ -111,7 +108,8 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 	const initialValue = mergedProps.value;
 
 	const [value, setValue] = createControllableSignal({
-		value: () => (initialValue === undefined ? undefined : mergedProps.value ?? ""),
+		value: () =>
+			initialValue === undefined ? undefined : (mergedProps.value ?? ""),
 		defaultValue: () => mergedProps.defaultValue,
 		onChange: (value) => mergedProps.onChange?.(value),
 	});

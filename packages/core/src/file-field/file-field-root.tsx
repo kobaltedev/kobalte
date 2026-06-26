@@ -1,19 +1,18 @@
-import { type ValidComponent } from "@solidjs/web";
+import { mergeDefaultProps, type ValidationState } from "@kobalte/utils";
+import type { UploadFile } from "@solid-primitives/upload";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	createSignal,
+	createStore,
 	createUniqueId,
 	omit,
 	snapshot,
-	createStore,
 } from "solid-js";
-import type { UploadFile } from "@solid-primitives/upload";
-
-import { type ValidationState, mergeDefaultProps } from "@kobalte/utils";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
@@ -21,13 +20,13 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import {
-	FileFieldContext,
-	type FileFieldContextValue,
-} from "./file-field-context";
-import {
 	FILE_FIELD_INTL_TRANSLATIONS,
 	type FileFieldIntlTranslations,
 } from "./file-field.intl";
+import {
+	FileFieldContext,
+	type FileFieldContextValue,
+} from "./file-field-context";
 import type { Accept, Details, FileError, FileRejection } from "./types";
 import { getFiles, parseAcceptedTypes } from "./util";
 
@@ -96,7 +95,9 @@ export function FileField<T extends ValidComponent = "div">(
 		file,
 	});
 
-	const [acceptedFilesState, setAcceptedFilesState] = createStore<UploadFile[]>([]);
+	const [acceptedFilesState, setAcceptedFilesState] = createStore<UploadFile[]>(
+		[],
+	);
 	const [rejectedFilesState, setRejectedFilesState] = createStore<
 		FileRejection[]
 	>([]);

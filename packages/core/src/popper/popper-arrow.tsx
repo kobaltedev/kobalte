@@ -8,15 +8,9 @@
  */
 
 import { getWindow, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Accessor,
-	createEffect,
-	createSignal,
-	omit,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Accessor, createEffect, createSignal, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -84,7 +78,9 @@ export function PopperArrow<T extends ValidComponent = "div">(
 	const borderWidth = () =>
 		contentStyle()?.getPropertyValue(`border-${dir()}-width`) || "0px";
 	const strokeWidth = () => {
-		return Number.parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / mergedProps.size!);
+		return (
+			Number.parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / mergedProps.size!)
+		);
 	};
 	const rotate = () => {
 		return `rotate(${

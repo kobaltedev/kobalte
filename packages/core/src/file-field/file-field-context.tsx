@@ -1,10 +1,10 @@
+import type { UploadFile } from "@solid-primitives/upload";
 import {
 	type Accessor,
-	type Setter,
 	createContext,
+	type Setter,
 	useContext,
 } from "solid-js";
-import type { UploadFile } from "@solid-primitives/upload";
 import type { FileFieldIntlTranslations } from "./file-field.intl";
 import type { FileRejection } from "./types";
 

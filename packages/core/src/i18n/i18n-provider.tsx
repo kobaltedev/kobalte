@@ -6,7 +6,12 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/i18n/src/context.tsx
  */
 
-import { type Accessor, type Element, createContext, useContext } from "solid-js";
+import {
+	type Accessor,
+	createContext,
+	type Element,
+	useContext,
+} from "solid-js";
 
 import { createDefaultLocale, getDefaultLocale } from "./create-default-locale";
 import { type Direction, getReadingDirection } from "./utils";
@@ -46,11 +51,7 @@ export function I18nProvider(props: I18nProviderProps) {
 				: defaultLocale.direction(),
 	};
 
-	return (
-		<I18nContext value={context}>
-			{props.children}
-		</I18nContext>
-	);
+	return <I18nContext value={context}>{props.children}</I18nContext>;
 }
 
 /**

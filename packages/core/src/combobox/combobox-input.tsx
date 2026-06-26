@@ -17,9 +17,9 @@ import type { JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
 
 import {
+	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
-	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import {
@@ -90,15 +90,41 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		props as ComboboxInputProps,
 	);
 
-	const formControlFieldProps = omit(mergedProps, "ref", "disabled", "onClick", "onInput", "onKeyDown", "onFocus", "onBlur", "onTouchEnd");
-	const others = omit(mergedProps, "ref", "disabled", "onClick", "onInput", "onKeyDown", "onFocus", "onBlur", "onTouchEnd", "id", "aria-label", "aria-labelledby", "aria-describedby");
+	const formControlFieldProps = omit(
+		mergedProps,
+		"ref",
+		"disabled",
+		"onClick",
+		"onInput",
+		"onKeyDown",
+		"onFocus",
+		"onBlur",
+		"onTouchEnd",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"disabled",
+		"onClick",
+		"onInput",
+		"onKeyDown",
+		"onFocus",
+		"onBlur",
+		"onTouchEnd",
+		"id",
+		"aria-label",
+		"aria-labelledby",
+		"aria-describedby",
+	);
 
 	const collection = () => context.listState().collection();
 	const selectionManager = () => context.listState().selectionManager();
 
 	const isDisabled = () => {
 		return (
-			mergedProps.disabled || context.isDisabled() || formControlContext.isDisabled()
+			mergedProps.disabled ||
+			context.isDisabled() ||
+			formControlContext.isDisabled()
 		);
 	};
 
