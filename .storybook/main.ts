@@ -1,8 +1,6 @@
 import type { StorybookConfig } from "storybook-solidjs-vite";
 import { mergeConfig } from "vite";
 
-const SOLID_PRIMITIVES_ROOT = new URL("../../solid-primitives/packages", import.meta.url).pathname;
-
 const config: StorybookConfig = {
 	stories: ["../packages/core/src/**/stories/*.stories.{ts,tsx}"],
 	staticDirs: ["./public"],
@@ -55,22 +53,11 @@ const config: StorybookConfig = {
 				},
 			],
 			resolve: {
-				conditions: ["@solid-primitives/source"],
 				alias: [
 					{ find: "solid-js/web", replacement: "@solidjs/web" },
 					{
 						find: "@kobalte/utils",
 						replacement: new URL("../packages/utils/src/index.ts", import.meta.url).pathname,
-					},
-					// Redirect @solid-primitives/<pkg> (top-level only) to local TypeScript source.
-					// Transitive deps (event-listener, rootless, static-store, utils) would otherwise
-					// fall through to system-level Solid 1.x packages that import the removed `on` export.
-					// Subpath exports like @solid-primitives/utils/colors are intentionally NOT matched
-					// here — they fall through to Vite package-exports resolution, which uses the
-					// "@solid-primitives/source" condition to find the correct TypeScript source file.
-					{
-						find: /^@solid-primitives\/([^/]+)$/,
-						replacement: `${SOLID_PRIMITIVES_ROOT}/$1/src/index.ts`,
 					},
 				],
 				dedupe: ["react", "react-dom"],

@@ -81,19 +81,7 @@
 	},
 	"pnpm": {
 		"overrides": {
-			"@solidjs/testing-library": "1.0.0-beta.2",
-			"@solid-primitives/controlled-signal": "link:/Users/ddibiase/Projects/solid-primitives/packages/controlled-signal",
-			"@solid-primitives/utils": "link:/Users/ddibiase/Projects/solid-primitives/packages/utils",
-			"@solid-primitives/event-listener": "link:/Users/ddibiase/Projects/solid-primitives/packages/event-listener",
-			"@solid-primitives/keyed": "link:/Users/ddibiase/Projects/solid-primitives/packages/keyed",
-			"@solid-primitives/map": "link:/Users/ddibiase/Projects/solid-primitives/packages/map",
-			"@solid-primitives/media": "link:/Users/ddibiase/Projects/solid-primitives/packages/media",
-			"@solid-primitives/props": "link:/Users/ddibiase/Projects/solid-primitives/packages/props",
-			"@solid-primitives/refs": "link:/Users/ddibiase/Projects/solid-primitives/packages/refs",
-			"@solid-primitives/resize-observer": "link:/Users/ddibiase/Projects/solid-primitives/packages/resize-observer",
-			"@solid-primitives/trigger": "link:/Users/ddibiase/Projects/solid-primitives/packages/trigger",
-			"@solid-primitives/rootless": "link:/Users/ddibiase/Projects/solid-primitives/packages/rootless",
-			"@solid-primitives/static-store": "link:/Users/ddibiase/Projects/solid-primitives/packages/static-store"
+			"@solidjs/testing-library": "1.0.0-beta.2"
 		}
 	},
 	"packageManager": "pnpm@9.12.3"
