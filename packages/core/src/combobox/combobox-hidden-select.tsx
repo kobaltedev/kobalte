@@ -23,7 +23,7 @@ export function ComboboxHiddenSelect(props: ComboboxHiddenSelectProps) {
 			isOpen={context.isOpen()}
 			isMultiple={context.isMultiple()}
 			isVirtualized={context.isVirtualized()}
-			focusTrigger={() => context.inputRef()?.focus()}
+			focusTrigger={() => context.inputRef()?.focus({ preventScroll: true })}
 			{...props}
 		/>
 	);

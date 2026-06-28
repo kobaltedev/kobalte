@@ -105,7 +105,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 			}
 
 			// Focus the input field in case it isn't focused yet.
-			context.inputRef()?.focus();
+			context.inputRef()?.focus({ preventScroll: true });
 		}
 	};
 
