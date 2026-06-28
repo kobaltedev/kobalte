@@ -321,15 +321,12 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 		const el = inputRef;
 		if (!el) return;
 
-		console.log('[osc] isFocused:', context.isFocused(), 'activeEl===el:', document.activeElement === el, 'selStart:', el.selectionStart, 'selEnd:', el.selectionEnd, 'isReadOnly:', formControlContext.isReadOnly(), 'value.length:', context.value().length);
-
 		if (
 			!context.isFocused() ||
 			document.activeElement !== el ||
 			el.selectionStart === null ||
 			el.selectionEnd === null
 		) {
-			console.log('[osc] GUARD FIRED - clearing activeSlots');
 			syncSelection({
 				start: null,
 				end: null,
@@ -342,7 +339,6 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 		}
 
 		if (formControlContext.isReadOnly()) {
-			console.log('[osc] READONLY BRANCH - setting', context.value().length, 'active slots');
 			context.setActiveSlots(
 				Array.from({ length: context.value().length }, (_, i) => i),
 			);
@@ -472,13 +468,10 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 			</Show>
 			<Polymorphic<OTPFieldInputRenderProps>
 				as="input"
-				ref={mergeRefs(
-					(el) => {
-						inputRef = el as HTMLInputElement;
-						inputRef.value = context.value();
-					},
-					mergedProps.ref,
-				)}
+				ref={mergeRefs((el) => {
+					inputRef = el as HTMLInputElement;
+					inputRef.value = context.value();
+				}, mergedProps.ref)}
 				onInput={onInput}
 				onFocus={onFocus}
 				onBlur={onBlur}
