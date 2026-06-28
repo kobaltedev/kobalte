@@ -178,7 +178,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			return;
 		}
 		if (local.segment === "dayPeriod") {
-			if ((context.value()?.hour ?? 0) > 12) {
+			if ((context.value()?.hour ?? 0) >= 12) {
 				if (!formControlContext.isReadOnly())
 					context.setValue({ hour: context.value()!.hour! - 12 });
 			} else context.focusManager().focusPrevious();
@@ -236,7 +236,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		switch (local.segment) {
 			case "dayPeriod":
 				if (filter.startsWith(context.translations().am, key)) {
-					if ((context.value()?.hour ?? 0) > 12)
+					if ((context.value()?.hour ?? 0) >= 12)
 						context.setValue({ hour: context.value()!.hour! - 12 });
 				} else if (filter.startsWith(context.translations().pm, key)) {
 					if ((context.value()?.hour ?? 0) < 12)
@@ -256,15 +256,15 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				let numberValue = numberParser().parse(newValue);
 				let allowsZero = true;
 
-				console.log(numberValue);
+				console.log("A", numberValue);
 
 				if (local.segment === "hour" && context.hourCycle() === 12) {
 					allowsZero = false;
-					if (numberValue > 12) {
+					if (numberValue >= 12) {
 						numberValue = numberParser().parse(key);
 					}
 
-					if ((context.value()?.hour ?? 0) > 12) {
+					if ((context.value()?.hour ?? 0) >= 12) {
 						numberValue += 12;
 					}
 				}
@@ -373,22 +373,49 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	};
 
 	const cycleDayPeriod = () => {
-		if ((context.value()?.hour ?? 0) > 12)
+		if ((context.value()?.hour ?? 0) >= 12)
 			context.setValue({ hour: context.value()!.hour! - 12 });
 		else context.setValue({ hour: context.value()!.hour! + 12 });
 	};
 
-	const adjust = (adjust: number) => {
-		const is12Cycle = local.segment === "hour" && context.hourCycle() === 12;
-		const isPM = is12Cycle && (context.value()?.hour ?? 0) > 12;
+	const adjust = (delta: number) => {
+		const hour = context.value()?.hour ?? 0;
 
-		const max = is12Cycle ? 12 : maxValue();
-		const v =
-			((context.value()?.[local.segment as keyof Time] ?? 0) -
-				(isPM ? 12 : 0) +
-				adjust) %
-			(max + (is12Cycle ? 0 : 1));
-		return (v < 0 ? max : v) + (isPM ? 12 : 0);
+		if (local.segment === "hour" && context.hourCycle() === 12) {
+			const isPM = hour >= 12;
+			const h12 = hour % 12; // 0..11 (12 becomes 0)
+
+			const next = (h12 + delta + 12) % 12;
+
+			console.log(
+				"BBBBB",
+				next,
+				isPM,
+				"=>",
+				next + (isPM ? 12 : 0),
+				isPM && next === 0,
+			);
+			if (isPM && next === 0) return 23;
+			return next + (isPM ? 12 : 0);
+		}
+
+		const max = maxValue();
+
+		console.log(
+			"AAAAAAAAAAA",
+			(context.value()?.[local.segment as keyof Time] ?? 0) + delta,
+			"=>",
+			((context.value()?.[local.segment as keyof Time] ?? 0) +
+				delta +
+				(max + 1)) %
+				(max + 1),
+		);
+		return (
+			((context.value()?.[local.segment as keyof Time] ?? 0) +
+				delta +
+				(max + 1)) %
+			(max + 1)
+		);
 	};
 
 	const onIncrement = () => {
@@ -442,7 +469,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			return;
 		}
 		if (local.segment === "hour" && context.hourCycle() === 12) {
-			if ((context.value()?.hour ?? 0) > 12) context.setValue({ hour: 12 });
+			if ((context.value()?.hour ?? 0) >= 12) context.setValue({ hour: 12 });
 			else context.setValue({ hour: 0 });
 		} else context.setValue({ [local.segment]: 0 });
 	};
@@ -454,7 +481,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			return;
 		}
 		if (local.segment === "hour" && context.hourCycle() === 12) {
-			if ((context.value()?.hour ?? 0) > 12) context.setValue({ hour: 24 });
+			if ((context.value()?.hour ?? 0) >= 12) context.setValue({ hour: 24 });
 			else context.setValue({ hour: 12 });
 		} else context.setValue({ [local.segment]: maxValue() });
 	};
@@ -478,14 +505,14 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	const getValue = () => {
 		if (local.segment === "dayPeriod")
 			return context.translations()[
-				(context.value()?.hour ?? 0) > 12 ? "pm" : "am"
+				(context.value()?.hour ?? 0) >= 12 ? "pm" : "am"
 			];
 		if (local.segment === "hour") {
 			const val = context.value()?.hour;
 			if (val === undefined) return undefined;
-
+			console.log("WHA", val);
 			if (context.hourCycle() === 12) {
-				if (val > 12) return val - 12;
+				if (val >= 12) return val - 12;
 				if (val === 0) return 12;
 			}
 			return val;
