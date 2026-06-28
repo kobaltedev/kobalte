@@ -25,6 +25,7 @@ export * as Listbox from "./listbox";
 export * from "./live-announcer";
 export * as Menubar from "./menubar";
 export * as NumberField from "./number-field";
+export * as OTPField from "./otp-field";
 export * as Pagination from "./pagination";
 export * from "./polymorphic";
 export * as Popover from "./popover";

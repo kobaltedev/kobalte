@@ -141,6 +141,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/number-field",
 			},
 			{
+				title: "OTP Field",
+				href: "/docs/core/components/otp-field",
+			},
+			{
 				title: "Pagination",
 				href: "/docs/core/components/pagination",
 			},
