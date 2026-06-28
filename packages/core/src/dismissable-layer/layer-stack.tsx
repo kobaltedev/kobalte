@@ -36,7 +36,7 @@ function find(node: HTMLElement | undefined): LayerModel | undefined {
 }
 
 function isTopMostLayer(node: HTMLElement | null) {
-	return layers[layers.length - 1].node === node;
+	return layers.length > 0 && layers[layers.length - 1].node === node;
 }
 
 function getPointerBlockingLayers() {
