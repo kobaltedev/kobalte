@@ -377,7 +377,8 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	};
 
 	const cycleDayPeriod = () => {
-		if ((context.value()?.hour ?? 0) > 12) context.setValue({ hour: context.value()!.hour! - 12 });
+		if ((context.value()?.hour ?? 0) > 12)
+			context.setValue({ hour: context.value()!.hour! - 12 });
 		else context.setValue({ hour: context.value()!.hour! + 12 });
 	};
 
@@ -386,9 +387,13 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		const isPM = is12Cycle && (context.value()?.hour ?? 0) > 12;
 
 		const max = is12Cycle ? 12 : maxValue();
-		const v = ((context.value()?.[local.segment as keyof Time] ?? 0) - (isPM ? 12 : 0) + adjust) % (max + (is12Cycle ? 0 : 1));
+		const v =
+			((context.value()?.[local.segment as keyof Time] ?? 0) -
+				(isPM ? 12 : 0) +
+				adjust) %
+			(max + (is12Cycle ? 0 : 1));
 		return (v < 0 ? max : v) + (isPM ? 12 : 0);
-	}
+	};
 
 	const onIncrement = () => {
 		enteredKeys = "";
@@ -419,7 +424,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			return;
 		}
 		context.setValue({
-			[local.segment]: adjust(PAGE_STEP[local.segment])
+			[local.segment]: adjust(PAGE_STEP[local.segment]),
 		});
 	};
 
