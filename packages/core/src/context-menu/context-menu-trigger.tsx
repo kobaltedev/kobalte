@@ -87,9 +87,18 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 	});
 
 	const onContextMenu: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+		// Always call the user-provided handler so consumers can access the event
+		// (e.g. the pointer coordinates) and optionally opt out of the default
+		// behavior by calling `event.preventDefault()`.
+		callHandler(e, local.onContextMenu);
+
 		// If trigger is disabled, enable the native Context Menu.
 		if (local.disabled) {
-			callHandler(e, local.onContextMenu);
+			return;
+		}
+
+		// Allow consumers to prevent the menu from opening.
+		if (e.defaultPrevented) {
 			return;
 		}
 
