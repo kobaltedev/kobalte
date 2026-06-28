@@ -105,6 +105,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/dialog",
 			},
 			{
+				title: "Drawer",
+				href: "/docs/core/components/drawer",
+			},
+			{
 				title: "Dropdown Menu",
 				href: "/docs/core/components/dropdown-menu",
 			},
