@@ -88,22 +88,6 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 
 	const { direction } = useLocale();
 
-	const displayValue = createMemo(() => ({
-		hour: 0,
-		minute: 0,
-		second: 0,
-		...timeFieldContext.placeholder(),
-		...timeFieldContext.value(),
-	}));
-
-	const setValue = (newValue: Time) => {
-		if (formControlContext.isDisabled() || formControlContext.isReadOnly()) {
-			return;
-		}
-
-		timeFieldContext.setValue(newValue);
-	};
-
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 

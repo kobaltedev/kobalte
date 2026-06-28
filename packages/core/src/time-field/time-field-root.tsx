@@ -246,10 +246,12 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	);
 
 	const resolvedGranularity = createMemo(() => {
+		if (typeof props.granularity === "object") return props.granularity;
+
 		return {
 			hour: true,
-			minute: true,
-			second: true,
+			minute: props.granularity === "minute" || props.granularity === "second",
+			second: props.granularity === "second",
 		};
 	});
 
@@ -306,11 +308,13 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	};
 
 	const segments = createMemo(() => {
-		const seg = Object.keys(resolvedGranularity());
+		const seg: SegmentType[] = (
+			Object.keys(resolvedGranularity()) as Array<"hour" | "minute" | "second">
+		).filter((k) => resolvedGranularity()[k]);
 
 		if (seg.includes("hour") && local.hourCycle === 12) seg.push("dayPeriod");
 
-		return seg as SegmentType[];
+		return seg;
 	});
 
 	const context: TimeFieldContextValue = {

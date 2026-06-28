@@ -35,12 +35,8 @@ import {
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { createDateFormatter, createFilter, useLocale } from "../i18n";
-import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+import { createFilter, useLocale } from "../i18n";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import * as SpinButton from "../spin-button";
 import { useTimeFieldContext } from "./time-field-context";
 import type { SegmentType, Time } from "./types";

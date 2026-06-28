@@ -1,12 +1,4 @@
-import {
-	Time,
-	getLocalTimeZone,
-	parseZonedDateTime,
-	toCalendarDateTime,
-	today,
-} from "@internationalized/date";
-import { createSignal } from "solid-js";
-import { createDateFormatter } from "../../../../packages/core/src/i18n";
+import { Show, createSignal } from "solid-js";
 import { TimeField } from "../../../../packages/core/src/time-field";
 import style from "./time-field.module.css";
 
@@ -16,40 +8,38 @@ export function BasicExample() {
 			<TimeField.Label class={style["time-field__label"]}>
 				Event time
 			</TimeField.Label>
-			<TimeField.Field class={style["time-field__field"]}>
+			<TimeField.Input class={style["time-field__field"]}>
 				{(segment) => (
 					<TimeField.Segment
 						class={style["time-field__segment"]}
 						segment={segment()}
 					/>
 				)}
-			</TimeField.Field>
+			</TimeField.Input>
 		</TimeField>
 	);
 }
 
 export function DefaultValueExample() {
 	return (
-		<TimeField class={style["time-field"]} defaultValue={new Time(11, 45)}>
-			<TimeField.Field class={style["time-field__field"]}>
+		<TimeField
+			class={style["time-field"]}
+			defaultValue={{ hour: 11, minute: 45 }}
+		>
+			<TimeField.Input class={style["time-field__field"]}>
 				{(segment) => (
 					<TimeField.Segment
 						class={style["time-field__segment"]}
 						segment={segment()}
 					/>
 				)}
-			</TimeField.Field>
+			</TimeField.Input>
 		</TimeField>
 	);
 }
 
 export function ControlledValueExample() {
-	const [value, setValue] = createSignal(new Time(9, 45));
-
-	const dateFormatter = createDateFormatter({
-		hour12: true,
-		timeStyle: "short",
-	});
+	const [value, setValue] = createSignal({ hour: 9, minute: 45 });
 
 	return (
 		<>
@@ -58,58 +48,36 @@ export function ControlledValueExample() {
 				value={value()}
 				onChange={setValue}
 			>
-				<TimeField.Field class={style["time-field__field"]}>
+				<TimeField.Input class={style["time-field__field"]}>
 					{(segment) => (
 						<TimeField.Segment
 							class={style["time-field__segment"]}
 							segment={segment()}
 						/>
 					)}
-				</TimeField.Field>
+				</TimeField.Input>
 			</TimeField>
 			<p class="not-prose text-sm mt-4">
 				Selected time:{" "}
-				{value()
-					? dateFormatter().format(
-							toCalendarDateTime(today(getLocalTimeZone()), value()).toDate(
-								getLocalTimeZone(),
-							),
-						)
-					: "––"}
+				<Show when={value()} fallback={"--"}>
+					{JSON.stringify(value())}
+				</Show>
 			</p>
 		</>
-	);
-}
-
-export function TimeZoneExample() {
-	return (
-		<TimeField
-			class={style["time-field"]}
-			defaultValue={parseZonedDateTime("2022-11-07T00:45[America/Los_Angeles]")}
-		>
-			<TimeField.Field class={style["time-field__field"]}>
-				{(segment) => (
-					<TimeField.Segment
-						class={style["time-field__segment"]}
-						segment={segment()}
-					/>
-				)}
-			</TimeField.Field>
-		</TimeField>
 	);
 }
 
 export function GranularityExample() {
 	return (
 		<TimeField class={style["time-field"]} granularity="second">
-			<TimeField.Field class={style["time-field__field"]}>
+			<TimeField.Input class={style["time-field__field"]}>
 				{(segment) => (
 					<TimeField.Segment
 						class={style["time-field__segment"]}
 						segment={segment()}
 					/>
 				)}
-			</TimeField.Field>
+			</TimeField.Input>
 		</TimeField>
 	);
 }
@@ -118,18 +86,19 @@ export function MinMaxExample() {
 	return (
 		<TimeField
 			class={style["time-field"]}
-			defaultValue={new Time(9, 45)}
-			minValue={new Time(9)}
-			maxValue={new Time(17)}
+			defaultValue={{ hour: 9, minute: 45 }}
+			min={{ hour: 9 }}
+			max={{ hour: 17 }}
+			hourCycle={12}
 		>
-			<TimeField.Field class={style["time-field__field"]}>
+			<TimeField.Input class={style["time-field__field"]}>
 				{(segment) => (
 					<TimeField.Segment
 						class={style["time-field__segment"]}
 						segment={segment()}
 					/>
 				)}
-			</TimeField.Field>
+			</TimeField.Input>
 			<TimeField.ErrorMessage class={style["time-field__error-message"]}>
 				Select time between 9 AM and 5 PM.
 			</TimeField.ErrorMessage>
@@ -139,49 +108,30 @@ export function MinMaxExample() {
 
 export function PlaceholderValueExample() {
 	return (
-		<TimeField class={style["time-field"]} placeholderValue={new Time(9)}>
-			<TimeField.Field class={style["time-field__field"]}>
+		<TimeField class={style["time-field"]} placeholder={{ hour: 9 }}>
+			<TimeField.Input class={style["time-field__field"]}>
 				{(segment) => (
 					<TimeField.Segment
 						class={style["time-field__segment"]}
 						segment={segment()}
 					/>
 				)}
-			</TimeField.Field>
-		</TimeField>
-	);
-}
-
-export function HideTimeZoneExample() {
-	return (
-		<TimeField
-			class={style["time-field"]}
-			defaultValue={parseZonedDateTime("2022-11-07T00:45[America/Los_Angeles]")}
-			hideTimeZone
-		>
-			<TimeField.Field class={style["time-field__field"]}>
-				{(segment) => (
-					<TimeField.Segment
-						class={style["time-field__segment"]}
-						segment={segment()}
-					/>
-				)}
-			</TimeField.Field>
+			</TimeField.Input>
 		</TimeField>
 	);
 }
 
 export function HourCycleExample() {
 	return (
-		<TimeField class={style["time-field"]} hourCycle={24}>
-			<TimeField.Field class={style["time-field__field"]}>
+		<TimeField class={style["time-field"]} hourCycle={12}>
+			<TimeField.Input class={style["time-field__field"]}>
 				{(segment) => (
 					<TimeField.Segment
 						class={style["time-field__segment"]}
 						segment={segment()}
 					/>
 				)}
-			</TimeField.Field>
+			</TimeField.Input>
 		</TimeField>
 	);
 }
@@ -190,14 +140,14 @@ export function DescriptionExample() {
 	return (
 		<TimeField class={style["time-field"]}>
 			<TimeField.Label class={style["time-field__label"]}>Time</TimeField.Label>
-			<TimeField.Field class={style["time-field__field"]}>
+			<TimeField.Input class={style["time-field__field"]}>
 				{(segment) => (
 					<TimeField.Segment
 						class={style["time-field__segment"]}
 						segment={segment()}
 					/>
 				)}
-			</TimeField.Field>
+			</TimeField.Input>
 			<TimeField.Description class={style["time-field__description"]}>
 				Select a meeting time.
 			</TimeField.Description>
@@ -216,14 +166,14 @@ export function ErrorMessageExample() {
 			validationState={value() === undefined ? "invalid" : "valid"}
 		>
 			<TimeField.Label class={style["time-field__label"]}>Time</TimeField.Label>
-			<TimeField.Field class={style["time-field__field"]}>
+			<TimeField.Input class={style["time-field__field"]}>
 				{(segment) => (
 					<TimeField.Segment
 						class={style["time-field__segment"]}
 						segment={segment()}
 					/>
 				)}
-			</TimeField.Field>
+			</TimeField.Input>
 			<TimeField.ErrorMessage class={style["time-field__error-message"]}>
 				Please select a time.
 			</TimeField.ErrorMessage>
@@ -250,14 +200,14 @@ export function HTMLFormExample() {
 			class="flex flex-col items-center space-y-6"
 		>
 			<TimeField class={style["time-field"]} name="time">
-				<TimeField.Field class={style["time-field__field"]}>
+				<TimeField.Input class={style["time-field__field"]}>
 					{(segment) => (
 						<TimeField.Segment
 							class={style["time-field__segment"]}
 							segment={segment()}
 						/>
 					)}
-				</TimeField.Field>
+				</TimeField.Input>
 				<TimeField.HiddenInput />
 			</TimeField>
 			<div class="flex space-x-2">
