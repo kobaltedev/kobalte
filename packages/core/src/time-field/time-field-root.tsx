@@ -246,12 +246,14 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	);
 
 	const resolvedGranularity = createMemo(() => {
-		if (typeof props.granularity === "object") return props.granularity;
+		const granularity = props.granularity ?? "minute";
+
+		if (typeof granularity === "object") return granularity;
 
 		return {
 			hour: true,
-			minute: props.granularity === "minute" || props.granularity === "second",
-			second: props.granularity === "second",
+			minute: granularity === "minute" || granularity === "second",
+			second: granularity === "second",
 		};
 	});
 
