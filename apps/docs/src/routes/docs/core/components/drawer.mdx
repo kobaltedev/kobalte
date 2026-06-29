@@ -5,8 +5,6 @@ import { BasicExample, SnapPointsExample, ControlledExample } from "../../../../
 
 A panel that slides in from the edge of the screen with drag-to-dismiss and snap-point support. Built on [Dialog](/docs/core/components/dialog) with a two-signal open pattern so content stays mounted during the closing animation.
 
-> Snap-point architecture and drag math are adapted from [corvu/drawer](https://github.com/corvudev/corvu/tree/main/packages/drawer) by Jasmin Noetzli (MIT).
-
 ## Import
 
 ```ts
@@ -462,3 +460,5 @@ ctx.transitionState()    // null | "opening" | "closing" | "snapping"
 | <Kbd>Tab</Kbd> | Moves focus to the next focusable element inside the drawer. |
 | <Kbd>Shift</Kbd> + <Kbd>Tab</Kbd> | Moves focus to the previous focusable element inside the drawer. |
 | <Kbd>Esc</Kbd> | Closes the drawer and returns focus to the trigger. |
+
+> Snap-point architecture and drag math are adapted from [corvu/drawer](https://github.com/corvudev/corvu/tree/main/packages/drawer) by Jasmin Noetzli (MIT).

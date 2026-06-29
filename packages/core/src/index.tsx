@@ -34,6 +34,7 @@ export * from "./primitives";
 export * as Progress from "./progress";
 export * as RadioGroup from "./radio-group";
 export * as RatingGroup from "./rating-group";
+export * as Resizable from "./resizable";
 export * as Select from "./select";
 export * from "./selection";
 export * as Separator from "./separator";
