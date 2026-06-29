@@ -1,3 +1,4 @@
+import path from "node:path";
 import solidPlugin from "vite-plugin-solid";
 import { defineConfig } from "vitest/config";
 
@@ -24,6 +25,9 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			"solid-js/web": "@solidjs/web",
+			// Use the workspace source of @kobalte/utils so tests run against the
+			// Solid 2.0-compatible version rather than the published npm dist.
+			"@kobalte/utils": path.resolve(__dirname, "../utils/src/index.ts"),
 		},
 		conditions: ["development", "browser"],
 	},
