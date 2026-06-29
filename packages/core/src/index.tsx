@@ -6,7 +6,7 @@ export * as Alert from "./alert";
 export * as AlertDialog from "./alert-dialog";
 export * as Breadcrumbs from "./breadcrumbs";
 export * as Button from "./button";
-//export * as Calendar from "./calendar";
+export * as Calendar from "./calendar";
 export * as Checkbox from "./checkbox";
 export * as Collapsible from "./collapsible";
 export * from "./color-mode";
