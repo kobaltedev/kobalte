@@ -44,3 +44,4 @@ packages/core/NOTICE.txt
 .DS_Store
 Thumbs.db
 .vercel
+/storybook-static

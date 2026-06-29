@@ -45,6 +45,7 @@
 		"@commitlint/cli": "21.1.0",
 		"@commitlint/config-conventional": "21.1.0",
 		"@commitlint/cz-commitlint": "21.1.0",
+		"@solidjs/signals": "2.0.0-beta.15",
 		"@solidjs/testing-library": "1.0.0-beta.2",
 		"@solidjs/web": "2.0.0-beta.15",
 		"@storybook/addon-docs": "^10.4.1",
