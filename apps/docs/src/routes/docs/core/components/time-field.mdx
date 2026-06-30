@@ -238,7 +238,7 @@ The `min` and `max` props can be used to perform builtin validation. This marks 
 	<MinMaxExample />
 </Preview>
 
-```tsx {0, 2}
+```tsx {2, 3}
 <TimeField
 	defaultValue={{ hour: 9, minute: 45 }}
 	min={{ hour: 9 }}
@@ -359,23 +359,23 @@ function HTMLFormExample() {
 
 `TimeField` is equivalent to the `Root` import from `@kobalte/core/time-field`.
 
-| Prop                    | Description                                                                                                                                                                              |
-| :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value                   | `Time` (`{ hour?: number; minute?: number; second?: number; }`) <br/> The current value (controlled).                                                                                    |
-| defaultValue            | `Time` <br/> The default value (uncontrolled).                                                                                                                                           |
-| onChange                | `(value: Time) => void` <br/> Handler that is called when the value changes.                                                                                                             |
-| hourCycle               | `12 \| 24` <br/> Whether to display the time in 12 or 24-hour format. By default, this is determined by the user's locale.                                                               |
-| granularity             | `'hour' \| 'minute' \| 'second' \| { hour: boolean; minute: boolean; second: boolean; }` <br/> Determines the smallest unit that is displayed in the time field. Defaults to `"minute"`. |
-| shouldForceLeadingZeros | `boolean` <br/> Whether to always show leading zeros in the hour field. By default, this is determined by the user's locale.                                                             |
-| placeholder             | `Time` <br/> A placeholder time shown when no value is selected, and acts as the starting point for interactions.                                                                        |
-| min                     | `Time` <br/> The minimum allowed time that a user may select.                                                                                                                            |
-| max                     | `Time` <br/> The maximum allowed time that a user may select.                                                                                                                            |
-| name                    | `string` <br/> The name of the time field. Submitted with its owning form as part of a name/value pair.                                                                                  |
-| validationState         | `'valid' \| 'invalid'` <br/> Whether the time field should display its "valid" or "invalid" visual styling.                                                                              |
-| required                | `boolean` <br/> Whether the time field is required.                                                                                                                                      |
-| disabled                | `boolean` <br/> Whether the time field is disabled.                                                                                                                                      |
-| readOnly                | `boolean` <br/> Whether the time field is read only.                                                                                                                                     |
-| translations            | `TimeFieldIntlTranslations` <br/> The localized strings of the component.                                                                                                                |
+| Prop              | Description                                                                                                                                                                              |
+| :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value             | `Time` (`{ hour?: number; minute?: number; second?: number; }`) <br/> The current value (controlled).                                                                                    |
+| defaultValue      | `Time` <br/> The default value (uncontrolled).                                                                                                                                           |
+| onChange          | `(value: Time) => void` <br/> Handler that is called when the value changes.                                                                                                             |
+| hourCycle         | `12 \| 24` <br/> Whether to display the time in 12 or 24-hour format. By default, this is determined by the user's locale.                                                               |
+| granularity       | `'hour' \| 'minute' \| 'second' \| { hour: boolean; minute: boolean; second: boolean; }` <br/> Determines the smallest unit that is displayed in the time field. Defaults to `"minute"`. |
+| forceLeadingZeros | `boolean` <br/> Whether to always show leading zeros in the hour field.                                                                                                                  |
+| placeholder       | `Time` <br/> A placeholder time shown when no value is selected, and acts as the starting point for interactions.                                                                        |
+| min               | `Time` <br/> The minimum allowed time that a user may select.                                                                                                                            |
+| max               | `Time` <br/> The maximum allowed time that a user may select.                                                                                                                            |
+| name              | `string` <br/> The name of the time field. Submitted with its owning form as part of a name/value pair.                                                                                  |
+| validationState   | `'valid' \| 'invalid'` <br/> Whether the time field should display its "valid" or "invalid" visual styling.                                                                              |
+| required          | `boolean` <br/> Whether the time field is required.                                                                                                                                      |
+| disabled          | `boolean` <br/> Whether the time field is disabled.                                                                                                                                      |
+| readOnly          | `boolean` <br/> Whether the time field is read only.                                                                                                                                     |
+| translations      | `TimeFieldIntlTranslations` <br/> The localized strings of the component.                                                                                                                |
 
 | Data attribute | Description                                                               |
 | :------------- | :------------------------------------------------------------------------ |
