@@ -9,7 +9,7 @@ import {
 	HTMLFormExample,
 } from "../../../../examples/rating";
 
-# Rating Group
+# Rating
 
 Allows users to rate items using a set of icons.
 
@@ -30,14 +30,14 @@ import { Root, Label, ... } from "@kobalte/core/rating";
 
 ## Anatomy
 
-The rating group consists of:
+The rating consists of:
 
-- **Rating**: The root container for the rating group.
+- **Rating**: The root container for the rating.
 - **Rating.Control**: The container for the rating items.
-- **Rating.Label**: The label that gives the user information on the rating group.
-- **Rating.HiddenInput**: The native html input that is visually hidden in the rating group.
-- **Rating.Description**: The description that gives the user more information on the rating group.
-- **Rating.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the rating group.
+- **Rating.Label**: The label that gives the user information on the rating.
+- **Rating.HiddenInput**: The native html input that is visually hidden in the rating.
+- **Rating.Description**: The description that gives the user more information on the rating.
+- **Rating.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the rating.
 
 The rating item consists of:
 
@@ -235,7 +235,7 @@ Allow 0.5 value steps by setting the `allowHalf` prop to true.
 
 ### Description
 
-The `Rating.Description` component can be used to associate additional help text with a rating group.
+The `Rating.Description` component can be used to associate additional help text with a rating.
 
 <Preview>
 	<DescriptionExample />
@@ -261,7 +261,7 @@ The `Rating.Description` component can be used to associate additional help text
 
 ### Error message
 
-The `Rating.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the rating group as invalid for assistive technologies.
+The `Rating.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the rating as invalid for assistive technologies.
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
@@ -344,26 +344,26 @@ function HTMLFormExample() {
 
 `Rating` is equivalent to the `Root` import from `@kobalte/core/rating`.
 
-| Prop            | Description                                                                                                                                        |
-| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value           | `number` <br/> The current rating value.                                                                                                           |
-| defaultValue    | `number` <br/> The initial value of the rating group when it is first rendered. Use when you do not need to control the state of the rating group. |
-| onChange        | `(value: number) => void` <br/> Event handler called when the value changes.                                                                       |
-| allowHalf       | `boolean` <br/> Whether to allow half ratings.                                                                                                     |
-| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the rating group items should align with.                                                              |
-| name            | `string` <br/> The name of the rating group. Submitted with its owning form as part of a name/value pair.                                          |
-| validationState | `'valid' \| 'invalid'` <br/> Whether the rating group should display its "valid" or "invalid" visual styling.                                      |
-| required        | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                                      |
-| disabled        | `boolean` <br/> Whether the rating group is disabled.                                                                                              |
-| readOnly        | `boolean` <br/> Whether the rating group items can be selected but not changed by the user.                                                        |
+| Prop            | Description                                                                                                                            |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `number` <br/> The current rating value.                                                                                               |
+| defaultValue    | `number` <br/> The initial value of the rating when it is first rendered. Use when you do not need to control the state of the rating. |
+| onChange        | `(value: number) => void` <br/> Event handler called when the value changes.                                                           |
+| allowHalf       | `boolean` <br/> Whether to allow half ratings.                                                                                         |
+| orientation     | `'horizontal' \| 'vertical'` <br/> The axis the rating items should align with.                                                        |
+| name            | `string` <br/> The name of the rating. Submitted with its owning form as part of a name/value pair.                                    |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the rating should display its "valid" or "invalid" visual styling.                                |
+| required        | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                          |
+| disabled        | `boolean` <br/> Whether the rating is disabled.                                                                                        |
+| readOnly        | `boolean` <br/> Whether the rating items can be selected but not changed by the user.                                                  |
 
-| Data attribute | Description                                                                                    |
-| :------------- | :--------------------------------------------------------------------------------------------- |
-| data-valid     | Present when the rating group is valid according to the validation rules.                      |
-| data-invalid   | Present when the rating group is invalid according to the validation rules.                    |
-| data-required  | Present when the user must select a rating group item before the owning form can be submitted. |
-| data-disabled  | Present when the rating group is disabled.                                                     |
-| data-readonly  | Present when the rating group is read only.                                                    |
+| Data attribute | Description                                                                              |
+| :------------- | :--------------------------------------------------------------------------------------- |
+| data-valid     | Present when the rating is valid according to the validation rules.                      |
+| data-invalid   | Present when the rating is invalid according to the validation rules.                    |
+| data-required  | Present when the user must select a rating item before the owning form can be submitted. |
+| data-disabled  | Present when the rating is disabled.                                                     |
+| data-readonly  | Present when the rating is read only.                                                    |
 
 `Rating.Label`, `Rating.Description` and `Rating.ErrorMesssage` shares the same data-attributes.
 
@@ -380,16 +380,16 @@ function HTMLFormExample() {
 | half        | `Accessor<boolean>` <br/> Whether the rating item is half.        |
 | highlighted | `Accessor<boolean>` <br/> Whether the rating item is highlighted. |
 
-| Data attribute   | Description                                                                        |
-| :--------------- | :--------------------------------------------------------------------------------- |
-| data-valid       | Present when the parent rating group is valid according to the validation rules.   |
-| data-invalid     | Present when the parent rating group is invalid according to the validation rules. |
-| data-required    | Present when the parent rating group is required.                                  |
-| data-disabled    | Present when the parent rating group is disabled.                                  |
-| data-readonly    | Present when the parent rating group is read only.                                 |
-| data-checked     | Present when the rating is checked.                                                |
-| data-half        | Present when the rating is half.                                                   |
-| data-highlighted | Present when the rating is highlighted.                                            |
+| Data attribute   | Description                                                                  |
+| :--------------- | :--------------------------------------------------------------------------- |
+| data-valid       | Present when the parent rating is valid according to the validation rules.   |
+| data-invalid     | Present when the parent rating is invalid according to the validation rules. |
+| data-required    | Present when the parent rating is required.                                  |
+| data-disabled    | Present when the parent rating is disabled.                                  |
+| data-readonly    | Present when the parent rating is read only.                                 |
+| data-checked     | Present when the rating is checked.                                          |
+| data-half        | Present when the rating is half.                                             |
+| data-highlighted | Present when the rating is highlighted.                                      |
 
 `Rating.ItemLabel` and `Rating.ItemDescription` share the same data-attributes.
 
@@ -418,6 +418,6 @@ function HTMLFormExample() {
 | <Kbd>ArrowRight</Kbd> | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.     |
 | <Kbd>ArrowUp</Kbd>    | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property. |
 | <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property. |
-| <Kbd>Space</Kbd>      | Selects the focused item in the rating group.                                                    |
-| <Kbd>Home</Kbd>       | Sets the value of the rating group to 1.                                                         |
-| <Kbd>End</Kbd>        | Sets the value of the rating group to the maximum value.                                         |
+| <Kbd>Space</Kbd>      | Selects the focused item in the rating.                                                          |
+| <Kbd>Home</Kbd>       | Sets the value of the rating to 1.                                                               |
+| <Kbd>End</Kbd>        | Sets the value of the rating to the maximum value.                                               |

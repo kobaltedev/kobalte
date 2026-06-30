@@ -13,7 +13,7 @@ import {
 
 export interface RatingItemControlOptions {
 	/**
-	 * The children of the rating group item.
+	 * The children of the rating item.
 	 * Can be a `JSX.Element` or a _render prop_ for having access to the internal state.
 	 */
 	children?: JSX.Element | ((state: RatingItemState) => JSX.Element);
