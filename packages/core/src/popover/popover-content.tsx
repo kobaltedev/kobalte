@@ -1,35 +1,28 @@
 import {
-	OverrideComponentProps,
 	contains,
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
+	OverrideComponentProps,
 } from "@kobalte/utils";
+import { createFocusTrap } from "@solid-primitives/focus";
 import {
-	type Component,
-	type JSX,
-	Show,
-	type ValidComponent,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+	createHideOutside,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 
 import { combineStyle } from "@solid-primitives/props";
-import createPreventScroll from "solid-prevent-scroll";
+import { createPreventScroll } from "@solid-primitives/scroll";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-	createFocusScope,
-	createHideOutside,
-} from "../primitives";
 import { type PopoverDataSet, usePopoverContext } from "./popover-context";
 
 export interface PopoverContentOptions {
@@ -83,7 +76,7 @@ export interface PopoverContentRenderProps
 		DismissableLayerRenderProps,
 		PopoverDataSet {
 	role: "dialog";
-	tabIndex: -1;
+	tabindex: -1;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 }
@@ -109,7 +102,8 @@ export function PopoverContent<T extends ValidComponent = "div">(
 		props as PopoverContentProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"style",
 		"onOpenAutoFocus",
@@ -117,14 +111,14 @@ export function PopoverContent<T extends ValidComponent = "div">(
 		"onPointerDownOutside",
 		"onFocusOutside",
 		"onInteractOutside",
-	]);
+	);
 
 	let isRightClickOutside = false;
 	let hasInteractedOutside = false;
 	let hasPointerDownOutside = false;
 
 	const onCloseAutoFocus = (e: Event) => {
-		local.onCloseAutoFocus?.(e);
+		mergedProps.onCloseAutoFocus?.(e);
 
 		if (context.isModal()) {
 			e.preventDefault();
@@ -148,7 +142,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 	};
 
 	const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
-		local.onPointerDownOutside?.(e);
+		mergedProps.onPointerDownOutside?.(e);
 
 		if (context.isModal()) {
 			isRightClickOutside = e.detail.isContextMenu;
@@ -156,7 +150,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		mergedProps.onFocusOutside?.(e);
 
 		// When focus is trapped, a `focusout` event may still happen.
 		// We make sure we don't trigger our `onDismiss` in such case.
@@ -166,7 +160,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 	};
 
 	const onInteractOutside = (e: InteractOutsideEvent) => {
-		local.onInteractOutside?.(e);
+		mergedProps.onInteractOutside?.(e);
 
 		if (context.isModal()) {
 			return;
@@ -200,25 +194,27 @@ export function PopoverContent<T extends ValidComponent = "div">(
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
-		isDisabled: () => !(context.isOpen() && context.isModal()),
+		disabled: () => !(context.isOpen() && context.isModal()),
 		targets: () => (ref ? [ref] : []),
+		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createPreventScroll({
-		element: () => ref ?? null,
+		element: () => ref ?? undefined,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
-	createFocusScope(
-		{
-			trapFocus: () => context.isOpen() && context.isModal(),
-			onMountAutoFocus: local.onOpenAutoFocus,
-			onUnmountAutoFocus: onCloseAutoFocus,
-		},
-		() => ref,
-	);
+	createFocusTrap({
+		element: () => ref,
+		enabled: () => context.isOpen() && context.isModal(),
+		onInitialFocus: mergedProps.onOpenAutoFocus,
+		onFinalFocus: onCloseAutoFocus,
+	});
 
-	createEffect(() => onCleanup(context.registerContentId(others.id!)));
+	createEffect(
+		() => others.id,
+		(id) => context.registerContentId(id!),
+	);
 
 	return (
 		<Show when={context.contentPresent()}>
@@ -231,9 +227,9 @@ export function PopoverContent<T extends ValidComponent = "div">(
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
 						ref = el;
-					}, local.ref)}
+					}, mergedProps.ref)}
 					role="dialog"
-					tabIndex={-1}
+					tabindex={-1}
 					disableOutsidePointerEvents={context.isOpen() && context.isModal()}
 					excludedElements={[context.triggerRef]}
 					style={combineStyle(
@@ -242,7 +238,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 								"var(--kb-popper-content-transform-origin)",
 							position: "relative",
 						},
-						local.style,
+						mergedProps.style,
 					)}
 					aria-labelledby={context.titleId()}
 					aria-describedby={context.descriptionId()}

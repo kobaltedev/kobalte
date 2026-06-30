@@ -1,15 +1,13 @@
 import { mergeDefaultProps } from "@kobalte/utils";
+import { parseColor } from "@solid-primitives/utils/colors";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	type ValidComponent,
-	batch,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
-import { parseColor } from "../colors";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import * as TextField from "../text-field";
@@ -44,14 +42,10 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 		props as ColorFieldRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"value",
-		"defaultValue",
-		"onChange",
-	]);
+	const others = omit(mergedProps, "value", "defaultValue", "onChange");
 
 	const defaultValue = createMemo(() => {
-		let defaultValue = local.defaultValue;
+		let defaultValue = mergedProps.defaultValue;
 		try {
 			defaultValue = parseColor(
 				defaultValue?.startsWith("#") ? defaultValue : `#${defaultValue}`,
@@ -63,9 +57,9 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 	});
 
 	const [value, setValue] = createControllableSignal<string>({
-		value: () => local.value,
+		value: () => mergedProps.value,
 		defaultValue,
-		onChange: (value) => local.onChange?.(value),
+		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
 	const [prevValue, setPrevValue] = createSignal(value());
@@ -96,10 +90,8 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 			}
 			return;
 		}
-		batch(() => {
-			setValue(newValue);
-			setPrevValue(newValue);
-		});
+		setValue(newValue);
+		setPrevValue(newValue);
 	};
 
 	const context: ColorFieldContextValue = {
@@ -107,7 +99,7 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<ColorFieldContext.Provider value={context}>
+		<ColorFieldContext value={context}>
 			<TextField.Root<
 				Component<
 					Omit<
@@ -121,7 +113,7 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 				onChange={onChange}
 				{...others}
 			/>
-		</ColorFieldContext.Provider>
+		</ColorFieldContext>
 	);
 }
 

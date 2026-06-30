@@ -93,7 +93,8 @@
 	box-shadow:
 		0px 1px 3px rgba(0 0 0 / 8%),
 		0px 2px 8px rgba(0 0 0 / 12%),
-		inset 0px 0px 0px var(--indicator-focus-shadow-width, 0px) var(--indicator-focus-shadow-color),
+		inset 0px 0px 0px var(--indicator-focus-shadow-width, 0px)
+		var(--indicator-focus-shadow-color),
 		inset 0px 0px 0px var(--border-width) var(--border-active-color);
 	content: "";
 	opacity: var(--pane-opacity, 1);
@@ -132,7 +133,8 @@
 }
 
 .segmented-control__item:has(.segmented-control__item-input:checked)::before,
-.segmented-control__item:has(.segmented-control__item-input:checked) + ::before {
+.segmented-control__item:has(.segmented-control__item-input:checked)
+	+ ::before {
 	opacity: 0;
 }
 
@@ -184,16 +186,19 @@
 	opacity: 0.5;
 }
 
-.segmented-control__item-input:not(:checked, :disabled) + .segmented-control__item-label {
+.segmented-control__item-input:not(:checked, :disabled)
+	+ .segmented-control__item-label {
 	cursor: pointer;
 	opacity: var(--item-label-opacity, 1);
 	user-select: none;
 }
 
-.segmented-control__item-input:not(:checked, :disabled) + .segmented-control__item-label:hover {
+.segmented-control__item-input:not(:checked, :disabled)
+	+ .segmented-control__item-label:hover {
 	--item-label-opacity: 0.75;
 }
 
-.segmented-control__item-input:not(:checked, :disabled) + .segmented-control__item-label:active {
+.segmented-control__item-input:not(:checked, :disabled)
+	+ .segmented-control__item-label:active {
 	--item-label-opacity: 0.5;
 }

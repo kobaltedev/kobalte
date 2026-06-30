@@ -7,13 +7,8 @@
  */
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit, onCleanup } from "solid-js";
 
 import * as Link from "../link";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -53,18 +48,20 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 ) {
 	const context = useHoverCardContext();
 
-	const [local, others] = splitProps(props as HoverCardTriggerProps, [
+	const p = props as HoverCardTriggerProps;
+	const others = omit(
+		p,
 		"ref",
 		"onPointerEnter",
 		"onPointerLeave",
 		"onFocus",
 		"onBlur",
-	]);
+	);
 
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerEnter);
+		callHandler(e, p.onPointerEnter);
 
 		if (e.pointerType === "touch" || others.disabled || e.defaultPrevented) {
 			return;
@@ -80,7 +77,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerLeave);
+		callHandler(e, p.onPointerLeave);
 
 		if (e.pointerType === "touch") {
 			return;
@@ -90,7 +87,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, p.onFocus);
 
 		if (others.disabled || e.defaultPrevented) {
 			return;
@@ -104,7 +101,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, p.onBlur);
 
 		context.cancelOpening();
 
@@ -125,7 +122,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 				Omit<HoverCardTriggerRenderProps, keyof Link.LinkRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			ref={mergeRefs(context.setTriggerRef, p.ref)}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}
 			onFocus={onFocus}

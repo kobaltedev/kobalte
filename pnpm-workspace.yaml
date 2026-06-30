@@ -1,3 +1,51 @@
 packages:
   - apps/*
   - packages/*
+overrides:
+  "@solidjs/testing-library": "1.0.0-beta.2"
+  "@solid-primitives/a11y": "next"
+  "@solid-primitives/controlled-signal": "next"
+  "@solid-primitives/event-listener": "next"
+  "@solid-primitives/focus": "next"
+  "@solid-primitives/form": "next"
+  "@solid-primitives/i18n": "next"
+  "@solid-primitives/interaction": "next"
+  "@solid-primitives/keyboard": "next"
+  "@solid-primitives/keyed": "next"
+  "@solid-primitives/map": "next"
+  "@solid-primitives/media": "next"
+  "@solid-primitives/presence": "next"
+  "@solid-primitives/props": "next"
+  "@solid-primitives/refs": "next"
+  "@solid-primitives/resize-observer": "next"
+  "@solid-primitives/rootless": "next"
+  "@solid-primitives/scroll": "next"
+  "@solid-primitives/static-store": "next"
+  "@solid-primitives/trigger": "next"
+  "@solid-primitives/upload": "next"
+  "@solid-primitives/utils": "next"
+allowBuilds:
+  '@parcel/watcher': false
+  esbuild: false
+minimumReleaseAgeExclude:
+  - '@solid-primitives/a11y@1.0.0-next.0'
+  - '@solid-primitives/controlled-signal@1.0.0-next.0'
+  - '@solid-primitives/event-listener@3.0.0-next.0'
+  - '@solid-primitives/focus@1.0.0-next.0'
+  - '@solid-primitives/form@1.0.0-next.0'
+  - '@solid-primitives/i18n@3.0.0-next.0'
+  - '@solid-primitives/interaction@1.0.0-next.0'
+  - '@solid-primitives/keyboard@2.0.0-next.0'
+  - '@solid-primitives/keyed@3.0.0-next.0'
+  - '@solid-primitives/map@1.0.0-next.0'
+  - '@solid-primitives/media@4.0.0-next.0'
+  - '@solid-primitives/presence@1.0.0-next.0'
+  - '@solid-primitives/props@4.0.0-next.0'
+  - '@solid-primitives/refs@3.0.0-next.0'
+  - '@solid-primitives/resize-observer@4.0.0-next.0'
+  - '@solid-primitives/rootless@2.0.0-next.0'
+  - '@solid-primitives/scroll@3.0.0-next.0'
+  - '@solid-primitives/static-store@1.0.0-next.0'
+  - '@solid-primitives/trigger@3.0.0-next.0'
+  - '@solid-primitives/upload@1.0.0-next.0'
+  - '@solid-primitives/utils@7.0.0-next.0'

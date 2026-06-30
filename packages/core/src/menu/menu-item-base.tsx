@@ -14,14 +14,13 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -85,9 +84,9 @@ export interface MenuItemBaseCommonProps<T extends HTMLElement = HTMLElement> {
 export interface MenuItemBaseRenderProps
 	extends MenuItemBaseCommonProps,
 		MenuItemDataSet {
-	tabIndex: number | undefined;
-	"aria-checked": boolean | "mixed" | undefined;
-	"aria-disabled": boolean | undefined;
+	tabindex: number | undefined;
+	"aria-checked": "true" | "false" | "mixed" | undefined;
+	"aria-disabled": "true" | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	"data-key": string | undefined;
@@ -115,7 +114,8 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		props as MenuItemBaseProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"textValue",
 		"disabled",
@@ -131,11 +131,19 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		"onKeyDown",
 		"onMouseDown",
 		"onFocus",
-	]);
+	);
 
-	const [labelId, setLabelId] = createSignal<string>();
-	const [descriptionId, setDescriptionId] = createSignal<string>();
-	const [labelRef, setLabelRef] = createSignal<HTMLElement>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [labelRef, setLabelRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const selectionManager = () => menuContext.listState().selectionManager();
 
@@ -144,9 +152,9 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	const isHighlighted = () => selectionManager().focusedKey() === key();
 
 	const onSelect = () => {
-		local.onSelect?.();
+		mergedProps.onSelect?.();
 
-		if (local.closeOnSelect) {
+		if (mergedProps.closeOnSelect) {
 			setTimeout(
 				() => {
 					menuContext.close(true);
@@ -164,8 +172,11 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			type: "item",
 			key: key(),
 			textValue:
-				local.textValue ?? labelRef()?.textContent ?? ref?.textContent ?? "",
-			disabled: local.disabled ?? false,
+				mergedProps.textValue ??
+				labelRef()?.textContent ??
+				ref?.textContent ??
+				"",
+			disabled: mergedProps.disabled ?? false,
 		}),
 	});
 
@@ -175,7 +186,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			selectionManager: selectionManager,
 			shouldSelectOnPressUp: true,
 			allowsDifferentPressOrigin: true,
-			disabled: () => local.disabled,
+			disabled: () => mergedProps.disabled,
 		},
 		() => ref,
 	);
@@ -194,13 +205,13 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
 			return;
 		}
 
-		if (local.disabled) {
+		if (mergedProps.disabled) {
 			menuContext.onItemLeave(e);
 		} else {
 			menuContext.onItemEnter(e);
@@ -216,7 +227,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerLeave);
+		callHandler(e, mergedProps.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {
 			return;
@@ -226,16 +237,16 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	};
 
 	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerUp);
+		callHandler(e, mergedProps.onPointerUp);
 
 		// Selection occurs on pointer up (main button).
-		if (!local.disabled && e.button === 0) {
+		if (!mergedProps.disabled && e.button === 0) {
 			onSelect();
 		}
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		// Ignore repeating events, which may have started on the menu trigger before moving
 		// focus to the menu item. We want to wait for a second complete key press sequence.
@@ -243,7 +254,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			return;
 		}
 
-		if (local.disabled) {
+		if (mergedProps.disabled) {
 			return;
 		}
 
@@ -256,26 +267,27 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	};
 
 	const ariaChecked = createMemo(() => {
-		if (local.indeterminate) {
+		if (mergedProps.indeterminate) {
 			return "mixed";
 		}
 
-		if (local.checked == null) {
+		if (mergedProps.checked == null) {
 			return undefined;
 		}
 
-		return local.checked;
+		return mergedProps.checked ? "true" : "false";
 	});
 
 	const dataset: Accessor<MenuItemDataSet> = createMemo(() => ({
-		"data-indeterminate": local.indeterminate ? "" : undefined,
-		"data-checked": local.checked && !local.indeterminate ? "" : undefined,
-		"data-disabled": local.disabled ? "" : undefined,
+		"data-indeterminate": mergedProps.indeterminate ? "" : undefined,
+		"data-checked":
+			mergedProps.checked && !mergedProps.indeterminate ? "" : undefined,
+		"data-disabled": mergedProps.disabled ? "" : undefined,
 		"data-highlighted": isHighlighted() ? "" : undefined,
 	}));
 
 	const context: MenuItemContextValue = {
-		isChecked: () => local.checked,
+		isChecked: () => mergedProps.checked,
 		dataset,
 		setLabelRef,
 		generateId: createGenerateId(() => others.id!),
@@ -284,36 +296,42 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<MenuItemContext.Provider value={context}>
+		<MenuItemContext value={context}>
 			<Polymorphic<MenuItemBaseRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el), local.ref)}
-				tabIndex={selectableItem.tabIndex()}
+				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+				tabindex={selectableItem.tabIndex()}
 				aria-checked={ariaChecked()}
-				aria-disabled={local.disabled}
+				aria-disabled={mergedProps.disabled ? "true" : undefined}
 				aria-labelledby={labelId()}
 				aria-describedby={descriptionId()}
 				data-key={selectableItem.dataKey()}
 				onPointerDown={composeEventHandlers([
-					local.onPointerDown,
+					mergedProps.onPointerDown,
 					selectableItem.onPointerDown,
 				])}
 				onPointerUp={composeEventHandlers([
 					onPointerUp,
 					selectableItem.onPointerUp,
 				])}
-				onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
+				onClick={composeEventHandlers([
+					mergedProps.onClick,
+					selectableItem.onClick,
+				])}
 				onKeyDown={composeEventHandlers([onKeyDown, selectableItem.onKeyDown])}
 				onMouseDown={composeEventHandlers([
-					local.onMouseDown,
+					mergedProps.onMouseDown,
 					selectableItem.onMouseDown,
 				])}
-				onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+				onFocus={composeEventHandlers([
+					mergedProps.onFocus,
+					selectableItem.onFocus,
+				])}
 				onPointerMove={onPointerMove}
 				onPointerLeave={onPointerLeave}
 				{...dataset()}
 				{...others}
 			/>
-		</MenuItemContext.Provider>
+		</MenuItemContext>
 	);
 }

@@ -1,11 +1,6 @@
-import { OverrideComponentProps, isFunction, mergeRefs } from "@kobalte/utils";
-import {
-	type Accessor,
-	type JSX,
-	type ValidComponent,
-	children,
-	splitProps,
-} from "solid-js";
+import { isFunction, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Accessor, children, omit } from "solid-js";
 
 import {
 	type FormControlDataSet,
@@ -67,17 +62,17 @@ export function ComboboxControl<Option, T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
-	const [local, others] = splitProps(props as ComboboxControlProps<Option>, [
-		"ref",
-		"children",
-	]);
+	const others = omit(props as ComboboxControlProps<Option>, "ref", "children");
 
 	const selectionManager = () => context.listState().selectionManager();
 
 	return (
 		<Polymorphic<ComboboxControlRenderProps>
 			as="div"
-			ref={mergeRefs(context.setControlRef, local.ref)}
+			ref={mergeRefs(
+				context.setControlRef,
+				props.ref as (el: HTMLElement) => void,
+			)}
 			{...context.dataset()}
 			{...formControlContext.dataset()}
 			{...others}
@@ -89,7 +84,7 @@ export function ComboboxControl<Option, T extends ValidComponent = "div">(
 					clear: () => selectionManager().clearSelection(),
 				}}
 			>
-				{local.children}
+				{props.children}
 			</ComboboxControlChild>
 		</Polymorphic>
 	);

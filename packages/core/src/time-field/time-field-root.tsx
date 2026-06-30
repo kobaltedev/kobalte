@@ -1,26 +1,26 @@
 import { DateFormatter, Time } from "@internationalized/date";
 import {
-	type ValidationState,
 	access,
 	createFocusManager,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	mergeProps,
-	splitProps,
+	merge,
+	omit,
 } from "solid-js";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import { useLocale } from "../i18n";
 import {
@@ -28,20 +28,16 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
+import { createControllableSignal, createRegisterId } from "../primitives";
 import {
-	createControllableSignal,
-	createFormResetListener,
-	createRegisterId,
-} from "../primitives";
+	TIME_FIELD_INTL_MESSAGES,
+	type TimeFieldIntlTranslations,
+} from "./time-field.intl";
 import {
 	TimeFieldContext,
 	type TimeFieldContextValue,
 } from "./time-field-context";
 import { TimeFieldValueDescription } from "./time-field-value-description";
-import {
-	TIME_FIELD_INTL_MESSAGES,
-	type TimeFieldIntlTranslations,
-} from "./time-field.intl";
 import type {
 	MappedTimeValue,
 	TimeFieldGranularity,
@@ -139,10 +135,10 @@ export interface TimeFieldRootRenderProps
 	extends TimeFieldRootCommonProps,
 		FormControlDataSet {
 	role: "group";
-	"aria-invalid": boolean | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
+	"aria-invalid": "true" | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
 }
 
 export type TimeFieldRootProps<
@@ -165,78 +161,81 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		props as TimeFieldRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
+	const others = omit(
 		mergedProps,
-		[
-			"ref",
-			"translations",
-			"minValue",
-			"maxValue",
-			"placeholderValue",
-			"hourCycle",
-			"granularity",
-			"hideTimeZone",
-			"shouldForceLeadingZeros",
-			"validationState",
-			"value",
-			"defaultValue",
-			"onChange",
-			"aria-labelledby",
-			"aria-describedby",
-			"children",
-		],
-		FORM_CONTROL_PROP_NAMES,
+		"ref",
+		"translations",
+		"minValue",
+		"maxValue",
+		"placeholderValue",
+		"hourCycle",
+		"granularity",
+		"hideTimeZone",
+		"shouldForceLeadingZeros",
+		"validationState",
+		"value",
+		"defaultValue",
+		"onChange",
+		"aria-labelledby",
+		"aria-describedby",
+		"children",
+		...FORM_CONTROL_PROP_NAMES,
 	);
 
 	const { locale } = useLocale();
 
-	const [inputRef, setInputRef] = createSignal<HTMLDivElement>();
-	const [valueDescriptionId, setValueDescriptionId] = createSignal<string>();
+	const [inputRef, setInputRef] = createSignal<HTMLDivElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [valueDescriptionId, setValueDescriptionId] = createSignal<
+		string | undefined
+	>(undefined, { ownedWrite: true });
 
 	const focusManager = createFocusManager(inputRef);
 
 	const [value, setValue] = createControllableSignal<TimeValue | undefined>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue,
-		onChange: (value) => local.onChange?.(value!),
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue,
+		onChange: (value) => mergedProps.onChange?.(value!),
 	});
 
 	const { granularity, defaultTimeZone } = createDefaultProps({
-		value: () => value() ?? local.placeholderValue,
-		granularity: () => local.granularity,
+		value: () => value() ?? mergedProps.placeholderValue,
+		granularity: () => mergedProps.granularity,
 	});
 
 	createFormResetListener(
 		() => ref,
 		() => {
-			setValue(local.defaultValue ?? new Time());
+			setValue(mergedProps.defaultValue ?? new Time());
 		},
 	);
 
 	const validationState = createMemo(() => {
-		if (local.validationState) {
-			return local.validationState;
+		if (mergedProps.validationState) {
+			return mergedProps.validationState;
 		}
 
-		const v = value() || local.placeholderValue;
+		const v = value() || mergedProps.placeholderValue;
 		const day = v && "day" in v ? v : undefined;
-		const minDate = convertValue(local.minValue, day);
-		const maxDate = convertValue(local.maxValue, day);
+		const minDate = convertValue(mergedProps.minValue, day);
+		const maxDate = convertValue(mergedProps.maxValue, day);
 
 		const rangeOverflow =
 			value() != null &&
 			minDate != null &&
-			value()!.compare(convertValue(local.maxValue)!) > 0;
+			value()!.compare(convertValue(mergedProps.maxValue)!) > 0;
 		const rangeUnderflow =
 			value() != null &&
 			maxDate != null &&
-			value()!.compare(convertValue(local.minValue)!) < 0;
+			value()!.compare(convertValue(mergedProps.minValue)!) < 0;
 
 		return rangeOverflow || rangeUnderflow ? "invalid" : undefined;
 	});
 
 	const { formControlContext } = createFormControl(
-		mergeProps(formControlProps, {
+		merge(mergedProps, {
 			get validationState() {
 				return validationState();
 			},
@@ -247,8 +246,8 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		const formatOptions = getTimeFieldFormatOptions({
 			granularity: granularity(),
 			timeZone: defaultTimeZone(),
-			hideTimeZone: local.hideTimeZone,
-			hourCycle: local.hourCycle,
+			hideTimeZone: mergedProps.hideTimeZone,
+			hourCycle: mergedProps.hourCycle,
 		});
 
 		const dateFormatter = createMemo(
@@ -266,9 +265,9 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 	const ariaLabelledBy = () => {
 		return formControlContext.getAriaLabelledBy(
-			access(formControlProps.id),
+			access(mergedProps.id),
 			others["aria-label"],
-			local["aria-labelledby"],
+			mergedProps["aria-labelledby"],
 		);
 	};
 
@@ -276,7 +275,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		return (
 			[
 				valueDescriptionId(),
-				formControlContext.getAriaDescribedBy(local["aria-describedby"]),
+				formControlContext.getAriaDescribedBy(mergedProps["aria-describedby"]),
 			]
 				.filter(Boolean)
 				.join(" ") || undefined
@@ -284,15 +283,16 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	};
 
 	const context: TimeFieldContextValue = {
-		translations: () => local.translations!,
+		translations: () => mergedProps.translations!,
 		value,
 		setValue,
-		hourCycle: () => local.hourCycle,
+		hourCycle: () => mergedProps.hourCycle,
 		granularity,
-		hideTimeZone: () => local.hideTimeZone ?? false,
-		shouldForceLeadingZeros: () => local.shouldForceLeadingZeros ?? false,
-		placeholderTime: () => value() || (local.placeholderValue ?? new Time()),
-		placeholderValue: () => local.placeholderValue,
+		hideTimeZone: () => mergedProps.hideTimeZone ?? false,
+		shouldForceLeadingZeros: () => mergedProps.shouldForceLeadingZeros ?? false,
+		placeholderTime: () =>
+			value() || (mergedProps.placeholderValue ?? new Time()),
+		placeholderValue: () => mergedProps.placeholderValue,
 		defaultTimeZone,
 		formattedValue,
 		focusManager: () => focusManager,
@@ -302,32 +302,34 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		setInputRef,
 		valueDescriptionId,
 		registerValueDescriptionId: createRegisterId(setValueDescriptionId),
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: createGenerateId(() => access(mergedProps.id)!),
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<TimeFieldContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<TimeFieldContext value={context}>
 				<Polymorphic<TimeFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
+					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 					role="group"
-					id={access(formControlProps.id)!}
+					id={access(mergedProps.id)!}
 					aria-invalid={
-						formControlContext.validationState() === "invalid" || undefined
+						formControlContext.validationState() === "invalid"
+							? "true"
+							: undefined
 					}
-					aria-required={formControlContext.isRequired() || undefined}
-					aria-disabled={formControlContext.isDisabled() || undefined}
-					aria-readonly={formControlContext.isReadOnly() || undefined}
+					aria-required={formControlContext.isRequired() ? "true" : undefined}
+					aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+					aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 					aria-labelledby={ariaLabelledBy()}
 					aria-describedby={ariaDescribedBy()}
 					{...formControlContext.dataset()}
 					{...others}
 				>
-					{local.children}
+					{mergedProps.children}
 					<TimeFieldValueDescription />
 				</Polymorphic>
-			</TimeFieldContext.Provider>
-		</FormControlContext.Provider>
+			</TimeFieldContext>
+		</FormControlContext>
 	);
 }

@@ -1,35 +1,29 @@
-import {
-	composeEventHandlers,
-	mergeRefs,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { composeEventHandlers, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import {
-	type ComponentProps,
-	type JSX,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
+import type { ComponentProps, JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { useFormControlContext } from "../form-control";
 import { useFileFieldContext } from "./file-field-context";
 
 export interface FileFieldHiddenInputProps extends ComponentProps<"input"> {}
 
-export function FileFieldHiddenInput<T extends ValidComponent = "input">(
-	props: FileFieldHiddenInputProps,
-) {
-	const [local, others] = splitProps(props, ["style", "ref", "onChange"]);
+export function FileFieldHiddenInput(props: FileFieldHiddenInputProps) {
+	const others = omit(props, "style", "ref", "onChange");
 
 	const context = useFileFieldContext();
 	const formControlContext = useFormControlContext();
 
-	const onChange: JSX.EventHandler<HTMLInputElement, InputEvent> = (event) => {
+	const onChange: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (
+		event,
+	) => {
 		if (context.disabled()) {
 			return;
 		}
 
-		const { files } = event.currentTarget;
-		context.processFiles(Array.from(files ?? []));
+		const { files } = (
+			event as InputEvent & { currentTarget: HTMLInputElement }
+		).currentTarget;
+		context.processFiles(Array.from(files ?? []) as File[]);
 	};
 
 	return (
@@ -38,12 +32,19 @@ export function FileFieldHiddenInput<T extends ValidComponent = "input">(
 			id={context.inputId()}
 			accept={context.accept()}
 			multiple={context.multiple()}
-			ref={mergeRefs(context.setFileInputRef, local.ref)}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
-			onChange={composeEventHandlers([local.onChange, onChange])}
+			ref={(el: HTMLInputElement) => {
+				context.setFileInputRef(el);
+				if (typeof props.ref === "function")
+					(props.ref as (el: HTMLInputElement) => void)(el);
+			}}
+			style={combineStyle(
+				{ ...visuallyHiddenStyles },
+				props.style || undefined,
+			)}
+			onChange={composeEventHandlers([props.onChange, onChange])}
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
-			readOnly={formControlContext.isReadOnly()}
+			readonly={formControlContext.isReadOnly()}
 			{...others}
 		/>
 	);

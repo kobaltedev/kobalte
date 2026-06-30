@@ -13,20 +13,13 @@
  */
 
 import {
-	OverrideComponentProps,
 	createGenerateId,
 	mergeDefaultProps,
+	OverrideComponentProps,
 } from "@kobalte/utils";
-import {
-	type JSX,
-	type ValidComponent,
-	createMemo,
-	createSignal,
-	createUniqueId,
-	splitProps,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createMemo, createSignal, createUniqueId, omit } from "solid-js";
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
 import {
 	type ElementOf,
@@ -34,15 +27,15 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import {
-	ToastRegionContext,
-	type ToastRegionContextValue,
-} from "./toast-region-context";
-import { toastStore } from "./toast-store";
-import {
 	TOAST_HOTKEY_PLACEHOLDER,
 	TOAST_REGION_INTL_TRANSLATIONS,
 	type ToastRegionIntlTranslations,
 } from "./toast.intl";
+import {
+	ToastRegionContext,
+	type ToastRegionContextValue,
+} from "./toast-region-context";
+import { toastStore } from "./toast-store";
 import type { ToastSwipeDirection } from "./types";
 
 export interface ToastRegionOptions {
@@ -104,7 +97,7 @@ export interface ToastRegionCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface ToastRegionRenderProps extends ToastRegionCommonProps {
 	role: "region";
-	tabIndex: -1;
+	tabindex: -1;
 	"aria-label": string;
 	"data-kb-top-layer": string | undefined;
 }
@@ -136,31 +129,30 @@ export function ToastRegion<T extends ValidComponent = "div">(
 		props as ToastRegionProps,
 	);
 
-	const [local, others] = splitProps(
+	const others = omit(
 		mergedProps as typeof mergedProps & { id: string },
-		[
-			"translations",
-			"style",
-			"hotkey",
-			"duration",
-			"limit",
-			"swipeDirection",
-			"swipeThreshold",
-			"pauseOnInteraction",
-			"pauseOnPageIdle",
-			"topLayer",
-			"aria-label",
-			"regionId",
-		],
+		"translations",
+		"style",
+		"hotkey",
+		"duration",
+		"limit",
+		"swipeDirection",
+		"swipeThreshold",
+		"pauseOnInteraction",
+		"pauseOnPageIdle",
+		"topLayer",
+		"aria-label",
+		"regionId",
 	);
 
 	const toasts = createMemo(() =>
 		toastStore
 			.toasts()
 			.filter(
-				(toast) => toast.region === local.regionId && toast.dismiss === false,
+				(toast) =>
+					toast.region === mergedProps.regionId && toast.dismiss === false,
 			)
-			.slice(0, local.limit!),
+			.slice(0, mergedProps.limit!),
 	);
 
 	const [isPaused, setIsPaused] = createSignal(false);
@@ -168,41 +160,44 @@ export function ToastRegion<T extends ValidComponent = "div">(
 	const hasToasts = () => toasts().length > 0;
 
 	const hotkeyLabel = () => {
-		return local.hotkey!.join("+").replace(/Key/g, "").replace(/Digit/g, "");
+		return mergedProps
+			.hotkey!.join("+")
+			.replace(/Key/g, "")
+			.replace(/Digit/g, "");
 	};
 
 	const ariaLabel = () => {
 		const label =
-			local["aria-label"] ||
-			local.translations!.notifications(TOAST_HOTKEY_PLACEHOLDER);
+			mergedProps["aria-label"] ||
+			mergedProps.translations!.notifications(TOAST_HOTKEY_PLACEHOLDER);
 
 		return label.replace(TOAST_HOTKEY_PLACEHOLDER, hotkeyLabel());
 	};
 
 	const topLayerAttr = () => ({
-		[DATA_TOP_LAYER_ATTR]: local.topLayer ? "" : undefined,
+		[DATA_TOP_LAYER_ATTR]: mergedProps.topLayer ? "" : undefined,
 	});
 
 	const context: ToastRegionContextValue = {
 		isPaused,
 		toasts,
-		hotkey: () => local.hotkey!,
-		duration: () => local.duration!,
-		swipeDirection: () => local.swipeDirection!,
-		swipeThreshold: () => local.swipeThreshold!,
-		pauseOnInteraction: () => local.pauseOnInteraction!,
-		pauseOnPageIdle: () => local.pauseOnPageIdle!,
+		hotkey: () => mergedProps.hotkey!,
+		duration: () => mergedProps.duration!,
+		swipeDirection: () => mergedProps.swipeDirection!,
+		swipeThreshold: () => mergedProps.swipeThreshold!,
+		pauseOnInteraction: () => mergedProps.pauseOnInteraction!,
+		pauseOnPageIdle: () => mergedProps.pauseOnPageIdle!,
 		pauseAllTimer: () => setIsPaused(true),
 		resumeAllTimer: () => setIsPaused(false),
 		generateId: createGenerateId(() => others.id!),
 	};
 
 	return (
-		<ToastRegionContext.Provider value={context}>
+		<ToastRegionContext value={context}>
 			<Polymorphic<ToastRegionRenderProps>
 				as="div"
 				role="region"
-				tabIndex={-1}
+				tabindex={-1}
 				aria-label={ariaLabel()}
 				// In case it has size when empty (e.g. padding), we remove pointer events,
 				// so it doesn't prevent interactions with page elements that it overlays.
@@ -210,16 +205,16 @@ export function ToastRegion<T extends ValidComponent = "div">(
 				style={combineStyle(
 					{
 						"pointer-events": hasToasts()
-							? local.topLayer
+							? mergedProps.topLayer
 								? "auto"
 								: undefined
 							: "none",
 					},
-					local.style,
+					mergedProps.style,
 				)}
 				{...topLayerAttr()}
 				{...others}
 			/>
-		</ToastRegionContext.Provider>
+		</ToastRegionContext>
 	);
 }

@@ -1,10 +1,6 @@
 import { OverrideComponentProps } from "@kobalte/utils";
-import {
-	type Component,
-	type ValidComponent,
-	createMemo,
-	splitProps,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createMemo, omit } from "solid-js";
 
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
@@ -77,33 +73,36 @@ export function ComboboxRoot<
 	OptGroup = never,
 	T extends ValidComponent = "div",
 >(props: PolymorphicProps<T, ComboboxRootProps<Option, OptGroup, T>>) {
-	const [local, others] = splitProps(
+	const others = omit(
 		props as ComboboxRootProps<Option, OptGroup>,
-		["value", "defaultValue", "onChange", "multiple"],
+		"value",
+		"defaultValue",
+		"onChange",
+		"multiple",
 	);
 
 	const value = createMemo(() => {
-		if (local.value != null) {
-			return local.multiple ? local.value : [local.value];
+		if (props.value != null) {
+			return props.multiple ? props.value : [props.value];
 		}
 
-		return local.value;
+		return props.value;
 	});
 
 	const defaultValue = createMemo(() => {
-		if (local.defaultValue != null) {
-			return local.multiple ? local.defaultValue : [local.defaultValue];
+		if (props.defaultValue != null) {
+			return props.multiple ? props.defaultValue : [props.defaultValue];
 		}
 
-		return local.defaultValue;
+		return props.defaultValue;
 	});
 
 	const onChange = (value: Option[]) => {
-		if (local.multiple) {
-			local.onChange?.((value ?? []) as any);
+		if (props.multiple) {
+			props.onChange?.((value ?? []) as any);
 		} else {
 			// use `null` as "no value" because `undefined` mean the component is "uncontrolled".
-			local.onChange?.((value[0] ?? null) as any); // TODO: maybe return undefined? breaking change!
+			props.onChange?.((value[0] ?? null) as any); // TODO: maybe return undefined? breaking change!
 		}
 	};
 
@@ -116,7 +115,7 @@ export function ComboboxRoot<
 			value={value() as any}
 			defaultValue={defaultValue() as any}
 			onChange={onChange}
-			selectionMode={local.multiple ? "multiple" : "single"}
+			selectionMode={props.multiple ? "multiple" : "single"}
 			{...others}
 		/>
 	);

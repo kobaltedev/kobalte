@@ -1,22 +1,18 @@
 import {
-	type Orientation,
-	type ValidationState,
 	access,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
+import type { ValidComponent } from "@solidjs/web";
+import { createSignal, createUniqueId, omit } from "solid-js";
 import {
-	type ValidComponent,
-	createSignal,
-	createUniqueId,
-	splitProps,
-} from "solid-js";
-
-import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
@@ -26,7 +22,6 @@ import {
 import {
 	type CollectionItemWithRef,
 	createControllableSignal,
-	createFormResetListener,
 } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import {
@@ -93,10 +88,10 @@ export interface RatingGroupRootRenderProps
 	extends RatingGroupRootCommonProps,
 		FormControlDataSet {
 	role: "radiogroup";
-	"aria-invalid": boolean | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
+	"aria-invalid": "true" | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
 	"aria-orientation": Orientation | undefined;
 }
 
@@ -119,19 +114,28 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 		props as RatingGroupRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
+	const formControlProps = omit(
 		mergedProps,
-		[
-			"ref",
-			"value",
-			"defaultValue",
-			"onChange",
-			"allowHalf",
-			"orientation",
-			"aria-labelledby",
-			"aria-describedby",
-		],
-		FORM_CONTROL_PROP_NAMES,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"allowHalf",
+		"orientation",
+		"aria-labelledby",
+		"aria-describedby",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"allowHalf",
+		"orientation",
+		"aria-labelledby",
+		"aria-describedby",
+		...FORM_CONTROL_PROP_NAMES,
 	);
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
@@ -143,28 +147,30 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 	const [hoveredValue, setHoveredValue] = createSignal(-1);
 
 	const [value, setValue] = createControllableSignal<number>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue ?? 0,
-		onChange: (value) => local.onChange?.(value),
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue ?? 0,
+		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
 	const { formControlContext } = createFormControl(formControlProps);
 
 	createFormResetListener(
 		() => ref,
-		() => setValue(local.defaultValue!),
+		() => setValue(mergedProps.defaultValue!),
 	);
 
 	const ariaLabelledBy = () => {
 		return formControlContext.getAriaLabelledBy(
-			access(formControlProps.id),
+			access(mergedProps.id),
 			others["aria-label"],
-			local["aria-labelledby"],
+			mergedProps["aria-labelledby"],
 		);
 	};
 
 	const ariaDescribedBy = () => {
-		return formControlContext.getAriaDescribedBy(local["aria-describedby"]);
+		return formControlContext.getAriaDescribedBy(
+			mergedProps["aria-describedby"],
+		);
 	};
 
 	const context: RatingGroupContextValue = {
@@ -176,8 +182,8 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 
 			setValue(newValue);
 		},
-		allowHalf: () => local.allowHalf,
-		orientation: () => local.orientation!,
+		allowHalf: () => mergedProps.allowHalf,
+		orientation: () => mergedProps.orientation!,
 		hoveredValue,
 		setHoveredValue,
 		isHovering: () => hoveredValue() > -1,
@@ -188,27 +194,29 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 
 	return (
 		<DomCollectionProvider>
-			<FormControlContext.Provider value={formControlContext}>
-				<RatingGroupContext.Provider value={context}>
+			<FormControlContext value={formControlContext}>
+				<RatingGroupContext value={context}>
 					<Polymorphic<RatingGroupRootRenderProps>
 						as="div"
-						ref={mergeRefs((el) => (ref = el), local.ref)}
+						ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 						role="radiogroup"
-						id={access(formControlProps.id)!}
+						id={access(mergedProps.id)!}
 						aria-invalid={
-							formControlContext.validationState() === "invalid" || undefined
+							formControlContext.validationState() === "invalid"
+								? "true"
+								: undefined
 						}
-						aria-required={formControlContext.isRequired() || undefined}
-						aria-disabled={formControlContext.isDisabled() || undefined}
-						aria-readonly={formControlContext.isReadOnly() || undefined}
-						aria-orientation={local.orientation}
+						aria-required={formControlContext.isRequired() ? "true" : undefined}
+						aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+						aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
+						aria-orientation={mergedProps.orientation}
 						aria-labelledby={ariaLabelledBy()}
 						aria-describedby={ariaDescribedBy()}
 						{...formControlContext.dataset()}
 						{...others}
 					/>
-				</RatingGroupContext.Provider>
-			</FormControlContext.Provider>
+				</RatingGroupContext>
+			</FormControlContext>
 		</DomCollectionProvider>
 	);
 }

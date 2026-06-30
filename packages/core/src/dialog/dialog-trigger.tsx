@@ -7,12 +7,8 @@
  */
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -29,7 +25,7 @@ export interface DialogTriggerRenderProps
 	extends DialogTriggerCommonProps,
 		Button.ButtonRootRenderProps {
 	"aria-haspopup": "dialog";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 	"data-expanded": string | undefined;
 	"data-closed": string | undefined;
@@ -47,13 +43,11 @@ export function DialogTrigger<T extends ValidComponent = "button">(
 ) {
 	const context = useDialogContext();
 
-	const [local, others] = splitProps(props as DialogTriggerProps, [
-		"ref",
-		"onClick",
-	]);
+	const p = props as DialogTriggerProps;
+	const others = omit(p, "ref", "onClick");
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, p.onClick);
 		context.toggle();
 	};
 
@@ -63,9 +57,9 @@ export function DialogTrigger<T extends ValidComponent = "button">(
 				Omit<DialogTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			ref={mergeRefs(context.setTriggerRef, p.ref)}
 			aria-haspopup="dialog"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			data-expanded={context.isOpen() ? "" : undefined}
 			data-closed={!context.isOpen() ? "" : undefined}

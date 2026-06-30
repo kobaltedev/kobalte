@@ -1,18 +1,10 @@
 import {
-	OverrideComponentProps,
 	isFunction,
 	mergeDefaultProps,
+	OverrideComponentProps,
 } from "@kobalte/utils";
-import {
-	type Accessor,
-	type JSX,
-	Show,
-	type ValidComponent,
-	children,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Accessor, children, createEffect, omit, Show } from "solid-js";
 
 import {
 	type FormControlDataSet,
@@ -79,7 +71,7 @@ export function SelectValue<Option, T extends ValidComponent = "span">(
 		props as SelectValueProps<Option>,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["id", "children"]);
+	const others = omit(mergedProps, "id", "children");
 
 	const selectionManager = () => context.listState().selectionManager();
 
@@ -95,12 +87,15 @@ export function SelectValue<Option, T extends ValidComponent = "span">(
 		return selectionManager().isEmpty();
 	};
 
-	createEffect(() => onCleanup(context.registerValueId(local.id!)));
+	createEffect(
+		() => mergedProps.id!,
+		(id) => context.registerValueId(id),
+	);
 
 	return (
 		<Polymorphic<SelectValueRenderProps>
 			as="span"
-			id={local.id}
+			id={mergedProps.id}
 			data-placeholder-shown={isSelectionEmpty() ? "" : undefined}
 			{...formControlContext.dataset()}
 			{...others}
@@ -114,7 +109,7 @@ export function SelectValue<Option, T extends ValidComponent = "span">(
 						clear: () => selectionManager().clearSelection(),
 					}}
 				>
-					{local.children}
+					{mergedProps.children}
 				</SelectValueChild>
 			</Show>
 		</Polymorphic>

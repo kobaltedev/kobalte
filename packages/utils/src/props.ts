@@ -1,4 +1,4 @@
-import { type ComponentProps, type ValidComponent, mergeProps } from "solid-js";
+import { type ComponentProps, merge, type ValidComponent } from "solid-js";
 
 /**
  * Allows for extending a set of props (`Source`) by an overriding set of props (`Override`),
@@ -23,5 +23,5 @@ export function mergeDefaultProps<T extends {}, D extends Partial<T>>(
 	defaultProps: D,
 	props: T,
 ): OverrideProps<T, D> {
-	return mergeProps(defaultProps, props) as OverrideProps<T, D>;
+	return merge(defaultProps, props) as OverrideProps<T, D>;
 }

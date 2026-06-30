@@ -1,7 +1,9 @@
-import type { ComponentProps } from "solid-js";
-import { ColorAreaHiddenInputBase } from "./color-area-hidden-input-base";
+import {
+	ColorAreaHiddenInputBase,
+	type ColorAreaHiddenInputBaseProps,
+} from "./color-area-hidden-input-base";
 
-export type ColorAreaHiddenInputYProps = ComponentProps<"input">;
+export type ColorAreaHiddenInputYProps = ColorAreaHiddenInputBaseProps;
 
 export function ColorAreaHiddenInputY(props: ColorAreaHiddenInputYProps) {
 	return <ColorAreaHiddenInputBase orientation="vertical" {...props} />;

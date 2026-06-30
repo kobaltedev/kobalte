@@ -2,8 +2,8 @@ import {
 	type DateValue,
 	getLocalTimeZone,
 	toCalendarDateTime,
-	toZoned,
 	today,
+	toZoned,
 } from "@internationalized/date";
 import { type Accessor, createEffect, createMemo } from "solid-js";
 import type {
@@ -42,16 +42,16 @@ export function createDefaultProps(props: {
 		return props.granularity() || "minute";
 	});
 
-	createEffect(() => {
-		const resolvedValue = value();
-		const resolvedGranularity = granularity();
-
-		if (resolvedValue && !(resolvedGranularity in resolvedValue)) {
-			throw new Error(
-				`Invalid granularity ${resolvedGranularity} for value ${resolvedValue.toString()}`,
-			);
-		}
-	});
+	createEffect(
+		() => ({ resolvedValue: value(), resolvedGranularity: granularity() }),
+		({ resolvedValue, resolvedGranularity }) => {
+			if (resolvedValue && !(resolvedGranularity in resolvedValue)) {
+				throw new Error(
+					`Invalid granularity ${resolvedGranularity} for value ${resolvedValue.toString()}`,
+				);
+			}
+		},
+	);
 
 	return { granularity, defaultTimeZone };
 }
@@ -108,7 +108,7 @@ export function getTimeFieldFormatOptions(
 	const opts: Intl.DateTimeFormatOptions = keys
 		.slice(startIdx, endIdx + 1)
 		.reduce((opts, key) => {
-			//@ts-ignore
+			//@ts-expect-error
 			opts[key] = defaultFieldOptions[key];
 			return opts;
 		}, {});

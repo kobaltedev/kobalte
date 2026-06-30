@@ -1,5 +1,5 @@
 import { visuallyHiddenStyles } from "@kobalte/utils";
-import type { ComponentProps } from "solid-js";
+import type { ComponentProps } from "@solidjs/web";
 
 import { useFormControlContext } from "../form-control";
 import { useRatingGroupContext } from "./rating-group-context";
@@ -13,13 +13,13 @@ export function RatingGroupHiddenInput(props: RatingGroupHiddenInputProps) {
 	return (
 		<input
 			type="text"
-			tabIndex={-1}
+			tabindex={-1}
 			style={visuallyHiddenStyles}
 			name={formControlContext.name()}
 			value={context.value()}
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
-			readOnly={formControlContext.isReadOnly()}
+			readonly={formControlContext.isReadOnly()}
 			{...props}
 		/>
 	);

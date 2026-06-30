@@ -1,6 +1,6 @@
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -31,7 +31,7 @@ export function SliderFill<T extends ValidComponent = "div">(
 ) {
 	const context = useSliderContext();
 
-	const [local, others] = splitProps(props as SliderFillProps, ["style"]);
+	const others = omit(props as SliderFillProps, "style");
 
 	const percentages = () => {
 		return context.state
@@ -54,7 +54,7 @@ export function SliderFill<T extends ValidComponent = "div">(
 					[context.startEdge()]: `${offsetStart()}%`,
 					[context.endEdge()]: `${offsetEnd()}%`,
 				},
-				local.style,
+				props.style,
 			)}
 			{...context.dataset()}
 			{...others}

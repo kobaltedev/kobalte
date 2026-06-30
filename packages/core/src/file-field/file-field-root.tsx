@@ -1,17 +1,18 @@
+import { mergeDefaultProps, type ValidationState } from "@kobalte/utils";
+import type { UploadFile } from "@solid-primitives/upload";
+import type { ValidComponent } from "@solidjs/web";
 import {
-	type ValidComponent,
 	createSignal,
+	createStore,
 	createUniqueId,
-	splitProps,
+	omit,
+	snapshot,
 } from "solid-js";
-
-import { type ValidationState, mergeDefaultProps } from "@kobalte/utils";
-import { createStore, unwrap } from "solid-js/store";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
@@ -19,13 +20,13 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import {
-	FileFieldContext,
-	type FileFieldContextValue,
-} from "./file-field-context";
-import {
 	FILE_FIELD_INTL_TRANSLATIONS,
 	type FileFieldIntlTranslations,
 } from "./file-field.intl";
+import {
+	FileFieldContext,
+	type FileFieldContextValue,
+} from "./file-field-context";
 import type { Accept, Details, FileError, FileRejection } from "./types";
 import { getFiles, parseAcceptedTypes } from "./util";
 
@@ -87,7 +88,16 @@ export function FileField<T extends ValidComponent = "div">(
 	const [fileInputRef, setFileInputRef] = createSignal<HTMLInputElement>();
 	const [dropzoneRef, setDropzoneRef] = createSignal<HTMLElement>();
 
-	const [acceptedFilesState, setAcceptedFilesState] = createStore<File[]>([]);
+	const toUploadFile = (file: File): UploadFile => ({
+		source: URL.createObjectURL(file),
+		name: file.name,
+		size: file.size,
+		file,
+	});
+
+	const [acceptedFilesState, setAcceptedFilesState] = createStore<UploadFile[]>(
+		[],
+	);
 	const [rejectedFilesState, setRejectedFilesState] = createStore<
 		FileRejection[]
 	>([]);
@@ -118,18 +128,20 @@ export function FileField<T extends ValidComponent = "div">(
 			mergedProps.validate,
 		);
 
+		const uploadAcceptedFiles = acceptedFiles.map(toUploadFile);
+
 		if (mergedProps.multiple) {
 			setAcceptedFilesState((prevAcceptedFiles) => [
 				...prevAcceptedFiles,
-				...acceptedFiles,
+				...uploadAcceptedFiles,
 			]);
-			setRejectedFilesState(rejectedFiles);
+			setRejectedFilesState(() => rejectedFiles);
 		} else {
 			if (acceptedFiles.length > 0 && acceptedFiles.length === 1) {
-				setAcceptedFilesState([acceptedFiles[0]]);
-				setRejectedFilesState(rejectedFiles);
+				setAcceptedFilesState(() => [uploadAcceptedFiles[0]]);
+				setRejectedFilesState(() => rejectedFiles);
 			} else if (rejectedFiles.length > 0 && rejectedFiles.length === 1) {
-				setRejectedFilesState(rejectedFiles);
+				setRejectedFilesState(() => rejectedFiles);
 			}
 		}
 
@@ -145,23 +157,21 @@ export function FileField<T extends ValidComponent = "div">(
 		mergedProps.onFileChange?.({ acceptedFiles, rejectedFiles });
 	};
 
-	const removeFile = (file: File) => {
+	const removeFile = (file: UploadFile) => {
+		URL.revokeObjectURL(file.source);
 		setAcceptedFilesState((prevAcceptedFiles) =>
-			prevAcceptedFiles.filter((f) => f !== file),
+			prevAcceptedFiles.filter((f) => f.source !== file.source),
 		);
 		// trigger on change
 		mergedProps.onFileChange?.({
-			acceptedFiles: unwrap(acceptedFilesState),
-			rejectedFiles: unwrap(rejectedFilesState),
+			acceptedFiles: [...snapshot(acceptedFilesState)].map((f) => f.file),
+			rejectedFiles: [...snapshot(rejectedFilesState)],
 		});
 	};
 
-	const [formControlProps, others] = splitProps(
-		mergedProps,
-		FORM_CONTROL_PROP_NAMES,
-	);
+	const others = omit(mergedProps, ...FORM_CONTROL_PROP_NAMES);
 
-	const { formControlContext } = createFormControl(formControlProps);
+	const { formControlContext } = createFormControl(mergedProps);
 
 	const context: FileFieldContextValue = {
 		inputId: () => mergedProps.id,
@@ -181,16 +191,16 @@ export function FileField<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<FileFieldContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<FileFieldContext value={context}>
 				<Polymorphic<FileFieldRootRenderProps>
 					as="div"
 					role="group"
-					id={formControlProps.id}
+					id={mergedProps.id}
 					{...formControlContext.dataset()}
 					{...others}
 				/>
-			</FileFieldContext.Provider>
-		</FormControlContext.Provider>
+			</FileFieldContext>
+		</FormControlContext>
 	);
 }

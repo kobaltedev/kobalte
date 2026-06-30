@@ -30,21 +30,21 @@ import {
 } from "./tooltip-trigger";
 
 export type {
-	TooltipArrowOptions,
 	TooltipArrowCommonProps,
-	TooltipArrowRenderProps,
+	TooltipArrowOptions,
 	TooltipArrowProps,
-	TooltipContentOptions,
+	TooltipArrowRenderProps,
 	TooltipContentCommonProps,
-	TooltipContentRenderProps,
+	TooltipContentOptions,
 	TooltipContentProps,
+	TooltipContentRenderProps,
 	TooltipPortalProps,
 	TooltipRootOptions,
 	TooltipRootProps,
-	TooltipTriggerOptions,
 	TooltipTriggerCommonProps,
-	TooltipTriggerRenderProps,
+	TooltipTriggerOptions,
 	TooltipTriggerProps,
+	TooltipTriggerRenderProps,
 };
 
 export { Arrow, Content, Portal, Root, Trigger };
@@ -59,4 +59,4 @@ export const Tooltip = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useTooltipContext, type TooltipContextValue } from "./tooltip-context";
+export { type TooltipContextValue, useTooltipContext } from "./tooltip-context";

@@ -1,15 +1,7 @@
-import {
-	type JSX,
-	type ValidComponent,
-	batch,
-	createEffect,
-	createSignal,
-	on,
-	splitProps,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
 import { createResizeObserver } from "@solid-primitives/resize-observer";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, omit } from "solid-js";
 import { Polymorphic, type PolymorphicProps } from "../polymorphic";
 import { useSegmentedControlContext } from "./segmented-control-context";
 
@@ -32,58 +24,62 @@ export function SegmentedControlIndicator<T extends ValidComponent = "div">(
 ) {
 	const context = useSegmentedControlContext();
 
-	const [localProps, otherProps] = splitProps(props, ["style"]);
+	const otherProps = omit(props, "style");
 
 	const [style, setStyle] = createSignal<JSX.CSSProperties>();
 	const [resizing, setResizing] = createSignal(false);
 
-	const computeStyle = () => {
-		const element = context.selectedItem();
+	const computeStyle = (element?: HTMLElement) => {
+		const el = element ?? context.selectedItem();
 
-		if (!element) {
+		if (!el) {
 			// TODO: Listen for transition to end here before removing the style.
 			setStyle(undefined);
 			return;
 		}
 
+		const rect = el.getBoundingClientRect();
 		setStyle({
-			width: `${element.offsetWidth}px`,
-			height: `${element.offsetHeight}px`,
-			transform: computeTransform(element),
+			width: `${rect.width}px`,
+			height: `${rect.height}px`,
+			transform: computeTransform(el),
 			"transition-duration": resizing() ? "0ms" : undefined,
 		});
 	};
 
 	const computeTransform = (element: HTMLElement): string | undefined => {
-		const style = getComputedStyle(element.parentElement as HTMLElement);
+		const rootEl = context.root();
+		if (!rootEl) return undefined;
 
-		const x = element.offsetLeft - Number.parseFloat(style.paddingLeft);
-		const y = element.offsetTop - Number.parseFloat(style.paddingTop);
+		const rootRect = rootEl.getBoundingClientRect();
+		const itemRect = element.getBoundingClientRect();
+
+		const x = itemRect.left - rootRect.left;
+		const y = itemRect.top - rootRect.top;
 
 		return `translate(${x}px, ${y}px)`;
 	};
 
 	createEffect(
-		on(context.selectedItem, () => {
+		() => context.selectedItem(),
+		(element) => {
 			setResizing(!style());
-			computeStyle();
+			computeStyle(element);
 			setResizing(false);
-		}),
+		},
 	);
 
 	createResizeObserver(context.root, () => {
-		batch(() => {
-			setResizing(true);
-			computeStyle();
-			setResizing(false);
-		});
+		setResizing(true);
+		computeStyle();
+		setResizing(false);
 	});
 
 	return (
 		<Polymorphic<SegmentedControlIndicatorRenderProps>
 			as="div"
 			role="presentation"
-			style={combineStyle(style(), localProps.style)}
+			style={combineStyle(style(), props.style)}
 			data-resizing={resizing()}
 			data-orientation={context.orientation()}
 			{...otherProps}

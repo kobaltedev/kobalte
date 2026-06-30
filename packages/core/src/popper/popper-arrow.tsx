@@ -8,16 +8,9 @@
  */
 
 import { getWindow, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import {
-	type Accessor,
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	splitProps,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Accessor, createEffect, createSignal, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -74,7 +67,7 @@ export function PopperArrow<T extends ValidComponent = "div">(
 		props as PopperArrowProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "style", "size"]);
+	const others = omit(mergedProps, "ref", "style", "size");
 
 	const dir = () => context.currentPlacement().split("-")[0] as BasePlacement;
 	const contentStyle = createComputedStyle(context.contentRef);
@@ -85,7 +78,9 @@ export function PopperArrow<T extends ValidComponent = "div">(
 	const borderWidth = () =>
 		contentStyle()?.getPropertyValue(`border-${dir()}-width`) || "0px";
 	const strokeWidth = () => {
-		return Number.parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / local.size!);
+		return (
+			Number.parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / mergedProps.size!)
+		);
 	};
 	const rotate = () => {
 		return `rotate(${
@@ -96,13 +91,13 @@ export function PopperArrow<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<PopperArrowRenderProps>
 			as="div"
-			ref={mergeRefs(context.setArrowRef, local.ref)}
+			ref={mergeRefs(context.setArrowRef, mergedProps.ref)}
 			aria-hidden="true"
 			style={combineStyle(
 				{
 					// server side rendering
 					position: "absolute",
-					"font-size": `${local.size!}px`,
+					"font-size": `${mergedProps.size!}px`,
 					width: "1em",
 					height: "1em",
 					"pointer-events": "none",
@@ -110,7 +105,7 @@ export function PopperArrow<T extends ValidComponent = "div">(
 					stroke: stroke(),
 					"stroke-width": strokeWidth(),
 				} as JSX.CSSProperties,
-				local.style,
+				mergedProps.style,
 			)}
 			{...others}
 		>
@@ -132,10 +127,12 @@ export function PopperArrow<T extends ValidComponent = "div">(
 function createComputedStyle(element: Accessor<Element | undefined>) {
 	const [style, setStyle] = createSignal<CSSStyleDeclaration>();
 
-	createEffect(() => {
-		const el = element();
-		el && setStyle(getWindow(el).getComputedStyle(el));
-	});
+	createEffect(
+		() => element(),
+		(el) => {
+			if (el) setStyle(getWindow(el).getComputedStyle(el));
+		},
+	);
 
 	return style;
 }

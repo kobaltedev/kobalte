@@ -18,34 +18,32 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import { createPresence } from "@solid-primitives/presence";
+import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	Show,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	on,
-	onMount,
-	splitProps,
+	omit,
+	onSettled,
+	Show,
+	untrack,
 } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-
-import { combineStyle } from "@solid-primitives/props";
-import createPresence from "solid-presence";
 import { createRegisterId } from "../primitives";
-import { ToastContext, type ToastContextValue } from "./toast-context";
-import { useToastRegionContext } from "./toast-region-context";
-import { toastStore } from "./toast-store";
 import {
 	TOAST_INTL_TRANSLATIONS,
 	type ToastIntlTranslations,
 } from "./toast.intl";
+import { ToastContext, type ToastContextValue } from "./toast-context";
+import { useToastRegionContext } from "./toast-region-context";
+import { toastStore } from "./toast-store";
 import type { ToastSwipeDirection } from "./types";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
@@ -124,7 +122,7 @@ export interface ToastRootCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface ToastRootRenderProps extends ToastRootCommonProps {
 	role: "status";
-	tabIndex: 0;
+	tabindex: 0;
 }
 
 export type ToastRootProps<
@@ -145,46 +143,52 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		props as ToastRootProps,
 	);
 
-	const [local, others] = splitProps(
+	const others = omit(
 		mergedProps as typeof mergedProps & { toastId: string; id: string },
-		[
-			"ref",
-			"translations",
-			"toastId",
-			"style",
-			"priority",
-			"duration",
-			"persistent",
-			"onPause",
-			"onResume",
-			"onSwipeStart",
-			"onSwipeMove",
-			"onSwipeCancel",
-			"onSwipeEnd",
-			"onEscapeKeyDown",
-			"onKeyDown",
-			"onPointerDown",
-			"onPointerMove",
-			"onPointerUp",
-		],
+		"ref",
+		"translations",
+		"toastId",
+		"style",
+		"priority",
+		"duration",
+		"persistent",
+		"onPause",
+		"onResume",
+		"onSwipeStart",
+		"onSwipeMove",
+		"onSwipeCancel",
+		"onSwipeEnd",
+		"onEscapeKeyDown",
+		"onKeyDown",
+		"onPointerDown",
+		"onPointerMove",
+		"onPointerUp",
 	);
 
 	const [isOpen, setIsOpen] = createSignal(true);
-	const [titleId, setTitleId] = createSignal<string>();
-	const [descriptionId, setDescriptionId] = createSignal<string>();
+	const [titleId, setTitleId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 	const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
-	const [ref, setRef] = createSignal<HTMLElement>();
-
-	const { present } = createPresence({
-		show: isOpen,
-		element: () => ref() ?? null,
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
 	});
 
-	const duration = createMemo(() => local.duration || rootContext.duration());
+	const { isMounted: present } = createPresence(() => isOpen() || undefined, {
+		transitionDuration: 0,
+	});
+
+	const duration = createMemo(
+		() => mergedProps.duration || rootContext.duration(),
+	);
 
 	let closeTimerId: number;
 	let closeTimerStartTime = 0;
-	let closeTimerRemainingTime = duration();
+	let closeTimerRemainingTime = untrack(duration);
 
 	let pointerStart: { x: number; y: number } | null = null;
 	let swipeDelta: { x: number; y: number } | null = null;
@@ -197,11 +201,11 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	};
 
 	const deleteToast = () => {
-		toastStore.remove(local.toastId);
+		toastStore.remove(mergedProps.toastId!);
 	};
 
 	const startTimer = (duration: number) => {
-		if (!duration || local.persistent) {
+		if (!duration || mergedProps.persistent) {
 			return;
 		}
 
@@ -214,7 +218,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	const resumeTimer = () => {
 		startTimer(closeTimerRemainingTime);
 
-		local.onResume?.();
+		mergedProps.onResume?.();
 	};
 
 	const pauseTimer = () => {
@@ -223,17 +227,17 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 		window.clearTimeout(closeTimerId);
 
-		local.onPause?.();
+		mergedProps.onPause?.();
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		if (e.key !== "Escape") {
 			return;
 		}
 
-		local.onEscapeKeyDown?.(e);
+		mergedProps.onEscapeKeyDown?.(e);
 
 		if (!e.defaultPrevented) {
 			close();
@@ -243,7 +247,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		if (e.button !== 0) {
 			return;
@@ -255,7 +259,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		if (!pointerStart) {
 			return;
@@ -287,7 +291,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 			handleAndDispatchCustomEvent(
 				TOAST_SWIPE_MOVE_EVENT,
-				local.onSwipeMove,
+				mergedProps.onSwipeMove,
 				eventDetail,
 			);
 
@@ -302,7 +306,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 			handleAndDispatchCustomEvent(
 				TOAST_SWIPE_START_EVENT,
-				local.onSwipeStart,
+				mergedProps.onSwipeStart,
 				eventDetail,
 			);
 			e.currentTarget.setAttribute("data-swipe", "start");
@@ -316,7 +320,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	};
 
 	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerUp);
+		callHandler(e, mergedProps.onPointerUp);
 
 		const delta = swipeDelta;
 		const target = e.target as HTMLElement;
@@ -341,7 +345,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 			) {
 				handleAndDispatchCustomEvent(
 					TOAST_SWIPE_END_EVENT,
-					local.onSwipeEnd,
+					mergedProps.onSwipeEnd,
 					eventDetail,
 				);
 
@@ -356,7 +360,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 			} else {
 				handleAndDispatchCustomEvent(
 					TOAST_SWIPE_CANCEL_EVENT,
-					local.onSwipeCancel,
+					mergedProps.onSwipeCancel,
 					eventDetail,
 				);
 
@@ -375,63 +379,59 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		}
 	};
 
-	onMount(() => {
+	onSettled(() => {
 		// Disable animation for updated toast.
 		if (
 			rootContext
 				.toasts()
-				.find((toast) => toast.id === local.toastId && toast.update)
+				.find((toast) => toast.id === mergedProps.toastId && toast.update)
 		) {
 			setIsAnimationEnabled(false);
 		}
 	});
 
 	createEffect(
-		on(
-			() => rootContext.isPaused(),
-			(isPaused) => {
-				if (isPaused) {
-					pauseTimer();
-				} else {
-					resumeTimer();
-				}
-			},
-			{
-				defer: true,
-			},
-		),
+		() => rootContext.isPaused(),
+		(isPaused) => {
+			if (isPaused) {
+				pauseTimer();
+			} else {
+				resumeTimer();
+			}
+		},
 	);
 
 	// start timer when toast opens or duration changes.
 	// we include `open` in deps because closed !== unmounted when animating,
 	// so it could reopen before being completely unmounted
 	createEffect(
-		on([isOpen, duration], ([isOpen, duration]) => {
-			if (isOpen && !rootContext.isPaused()) {
-				startTimer(duration);
+		() => [isOpen(), duration(), rootContext.isPaused()] as const,
+		([isOpenVal, durationVal, isPaused]) => {
+			if (isOpenVal && !isPaused) {
+				startTimer(durationVal);
 			}
-		}),
+		},
 	);
 
 	createEffect(
-		on(
-			() => toastStore.get(local.toastId)?.dismiss,
-			(dismiss) => dismiss && close(),
-		),
+		() => toastStore.get(mergedProps.toastId!)?.dismiss,
+		(dismiss) => {
+			if (dismiss) close();
+		},
 	);
 
 	createEffect(
-		on(
-			() => present(),
-			(isPresent) => !isPresent && deleteToast(),
-		),
+		() => present(),
+		(isPresent) => {
+			if (!isPresent) deleteToast();
+		},
 	);
 
 	const context: ToastContextValue = {
-		translations: () => local.translations!,
+		translations: () => mergedProps.translations!,
 		close,
 		duration,
-		isPersistent: () => local.persistent ?? false,
+		isPersistent: () => mergedProps.persistent ?? false,
 		closeTimerStartTime: () => closeTimerStartTime,
 		generateId: createGenerateId(() => others.id!),
 		registerTitleId: createRegisterId(setTitleId),
@@ -440,21 +440,21 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 	return (
 		<Show when={present()}>
-			<ToastContext.Provider value={context}>
+			<ToastContext value={context}>
 				<Polymorphic<ToastRootRenderProps>
 					as="li"
-					ref={mergeRefs(setRef, local.ref)}
+					ref={mergeRefs(setRef, mergedProps.ref)}
 					role="status"
-					tabIndex={0}
+					tabindex={0}
 					style={combineStyle(
 						{
 							animation: isAnimationEnabled() ? undefined : "none",
 							"user-select": "none",
 							"touch-action": "none",
 						},
-						local.style,
+						mergedProps.style,
 					)}
-					aria-live={local.priority === "high" ? "assertive" : "polite"}
+					aria-live={mergedProps.priority === "high" ? "assertive" : "polite"}
 					aria-atomic="true"
 					aria-labelledby={titleId()}
 					aria-describedby={descriptionId()}
@@ -467,7 +467,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 					onPointerUp={onPointerUp}
 					{...others}
 				/>
-			</ToastContext.Provider>
+			</ToastContext>
 		</Show>
 	);
 }

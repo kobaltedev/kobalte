@@ -1,19 +1,17 @@
 import {
-	EventKey,
 	callHandler,
 	createGenerateId,
+	EventKey,
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	onMount,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -52,11 +50,11 @@ export interface RatingGroupItemRenderProps
 	extends RatingGroupItemCommonProps,
 		RatingGroupItemDataSet {
 	role: "radio";
-	tabIndex: number | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
-	"aria-checked": boolean;
+	tabindex: number | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
+	"aria-checked": "true" | "false";
 }
 
 export type RatingGroupItemProps<
@@ -80,14 +78,15 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 		props as RatingGroupItemProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"aria-labelledby",
 		"aria-describedby",
 		"onClick",
 		"onKeyDown",
 		"onPointerMove",
-	]);
+	);
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
@@ -102,9 +101,9 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const ariaLabelledBy = () => {
 		return (
 			[
-				local["aria-labelledby"],
+				mergedProps["aria-labelledby"],
 				labelId(),
-				local["aria-labelledby"] != null && others["aria-label"] != null
+				mergedProps["aria-labelledby"] != null && others["aria-label"] != null
 					? others.id
 					: undefined,
 			]
@@ -116,7 +115,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const ariaDescribedBy = () => {
 		return (
 			[
-				local["aria-describedby"],
+				mergedProps["aria-describedby"],
 				descriptionId(),
 				ratingGroupContext.ariaDescribedBy(),
 			]
@@ -128,27 +127,37 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const { direction } = useLocale();
 	const isLTR = () => direction() === "ltr";
 
-	const [labelId, setLabelId] = createSignal<string>();
-	const [descriptionId, setDescriptionId] = createSignal<string>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const index = () =>
 		ref ? ratingGroupContext.items().findIndex((v) => v.ref() === ref) : -1;
-	const [value, setValue] = createSignal<number>();
+
+	// Always read items() so the memo re-runs when the collection registers.
+	// onSettled fired before createDomCollectionItem effects flushed in Solid 2.0,
+	// leaving index() === -1 and value === 0 for every item — all stars highlighted.
+	const value = createMemo((): number | undefined => {
+		const items = ratingGroupContext.items();
+		if (!ref) return undefined;
+		const i = items.findIndex((v) => v.ref() === ref);
+		if (i === -1) return undefined;
+		return direction() === "ltr" ? i + 1 : items.length - i;
+	});
 	const newValue = () =>
 		ratingGroupContext.isHovering()
 			? ratingGroupContext.hoveredValue()!
 			: ratingGroupContext.value()!;
 	const equal = () => Math.ceil(newValue()!) === value();
-	const highlighted = () => value()! <= newValue()! || equal();
+	const highlighted = () => {
+		const v = value();
+		return v !== undefined && (v <= newValue()! || equal());
+	};
 	const half = () => equal() && Math.abs(newValue()! - value()!) === 0.5;
-
-	onMount(() => {
-		setValue(
-			direction() === "ltr"
-				? index() + 1
-				: ratingGroupContext.items().length - index(),
-		);
-	});
 
 	const tabIndex = () => {
 		if (formControlContext.isDisabled()) return undefined;
@@ -180,7 +189,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	};
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
 		const value =
 			ratingGroupContext.hoveredValue() === -1
@@ -194,7 +203,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		if (formControlContext.isDisabled() || formControlContext.isReadOnly())
 			return;
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		const point = getEventPoint(e);
 		const relativePoint = getRelativePoint(point, e.currentTarget);
@@ -209,7 +218,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		switch (e.key) {
 			case EventKey.ArrowLeft:
@@ -262,16 +271,16 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<RatingGroupItemContext.Provider value={context}>
+		<RatingGroupItemContext value={context}>
 			<Polymorphic<RatingGroupItemRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el), local.ref)}
+				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="radio"
-				tabIndex={tabIndex()}
-				aria-checked={equal()}
-				aria-required={formControlContext.isRequired() || undefined}
-				aria-disabled={formControlContext.isDisabled() || undefined}
-				aria-readonly={formControlContext.isReadOnly() || undefined}
+				tabindex={tabIndex()}
+				aria-checked={equal() ? "true" : "false"}
+				aria-required={formControlContext.isRequired() ? "true" : undefined}
+				aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+				aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 				aria-labelledby={ariaLabelledBy()}
 				aria-describedby={ariaDescribedBy()}
 				onClick={onClick}
@@ -280,6 +289,6 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 				{...dataset()}
 				{...others}
 			/>
-		</RatingGroupItemContext.Provider>
+		</RatingGroupItemContext>
 	);
 }

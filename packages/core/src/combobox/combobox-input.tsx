@@ -13,12 +13,13 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 
 import {
+	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
-	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import {
@@ -54,10 +55,10 @@ export interface ComboboxInputRenderProps
 	required: boolean | undefined;
 	readonly: boolean | undefined;
 	placeholder: JSX.Element;
-	"aria-invalid": boolean | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
+	"aria-invalid": "true" | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
 	type: "text";
 	role: "combobox";
 	autoComplete: "off";
@@ -65,7 +66,7 @@ export interface ComboboxInputRenderProps
 	spellCheck: "false";
 	"aria-haspopup": "listbox";
 	"aria-autocomplete": "list";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 	"aria-activedescendant": string | undefined;
 }
@@ -89,19 +90,31 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		props as ComboboxInputProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
+	const formControlFieldProps = omit(
 		mergedProps,
-		[
-			"ref",
-			"disabled",
-			"onClick",
-			"onInput",
-			"onKeyDown",
-			"onFocus",
-			"onBlur",
-			"onTouchEnd",
-		],
-		FORM_CONTROL_FIELD_PROP_NAMES,
+		"ref",
+		"disabled",
+		"onClick",
+		"onInput",
+		"onKeyDown",
+		"onFocus",
+		"onBlur",
+		"onTouchEnd",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"disabled",
+		"onClick",
+		"onInput",
+		"onKeyDown",
+		"onFocus",
+		"onBlur",
+		"onTouchEnd",
+		"id",
+		"aria-label",
+		"aria-labelledby",
+		"aria-describedby",
 	);
 
 	const collection = () => context.listState().collection();
@@ -109,14 +122,16 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 
 	const isDisabled = () => {
 		return (
-			local.disabled || context.isDisabled() || formControlContext.isDisabled()
+			mergedProps.disabled ||
+			context.isDisabled() ||
+			formControlContext.isDisabled()
 		);
 	};
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
 	const onClick: JSX.EventHandlerUnion<HTMLInputElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
 		if (context.triggerMode() === "focus" && !context.isOpen()) {
 			context.open(false, "focus");
@@ -124,7 +139,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	};
 
 	const onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
-		callHandler(e, local.onInput);
+		callHandler(e, mergedProps.onInput);
 
 		if (formControlContext.isReadOnly() || isDisabled()) {
 			return;
@@ -133,13 +148,6 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		const target = e.target as HTMLInputElement;
 
 		context.setInputValue(target.value);
-
-		// Unlike in React, inputs `value` can be out of sync with our value state.
-		// even if an input is controlled (ex: `<input value="foo" />`,
-		// typing on the input will change its internal `value`.
-		//
-		// To prevent this, we need to force the input `value` to be in sync with the input value state.
-		target.value = context.inputValue() ?? "";
 
 		if (context.isOpen()) {
 			if (collection().getSize() <= 0 && !context.allowsEmptyCollection()) {
@@ -155,7 +163,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	const onKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		if (formControlContext.isReadOnly() || isDisabled()) {
 			return;
@@ -235,7 +243,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 
 		if (context.isInputFocused()) {
 			return;
@@ -245,7 +253,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 
 		// Ignore blur if focused moved into the control or menu.
 		if (
@@ -264,7 +272,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	const onTouchEnd: JSX.EventHandlerUnion<HTMLInputElement, TouchEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onTouchEnd);
+		callHandler(e, mergedProps.onTouchEnd);
 
 		if (!ref || formControlContext.isReadOnly() || isDisabled()) {
 			return;
@@ -299,7 +307,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 			ref={mergeRefs((el) => {
 				context.setInputRef(el);
 				ref = el;
-			}, local.ref)}
+			}, mergedProps.ref)}
 			id={fieldProps.id()}
 			value={context.inputValue()}
 			required={formControlContext.isRequired()}
@@ -313,18 +321,18 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 			spellCheck="false"
 			aria-haspopup="listbox"
 			aria-autocomplete="list"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.listboxId() : undefined}
 			aria-activedescendant={context.activeDescendant()}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
 			aria-invalid={
-				formControlContext.validationState() === "invalid" || undefined
+				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
+			aria-required={formControlContext.isRequired() ? "true" : undefined}
+			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onClick={onClick}
 			onInput={onInput}
 			onKeyDown={onKeyDown}

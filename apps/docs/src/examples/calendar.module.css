@@ -1,0 +1,241 @@
+.calendar {
+	display: inline-block;
+	background-color: white;
+	border: 1px solid hsl(214 32% 91%);
+	border-radius: 10px;
+	padding: 16px;
+	box-shadow: 0 1px 3px rgb(0 0 0 / 0.07);
+	font-family: inherit;
+}
+
+.calendar__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 12px;
+}
+
+.calendar__heading {
+	font-size: 14px;
+	font-weight: 600;
+	color: hsl(222 47% 11%);
+}
+
+.calendar__nav_button {
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 6px;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: white;
+	color: hsl(215 16% 47%);
+	cursor: pointer;
+	font-size: 16px;
+	line-height: 1;
+	flex-shrink: 0;
+	transition: background-color 150ms, color 150ms;
+}
+
+.calendar__nav_button:hover {
+	background-color: hsl(210 40% 96%);
+	color: hsl(222 47% 11%);
+}
+
+.calendar__nav_button:focus-visible {
+	outline: 2px solid hsl(221 83% 53%);
+	outline-offset: 2px;
+}
+
+.calendar__nav_button[disabled] {
+	opacity: 0.4;
+	cursor: default;
+}
+
+.calendar__body {
+	display: flex;
+	gap: 24px;
+}
+
+.calendar__grid {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.calendar__day_name {
+	font-size: 11px;
+	font-weight: 500;
+	color: hsl(215 16% 47%);
+	text-align: center;
+	padding: 4px 0 8px;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.calendar__cell_trigger {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 9999px;
+	font-size: 13px;
+	cursor: pointer;
+	user-select: none;
+	color: hsl(222 47% 11%);
+	transition: background-color 100ms;
+}
+
+.calendar__cell_trigger:focus-visible {
+	outline: 2px solid hsl(221 83% 53%);
+	outline-offset: 1px;
+}
+
+.calendar__cell_trigger[data-selected] {
+	background-color: hsl(221 83% 53%);
+	color: white;
+}
+
+.calendar__cell_trigger[data-today] {
+	font-weight: 600;
+	color: hsl(221 83% 53%);
+}
+
+.calendar__cell_trigger[data-today][data-selected] {
+	color: white;
+}
+
+.calendar__cell_trigger[data-highlighted] {
+	background-color: hsl(210 40% 94%);
+}
+
+.calendar__cell_trigger[data-highlighted][data-selected] {
+	background-color: hsl(221 83% 47%);
+}
+
+.calendar__cell_trigger:hover:not([data-selected]):not([data-disabled]):not([data-unavailable]) {
+	background-color: hsl(210 40% 96%);
+}
+
+.calendar__cell_trigger[data-selected]:hover {
+	background-color: hsl(221 83% 47%);
+}
+
+.calendar__cell_trigger[data-disabled] {
+	opacity: 0.3;
+	cursor: default;
+}
+
+.calendar__cell_trigger[data-unavailable] {
+	text-decoration: line-through;
+	opacity: 0.4;
+	cursor: default;
+}
+
+.calendar__cell_trigger[data-outside-month] {
+	opacity: 0.2;
+}
+
+.calendar__controlled_output {
+	font-size: 12px;
+	color: hsl(215 16% 47%);
+	margin: 0;
+}
+
+/* ─── Date picker ───────────────────────────────────────────────────────────── */
+
+.datepicker {
+	display: inline-flex;
+	align-items: center;
+	border: 1px solid hsl(214 32% 91%);
+	border-radius: 8px;
+	background-color: white;
+	overflow: hidden;
+	transition: box-shadow 150ms;
+}
+
+.datepicker:focus-within {
+	box-shadow: 0 0 0 2px hsl(221 83% 53% / 0.3);
+	border-color: hsl(221 83% 53%);
+}
+
+.datepicker__input {
+	flex: 1;
+	border: none;
+	outline: none;
+	padding: 0 12px;
+	height: 38px;
+	font-size: 14px;
+	color: hsl(222 47% 11%);
+	background: transparent;
+	cursor: default;
+	min-width: 180px;
+}
+
+.datepicker__input::placeholder {
+	color: hsl(215 16% 65%);
+}
+
+.datepicker__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 38px;
+	border: none;
+	border-left: 1px solid hsl(214 32% 91%);
+	background-color: white;
+	color: hsl(215 16% 47%);
+	cursor: pointer;
+	flex-shrink: 0;
+	transition: background-color 150ms, color 150ms;
+}
+
+.datepicker__button:hover {
+	background-color: hsl(210 40% 96%);
+	color: hsl(221 83% 53%);
+}
+
+.datepicker__button:focus-visible {
+	outline: 2px solid hsl(221 83% 53%);
+	outline-offset: -2px;
+}
+
+.datepicker__button[data-expanded] {
+	background-color: hsl(210 40% 96%);
+	color: hsl(221 83% 53%);
+}
+
+.datepicker__popover {
+	z-index: 50;
+	transform-origin: var(--kb-popover-content-transform-origin);
+	animation: datepicker-hide 150ms ease-in forwards;
+}
+
+.datepicker__popover[data-expanded] {
+	animation: datepicker-show 150ms ease-out;
+}
+
+@keyframes datepicker-show {
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes datepicker-hide {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+}

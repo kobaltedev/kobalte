@@ -13,11 +13,11 @@ import {
 	today,
 } from "@internationalized/date";
 import {
-	type OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
+	type OverrideComponentProps,
 } from "@kobalte/utils";
-import { type JSX, createMemo, splitProps } from "solid-js";
+import { createMemo, type JSX, splitProps } from "solid-js";
 
 import { createDateFormatter } from "../i18n";
 import { Polymorphic } from "../polymorphic";

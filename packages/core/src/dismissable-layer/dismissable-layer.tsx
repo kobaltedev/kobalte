@@ -14,27 +14,25 @@
 
 import { contains, getDocument, mergeRefs } from "@kobalte/utils";
 import {
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	interactOutside,
+	type PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
+import { createShortcut } from "@solid-primitives/keyboard";
+import type { ValidComponent } from "@solidjs/web";
+import {
 	type Accessor,
-	type ValidComponent,
 	createEffect,
-	on,
-	onCleanup,
-	onMount,
-	splitProps,
+	createMemo,
+	omit,
+	onSettled,
 } from "solid-js";
-
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-	createEscapeKeyDown,
-	createInteractOutside,
-} from "../primitives";
 import {
 	DismissableLayerContext,
 	type DismissableLayerContextValue,
@@ -105,8 +103,8 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	let ref: HTMLElement | undefined;
 
 	const parentContext = useOptionalDismissableLayerContext();
-
-	const [local, others] = splitProps(props as DismissableLayerProps, [
+	const others = omit(
+		props as DismissableLayerProps,
 		"ref",
 		"disableOutsidePointerEvents",
 		"excludedElements",
@@ -116,8 +114,8 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 		"onInteractOutside",
 		"onDismiss",
 		"bypassTopMostLayerCheck",
-	]);
-
+	);
+	const isPointerBlocking = createMemo(() => props.disableOutsidePointerEvents);
 	const nestedLayers = new Set<Element>([]);
 
 	const registerNestedLayer = (element: Element) => {
@@ -137,7 +135,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 		}
 
 		return (
-			local.excludedElements?.some((node) => contains(node(), element)) ||
+			props.excludedElements?.some((node) => contains(node(), element)) ||
 			[...nestedLayers].some((layer) => contains(layer, element))
 		);
 	};
@@ -147,61 +145,58 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 			return;
 		}
 
-		if (!local.bypassTopMostLayerCheck && !layerStack.isTopMostLayer(ref)) {
+		if (!props.bypassTopMostLayerCheck && !layerStack.isTopMostLayer(ref)) {
 			return;
 		}
 
-		local.onPointerDownOutside?.(e);
-		local.onInteractOutside?.(e);
+		props.onPointerDownOutside?.(e);
+		props.onInteractOutside?.(e);
 
 		if (!e.defaultPrevented) {
-			local.onDismiss?.();
+			props.onDismiss?.();
 		}
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
-		local.onInteractOutside?.(e);
+		props.onFocusOutside?.(e);
+		props.onInteractOutside?.(e);
 
 		if (!e.defaultPrevented) {
-			local.onDismiss?.();
+			props.onDismiss?.();
 		}
 	};
 
-	createInteractOutside(
-		{
-			shouldExcludeElement,
-			onPointerDownOutside,
-			onFocusOutside,
-		},
-		() => ref,
-	);
-
-	createEscapeKeyDown({
-		ownerDocument: () => getDocument(ref),
-		onEscapeKeyDown: (e) => {
-			if (!ref || !layerStack.isTopMostLayer(ref)) {
+	const interactOutsideRef = interactOutside({
+		shouldExcludeElement,
+		onPointerDownOutside,
+		onFocusOutside,
+	});
+	createShortcut(
+		["Escape"],
+		(e) => {
+			if (!e || !ref || !layerStack.isTopMostLayer(ref)) {
 				return;
 			}
 
-			local.onEscapeKeyDown?.(e);
+			props.onEscapeKeyDown?.(e);
 
-			if (!e.defaultPrevented && local.onDismiss) {
+			if (!e.defaultPrevented && props.onDismiss) {
 				e.preventDefault();
-				local.onDismiss();
+				props.onDismiss();
 			}
 		},
-	});
+		{ preventDefault: false },
+	);
 
-	onMount(() => {
+	onSettled(() => {
 		if (!ref) {
 			return;
 		}
 
 		layerStack.addLayer({
 			node: ref,
-			isPointerBlocking: local.disableOutsidePointerEvents,
-			dismiss: local.onDismiss,
+			isPointerBlocking: isPointerBlocking(),
+			dismiss: props.onDismiss,
 		});
 
 		const unregisterFromParentLayer = parentContext?.registerNestedLayer(ref);
@@ -210,7 +205,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 
 		layerStack.disableBodyPointerEvents(ref);
 
-		onCleanup(() => {
+		return () => {
 			if (!ref) {
 				return;
 			}
@@ -223,52 +218,54 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 			layerStack.assignPointerEventToLayers();
 
 			layerStack.restoreBodyPointerEvents(ref);
-		});
+		};
 	});
 
 	createEffect(
-		on(
-			[() => ref, () => local.disableOutsidePointerEvents],
-			([ref, disableOutsidePointerEvents]) => {
-				if (!ref) {
-					return;
-				}
+		() => ({ ref, disabled: isPointerBlocking() }),
+		({ ref, disabled: disableOutsidePointerEvents }) => {
+			if (!ref) return;
 
-				const layer = layerStack.find(ref);
+			const layer = layerStack.find(ref);
 
-				if (layer && layer.isPointerBlocking !== disableOutsidePointerEvents) {
-					// Keep layer in sync with the prop.
-					layer.isPointerBlocking = disableOutsidePointerEvents;
+			if (layer && layer.isPointerBlocking !== disableOutsidePointerEvents) {
+				// Keep layer in sync with the prop.
+				layer.isPointerBlocking = disableOutsidePointerEvents;
 
-					// Update layers pointer-events since this layer "isPointerBlocking" has changed.
-					layerStack.assignPointerEventToLayers();
-				}
+				// Update layers pointer-events since this layer "isPointerBlocking" has changed.
+				layerStack.assignPointerEventToLayers();
+			}
 
-				if (disableOutsidePointerEvents) {
-					layerStack.disableBodyPointerEvents(ref);
-				}
+			if (disableOutsidePointerEvents) {
+				layerStack.disableBodyPointerEvents(ref);
+			}
 
-				onCleanup(() => {
-					layerStack.restoreBodyPointerEvents(ref);
-				});
-			},
-			{
-				defer: true,
-			},
-		),
+			return () => {
+				layerStack.restoreBodyPointerEvents(ref);
+			};
+		},
+		{ defer: true },
 	);
 
 	const context: DismissableLayerContextValue = {
 		registerNestedLayer,
 	};
 
+	// TODO: restore <Polymorphic> once @solidjs/web Dynamic/spread passes ref callbacks correctly
 	return (
-		<DismissableLayerContext.Provider value={context}>
-			<Polymorphic<DismissableLayerRenderProps>
-				as="div"
-				ref={mergeRefs((el) => (ref = el), local.ref)}
-				{...others}
-			/>
-		</DismissableLayerContext.Provider>
+		<DismissableLayerContext value={context}>
+			<div
+				ref={mergeRefs(
+					(el) => {
+						ref = el;
+					},
+					interactOutsideRef as (el: HTMLElement) => void,
+					props.ref as any,
+				)}
+				{...(others as any)}
+			>
+				{(others as any).children}
+			</div>
+		</DismissableLayerContext>
 	);
 }

@@ -7,20 +7,15 @@
  */
 
 import {
-	type Orientation,
 	composeEventHandlers,
 	focusWithoutScrolling,
 	isWebKit,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
-import {
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	on,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -54,10 +49,10 @@ export interface TabsTriggerCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface TabsTriggerRenderProps extends TabsTriggerCommonProps {
 	role: "tab";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	disabled: boolean;
-	"aria-selected": boolean;
-	"aria-disabled": boolean | undefined;
+	"aria-selected": "true" | "false";
+	"aria-disabled": "true" | undefined;
 	"aria-controls": string | undefined;
 	"data-key": string | undefined;
 	"data-orientation": Orientation;
@@ -87,7 +82,8 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 		props as TabsTriggerProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"id",
 		"value",
@@ -98,22 +94,23 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 		"onKeyDown",
 		"onMouseDown",
 		"onFocus",
-	]);
+	);
 
-	const id = () => local.id ?? context.generateTriggerId(local.value);
+	const id = () =>
+		mergedProps.id ?? context.generateTriggerId(mergedProps.value);
 
 	const isHighlighted = () =>
-		context.listState().selectionManager().focusedKey() === local.value;
+		context.listState().selectionManager().focusedKey() === mergedProps.value;
 
-	const isDisabled = () => local.disabled || context.isDisabled();
+	const isDisabled = () => mergedProps.disabled || context.isDisabled();
 
-	const contentId = () => context.contentIdsMap().get(local.value);
+	const contentId = () => context.contentIdsMap().get(mergedProps.value);
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
 			ref: () => ref,
 			type: "item",
-			key: local.value,
+			key: mergedProps.value,
 			textValue: "", // not applicable here
 			disabled: isDisabled(),
 		}),
@@ -121,14 +118,14 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 
 	const selectableItem = createSelectableItem(
 		{
-			key: () => local.value,
+			key: () => mergedProps.value,
 			selectionManager: () => context.listState().selectionManager(),
 			disabled: isDisabled,
 		},
 		() => ref,
 	);
 
-	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// Force focusing the trigger on click on safari.
 		if (isWebKit()) {
 			focusWithoutScrolling(e.currentTarget);
@@ -136,21 +133,22 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 	};
 
 	createEffect(
-		on([() => local.value, id], ([value, id]) => {
-			context.triggerIdsMap().set(value, id);
-		}),
+		() => [mergedProps.value, id()] as const,
+		([value, triggerId]) => {
+			context.triggerIdsMap().set(value, triggerId);
+		},
 	);
 
 	return (
 		<Polymorphic<TabsTriggerRenderProps>
 			as="button"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 			id={id()}
 			role="tab"
-			tabIndex={!isDisabled() ? selectableItem.tabIndex() : undefined}
+			tabindex={!isDisabled() ? selectableItem.tabIndex() : undefined}
 			disabled={isDisabled()}
-			aria-selected={selectableItem.isSelected()}
-			aria-disabled={isDisabled() || undefined}
+			aria-selected={selectableItem.isSelected() ? "true" : "false"}
+			aria-disabled={isDisabled() ? "true" : undefined}
 			aria-controls={selectableItem.isSelected() ? contentId() : undefined}
 			data-key={selectableItem.dataKey()}
 			data-orientation={context.orientation()}
@@ -158,27 +156,30 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 			data-highlighted={isHighlighted() ? "" : undefined}
 			data-disabled={isDisabled() ? "" : undefined}
 			onPointerDown={composeEventHandlers([
-				local.onPointerDown,
+				mergedProps.onPointerDown,
 				selectableItem.onPointerDown,
 			])}
 			onPointerUp={composeEventHandlers([
-				local.onPointerUp,
+				mergedProps.onPointerUp,
 				selectableItem.onPointerUp,
 			])}
 			onClick={composeEventHandlers([
-				local.onClick,
+				mergedProps.onClick,
 				selectableItem.onClick,
 				onClick,
 			])}
 			onKeyDown={composeEventHandlers([
-				local.onKeyDown,
+				mergedProps.onKeyDown,
 				selectableItem.onKeyDown,
 			])}
 			onMouseDown={composeEventHandlers([
-				local.onMouseDown,
+				mergedProps.onMouseDown,
 				selectableItem.onMouseDown,
 			])}
-			onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+			onFocus={composeEventHandlers([
+				mergedProps.onFocus,
+				selectableItem.onFocus,
+			])}
 			{...others}
 		/>
 	);

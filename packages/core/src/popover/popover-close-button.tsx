@@ -1,10 +1,6 @@
 import { callHandler } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -37,13 +33,11 @@ export function PopoverCloseButton<T extends ValidComponent = "button">(
 ) {
 	const context = usePopoverContext();
 
-	const [local, others] = splitProps(props as PopoverCloseButtonProps, [
-		"aria-label",
-		"onClick",
-	]);
+	const p = props as PopoverCloseButtonProps;
+	const others = omit(p, "aria-label", "onClick");
 
-	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+		callHandler(e, p.onClick);
 		context.close();
 	};
 
@@ -53,7 +47,7 @@ export function PopoverCloseButton<T extends ValidComponent = "button">(
 				Omit<PopoverCloseButtonRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-label={local["aria-label"] || context.translations().dismiss}
+			aria-label={p["aria-label"] || context.translations().dismiss}
 			onClick={onClick}
 			{...context.dataset()}
 			{...others}

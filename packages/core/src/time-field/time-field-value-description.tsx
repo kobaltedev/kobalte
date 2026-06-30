@@ -1,4 +1,4 @@
-import { Show, createEffect, onCleanup } from "solid-js";
+import { createEffect, Show } from "solid-js";
 import { useTimeFieldContext } from "./time-field-context";
 
 export function TimeFieldValueDescription() {
@@ -8,13 +8,13 @@ export function TimeFieldValueDescription() {
 
 	const isValid = () => context.value()?.toString() !== undefined;
 
-	createEffect(() => {
-		if (!isValid()) {
-			return;
-		}
-
-		onCleanup(context.registerValueDescriptionId(defaultId));
-	});
+	createEffect(
+		() => isValid(),
+		(valid) => {
+			if (!valid) return;
+			return context.registerValueDescriptionId(defaultId);
+		},
+	);
 
 	return (
 		<Show when={isValid()}>

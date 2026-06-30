@@ -21,18 +21,18 @@ import {
 } from "./image-root";
 
 export type {
-	ImageFallbackOptions,
 	ImageFallbackCommonProps,
-	ImageFallbackRenderProps,
+	ImageFallbackOptions,
 	ImageFallbackProps,
-	ImageImgOptions,
+	ImageFallbackRenderProps,
 	ImageImgCommonProps,
-	ImageImgRenderProps,
+	ImageImgOptions,
 	ImageImgProps,
-	ImageRootOptions,
+	ImageImgRenderProps,
 	ImageRootCommonProps,
-	ImageRootRenderProps,
+	ImageRootOptions,
 	ImageRootProps,
+	ImageRootRenderProps,
 };
 export { Fallback, Img, Root };
 
@@ -44,4 +44,4 @@ export const Image = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useImageContext, type ImageContextValue } from "./image-context";
+export { type ImageContextValue, useImageContext } from "./image-context";

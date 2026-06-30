@@ -1,5 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { type ValidComponent, createEffect, onCleanup } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, onCleanup } from "solid-js";
 
 import {
 	type ElementOf,
@@ -43,7 +44,12 @@ export function RadioGroupItemDescription<T extends ValidComponent = "div">(
 		props as RadioGroupItemDescriptionProps,
 	);
 
-	createEffect(() => onCleanup(context.registerDescription(mergedProps.id)));
+	createEffect(
+		() => mergedProps.id,
+		(id) => {
+			onCleanup(context.registerDescription(id));
+		},
+	);
 
 	return (
 		<Polymorphic<RadioGroupItemDescriptionRenderProps>

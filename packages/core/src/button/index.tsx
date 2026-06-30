@@ -7,10 +7,10 @@ import {
 } from "./button-root";
 
 export type {
-	ButtonRootOptions,
 	ButtonRootCommonProps,
-	ButtonRootRenderProps,
+	ButtonRootOptions,
 	ButtonRootProps,
+	ButtonRootRenderProps,
 };
 export { Root };
 

@@ -7,38 +7,37 @@
  */
 
 import {
-	OverrideComponentProps,
-	type ValidationState,
 	access,
 	callHandler,
 	createGenerateId,
 	isFunction,
 	mergeDefaultProps,
 	mergeRefs,
+	OverrideComponentProps,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
-	type ValidComponent,
 	children,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
-
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createFormResetListener, createToggleState } from "../primitives";
+import { createToggleState } from "../primitives";
 import {
 	CheckboxContext,
 	type CheckboxContextValue,
@@ -140,43 +139,60 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		props as CheckboxRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
+	const formControlProps = omit(
 		mergedProps,
-		[
-			"ref",
-			"children",
-			"value",
-			"checked",
-			"defaultChecked",
-			"indeterminate",
-			"onChange",
-			"onPointerDown",
-		],
-		FORM_CONTROL_PROP_NAMES,
+		"ref",
+		"children",
+		"value",
+		"checked",
+		"defaultChecked",
+		"indeterminate",
+		"onChange",
+		"onPointerDown",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"children",
+		"value",
+		"checked",
+		"defaultChecked",
+		"indeterminate",
+		"onChange",
+		"onPointerDown",
+		"id",
+		"name",
+		"validationState",
+		"required",
+		"disabled",
+		"readOnly",
 	);
 
-	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 	const [isFocused, setIsFocused] = createSignal(false);
 
 	const { formControlContext } = createFormControl(formControlProps);
 
 	const state = createToggleState({
-		isSelected: () => local.checked,
-		defaultIsSelected: () => local.defaultChecked,
-		onSelectedChange: (selected) => local.onChange?.(selected),
+		isSelected: () => mergedProps.checked,
+		defaultIsSelected: () => mergedProps.defaultChecked,
+		onSelectedChange: (selected) => mergedProps.onChange?.(selected),
 		isDisabled: () => formControlContext.isDisabled(),
 		isReadOnly: () => formControlContext.isReadOnly(),
 	});
 
 	createFormResetListener(
 		() => ref,
-		() => state.setIsSelected(local.defaultChecked ?? false),
+		() => state.setIsSelected(mergedProps.defaultChecked ?? false),
 	);
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		// For consistency with native, prevent the input blurs on pointer down.
 		if (isFocused()) {
@@ -186,14 +202,14 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 
 	const dataset: Accessor<CheckboxDataSet> = createMemo(() => ({
 		"data-checked": state.isSelected() ? "" : undefined,
-		"data-indeterminate": local.indeterminate ? "" : undefined,
+		"data-indeterminate": mergedProps.indeterminate ? "" : undefined,
 	}));
 
 	const context: CheckboxContextValue = {
-		value: () => local.value!,
+		value: () => mergedProps.value!,
 		dataset,
 		checked: () => state.isSelected(),
-		indeterminate: () => local.indeterminate ?? false,
+		indeterminate: () => mergedProps.indeterminate ?? false,
 		inputRef,
 		generateId: createGenerateId(() => access(formControlProps.id)!),
 		toggle: () => state.toggle(),
@@ -203,11 +219,11 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<CheckboxContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<CheckboxContext value={context}>
 				<Polymorphic<CheckboxRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
+					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 					role="group"
 					id={access(formControlProps.id)}
 					onPointerDown={onPointerDown}
@@ -216,11 +232,11 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 					{...others}
 				>
 					<CheckboxRootChild state={context}>
-						{local.children}
+						{mergedProps.children}
 					</CheckboxRootChild>
 				</Polymorphic>
-			</CheckboxContext.Provider>
-		</FormControlContext.Provider>
+			</CheckboxContext>
+		</FormControlContext>
 	);
 }
 

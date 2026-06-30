@@ -1,13 +1,6 @@
-import {
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	onCleanup,
-	splitProps,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -42,31 +35,33 @@ export function ToastProgressFill<T extends ValidComponent = "div">(
 	const rootContext = useToastRegionContext();
 	const context = useToastContext();
 
-	const [local, others] = splitProps(props as ToastProgressFillProps, [
-		"style",
-	]);
+	const others = omit(props as ToastProgressFillProps, "style");
 
 	const [lifeTime, setLifeTime] = createSignal(100);
 	let totalElapsedTime = 0;
 
-	createEffect(() => {
-		if (rootContext.isPaused() || context.isPersistent()) {
-			return;
-		}
+	createEffect(
+		() => [rootContext.isPaused(), context.isPersistent()] as const,
+		([isPaused, isPersistent]) => {
+			if (isPaused || isPersistent) return;
 
-		const intervalId = setInterval(() => {
-			const elapsedTime =
-				new Date().getTime() - context.closeTimerStartTime() + totalElapsedTime;
+			const intervalId = setInterval(() => {
+				const elapsedTime =
+					new Date().getTime() -
+					context.closeTimerStartTime() +
+					totalElapsedTime;
 
-			const life = Math.trunc(100 - (elapsedTime / context.duration()) * 100);
-			setLifeTime(life < 0 ? 0 : life);
-		});
+				const life = Math.trunc(100 - (elapsedTime / context.duration()) * 100);
+				setLifeTime(life < 0 ? 0 : life);
+			});
 
-		onCleanup(() => {
-			totalElapsedTime += new Date().getTime() - context.closeTimerStartTime();
-			clearInterval(intervalId);
-		});
-	});
+			return () => {
+				totalElapsedTime +=
+					new Date().getTime() - context.closeTimerStartTime();
+				clearInterval(intervalId);
+			};
+		},
+	);
 
 	return (
 		<Polymorphic<ToastProgressFillRenderProps>
@@ -75,7 +70,7 @@ export function ToastProgressFill<T extends ValidComponent = "div">(
 				{
 					"--kb-toast-progress-fill-width": `${lifeTime()}%`,
 				},
-				local.style,
+				props.style,
 			)}
 			{...others}
 		/>

@@ -7,15 +7,9 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import {
-	type Component,
-	type ValidComponent,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit } from "solid-js";
 import * as Collapsible from "../collapsible";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useAccordionItemContext } from "./accordion-item-context";
@@ -55,9 +49,12 @@ export function AccordionContent<T extends ValidComponent = "div">(
 		props as AccordionContentProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["id", "style"]);
+	const others = omit(mergedProps, "id", "style");
 
-	createEffect(() => onCleanup(itemContext.registerContentId(local.id)));
+	createEffect(
+		() => mergedProps.id,
+		(id) => itemContext.registerContentId(id),
+	);
 
 	return (
 		<Collapsible.Content<
@@ -76,7 +73,7 @@ export function AccordionContent<T extends ValidComponent = "div">(
 						"var(--kb-collapsible-content-height)",
 					"--kb-accordion-content-width": "var(--kb-collapsible-content-width)",
 				},
-				local.style,
+				mergedProps.style,
 			)}
 			{...others}
 		/>

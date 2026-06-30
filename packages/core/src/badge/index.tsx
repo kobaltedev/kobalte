@@ -7,10 +7,10 @@ import {
 } from "./badge-root";
 
 export type {
-	BadgeRootOptions,
 	BadgeRootCommonProps,
-	BadgeRootRenderProps,
+	BadgeRootOptions,
 	BadgeRootProps,
+	BadgeRootRenderProps,
 };
 export { Root };
 

@@ -5,19 +5,12 @@
  * Credits to the React Spectrum team:
  * https://github.com/adobe/react-spectrum/blob/703ab7b4559ecd4fc611e7f2c0e758867990fe01/packages/@react-spectrum/tabs/src/Tabs.tsx
  */
-import {
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	on,
-	onMount,
-	splitProps,
-} from "solid-js";
 
 import type { Orientation } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import { createResizeObserver } from "@solid-primitives/resize-observer";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, omit, onSettled } from "solid-js";
 import { useLocale } from "../i18n";
 import {
 	type ElementOf,
@@ -50,7 +43,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 ) {
 	const context = useTabsContext();
 
-	const [local, others] = splitProps(props as TabsIndicatorProps, ["style"]);
+	const others = omit(props as TabsIndicatorProps, "style");
 
 	const [style, setStyle] = createSignal<JSX.CSSProperties>({
 		width: undefined,
@@ -98,7 +91,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 
 	// For the first run, wait for all tabs to be mounted and registered in tabs DOM collection
 	// before computing the style.
-	onMount(() => {
+	onSettled(() => {
 		queueMicrotask(() => {
 			computeStyle();
 		});
@@ -106,13 +99,11 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 
 	// Compute style normally for subsequent runs.
 	createEffect(
-		on(
-			[context.selectedTab, context.orientation, direction],
-			() => {
-				computeStyle();
-			},
-			{ defer: true },
-		),
+		() => [context.selectedTab(), context.orientation(), direction()] as const,
+		() => {
+			computeStyle();
+		},
+		{ defer: true },
 	);
 
 	const [resizing, setResizing] = createSignal(false);
@@ -142,7 +133,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		<Polymorphic<TabsIndicatorRenderProps>
 			as="div"
 			role="presentation"
-			style={combineStyle(style(), local.style)}
+			style={combineStyle(style(), props.style)}
 			data-orientation={context.orientation()}
 			data-resizing={resizing()}
 			{...others}

@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.cjs";
 
 @font-face {
 	font-family: "Lexend";
@@ -432,7 +431,8 @@ pre.shiki {
 
 	padding: 12px;
 
-	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+	font-family:
+		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
 		"Courier New", monospace;
 }
 
@@ -634,7 +634,8 @@ pre .inline-completions ul.dropdown {
 	width: 240px;
 	background-color: gainsboro;
 	color: grey;
-	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+	font-family:
+		ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
 		"Courier New", monospace;
 	font-size: 0.8rem;
 	margin: 0;

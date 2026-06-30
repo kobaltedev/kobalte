@@ -1,5 +1,5 @@
 import { SegmentedControl } from "@kobalte/core/segmented-control";
-import { For, createSignal } from "solid-js";
+import { createSignal, For } from "solid-js";
 
 import style from "./segmented-control.module.css";
 

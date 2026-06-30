@@ -1,24 +1,23 @@
 import {
-	type OverrideComponentProps,
 	contains,
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
+	type OverrideComponentProps,
 } from "@kobalte/utils";
-import { type JSX, Show, createEffect, onCleanup, splitProps } from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import { createEffect, type JSX, onCleanup, Show, splitProps } from "solid-js";
 import createPreventScroll from "solid-prevent-scroll";
 import { DismissableLayer } from "../dismissable-layer";
 import { useFormControlContext } from "../form-control";
 import type { AsChildProp } from "../polymorphic";
 import { Popper } from "../popper";
 import {
+	createFocusScope,
+	createHideOutside,
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
 	type PointerDownOutsideEvent,
-	createFocusScope,
-	createHideOutside,
 } from "../primitives";
 import { useDatePickerContext } from "./date-picker-context";
 

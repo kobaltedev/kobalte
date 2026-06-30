@@ -1,11 +1,6 @@
 import { combineStyle } from "@solid-primitives/props";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	createMemo,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createMemo, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import * as Slider from "../slider";
 import { useColorSliderContext } from "./color-slider-context";
@@ -32,7 +27,7 @@ export function ColorSliderThumb<T extends ValidComponent = "span">(
 ) {
 	const context = useColorSliderContext();
 
-	const [local, others] = splitProps(props, ["style"]);
+	const others = omit(props, "style");
 
 	const valueText = createMemo(() => {
 		const formattedValue = context
@@ -59,7 +54,7 @@ export function ColorSliderThumb<T extends ValidComponent = "span">(
 					"forced-color-adjust": "none",
 					"--kb-color-current": context.value().toString(),
 				},
-				local.style,
+				props.style,
 			)}
 			aria-valuetext={valueText()}
 			{...others}

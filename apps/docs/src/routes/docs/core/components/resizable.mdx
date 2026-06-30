@@ -1,0 +1,443 @@
+import { Kbd } from "../../../../components";
+
+# Resizable
+
+A set of panels that can be resized by dragging the handles between them. Supports horizontal and vertical layouts, collapsible panels, pixel or fraction sizes, and full keyboard navigation.
+
+## Import
+
+```ts
+import { Resizable } from "@kobalte/core/resizable";
+// or
+import { Root, Panel, Handle, useResizableContext, useResizablePanelContext } from "@kobalte/core/resizable";
+```
+
+## Features
+
+- Horizontal and vertical layouts.
+- Sizes expressed as fractions (`0`–`1`) or absolute pixel strings (`"200px"`).
+- Per-panel `minSize` and `maxSize` constraints.
+- Collapsible panels with configurable collapsed size and overdrag threshold.
+- `initialSizes` on the root or `initialSize` on individual panels.
+- Controlled mode via `sizes` / `onSizesChange`.
+- Programmatic `resize`, `collapse`, and `expand` via `useResizableContext` or render-prop children.
+- Nested resizables supported.
+- Full keyboard navigation — arrow keys resize, <Kbd>Shift</Kbd> + arrow jumps to edge, <Kbd>Enter</Kbd> toggles collapse on an adjacent collapsible panel.
+- ARIA `role="separator"` with `aria-valuenow` / `aria-valuemin` / `aria-valuemax` on handles.
+- Global cursor style managed automatically during drag.
+- Handle intersection zones for seamless nested layouts.
+
+## Anatomy
+
+- **Resizable:** The root container that measures itself, manages panel sizes, and coordinates all panels and handles.
+- **Resizable.Panel:** A panel whose `flex-basis` is driven by the root's size state.
+- **Resizable.Handle:** A draggable separator between two panels.
+
+```tsx
+<Resizable>
+	<Resizable.Panel />
+	<Resizable.Handle />
+	<Resizable.Panel />
+</Resizable>
+```
+
+## Example
+
+```tsx
+import { Resizable } from "@kobalte/core/resizable";
+import "./style.css";
+
+function App() {
+  return (
+    <Resizable class="resizable">
+      <Resizable.Panel class="resizable__panel">Left</Resizable.Panel>
+      <Resizable.Handle class="resizable__handle" aria-label="Resize panels" />
+      <Resizable.Panel class="resizable__panel">Right</Resizable.Panel>
+    </Resizable>
+  );
+}
+```
+
+```css
+.resizable {
+  width: 600px;
+  height: 300px;
+  border: 1px solid hsl(240 6% 90%);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.resizable__panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: hsl(210 40% 98%);
+}
+
+.resizable__handle {
+  width: 5px;
+  background: hsl(240 6% 90%);
+  cursor: col-resize;
+  flex-shrink: 0;
+  transition: background 150ms;
+}
+
+.resizable__handle:hover,
+.resizable__handle[data-active] {
+  background: hsl(200 98% 39%);
+}
+```
+
+## Usage
+
+### Vertical layout
+
+Use `orientation="vertical"` to stack panels top-to-bottom. Handles then resize vertically.
+
+```tsx
+<Resizable orientation="vertical" class="resizable">
+  <Resizable.Panel class="resizable__panel">Top</Resizable.Panel>
+  <Resizable.Handle
+    class="resizable__handle resizable__handle--vertical"
+    aria-label="Resize panels"
+  />
+  <Resizable.Panel class="resizable__panel">Bottom</Resizable.Panel>
+</Resizable>
+```
+
+```css
+.resizable__handle--vertical {
+  height: 5px;
+  width: auto;
+  cursor: row-resize;
+}
+```
+
+### Three panels
+
+Place a handle between each adjacent pair of panels. Each handle operates independently.
+
+```tsx
+<Resizable class="resizable">
+  <Resizable.Panel class="resizable__panel">Left</Resizable.Panel>
+  <Resizable.Handle aria-label="Resize left-center" class="resizable__handle" />
+  <Resizable.Panel class="resizable__panel">Center</Resizable.Panel>
+  <Resizable.Handle aria-label="Resize center-right" class="resizable__handle" />
+  <Resizable.Panel class="resizable__panel">Right</Resizable.Panel>
+</Resizable>
+```
+
+### Collapsible panel
+
+Set `collapsible` on a panel to let it be dragged completely closed. `collapseThreshold` controls how far past `collapsedSize` the user must drag to snap it shut. Press <Kbd>Enter</Kbd> on the adjacent handle to toggle it with the keyboard.
+
+```tsx
+<Resizable class="resizable">
+  <Resizable.Panel
+    collapsible
+    collapsedSize={0}
+    collapseThreshold={0.1}
+    minSize={0.15}
+    class="resizable__panel"
+  >
+    {(panel) => (
+      <span>{panel.collapsed ? "—" : "Sidebar"}</span>
+    )}
+  </Resizable.Panel>
+  <Resizable.Handle class="resizable__handle" aria-label="Resize sidebar" />
+  <Resizable.Panel class="resizable__panel">Content</Resizable.Panel>
+</Resizable>
+```
+
+### Min and max sizes
+
+Constrain a panel to a range of sizes. Sizes are fractions (`0`–`1`) unless a pixel string is passed.
+
+```tsx
+<Resizable class="resizable">
+  <Resizable.Panel minSize={0.2} maxSize={0.5} class="resizable__panel">
+    {() => "20% – 50%"}
+  </Resizable.Panel>
+  <Resizable.Handle class="resizable__handle" aria-label="Resize panels" />
+  <Resizable.Panel class="resizable__panel">Flexible</Resizable.Panel>
+</Resizable>
+```
+
+### Pixel sizes
+
+Sizes can be absolute pixel strings. The layout converts them to fractions based on the root's measured width (or height for vertical layouts).
+
+```tsx
+<Resizable class="resizable">
+  <Resizable.Panel initialSize="200px" minSize="120px" class="resizable__panel">
+    200px start
+  </Resizable.Panel>
+  <Resizable.Handle class="resizable__handle" aria-label="Resize panels" />
+  <Resizable.Panel class="resizable__panel">Flexible</Resizable.Panel>
+</Resizable>
+```
+
+### Controlled sizes
+
+Pass `sizes` and `onSizesChange` to take full control of the size state. Both handles and programmatic APIs still work normally.
+
+```tsx
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+  const [sizes, setSizes] = createSignal([0.5, 0.5]);
+
+  return (
+    <>
+      <Resizable
+        class="resizable"
+        sizes={sizes()}
+        onSizesChange={setSizes}
+      >
+        <Resizable.Panel class="resizable__panel">
+          Left ({(sizes()[0]! * 100).toFixed(0)}%)
+        </Resizable.Panel>
+        <Resizable.Handle class="resizable__handle" aria-label="Resize panels" />
+        <Resizable.Panel class="resizable__panel">
+          Right ({(sizes()[1]! * 100).toFixed(0)}%)
+        </Resizable.Panel>
+      </Resizable>
+      <button onClick={() => setSizes([0.3, 0.7])}>30 / 70</button>
+      <button onClick={() => setSizes([0.5, 0.5])}>Equal</button>
+    </>
+  );
+}
+```
+
+### Programmatic resize via context
+
+`useResizableContext` (or `Resizable.useContext`) returns `resize`, `collapse`, and `expand` functions. Call them from any component rendered inside `<Resizable>`.
+
+```tsx
+import { Resizable, useResizableContext } from "@kobalte/core/resizable";
+
+function Controls() {
+  const ctx = useResizableContext();
+
+  return (
+    <div>
+      <button onClick={() => ctx.collapse(0)}>Collapse sidebar</button>
+      <button onClick={() => ctx.expand(0)}>Expand sidebar</button>
+      <button onClick={() => ctx.resize(0, 0.5)}>Equal split</button>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Resizable class="resizable">
+      <Resizable.Panel collapsible minSize={0.15} collapsedSize={0} collapseThreshold={0.05} class="resizable__panel">
+        Sidebar
+      </Resizable.Panel>
+      <Resizable.Handle class="resizable__handle" aria-label="Resize" />
+      <Resizable.Panel class="resizable__panel">
+        <Controls />
+      </Resizable.Panel>
+    </Resizable>
+  );
+}
+```
+
+### Programmatic resize via render prop
+
+The render-prop form of `<Resizable>` passes the same API directly into the children function without needing a context hook.
+
+```tsx
+<Resizable class="resizable">
+  {(root) => (
+    <>
+      <Resizable.Panel class="resizable__panel">Left</Resizable.Panel>
+      <Resizable.Handle class="resizable__handle" aria-label="Resize" />
+      <Resizable.Panel class="resizable__panel">
+        <button onClick={() => root.resize(0, 0.3)}>30 / 70</button>
+      </Resizable.Panel>
+    </>
+  )}
+</Resizable>
+```
+
+### Nested layouts
+
+Nest a vertical `<Resizable>` inside a panel of a horizontal one. Handles across boundaries work correctly.
+
+```tsx
+<Resizable class="resizable">
+  <Resizable.Panel class="resizable__panel">Left</Resizable.Panel>
+  <Resizable.Handle class="resizable__handle" aria-label="Resize left-right" />
+  <Resizable.Panel style={{ padding: 0, overflow: "hidden" }}>
+    <Resizable style={{ width: "100%", height: "100%" }} orientation="vertical">
+      <Resizable.Panel class="resizable__panel">Top-right</Resizable.Panel>
+      <Resizable.Handle
+        class="resizable__handle resizable__handle--vertical"
+        aria-label="Resize top-bottom"
+      />
+      <Resizable.Panel class="resizable__panel">Bottom-right</Resizable.Panel>
+    </Resizable>
+  </Resizable.Panel>
+</Resizable>
+```
+
+## API Reference
+
+### Resizable
+
+`Resizable` is equivalent to the `Root` import from `@kobalte/core/resizable`.
+
+| Prop | Description |
+| :--- | :--- |
+| orientation | `"horizontal" \| "vertical"` <br/> Orientation of the resizable layout. **Default:** `"horizontal"` |
+| sizes | `number[]` <br/> Controlled panel sizes as fractions (0–1). |
+| onSizesChange | `(sizes: number[]) => void` <br/> Event handler called when panel sizes change. |
+| initialSizes | `ResizableSize[]` <br/> Initial sizes for panels in order. Overridden by `initialSize` on individual panels. |
+| keyboardDelta | `ResizableSize` <br/> Delta applied per arrow-key press. **Default:** `0.1` |
+| handleCursorStyle | `boolean` <br/> Whether the component manages the global cursor style during drag. **Default:** `true` |
+
+The render-prop form of `children` receives a `ResizableRootChildrenProps` object:
+
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| orientation | `"horizontal" \| "vertical"` | Current orientation. |
+| sizes | `number[]` | Current panel sizes as fractions (0–1). |
+| setSizes | `Setter<number[]>` | Directly set all panel sizes. |
+| keyboardDelta | `ResizableSize` | Delta applied per arrow-key press. |
+| handleCursorStyle | `boolean` | Whether global cursor style is managed during drag. |
+| resize | `(panelIndex, size, strategy?) => void` | Resize a panel to the given size. |
+| collapse | `(panelIndex, strategy?) => void` | Collapse a panel to its `collapsedSize`. |
+| expand | `(panelIndex, strategy?) => void` | Expand a panel from its collapsed state. |
+
+| Data attribute | Description |
+| :--- | :--- |
+| data-kb-resizable-root | Present on every root element. |
+| data-orientation | `"horizontal"` or `"vertical"`. |
+
+### Resizable.Panel
+
+| Prop | Description |
+| :--- | :--- |
+| initialSize | `ResizableSize` <br/> Initial size as a fraction (0–1) or pixel string. Prefer fractions for SSR to avoid layout shifts. |
+| minSize | `ResizableSize` <br/> Minimum size. **Default:** `0` |
+| maxSize | `ResizableSize` <br/> Maximum size. **Default:** `1` |
+| collapsible | `boolean` <br/> Whether this panel can be fully collapsed. **Default:** `false` |
+| collapsedSize | `ResizableSize` <br/> The size the panel collapses to. **Default:** `0` |
+| collapseThreshold | `ResizableSize` <br/> How much the user must overdrag past `collapsedSize` to trigger collapse. **Default:** `0.05` |
+| onResize | `(size: number) => void` <br/> Fired when the panel is resized. |
+| onCollapse | `(size: number) => void` <br/> Fired when the panel collapses. |
+| onExpand | `(size: number) => void` <br/> Fired when the panel expands. |
+| panelId | `string` <br/> The `id` attribute of the panel element. Auto-generated if not provided. |
+
+The render-prop form of `children` receives a `ResizablePanelChildrenProps` object:
+
+| Property | Type | Description |
+| :--- | :--- | :--- |
+| size | `number` | Current size as a fraction (0–1). |
+| minSize | `ResizableSize` | Configured minimum size. |
+| maxSize | `ResizableSize` | Configured maximum size. |
+| collapsible | `boolean` | Whether the panel can be fully collapsed. |
+| collapsedSize | `ResizableSize` | Size the panel collapses to. |
+| collapseThreshold | `ResizableSize` | Overdrag threshold required to trigger collapse. |
+| collapsed | `boolean` | Whether the panel is currently collapsed. |
+| resize | `(size, strategy?) => void` | Resize this panel. |
+| collapse | `(strategy?) => void` | Collapse this panel. |
+| expand | `(strategy?) => void` | Expand this panel. |
+| panelId | `string` | The HTML `id` attribute of the panel element. |
+
+| Data attribute | Description |
+| :--- | :--- |
+| data-kb-resizable-panel | Present on every panel element. |
+| data-orientation | `"horizontal"` or `"vertical"`. |
+| data-collapsed | Present when the panel is collapsed. |
+| data-expanded | Present when a collapsible panel is expanded. |
+
+### Resizable.Handle
+
+| Prop | Description |
+| :--- | :--- |
+| startIntersection | `boolean` <br/> Whether the handle exposes an intersection zone at its start edge (left/top). Useful for seamless nested layouts. **Default:** `true` |
+| endIntersection | `boolean` <br/> Whether the handle exposes an intersection zone at its end edge (right/bottom). **Default:** `true` |
+| altKey | `boolean \| "only"` <br/> Whether Alt-key resize mode is enabled. `"only"` makes it the exclusive resize method. **Default:** `true` |
+| disabled | `boolean` <br/> Whether the handle is disabled. |
+| onHandleDragStart | `(event: PointerEvent) => void` <br/> Fired when the handle starts being dragged. Call `event.preventDefault()` to cancel. |
+| onHandleDrag | `(event: CustomEvent) => void` <br/> Fired while the handle is being dragged. Call `event.preventDefault()` to cancel. |
+| onHandleDragEnd | `(event: PointerEvent \| TouchEvent \| MouseEvent) => void` <br/> Fired when the drag ends. |
+
+| Data attribute | Description |
+| :--- | :--- |
+| data-kb-resizable-handle | Present on every handle element. |
+| data-orientation | `"horizontal"` or `"vertical"`. |
+| data-active | Present when the handle is active (hovered, focused, or being dragged). |
+| data-dragging | Present while the handle is being dragged. |
+
+### useResizableContext
+
+Returns the `ResizableContextValue` object. Must be called inside a `<Resizable>`. Also available as `Resizable.useContext`.
+
+```tsx
+const ctx = useResizableContext();
+
+ctx.orientation()      // "horizontal" | "vertical"
+ctx.sizes()            // number[] — fractions (0–1)
+ctx.setSizes           // Setter<number[]>
+ctx.keyboardDelta()    // ResizableSize
+ctx.handleCursorStyle() // boolean
+ctx.resize(index, size, strategy?)  // resize panel at index
+ctx.collapse(index, strategy?)      // collapse panel at index
+ctx.expand(index, strategy?)        // expand panel at index
+```
+
+### useResizablePanelContext
+
+Returns the `ResizablePanelContextValue` object. Must be called inside a `<Resizable.Panel>`. Also available as `Resizable.usePanelContext`.
+
+```tsx
+const ctx = useResizablePanelContext();
+
+ctx.size()               // number — current fraction (0–1)
+ctx.minSize()            // ResizableSize
+ctx.maxSize()            // ResizableSize
+ctx.collapsible()        // boolean
+ctx.collapsedSize()      // ResizableSize
+ctx.collapseThreshold()  // ResizableSize
+ctx.collapsed()          // boolean
+ctx.panelId()            // string — the element id
+ctx.resize(size, strategy?)   // resize this panel
+ctx.collapse(strategy?)       // collapse this panel
+ctx.expand(strategy?)         // expand this panel
+```
+
+### ResizeStrategy
+
+Controls which neighbouring panels absorb the size change during a resize.
+
+| Value | Description |
+| :--- | :--- |
+| `"preceding"` | Only panels before the target give or receive space. |
+| `"following"` | Only panels after the target give or receive space. |
+| `"both"` | Space is shared across both sides. **Default for programmatic APIs.** |
+
+## Rendered elements
+
+| Component | Default rendered element |
+| :--- | :--- |
+| `Resizable` | `div` |
+| `Resizable.Panel` | `div` |
+| `Resizable.Handle` | `button` |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key | Description |
+| :--- | :--- |
+| <Kbd>ArrowLeft</Kbd> / <Kbd>ArrowRight</Kbd> | Resize panels horizontally by `keyboardDelta`. |
+| <Kbd>ArrowUp</Kbd> / <Kbd>ArrowDown</Kbd> | Resize panels vertically by `keyboardDelta`. |
+| <Kbd>Shift</Kbd> + <Kbd>Arrow</Kbd> | Jump the adjacent panel to its minimum or maximum size. |
+| <Kbd>Home</Kbd> | Jump to the minimum allowed size in the current direction. |
+| <Kbd>End</Kbd> | Jump to the maximum allowed size in the current direction. |
+| <Kbd>Enter</Kbd> | Toggle collapse / expand on the nearest collapsible adjacent panel. |
+
+> Resize algorithms and handle interaction adapted from [corvu/resizable](https://github.com/corvudev/corvu/tree/main/packages/resizable) by Jasmin Noetzli (MIT).

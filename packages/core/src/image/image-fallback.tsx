@@ -6,13 +6,8 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/avatar/src/Avatar.tsx
  */
 
-import {
-	Show,
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	onCleanup,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, Show } from "solid-js";
 
 import {
 	type ElementOf,
@@ -46,14 +41,15 @@ export function ImageFallback<T extends ValidComponent = "span">(
 		context.fallbackDelay() === undefined,
 	);
 
-	createEffect(() => {
-		const delayMs = context.fallbackDelay();
-
-		if (delayMs !== undefined) {
-			const timerId = window.setTimeout(() => setCanRender(true), delayMs);
-			onCleanup(() => window.clearTimeout(timerId));
-		}
-	});
+	createEffect(
+		() => context.fallbackDelay(),
+		(delayMs) => {
+			if (delayMs !== undefined) {
+				const timerId = window.setTimeout(() => setCanRender(true), delayMs);
+				return () => window.clearTimeout(timerId);
+			}
+		},
+	);
 
 	return (
 		<Show when={canRender() && context.imageLoadingStatus() !== "loaded"}>

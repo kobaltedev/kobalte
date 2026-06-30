@@ -1,17 +1,11 @@
-import {
-	type JSX,
-	type ValidComponent,
-	createSignal,
-	splitProps,
-} from "solid-js";
-
+import { composeEventHandlers, mergeRefs } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createSignal, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-
-import { composeEventHandlers, mergeRefs } from "@kobalte/utils";
 import { useFileFieldContext } from "./file-field-context";
 import { isDragEventWithFiles } from "./util";
 
@@ -33,7 +27,7 @@ export interface FileFieldDropzoneRenderProps
 	"aria-label": "dropzone";
 	role: "button";
 	tabindex: "0";
-	"aria-disabled": boolean | undefined;
+	"aria-disabled": "true" | undefined;
 	"data-dragging": boolean;
 }
 
@@ -48,14 +42,15 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 	const [isDragging, setIsDragging] = createSignal(false);
 	const context = useFileFieldContext();
 
-	const [local, others] = splitProps(props as FileFieldDropzoneProps, [
+	const others = omit(
+		props as FileFieldDropzoneProps,
 		"ref",
 		"onClick",
 		"onKeyDown",
 		"onDragOver",
 		"onDragLeave",
 		"onDrop",
-	]);
+	);
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// if label is within file dropzone, avoid opening up file dialog
@@ -113,7 +108,7 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 			return;
 		}
 		const files = e.dataTransfer?.files;
-		const fileList = Array.from(files ?? []);
+		const fileList = Array.from(files ?? []) as File[];
 		context.processFiles(fileList);
 	};
 
@@ -123,14 +118,17 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 			aria-label="dropzone"
 			role="button"
 			tabindex="0"
-			aria-disabled={context.disabled()}
+			aria-disabled={context.disabled() ? "true" : undefined}
 			data-dragging={isDragging()}
-			ref={mergeRefs(context.setDropzoneRef, local.ref)}
-			onClick={composeEventHandlers([local.onClick, onClick])}
-			onKeyDown={composeEventHandlers([local.onKeyDown, onKeyDown])}
-			onDragOver={composeEventHandlers([local.onDragOver, onDragOver])}
-			onDragLeave={composeEventHandlers([local.onDragLeave, onDragLeave])}
-			onDrop={composeEventHandlers([local.onDrop, onDrop])}
+			ref={mergeRefs(
+				(el: HTMLElement) => context.setDropzoneRef(el),
+				props.ref as (el: HTMLElement) => void,
+			)}
+			onClick={composeEventHandlers([props.onClick, onClick])}
+			onKeyDown={composeEventHandlers([props.onKeyDown, onKeyDown])}
+			onDragOver={composeEventHandlers([props.onDragOver, onDragOver])}
+			onDragLeave={composeEventHandlers([props.onDragLeave, onDragLeave])}
+			onDrop={composeEventHandlers([props.onDrop, onDrop])}
 			{...others}
 		/>
 	);

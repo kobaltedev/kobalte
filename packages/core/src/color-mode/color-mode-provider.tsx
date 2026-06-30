@@ -17,8 +17,8 @@ import type {
 	ConfigColorMode,
 } from "./types";
 import {
-	FALLBACK_COLOR_MODE_VALUE,
 	addColorModeListener,
+	FALLBACK_COLOR_MODE_VALUE,
 	getInitialColorMode,
 	getSystemColorMode,
 	setColorModeDataset,
@@ -79,9 +79,5 @@ export function ColorModeProvider(props: ColorModeProviderProps) {
 		toggleColorMode,
 	};
 
-	return (
-		<ColorModeContext.Provider value={context}>
-			{props.children}
-		</ColorModeContext.Provider>
-	);
+	return <ColorModeContext value={context}>{props.children}</ColorModeContext>;
 }

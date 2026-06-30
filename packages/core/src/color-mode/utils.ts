@@ -6,7 +6,7 @@
  * https://github.com/chakra-ui/chakra-ui/blob/main/packages/color-mode/src/color-mode.utils.ts
  */
 
-import { isServer } from "solid-js/web";
+import { isServer } from "@solidjs/web";
 
 import type {
 	ColorMode,

@@ -7,15 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import { type Orientation, mergeDefaultProps } from "@kobalte/utils";
-import {
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	createUniqueId,
-	on,
-	splitProps,
-} from "solid-js";
+import { mergeDefaultProps, type Orientation } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, createUniqueId, omit } from "solid-js";
 
 import { createSingleSelectListState } from "../list";
 import {
@@ -81,14 +75,15 @@ export function TabsRoot<T extends ValidComponent = "div">(
 		props as TabsRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"value",
 		"defaultValue",
 		"onChange",
 		"orientation",
 		"activationMode",
 		"disabled",
-	]);
+	);
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 	const [selectedTab, setSelectedTab] = createSignal<HTMLElement>();
@@ -99,71 +94,66 @@ export function TabsRoot<T extends ValidComponent = "div">(
 	});
 
 	const listState = createSingleSelectListState({
-		selectedKey: () => local.value,
-		defaultSelectedKey: () => local.defaultValue,
-		onSelectionChange: (key) => local.onChange?.(String(key)),
+		selectedKey: () => mergedProps.value,
+		defaultSelectedKey: () => mergedProps.defaultValue,
+		onSelectionChange: (key) => mergedProps.onChange?.(String(key)),
 		dataSource: items,
 	});
 
 	let lastSelectedKey = listState.selectedKey();
 
 	createEffect(
-		on(
-			[
-				() => listState.selectionManager(),
-				() => listState.collection(),
-				() => listState.selectedKey(),
-			],
-			([selectionManager, collection, currentSelectedKey]) => {
-				let selectedKey = currentSelectedKey;
+		() => ({
+			selectionManager: listState.selectionManager(),
+			collection: listState.collection(),
+			currentSelectedKey: listState.selectedKey(),
+		}),
+		({ selectionManager, collection, currentSelectedKey }) => {
+			let selectedKey = currentSelectedKey;
 
-				// Ensure a tab is always selected (in case no selected key was specified or if selected item was deleted from collection)
-				if (
-					selectionManager.isEmpty() ||
-					selectedKey == null ||
-					!collection.getItem(selectedKey)
+			// Ensure a tab is always selected (in case no selected key was specified or if selected item was deleted from collection)
+			if (
+				selectionManager.isEmpty() ||
+				selectedKey == null ||
+				!collection.getItem(selectedKey)
+			) {
+				selectedKey = collection.getFirstKey();
+
+				let selectedItem =
+					selectedKey != null ? collection.getItem(selectedKey) : undefined;
+
+				// loop over tabs until we find one that isn't disabled and select that
+				while (
+					selectedItem?.disabled &&
+					selectedItem.key !== collection.getLastKey()
 				) {
-					selectedKey = collection.getFirstKey();
-
-					let selectedItem =
+					selectedKey = collection.getKeyAfter(selectedItem.key);
+					selectedItem =
 						selectedKey != null ? collection.getItem(selectedKey) : undefined;
-
-					// loop over tabs until we find one that isn't disabled and select that
-					while (
-						selectedItem?.disabled &&
-						selectedItem.key !== collection.getLastKey()
-					) {
-						selectedKey = collection.getKeyAfter(selectedItem.key);
-						selectedItem =
-							selectedKey != null ? collection.getItem(selectedKey) : undefined;
-					}
-
-					// if this check is true, then every item is disabled, it makes more sense to default to the first key than the last
-					if (
-						selectedItem?.disabled &&
-						selectedKey === collection.getLastKey()
-					) {
-						selectedKey = collection.getFirstKey();
-					}
-
-					// directly set selection because replace/toggle selection won't consider disabled keys
-					if (selectedKey != null) {
-						selectionManager.setSelectedKeys([selectedKey]);
-					}
 				}
 
-				// If there isn't a focused key yet or the tabs doesn't have focus and the selected key changes,
-				// change focused key to the selected key if it exists.
-				if (
-					selectionManager.focusedKey() == null ||
-					(!selectionManager.isFocused() && selectedKey !== lastSelectedKey)
-				) {
-					selectionManager.setFocusedKey(selectedKey);
+				// if this check is true, then every item is disabled, it makes more sense to default to the first key than the last
+				if (selectedItem?.disabled && selectedKey === collection.getLastKey()) {
+					selectedKey = collection.getFirstKey();
 				}
 
-				lastSelectedKey = selectedKey;
-			},
-		),
+				// directly set selection because replace/toggle selection won't consider disabled keys
+				if (selectedKey != null) {
+					selectionManager.setSelectedKeys([selectedKey]);
+				}
+			}
+
+			// If there isn't a focused key yet or the tabs doesn't have focus and the selected key changes,
+			// change focused key to the selected key if it exists.
+			if (
+				selectionManager.focusedKey() == null ||
+				(!selectionManager.isFocused() && selectedKey !== lastSelectedKey)
+			) {
+				selectionManager.setFocusedKey(selectedKey);
+			}
+
+			lastSelectedKey = selectedKey;
+		},
 	);
 
 	// associated value/trigger ids
@@ -173,9 +163,9 @@ export function TabsRoot<T extends ValidComponent = "div">(
 	const contentIdsMap = new Map<string, string>();
 
 	const context: TabsContextValue = {
-		isDisabled: () => local.disabled ?? false,
-		orientation: () => local.orientation!,
-		activationMode: () => local.activationMode!,
+		isDisabled: () => mergedProps.disabled ?? false,
+		orientation: () => mergedProps.orientation!,
+		activationMode: () => mergedProps.activationMode!,
 		triggerIdsMap: () => triggerIdsMap,
 		contentIdsMap: () => contentIdsMap,
 		listState: () => listState,
@@ -187,13 +177,13 @@ export function TabsRoot<T extends ValidComponent = "div">(
 
 	return (
 		<DomCollectionProvider>
-			<TabsContext.Provider value={context}>
+			<TabsContext value={context}>
 				<Polymorphic<TabsRootRenderProps>
 					as="div"
 					data-orientation={context.orientation()}
 					{...others}
 				/>
-			</TabsContext.Provider>
+			</TabsContext>
 		</DomCollectionProvider>
 	);
 }

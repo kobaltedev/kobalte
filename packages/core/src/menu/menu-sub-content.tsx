@@ -7,22 +7,17 @@
  */
 
 import {
-	type Orientation,
-	OverrideComponentProps,
 	callHandler,
 	contains,
 	focusWithoutScrolling,
+	type Orientation,
+	OverrideComponentProps,
 } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
-
+import type { FocusOutsideEvent } from "@solid-primitives/interaction";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 import { type Direction, useLocale } from "../i18n";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import type { FocusOutsideEvent } from "../primitives";
 import {
 	MenuContentBase,
 	type MenuContentBaseCommonProps,
@@ -69,10 +64,11 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 	const context = useMenuContext();
 	const rootContext = useMenuRootContext();
 
-	const [local, others] = splitProps(props as MenuSubContentProps, [
+	const others = omit(
+		props as MenuSubContentProps,
 		"onFocusOutside",
 		"onKeyDown",
-	]);
+	);
 
 	const { direction } = useLocale();
 
@@ -88,7 +84,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		props.onFocusOutside?.(e);
 
 		const target = e.target as HTMLElement | null;
 
@@ -100,7 +96,12 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(
+			e,
+			props.onKeyDown as
+				| JSX.EventHandlerUnion<HTMLElement, KeyboardEvent>
+				| undefined,
+		);
 
 		// Submenu key events bubble through portals. We only care about keys in this menu.
 		const isKeyDownInside = contains(e.currentTarget, e.target);

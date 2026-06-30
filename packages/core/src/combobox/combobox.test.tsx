@@ -8,9 +8,8 @@
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, within } from "@solidjs/testing-library";
+import { createSignal, Show } from "solid-js";
 import { vi } from "vitest";
-
-import { Show, createSignal } from "solid-js";
 import * as Combobox from ".";
 
 interface DataSourceItem {
@@ -3432,7 +3431,7 @@ describe.skip("Combobox", () => {
 			await Promise.resolve();
 
 			expect(onSubmit).toHaveBeenCalledTimes(1);
-			// @ts-ignore
+			// @ts-expect-error
 			expect(value).toBe("");
 		});
 
@@ -3481,7 +3480,7 @@ describe.skip("Combobox", () => {
 			await Promise.resolve();
 
 			expect(onSubmit).toHaveBeenCalledTimes(1);
-			// @ts-ignore
+			// @ts-expect-error
 			expect(value).toEqual("1");
 		});
 	});

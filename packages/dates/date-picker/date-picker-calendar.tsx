@@ -1,4 +1,4 @@
-import { type OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
+import { mergeDefaultProps, type OverrideComponentProps } from "@kobalte/utils";
 
 import { CalendarRoot } from "../calendar/calendar-root";
 import { useFormControlContext } from "../form-control";

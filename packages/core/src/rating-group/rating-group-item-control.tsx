@@ -1,5 +1,6 @@
 import { callHandler, isFunction, mergeDefaultProps } from "@kobalte/utils";
-import { type JSX, type ValidComponent, children, splitProps } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { children, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -50,7 +51,7 @@ export function RatingGroupItemControl<T extends ValidComponent = "div">(
 		props as RatingGroupItemControlProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["children"]);
+	const others = omit(mergedProps, "children");
 
 	return (
 		<Polymorphic<RatingGroupItemControlRenderProps>
@@ -64,7 +65,7 @@ export function RatingGroupItemControl<T extends ValidComponent = "div">(
 					half: context.state.half,
 				}}
 			>
-				{local.children}
+				{mergedProps.children}
 			</RatingGroupItemControlChild>
 		</Polymorphic>
 	);

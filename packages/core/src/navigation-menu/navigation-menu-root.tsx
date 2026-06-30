@@ -1,17 +1,17 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { createControllableSignal } from "@solid-primitives/controlled-signal";
+import { createPresence } from "@solid-primitives/presence";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	JSX,
-	type Setter,
-	type ValidComponent,
-	batch,
 	createEffect,
 	createMemo,
 	createSignal,
-	splitProps,
+	omit,
+	type Setter,
+	untrack,
 } from "solid-js";
-import createPresence from "solid-presence";
 import type {
 	MenubarRootCommonProps,
 	MenubarRootOptions,
@@ -21,7 +21,6 @@ import { MenubarRoot } from "../menubar/menubar-root";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper, type PopperRootOptions } from "../popper";
 import type { Placement } from "../popper/utils";
-import { createControllableSignal } from "../primitives/create-controllable-signal";
 import {
 	NavigationMenuContext,
 	type NavigationMenuContextValue,
@@ -83,61 +82,74 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 		props as NavigationMenuRootProps,
 	);
 
-	const [local, popperProps, others] = splitProps(
+	const popperProps = omit(
 		mergedProps,
-		[
-			"ref",
-			"delayDuration",
-			"skipDelayDuration",
-			"autoFocusMenu",
-			"onAutoFocusMenuChange",
-			"defaultValue",
-			"value",
-			"onValueChange",
-			"forceMount",
-		],
-		[
-			"getAnchorRect",
-			"placement",
-			"gutter",
-			"shift",
-			"flip",
-			"slide",
-			"overlap",
-			"sameWidth",
-			"fitViewport",
-			"hideWhenDetached",
-			"detachedPadding",
-			"arrowPadding",
-			"overflowPadding",
-		],
+		"ref",
+		"delayDuration",
+		"skipDelayDuration",
+		"autoFocusMenu",
+		"onAutoFocusMenuChange",
+		"defaultValue",
+		"value",
+		"onValueChange",
+		"forceMount",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"delayDuration",
+		"skipDelayDuration",
+		"autoFocusMenu",
+		"onAutoFocusMenuChange",
+		"defaultValue",
+		"value",
+		"onValueChange",
+		"forceMount",
+		"getAnchorRect",
+		"placement",
+		"gutter",
+		"shift",
+		"flip",
+		"slide",
+		"overlap",
+		"sameWidth",
+		"fitViewport",
+		"hideWhenDetached",
+		"detachedPadding",
+		"arrowPadding",
+		"overflowPadding",
 	);
 
 	const [value, setValue] = createControllableSignal<string | undefined | null>(
 		{
-			value: () => local.value,
-			defaultValue: () => local.defaultValue,
-			onChange: (value) => local.onValueChange?.(value),
+			value: () => mergedProps.value,
+			defaultValue: () => mergedProps.defaultValue,
+			onChange: (value) => mergedProps.onValueChange?.(value),
 		},
 	);
 	const [autoFocusMenu, setAutoFocusMenu] = createControllableSignal({
-		value: () => local.autoFocusMenu,
+		value: () => mergedProps.autoFocusMenu,
 		defaultValue: () => false,
-		onChange: local.onAutoFocusMenuChange,
+		onChange: mergedProps.onAutoFocusMenuChange,
 	});
 
 	const [viewportRef, setViewportRef] = createSignal<HTMLElement>();
 	const [rootRef, setRootRef] = createSignal<HTMLElement>();
 
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
-		popperProps.placement ?? others.orientation === "vertical"
-			? "right"
-			: "bottom",
+		untrack(
+			() =>
+				popperProps.placement ??
+				(others.orientation === "vertical" ? "right" : "bottom"),
+		),
 	);
 
-	createEffect(() => {
-		setCurrentPlacement(others.orientation === "vertical" ? "right" : "bottom");
-	});
+	createEffect(
+		() => (others.orientation === "vertical" ? "right" : "bottom") as Placement,
+		(placement) => {
+			setCurrentPlacement(placement);
+		},
+	);
 
 	let timeoutId: number | undefined;
 
@@ -146,38 +158,35 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	const [show, setShow] = createSignal(false);
 	const [expanded, setExpanded] = createSignal(false);
 
-	createEffect(() => {
-		if (value() && !value()!.includes("link-trigger-") && autoFocusMenu()) {
-			batch(() => {
-				setExpanded(true);
-				setShow(true);
-			});
-		} else {
-			setExpanded(false);
-			setShow(false);
-		}
-	});
+	createEffect(
+		() => !!(value() && !value()!.includes("link-trigger-") && autoFocusMenu()),
+		(isVisible) => {
+			setExpanded(isVisible);
+			setShow(isVisible);
+		},
+	);
 
 	const dataset: Accessor<NavigationMenuDataSet> = createMemo(() => ({
 		"data-expanded": expanded() ? "" : undefined,
 		"data-closed": !expanded() ? "" : undefined,
 	}));
 
-	const { present: viewportPresent } = createPresence({
-		show: () => local.forceMount || show() || expanded(),
-		element: () => viewportRef() ?? null,
-	});
+	const { isMounted: viewportPresent } = createPresence(
+		() => mergedProps.forceMount || show() || expanded() || undefined,
+		{ transitionDuration: 0 },
+	);
 
-	createEffect(() => {
-		if (!viewportPresent()) {
-			context.setPreviousMenu(undefined);
-		}
-	});
+	createEffect(
+		() => viewportPresent(),
+		(isPresent) => {
+			if (!isPresent) context.setPreviousMenu(undefined);
+		},
+	);
 
 	const context: NavigationMenuContextValue = {
 		dataset,
-		delayDuration: () => local.delayDuration!,
-		skipDelayDuration: () => local.skipDelayDuration!,
+		delayDuration: () => mergedProps.delayDuration!,
+		skipDelayDuration: () => mergedProps.skipDelayDuration!,
 		autoFocusMenu: autoFocusMenu as Accessor<boolean>,
 		setAutoFocusMenu,
 		startLeaveTimer: () => {
@@ -200,7 +209,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	};
 
 	return (
-		<NavigationMenuContext.Provider value={context}>
+		<NavigationMenuContext value={context}>
 			<Popper
 				anchorRef={rootRef}
 				contentRef={viewportRef}
@@ -215,7 +224,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 						>
 					>
 						as="ul"
-						ref={mergeRefs(context.setRootRef, local.ref)}
+						ref={mergeRefs(context.setRootRef, mergedProps.ref)}
 						value={value() ?? null}
 						onValueChange={setValue}
 						autoFocusMenu={autoFocusMenu()}
@@ -224,6 +233,6 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 					/>
 				</nav>
 			</Popper>
-		</NavigationMenuContext.Provider>
+		</NavigationMenuContext>
 	);
 }

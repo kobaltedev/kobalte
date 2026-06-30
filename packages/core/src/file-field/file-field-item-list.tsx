@@ -1,4 +1,6 @@
-import { For, type JSX, type ValidComponent, splitProps } from "solid-js";
+import type { UploadFile } from "@solid-primitives/upload";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { For, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -8,7 +10,7 @@ import { useFileFieldContext } from "./file-field-context";
 import { FileFieldItemContext } from "./file-field-item-context";
 
 export interface FileFieldItemListOptions {
-	children: (file: File) => JSX.Element;
+	children: (file: UploadFile) => JSX.Element;
 }
 
 export interface FileFieldItemListCommonProps<
@@ -30,17 +32,15 @@ export function FileFieldItemList<T extends ValidComponent = "ul">(
 ) {
 	const context = useFileFieldContext();
 
-	const [local, others] = splitProps(props as FileFieldItemListProps, [
-		"children",
-	]);
+	const others = omit(props as FileFieldItemListProps, "children");
 
 	return (
 		<Polymorphic<FileFieldItemListRenderProps> as="ul" {...others}>
 			<For each={context.acceptedFiles}>
 				{(file) => (
-					<FileFieldItemContext.Provider value={{ file }}>
-						{local.children(file)}
-					</FileFieldItemContext.Provider>
+					<FileFieldItemContext value={{ file }}>
+						{props.children(file)}
+					</FileFieldItemContext>
 				)}
 			</For>
 		</Polymorphic>

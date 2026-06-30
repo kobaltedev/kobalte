@@ -21,19 +21,18 @@ import {
 	isPointInPolygon,
 	mergeDefaultProps,
 } from "@kobalte/utils";
+import { createPresence } from "@solid-primitives/presence";
+import { isServer } from "@solidjs/web";
 import {
 	type Accessor,
-	type ParentProps,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	omit,
 	onCleanup,
-	splitProps,
+	type ParentProps,
 } from "solid-js";
-import { isServer } from "solid-js/web";
-
-import createPresence from "solid-presence";
 import { Popper, type PopperRootOptions } from "../popper";
 import type { Placement } from "../popper/utils";
 import { createDisclosureState, createRegisterId } from "../primitives";
@@ -52,10 +51,7 @@ let globalCoolDownTimeout: number | undefined;
 let globalSkipDelayTimeout: number | undefined;
 
 export interface TooltipRootOptions
-	extends Omit<
-		PopperRootOptions,
-		"anchorRef" | "contentRef"
-	> {
+	extends Omit<PopperRootOptions, "anchorRef" | "contentRef"> {
 	/** The controlled open state of the tooltip. */
 	open?: boolean;
 
@@ -125,7 +121,8 @@ export function TooltipRoot(props: TooltipRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"id",
 		"open",
 		"defaultOpen",
@@ -138,28 +135,37 @@ export function TooltipRoot(props: TooltipRootProps) {
 		"ignoreSafeArea",
 		"forceMount",
 		"onCurrentPlacementChange",
-	]);
+	);
 
 	let closeTimeoutId: number | undefined;
 
-	const [contentId, setContentId] = createSignal<string>();
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-	const [contentRef, setContentRef] = createSignal<HTMLElement>();
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const [currentPlacement, setCurrentPlacement] = createSignal<Placement>(
 		others.placement!,
 	);
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
-	const { present: contentPresent } = createPresence({
-		show: () => local.forceMount || disclosureState.isOpen(),
-		element: () => contentRef() ?? null,
-	});
+	const { isMounted: contentPresent } = createPresence(
+		() => mergedProps.forceMount || disclosureState.isOpen() || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	const ensureTooltipEntry = () => {
 		tooltips[tooltipId] = hideTooltip;
@@ -179,7 +185,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 			return;
 		}
 
-		if (immediate || (local.closeDelay && local.closeDelay <= 0)) {
+		if (immediate || (mergedProps.closeDelay && mergedProps.closeDelay <= 0)) {
 			window.clearTimeout(closeTimeoutId);
 			closeTimeoutId = undefined;
 			disclosureState.close();
@@ -187,17 +193,17 @@ export function TooltipRoot(props: TooltipRootProps) {
 			closeTimeoutId = window.setTimeout(() => {
 				closeTimeoutId = undefined;
 				disclosureState.close();
-			}, local.closeDelay);
+			}, mergedProps.closeDelay);
 		}
 
 		window.clearTimeout(globalWarmUpTimeout);
 		globalWarmUpTimeout = undefined;
 
-		if (local.skipDelayDuration && local.skipDelayDuration >= 0) {
+		if (mergedProps.skipDelayDuration && mergedProps.skipDelayDuration >= 0) {
 			globalSkipDelayTimeout = window.setTimeout(() => {
 				window.clearTimeout(globalSkipDelayTimeout);
 				globalSkipDelayTimeout = undefined;
-			}, local.skipDelayDuration);
+			}, mergedProps.skipDelayDuration);
 		}
 
 		if (globalWarmedUp) {
@@ -207,7 +213,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 				delete tooltips[tooltipId];
 				globalCoolDownTimeout = undefined;
 				globalWarmedUp = false;
-			}, local.closeDelay);
+			}, mergedProps.closeDelay);
 		}
 	};
 
@@ -246,7 +252,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 				globalWarmUpTimeout = undefined;
 				globalWarmedUp = true;
 				showTooltip();
-			}, local.openDelay);
+			}, mergedProps.openDelay);
 		} else if (!disclosureState.isOpen()) {
 			showTooltip();
 		}
@@ -259,8 +265,8 @@ export function TooltipRoot(props: TooltipRootProps) {
 
 		if (
 			!immediate &&
-			local.openDelay &&
-			local.openDelay > 0 &&
+			mergedProps.openDelay &&
+			mergedProps.openDelay > 0 &&
 			!closeTimeoutId &&
 			!globalSkipDelayTimeout
 		) {
@@ -313,7 +319,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 			return;
 		}
 
-		if (!local.ignoreSafeArea) {
+		if (!mergedProps.ignoreSafeArea) {
 			const polygon = getPolygonSafeArea(currentPlacement());
 
 			//Don't close if the current's event mouse position is inside the polygon safe area.
@@ -332,50 +338,41 @@ export function TooltipRoot(props: TooltipRootProps) {
 		hideTooltip();
 	};
 
-	createEffect(() => {
-		if (isServer) {
-			return;
-		}
+	// Checks whether the mouse is moving outside the tooltip.
+	// If yes, hide the tooltip after the close delay.
+	createEffect(
+		() => disclosureState.isOpen(),
+		(isOpen) => {
+			if (isServer || !isOpen) return;
 
-		if (!disclosureState.isOpen()) {
-			return;
-		}
-
-		const doc = getDocument();
-
-		// Checks whether the mouse is moving outside the tooltip.
-		// If yes, hide the tooltip after the close delay.
-		doc.addEventListener("pointermove", onHoverOutside, true);
-
-		onCleanup(() => {
-			doc.removeEventListener("pointermove", onHoverOutside, true);
-		});
-	});
+			const doc = getDocument();
+			doc.addEventListener("pointermove", onHoverOutside, true);
+			return () => {
+				doc.removeEventListener("pointermove", onHoverOutside, true);
+			};
+		},
+	);
 
 	// Close the tooltip if the trigger is scrolled.
-	createEffect(() => {
-		const trigger = triggerRef();
+	createEffect(
+		() => ({ trigger: triggerRef(), isOpen: disclosureState.isOpen() }),
+		({ trigger, isOpen }) => {
+			if (!trigger || !isOpen) return;
 
-		if (!trigger || !disclosureState.isOpen()) {
-			return;
-		}
+			const handleScroll = (event: Event) => {
+				const target = event.target as HTMLElement;
+				if (contains(target, trigger)) {
+					hideTooltip(true);
+				}
+			};
 
-		const handleScroll = (event: Event) => {
-			const target = event.target as HTMLElement;
-
-			if (contains(target, trigger)) {
-				hideTooltip(true);
-			}
-		};
-
-		const win = getWindow();
-
-		win.addEventListener("scroll", handleScroll, { capture: true });
-
-		onCleanup(() => {
-			win.removeEventListener("scroll", handleScroll, { capture: true });
-		});
-	});
+			const win = getWindow();
+			win.addEventListener("scroll", handleScroll, { capture: true });
+			return () => {
+				win.removeEventListener("scroll", handleScroll, { capture: true });
+			};
+		},
+	);
 
 	onCleanup(() => {
 		clearTimeout(closeTimeoutId);
@@ -395,8 +392,8 @@ export function TooltipRoot(props: TooltipRootProps) {
 	const context: TooltipContextValue = {
 		dataset,
 		isOpen: disclosureState.isOpen,
-		isDisabled: () => local.disabled ?? false,
-		triggerOnFocusOnly: () => local.triggerOnFocusOnly ?? false,
+		isDisabled: () => mergedProps.disabled ?? false,
+		triggerOnFocusOnly: () => mergedProps.triggerOnFocusOnly ?? false,
 		contentId,
 		contentPresent,
 		openTooltip,
@@ -410,16 +407,16 @@ export function TooltipRoot(props: TooltipRootProps) {
 	};
 
 	return (
-		<TooltipContext.Provider value={context}>
+		<TooltipContext value={context}>
 			<Popper
 				anchorRef={triggerRef}
 				contentRef={contentRef}
 				onCurrentPlacementChange={(value) => {
 					setCurrentPlacement(value);
-					local.onCurrentPlacementChange?.(value);
+					mergedProps.onCurrentPlacementChange?.(value);
 				}}
 				{...others}
 			/>
-		</TooltipContext.Provider>
+		</TooltipContext>
 	);
 }

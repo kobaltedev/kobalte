@@ -74,18 +74,28 @@
 		"@internationalized/date": "^3.4.0",
 		"@internationalized/number": "^3.2.1",
 		"@kobalte/utils": "^0.9.1",
-		"@solid-primitives/props": "^3.1.8",
-		"@solid-primitives/resize-observer": "^2.0.26",
-		"solid-presence": "^0.1.8",
-		"solid-prevent-scroll": "^0.1.4"
+		"@solid-primitives/a11y": "next",
+		"@solid-primitives/controlled-signal": "next",
+		"@solid-primitives/i18n": "next",
+		"@solid-primitives/focus": "next",
+		"@solid-primitives/form": "next",
+		"@solid-primitives/interaction": "next",
+		"@solid-primitives/keyboard": "next",
+		"@solid-primitives/props": "next",
+		"@solid-primitives/resize-observer": "next",
+		"@solid-primitives/presence": "next",
+		"@solid-primitives/scroll": "next",
+		"@solid-primitives/upload": "next",
+		"@solid-primitives/utils": "next"
 	},
 	"devDependencies": {
 		"@kobalte/tests": "workspace:*",
 		"esbuild-plugin-solid": "^0.5.0",
-		"tsup": "7.2.0"
+		"tsup": "8.5.1"
 	},
 	"peerDependencies": {
-		"solid-js": "^1.8.15"
+		"@solidjs/web": "^2.0.0-beta.14",
+		"solid-js": "^2.0.0-beta.14"
 	},
 	"publishConfig": {
 		"access": "public"

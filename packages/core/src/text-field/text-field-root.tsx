@@ -1,32 +1,25 @@
 import {
-	type ValidationState,
 	access,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createUniqueId, omit } from "solid-js";
 import {
-	type JSX,
-	type ValidComponent,
-	createUniqueId,
-	splitProps,
-} from "solid-js";
-
-import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import {
-	createControllableSignal,
-	createFormResetListener,
-} from "../primitives";
+import { createControllableSignal } from "../primitives";
 import {
 	TextFieldContext,
 	type TextFieldContextValue,
@@ -101,27 +94,31 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 		props as TextFieldRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
+	const others = omit(
 		mergedProps,
-		["ref", "value", "defaultValue", "onChange"],
-		FORM_CONTROL_PROP_NAMES,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		...FORM_CONTROL_PROP_NAMES,
 	);
 
 	// Disable reactivity to only track controllability on first run
 	// Our current implementation breaks with undefined (stops tracking controlled value)
-	const initialValue = local.value;
+	const initialValue = mergedProps.value;
 
 	const [value, setValue] = createControllableSignal({
-		value: () => (initialValue === undefined ? undefined : local.value ?? ""),
-		defaultValue: () => local.defaultValue,
-		onChange: (value) => local.onChange?.(value),
+		value: () =>
+			initialValue === undefined ? undefined : (mergedProps.value ?? ""),
+		defaultValue: () => mergedProps.defaultValue,
+		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
-	const { formControlContext } = createFormControl(formControlProps);
+	const { formControlContext } = createFormControl(mergedProps);
 
 	createFormResetListener(
 		() => ref,
-		() => setValue(local.defaultValue ?? ""),
+		() => setValue(mergedProps.defaultValue ?? ""),
 	);
 
 	const onInput: JSX.EventHandlerUnion<
@@ -146,22 +143,22 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 
 	const context: TextFieldContextValue = {
 		value,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: createGenerateId(() => access(mergedProps.id)!),
 		onInput,
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<TextFieldContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<TextFieldContext value={context}>
 				<Polymorphic<TextFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
+					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 					role="group"
-					id={access(formControlProps.id)}
+					id={access(mergedProps.id)}
 					{...formControlContext.dataset()}
 					{...others}
 				/>
-			</TextFieldContext.Provider>
-		</FormControlContext.Provider>
+			</TextFieldContext>
+		</FormControlContext>
 	);
 }

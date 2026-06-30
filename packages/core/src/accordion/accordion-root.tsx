@@ -12,13 +12,8 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import {
-	type JSX,
-	type ValidComponent,
-	createSignal,
-	createUniqueId,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createUniqueId, omit } from "solid-js";
 
 import { createListState, createSelectableList } from "../list";
 import {
@@ -91,7 +86,8 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 		props as AccordionRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"id",
 		"ref",
 		"value",
@@ -102,27 +98,22 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 		"shouldFocusWrap",
 		"onKeyDown",
 		"onMouseDown",
-		"onFocusIn", // TODO: remove next breaking
+		"onFocusIn",
 		"onFocusOut",
-	]);
+	);
 
-	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
-
-	const { DomCollectionProvider } = createDomCollection({
-		items,
-		onItemsChange: setItems,
-	});
+	const { DomCollectionProvider, items } =
+		createDomCollection<CollectionItemWithRef>();
 
 	const listState = createListState({
-		selectedKeys: () => local.value,
-		defaultSelectedKeys: () => local.defaultValue,
-		onSelectionChange: (value) => local.onChange?.(Array.from(value)),
-		disallowEmptySelection: () => !local.multiple && !local.collapsible,
-		selectionMode: () => (local.multiple ? "multiple" : "single"),
+		selectedKeys: () => mergedProps.value,
+		defaultSelectedKeys: () => mergedProps.defaultValue,
+		onSelectionChange: (value) => mergedProps.onChange?.(Array.from(value)),
+		disallowEmptySelection: () =>
+			!mergedProps.multiple && !mergedProps.collapsible,
+		selectionMode: () => (mergedProps.multiple ? "multiple" : "single"),
 		dataSource: items,
 	});
-
-	listState.selectionManager().setFocusedKey("item-1");
 
 	const selectableList = createSelectableList(
 		{
@@ -130,7 +121,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 			collection: () => listState.collection(),
 			disallowEmptySelection: () =>
 				listState.selectionManager().disallowEmptySelection(),
-			shouldFocusWrap: () => local.shouldFocusWrap,
+			shouldFocusWrap: () => mergedProps.shouldFocusWrap,
 			disallowTypeAhead: true,
 			allowsTabNavigation: true,
 		},
@@ -139,34 +130,34 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 
 	const context: AccordionContextValue = {
 		listState: () => listState,
-		generateId: createGenerateId(() => local.id),
+		generateId: createGenerateId(() => mergedProps.id),
 	};
 
 	return (
 		<DomCollectionProvider>
-			<AccordionContext.Provider value={context}>
+			<AccordionContext value={context}>
 				<Polymorphic<AccordionRootRenderProps>
 					as="div"
-					id={local.id}
-					ref={mergeRefs((el) => (ref = el), local.ref)}
+					id={mergedProps.id}
+					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 					onKeyDown={composeEventHandlers([
-						local.onKeyDown,
+						mergedProps.onKeyDown,
 						selectableList.onKeyDown,
 					])}
 					onMouseDown={composeEventHandlers([
-						local.onMouseDown,
+						mergedProps.onMouseDown,
 						selectableList.onMouseDown,
 					])}
 					onFocusIn={composeEventHandlers([
-						local.onFocusIn, // TODO: remove next breaking
+						mergedProps.onFocusIn, // TODO: remove next breaking
 					])}
 					onFocusOut={composeEventHandlers([
-						local.onFocusOut,
+						mergedProps.onFocusOut,
 						selectableList.onFocusOut,
 					])}
 					{...others}
 				/>
-			</AccordionContext.Provider>
+			</AccordionContext>
 		</DomCollectionProvider>
 	);
 }

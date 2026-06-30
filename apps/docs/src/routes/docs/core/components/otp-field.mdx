@@ -1,0 +1,415 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import {
+	AnimatedExample,
+	BasicExample,
+	ControlledExample,
+	CustomPatternExample,
+	DefaultValueExample,
+	HTMLFormExample,
+	OnCompleteExample,
+	ValidationExample,
+} from "../../../../examples/otp-field";
+
+# OTP Field
+
+An accessible one-time password input built from a hidden native `<input>` and fully customizable visual slots.
+
+## Import
+
+```ts
+import { OTPField } from "@kobalte/core/otp-field";
+// or
+import { Root, Input, Label, Description, ErrorMessage } from "@kobalte/core/otp-field";
+// or (deprecated)
+import { OTPField } from "@kobalte/core";
+```
+
+## Features
+
+- Built with a hidden native `<input>` that handles all keyboard interaction and browser autofill.
+- Visual slots are fully customizable — build any design using the provided context hook.
+- Active slot and caret position tracking exposed via context.
+- Supports custom character patterns via a regex `pattern` prop.
+- Syncs with form reset events.
+- Can be controlled or uncontrolled.
+- Shifts password manager icons to avoid overlapping the slots.
+- Integrates with Kobalte's form control system — supports `validationState`, `required`, `disabled`, and `readOnly` with associated Label, Description, and ErrorMessage sub-components.
+
+## Anatomy
+
+The OTP field consists of:
+
+- **OTPField**: The root container that manages value state and provides form control context.
+- **OTPField.Label**: A label that gives the user information on the OTP field.
+- **OTPField.Input**: The hidden native `<input>` that handles keyboard events, autofill, and selection tracking.
+- **OTPField.Description**: A description that gives the user more information on the OTP field.
+- **OTPField.ErrorMessage**: An error message that gives the user information on how to fix a validation error.
+- **Slot** *(user-defined)*: A visual character cell built with `useOTPFieldContext`.
+
+```tsx
+<OTPField>
+	<OTPField.Label />
+	<OTPField.Input />
+	{/* user-defined slot elements */}
+	<OTPField.Description />
+	<OTPField.ErrorMessage />
+</OTPField>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { OTPField, useOTPFieldContext } from "@kobalte/core/otp-field";
+    import { For } from "solid-js";
+    import "./style.css";
+
+    function makeSlots(n: number) {
+      return Array.from({ length: n }, (_, i) => i);
+    }
+
+    function OtpSlot(props: { index: number }) {
+      const context = useOTPFieldContext();
+      const char = () => context.value()[props.index];
+      const isActive = () => context.activeSlots().includes(props.index);
+      const showCaret = () =>
+        context.isInserting() && context.activeSlots()[0] === props.index;
+
+      return (
+        <div class="otp-field__slot" data-active={isActive() ? "" : undefined}>
+          {showCaret() ? <div class="otp-field__caret" /> : char()}
+        </div>
+      );
+    }
+
+    function App() {
+      return (
+        <OTPField maxLength={6} class="otp-field">
+          <OTPField.Input />
+          <For each={makeSlots(6)}>{(i) => <OtpSlot index={i} />}</For>
+        </OTPField>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .otp-field {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .otp-field__slot {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 52px;
+      border-radius: 8px;
+      border: 1.5px solid hsl(240 6% 90%);
+      font-size: 20px;
+      font-weight: 600;
+      color: hsl(240 4% 16%);
+      transition: border-color 150ms, box-shadow 150ms;
+      user-select: none;
+    }
+
+    .otp-field__slot[data-active] {
+      border-color: hsl(200 98% 39%);
+      box-shadow: 0 0 0 3px hsl(200 98% 39% / 0.15);
+    }
+
+    .otp-field__caret {
+      width: 1.5px;
+      height: 24px;
+      background-color: hsl(200 98% 39%);
+      border-radius: 999px;
+      animation: otp-caret-blink 1.2s ease-out infinite;
+    }
+
+    @keyframes otp-caret-blink {
+      0%, 70%, 100% { opacity: 1; }
+      20%, 50% { opacity: 0; }
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Default value
+
+An initial, uncontrolled value can be provided using the `defaultValue` prop.
+
+<Preview>
+	<DefaultValueExample />
+</Preview>
+
+```tsx {0}
+<OTPField maxLength={6} defaultValue="123">
+	<OTPField.Input />
+	<For each={makeSlots(6)}>{(i) => <OtpSlot index={i} />}</For>
+</OTPField>
+```
+
+### Controlled value
+
+The `value` and `onChange` props can be used to make the value controlled.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {3,4,7-9}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal("");
+
+	return (
+		<>
+			<OTPField maxLength={6} value={value()} onChange={setValue}>
+				<OTPField.Input />
+				<For each={makeSlots(6)}>{(i) => <OtpSlot index={i} />}</For>
+			</OTPField>
+			<p>Value: {value()}</p>
+		</>
+	);
+}
+```
+
+### Completion callback
+
+The `onComplete` prop fires once when all slots are filled.
+
+<Preview>
+	<OnCompleteExample />
+</Preview>
+
+```tsx {5-7}
+<OTPField
+	maxLength={6}
+	onComplete={(v) => console.log("Complete:", v)}
+>
+	<OTPField.Input />
+	<For each={makeSlots(6)}>{(i) => <OtpSlot index={i} />}</For>
+</OTPField>
+```
+
+### Custom character pattern
+
+By default the input only accepts digits (`^\d*$`). Pass a `pattern` prop on `OTPField.Input` to allow other characters.
+
+<Preview>
+	<CustomPatternExample />
+</Preview>
+
+```tsx {2}
+<OTPField maxLength={4}>
+	<OTPField.Input pattern="^[a-zA-Z]*$" />
+	<For each={makeSlots(4)}>{(i) => <OtpSlot index={i} />}</For>
+</OTPField>
+```
+
+Pass `pattern={null}` to disable validation entirely and allow any character.
+
+### Animated slots
+
+Render the caret and character **exclusively** (not overlaid) so the character `<span>` mounts fresh on every keystroke. The CSS `animation` property fires on mount, producing a pop-in effect with no JavaScript.
+
+<Preview>
+	<AnimatedExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    function AnimatedOtpSlot(props: { index: number }) {
+      const context = useOTPFieldContext();
+      const char = () => context.value()[props.index];
+      const isActive = () => context.activeSlots().includes(props.index);
+      const showCaret = () =>
+        context.isInserting() && context.activeSlots()[0] === props.index;
+
+      return (
+        <div class="otp-field__slot" data-active={isActive() ? "" : undefined}>
+          {showCaret() ? (
+            <div class="otp-field__caret" />
+          ) : (
+            <span class="otp-field__char">{char()}</span>
+          )}
+        </div>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .otp-field__char {
+      display: inline-block;
+      animation: otp-slip-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes otp-slip-in {
+      from {
+        transform: translateY(8px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+### Validation
+
+Use `validationState`, `OTPField.Label`, `OTPField.Description`, and `OTPField.ErrorMessage` to integrate with Kobalte's form control system. `OTPField.ErrorMessage` only renders when `validationState` is `"invalid"`.
+
+<Preview>
+	<ValidationExample />
+</Preview>
+
+```tsx
+function ValidationExample() {
+	const [value, setValue] = createSignal("");
+
+	const isInvalid = () => value().length > 0 && value().length < 6;
+
+	return (
+		<OTPField
+			maxLength={6}
+			value={value()}
+			onChange={setValue}
+			validationState={isInvalid() ? "invalid" : "valid"}
+		>
+			<OTPField.Label>Verification code</OTPField.Label>
+			<OTPField.Input />
+			{/* ...slots... */}
+			<OTPField.Description>
+				Enter the 6-digit code sent to your device.
+			</OTPField.Description>
+			<OTPField.ErrorMessage>Please enter all 6 digits.</OTPField.ErrorMessage>
+		</OTPField>
+	);
+}
+```
+
+### HTML forms
+
+Add a `name` prop to `OTPField.Input` to include the value in form submissions. The field value resets automatically when the parent form is reset.
+
+<Preview>
+	<HTMLFormExample />
+</Preview>
+
+```tsx {3}
+<form onSubmit={handleSubmit}>
+	<OTPField maxLength={6}>
+		<OTPField.Input name="otp" />
+		<For each={makeSlots(6)}>{(i) => <OtpSlot index={i} />}</For>
+	</OTPField>
+</form>
+```
+
+## API Reference
+
+### OTPField
+
+`OTPField` is equivalent to the `Root` import from `@kobalte/core/otp-field` (and deprecated `OTPField.Root`).
+
+| Prop             | Description                                                                                                     |
+| :--------------- | :-------------------------------------------------------------------------------------------------------------- |
+| maxLength        | `number` <br/> The maximum number of characters the OTP field accepts.                                          |
+| value            | `string` <br/> The controlled value of the OTP field.                                                           |
+| defaultValue     | `string` <br/> The default value when initially rendered. Useful when you do not need to control the value.     |
+| onChange         | `(value: string) => void` <br/> Event handler called when the value changes.                                    |
+| onComplete       | `(value: string) => void` <br/> Event handler called once when all slots are filled.                            |
+| shiftPWManagers  | `boolean` <br/> Whether to shift password manager icons to the right to avoid overlapping slots. Defaults to `true`. |
+| id               | `string` <br/> A unique identifier. Used to generate ids for nested Label, Description, and ErrorMessage. Auto-generated if not provided. |
+| name             | `string` <br/> The name used when submitting an HTML form.                                                      |
+| validationState  | `'valid' \| 'invalid'` <br/> Whether the OTP field should display its "valid" or "invalid" visual styling.      |
+| required         | `boolean` <br/> Whether the user must fill the OTP field before the form can be submitted.                      |
+| disabled         | `boolean` <br/> Whether the OTP field is disabled.                                                              |
+| readOnly         | `boolean` <br/> Whether the OTP field is read only.                                                             |
+
+### OTPField.Label
+
+| Prop | Description |
+| :--- | :---------- |
+| `id` | `string` <br/> The id of the label element. Auto-generated from the root id if not provided. |
+
+### OTPField.Description
+
+| Prop | Description |
+| :--- | :---------- |
+| `id` | `string` <br/> The id of the description element. Auto-generated from the root id if not provided. |
+
+### OTPField.ErrorMessage
+
+| Prop         | Description                                                                                                                              |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| `forceMount` | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### OTPField.Input
+
+| Prop                | Description                                                                                                                              |
+| :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| pattern             | `string \| null` <br/> Regex pattern for allowed characters. Defaults to `'^\d*$'` (digits only). Pass `null` to allow any character.    |
+| noScriptCSSFallback | `string \| null` <br/> CSS injected via `<noscript>` for no-JS environments. Pass `null` to disable. Defaults to a built-in fallback.    |
+
+`OTPField.Input` also accepts all native `<input>` attributes. Use `name` for form submission.
+
+| Data attribute          | Description                                    |
+| :---------------------- | :--------------------------------------------- |
+| data-kb-otp-field-input | Present on the native input element.           |
+
+### useOTPFieldContext
+
+Returns the `OTPFieldContextValue` object. Must be called inside an `OTPField`.
+
+| Property     | Type                       | Description                                                                  |
+| :----------- | :------------------------- | :--------------------------------------------------------------------------- |
+| value        | `Accessor<string>`         | The current OTP value.                                                       |
+| isFocused    | `Accessor<boolean>`        | Whether the hidden input is currently focused.                               |
+| isHovered    | `Accessor<boolean>`        | Whether the pointer is hovering over the root element.                       |
+| isInserting  | `Accessor<boolean>`        | Whether the caret is at the end of the value (insertion position).           |
+| maxLength    | `Accessor<number>`         | The configured maximum length.                                               |
+| activeSlots  | `Accessor<number[]>`       | Indices of the currently active (selected/focused) slots.                    |
+| rootHeight   | `Accessor<number \| null>` | Measured height of the root element, used for input font-size scaling.       |
+| generateId   | `(part: string) => string` | Generates a namespaced id from the root id. Useful when building custom sub-components. |
+
+## Rendered elements
+
+| Component                | Default rendered element |
+| :----------------------- | :----------------------- |
+| `OTPField`               | `div`                    |
+| `OTPField.Label`         | `label`                  |
+| `OTPField.Description`   | `div`                    |
+| `OTPField.ErrorMessage`  | `div`                    |
+| `OTPField.Input`         | `input`                  |

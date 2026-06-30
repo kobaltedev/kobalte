@@ -115,12 +115,12 @@ export function alignCenter(
 	const halfDuration: DateDuration = {};
 
 	for (const key in duration) {
-		// @ts-ignore
+		// @ts-expect-error
 		halfDuration[key] = Math.floor(duration[key] / 2);
 
-		// @ts-ignore
+		// @ts-expect-error
 		if (halfDuration[key] > 0 && duration[key] % 2 === 0) {
-			// @ts-ignore
+			// @ts-expect-error
 			halfDuration[key]--;
 		}
 	}
@@ -293,7 +293,7 @@ export function getUnitDuration(duration: DateDuration) {
 	const unit = { ...duration };
 
 	for (const key in unit) {
-		// @ts-ignore
+		// @ts-expect-error
 		unit[key] = 1;
 	}
 

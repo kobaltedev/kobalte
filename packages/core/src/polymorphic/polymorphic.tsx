@@ -1,13 +1,11 @@
-/* @refresh reload */
-
 import type { OverrideProps } from "@kobalte/utils";
 import {
 	type ComponentProps,
+	Dynamic,
 	type JSX,
 	type ValidComponent,
-	splitProps,
-} from "solid-js";
-import { Dynamic } from "solid-js/web";
+} from "@solidjs/web";
+import { omit, untrack } from "solid-js";
 
 export type { OverrideComponentProps, OverrideProps } from "@kobalte/utils";
 
@@ -55,16 +53,13 @@ export type PolymorphicCallbackProps<
 export function Polymorphic<RenderProps>(
 	props: RenderProps & PolymorphicAttributes<ValidComponent>,
 ): JSX.Element {
-	const [local, others] = splitProps(props, ["as"]);
+	const others = omit(props, "as");
 
-	if (!local.as) {
+	if (!untrack(() => props.as)) {
 		throw new Error(
 			"[kobalte]: Polymorphic is missing the required `as` prop.",
 		);
 	}
 
-	return (
-		// @ts-ignore: Props are valid but not worth calculating
-		<Dynamic {...others} component={local.as} />
-	);
+	return <Dynamic {...others} component={props.as} />;
 }

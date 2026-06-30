@@ -11,18 +11,19 @@ import {
 	mergeDefaultProps,
 	removeItemFromArray,
 } from "@kobalte/utils";
+import { createHideOutside } from "@solid-primitives/interaction";
+
+import { createPresence } from "@solid-primitives/presence";
 import {
 	type Accessor,
-	type ParentProps,
-	Show,
 	createEffect,
 	createMemo,
 	createSignal,
+	omit,
 	onCleanup,
-	splitProps,
+	type ParentProps,
+	Show,
 } from "solid-js";
-
-import createPresence from "solid-presence";
 import { createListState } from "../list";
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
@@ -31,7 +32,6 @@ import type { Placement } from "../popper/utils";
 import {
 	type CollectionItemWithRef,
 	createDisclosureState,
-	createHideOutside,
 	createRegisterId,
 } from "../primitives";
 import {
@@ -46,7 +46,7 @@ import {
 	useOptionalMenuContext,
 } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { type GraceIntent, type Side, isPointerInGraceArea } from "./utils";
+import { type GraceIntent, isPointerInGraceArea, type Side } from "./utils";
 
 export interface MenuOptions
 	extends Omit<
@@ -88,21 +88,29 @@ export function Menu(props: MenuProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"open",
-		"defaultOpen",
-		"onOpenChange",
-	]);
+	const others = omit(mergedProps, "open", "defaultOpen", "onOpenChange");
 
 	let pointerGraceTimeoutId = 0;
 	let pointerGraceIntent: GraceIntent | null = null;
 	let pointerDir: Side = "right";
 
-	const [triggerId, setTriggerId] = createSignal<string>();
-	const [contentId, setContentId] = createSignal<string>();
+	const [triggerId, setTriggerId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-	const [contentRef, setContentRef] = createSignal<HTMLDivElement>();
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentRef, setContentRef] = createSignal<HTMLDivElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const [focusStrategy, setFocusStrategy] = createSignal<
 		FocusStrategy | boolean
@@ -120,15 +128,15 @@ export function Menu(props: MenuProps) {
 	});
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
-	const { present: contentPresent } = createPresence({
-		show: () => rootContext.forceMount() || disclosureState.isOpen(),
-		element: () => contentRef() ?? null,
-	});
+	const { isMounted: contentPresent } = createPresence(
+		() => rootContext.forceMount() || disclosureState.isOpen() || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	const listState = createListState({
 		selectionMode: "none",
@@ -207,55 +215,76 @@ export function Menu(props: MenuProps) {
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
-		isDisabled: () => {
-			// Apply only on root menu when opened and modal.
-			return !(
+		disabled: () =>
+			!(
 				parentMenuContext == null &&
 				disclosureState.isOpen() &&
 				rootContext.isModal()
-			);
-		},
+			),
 		targets: () =>
 			[contentRef(), ...nestedMenus()].filter(Boolean) as Element[],
+		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
-	createEffect(() => {
-		const contentEl = contentRef();
+	createEffect(
+		() => contentRef(),
+		(contentEl) => {
+			if (!contentEl || !parentMenuContext) return;
+			const parentUnregister = parentMenuContext.registerNestedMenu(contentEl);
+			return () => parentUnregister();
+		},
+	);
 
-		if (!contentEl || !parentMenuContext) {
-			return;
-		}
+	createEffect(
+		() => [rootContext.value(), contentRef(), nestedMenus()] as const,
+		([rootValue, contentEl, menus]) => {
+			if (parentMenuContext !== undefined) return;
+			optionalMenubarContext?.registerMenu(rootValue!, [contentEl!, ...menus]);
+		},
+	);
 
-		const parentUnregister = parentMenuContext.registerNestedMenu(contentEl);
+	createEffect(
+		() => {
+			if (
+				parentMenuContext !== undefined ||
+				optionalMenubarContext === undefined
+			)
+				return undefined;
+			return {
+				menubarValue: optionalMenubarContext.value(),
+				rootValue: rootContext.value()!,
+				trigger: triggerRef(),
+				autoFocus: optionalMenubarContext.autoFocusMenu(),
+			};
+		},
+		(state) => {
+			if (!state) return;
+			if (state.menubarValue === state.rootValue) {
+				state.trigger?.focus();
+				if (state.autoFocus) open(true);
+			} else {
+				close();
+			}
+		},
+	);
 
-		onCleanup(() => {
-			parentUnregister();
-		});
-	});
-
-	createEffect(() => {
-		if (parentMenuContext !== undefined) return;
-		optionalMenubarContext?.registerMenu(rootContext.value()!, [
-			contentRef()!,
-			...nestedMenus(),
-		]);
-	});
-
-	createEffect(() => {
-		if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
-			return;
-		if (optionalMenubarContext.value() === rootContext.value()!) {
-			triggerRef()?.focus();
-			if (optionalMenubarContext.autoFocusMenu()) open(true);
-		} else close();
-	});
-
-	createEffect(() => {
-		if (parentMenuContext !== undefined || optionalMenubarContext === undefined)
-			return;
-		if (disclosureState.isOpen())
-			optionalMenubarContext.setValue(rootContext.value()!);
-	});
+	createEffect(
+		() => {
+			if (
+				parentMenuContext !== undefined ||
+				optionalMenubarContext === undefined
+			)
+				return undefined;
+			return {
+				isOpen: disclosureState.isOpen(),
+				rootValue: rootContext.value()!,
+			};
+		},
+		(state) => {
+			if (!state) return;
+			if (state.isOpen) optionalMenubarContext!.setValue(state.rootValue);
+		},
+	);
 
 	onCleanup(() => {
 		if (parentMenuContext !== undefined) return;
@@ -302,7 +331,7 @@ export function Menu(props: MenuProps) {
 
 	return (
 		<DomCollectionProvider>
-			<MenuContext.Provider value={context}>
+			<MenuContext value={context}>
 				<Show
 					when={optionalNavigationMenuContext === undefined}
 					fallback={others.children}
@@ -314,7 +343,7 @@ export function Menu(props: MenuProps) {
 						{...others}
 					/>
 				</Show>
-			</MenuContext.Provider>
+			</MenuContext>
 		</DomCollectionProvider>
 	);
 }

@@ -1,5 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import type { JSX, ValidComponent } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import type { Element } from "solid-js";
 
 import {
 	type ElementOf,
@@ -11,7 +12,7 @@ import { type MenuDataSet, useMenuContext } from "./menu-context";
 export interface MenuIconOptions {}
 
 export interface MenuIconCommonProps<T extends HTMLElement = HTMLElement> {
-	children: JSX.Element;
+	children: Element;
 }
 
 export interface MenuIconRenderProps extends MenuIconCommonProps, MenuDataSet {

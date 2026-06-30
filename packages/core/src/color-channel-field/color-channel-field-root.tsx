@@ -1,13 +1,12 @@
 import { clamp, mergeDefaultProps } from "@kobalte/utils";
 import {
-	type Component,
-	type ValidComponent,
-	createMemo,
-	createUniqueId,
-	splitProps,
-} from "solid-js";
-import type { Color, ColorChannel, ColorSpace } from "../colors";
-import { parseColor } from "../colors";
+	type Color,
+	type ColorChannel,
+	type ColorSpace,
+	parseColor,
+} from "@solid-primitives/utils/colors";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createMemo, createUniqueId, omit } from "solid-js";
 import * as NumberField from "../number-field";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
@@ -67,28 +66,32 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 		props as ColorChannelFieldRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"value",
 		"defaultValue",
 		"onChange",
 		"channel",
 		"colorSpace",
-	]);
+	);
 
 	const [value, setValue] = createControllableSignal<Color>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue ?? parseColor("hsl(0, 100%, 50%)"),
-		onChange: (value) => local.onChange?.(value),
+		value: () => mergedProps.value,
+		defaultValue: () =>
+			mergedProps.defaultValue ?? parseColor("hsl(0, 100%, 50%)"),
+		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
 	const color = createMemo(() =>
-		local.colorSpace ? value()!.toFormat(local.colorSpace) : value(),
+		mergedProps.colorSpace
+			? value()!.toFormat(mergedProps.colorSpace)
+			: value(),
 	);
 
-	const range = createMemo(() => color()!.getChannelRange(local.channel));
+	const range = createMemo(() => color()!.getChannelRange(mergedProps.channel));
 
 	const formatOptions = createMemo(() =>
-		color()!.getChannelFormatOptions(local.channel),
+		color()!.getChannelFormatOptions(mergedProps.channel),
 	);
 
 	const multiplier = createMemo(() =>
@@ -97,7 +100,7 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 
 	const onRawValueChange = (value: number) => {
 		if (Number.isNaN(value)) {
-			setValue(color()!.withChannelValue(local.channel, Number.NaN));
+			setValue(color()!.withChannelValue(mergedProps.channel, Number.NaN));
 			return;
 		}
 
@@ -111,7 +114,7 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 
 		const roundedValue = Math.round(clampedValue * 10 ** digits) / 10 ** digits;
 
-		setValue(color()!.withChannelValue(local.channel, roundedValue));
+		setValue(color()!.withChannelValue(mergedProps.channel, roundedValue));
 	};
 
 	return (
@@ -124,9 +127,9 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 			>
 		>
 			rawValue={
-				Number.isNaN(color()!.getChannelValue(local.channel))
+				Number.isNaN(color()!.getChannelValue(mergedProps.channel))
 					? undefined
-					: color()!.getChannelValue(local.channel) / multiplier()
+					: color()!.getChannelValue(mergedProps.channel) / multiplier()
 			}
 			minValue={range().minValue / multiplier()}
 			maxValue={range().maxValue / multiplier()}

@@ -8,24 +8,19 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	OverrideComponentProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import {
-	ComponentProps,
-	type JSX,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 import {
+	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
-	createFormControlField,
 	useFormControlContext,
 } from "../form-control";
 import {
@@ -63,10 +58,10 @@ export interface SwitchInputRenderProps
 	required: boolean | undefined;
 	disabled: boolean | undefined;
 	readonly: boolean | undefined;
-	"aria-invalid": boolean | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
+	"aria-invalid": "true" | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
 }
 
 export type SwitchInputProps<
@@ -87,16 +82,28 @@ export function SwitchInput<T extends ValidComponent = "input">(
 		props as SwitchInputProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
+	const formControlFieldProps = omit(
 		mergedProps,
-		["ref", "style", "onChange", "onFocus", "onBlur"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
+		"ref",
+		"style",
+		"onChange",
+		"onFocus",
+		"onBlur",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"style",
+		"onChange",
+		"onFocus",
+		"onBlur",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
 	);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
 	const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (e) => {
-		callHandler(e, local.onChange);
+		callHandler(e, mergedProps.onChange);
 
 		e.stopPropagation();
 
@@ -115,19 +122,19 @@ export function SwitchInput<T extends ValidComponent = "input">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 		context.setIsFocused(true);
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 		context.setIsFocused(false);
 	};
 
 	return (
 		<Polymorphic<SwitchInputRenderProps>
 			as="input"
-			ref={mergeRefs(context.setInputRef, local.ref)}
+			ref={mergeRefs(context.setInputRef, mergedProps.ref)}
 			type="checkbox"
 			role="switch"
 			id={fieldProps.id()}
@@ -137,17 +144,17 @@ export function SwitchInput<T extends ValidComponent = "input">(
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
-			aria-checked={context.checked()}
+			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
+			aria-checked={context.checked() ? "true" : "false"}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
 			aria-invalid={
-				formControlContext.validationState() === "invalid" || undefined
+				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
+			aria-required={formControlContext.isRequired() ? "true" : undefined}
+			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onChange={onChange}
 			onFocus={onFocus}
 			onBlur={onBlur}

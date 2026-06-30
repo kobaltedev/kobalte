@@ -6,7 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import { type Polygon, isPointInPolygon } from "@kobalte/utils";
+import { isPointInPolygon, type Polygon } from "@kobalte/utils";
 
 import type { BasePlacement, Placement } from "../popper/utils";
 

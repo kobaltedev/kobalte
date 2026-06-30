@@ -52,16 +52,17 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@solid-primitives/event-listener": "^2.2.14",
-		"@solid-primitives/keyed": "^1.2.0",
-		"@solid-primitives/map": "^0.4.7",
-		"@solid-primitives/media": "^2.2.4",
-		"@solid-primitives/props": "^3.1.8",
-		"@solid-primitives/refs": "^1.0.5",
-		"@solid-primitives/utils": "^6.2.1"
+		"@solid-primitives/event-listener": "next",
+		"@solid-primitives/keyed": "next",
+		"@solid-primitives/map": "next",
+		"@solid-primitives/media": "next",
+		"@solid-primitives/props": "next",
+		"@solid-primitives/refs": "next",
+		"@solid-primitives/utils": "next"
 	},
 	"peerDependencies": {
-		"solid-js": "^1.8.8"
+		"@solidjs/web": "^2.0.0-beta.14",
+		"solid-js": "^2.0.0-beta.14"
 	},
 	"publishConfig": {
 		"access": "public"

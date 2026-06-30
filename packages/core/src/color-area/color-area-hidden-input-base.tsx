@@ -4,16 +4,12 @@ import {
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import { COLOR_INTL_TRANSLATIONS } from "@solid-primitives/utils/colors";
+import type { ComponentProps, JSX } from "@solidjs/web";
+import { createMemo, omit } from "solid-js";
 import {
-	type ComponentProps,
-	type JSX,
-	createMemo,
-	splitProps,
-} from "solid-js";
-import { COLOR_INTL_TRANSLATIONS } from "../colors";
-import {
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
+	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
 } from "../form-control";
 import { useColorAreaContext } from "./color-area-context";
@@ -40,15 +36,27 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 		props,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
+	const formControlFieldProps = omit(
 		mergedProps,
-		["style", "orientation", "onChange", "onFocus", "onBlur"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
+		"style",
+		"orientation",
+		"onChange",
+		"onFocus",
+		"onBlur",
+	);
+	const others = omit(
+		mergedProps,
+		"style",
+		"orientation",
+		"onChange",
+		"onFocus",
+		"onBlur",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
 	);
 
-	const { fieldProps } = createFormControlField(formControlFieldProps);
+	const { fieldProps } = createFormControlField(formControlFieldProps as any);
 
-	const isVertical = () => local.orientation === "vertical";
+	const isVertical = () => mergedProps.orientation === "vertical";
 
 	const ariaLabel = () => {
 		return [fieldProps.ariaLabel(), context.translations().colorPicker]
@@ -59,7 +67,12 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e, local.onChange);
+		callHandler(
+			e as Event & { currentTarget: HTMLInputElement; target: Element },
+			mergedProps.onChange as
+				| JSX.EventHandlerUnion<HTMLInputElement, Event>
+				| undefined,
+		);
 		const target = e.target as HTMLInputElement;
 
 		isVertical()
@@ -91,7 +104,7 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 				(isVertical() ? context.yName() : context.xName()) ||
 				formControlContext.name()
 			}
-			tabIndex={context.state.isDisabled() ? undefined : -1}
+			tabindex={context.state.isDisabled() ? undefined : -1}
 			min={isVertical() ? context.state.yMinValue() : context.state.xMinValue()}
 			max={isVertical() ? context.state.yMaxValue() : context.state.xMaxValue()}
 			step={isVertical() ? context.state.yStep() : context.state.xStep()}
@@ -99,20 +112,20 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
+			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
 			aria-roledescription={context.translations().twoDimensionalSlider}
 			aria-valuetext={valueText()}
-			aria-orientation={local.orientation}
+			aria-orientation={mergedProps.orientation}
 			aria-label={ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
 			aria-invalid={
-				formControlContext.validationState() === "invalid" || undefined
+				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
-			data-orientation={local.orientation}
+			aria-required={formControlContext.isRequired() ? "true" : undefined}
+			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
+			data-orientation={mergedProps.orientation}
 			onChange={onChange}
 			{...formControlContext.dataset()}
 			{...others}

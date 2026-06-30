@@ -1,5 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { Show, type ValidComponent, splitProps } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { omit, Show } from "solid-js";
 
 import {
 	type ElementOf,
@@ -52,10 +53,10 @@ export function ListboxItemIndicator<T extends ValidComponent = "div">(
 		props as ListboxItemIndicatorProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["forceMount"]);
+	const others = omit(mergedProps, "forceMount");
 
 	return (
-		<Show when={local.forceMount || context.isSelected()}>
+		<Show when={mergedProps.forceMount || context.isSelected()}>
 			<Polymorphic<ListboxItemIndicatorRenderProps>
 				as="div"
 				aria-hidden="true"

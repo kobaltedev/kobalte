@@ -1,5 +1,6 @@
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { type Component, type ValidComponent, splitProps } from "solid-js";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import { createToggleState } from "../primitives";
@@ -53,22 +54,23 @@ export function MenuCheckboxItem<T extends ValidComponent = "div">(
 		props as MenuCheckboxItemProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"checked",
 		"defaultChecked",
 		"onChange",
 		"onSelect",
-	]);
+	);
 
 	const state = createToggleState({
-		isSelected: () => local.checked,
-		defaultIsSelected: () => local.defaultChecked,
-		onSelectedChange: (checked) => local.onChange?.(checked),
+		isSelected: () => mergedProps.checked,
+		defaultIsSelected: () => mergedProps.defaultChecked,
+		onSelectedChange: (checked) => mergedProps.onChange?.(checked),
 		isDisabled: () => others.disabled,
 	});
 
 	const onSelect = () => {
-		local.onSelect?.();
+		mergedProps.onSelect?.();
 		state.toggle();
 	};
 

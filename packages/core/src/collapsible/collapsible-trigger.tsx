@@ -7,12 +7,8 @@
  */
 
 import { callHandler } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -30,7 +26,7 @@ export interface CollapsibleTriggerCommonProps<
 export interface CollapsibleTriggerRenderProps
 	extends CollapsibleTriggerCommonProps,
 		Button.ButtonRootRenderProps {
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 }
 
@@ -47,10 +43,10 @@ export function CollapsibleTrigger<T extends ValidComponent = "div">(
 ) {
 	const context = useCollapsibleContext();
 
-	const [local, others] = splitProps(props, ["onClick"]);
+	const others = omit(props, "onClick");
 
-	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+	const onClick: JSX.EventHandlerUnion<Element, MouseEvent> = (e) => {
+		callHandler(e, props.onClick as JSX.EventHandlerUnion<Element, MouseEvent>);
 		context.toggle();
 	};
 
@@ -60,7 +56,7 @@ export function CollapsibleTrigger<T extends ValidComponent = "div">(
 				Omit<CollapsibleTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			disabled={context.disabled()}
 			onClick={onClick}

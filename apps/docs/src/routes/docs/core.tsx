@@ -61,6 +61,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/button",
 			},
 			{
+				title: "Calendar",
+				href: "/docs/core/components/calendar",
+			},
+			{
 				title: "Checkbox",
 				href: "/docs/core/components/checkbox",
 			},
@@ -105,6 +109,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/dialog",
 			},
 			{
+				title: "Drawer",
+				href: "/docs/core/components/drawer",
+			},
+			{
 				title: "Dropdown Menu",
 				href: "/docs/core/components/dropdown-menu",
 			},
@@ -139,6 +147,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Number Field",
 				href: "/docs/core/components/number-field",
+			},
+			{
+				title: "OTP Field",
+				href: "/docs/core/components/otp-field",
 			},
 			{
 				title: "Pagination",

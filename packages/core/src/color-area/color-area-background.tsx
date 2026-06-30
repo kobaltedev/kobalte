@@ -1,14 +1,12 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import {
-	type JSX,
-	type ValidComponent,
-	createMemo,
-	createSignal,
-	splitProps,
-} from "solid-js";
-import type { Color, ColorChannel } from "../colors";
-import { parseColor } from "../colors";
+	type Color,
+	type ColorChannel,
+	parseColor,
+} from "@solid-primitives/utils/colors";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createMemo, createSignal, omit } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -48,12 +46,13 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 	const context = useColorAreaContext();
 	const formControlContext = useFormControlContext();
 
-	const [local, others] = splitProps(props, [
+	const others = omit(
+		props,
 		"style",
 		"onPointerDown",
 		"onPointerMove",
 		"onPointerUp",
-	]);
+	);
 
 	const { direction } = useLocale();
 
@@ -92,7 +91,12 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(
+			e,
+			props.onPointerDown as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		const target = e.target as HTMLElement;
 		target.setPointerCapture(e.pointerId);
@@ -106,7 +110,12 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(
+			e,
+			props.onPointerMove as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		const target = e.target as HTMLElement;
 
@@ -120,7 +129,12 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 	};
 
 	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerUp);
+		callHandler(
+			e,
+			props.onPointerUp as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		const target = e.target as HTMLElement;
 
@@ -156,9 +170,9 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 				const bg = context.state
 					.value()
 					.getColorChannels()
-					.filter((c) => c !== context.state.channels().zChannel)
+					.filter((c: ColorChannel) => c !== context.state.channels().zChannel)
 					.map(
-						(c) =>
+						(c: ColorChannel) =>
 							`linear-gradient(to ${c === context.state.channels().xChannel ? end : "top"}, ${hslChannels[c as Exclude<ColorChannel, "brightness" | "red" | "green" | "blue" | "alpha">](value)})`,
 					)
 					.reverse();
@@ -179,9 +193,9 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 				const bg = context.state
 					.value()
 					.getColorChannels()
-					.filter((c) => c !== context.state.channels().zChannel)
+					.filter((c: ColorChannel) => c !== context.state.channels().zChannel)
 					.map(
-						(c) =>
+						(c: ColorChannel) =>
 							`linear-gradient(to ${c === context.state.channels().xChannel ? end : "top"}, ${hsbChannels[c as Exclude<ColorChannel, "lightness" | "red" | "green" | "blue" | "alpha">](value)})`,
 					)
 					.reverse();
@@ -206,7 +220,7 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 					"forced-color-adjust": "none",
 					...backgroundStyles(),
 				},
-				local.style,
+				props.style,
 			)}
 			onPointerDown={onPointerDown}
 			onPointerMove={onPointerMove}

@@ -1,5 +1,5 @@
+import type { Color } from "@solid-primitives/utils/colors";
 import { type Accessor, createContext, useContext } from "solid-js";
-import type { Color } from "../colors";
 import type { ColorWheelState } from "./create-color-wheel-state";
 
 export interface ColorWheelContextValue {

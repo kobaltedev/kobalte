@@ -1,5 +1,5 @@
 import { type MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, onCleanup } from "solid-js";
+import { createEffect } from "solid-js";
 
 import { useDomCollectionContext } from "./dom-collection-context";
 import type { DomCollectionItem } from "./types";
@@ -21,13 +21,11 @@ export function createDomCollectionItem<
 
 	const mergedProps = mergeDefaultProps({ shouldRegisterItem: true }, props);
 
-	createEffect(() => {
-		if (!mergedProps.shouldRegisterItem) {
-			return;
-		}
-
-		const unregister = context.registerItem(mergedProps.getItem());
-
-		onCleanup(unregister);
-	});
+	createEffect(
+		() => (mergedProps.shouldRegisterItem ? mergedProps.getItem() : undefined),
+		(item) => {
+			if (item == null) return;
+			return context.registerItem(item);
+		},
+	);
 }

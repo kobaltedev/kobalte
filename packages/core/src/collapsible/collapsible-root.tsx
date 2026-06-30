@@ -6,18 +6,14 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import {
-	OverrideComponentProps,
-	createGenerateId,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import {
@@ -82,33 +78,37 @@ export function CollapsibleRoot<T extends ValidComponent = "div">(
 		props as CollapsibleRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"open",
 		"defaultOpen",
 		"onOpenChange",
 		"disabled",
 		"forceMount",
-	]);
+	);
 
-	const [contentId, setContentId] = createSignal<string>();
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
 	const dataset: Accessor<CollapsibleDataSet> = createMemo(() => ({
 		"data-expanded": disclosureState.isOpen() ? "" : undefined,
 		"data-closed": !disclosureState.isOpen() ? "" : undefined,
-		"data-disabled": local.disabled ? "" : undefined,
+		"data-disabled": mergedProps.disabled ? "" : undefined,
 	}));
 
 	const context: CollapsibleContextValue = {
 		dataset,
 		isOpen: disclosureState.isOpen,
-		disabled: () => local.disabled ?? false,
-		shouldMount: () => local.forceMount || disclosureState.isOpen(),
+		disabled: () => mergedProps.disabled ?? false,
+		shouldMount: () => mergedProps.forceMount || disclosureState.isOpen(),
 		contentId,
 		toggle: disclosureState.toggle,
 		generateId: createGenerateId(() => others.id!),
@@ -116,12 +116,12 @@ export function CollapsibleRoot<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<CollapsibleContext.Provider value={context}>
+		<CollapsibleContext value={context}>
 			<Polymorphic<CollapsibleRootRenderProps>
 				as="div"
 				{...dataset()}
 				{...others}
 			/>
-		</CollapsibleContext.Provider>
+		</CollapsibleContext>
 	);
 }

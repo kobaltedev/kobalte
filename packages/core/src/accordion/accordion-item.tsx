@@ -7,17 +7,11 @@
  */
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import {
-	type Component,
-	JSX,
-	type ValidComponent,
-	createSignal,
-	createUniqueId,
-	splitProps,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createSignal, createUniqueId, omit } from "solid-js";
 
 import * as Collapsible from "../collapsible";
-import { ElementOf, type PolymorphicProps } from "../polymorphic";
+import type { PolymorphicProps } from "../polymorphic";
 import { createRegisterId } from "../primitives";
 import { useAccordionContext } from "./accordion-context";
 import {
@@ -46,15 +40,14 @@ export interface AccordionItemRenderProps
 	extends AccordionItemCommonProps,
 		Collapsible.CollapsibleRootRenderProps {}
 
-export type AccordionItemProps<
-	T extends ValidComponent | HTMLElement = HTMLElement,
-> = AccordionItemOptions & Partial<AccordionItemRenderProps>;
+export type AccordionItemProps = AccordionItemOptions &
+	Partial<AccordionItemRenderProps>;
 
 /**
  * An item of the accordion, contains all the parts of a collapsible section.
  */
 export function AccordionItem<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, AccordionItemProps<T>>,
+	props: PolymorphicProps<T, AccordionItemProps>,
 ) {
 	const accordionContext = useAccordionContext();
 
@@ -67,20 +60,26 @@ export function AccordionItem<T extends ValidComponent = "div">(
 		props as AccordionItemProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["value", "disabled"]);
+	const others = omit(mergedProps, "value", "disabled");
 
-	const [triggerId, setTriggerId] = createSignal<string>();
-	const [contentId, setContentId] = createSignal<string>();
+	const [triggerId, setTriggerId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const selectionManager = () =>
 		accordionContext.listState().selectionManager();
 
 	const isExpanded = () => {
-		return selectionManager().isSelected(local.value);
+		return selectionManager().isSelected(mergedProps.value);
 	};
 
 	const context: AccordionItemContextValue = {
-		value: () => local.value,
+		value: () => mergedProps.value,
 		triggerId,
 		contentId,
 		generateId: createGenerateId(() => others.id!),
@@ -89,7 +88,7 @@ export function AccordionItem<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<AccordionItemContext.Provider value={context}>
+		<AccordionItemContext value={context}>
 			<Collapsible.Root<
 				Component<
 					Omit<
@@ -99,9 +98,9 @@ export function AccordionItem<T extends ValidComponent = "div">(
 				>
 			>
 				open={isExpanded()}
-				disabled={local.disabled}
+				disabled={mergedProps.disabled}
 				{...others}
 			/>
-		</AccordionItemContext.Provider>
+		</AccordionItemContext>
 	);
 }

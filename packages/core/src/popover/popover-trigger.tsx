@@ -7,12 +7,8 @@
  */
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -33,7 +29,7 @@ export interface PopoverTriggerRenderProps
 		Button.ButtonRootRenderProps,
 		PopoverDataSet {
 	"aria-haspopup": "dialog";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 }
 
@@ -49,23 +45,20 @@ export function PopoverTrigger<T extends ValidComponent = "button">(
 ) {
 	const context = usePopoverContext();
 
-	const [local, others] = splitProps(props as PopoverTriggerProps, [
-		"ref",
-		"onClick",
-		"onPointerDown",
-	]);
+	const p = props as PopoverTriggerProps;
+	const others = omit(p, "ref", "onClick", "onPointerDown");
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, p.onPointerDown);
 
 		// Prevent popover from opening then closing immediately when inside an overlay in safari.
 		e.preventDefault();
 	};
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, p.onClick);
 		context.toggle();
 	};
 
@@ -75,9 +68,9 @@ export function PopoverTrigger<T extends ValidComponent = "button">(
 				Omit<PopoverTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			ref={mergeRefs(context.setTriggerRef, p.ref)}
 			aria-haspopup="dialog"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			onPointerDown={onPointerDown}
 			onClick={onClick}

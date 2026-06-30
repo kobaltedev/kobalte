@@ -1,10 +1,6 @@
 import { callHandler } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -36,13 +32,11 @@ export function DialogCloseButton<T extends ValidComponent = "button">(
 ) {
 	const context = useDialogContext();
 
-	const [local, others] = splitProps(props as DialogCloseButtonProps, [
-		"aria-label",
-		"onClick",
-	]);
+	const p = props as DialogCloseButtonProps;
+	const others = omit(p, "aria-label", "onClick");
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, p.onClick);
 		context.close();
 	};
 
@@ -52,7 +46,7 @@ export function DialogCloseButton<T extends ValidComponent = "button">(
 				Omit<DialogCloseButtonRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-label={local["aria-label"] || context.translations().dismiss}
+			aria-label={p["aria-label"] || context.translations().dismiss}
 			onClick={onClick}
 			{...others}
 		/>

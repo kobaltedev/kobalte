@@ -37,23 +37,24 @@ describe("createToggleState", () => {
 		});
 	});
 
-	it("should setSelected with the given value", () => {
-		createRoot((dispose) => {
+	it("should setSelected with the given value", () =>
+		createRoot(async (dispose) => {
 			const state = createToggleState({ defaultIsSelected: false });
 
 			expect(state.isSelected()).toBeFalsy();
 
 			state.setIsSelected(true);
+			await Promise.resolve();
 
 			expect(state.isSelected()).toBeTruthy();
 
 			state.setIsSelected(false);
+			await Promise.resolve();
 
 			expect(state.isSelected()).toBeFalsy();
 
 			dispose();
-		});
-	});
+		}));
 
 	it("should not setSelected with the given value when is read only", () => {
 		createRoot((dispose) => {
@@ -72,23 +73,24 @@ describe("createToggleState", () => {
 		});
 	});
 
-	it("should toggle selected state", () => {
-		createRoot((dispose) => {
+	it("should toggle selected state", () =>
+		createRoot(async (dispose) => {
 			const state = createToggleState({ defaultIsSelected: false });
 
 			expect(state.isSelected()).toBeFalsy();
 
 			state.toggle();
+			await Promise.resolve();
 
 			expect(state.isSelected()).toBeTruthy();
 
 			state.toggle();
+			await Promise.resolve();
 
 			expect(state.isSelected()).toBeFalsy();
 
 			dispose();
-		});
-	});
+		}));
 
 	it("should not toggle selected state when is read only", () => {
 		createRoot((dispose) => {

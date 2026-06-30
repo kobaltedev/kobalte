@@ -1,6 +1,6 @@
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -31,7 +31,7 @@ export function MeterFill<T extends ValidComponent = "div">(
 ) {
 	const context = useMeterContext();
 
-	const [local, others] = splitProps(props as MeterFillProps, ["style"]);
+	const others = omit(props as MeterFillProps, "style");
 
 	return (
 		<Polymorphic<MeterFillRenderProps>
@@ -40,7 +40,7 @@ export function MeterFill<T extends ValidComponent = "div">(
 				{
 					"--kb-meter-fill-width": context.meterFillWidth(),
 				},
-				local.style,
+				props.style,
 			)}
 			{...context.dataset()}
 			{...others}

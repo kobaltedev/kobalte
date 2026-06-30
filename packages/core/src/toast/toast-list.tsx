@@ -20,16 +20,8 @@ import {
 	getWindow,
 	mergeRefs,
 } from "@kobalte/utils";
-import {
-	For,
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	on,
-	onCleanup,
-	splitProps,
-} from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
+import { createEffect, For, omit, untrack } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -50,7 +42,7 @@ export interface ToastListCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface ToastListRenderProps extends ToastListCommonProps {
 	children: JSX.Element;
-	tabIndex: -1;
+	tabindex: -1;
 }
 
 export type ToastListProps<
@@ -68,16 +60,22 @@ export function ToastList<T extends ValidComponent = "ol">(
 
 	const context = useToastRegionContext();
 
-	const [local, others] = splitProps(props as ToastListProps, [
+	const others = omit(
+		props as ToastListProps,
 		"ref",
 		"onFocusIn",
 		"onFocusOut",
 		"onPointerMove",
 		"onPointerLeave",
-	]);
+	);
 
 	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocusIn);
+		callHandler(
+			e,
+			props.onFocusIn as
+				| JSX.EventHandlerUnion<HTMLElement, FocusEvent>
+				| undefined,
+		);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
 			context.pauseAllTimer();
@@ -85,7 +83,12 @@ export function ToastList<T extends ValidComponent = "ol">(
 	};
 
 	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocusOut);
+		callHandler(
+			e,
+			props.onFocusOut as
+				| JSX.EventHandlerUnion<HTMLElement, FocusEvent>
+				| undefined,
+		);
 
 		// The newly focused element isn't inside the toast list.
 		if (!contains(ref, e.relatedTarget as HTMLElement)) {
@@ -96,7 +99,12 @@ export function ToastList<T extends ValidComponent = "ol">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(
+			e,
+			props.onPointerMove as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		if (context.pauseOnInteraction() && !context.isPaused()) {
 			context.pauseAllTimer();
@@ -106,7 +114,12 @@ export function ToastList<T extends ValidComponent = "ol">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerLeave);
+		callHandler(
+			e,
+			props.onPointerLeave as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		// The current active element isn't inside the toast list.
 		if (!contains(ref, getDocument(ref).activeElement)) {
@@ -115,14 +128,9 @@ export function ToastList<T extends ValidComponent = "ol">(
 	};
 
 	createEffect(
-		on([() => ref, () => context.hotkey()], ([ref, hotkey]) => {
-			if (isServer) {
-				return;
-			}
-
-			if (!ref) {
-				return;
-			}
+		() => context.hotkey(),
+		(hotkey) => {
+			if (isServer || !ref) return;
 
 			const doc = getDocument(ref);
 
@@ -138,31 +146,32 @@ export function ToastList<T extends ValidComponent = "ol">(
 
 			doc.addEventListener("keydown", onKeyDown);
 
-			onCleanup(() => doc.removeEventListener("keydown", onKeyDown));
-		}),
+			return () => doc.removeEventListener("keydown", onKeyDown);
+		},
 	);
 
-	createEffect(() => {
-		if (!context.pauseOnPageIdle()) {
-			return;
-		}
+	createEffect(
+		() => context.pauseOnPageIdle(),
+		(pauseOnPageIdle) => {
+			if (!pauseOnPageIdle) return;
 
-		const win = getWindow(ref);
+			const win = getWindow(ref);
 
-		win.addEventListener("blur", context.pauseAllTimer);
-		win.addEventListener("focus", context.resumeAllTimer);
+			win.addEventListener("blur", context.pauseAllTimer);
+			win.addEventListener("focus", context.resumeAllTimer);
 
-		onCleanup(() => {
-			win.removeEventListener("blur", context.pauseAllTimer);
-			win.removeEventListener("focus", context.resumeAllTimer);
-		});
-	});
+			return () => {
+				win.removeEventListener("blur", context.pauseAllTimer);
+				win.removeEventListener("focus", context.resumeAllTimer);
+			};
+		},
+	);
 
 	return (
 		<Polymorphic<ToastListRenderProps>
 			as="ol"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
-			tabIndex={-1}
+			ref={mergeRefs((el) => (ref = el), props.ref as any)}
+			tabindex={-1}
 			onFocusIn={onFocusIn}
 			onFocusOut={onFocusOut}
 			onPointerMove={onPointerMove}
@@ -170,13 +179,11 @@ export function ToastList<T extends ValidComponent = "ol">(
 			{...others}
 		>
 			<For each={context.toasts()}>
-				{(toast) =>
-					toast.toastComponent({
-						get toastId() {
-							return toast.id;
-						},
-					})
-				}
+				{(toast) => {
+					const Component = untrack(() => toast.toastComponent);
+					const id = untrack(() => toast.id);
+					return Component({ toastId: id });
+				}}
 			</For>
 		</Polymorphic>
 	);

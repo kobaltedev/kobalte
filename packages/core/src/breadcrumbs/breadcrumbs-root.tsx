@@ -7,7 +7,8 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -15,13 +16,13 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import {
-	BreadcrumbsContext,
-	type BreadcrumbsContextValue,
-} from "./breadcrumbs-context";
-import {
 	BREADCRUMBS_INTL_TRANSLATIONS,
 	type BreadcrumbsIntlTranslations,
 } from "./breadcrumbs.intl";
+import {
+	BreadcrumbsContext,
+	type BreadcrumbsContextValue,
+} from "./breadcrumbs-context";
 
 export interface BreadcrumbsRootOptions {
 	/**
@@ -60,22 +61,19 @@ export function BreadcrumbsRoot<T extends ValidComponent = "nav">(
 		props as BreadcrumbsRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
-		"separator",
-		"translations",
-	]);
+	const others = omit(mergedProps, "separator", "translations");
 
 	const context: BreadcrumbsContextValue = {
-		separator: () => local.separator,
+		separator: () => mergedProps.separator,
 	};
 
 	return (
-		<BreadcrumbsContext.Provider value={context}>
+		<BreadcrumbsContext value={context}>
 			<Polymorphic<BreadcrumbsRootRenderProps>
 				as="nav"
-				aria-label={local.translations.breadcrumbs}
+				aria-label={mergedProps.translations.breadcrumbs}
 				{...others}
 			/>
-		</BreadcrumbsContext.Provider>
+		</BreadcrumbsContext>
 	);
 }

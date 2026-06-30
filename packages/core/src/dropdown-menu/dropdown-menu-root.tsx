@@ -1,5 +1,5 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { type ParentProps, createUniqueId } from "solid-js";
+import { createUniqueId, type ParentProps } from "solid-js";
 
 import { MenuRoot, type MenuRootOptions } from "../menu";
 

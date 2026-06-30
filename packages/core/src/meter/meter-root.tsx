@@ -7,13 +7,13 @@
  */
 
 import { clamp, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { createNumberFormatter } from "../i18n";
@@ -98,7 +98,8 @@ export function MeterRoot<T extends ValidComponent = "div">(
 		props as MeterRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"value",
 		"minValue",
 		"maxValue",
@@ -110,29 +111,38 @@ export function MeterRoot<T extends ValidComponent = "div">(
 		"aria-valuemin",
 		"aria-valuenow",
 		"indeterminate",
-	]);
+	);
 
-	const [labelId, setLabelId] = createSignal<string>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultFormatter = createNumberFormatter(() => ({ style: "percent" }));
 
 	const value = () => {
-		return clamp(local.value!, local.minValue!, local.maxValue!);
+		return clamp(
+			mergedProps.value!,
+			mergedProps.minValue!,
+			mergedProps.maxValue!,
+		);
 	};
 
 	const valuePercent = () => {
-		return (value() - local.minValue!) / (local.maxValue! - local.minValue!);
+		return (
+			(value() - mergedProps.minValue!) /
+			(mergedProps.maxValue! - mergedProps.minValue!)
+		);
 	};
 
 	const valueLabel = () => {
-		if (local.indeterminate) {
+		if (mergedProps.indeterminate) {
 			return undefined;
 		}
-		if (local.getValueLabel) {
-			return local.getValueLabel({
+		if (mergedProps.getValueLabel) {
+			return mergedProps.getValueLabel({
 				value: value(),
-				min: local.minValue!,
-				max: local.maxValue!,
+				min: mergedProps.minValue!,
+				max: mergedProps.maxValue!,
 			});
 		}
 
@@ -158,18 +168,18 @@ export function MeterRoot<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<MeterContext.Provider value={context}>
+		<MeterContext value={context}>
 			<Polymorphic<MeterRootRenderProps>
 				as="div"
-				role={local.role || "meter"}
-				aria-valuenow={local.indeterminate ? undefined : value()}
-				aria-valuemin={local.minValue}
-				aria-valuemax={local.maxValue}
+				role={mergedProps.role || "meter"}
+				aria-valuenow={mergedProps.indeterminate ? undefined : value()}
+				aria-valuemin={mergedProps.minValue}
+				aria-valuemax={mergedProps.maxValue}
 				aria-valuetext={valueLabel()}
 				aria-labelledby={labelId()}
 				{...dataset()}
 				{...others}
 			/>
-		</MeterContext.Provider>
+		</MeterContext>
 	);
 }

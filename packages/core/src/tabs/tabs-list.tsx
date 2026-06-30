@@ -7,16 +7,12 @@
  */
 
 import {
-	type Orientation,
 	composeEventHandlers,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
-import {
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, omit } from "solid-js";
 
 import { useLocale } from "../i18n";
 import {
@@ -58,13 +54,14 @@ export function TabsList<T extends ValidComponent = "div">(
 
 	const context = useTabsContext();
 
-	const [local, others] = splitProps(props as TabsListProps, [
+	const others = omit(
+		props as TabsListProps,
 		"ref",
 		"onKeyDown",
 		"onMouseDown",
 		"onFocusIn",
 		"onFocusOut",
-	]);
+	);
 
 	const { direction } = useLocale();
 
@@ -85,41 +82,41 @@ export function TabsList<T extends ValidComponent = "div">(
 		() => ref,
 	);
 
-	createEffect(() => {
-		if (ref == null) {
-			return;
-		}
-
-		const selectedTab = ref.querySelector(
-			`[data-key="${context.listState().selectedKey()}"]`,
-		) as HTMLElement | null;
-
-		if (selectedTab != null) {
-			context.setSelectedTab(selectedTab);
-		}
-	});
+	createEffect(
+		() => {
+			if (ref == null) return null;
+			return ref.querySelector(
+				`[data-key="${context.listState().selectedKey()}"]`,
+			) as HTMLElement | null;
+		},
+		(selectedTab) => {
+			if (selectedTab != null) {
+				context.setSelectedTab(selectedTab);
+			}
+		},
+	);
 
 	return (
 		<Polymorphic<TabsListRenderProps>
 			as="div"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), (props as TabsListProps).ref)}
 			role="tablist"
 			aria-orientation={context.orientation()}
 			data-orientation={context.orientation()}
 			onKeyDown={composeEventHandlers([
-				local.onKeyDown,
+				props.onKeyDown,
 				selectableCollection.onKeyDown,
 			])}
 			onMouseDown={composeEventHandlers([
-				local.onMouseDown,
+				props.onMouseDown,
 				selectableCollection.onMouseDown,
 			])}
 			onFocusIn={composeEventHandlers([
-				local.onFocusIn,
+				props.onFocusIn,
 				selectableCollection.onFocusIn,
 			])}
 			onFocusOut={composeEventHandlers([
-				local.onFocusOut,
+				props.onFocusOut,
 				selectableCollection.onFocusOut,
 			])}
 			{...others}

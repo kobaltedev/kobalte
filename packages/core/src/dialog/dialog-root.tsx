@@ -1,13 +1,12 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { type ParentProps, createSignal, createUniqueId } from "solid-js";
-
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
+import { createSignal, createUniqueId, type ParentProps } from "solid-js";
 import { createDisclosureState, createRegisterId } from "../primitives";
-import { DialogContext, type DialogContextValue } from "./dialog-context";
 import {
 	DIALOG_INTL_TRANSLATIONS,
 	type DialogIntlTranslations,
 } from "./dialog.intl";
+import { DialogContext, type DialogContextValue } from "./dialog-context";
 
 export interface DialogRootOptions {
 	/** The localized strings of the component. */
@@ -69,13 +68,30 @@ export function DialogRoot(props: DialogRootProps) {
 		props,
 	);
 
-	const [contentId, setContentId] = createSignal<string>();
-	const [titleId, setTitleId] = createSignal<string>();
-	const [descriptionId, setDescriptionId] = createSignal<string>();
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [titleId, setTitleId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
-	const [overlayRef, setOverlayRef] = createSignal<HTMLElement>();
-	const [contentRef, setContentRef] = createSignal<HTMLElement>();
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
+	const [overlayRef, setOverlayRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const disclosureState = createDisclosureState({
 		open: () => mergedProps.open,
@@ -85,15 +101,15 @@ export function DialogRoot(props: DialogRootProps) {
 
 	const shouldMount = () => mergedProps.forceMount || disclosureState.isOpen();
 
-	const { present: overlayPresent } = createPresence({
-		show: shouldMount,
-		element: () => overlayRef() ?? null,
-	});
+	const { isMounted: overlayPresent } = createPresence(
+		() => shouldMount() || undefined,
+		{ transitionDuration: 0 },
+	);
 
-	const { present: contentPresent } = createPresence({
-		show: shouldMount,
-		element: () => contentRef() ?? null,
-	});
+	const { isMounted: contentPresent } = createPresence(
+		() => shouldMount() || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	const context: DialogContextValue = {
 		translations: () => mergedProps.translations ?? DIALOG_INTL_TRANSLATIONS,
@@ -119,9 +135,5 @@ export function DialogRoot(props: DialogRootProps) {
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};
 
-	return (
-		<DialogContext.Provider value={context}>
-			{mergedProps.children}
-		</DialogContext.Provider>
-	);
+	return <DialogContext value={context}>{mergedProps.children}</DialogContext>;
 }

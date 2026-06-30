@@ -1,13 +1,7 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import {
-	Show,
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	splitProps,
-} from "solid-js";
-
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
+import type { ValidComponent } from "@solidjs/web";
+import { createSignal, omit, Show } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -63,19 +57,22 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 		props as CheckboxIndicatorProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "forceMount"]);
+	const others = omit(mergedProps, "ref", "forceMount");
 
-	const { present } = createPresence({
-		show: () =>
-			local.forceMount || context.indeterminate() || context.checked(),
-		element: () => ref() ?? null,
-	});
+	const { isMounted: present } = createPresence(
+		() =>
+			mergedProps.forceMount ||
+			context.indeterminate() ||
+			context.checked() ||
+			undefined,
+		{ transitionDuration: 0 },
+	);
 
 	return (
 		<Show when={present()}>
 			<Polymorphic<CheckboxIndicatorRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, local.ref)}
+				ref={mergeRefs(setRef, mergedProps.ref)}
 				{...formControlContext.dataset()}
 				{...context.dataset()}
 				{...others}

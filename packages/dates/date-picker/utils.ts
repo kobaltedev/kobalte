@@ -8,8 +8,8 @@
 
 import {
 	type Calendar,
-	Time,
 	now,
+	Time,
 	toCalendar,
 	toCalendarDate,
 	toCalendarDateTime,
@@ -80,7 +80,7 @@ export function getDateFieldFormatOptions(
 	const opts: Intl.DateTimeFormatOptions = keys
 		.slice(startIdx, endIdx + 1)
 		.reduce((opts, key) => {
-			// @ts-ignore
+			// @ts-expect-error
 			opts[key] = finalFieldOptions[key];
 			return opts;
 		}, {});

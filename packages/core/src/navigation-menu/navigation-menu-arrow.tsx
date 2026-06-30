@@ -1,12 +1,6 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import {
-	type Component,
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	on,
-	splitProps,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, createSignal, omit } from "solid-js";
 
 import { useMenubarContext } from "../menubar/menubar-context";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -50,14 +44,15 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 		props as NavigationMenuArrowProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref"]);
+	const others = omit(mergedProps, "ref");
 
 	const [offset, setOffset] = createSignal(0);
 
 	const horizontal = () => menubarContext.orientation() === "horizontal";
 
 	createEffect(
-		on(menubarContext.value, (value) => {
+		() => menubarContext.value(),
+		(value) => {
 			setTimeout(() => {
 				if (!value || (value as string).includes("link-trigger-")) return;
 				const triggerRef = document.querySelector(
@@ -83,7 +78,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 
 				setOffset(middle - initalArrowPos);
 			});
-		}),
+		},
 	);
 
 	return (
@@ -92,7 +87,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 				Omit<NavigationMenuArrowRenderProps, keyof PopperArrowRenderProps>
 			>
 		>
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 			style={{
 				transform: `translate${horizontal() ? "X" : "Y"}(${offset()}px)`,
 				color: "red",

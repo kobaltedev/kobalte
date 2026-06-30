@@ -1,7 +1,7 @@
-import { OverrideComponentProps, mergeRefs } from "@kobalte/utils";
-import { type Component, type ValidComponent, splitProps } from "solid-js";
-
-import createPreventScroll from "solid-prevent-scroll";
+import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { createPreventScroll } from "@solid-primitives/scroll";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	MenuContentBase,
@@ -33,10 +33,10 @@ export function MenuContent<T extends ValidComponent = "div">(
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 
-	const [local, others] = splitProps(props as MenuContentProps, ["ref"]);
+	const others = omit(props as MenuContentProps, "ref");
 
 	createPreventScroll({
-		element: () => ref ?? null,
+		element: () => ref ?? undefined,
 		enabled: () => context.contentPresent() && rootContext.preventScroll(),
 	});
 
@@ -46,7 +46,7 @@ export function MenuContent<T extends ValidComponent = "div">(
 		>
 			ref={mergeRefs((el) => {
 				ref = el;
-			}, local.ref)}
+			}, props.ref)}
 			{...others}
 		/>
 	);

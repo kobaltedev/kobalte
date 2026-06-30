@@ -12,29 +12,23 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
+import { createFocusTrap } from "@solid-primitives/focus";
 import {
-	type Component,
-	Show,
-	type ValidComponent,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+	createHideOutside,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 
-import createPreventScroll from "solid-prevent-scroll";
+import { createPreventScroll } from "@solid-primitives/scroll";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
 	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-	createFocusScope,
-	createHideOutside,
-} from "../primitives";
 import { useDialogContext } from "./dialog-context";
 
 export interface DialogContentOptions {
@@ -84,7 +78,7 @@ export interface DialogContentRenderProps
 	extends DialogContentCommonProps,
 		DismissableLayerRenderProps {
 	role: "dialog" | "alertdialog";
-	tabIndex: -1;
+	tabindex: -1;
 }
 
 export type DialogContentProps<
@@ -108,20 +102,21 @@ export function DialogContent<T extends ValidComponent = "div">(
 		props as DialogContentProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"onOpenAutoFocus",
 		"onCloseAutoFocus",
 		"onPointerDownOutside",
 		"onFocusOutside",
 		"onInteractOutside",
-	]);
+	);
 
 	let hasInteractedOutside = false;
 	let hasPointerDownOutside = false;
 
 	const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
-		local.onPointerDownOutside?.(e);
+		mergedProps.onPointerDownOutside?.(e);
 
 		// If the event is a right-click, we shouldn't close because
 		// it is effectively as if we right-clicked the `Overlay`.
@@ -131,7 +126,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		mergedProps.onFocusOutside?.(e);
 
 		// When focus is trapped, a `focusout` event may still happen.
 		// We make sure we don't trigger our `onDismiss` in such case.
@@ -141,7 +136,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 	};
 
 	const onInteractOutside = (e: InteractOutsideEvent) => {
-		local.onInteractOutside?.(e);
+		mergedProps.onInteractOutside?.(e);
 
 		if (context.modal()) {
 			return;
@@ -174,7 +169,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 	};
 
 	const onCloseAutoFocus = (e: Event) => {
-		local.onCloseAutoFocus?.(e);
+		mergedProps.onCloseAutoFocus?.(e);
 
 		if (context.modal()) {
 			e.preventDefault();
@@ -195,26 +190,32 @@ export function DialogContent<T extends ValidComponent = "div">(
 	};
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
+	// Use context.contentRef (a signal) so the effect re-runs when the element mounts.
 	createHideOutside({
-		isDisabled: () => !(context.isOpen() && context.modal()),
-		targets: () => (ref ? [ref] : []),
+		disabled: () => !(context.isOpen() && context.modal()),
+		targets: () => {
+			const el = context.contentRef();
+			return el ? [el] : [];
+		},
+		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createPreventScroll({
-		element: () => ref ?? null,
+		element: () => ref ?? undefined,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
-	createFocusScope(
-		{
-			trapFocus: () => context.isOpen() && context.modal(),
-			onMountAutoFocus: local.onOpenAutoFocus,
-			onUnmountAutoFocus: onCloseAutoFocus,
-		},
-		() => ref,
-	);
+	createFocusTrap({
+		element: () => ref,
+		enabled: () => context.isOpen() && context.modal(),
+		onInitialFocus: mergedProps.onOpenAutoFocus,
+		onFinalFocus: onCloseAutoFocus,
+	});
 
-	createEffect(() => onCleanup(context.registerContentId(others.id!)));
+	createEffect(
+		() => others.id,
+		(id) => context.registerContentId(id!),
+	);
 
 	return (
 		<Show when={context.contentPresent()}>
@@ -226,9 +227,9 @@ export function DialogContent<T extends ValidComponent = "div">(
 				ref={mergeRefs((el) => {
 					context.setContentRef(el);
 					ref = el;
-				}, local.ref)}
+				}, mergedProps.ref)}
 				role="dialog"
-				tabIndex={-1}
+				tabindex={-1}
 				disableOutsidePointerEvents={context.modal() && context.isOpen()}
 				excludedElements={[context.triggerRef]}
 				aria-labelledby={context.titleId()}
