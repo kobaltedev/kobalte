@@ -5,6 +5,7 @@ import { Callout } from "../../../../components/callout.tsx";
 Kobalte components that render a DOM element support polymorphism via the `as` prop. This allows you to change the rendered element or component while preserving behavior, accessibility, and state management.
 
 Polymorphism is useful when you want to:
+
 - Change the underlying element (`button` → `a`)
 - Integrate with your own design system components
 - Control which props reach your component
@@ -47,7 +48,7 @@ When using an `as` callback:
 
 - Always spread the provided props
 - Custom props are forwarded **unchanged**
-- Kobalte options are *not* passed
+- Kobalte options are _not_ passed
 - Event handlers must be defined on the **parent**
 
 Violating these rules can break behavior or accessibility.
@@ -64,12 +65,7 @@ function App() {
 					A Trigger
 				</Tabs.Trigger>
 
-				<Tabs.Trigger
-					value="one"
-					as={props => (
-						<MyCustomButton value="custom" {...props} />
-					)}
-				>
+				<Tabs.Trigger value="one" as={props => <MyCustomButton value="custom" {...props} />}>
 					Custom Button Trigger
 				</Tabs.Trigger>
 			</Tabs.List>
@@ -78,10 +74,11 @@ function App() {
 	);
 }
 ```
+
 In this example:
+
 - `value="one"` is used by Kobalte and not passed to `MyCustomButton`
 - `value="custom"` is explicitly passed to `MyCustomButton`
-
 
 ### Typing `as` callbacks
 
@@ -110,7 +107,7 @@ import { PolymorphicCallbackProps } from "@kobalte/core/polymorphic";
 
 ## Event lifecycle
 
-Custom event handlers defined on a Kobalte component are called *before* Kobalte’s internal handlers.
+Custom event handlers defined on a Kobalte component are called _before_ Kobalte’s internal handlers.
 
 ## Component Prop Types
 
@@ -119,6 +116,7 @@ Custom event handlers defined on a Kobalte component are called *before* Kobalte
 </Callout>
 
 Every Kobalte component that renders an element exposes four core types:
+
 - `ComponentOptions`
 - `ComponentCommonProps<T>`
 - `ComponentRenderProps`
@@ -167,7 +165,7 @@ Equivalent to `ComponentOptions` & `Partial<ComponentCommonProps>`.
 
 Use `PolymorphicProps<T, ComponentProps>` when you’re building a wrapper component and want to expose Kobalte’s `as` prop to end users with correct typing.
 
-####  Example
+#### Example
 
 ```tsx
 import { Tabs, TabsTriggerProps } from "@kobalte/core/tabs";
@@ -193,12 +191,14 @@ function CustomTabsTrigger<T extends ValidComponent = "button">(
 	);
 }
 ```
+
 <Callout type="info">
-	When using generics, TypeScript can lose some precision; splitting local props and spreading the remaining props helps preserve usability.
+	When using generics, TypeScript can lose some precision; splitting local props and spreading the
+	remaining props helps preserve usability.
 </Callout>
 
-
 Note:
+
 - `T` should extend `ValidComponent` and default to the underlying element you render (eg. `"button"`).
 
 ### Fixed element wrappers
@@ -233,13 +233,12 @@ export interface CustomTabsTriggerRenderProps
 	class: string;
 }
 
-export type CustomTabsTriggerProps<T extends ValidComponent = "button"> =
-	CustomTabsTriggerOptions & Partial<CustomTabsTriggerCommonProps<ElementOf<T>>>;
+export type CustomTabsTriggerProps<T extends ValidComponent = "button"> = CustomTabsTriggerOptions &
+	Partial<CustomTabsTriggerCommonProps<ElementOf<T>>>;
 
 export function CustomTabsTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, CustomTabsTriggerProps<T>>,
 ) {}
-
 ```
 
 `ElementOf<T>` (from `@kobalte/core/polymorphic`) maps a tag name to its corresponding DOM element type (eg. `ElementOf<"button">` → `HTMLButtonElement`).

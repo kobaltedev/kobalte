@@ -25,19 +25,17 @@ import {
 } from "../polymorphic";
 import { type CollectionItemWithRef, createRegisterId } from "../primitives";
 import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { useRatingGroupContext } from "./rating-group-context";
+import { useRatingContext } from "./rating-context";
 import {
-	RatingGroupItemContext,
-	type RatingGroupItemContextValue,
-	type RatingGroupItemDataSet,
-} from "./rating-group-item-context";
+	RatingItemContext,
+	type RatingItemContextValue,
+	type RatingItemDataSet,
+} from "./rating-item-context";
 import { getEventPoint, getRelativePoint } from "./utils";
 
-export interface RatingGroupItemOptions {}
+export interface RatingItemOptions {}
 
-export interface RatingGroupItemCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {
+export interface RatingItemCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 	ref: T | ((el: T) => void);
 	"aria-labelledby": string | undefined;
@@ -48,9 +46,9 @@ export interface RatingGroupItemCommonProps<
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
-export interface RatingGroupItemRenderProps
-	extends RatingGroupItemCommonProps,
-		RatingGroupItemDataSet {
+export interface RatingItemRenderProps
+	extends RatingItemCommonProps,
+		RatingItemDataSet {
 	role: "radio";
 	tabIndex: number | undefined;
 	"aria-required": boolean | undefined;
@@ -59,17 +57,17 @@ export interface RatingGroupItemRenderProps
 	"aria-checked": boolean;
 }
 
-export type RatingGroupItemProps<
+export type RatingItemProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = RatingGroupItemOptions & Partial<RatingGroupItemCommonProps<ElementOf<T>>>;
+> = RatingItemOptions & Partial<RatingItemCommonProps<ElementOf<T>>>;
 
-export function RatingGroupItem<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, RatingGroupItemProps<T>>,
+export function RatingItem<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, RatingItemProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 
 	const formControlContext = useFormControlContext();
-	const ratingGroupContext = useRatingGroupContext();
+	const RatingContext = useRatingContext();
 
 	const defaultId = `${formControlContext.generateId("item")}-${createUniqueId()}`;
 
@@ -77,7 +75,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 		{
 			id: defaultId,
 		},
-		props as RatingGroupItemProps,
+		props as RatingItemProps,
 	);
 
 	const [local, others] = splitProps(mergedProps, [
@@ -118,7 +116,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 			[
 				local["aria-describedby"],
 				descriptionId(),
-				ratingGroupContext.ariaDescribedBy(),
+				RatingContext.ariaDescribedBy(),
 			]
 				.filter(Boolean)
 				.join(" ") || undefined
@@ -132,12 +130,12 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	const [descriptionId, setDescriptionId] = createSignal<string>();
 
 	const index = () =>
-		ref ? ratingGroupContext.items().findIndex((v) => v.ref() === ref) : -1;
+		ref ? RatingContext.items().findIndex((v) => v.ref() === ref) : -1;
 	const [value, setValue] = createSignal<number>();
 	const newValue = () =>
-		ratingGroupContext.isHovering()
-			? ratingGroupContext.hoveredValue()!
-			: ratingGroupContext.value()!;
+		RatingContext.isHovering()
+			? RatingContext.hoveredValue()!
+			: RatingContext.value()!;
 	const equal = () => Math.ceil(newValue()!) === value();
 	const highlighted = () => value()! <= newValue()! || equal();
 	const half = () => equal() && Math.abs(newValue()! - value()!) === 0.5;
@@ -146,7 +144,7 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 		setValue(
 			direction() === "ltr"
 				? index() + 1
-				: ratingGroupContext.items().length - index(),
+				: RatingContext.items().length - index(),
 		);
 	});
 
@@ -157,25 +155,22 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	};
 
 	const focusItem = (index: number) =>
-		(
-			ratingGroupContext.items()[Math.round(index)].ref() as HTMLElement
-		).focus();
+		(RatingContext.items()[Math.round(index)].ref() as HTMLElement).focus();
 
 	const setPrevValue = () => {
-		const factor = ratingGroupContext.allowHalf() ? 0.5 : 1;
-		const value = Math.max(0, ratingGroupContext.value()! - factor);
-		ratingGroupContext.setValue(value);
+		const factor = RatingContext.allowHalf() ? 0.5 : 1;
+		const value = Math.max(0, RatingContext.value()! - factor);
+		RatingContext.setValue(value);
 		focusItem(Math.max(value - 1, 0));
 	};
 
 	const setNextValue = () => {
-		const factor = ratingGroupContext.allowHalf() ? 0.5 : 1;
+		const factor = RatingContext.allowHalf() ? 0.5 : 1;
 		const value = Math.min(
-			ratingGroupContext.items().length,
-			(ratingGroupContext.value() === -1 ? 0 : ratingGroupContext.value())! +
-				factor,
+			RatingContext.items().length,
+			(RatingContext.value() === -1 ? 0 : RatingContext.value())! + factor,
 		);
-		ratingGroupContext.setValue(value);
+		RatingContext.setValue(value);
 		focusItem(value - 1);
 	};
 
@@ -183,11 +178,11 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 		callHandler(e, local.onClick);
 
 		const value =
-			ratingGroupContext.hoveredValue() === -1
+			RatingContext.hoveredValue() === -1
 				? index() + 1
-				: ratingGroupContext.hoveredValue();
-		ratingGroupContext.setValue(value);
-		ratingGroupContext.setHoveredValue(-1);
+				: RatingContext.hoveredValue();
+		RatingContext.setValue(value);
+		RatingContext.setHoveredValue(-1);
 		focusItem(value - 1);
 	};
 
@@ -199,13 +194,13 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 		const point = getEventPoint(e);
 		const relativePoint = getRelativePoint(point, e.currentTarget);
 		const percentX = relativePoint.getPercentValue({
-			orientation: ratingGroupContext.orientation(),
+			orientation: RatingContext.orientation(),
 			dir: direction(),
 		});
 		const isMidway = percentX < 0.5;
-		const half = ratingGroupContext.allowHalf() && isMidway;
+		const half = RatingContext.allowHalf() && isMidway;
 		const factor = half ? 0.5 : 0;
-		ratingGroupContext.setHoveredValue(value()! - factor);
+		RatingContext.setHoveredValue(value()! - factor);
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
@@ -232,27 +227,27 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 				break;
 			case EventKey.Space:
 				e.preventDefault();
-				ratingGroupContext.setValue(newValue()!);
+				RatingContext.setValue(newValue()!);
 				break;
 			case EventKey.Home:
 				e.preventDefault();
-				ratingGroupContext.setValue(1);
+				RatingContext.setValue(1);
 				break;
 			case EventKey.End:
 				e.preventDefault();
-				ratingGroupContext.setValue(ratingGroupContext.items().length);
+				RatingContext.setValue(RatingContext.items().length);
 				break;
 		}
 	};
 
-	const dataset: Accessor<RatingGroupItemDataSet> = createMemo(() => ({
+	const dataset: Accessor<RatingItemDataSet> = createMemo(() => ({
 		...formControlContext.dataset(),
 		"data-checked": equal() ? "" : undefined,
 		"data-half": half() ? "" : undefined,
 		"data-highlighted": highlighted() ? "" : undefined,
 	}));
 
-	const context: RatingGroupItemContextValue = {
+	const context: RatingItemContextValue = {
 		state: { highlighted, half },
 		dataset,
 		generateId: createGenerateId(() => others.id!),
@@ -262,8 +257,8 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<RatingGroupItemContext.Provider value={context}>
-			<Polymorphic<RatingGroupItemRenderProps>
+		<RatingItemContext.Provider value={context}>
+			<Polymorphic<RatingItemRenderProps>
 				as="div"
 				ref={mergeRefs((el) => (ref = el), local.ref)}
 				role="radio"
@@ -280,6 +275,6 @@ export function RatingGroupItem<T extends ValidComponent = "div">(
 				{...dataset()}
 				{...others}
 			/>
-		</RatingGroupItemContext.Provider>
+		</RatingItemContext.Provider>
 	);
 }

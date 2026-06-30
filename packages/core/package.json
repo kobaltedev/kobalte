@@ -71,7 +71,6 @@
 	},
 	"dependencies": {
 		"@floating-ui/dom": "^1.5.1",
-		"@internationalized/date": "^3.4.0",
 		"@internationalized/number": "^3.2.1",
 		"@kobalte/utils": "^0.9.1",
 		"@solid-primitives/props": "^3.1.8",

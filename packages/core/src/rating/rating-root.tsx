@@ -29,12 +29,9 @@ import {
 	createFormResetListener,
 } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
-import {
-	RatingGroupContext,
-	type RatingGroupContextValue,
-} from "./rating-group-context";
+import { RatingContext, type RatingContextValue } from "./rating-context";
 
-export interface RatingGroupRootOptions {
+export interface RatingRootOptions {
 	/** The current rating value. */
 	value?: number;
 
@@ -79,9 +76,7 @@ export interface RatingGroupRootOptions {
 	readOnly?: boolean;
 }
 
-export interface RatingGroupRootCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {
+export interface RatingRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
 	ref: T | ((el: T) => void);
 	"aria-labelledby": string | undefined;
@@ -89,8 +84,8 @@ export interface RatingGroupRootCommonProps<
 	"aria-label"?: string;
 }
 
-export interface RatingGroupRootRenderProps
-	extends RatingGroupRootCommonProps,
+export interface RatingRootRenderProps
+	extends RatingRootCommonProps,
 		FormControlDataSet {
 	role: "radiogroup";
 	"aria-invalid": boolean | undefined;
@@ -100,23 +95,23 @@ export interface RatingGroupRootRenderProps
 	"aria-orientation": Orientation | undefined;
 }
 
-export type RatingGroupRootProps<
+export type RatingRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
-> = RatingGroupRootOptions & Partial<RatingGroupRootCommonProps<ElementOf<T>>>;
+> = RatingRootOptions & Partial<RatingRootCommonProps<ElementOf<T>>>;
 
-export function RatingGroupRoot<T extends ValidComponent = "div">(
-	props: PolymorphicProps<T, RatingGroupRootProps<T>>,
+export function RatingRoot<T extends ValidComponent = "div">(
+	props: PolymorphicProps<T, RatingRootProps<T>>,
 ) {
 	let ref: HTMLElement | undefined;
 
-	const defaultId = `ratinggroup-${createUniqueId()}`;
+	const defaultId = `Rating-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
 		{
 			id: defaultId,
 			orientation: "horizontal",
 		},
-		props as RatingGroupRootProps,
+		props as RatingRootProps,
 	);
 
 	const [local, formControlProps, others] = splitProps(
@@ -167,7 +162,7 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 		return formControlContext.getAriaDescribedBy(local["aria-describedby"]);
 	};
 
-	const context: RatingGroupContextValue = {
+	const context: RatingContextValue = {
 		value,
 		setValue: (newValue) => {
 			if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
@@ -189,8 +184,8 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 	return (
 		<DomCollectionProvider>
 			<FormControlContext.Provider value={formControlContext}>
-				<RatingGroupContext.Provider value={context}>
-					<Polymorphic<RatingGroupRootRenderProps>
+				<RatingContext.Provider value={context}>
+					<Polymorphic<RatingRootRenderProps>
 						as="div"
 						ref={mergeRefs((el) => (ref = el), local.ref)}
 						role="radiogroup"
@@ -207,7 +202,7 @@ export function RatingGroupRoot<T extends ValidComponent = "div">(
 						{...formControlContext.dataset()}
 						{...others}
 					/>
-				</RatingGroupContext.Provider>
+				</RatingContext.Provider>
 			</FormControlContext.Provider>
 		</DomCollectionProvider>
 	);

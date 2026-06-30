@@ -52,10 +52,7 @@ let globalCoolDownTimeout: number | undefined;
 let globalSkipDelayTimeout: number | undefined;
 
 export interface TooltipRootOptions
-	extends Omit<
-		PopperRootOptions,
-		"anchorRef" | "contentRef"
-	> {
+	extends Omit<PopperRootOptions, "anchorRef" | "contentRef"> {
 	/** The controlled open state of the tooltip. */
 	open?: boolean;
 
