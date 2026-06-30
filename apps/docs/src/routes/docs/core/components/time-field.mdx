@@ -218,7 +218,7 @@ function ControlledValueExample() {
 
 ### Granularity
 
-The `granularity` prop allows you to control the smallest unit that is displayed by a TimeField. By default, times are displayed with "minute" granularity. More granular time values can be displayed by setting the `granularity` prop to "second".
+The `granularity` prop allows you to control the smallest unit that is displayed by a TimeField. By default, times are displayed with "minute" granularity. More granular time values can be displayed by setting the `granularity` prop to "second" or an object with time slots as keys and boolean values.
 
 <Preview>
 	<GranularityExample />
@@ -252,14 +252,14 @@ The `min` and `max` props can be used to perform builtin validation. This marks 
 
 ### Placeholder Value
 
-When no value is set, a placeholder is shown. The format of the placeholder is influenced by the `granularity` and `placeholderValue` props. `placeholderValue` also controls the default values of each segment when the user first interacts with them, e.g. using the up and down arrow keys. By default, the `placeholderValue` is midnight.
+A placeholder time can be shown instead of dashes, also influences the starting time.
 
 <Preview>
 	<PlaceholderValueExample />
 </Preview>
 
 ```tsx {0}
-<TimeField placeholderValue={{ hour: 9 }}>
+<TimeField placeholder={{ hour: 9 }}>
 	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
 ```
@@ -367,7 +367,7 @@ function HTMLFormExample() {
 | hourCycle               | `12 \| 24` <br/> Whether to display the time in 12 or 24-hour format. By default, this is determined by the user's locale.                                                               |
 | granularity             | `'hour' \| 'minute' \| 'second' \| { hour: boolean; minute: boolean; second: boolean; }` <br/> Determines the smallest unit that is displayed in the time field. Defaults to `"minute"`. |
 | shouldForceLeadingZeros | `boolean` <br/> Whether to always show leading zeros in the hour field. By default, this is determined by the user's locale.                                                             |
-| placeholderValue        | `TimeValue` <br/> A placeholder time that influences the format of the placeholder shown when no value is selected. Defaults to 12:00 AM or 00:00 depending on the hour cycle.           |
+| placeholder             | `Time` <br/> A placeholder time shown when no value is selected, and acts as the starting point for interactions.                                                                        |
 | min                     | `Time` <br/> The minimum allowed time that a user may select.                                                                                                                            |
 | max                     | `Time` <br/> The maximum allowed time that a user may select.                                                                                                                            |
 | name                    | `string` <br/> The name of the time field. Submitted with its owning form as part of a name/value pair.                                                                                  |

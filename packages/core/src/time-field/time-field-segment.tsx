@@ -27,7 +27,6 @@ import {
 	children,
 	createEffect,
 	createMemo,
-	createSignal,
 	createUniqueId,
 	on,
 	onCleanup,
@@ -84,10 +83,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		{
 			id: `${context.generateId("segment")}-${createUniqueId()}`,
 		},
-		props as TimeFieldSegmentProps,
+		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const [local, others] = splitProps(mergedProps as TimeFieldSegmentProps, [
 		"ref",
 		"segment",
 		"onKeyDown",
@@ -256,8 +255,6 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				let numberValue = numberParser().parse(newValue);
 				let allowsZero = true;
 
-				console.log("A", numberValue);
-
 				if (local.segment === "hour" && context.hourCycle() === 12) {
 					allowsZero = false;
 					if (numberValue >= 12) {
@@ -276,8 +273,6 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				if (Number.isNaN(numberValue)) return;
 
 				const shouldSetValue = numberValue !== 0 || allowsZero;
-
-				console.log(shouldSetValue, numberValue);
 
 				if (shouldSetValue) {
 					context.setValue({ [local.segment]: numberValue });
@@ -379,39 +374,23 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	};
 
 	const adjust = (delta: number) => {
-		const hour = context.value()?.hour ?? 0;
+		const hour = context.value()?.hour ?? context.placeholder()?.hour ?? 0;
 
 		if (local.segment === "hour" && context.hourCycle() === 12) {
 			const isPM = hour >= 12;
-			const h12 = hour % 12; // 0..11 (12 becomes 0)
+			const h12 = hour % 12;
 
 			const next = (h12 + delta + 12) % 12;
 
-			console.log(
-				"BBBBB",
-				next,
-				isPM,
-				"=>",
-				next + (isPM ? 12 : 0),
-				isPM && next === 0,
-			);
-			if (isPM && next === 0) return 23;
 			return next + (isPM ? 12 : 0);
 		}
 
 		const max = maxValue();
 
-		console.log(
-			"AAAAAAAAAAA",
-			(context.value()?.[local.segment as keyof Time] ?? 0) + delta,
-			"=>",
-			((context.value()?.[local.segment as keyof Time] ?? 0) +
-				delta +
-				(max + 1)) %
-				(max + 1),
-		);
 		return (
-			((context.value()?.[local.segment as keyof Time] ?? 0) +
+			((context.value()?.[local.segment as keyof Time] ??
+				context.placeholder()?.[local.segment as keyof Time] ??
+				0) +
 				delta +
 				(max + 1)) %
 			(max + 1)
@@ -505,22 +484,32 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	const getValue = () => {
 		if (local.segment === "dayPeriod")
 			return context.translations()[
-				(context.value()?.hour ?? 0) >= 12 ? "pm" : "am"
+				(context.value()?.hour ?? context.placeholder()?.hour ?? 0) >= 12
+					? "pm"
+					: "am"
 			];
+
 		if (local.segment === "hour") {
-			const val = context.value()?.hour;
+			const val = context.value()?.hour ?? context.placeholder()?.hour;
 			if (val === undefined) return undefined;
-			console.log("WHA", val);
 			if (context.hourCycle() === 12) {
-				if (val >= 12) return val - 12;
+				if (val > 12) return val - 12;
 				if (val === 0) return 12;
 			}
 			return val;
 		}
-		return context.value()?.[local.segment];
+		return (
+			context.value()?.[local.segment] ?? context.placeholder()?.[local.segment]
+		);
 	};
 
-	const padding = () => (context.shouldForceLeadingZeros() ? 2 : 1);
+	const padding = () =>
+		local.segment !== "hour" ? 2 : context.forceLeadingZeros() ? 2 : 1;
+	const textValue = () =>
+		(getValue()?.toString() ?? "-".padStart(padding(), "-")).padStart(
+			padding(),
+			"0",
+		);
 
 	return (
 		<>
@@ -535,10 +524,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 					>
 				>
 			>
-				ref={mergeRefs((el) => (ref = el), local.ref)}
+				ref={mergeRefs((el: HTMLElement) => (ref = el), local.ref)}
 				tabIndex={formControlContext.isDisabled() ? undefined : 0}
 				value={getValue()}
-				textValue={(getValue()?.toString() ?? "––").padStart(padding(), "0")}
+				textValue={textValue()}
 				minValue={0}
 				maxValue={maxValue()}
 				validationState={formControlContext.validationState()}
@@ -556,7 +545,13 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				aria-label={ariaLabel()}
 				aria-labelledby={ariaLabelledBy()}
 				aria-describedby={ariaDescribedBy()}
-				data-placeholder={getValue() === undefined ? "" : undefined}
+				data-placeholder={
+					context.value()?.[
+						local.segment === "dayPeriod" ? "hour" : local.segment
+					] === undefined
+						? ""
+						: undefined
+				}
 				data-type={local.segment}
 				onKeyDown={onKeyDown}
 				onBeforeInput={onBeforeInput}
@@ -574,7 +569,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			>
 				<Show
 					when={resolvedChildren()}
-					fallback={(getValue()?.toString() ?? "––").padStart(padding(), "0")}
+					fallback={textValue().replaceAll("-", "–")}
 				>
 					{resolvedChildren()}
 				</Show>

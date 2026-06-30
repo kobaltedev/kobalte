@@ -14,7 +14,7 @@ export interface TimeFieldContextValue {
 		second: boolean;
 	}>;
 	segments: Accessor<SegmentType[]>;
-	shouldForceLeadingZeros: Accessor<boolean>;
+	forceLeadingZeros: Accessor<boolean>;
 	placeholder: Accessor<Time | undefined>;
 	formattedValue: Accessor<string | undefined>;
 	isDisabled: Accessor<boolean>;

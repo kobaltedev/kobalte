@@ -71,13 +71,12 @@ export interface TimeFieldRootOptions {
 
 	/**
 	 * Whether to always show leading zeros in the hour field.
-	 * By default, this is determined by the user's locale.
+	 * Defaults to `false`
 	 */
-	shouldForceLeadingZeros?: boolean;
+	forceLeadingZeros?: boolean;
 
 	/**
-	 * A placeholder time that influences the format of the placeholder shown when no value is selected.
-	 * Defaults to 12:00 AM or 00:00 depending on the hour cycle.
+	 * A placeholder time shown when no value is selected.
 	 */
 	placeholder?: Time;
 
@@ -165,7 +164,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 			"placeholder",
 			"hourCycle",
 			"granularity",
-			"shouldForceLeadingZeros",
+			"forceLeadingZeros",
 			"validationState",
 			"value",
 			"defaultValue",
@@ -263,7 +262,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 			hour -= 12;
 		}
 
-		const padding = local.shouldForceLeadingZeros ? 2 : 1;
+		const padding = local.forceLeadingZeros ? 2 : 1;
 
 		const segments: string[] = [];
 
@@ -323,7 +322,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		setValue,
 		hourCycle: () => local.hourCycle,
 		resolvedGranularity,
-		shouldForceLeadingZeros: () => local.shouldForceLeadingZeros ?? false,
+		forceLeadingZeros: () => local.forceLeadingZeros ?? false,
 		placeholder: () => local.placeholder,
 		formattedValue,
 		focusManager: () => focusManager,
@@ -335,7 +334,6 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		registerValueDescriptionId: createRegisterId(setValueDescriptionId),
 		generateId: createGenerateId(() => access(formControlProps.id)!),
 		segments,
-
 		fieldAriaLabel,
 		fieldAriaLabelledBy,
 		fieldAriaDescribedBy,
