@@ -83,7 +83,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		{
 			id: `${context.generateId("segment")}-${createUniqueId()}`,
 		},
-		props,
+		props as TimeFieldSegmentProps,
 	);
 
 	const [local, others] = splitProps(mergedProps as TimeFieldSegmentProps, [
