@@ -14,7 +14,7 @@ import {
 	scrollIntoViewport,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createMemo, omit } from "solid-js";
+import { type Component, createEffect, createMemo, omit, untrack } from "solid-js";
 
 import * as Button from "../button";
 import { useLocale } from "../i18n/i18n-provider";
@@ -104,7 +104,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 
 	if (optionalMenubarContext !== undefined) {
 		key = () => rootContext.value() ?? mergedProps.id!;
-		if (optionalMenubarContext.lastValue() === undefined)
+		if (untrack(() => optionalMenubarContext.lastValue()) === undefined)
 			optionalMenubarContext.setLastValue(key);
 	}
 

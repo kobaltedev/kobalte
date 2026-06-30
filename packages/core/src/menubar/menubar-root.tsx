@@ -110,7 +110,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		},
 	);
 
-	const [lastValue, setLastValue] = createSignal<string | undefined>();
+	const [lastValue, setLastValue] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const [menuRefs, setMenuRefs] = createSignal<Map<string, Array<HTMLElement>>>(
 		new Map<string, Array<HTMLElement>>(),
