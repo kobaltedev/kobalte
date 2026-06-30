@@ -159,7 +159,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Rating",
 				href: "/docs/core/components/rating",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Search",
@@ -200,7 +200,7 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Time Field",
 				href: "/docs/core/components/time-field",
-				status: "unreleased",
+				status: "new",
 			},
 			{
 				title: "Toast",

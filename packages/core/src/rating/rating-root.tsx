@@ -36,8 +36,8 @@ export interface RatingRootOptions {
 	value?: number;
 
 	/**
-	 * The initial value of the rating group when it is first rendered.
-	 * Use when you do not need to control the state of the rating group.
+	 * The initial value of the rating when it is first rendered.
+	 * Use when you do not need to control the state of the rating.
 	 */
 	defaultValue?: number;
 
@@ -47,7 +47,7 @@ export interface RatingRootOptions {
 	/** Whether to allow half ratings. */
 	allowHalf?: boolean;
 
-	/** The axis the rating group items should align with. */
+	/** The axis the rating items should align with. */
 	orientation?: Orientation;
 
 	/**
@@ -58,21 +58,21 @@ export interface RatingRootOptions {
 	id?: string;
 
 	/**
-	 * The name of the rating group.
+	 * The name of the rating.
 	 * Submitted with its owning form as part of a name/value pair.
 	 */
 	name?: string;
 
-	/** Whether the rating group should display its "valid" or "invalid" visual styling. */
+	/** Whether the rating should display its "valid" or "invalid" visual styling. */
 	validationState?: ValidationState;
 
 	/** Whether the user must select an item before the owning form can be submitted. */
 	required?: boolean;
 
-	/** Whether the rating group is disabled. */
+	/** Whether the rating is disabled. */
 	disabled?: boolean;
 
-	/** Whether the rating group is read only. */
+	/** Whether the rating is read only. */
 	readOnly?: boolean;
 }
 
