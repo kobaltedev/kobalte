@@ -1,0 +1,39 @@
+@import "./checkbox.module.css";
+
+.checkbox-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.checkbox-group__label {
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
+}
+
+.checkbox-group__description {
+	color: hsl(240 5% 26%);
+	font-size: 12px;
+	user-select: none;
+}
+
+.checkbox-group__error-message {
+	color: hsl(0 72% 51%);
+	font-size: 12px;
+	user-select: none;
+}
+
+.checkbox-group__items {
+	display: flex;
+	gap: 16px;
+}
+
+[data-kb-theme="dark"] .checkbox-group__label {
+	color: hsl(240 5% 84%);
+}
+
+[data-kb-theme="dark"] .checkbox-group__description {
+	color: hsl(240 5% 65%);
+}
