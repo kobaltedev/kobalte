@@ -1,0 +1,162 @@
+import { Preview, TabsSnippets, Kbd } from "../../../../components";
+import { BasicExample } from "../../../../examples/chip";
+
+# Chip
+
+- Chips are compact elements that represent an input or an action.
+
+## Import
+
+```ts
+import { Chip } from "@kobalte/core/chip";
+// or
+import { Root } from "@kobalte/core/chip";
+// or (deprecated)
+import { Chip } from "@kobalte/core";
+```
+
+## Features
+
+- **Flexible Usage**: Can be used as a simple display tag, an interactive button, or a deletable item.
+- **Keyboard Accessible**: Supports `Enter` and `Space` key interactions to ensure accessibility when clickable.
+- **Polymorphic Design**: By default, the chip is a `<div>` with `role="button"` for accessibility but can easily be wrapped in other elements if needed.
+- **ARIA Attributes**: Implements necessary ARIA roles for accessibility (`role="button"`, `aria-disabled`).
+- **Composable Subcomponents**: Includes a `Chip.Label` component to separate label content from other chip elements.
+
+## Anatomy
+
+The Chip consists of:
+
+- **Chip** - The root container for the chip.
+- **Chip.Label** - The label that is highly configurable which gives information to the user.
+
+```tsx
+<Chip>
+	<Chip.Label></Chip.Label>
+</Chip>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+	{/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+import { Chip } from "@kobalte/core/chip";
+import "./style.css";
+
+function App() {
+	return (
+			<div class={section}>
+				<Chip onClick={() => console.log('onClickHandler - Chip A')} class={chip}>
+					<Chip.Label class={chip__label}>Chip A</Chip.Label>
+				</Chip>
+				<Chip onClick={() => console.log('onClickHandler - Chip B')} class={chip}>
+					<Chip.Label class={chip__label}>Chip B</Chip.Label>
+				</Chip>
+				<Chip onClick={() => console.log('this is a disabled chip')} class={chip} disabled={true}>
+					<Chip.Label class={chip__label}>Disabled Chip C</Chip.Label>
+				</Chip>
+				<Chip onClick={() => console.log('delete me on click!!!')} class={chip__deletable}>
+					<Chip.Label class={chip__label}>Deletable Chip D</Chip.Label>
+					<span class={delete}>X</span>
+				</Chip>
+			</div>
+		);
+	}
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+	.section {
+		display: flex;
+		flex-direction: row;
+		column-gap: 10px;
+	}
+
+	.chip {
+		display: flex;
+		column-gap: 2px;
+		border: 1px solid black;
+		width: max-content;
+		padding: 5px 10px;
+		border-radius: 30px;
+		cursor: pointer;
+		background-color: #0369a0;
+	}
+
+	.chip:hover {
+		background-color: #0092e0;
+	}
+
+	.chip__label {
+		color: #fff;
+	}
+
+	.chip[aria-disabled="true"] {
+		background-color: #0369a0;
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.chip__deletable {
+		display: flex;
+		column-gap: 10px;
+		border: 1px solid black;
+		background-color: aliceblue;
+		width: max-content;
+		padding: 5px 10px;
+		border-radius: 30px;
+		cursor: pointer;
+		background-color: #0369a0;
+	}
+
+	.chip__deletable:hover {
+		background-color: #0092e0;
+	}
+
+	.delete {
+		color: black;
+		font-weight: 500;
+		font-size: 16px;
+	}
+    ```
+
+  </TabsSnippets.Content>
+	{/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## API Reference
+
+### Chip
+
+`Chip` is equivalent to the `Root` import from `@kobalte/core/chip` (and deprecated `Chip.Root`).
+
+| Prop         | Description                                                                                                                                                    |
+| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| disabled    | `boolean` <br/> If true, the component is disabled.           |
+| onClick | Callback function to handle onClick events. Keyboard events for enter and space would also trigger this callback on pressing `Enter` or `Space`. |
+
+### Chip.Label
+
+| Prop         | Description                                                                                                                                                    |
+| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| label    | `string` <br/> Uses label, if no children is provided           |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description                      |
+| :--------------- | :------------------------------- |
+| <Kbd>Enter</Kbd> | Triggers the onClick handler when pressed. |
+| <Kbd>Space</Kbd> | Triggers the onClick handler when pressed. |
