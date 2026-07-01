@@ -1,7 +1,6 @@
 import type { RouteProps } from "@solidjs/router";
 
 import { CORE_VERSIONS } from "../../VERSIONS";
-import { Layout } from "../../components";
 import type { NavSection } from "../../model/navigation";
 
 const CHANGELOG_NAV_SECTIONS: NavSection[] = [
@@ -15,5 +14,5 @@ const CHANGELOG_NAV_SECTIONS: NavSection[] = [
 ];
 
 export default function ChangelogLayout(props: RouteProps<string>) {
-	return <Layout navSections={CHANGELOG_NAV_SECTIONS}>{props.children}</Layout>;
+	return <>{props.children}</>;
 }

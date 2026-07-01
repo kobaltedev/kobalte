@@ -22,36 +22,39 @@
 		"url": "git+https://github.com/kobaltedev/kobalte.git"
 	},
 	"license": "MIT",
-	"author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
+	"author": "jer3m01 <jer3m01@jer3m01.com>",
+	"contributors": [
+		"Fabien Marie-Louise <fabienml.dev@gmail.com>"
+	],
 	"type": "module",
 	"scripts": {
-		"build": "NODE_OPTIONS=\"--max-old-space-size=8192\" vinxi build",
-		"build:dev": "NODE_OPTIONS=\"--max-old-space-size=8192\" DEVELOPMENT=1 vinxi build",
+		"build": "vite build",
+		"build:dev": "DEVELOPMENT=1 vite build",
 		"clean": "rm -rf .solid && rm -rf netlify && rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-		"dev": "vinxi dev --host",
-		"start": "vinxi start"
+		"dev": "vite dev"
 	},
 	"dependencies": {
 		"@docsearch/css": "3.5.2",
 		"@docsearch/js": "3.5.2",
 		"@internationalized/date": "3.4.0",
 		"@kobalte/core": "workspace:*",
+		"@kobalte/solidbase": "^0.6.3",
 		"@solidjs/meta": "0.29.3",
-		"@solidjs/router": "0.12.4",
-		"@solidjs/start": "0.6.1",
+		"@solidjs/router": "0.15.3",
+		"@solidjs/start": "2.0.0-alpha.3",
 		"@tanstack/solid-virtual": "3.0.0-beta.6",
 		"clsx": "2.0.0",
 		"minisearch": "7.1.0",
-		"solid-js": "1.8.15",
+		"nitro": "3.0.260311-beta",
+		"solid-js": "1.9.9",
 		"undici": "5.23.0",
-		"vinxi": "0.3.9"
+		"vite": "8.0"
 	},
 	"devDependencies": {
 		"@kobalte/tailwindcss": "0.9.0",
 		"@mdx-js/mdx": "3.0.0",
 		"@mdx-js/rollup": "3.0.0",
 		"@tailwindcss/typography": "0.5.9",
-		"@vinxi/plugin-mdx": "3.7.1",
 		"acorn": "8.10.0",
 		"autoprefixer": "10.4.15",
 		"github-slugger": "2.0.0",
@@ -65,10 +68,9 @@
 		"solid-mdx": "0.0.7",
 		"tailwindcss": "3.3.3",
 		"typescript": "4.9.5",
-		"unist-util-visit": "5.0.0",
-		"vite": "5.1.4"
+		"unist-util-visit": "5.0.0"
 	},
 	"engines": {
-		"node": ">=18"
+		"node": ">=22"
 	}
 }

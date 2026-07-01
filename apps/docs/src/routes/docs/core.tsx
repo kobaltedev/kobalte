@@ -227,5 +227,5 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 ];
 
 export default function CoreLayout(props: RouteProps<string>) {
-	return <Layout navSections={CORE_NAV_SECTIONS}>{props.children}</Layout>;
+	return <>{props.children}</>;
 }
