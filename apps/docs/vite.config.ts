@@ -2,8 +2,17 @@ import { solidStart } from "@solidjs/start/config";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 import { version as KBVersion } from "../../packages/core/package.json";
-import { solidBase } from "@kobalte/solidbase/config";
+import { createSolidBase, defineTheme } from "@kobalte/solidbase/config";
 import { createFilesystemSidebar } from "@kobalte/solidbase/config/sidebar";
+import defaultTheme from "@kobalte/solidbase/default-theme";
+
+
+const theme = defineTheme({
+	componentsPath: import.meta.resolve("./src/solidbase-theme"),
+	extends: defaultTheme,
+});
+
+const solidBase = createSolidBase(theme);
 
 export default defineConfig({
 	plugins: [
