@@ -196,7 +196,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 	<DefaultValueExample />
 </Preview>
 
-```tsx {0,4}
+```tsx {1,5}
 <RadioGroup defaultValue="Orange">
 	<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
 	<div role="presentation">
@@ -217,7 +217,7 @@ The `value` prop, which accepts a value corresponding with the `value` prop of e
 	<ControlledExample />
 </Preview>
 
-```tsx {3,7,11}
+```tsx {4,8,12}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -247,7 +247,7 @@ The `RadioGroup.Description` component can be used to associate additional help 
 	<DescriptionExample />
 </Preview>
 
-```tsx {7}
+```tsx {8}
 <RadioGroup>
 	<RadioGroup.Label>Favorite fruit</RadioGroup.Label>
 	<div role="presentation">
@@ -269,7 +269,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {9,17}
+```tsx {10,18}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -301,7 +301,7 @@ The radio group `name` prop, paired with the radio `value` prop, can be used for
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7,11}
+```tsx {8,12}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.

@@ -165,7 +165,7 @@ An initial, uncontrolled page can be provided using the `defaultPage` prop, whic
 	<DefaultPageExample />
 </Preview>
 
-```tsx {2}
+```tsx {3}
 <Pagination
 	count={10}
 	defaultPage={4}
@@ -186,7 +186,7 @@ The `page` prop, which accepts a page number, can be used to make the value cont
 	<ControlledExample />
 </Preview>
 
-```tsx {3,7-8}
+```tsx {4,8-9}
 import { createSignal } from "solid-js";
 
 export function ControlledExample() {
@@ -216,7 +216,7 @@ The appearance can be customized by omitting the Next and Previous Button.
 	<ButtonsExample />
 </Preview>
 
-```tsx {5}
+```tsx {6}
 <Pagination
 	count={10}
 	itemComponent={props => <Pagination.Item page={props.page}>{props.page}</Pagination.Item>}
@@ -234,7 +234,7 @@ The First and Last item can be hidden instead of displaying at all times.
 	<FirstLastExample />
 </Preview>
 
-```tsx {2-3}
+```tsx {3-4}
 <Pagination
 	count={10}
 	showFirst={false}
@@ -256,7 +256,7 @@ The number of items around the current page item can be customized.
 	<SiblingsExample />
 </Preview>
 
-```tsx {2}
+```tsx {3}
 <Pagination
 	count={10}
 	siblingCount={2}
@@ -277,7 +277,7 @@ The total number of items can be fixed to avoid content shift. If ellipsis are d
 	<FixedItemsExample />
 </Preview>
 
-```tsx {2}
+```tsx {3}
 <Pagination
 	count={10}
 	fixedItems

@@ -158,7 +158,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 	<DefaultValueExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <Rating defaultValue={3}>
 	<Rating.Control>
 		<Index each={Array(5)}>
@@ -182,7 +182,7 @@ The `value` prop can be used to make the value controlled. The `onChange` event 
 	<ControlledExample />
 </Preview>
 
-```tsx {3,7}
+```tsx {4,8}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -217,7 +217,7 @@ Allow 0.5 value steps by setting the `allowHalf` prop to true.
 	<HalfRatingsExample />
 </Preview>
 
-```tsx{0}
+```tsx {1}
 <Rating allowHalf>
 	<Rating.Control>
 		<Index each={Array(5)}>
@@ -241,7 +241,7 @@ The `Rating.Description` component can be used to associate additional help text
 	<DescriptionExample />
 </Preview>
 
-```tsx {13}
+```tsx {14}
 <Rating>
 	<Rating.Label>Rate Us:</Rating.Label>
 	<Rating.Control>
@@ -269,7 +269,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {9,23-25}
+```tsx {10,24-26}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -307,7 +307,7 @@ The `name` prop can be used for integration with HTML forms.
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7,19}
+```tsx {8,20}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.

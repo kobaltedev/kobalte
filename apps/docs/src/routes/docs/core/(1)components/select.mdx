@@ -293,7 +293,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 	<DefaultValueExample />
 </Preview>
 
-```tsx {1}
+```tsx {2}
 <Select
 	defaultValue="Blueberry"
 	options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
@@ -329,7 +329,7 @@ The `value` prop, which accepts a value corresponding with the `options` prop, c
 	<ControlledExample />
 </Preview>
 
-```tsx {3,8-9}
+```tsx {4,9-10}
 import { createSignal } from "solid-js";
 
 export function ControlledExample() {
@@ -377,7 +377,7 @@ The `Select.Description` component can be used to associate additional help text
 	<DescriptionExample />
 </Preview>
 
-```tsx {18}
+```tsx {19}
 <Select
 	options={["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"]}
 	placeholder="Select a fruit…"
@@ -415,7 +415,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {9,27}
+```tsx {10,28}
 import { createSignal } from "solid-js";
 
 export function ErrorMessageExample() {
@@ -462,7 +462,7 @@ The select `name` prop, paired with the `Select.HiddenSelect` component, can be 
 	<HTMLFormExample />
 </Preview>
 
-```tsx {8,20}
+```tsx {9,21}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.
@@ -517,7 +517,7 @@ Objects can be used as options instead of plain strings. In this case you have t
 	<ObjectExample />
 </Preview>
 
-```tsx {18-20}
+```tsx {19-21}
 interface Fruit {
 	value: string;
 	label: string;
@@ -577,7 +577,7 @@ Additionally, the `sectionComponent` prop is used to display the option group la
 	<OptionGroupExample />
 </Preview>
 
-```tsx {35,40,50}
+```tsx {36,41,51}
 interface Food {
 	value: string;
 	label: string;
@@ -662,7 +662,7 @@ Additionally, the example below uses the `as` prop to render a `div` for the `Se
 	<MultipleSelectionExample />
 </Preview>
 
-```tsx {3,8-10,22-23,28,32,39}
+```tsx {4,9-11,23-24,29,33,40}
 import { createSignal } from "solid-js";
 
 function MultipleSelectionExample() {
@@ -733,7 +733,7 @@ While Kobalte doesn't provide any built-in virtual scrolling API, it can easily 
 	<VirtualizedExample />
 </Preview>
 
-```tsx {18-25,31-33,46,80,101}
+```tsx {19-26,32-34,47,81,102}
 import { Select } from "@kobalte/core/select";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 

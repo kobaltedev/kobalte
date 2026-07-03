@@ -135,7 +135,7 @@ By default, `ColorWheel` is uncontrolled with a default value of red (hue = 0). 
 	<DefaultValueExample />
 </Preview>
 
-```tsx {6}
+```tsx {7}
 import { ColorWheel } from "@kobalte/core/color-wheel";
 import { parseColor } from "@kobalte/core/colors";
 
@@ -161,7 +161,7 @@ A `ColorWheel` can be made controlled using the `value` prop. The `onChange` eve
 	<ControlledValueExample />
 </Preview>
 
-```tsx {3, 8-9}
+```tsx {4,9-10}
 import { createSignal } from "solid-js";
 
 function ControlledValueExample() {
@@ -191,7 +191,7 @@ The `thickness` prop controls the width of the `ColorWheel`'s circular track. Th
 	<ThicknessExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <ColorWheel thickness={60}>
 	<ColorWheel.Label>Label</ColorWheel.Label>
 	<ColorWheel.Track>
@@ -208,7 +208,7 @@ The `thickness` prop controls the width of the `ColorWheel`'s circular track. Th
 	<CustomValueLabelExample />
 </Preview>
 
-```tsx {2-8}
+```tsx {3-9}
 <ColorWheel
 	getValueLabel={color =>
 		color
@@ -239,7 +239,7 @@ The `thickness` prop controls the width of the `ColorWheel`'s circular track. Th
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7}
+```tsx {8}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.

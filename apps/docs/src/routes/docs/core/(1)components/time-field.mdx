@@ -176,7 +176,7 @@ Time values are objects: `{ hour?: number; minute?: number; second?: number; }`.
 	<DefaultValueExample />
 </Preview>
 
-```tsx {2}
+```tsx {3}
 <TimeField defaultValue={{hour: 11, minute: 45}}>
 	<TimeField.Input>
 		{(segment) => (
@@ -194,7 +194,7 @@ The `value` prop can be used to make the value controlled. The `onChange` event 
 	<ControlledValueExample />
 </Preview>
 
-```tsx {5,14}
+```tsx {6,15}
 import { createSignal, Show } from "solid-js";
 
 function ControlledValueExample() {
@@ -224,7 +224,7 @@ The `granularity` prop allows you to control the smallest unit that is displayed
 	<GranularityExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <TimeField granularity="second">
 	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
@@ -238,7 +238,7 @@ The `min` and `max` props can be used to perform builtin validation. This marks 
 	<MinMaxExample />
 </Preview>
 
-```tsx {2, 3}
+```tsx {3,4}
 <TimeField
 	defaultValue={{ hour: 9, minute: 45 }}
 	min={{ hour: 9 }}
@@ -258,7 +258,7 @@ A placeholder time can be shown instead of dashes, also influences the starting 
 	<PlaceholderValueExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <TimeField placeholder={{ hour: 9 }}>
 	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
@@ -272,7 +272,7 @@ By default, TimeField displays times in either 12 or 24 hour format depending on
 	<HourCycleExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <TimeField hourCycle={12}>
 	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
@@ -286,7 +286,7 @@ The `TimeField.Description` component can be used to associate additional help t
 	<DescriptionExample />
 </Preview>
 
-```tsx {3}
+```tsx {4}
 <TimeField>
 	<TimeField.Label>Time</TimeField.Label>
 	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
@@ -304,7 +304,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {9, 13}
+```tsx {10,14}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -332,7 +332,7 @@ The `name` prop can be used for integration with HTML forms.
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7,9}
+```tsx {8,10}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.

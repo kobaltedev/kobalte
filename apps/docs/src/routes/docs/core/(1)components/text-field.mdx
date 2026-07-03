@@ -154,7 +154,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 	<DefaultValueExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <TextField defaultValue="Apple">
 	<TextField.Label>Favorite fruit</TextField.Label>
 	<TextField.Input />
@@ -169,7 +169,7 @@ The `value` prop can be used to make the value controlled. The `onChange` event 
 	<ControlledExample />
 </Preview>
 
-```tsx {3,7}
+```tsx {4,8}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -195,7 +195,7 @@ Use the `TextField.TextArea` component instead of `TextField.Input` to create a 
 	<TextAreaExample />
 </Preview>
 
-```tsx {2}
+```tsx {3}
 <TextField>
 	<TextField.Label>Favorite fruit</TextField.Label>
 	<TextField.TextArea />
@@ -208,7 +208,7 @@ In addition, the `autoResize` prop can be used to make the textarea height adjus
 	<TextAreaAutoResizeExample />
 </Preview>
 
-```tsx {2}
+```tsx {3}
 <TextField>
 	<TextField.Label>Favorite fruit</TextField.Label>
 	<TextField.TextArea autoResize />
@@ -223,7 +223,7 @@ The `TextField.Description` component can be used to associate additional help t
 	<DescriptionExample />
 </Preview>
 
-```tsx {3}
+```tsx {4}
 <TextField>
 	<TextField.Label>Favorite fruit</TextField.Label>
 	<TextField.Input />
@@ -241,7 +241,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {9,12}
+```tsx {10,13}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -269,7 +269,7 @@ The text field `name` prop can be used for integration with HTML forms.
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7}
+```tsx {8}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.

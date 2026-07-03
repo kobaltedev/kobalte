@@ -193,7 +193,7 @@ This must be one of the channels included in the color value, for example, for R
 	<DefaultValueExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <ColorChannelField defaultValue={parseColor("hsl(200, 98%, 39%)")} channel="saturation">
 	<ColorChannelField.Label>Saturation</ColorChannelField.Label>
 	<div>
@@ -210,7 +210,7 @@ This must be one of the channels included in the color value, for example, for R
 	<ControlledExample />
 </Preview>
 
-```tsx {3,8-9}
+```tsx {4,9-10}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -240,7 +240,7 @@ The `ColorChannelField.Description` component can be used to associate additiona
 	<DescriptionExample />
 </Preview>
 
-```tsx {7}
+```tsx {8}
 <ColorChannelField defaultValue={parseColor("hsl(0, 98%, 39%)")} channel="hue">
 	<ColorChannelField.Label>Hue</ColorChannelField.Label>
 	<div>
@@ -262,7 +262,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {10,18}
+```tsx {11,19}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -297,7 +297,7 @@ If the formatted value is wanted (unrecommended) set the `name` attribute on `<C
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7,9}
+```tsx {8,10}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.
@@ -331,7 +331,7 @@ The color channel field supports optional increment/decrement triggers that are 
 	<TriggersExample />
 </Preview>
 
-```tsx {3,5}
+```tsx {4,6}
 <ColorChannelField defaultValue={parseColor("hsb(10, 98%, 50%)")} channel="brightness">
 	<ColorChannelField.Label>Brightness</ColorChannelField.Label>
 	<div>

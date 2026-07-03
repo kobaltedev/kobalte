@@ -161,7 +161,7 @@ The `checked` prop can be used to make the checked state controlled. The `onChan
 	<ControlledExample />
 </Preview>
 
-```tsx {3,7}
+```tsx {4,8}
 import { createSignal } from "solid-js";
 
 export function ControlledExample() {
@@ -186,7 +186,7 @@ The `Switch.Description` component can be used to associate additional help text
 	<DescriptionExample />
 </Preview>
 
-```tsx {2}
+```tsx {3}
 <Switch>
 	<Switch.Label>Airplane mode</Switch.Label>
 	<Switch.Description>Disable all network connections.</Switch.Description>
@@ -207,7 +207,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {9,12}
+```tsx {10,13}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -238,7 +238,7 @@ The `name` and `value` props can be used for integration with HTML forms.
 	<HTMLFormExample />
 </Preview>
 
-```tsx {6}
+```tsx {7}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.

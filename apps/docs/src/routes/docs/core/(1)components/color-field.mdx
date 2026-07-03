@@ -150,7 +150,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 	<DefaultValueExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <ColorField class="color-field" defaultValue="#7f007f">
 	<ColorField.Label class="color-field__label">Favorite hex color</ColorField.Label>
 	<ColorField.Input class="color-field__input" />
@@ -165,7 +165,7 @@ The `value` prop can be used to make the value controlled. The `onChange` event 
 	<ControlledExample />
 </Preview>
 
-```tsx {3,7}
+```tsx {4,8}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -191,7 +191,7 @@ The `ColorField.Description` component can be used to associate additional help 
 	<DescriptionExample />
 </Preview>
 
-```tsx {3}
+```tsx {4}
 <ColorField class="color-field">
 	<ColorField.Label class="color-field__label">Favorite hex color</ColorField.Label>
 	<ColorField.Input class="color-field__input" />
@@ -211,7 +211,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {9,14}
+```tsx {10,15}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -239,7 +239,7 @@ The color field `name` prop can be used for integration with HTML forms.
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7}
+```tsx {8}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.

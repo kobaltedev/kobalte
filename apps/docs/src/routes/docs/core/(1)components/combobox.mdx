@@ -326,7 +326,7 @@ For convenience, we provide 3 built-in filtering mechanism based on substring ma
 
 A custom filter function can also be passed to the `defaultFilter` prop, it receives _an option and the input value_ as parameters, and should return a `boolean`.
 
-```tsx {6}
+```tsx {7}
 import { Combobox } from "@kobalte/core/combobox";
 
 const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
@@ -348,7 +348,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 	<DefaultValueExample />
 </Preview>
 
-```tsx {8}
+```tsx {9}
 import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
@@ -395,7 +395,7 @@ The `value` prop, which accepts a value corresponding with the `options` prop, c
 	<ControlledExample />
 </Preview>
 
-```tsx {7,20-21}
+```tsx {8,21-22}
 import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 import { createSignal } from "solid-js";
@@ -457,7 +457,7 @@ The `Combobox.Description` component can be used to associate additional help te
 	<DescriptionExample />
 </Preview>
 
-```tsx {27}
+```tsx {28}
 import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
@@ -506,7 +506,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {22,41}
+```tsx {23,42}
 import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 import { createSignal } from "solid-js";
@@ -567,7 +567,7 @@ The combobox `name` prop, paired with the `Combobox.HiddenSelect` component, can
 	<HTMLFormExample />
 </Preview>
 
-```tsx {13,25}
+```tsx {14,26}
 import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
@@ -630,7 +630,7 @@ Objects can be used as options instead of plain strings. In this case you have t
 	<ObjectExample />
 </Preview>
 
-```tsx {21-24}
+```tsx {22-25}
 import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
@@ -696,7 +696,7 @@ Additionally, the `sectionComponent` prop is used to display the option group la
 	<OptionGroupExample />
 </Preview>
 
-```tsx {44}
+```tsx {45}
 import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 
@@ -787,7 +787,7 @@ In this case `Combobox.Input` can't display the values, instead the `Combobox.Co
 	<MultipleSelectionExample />
 </Preview>
 
-```tsx {7,12,14-15,30,34,42}
+```tsx {8,13,15-16,31,35,43}
 import { Combobox } from "@kobalte/core/combobox";
 import { CaretSortIcon, CheckIcon } from "some-icon-library";
 import { createSignal } from "solid-js";

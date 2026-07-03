@@ -316,7 +316,7 @@ In addition to the `toastId`, props will contain the following properties:
 - **data**: The data returned by the promise when fulfilled, if any.
 - **error**: The error returned by the promise when rejected, if any.
 
-```tsx {3-5}
+```tsx {4-6}
 toaster.promise(promise, props => (
 	<Toast toastId={props.toastId}>
 		<Switch>
@@ -371,7 +371,7 @@ We expose a CSS custom property `--kb-toast-progress-fill-width` which correspon
 
 We expose the CSS custom properties `--kb-toast-swipe-move-[x|y]` and `--kb-toast-swipe-end-[x|y]` which can be used with `data-swipe="[start|move|cancel|end]"` attributes to animate a swipe to close gesture.
 
-```tsx {18}
+```tsx {19}
 // index.tsx
 
 import { Toast, toaster } from "@kobalte/core/toast";
@@ -507,7 +507,7 @@ export const toast = {
 
 Then inside your application, use your own toast API:
 
-```tsx {2,6}
+```tsx {3,7}
 // App.tsx
 
 import { toast } from "./toast";
@@ -534,7 +534,7 @@ function App() {
 
 The `region` option in `toaster.show()` allows you to display toast in multiple regions at the same time. Not providing a region uses the default one.
 
-```tsx {1}
+```tsx {2}
 toaster.show(props => <Toast toastId={props.toastId}>...</Toast>, {
 	region: "custom-region-id",
 });
@@ -542,7 +542,7 @@ toaster.show(props => <Toast toastId={props.toastId}>...</Toast>, {
 
 Inside your application, use add your custom region:
 
-```tsx {2, 5}
+```tsx {3,6}
 <Portal>
 	{/* Default region */}
 	<Toast.Region>

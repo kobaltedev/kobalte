@@ -127,7 +127,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 	<DefaultValueExample />
 </Preview>
 
-```tsx {0, 7-9}
+```tsx {1,8-10}
 <ToggleGroup defaultValue="underline">
 	<ToggleGroup.Item value="bold" aria-label="Bold">
 		<BoldIcon />
@@ -149,7 +149,7 @@ The `value` prop can be used to make the pressed state controlled. The `onChange
 	<ControlledExample />
 </Preview>
 
-```tsx {3,7}
+```tsx {4,8}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -174,7 +174,7 @@ The `multiple` prop can be used to create a select that allow multi-selection.
 	<MultipleSelectionExample />
 </Preview>
 
-```tsx {3,8-10,22-23,28,32,39}
+```tsx {4,9-11,23-24,29,33,40}
 import { createSignal } from "solid-js";
 
 function MultipleSelectionExample() {

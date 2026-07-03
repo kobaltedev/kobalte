@@ -185,7 +185,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 	<DefaultValueExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <NumberField defaultValue={40}>
 	<NumberField.Label>Quantity</NumberField.Label>
 	<div>
@@ -207,7 +207,7 @@ The `onRawValueChange` prop is called when the value changes and receives a `num
 	<ControlledExample />
 </Preview>
 
-```tsx {3,4,9-12}
+```tsx {4,5,10-13}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -245,7 +245,7 @@ The `NumberField.Description` component can be used to associate additional help
 	<DescriptionExample />
 </Preview>
 
-```tsx {7}
+```tsx {8}
 <NumberField>
 	<NumberField.Label>Quantity</NumberField.Label>
 	<div>
@@ -267,7 +267,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {8,16}
+```tsx {9,17}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -300,7 +300,7 @@ If the formatted value is wanted (unrecommended) set the `name` attribute on `<N
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7,9}
+```tsx {8,10}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.
@@ -334,7 +334,7 @@ The number field supports optional increment/decrement triggers that are easily 
 	<TriggersExample />
 </Preview>
 
-```tsx {3,5}
+```tsx {4,6}
 <NumberField>
 	<NumberField.Label>Quantity</NumberField.Label>
 	<div>
@@ -353,7 +353,7 @@ The value of the number field component can be formatted based on the [locale wi
 	<FormatExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <NumberField formatOptions={{ style: "currency", currency: "USD" }} defaultValue={4}>
 	<NumberField.Label>Price</NumberField.Label>
 	<div>
@@ -368,7 +368,7 @@ The value of the number field component can be formatted based on the [locale wi
 
 The number field supports autofill through `NumberField.HiddenInput`.
 
-```tsx {2}
+```tsx {3}
 <NumberField>
 	<NumberField.Label>Quantity</NumberField.Label>
 	<NumberField.HiddenInput />

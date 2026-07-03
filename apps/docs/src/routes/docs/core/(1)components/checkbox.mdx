@@ -148,7 +148,7 @@ The `checked` prop can be used to make the checked state controlled. The `onChan
 	<ControlledExample />
 </Preview>
 
-```tsx {3,7}
+```tsx {4,8}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -173,7 +173,7 @@ The `Checkbox.Description` component can be used to associate additional help te
 	<DescriptionExample />
 </Preview>
 
-```tsx {8}
+```tsx {9}
 <Checkbox>
 	<Checkbox.Input />
 	<Checkbox.Control>
@@ -196,7 +196,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {9,17}
+```tsx {10,18}
 import { createSignal } from "solid-js";
 
 function ErrorMessageExample() {
@@ -229,7 +229,7 @@ The `name` and `value` props can be used for integration with HTML forms.
 	<HTMLFormExample />
 </Preview>
 
-```tsx {7}
+```tsx {8}
 function HTMLFormExample() {
 	const onSubmit = (e: SubmitEvent) => {
 		// handle form submission.
