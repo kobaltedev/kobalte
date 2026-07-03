@@ -3,11 +3,9 @@ import {
 	BasicExample,
 	DefaultValueExample,
 	ControlledValueExample,
-	TimeZoneExample,
 	GranularityExample,
 	MinMaxExample,
 	PlaceholderValueExample,
-	HideTimeZoneExample,
 	HourCycleExample,
 	DescriptionExample,
 	ErrorMessageExample,
@@ -41,7 +39,7 @@ The time field consists of:
 
 - **TimeField**: The root container for the time field.
 - **TimeField.Label**: The label that gives the user information on the time field.
-- **TimeField.Field**: The container for the segments.
+- **TimeField.Input**: The container for the segments.
 - **TimeField.Segment**: The component that represents a unit of a time.
 - **TimeField.Description**: The description that gives the user more information on the time field.
 - **TimeField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the time field.
@@ -50,9 +48,9 @@ The time field consists of:
 ```tsx
 <TimeField>
 	<TimeField.Label />
-	<TimeField.Field>
+	<TimeField.Input>
 		<TimeField.Segment />
-	</TimeField.Field>
+	</TimeField.Input>
 	<TimeField.Description />
 	<TimeField.ErrorMessage />
 	<TimeField.HiddenInput />
@@ -80,9 +78,9 @@ The time field consists of:
       return (
         <TimeField class="time-field">
           <TimeField.Label class="time-field__label">Event time</TimeField.Label>
-          <TimeField.Field class="time-field__field">
+          <TimeField.Input class="time-field__field">
             {segment => <TimeField.Segment class="time-field__segment" segment={segment()} />}
-          </TimeField.Field>
+          </TimeField.Input>
     	</TimeField>
       );
     }
@@ -172,21 +170,19 @@ user-select: none;
 
 A TimeField displays a placeholder by default. An initial, uncontrolled value can be provided to the TimeField using the `defaultValue` prop.
 
-Time values are provided using objects in the [@internationalized/date](https://react-spectrum.adobe.com/internationalized/date/) package. This library handles correct international date and time manipulation across calendars, time zones, and other localization concerns.
+Time values are objects: `{ hour?: number; minute?: number; second?: number; }`.
 
 <Preview>
 	<DefaultValueExample />
 </Preview>
 
 ```tsx {2}
-import { Time } from "@internationalized/date";
-
-<TimeField defaultValue={new Time(11, 45)}>
-	<TimeField.Field>
+<TimeField defaultValue={{hour: 11, minute: 45}}>
+	<TimeField.Input>
 		{(segment) => (
 			<TimeField.Segment segment={segment()} />
 		)}
-	</TimeField.Field>
+	</TimeField.Input>
 </TimeField>
 ````
 
@@ -199,57 +195,30 @@ The `value` prop can be used to make the value controlled. The `onChange` event 
 </Preview>
 
 ```tsx {5,14}
-import { createSignal } from "solid-js";
-import { createDateFormatter } from "@kobalte/core/i18n";
-import { getLocalTimeZone, Time, toCalendarDateTime, today } from "@internationalized/date";
+import { createSignal, Show } from "solid-js";
 
 function ControlledValueExample() {
-	const [value, setValue] = createSignal(new Time(9, 45));
-
-	const dateFormatter = createDateFormatter({
-		hour12: true,
-		timeStyle: "short",
-	});
+	const [value, setValue] = createSignal({ hour: 9, minute: 45 });
 
 	return (
 		<>
 			<TimeField value={value()} onChange={setValue}>
-				<TimeField.Field>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Field>
+				<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 			</TimeField>
 			<p>
 				Selected time:{" "}
-				{value()
-					? dateFormatter().format(
-							toCalendarDateTime(today(getLocalTimeZone()), value()).toDate(getLocalTimeZone()),
-						)
-					: "––"}
+				<Show when={value()} fallback={"--"}>
+					{value()}
+				</Show>
 			</p>
 		</>
 	);
 }
 ```
 
-### Time Zones
-
-TimeField is time zone aware when a `ZonedDateTime` object is provided as the value. In this case, the time zone abbreviation is displayed, and time zone concerns such as daylight saving time are taken into account when the value is manipulated.
-
-[@internationalized/date](https://react-spectrum.adobe.com/internationalized/date/) includes functions for parsing strings in multiple formats into `ZonedDateTime` objects.
-
-<Preview>
-	<TimeZoneExample />
-</Preview>
-
-```tsx {2}
-import { parseZonedDateTime } from "@internationalized/date";
-
-<TimeField defaultValue={parseZonedDateTime("2022-11-07T00:45[America/Los_Angeles]")}>
-	<TimeField.Field>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Field>
-</TimeField>;
-```
-
 ### Granularity
 
-The `granularity` prop allows you to control the smallest unit that is displayed by a TimeField. By default, times are displayed with "minute" granularity. More granular time values can be displayed by setting the `granularity` prop to "second".
+The `granularity` prop allows you to control the smallest unit that is displayed by a TimeField. By default, times are displayed with "minute" granularity. More granular time values can be displayed by setting the `granularity` prop to "second" or an object with time slots as keys and boolean values.
 
 <Preview>
 	<GranularityExample />
@@ -257,50 +226,41 @@ The `granularity` prop allows you to control the smallest unit that is displayed
 
 ```tsx {0}
 <TimeField granularity="second">
-	<TimeField.Field>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Field>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
 ```
 
 ### Minimum and Maximum Values
 
-The `minValue` and `maxValue` props can be used to perform builtin validation. This marks the time field as invalid using ARIA if the user enters an invalid time.
+The `min` and `max` props can be used to perform builtin validation. This marks the time field as invalid using ARIA if the user enters an invalid time.
 
 <Preview>
 	<MinMaxExample />
 </Preview>
 
-```tsx {0, 2}
-<TimeField defaultValue={new Time(9, 45)} minValue={new Time(9)} maxValue={new Time(17)}>
-	<TimeField.Field>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Field>
+```tsx {2, 3}
+<TimeField
+	defaultValue={{ hour: 9, minute: 45 }}
+	min={{ hour: 9 }}
+	max={{ hour: 17 }}
+	hourCycle={12}
+>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 	<TimeField.ErrorMessage>Select time between 9 AM and 5 PM.</TimeField.ErrorMessage>
 </TimeField>
 ```
 
 ### Placeholder Value
 
-When no value is set, a placeholder is shown. The format of the placeholder is influenced by the `granularity` and `placeholderValue` props. `placeholderValue` also controls the default values of each segment when the user first interacts with them, e.g. using the up and down arrow keys. By default, the `placeholderValue` is midnight.
+A placeholder time can be shown instead of dashes, also influences the starting time.
 
 <Preview>
 	<PlaceholderValueExample />
 </Preview>
 
 ```tsx {0}
-<TimeField placeholderValue={new Time(9)}>
-	<TimeField.Field>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Field>
-</TimeField>
-```
-
-### Hide Time Zone
-
-When a `ZonedDateTime` object is provided as the value of a TimeField, the time zone abbreviation is displayed by default. It can be hidden using the `hideTimeZone` prop.
-
-<Preview>
-	<HideTimeZoneExample />
-</Preview>
-
-```tsx {0}
-<TimeField defaultValue={parseZonedDateTime("2022-11-07T00:45[America/Los_Angeles]")} hideTimeZone>
-	<TimeField.Field>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Field>
+<TimeField placeholder={{ hour: 9 }}>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
 ```
 
@@ -313,8 +273,8 @@ By default, TimeField displays times in either 12 or 24 hour format depending on
 </Preview>
 
 ```tsx {0}
-<TimeField hourCycle={24}>
-	<TimeField.Field>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Field>
+<TimeField hourCycle={12}>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
 ```
 
@@ -329,7 +289,7 @@ The `TimeField.Description` component can be used to associate additional help t
 ```tsx {3}
 <TimeField>
 	<TimeField.Label>Time</TimeField.Label>
-	<TimeField.Field>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Field>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 	<TimeField.Description>Select a meeting time.</TimeField.Description>
 </TimeField>
 ```
@@ -357,7 +317,7 @@ function ErrorMessageExample() {
 			validationState={value() === undefined ? "invalid" : "valid"}
 		>
 			<TimeField.Label>Time</TimeField.Label>
-			<TimeField.Field>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Field>
+			<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 			<TimeField.ErrorMessage>Please select a time.</TimeField.ErrorMessage>
 		</TimeField>
 	);
@@ -381,7 +341,7 @@ function HTMLFormExample() {
 	return (
 		<form onSubmit={onSubmit}>
 			<TimeField name="time">
-				<TimeField.Field>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Field>
+				<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 				<TimeField.HiddenInput />
 			</TimeField>
 			<div>
@@ -399,24 +359,23 @@ function HTMLFormExample() {
 
 `TimeField` is equivalent to the `Root` import from `@kobalte/core/time-field`.
 
-| Prop                    | Description                                                                                                                                                                    |
-| :---------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| value                   | `TimeValue` <br/> The current value (controlled).                                                                                                                              |
-| defaultValue            | `TimeValue` <br/> The default value (uncontrolled).                                                                                                                            |
-| onChange                | `(value: MappedTimeValue<TimeValue>) => void` <br/> Handler that is called when the value changes.                                                                             |
-| hourCycle               | `12 \| 24` <br/> Whether to display the time in 12 or 24-hour format. By default, this is determined by the user's locale.                                                     |
-| granularity             | `'hour' \| 'minute' \| 'second'` <br/> Determines the smallest unit that is displayed in the time field. Defaults to `"minute"`.                                               |
-| hideTimeZone            | `boolean` <br/> Whether to hide the time zone abbreviation.                                                                                                                    |
-| shouldForceLeadingZeros | `boolean` <br/> Whether to always show leading zeros in the hour field. By default, this is determined by the user's locale.                                                   |
-| placeholderValue        | `TimeValue` <br/> A placeholder time that influences the format of the placeholder shown when no value is selected. Defaults to 12:00 AM or 00:00 depending on the hour cycle. |
-| minValue                | `TimeValue` <br/> The minimum allowed time that a user may select.                                                                                                             |
-| maxValue                | `TimeValue` <br/> The maximum allowed time that a user may select.                                                                                                             |
-| name                    | `string` <br/> The name of the time field. Submitted with its owning form as part of a name/value pair.                                                                        |
-| validationState         | `'valid' \| 'invalid'` <br/> Whether the time field should display its "valid" or "invalid" visual styling.                                                                    |
-| required                | `boolean` <br/> Whether the time field is required.                                                                                                                            |
-| disabled                | `boolean` <br/> Whether the time field is disabled.                                                                                                                            |
-| readOnly                | `boolean` <br/> Whether the time field is read only.                                                                                                                           |
-| translations            | `TimeFieldIntlTranslations` <br/> The localized strings of the component.                                                                                                      |
+| Prop              | Description                                                                                                                                                                              |
+| :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value             | `Time` (`{ hour?: number; minute?: number; second?: number; }`) <br/> The current value (controlled).                                                                                    |
+| defaultValue      | `Time` <br/> The default value (uncontrolled).                                                                                                                                           |
+| onChange          | `(value: Time) => void` <br/> Handler that is called when the value changes.                                                                                                             |
+| hourCycle         | `12 \| 24` <br/> Whether to display the time in 12 or 24-hour format. By default, this is determined by the user's locale.                                                               |
+| granularity       | `'hour' \| 'minute' \| 'second' \| { hour: boolean; minute: boolean; second: boolean; }` <br/> Determines the smallest unit that is displayed in the time field. Defaults to `"minute"`. |
+| forceLeadingZeros | `boolean` <br/> Whether to always show leading zeros in the hour field.                                                                                                                  |
+| placeholder       | `Time` <br/> A placeholder time shown when no value is selected, and acts as the starting point for interactions.                                                                        |
+| min               | `Time` <br/> The minimum allowed time that a user may select.                                                                                                                            |
+| max               | `Time` <br/> The maximum allowed time that a user may select.                                                                                                                            |
+| name              | `string` <br/> The name of the time field. Submitted with its owning form as part of a name/value pair.                                                                                  |
+| validationState   | `'valid' \| 'invalid'` <br/> Whether the time field should display its "valid" or "invalid" visual styling.                                                                              |
+| required          | `boolean` <br/> Whether the time field is required.                                                                                                                                      |
+| disabled          | `boolean` <br/> Whether the time field is disabled.                                                                                                                                      |
+| readOnly          | `boolean` <br/> Whether the time field is read only.                                                                                                                                     |
+| translations      | `TimeFieldIntlTranslations` <br/> The localized strings of the component.                                                                                                                |
 
 | Data attribute | Description                                                               |
 | :------------- | :------------------------------------------------------------------------ |
@@ -426,7 +385,7 @@ function HTMLFormExample() {
 | data-disabled  | Present when the time field is disabled.                                  |
 | data-readonly  | Present when the time field is read only.                                 |
 
-`TimeField.Label`, `TimeField.Field`, `TimeField.Segment`, `TimeField.Description` and `TimeField.ErrorMessage` share the same data-attributes.
+`TimeField.Label`, `TimeField.Input`, `TimeField.Segment`, `TimeField.Description` and `TimeField.ErrorMessage` share the same data-attributes.
 
 ### TimeField.Segment
 
@@ -452,7 +411,7 @@ function HTMLFormExample() {
 | :----------------------- | :----------------------- |
 | `TimeField`              | `div`                    |
 | `TimeField.Label`        | `span`                   |
-| `TimeField.Field`        | `div`                    |
+| `TimeField.Input`        | `div`                    |
 | `TimeField.Segment`      | `div`                    |
 | `TimeField.Description`  | `div`                    |
 | `TimeField.ErrorMessage` | `div`                    |

@@ -52,7 +52,7 @@ export function RadioGroupItemControl<T extends ValidComponent = "div">(
 		callHandler(e, mergedProps.onClick);
 
 		context.select();
-		context.inputRef()?.focus();
+		context.inputRef()?.focus({ preventScroll: true });
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
@@ -60,7 +60,7 @@ export function RadioGroupItemControl<T extends ValidComponent = "div">(
 
 		if (e.key === EventKey.Space) {
 			context.select();
-			context.inputRef()?.focus();
+			context.inputRef()?.focus({ preventScroll: true });
 		}
 	};
 

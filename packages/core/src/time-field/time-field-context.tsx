@@ -1,23 +1,21 @@
 import type { FocusManager } from "@kobalte/utils";
 import { type Accessor, createContext, useContext } from "solid-js";
 import type { TimeFieldIntlTranslations } from "./time-field.intl";
-import type {
-	TimeFieldGranularity,
-	TimeFieldHourCycle,
-	TimeValue,
-} from "./types";
+import type { SegmentType, Time, TimeFieldHourCycle } from "./types";
 
 export interface TimeFieldContextValue {
 	translations: Accessor<TimeFieldIntlTranslations>;
-	value: Accessor<TimeValue | undefined>;
-	setValue: (value: TimeValue | undefined) => void;
+	value: Accessor<Time | undefined>;
+	setValue: (value: Time) => void;
 	hourCycle: Accessor<TimeFieldHourCycle | undefined>;
-	granularity: Accessor<TimeFieldGranularity>;
-	hideTimeZone: Accessor<boolean>;
-	shouldForceLeadingZeros: Accessor<boolean>;
-	placeholderTime: Accessor<TimeValue>;
-	placeholderValue: Accessor<TimeValue | undefined>;
-	defaultTimeZone: Accessor<string | undefined>;
+	resolvedGranularity: Accessor<{
+		hour: boolean;
+		minute: boolean;
+		second: boolean;
+	}>;
+	segments: Accessor<SegmentType[]>;
+	forceLeadingZeros: Accessor<boolean>;
+	placeholder: Accessor<Time | undefined>;
 	formattedValue: Accessor<string | undefined>;
 	isDisabled: Accessor<boolean>;
 	focusManager: Accessor<FocusManager>;
@@ -27,6 +25,13 @@ export interface TimeFieldContextValue {
 	valueDescriptionId: Accessor<string | undefined>;
 	registerValueDescriptionId: (id: string) => () => void;
 	generateId: (part: string) => string;
+
+	fieldAriaLabel: Accessor<string | undefined>;
+	fieldAriaLabelledBy: Accessor<string | undefined>;
+	fieldAriaDescribedBy: Accessor<string | undefined>;
+	setFieldAriaLabel: (s: string | undefined) => void;
+	setFieldAriaLabelledBy: (s: string | undefined) => void;
+	setFieldAriaDescribedBy: (s: string | undefined) => void;
 }
 
 export const TimeFieldContext = createContext<TimeFieldContextValue>();

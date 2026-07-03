@@ -65,7 +65,7 @@ export function NumberFieldVaryTrigger<T extends ValidComponent = "button">(
 					context.step() * (props.numberFieldVaryType === "increment" ? 1 : -1),
 				);
 
-				context.inputRef()?.focus();
+				context.inputRef()?.focus({ preventScroll: true });
 			}}
 			{...others}
 		/>

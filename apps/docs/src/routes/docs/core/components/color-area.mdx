@@ -1,10 +1,10 @@
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
-  BasicExample,
-  DefaultValueExample,
-  ControlledValueExample,
-  XAndYChannelExample,
-  HTMLFormExample,
+	BasicExample,
+	DefaultValueExample,
+	ControlledValueExample,
+	XAndYChannelExample,
+	HTMLFormExample,
 } from "../../../../examples/color-area";
 
 # Color Area
@@ -70,7 +70,7 @@ The color area consists of:
   <TabsSnippets.Content value="index.tsx">
     ```tsx
     import { ColorArea } from "@kobalte/core/color-area";
-    import { parseColor } from "@kobalte/utils";
+    import { parseColor } from "@kobalte/core/colors";
     import "./style.css";
 
     function App() {
@@ -263,14 +263,14 @@ The current color is available on the thumb using the custom css property `--kb-
 
 ### ColorArea.HiddenInputX
 
-| Data attribute                | Description     |
-| :---------------------------- | :-------------- |
+| Data attribute                | Description    |
+| :---------------------------- | :------------- |
 | data-orientation='horizontal' | Always present |
 
 ### ColorArea.HiddenInputY
 
-| Data attribute              | Description     |
-| :-------------------------- | :-------------- |
+| Data attribute              | Description    |
+| :-------------------------- | :------------- |
 | data-orientation='vertical' | Always present |
 
 ## Rendered elements

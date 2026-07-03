@@ -1,15 +1,15 @@
-import { Time } from "@internationalized/date";
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
 	Description,
 	ErrorMessage,
-	Field,
 	HiddenInput,
+	Input,
 	Label,
 	Root,
 	Segment,
 } from "../index";
+import type { Time } from "../types";
 
 const meta = preview.meta({
 	title: "Components/TimeField",
@@ -31,9 +31,9 @@ export const Default = meta.story({
 	render: () => (
 		<Root class={rootClass}>
 			<Label class={labelClass}>Start time</Label>
-			<Field class={fieldClass}>
+			<Input class={fieldClass}>
 				{(segment) => <Segment segment={segment()} class={segmentClass} />}
-			</Field>
+			</Input>
 			<HiddenInput />
 		</Root>
 	),
@@ -43,11 +43,11 @@ export const Default = meta.story({
 export const DefaultValue = meta.story({
 	name: "Default Value",
 	render: () => (
-		<Root class={rootClass} defaultValue={new Time(9, 30)}>
+		<Root class={rootClass} defaultValue={{ hour: 9, minute: 30 }}>
 			<Label class={labelClass}>Meeting time</Label>
-			<Field class={fieldClass}>
+			<Input class={fieldClass}>
 				{(segment) => <Segment segment={segment()} class={segmentClass} />}
-			</Field>
+			</Input>
 			<HiddenInput />
 		</Root>
 	),
@@ -60,12 +60,12 @@ export const WithSeconds = meta.story({
 		<Root
 			class={rootClass}
 			granularity="second"
-			defaultValue={new Time(12, 0, 0)}
+			defaultValue={{ hour: 12, minute: 0, second: 0 }}
 		>
 			<Label class={labelClass}>Duration</Label>
-			<Field class={fieldClass}>
+			<Input class={fieldClass}>
 				{(segment) => <Segment segment={segment()} class={segmentClass} />}
-			</Field>
+			</Input>
 			<HiddenInput />
 		</Root>
 	),
@@ -75,11 +75,15 @@ export const WithSeconds = meta.story({
 export const TwentyFourHour = meta.story({
 	name: "24-Hour Format",
 	render: () => (
-		<Root class={rootClass} hourCycle={24} defaultValue={new Time(14, 45)}>
+		<Root
+			class={rootClass}
+			hourCycle={24}
+			defaultValue={{ hour: 14, minute: 45 }}
+		>
 			<Label class={labelClass}>Departure</Label>
-			<Field class={fieldClass}>
+			<Input class={fieldClass}>
 				{(segment) => <Segment segment={segment()} class={segmentClass} />}
-			</Field>
+			</Input>
 			<HiddenInput />
 		</Root>
 	),
@@ -91,9 +95,9 @@ export const Invalid = meta.story({
 	render: () => (
 		<Root class={rootClass} validationState="invalid" required>
 			<Label class={labelClass}>Appointment</Label>
-			<Field class={fieldClass}>
+			<Input class={fieldClass}>
 				{(segment) => <Segment segment={segment()} class={segmentClass} />}
-			</Field>
+			</Input>
 			<ErrorMessage class="text-xs text-red-600">
 				A time is required.
 			</ErrorMessage>
@@ -106,11 +110,11 @@ export const Invalid = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root class={rootClass} disabled defaultValue={new Time(8, 0)}>
+		<Root class={rootClass} disabled defaultValue={{ hour: 8, minute: 0 }}>
 			<Label class={labelClass}>Closed at (disabled)</Label>
-			<Field class={fieldClass}>
+			<Input class={fieldClass}>
 				{(segment) => <Segment segment={segment()} class={segmentClass} />}
-			</Field>
+			</Input>
 			<HiddenInput />
 		</Root>
 	),
@@ -120,11 +124,11 @@ export const Disabled = meta.story({
 export const ReadOnly = meta.story({
 	name: "Read Only",
 	render: () => (
-		<Root class={rootClass} readOnly defaultValue={new Time(17, 30)}>
+		<Root class={rootClass} readOnly defaultValue={{ hour: 17, minute: 30 }}>
 			<Label class={labelClass}>Close time</Label>
-			<Field class={fieldClass}>
+			<Input class={fieldClass}>
 				{(segment) => <Segment segment={segment()} class={segmentClass} />}
-			</Field>
+			</Input>
 			<HiddenInput />
 		</Root>
 	),
@@ -132,18 +136,17 @@ export const ReadOnly = meta.story({
 
 /** Controlled value driven by an external signal. */
 function ControlledDemo() {
-	const [value, setValue] = createSignal<Time | undefined>(new Time(10, 0));
+	const [value, setValue] = createSignal<Time | undefined>({
+		hour: 10,
+		minute: 0,
+	});
 	return (
 		<div class="flex flex-col gap-3 font-sans">
-			<Root
-				class={rootClass}
-				value={value()}
-				onChange={(v) => setValue(v as Time)}
-			>
+			<Root class={rootClass} value={value()} onChange={setValue}>
 				<Label class={labelClass}>Event time</Label>
-				<Field class={fieldClass}>
+				<Input class={fieldClass}>
 					{(segment) => <Segment segment={segment()} class={segmentClass} />}
-				</Field>
+				</Input>
 				<Description class="text-xs text-slate-500">
 					Select a time for your event.
 				</Description>

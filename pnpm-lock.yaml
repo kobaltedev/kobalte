@@ -259,8 +259,8 @@ importers:
         specifier: ^3.2.1
         version: 3.6.7
       '@kobalte/utils':
-        specifier: ^0.9.1
-        version: 0.9.1(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
+        specifier: ^0.9.2
+        version: 0.9.2(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
       '@solid-primitives/a11y':
         specifier: next
         version: 1.0.0-next.0(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
@@ -2218,8 +2218,8 @@ packages:
     peerDependencies:
       tailwindcss: ^3.3.3
 
-  '@kobalte/utils@0.9.1':
-    resolution: {integrity: sha512-eeU60A3kprIiBDAfv9gUJX1tXGLuZiKMajUfSQURAF2pk4ZoMYiqIzmrMBvzcxP39xnYttgTyQEVLwiTZnrV4w==}
+  '@kobalte/utils@0.9.2':
+    resolution: {integrity: sha512-jRVXr+zsVHxzDXRoh+CDeXzvCsFJ6uiHhqqNQ26Cw9ZsZ3D6nqPUBt1gGVtj2ZPmRL3a9Uk1v8D1aJ8/I12Dow==}
     peerDependencies:
       solid-js: ^1.8.8
 
@@ -9578,7 +9578,7 @@ snapshots:
     dependencies:
       tailwindcss: 4.3.1
 
-  '@kobalte/utils@0.9.1(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)':
+  '@kobalte/utils@0.9.2(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)':
     dependencies:
       '@solid-primitives/event-listener': 3.0.0-next.0(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
       '@solid-primitives/keyed': 3.0.0-next.0(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)

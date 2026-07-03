@@ -23,26 +23,26 @@ import {
 	children,
 	createEffect,
 	createMemo,
-	createSignal,
 	createUniqueId,
 	omit,
 	Show,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
-import { createDateFormatter, createFilter, useLocale } from "../i18n";
-import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+import { createFilter, useLocale } from "../i18n";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import * as SpinButton from "../spin-button";
 import { useTimeFieldContext } from "./time-field-context";
-import { useTimeFieldFieldContext } from "./time-field-field-context";
-import type { TimeSegment } from "./types";
+import type { SegmentType, Time } from "./types";
+
+const PAGE_STEP = {
+	hour: 2,
+	minute: 15,
+	second: 15,
+};
 
 export interface TimeFieldSegmentOptions {
-	segment: TimeSegment;
+	segment: SegmentType;
 }
 
 export interface TimeFieldSegmentCommonProps<
@@ -86,11 +86,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 	const formControlContext = useFormControlContext();
 	const context = useTimeFieldContext();
-	const fieldContext = useTimeFieldFieldContext();
 
 	const mergedProps = mergeDefaultProps(
 		{
-			id: `${fieldContext.generateId("segment")}-${createUniqueId()}`,
+			id: `${context.generateId("segment")}-${createUniqueId()}`,
 		},
 		props as TimeFieldSegmentProps,
 	);
@@ -108,10 +107,6 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 	const { locale } = useLocale();
 
-	const [textValue, setTextValue] = createSignal(
-		mergedProps.segment.isPlaceholder ? "" : mergedProps.segment.text,
-	);
-
 	const resolvedChildren = children(() => mergedProps.children);
 
 	let enteredKeys = "";
@@ -120,7 +115,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	// spin buttons cannot be focused with VoiceOver on iOS.
 	const touchPropOverrides = createMemo(() => {
 		return (
-			isIOS() || mergedProps.segment.type === "timeZoneName"
+			isIOS()
 				? {
 						role: "textbox",
 						"aria-valuemax": undefined,
@@ -132,22 +127,16 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		) as ComponentProps<"div">;
 	});
 
-	const firstSegment = createMemo(() =>
-		fieldContext.segments().find((s) => s.isEditable),
-	);
+	const firstSegment = createMemo(() => context.segments()[0]);
 
 	// Prepend the label passed from the field to each segment name.
 	// This is needed because VoiceOver on iOS does not announce groups.
 	const name = createMemo(() => {
-		return mergedProps.segment.type === "literal"
-			? ""
-			: context.translations()[mergedProps.segment.type];
+		return context.translations()[mergedProps.segment];
 	});
 
 	const ariaLabel = createMemo(() => {
-		return `${name()}${
-			fieldContext.ariaLabel() ? `, ${fieldContext.ariaLabel()}` : ""
-		}${fieldContext.ariaLabelledBy() ? ", " : ""}`;
+		return [name(), context.fieldAriaLabel()].filter(Boolean).join(", ");
 	});
 
 	const ariaDescribedBy = createMemo(() => {
@@ -160,29 +149,20 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			return undefined;
 		}
 
-		return fieldContext.ariaDescribedBy();
+		return context.fieldAriaDescribedBy();
 	});
 
 	const ariaLabelledBy = createMemo(() => {
 		return (
-			[mergedProps.id, fieldContext.ariaLabelledBy()]
+			[mergedProps.id, context.fieldAriaLabelledBy()]
 				.filter(Boolean)
 				.join(" ") || undefined
 		);
 	});
 
-	const isEditable = createMemo(() => {
-		return (
-			!formControlContext.isDisabled() &&
-			!formControlContext.isReadOnly() &&
-			mergedProps.segment.isEditable
-		);
-	});
-
 	const inputMode = createMemo(() => {
 		return formControlContext.isDisabled() ||
-			mergedProps.segment.type === "dayPeriod" ||
-			!isEditable()
+			mergedProps.segment === "dayPeriod"
 			? undefined
 			: "numeric";
 	});
@@ -190,68 +170,44 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	// Safari dayPeriod option doesn't work...
 	const filter = createFilter({ sensitivity: "base" });
 
-	const options = createMemo(() => fieldContext.dateFormatterResolvedOptions());
-
-	const hourDateFormatter = createDateFormatter(() => ({
-		hour: "numeric",
-		hour12: options().hour12,
-		timeZone: options().timeZone,
-	}));
-
-	const amPmFormatter = createDateFormatter({
-		hour: "numeric",
-		hour12: true,
-	});
-
-	const am = createMemo(() => {
-		const date = new Date();
-		date.setHours(0);
-
-		return (
-			amPmFormatter()
-				.formatToParts(date)
-				.find((part) => part.type === "dayPeriod")?.value ?? ""
-		);
-	});
-
-	const pm = createMemo(() => {
-		const date = new Date();
-		date.setHours(12);
-
-		return (
-			amPmFormatter()
-				.formatToParts(date)
-				.find((part) => part.type === "dayPeriod")?.value ?? ""
-		);
-	});
-
 	const numberParser = createMemo(() => {
 		return new NumberParser(locale(), {
 			maximumFractionDigits: 0,
 		});
 	});
 
+	const maxValue = () => (mergedProps.segment === "hour" ? 23 : 59);
+
 	const onBackspaceKeyDown = () => {
-		if (mergedProps.segment.text === mergedProps.segment.placeholder) {
-			context.focusManager().focusPrevious();
-		}
 		if (
-			numberParser().isValidPartialNumber(mergedProps.segment.text) &&
-			!formControlContext.isReadOnly() &&
-			!mergedProps.segment.isPlaceholder
+			mergedProps.segment !== "dayPeriod" &&
+			context.value()?.[mergedProps.segment] === undefined
 		) {
-			let newValue = mergedProps.segment.text.slice(0, -1);
-			const parsed = numberParser().parse(newValue);
-			newValue = parsed === 0 ? "" : newValue;
-			if (newValue.length === 0 || parsed === 0) {
-				fieldContext.clearSegment(mergedProps.segment.type);
-			} else {
-				fieldContext.setSegment(mergedProps.segment.type, parsed);
-			}
-			enteredKeys = newValue;
-		} else if (mergedProps.segment.type === "dayPeriod") {
-			fieldContext.clearSegment(mergedProps.segment.type);
+			context.focusManager().focusPrevious();
+			return;
 		}
+		if (mergedProps.segment === "dayPeriod") {
+			if ((context.value()?.hour ?? 0) >= 12) {
+				if (!formControlContext.isReadOnly())
+					context.setValue({ hour: context.value()!.hour! - 12 });
+			} else context.focusManager().focusPrevious();
+			return;
+		}
+
+		if (formControlContext.isReadOnly()) return;
+
+		let newValue = (context.value()?.[mergedProps.segment] ?? 0)
+			.toString()
+			.slice(0, -1);
+		const parsed = numberParser().parse(newValue);
+		newValue = parsed === 0 ? "" : newValue;
+
+		if (newValue.length === 0 || parsed === 0) {
+			context.setValue({ [mergedProps.segment]: undefined });
+		} else {
+			context.setValue({ [mergedProps.segment]: parsed });
+		}
+		enteredKeys = newValue;
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
@@ -286,12 +242,14 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		const newValue = enteredKeys + key;
 
-		switch (mergedProps.segment.type) {
+		switch (mergedProps.segment) {
 			case "dayPeriod":
-				if (filter.startsWith(am(), key)) {
-					fieldContext.setSegment("dayPeriod", 0);
-				} else if (filter.startsWith(pm(), key)) {
-					fieldContext.setSegment("dayPeriod", 12);
+				if (filter.startsWith(context.translations().am, key)) {
+					if ((context.value()?.hour ?? 0) >= 12)
+						context.setValue({ hour: context.value()!.hour! - 12 });
+				} else if (filter.startsWith(context.translations().pm, key)) {
+					if ((context.value()?.hour ?? 0) < 12)
+						context.setValue({ hour: context.value()!.hour! + 12 });
 				} else {
 					break;
 				}
@@ -305,54 +263,34 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				}
 
 				let numberValue = numberParser().parse(newValue);
-				let segmentValue = numberValue;
-				let allowsZero = mergedProps.segment.minValue === 0;
-				if (
-					mergedProps.segment.type === "hour" &&
-					fieldContext.dateFormatterResolvedOptions().hour12
-				) {
-					switch (fieldContext.dateFormatterResolvedOptions().hourCycle) {
-						case "h11":
-							if (numberValue > 11) {
-								segmentValue = numberParser().parse(key);
-							}
-							break;
-						case "h12":
-							allowsZero = false;
-							if (numberValue > 12) {
-								segmentValue = numberParser().parse(key);
-							}
-							break;
+				let allowsZero = true;
+
+				if (mergedProps.segment === "hour" && context.hourCycle() === 12) {
+					allowsZero = false;
+					if (numberValue >= 12) {
+						numberValue = numberParser().parse(key);
 					}
 
-					if (
-						mergedProps.segment.value != null &&
-						mergedProps.segment.value >= 12 &&
-						numberValue > 1
-					) {
+					if ((context.value()?.hour ?? 0) >= 12) {
 						numberValue += 12;
 					}
-				} else if (
-					mergedProps.segment.maxValue != null &&
-					numberValue > mergedProps.segment.maxValue
-				) {
-					segmentValue = numberParser().parse(key);
 				}
 
-				if (Number.isNaN(numberValue)) {
-					return;
+				if (numberValue > maxValue()) {
+					numberValue = numberParser().parse(key);
 				}
 
-				const shouldSetValue = segmentValue !== 0 || allowsZero;
+				if (Number.isNaN(numberValue)) return;
+
+				const shouldSetValue = numberValue !== 0 || allowsZero;
 
 				if (shouldSetValue) {
-					fieldContext.setSegment(mergedProps.segment.type, segmentValue);
+					context.setValue({ [mergedProps.segment]: numberValue });
 				}
 
 				if (
-					(mergedProps.segment.maxValue != null &&
-						Number(`${numberValue}0`) > mergedProps.segment.maxValue) ||
-					newValue.length >= String(mergedProps.segment.maxValue).length
+					Number(`${numberValue}0`) > maxValue() ||
+					newValue.length >= String(maxValue).length
 				) {
 					enteredKeys = "";
 					if (shouldSetValue) {
@@ -375,7 +313,8 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			case "deleteContentBackward":
 			case "deleteContentForward":
 				if (
-					numberParser().isValidPartialNumber(mergedProps.segment.text) &&
+					mergedProps.segment !== "dayPeriod" &&
+					context.value()?.[mergedProps.segment] !== undefined &&
 					!formControlContext.isReadOnly()
 				) {
 					onBackspaceKeyDown();
@@ -412,7 +351,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 					// Android sometimes fires key presses of letters as composition events. Need to handle am/pm keys here too.
 					// Can also happen e.g. with Pinyin keyboard on iOS.
-					if (filter.startsWith(am(), data) || filter.startsWith(pm(), data)) {
+					if (
+						filter.startsWith(context.translations().am, data) ||
+						filter.startsWith(context.translations().pm, data)
+					) {
 						onInputBase(data);
 					}
 					break;
@@ -435,66 +377,103 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		}
 	};
 
+	const cycleDayPeriod = () => {
+		if ((context.value()?.hour ?? 0) >= 12)
+			context.setValue({ hour: context.value()!.hour! - 12 });
+		else context.setValue({ hour: context.value()!.hour! + 12 });
+	};
+
+	const adjust = (delta: number) => {
+		const hour = context.value()?.hour ?? context.placeholder()?.hour ?? 0;
+
+		if (mergedProps.segment === "hour" && context.hourCycle() === 12) {
+			const isPM = hour >= 12;
+			const h12 = hour % 12;
+
+			const next = (h12 + delta + 12) % 12;
+
+			return next + (isPM ? 12 : 0);
+		}
+
+		const max = maxValue();
+
+		return (
+			((context.value()?.[mergedProps.segment as keyof Time] ??
+				context.placeholder()?.[mergedProps.segment as keyof Time] ??
+				0) +
+				delta +
+				(max + 1)) %
+			(max + 1)
+		);
+	};
+
 	const onIncrement = () => {
 		enteredKeys = "";
-		fieldContext.increment(mergedProps.segment.type);
+		if (mergedProps.segment === "dayPeriod") {
+			cycleDayPeriod();
+			return;
+		}
+		context.setValue({
+			[mergedProps.segment]: adjust(1),
+		});
 	};
 
 	const onDecrement = () => {
 		enteredKeys = "";
-		fieldContext.decrement(mergedProps.segment.type);
+		if (mergedProps.segment === "dayPeriod") {
+			cycleDayPeriod();
+			return;
+		}
+		context.setValue({
+			[mergedProps.segment]: adjust(-1),
+		});
 	};
 
 	const onIncrementPage = () => {
 		enteredKeys = "";
-		fieldContext.incrementPage(mergedProps.segment.type);
+		if (mergedProps.segment === "dayPeriod") {
+			cycleDayPeriod();
+			return;
+		}
+		context.setValue({
+			[mergedProps.segment]: adjust(PAGE_STEP[mergedProps.segment]),
+		});
 	};
 
 	const onDecrementPage = () => {
 		enteredKeys = "";
-		fieldContext.decrementPage(mergedProps.segment.type);
+		if (mergedProps.segment === "dayPeriod") {
+			cycleDayPeriod();
+			return;
+		}
+		context.setValue({
+			[mergedProps.segment]: adjust(-PAGE_STEP[mergedProps.segment]),
+		});
 	};
 
 	const onDecrementToMin = () => {
-		if (mergedProps.segment.minValue == null) {
+		enteredKeys = "";
+		if (mergedProps.segment === "dayPeriod") {
+			cycleDayPeriod();
 			return;
 		}
-
-		enteredKeys = "";
-		fieldContext.setSegment(
-			mergedProps.segment.type,
-			mergedProps.segment.minValue,
-		);
+		if (mergedProps.segment === "hour" && context.hourCycle() === 12) {
+			if ((context.value()?.hour ?? 0) >= 12) context.setValue({ hour: 12 });
+			else context.setValue({ hour: 0 });
+		} else context.setValue({ [mergedProps.segment]: 0 });
 	};
 
 	const onIncrementToMax = () => {
-		if (mergedProps.segment.maxValue == null) {
+		enteredKeys = "";
+		if (mergedProps.segment === "dayPeriod") {
+			cycleDayPeriod();
 			return;
 		}
-
-		enteredKeys = "";
-		fieldContext.setSegment(
-			mergedProps.segment.type,
-			mergedProps.segment.maxValue,
-		);
+		if (mergedProps.segment === "hour" && context.hourCycle() === 12) {
+			if ((context.value()?.hour ?? 0) >= 12) context.setValue({ hour: 24 });
+			else context.setValue({ hour: 12 });
+		} else context.setValue({ [mergedProps.segment]: maxValue() });
 	};
-
-	createEffect(
-		() => {
-			const resolvedDateValue = fieldContext.dateValue();
-			if (!resolvedDateValue) return undefined;
-			if (
-				mergedProps.segment.type === "hour" &&
-				!mergedProps.segment.isPlaceholder
-			) {
-				return hourDateFormatter().format(resolvedDateValue);
-			}
-			return mergedProps.segment.isPlaceholder ? "" : mergedProps.segment.text;
-		},
-		(value) => {
-			if (value !== undefined) setTextValue(value);
-		},
-	);
 
 	createEffect(
 		() => context.focusManager(),
@@ -511,50 +490,68 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		},
 	);
 
-	return (
-		<Show
-			when={mergedProps.segment.type !== "literal"}
-			fallback={
-				<Polymorphic
-					as="div"
-					aria-hidden="true"
-					data-separator=""
-					data-type="literal"
-					{...others}
-				>
-					{mergedProps.segment.text}
-				</Polymorphic>
+	const getValue = () => {
+		if (mergedProps.segment === "dayPeriod")
+			return context.translations()[
+				(context.value()?.hour ?? context.placeholder()?.hour ?? 0) >= 12
+					? "pm"
+					: "am"
+			];
+
+		if (mergedProps.segment === "hour") {
+			const val = context.value()?.hour ?? context.placeholder()?.hour;
+			if (val === undefined) return undefined;
+			if (context.hourCycle() === 12) {
+				if (val > 12) return val - 12;
+				if (val === 0) return 12;
 			}
-		>
+			return val;
+		}
+		return (
+			context.value()?.[mergedProps.segment] ??
+			context.placeholder()?.[mergedProps.segment]
+		);
+	};
+
+	const padding = () =>
+		mergedProps.segment !== "hour" ? 2 : context.forceLeadingZeros() ? 2 : 1;
+	const textValue = () =>
+		(getValue()?.toString() ?? "-".padStart(padding(), "-")).padStart(
+			padding(),
+			"0",
+		);
+
+	return (
+		<>
 			<SpinButton.Root
-				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
-				tabindex={
-					formControlContext.isDisabled() || !mergedProps.segment.isEditable
-						? undefined
-						: 0
-				}
-				value={mergedProps.segment.value}
+				ref={mergeRefs((el: HTMLElement) => (ref = el), mergedProps.ref)}
+				tabindex={formControlContext.isDisabled() ? undefined : 0}
+				value={getValue()}
 				textValue={textValue()}
-				minValue={mergedProps.segment.minValue}
-				maxValue={mergedProps.segment.maxValue}
+				minValue={0}
+				maxValue={maxValue()}
 				validationState={formControlContext.validationState()}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
-				readOnly={
-					formControlContext.isReadOnly() || !mergedProps.segment.isEditable
-				}
-				contentEditable={isEditable()}
+				readOnly={formControlContext.isReadOnly()}
+				contentEditable={!formControlContext.isReadOnly()}
 				inputMode={inputMode()}
-				autocorrect={isEditable() ? "off" : undefined}
-				autoCapitalize={isEditable() ? "off" : undefined}
-				spellcheck={isEditable() ? false : undefined}
-				enterkeyhint={isEditable() ? "next" : undefined}
+				autocorrect={!formControlContext.isReadOnly() ? "off" : undefined}
+				autoCapitalize={!formControlContext.isReadOnly() ? "off" : undefined}
+				spellcheck={!formControlContext.isReadOnly() ? false : undefined}
+				enterkeyhint={!formControlContext.isReadOnly() ? "next" : undefined}
 				style={{ "caret-color": "transparent" }}
 				aria-label={ariaLabel()}
 				aria-labelledby={ariaLabelledBy()}
 				aria-describedby={ariaDescribedBy()}
-				data-placeholder={mergedProps.segment.isPlaceholder ? "" : undefined}
-				data-type={mergedProps.segment.type}
+				data-placeholder={
+					context.value()?.[
+						mergedProps.segment === "dayPeriod" ? "hour" : mergedProps.segment
+					] === undefined
+						? ""
+						: undefined
+				}
+				data-type={mergedProps.segment}
 				onKeyDown={onKeyDown}
 				onBeforeInput={onBeforeInput}
 				onInput={onInput}
@@ -569,10 +566,25 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				{...others}
 				{...touchPropOverrides()}
 			>
-				<Show when={resolvedChildren()} fallback={mergedProps.segment.text}>
+				<Show
+					when={resolvedChildren()}
+					fallback={textValue().replaceAll("-", "–")}
+				>
 					{resolvedChildren()}
 				</Show>
 			</SpinButton.Root>
-		</Show>
+
+			<Show
+				when={
+					(mergedProps.segment === "hour" &&
+						(context.resolvedGranularity().minute ||
+							context.resolvedGranularity().second)) ||
+					(mergedProps.segment === "minute" &&
+						context.resolvedGranularity().second)
+				}
+			>
+				<span>:</span>
+			</Show>
+		</>
 	);
 }
