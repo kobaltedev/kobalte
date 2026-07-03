@@ -1,7 +1,20 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"files": {
-		"ignore": ["./tsconfig.json", "*/netlify/*", "**/package.json"]
+		"includes": [
+			"**",
+			"!tsconfig.json",
+			"!**/*/netlify/**/*",
+			"!**/package.json",
+			"!.claude"
+		]
+	},
+	"css": {
+		"parser": {
+			"cssModules": false,
+			"allowWrongLineComments": false,
+			"tailwindDirectives": true
+		}
 	},
 	"vcs": {
 		"enabled": true,

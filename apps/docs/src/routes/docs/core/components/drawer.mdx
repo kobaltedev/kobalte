@@ -1,0 +1,464 @@
+import { Preview, Kbd, TabsSnippets } from "../../../../components";
+import { BasicExample, SnapPointsExample, ControlledExample } from "../../../../examples/drawer";
+
+# Drawer
+
+A panel that slides in from the edge of the screen with drag-to-dismiss and snap-point support. Built on [Dialog](/docs/core/components/dialog) with a two-signal open pattern so content stays mounted during the closing animation.
+
+## Import
+
+```ts
+import { Drawer } from "@kobalte/core/drawer";
+// or
+import { Root, Trigger, Content, Overlay, Portal, CloseButton, Title, Description } from "@kobalte/core/drawer";
+```
+
+## Features
+
+- Slides in from any of the four edges (`bottom`, `top`, `left`, `right`).
+- Drag-to-dismiss with configurable snap points and velocity-based release.
+- Overlay opacity tracks the drag position in real time.
+- Scrollable children are handled automatically — the drag gesture does not conflict with internal scrolling.
+- Snap points accept fractional values (`0`–`1`) or absolute pixel strings (`"200px"`).
+- Programmatic snap-point control via `useContext().setActiveSnapPoint`.
+- Supports modal and non-modal modes.
+- Focus is trapped and scroll is locked when modal.
+- Pressing <Kbd>Esc</Kbd> closes the drawer.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+- **Drawer:** Contains all the parts of a drawer.
+- **Drawer.Trigger:** The button that opens the drawer.
+- **Drawer.Portal:** Portals its children into the `body` when the drawer is open.
+- **Drawer.Overlay:** The layer that covers the inert portion of the view when the drawer is open. Opacity is driven automatically by `openPercentage`.
+- **Drawer.Content:** Contains the content rendered when the drawer is open. Handles all pointer and touch drag gestures.
+- **Drawer.CloseButton:** The button that closes the drawer.
+- **Drawer.Title:** An accessible title announced when the drawer is opened.
+- **Drawer.Description:** An optional accessible description announced when the drawer is opened.
+
+```tsx
+<Drawer>
+	<Drawer.Trigger />
+	<Drawer.Portal>
+		<Drawer.Overlay />
+		<Drawer.Content>
+			<Drawer.CloseButton />
+			<Drawer.Title />
+			<Drawer.Description />
+		</Drawer.Content>
+	</Drawer.Portal>
+</Drawer>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Drawer } from "@kobalte/core/drawer";
+    import { CrossIcon } from "some-icon-library";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Drawer side="bottom">
+          <Drawer.Trigger class="drawer__trigger">Open drawer</Drawer.Trigger>
+          <Drawer.Portal>
+            <Drawer.Overlay class="drawer__overlay" />
+            <Drawer.Content class="drawer__content">
+              <div class="drawer__handle" />
+              <div class="drawer__header">
+                <Drawer.Title class="drawer__title">Drawer</Drawer.Title>
+                <Drawer.CloseButton class="drawer__close-button">
+                  <CrossIcon />
+                </Drawer.CloseButton>
+              </div>
+              <Drawer.Description class="drawer__description">
+                Drag the handle or swipe down to dismiss.
+              </Drawer.Description>
+            </Drawer.Content>
+          </Drawer.Portal>
+        </Drawer>
+      );
+    }
+    ```
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .drawer__trigger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      padding: 0 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: hsl(200 98% 39%);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Opacity is driven by JS (openPercentage). Only a CSS transition is needed. */
+    .drawer__overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background-color: rgb(0 0 0 / 0.4);
+      transition: opacity 350ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .drawer__content {
+      position: fixed;
+      z-index: 50;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 320px;
+      background-color: white;
+      border-radius: 12px 12px 0 0;
+      border-top: 1px solid hsl(240 5% 84%);
+      padding: 16px 24px 32px;
+      outline: none;
+      /* The drawer applies transform via inline style. This transition animates it. */
+      transition: transform 350ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .drawer__handle {
+      width: 48px;
+      height: 4px;
+      background-color: hsl(240 5% 84%);
+      border-radius: 9999px;
+      margin: 0 auto 16px;
+    }
+
+    .drawer__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .drawer__close-button {
+      height: 16px;
+      width: 16px;
+      color: hsl(240 5% 34%);
+    }
+
+    .drawer__title {
+      font-size: 18px;
+      font-weight: 500;
+      color: hsl(240 6% 10%);
+    }
+
+    .drawer__description {
+      font-size: 14px;
+      color: hsl(240 5% 26%);
+    }
+    ```
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Side
+
+Use the `side` prop to control which edge of the viewport the drawer slides in from.
+
+```tsx
+<Drawer side="right">...</Drawer>
+<Drawer side="left">...</Drawer>
+<Drawer side="top">...</Drawer>
+<Drawer side="bottom">...</Drawer>  {/* default */}
+```
+
+The `Drawer.Content` must be positioned against the matching edge:
+
+```css
+/* right drawer */
+.drawer__content {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 320px;
+  transition: transform 350ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* bottom drawer */
+.drawer__content {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 320px;
+  transition: transform 350ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+```
+
+### Snap points
+
+Snap points define the positions the drawer can settle at. Each value is either a fraction of the drawer size (`0` = fully closed, `1` = fully open) or a pixel string (`"200px"`).
+
+<Preview>
+	<SnapPointsExample />
+</Preview>
+
+```tsx
+// Three snap points: closed, 40% peek, fully open
+<Drawer side="bottom" snapPoints={[0, 0.4, 1]} defaultSnapPoint={0.4}>
+  ...
+</Drawer>
+
+// Pixel-based snap point
+<Drawer side="bottom" snapPoints={[0, "200px", 1]}>
+  ...
+</Drawer>
+```
+
+`defaultSnapPoint` sets which snap point the drawer opens to. Defaults to `1` (fully open).
+
+### Default open
+
+```tsx
+<Drawer defaultOpen>...</Drawer>
+```
+
+### Controlled open
+
+The `open` prop makes the open state controlled. The `onOpenChange` event fires whenever the user interacts with the trigger, overlay, close button, or escape key.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {3,6}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+  const [open, setOpen] = createSignal(false);
+
+  return (
+    <Drawer open={open()} onOpenChange={setOpen}>
+      ...
+    </Drawer>
+  );
+}
+```
+
+### Programmatic snap
+
+Access `setActiveSnapPoint` from context to snap to a specific position without dragging.
+
+```tsx
+import { Drawer } from "@kobalte/core/drawer";
+
+function SnapButtons() {
+  const ctx = Drawer.useContext();
+
+  return (
+    <>
+      <button onClick={() => ctx.setActiveSnapPoint(0.4)}>Peek</button>
+      <button onClick={() => ctx.setActiveSnapPoint(1)}>Expand</button>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Drawer snapPoints={[0, 0.4, 1]}>
+      <Drawer.Trigger>Open</Drawer.Trigger>
+      <Drawer.Portal>
+        <Drawer.Overlay class="drawer__overlay" />
+        <Drawer.Content class="drawer__content">
+          <SnapButtons />
+        </Drawer.Content>
+      </Drawer.Portal>
+    </Drawer>
+  );
+}
+```
+
+### Non-modal
+
+Set `modal={false}` to keep the background interactive and remove the overlay. Focus is not trapped.
+
+```tsx
+<Drawer side="right" modal={false}>
+  <Drawer.Trigger>Open</Drawer.Trigger>
+  <Drawer.Portal>
+    {/* No Drawer.Overlay */}
+    <Drawer.Content class="drawer__content">...</Drawer.Content>
+  </Drawer.Portal>
+</Drawer>
+```
+
+### Drag handle
+
+Add a visible drag handle to hint that the drawer is draggable. Any element inside `Drawer.Content` is draggable by default — use `data-no-drag` to opt specific elements out.
+
+```tsx
+<Drawer.Content class="drawer__content">
+  <div class="drawer__handle" />
+  ...
+  {/* This element will not initiate a drag */}
+  <div data-no-drag>Non-draggable region</div>
+</Drawer.Content>
+```
+
+### Animating the overlay
+
+`Drawer.Overlay` automatically drives its `opacity` from the drawer's `openPercentage` (0 when fully closed, 1 when fully open). This means opacity tracks the drag position in real time with no extra JavaScript.
+
+To animate the opacity on open/close, add a CSS transition:
+
+```css
+.drawer__overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgb(0 0 0 / 0.4);
+  /* opacity changes will be animated */
+  transition: opacity 350ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+```
+
+The transition is automatically suppressed during drag so the opacity follows the finger instantly.
+
+### Custom damping and velocity
+
+Control the rubber-band feel when dragging past the most-open snap point, and the velocity threshold for snap selection on release.
+
+```tsx
+<Drawer
+  // Custom logarithmic rubber-band (default)
+  dampFunction={(distance) => 6 * Math.log(distance + 1)}
+  // Custom velocity: use raw distance/time ratio with no clamping
+  velocityFunction={(distance, time) => distance / time}
+  // Reset velocity window every 100ms (default: 200)
+  velocityCacheReset={100}
+  // Prevent fast flings from skipping intermediate snap points
+  allowSkippingSnapPoints={false}
+>
+  ...
+</Drawer>
+```
+
+## API Reference
+
+### Drawer
+
+`Drawer` is equivalent to the `Root` import from `@kobalte/core/drawer`.
+
+| Prop | Description |
+| :--- | :--- |
+| open | `boolean` <br/> The controlled open state of the drawer. |
+| defaultOpen | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state. |
+| onOpenChange | `(open: boolean) => void` <br/> Event handler called when the open state changes. |
+| side | `"bottom" \| "top" \| "left" \| "right"` <br/> Which edge of the viewport the drawer slides in from. **Default:** `"bottom"` |
+| snapPoints | `DrawerSize[]` <br/> Positions the drawer can settle at. Each value is a fraction (`0`–`1`) or a pixel string (`"200px"`). `0` = fully closed, `1` = fully open. **Default:** `[0, 1]` |
+| breakPoints | `(DrawerSize \| null)[]` <br/> Custom thresholds between adjacent snap points. Length must equal `snapPoints.length - 1`. Pass `null` to use the default midpoint. |
+| defaultSnapPoint | `DrawerSize` <br/> The snap point the drawer opens to. **Default:** `1` |
+| activeSnapPoint | `DrawerSize` <br/> The controlled active snap point. |
+| onActiveSnapPointChange | `(snapPoint: DrawerSize) => void` <br/> Event handler called when the active snap point changes. |
+| dampFunction | `(distance: number) => number` <br/> Controls rubber-band resistance when dragging past the most-open snap point. **Default:** `(d) => 6 * Math.log(d + 1)` |
+| velocityFunction | `(distance: number, time: number) => number` <br/> Computes the velocity multiplier used to project the release position for snap selection. **Default:** `d / t`, clamped to `1` when `\|v\| < 1` |
+| velocityCacheReset | `number` <br/> Milliseconds after which the cached drag distance resets for velocity calculation. **Default:** `200` |
+| allowSkippingSnapPoints | `boolean` <br/> Whether a high-velocity release can skip intermediate snap points. **Default:** `true` |
+| handleScrollableElements | `boolean` <br/> Whether the drag gesture yields to scrollable children. **Default:** `true` |
+| id | `string` <br/> A unique identifier for the component. If not provided, a generated id is used. |
+| modal | `boolean` <br/> When `true`: interaction with outside elements is disabled, scroll is locked, and focus is trapped inside the content. **Default:** `true` |
+| preventScroll | `boolean` <br/> Whether scroll should be locked even when `modal` is `false`. |
+| translations | [`DrawerIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/dialog/dialog.intl.ts) <br/> Localization strings. |
+
+### Drawer.Content
+
+| Prop | Description |
+| :--- | :--- |
+| onOpenAutoFocus | `(event: Event) => void` <br/> Event handler called when focus moves into the content after opening. Can be prevented by calling `event.preventDefault`. |
+| onCloseAutoFocus | `(event: Event) => void` <br/> Event handler called when focus returns to the trigger after closing. Can be prevented by calling `event.preventDefault`. |
+| onEscapeKeyDown | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is pressed. Can be prevented by calling `event.preventDefault`. |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the content. Can be prevented by calling `event.preventDefault`. |
+| onFocusOutside | `(event: FocusOutsideEvent) => void` <br/> Event handler called when focus moves outside the content. Can be prevented by calling `event.preventDefault`. |
+| onInteractOutside | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction occurs outside the content. Can be prevented by calling `event.preventDefault`. |
+
+| Data attribute | Description |
+| :--- | :--- |
+| data-side | The side the drawer appears from: `"bottom"`, `"top"`, `"left"`, or `"right"`. |
+| data-expanded | Present when the drawer is open. |
+| data-closed | Present when the drawer is closed. |
+| data-opening | Present during the open transition. |
+| data-closing | Present during the close transition. |
+| data-snapping | Present while snapping to a snap point after a drag gesture. |
+| data-transitioning | Present during any transition (opening, closing, or snapping). |
+
+### Drawer.Overlay
+
+| Data attribute | Description |
+| :--- | :--- |
+| data-expanded | Present when the drawer is open. |
+| data-closing | Present during the close transition. |
+| data-transitioning | Present during any transition. |
+
+### Drawer.Trigger
+
+`Drawer.Trigger` consists of [Button](/docs/core/components/button).
+
+| Data attribute | Description |
+| :--- | :--- |
+| data-expanded | Present when the drawer is open. |
+| data-closed | Present when the drawer is closed. |
+
+### Drawer.useContext
+
+Access the drawer's reactive state from any component inside `Drawer`. Useful for reading position, building custom controls, or snapping programmatically.
+
+```tsx
+const ctx = Drawer.useContext();
+
+ctx.side()               // DrawerSide — "bottom" | "top" | "left" | "right"
+ctx.activeSnapPoint()    // DrawerSize — the current snap point value
+ctx.setActiveSnapPoint() // (snapPoint: DrawerSize) => void
+ctx.openPercentage()     // number — 0 (closed) to 1 (open), tracks drag in real time
+ctx.translate()          // number — pixel offset from the fully-open position
+ctx.isDragging()         // boolean
+ctx.isTransitioning()    // boolean
+ctx.transitionState()    // null | "opening" | "closing" | "snapping"
+```
+
+## Rendered elements
+
+| Component | Default rendered element |
+| :--- | :--- |
+| `Drawer` | none |
+| `Drawer.Trigger` | `button` |
+| `Drawer.Portal` | `Portal` |
+| `Drawer.Overlay` | `div` |
+| `Drawer.Content` | `div` |
+| `Drawer.CloseButton` | `button` |
+| `Drawer.Title` | `h2` |
+| `Drawer.Description` | `p` |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key | Description |
+| :--- | :--- |
+| <Kbd>Space</Kbd> | When focus is on the trigger, opens/closes the drawer. |
+| <Kbd>Enter</Kbd> | When focus is on the trigger, opens/closes the drawer. |
+| <Kbd>Tab</Kbd> | Moves focus to the next focusable element inside the drawer. |
+| <Kbd>Shift</Kbd> + <Kbd>Tab</Kbd> | Moves focus to the previous focusable element inside the drawer. |
+| <Kbd>Esc</Kbd> | Closes the drawer and returns focus to the trigger. |
+
+> Snap-point architecture and drag math are adapted from [corvu/drawer](https://github.com/corvudev/corvu/tree/main/packages/drawer) by Jasmin Noetzli (MIT).

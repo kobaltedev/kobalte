@@ -6,8 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/separator/src/useSeparator.ts
  */
 
-import { type Orientation, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type ValidComponent, splitProps } from "solid-js";
+import { mergeDefaultProps, mergeRefs, type Orientation } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
+import { createSignal, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -41,7 +42,9 @@ export type SeparatorRootProps<
 export function SeparatorRoot<T extends ValidComponent = "hr">(
 	props: PolymorphicProps<T, SeparatorRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const mergedProps = mergeDefaultProps(
 		{
@@ -50,22 +53,19 @@ export function SeparatorRoot<T extends ValidComponent = "hr">(
 		props as SeparatorRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "orientation"]);
+	const others = omit(mergedProps, "ref", "orientation");
 
-	const tagName = createTagName(
-		() => ref,
-		() => "hr",
-	);
+	const tagName = createTagName(ref, () => "hr");
 
 	return (
 		<Polymorphic<SeparatorRootRenderProps>
 			as="hr"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs(setRef, mergedProps.ref)}
 			role={tagName() !== "hr" ? "separator" : undefined}
 			aria-orientation={
-				local.orientation === "vertical" ? "vertical" : undefined
+				mergedProps.orientation === "vertical" ? "vertical" : undefined
 			}
-			data-orientation={local.orientation}
+			data-orientation={mergedProps.orientation}
 			{...others}
 		/>
 	);

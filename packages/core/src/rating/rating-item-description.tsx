@@ -1,5 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import { type ValidComponent, createEffect, onCleanup } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect } from "solid-js";
 
 import {
 	type ElementOf,
@@ -40,7 +41,10 @@ export function RatingItemDescription<T extends ValidComponent = "div">(
 		props as RatingItemDescriptionProps,
 	);
 
-	createEffect(() => onCleanup(context.registerDescription(mergedProps.id)));
+	createEffect(
+		() => mergedProps.id,
+		(id) => context.registerDescription(id),
+	);
 
 	return (
 		<Polymorphic<RatingItemDescriptionRenderProps>

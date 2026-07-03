@@ -1,5 +1,5 @@
 import { Tabs } from "@kobalte/core/tabs";
-import { For, createSignal } from "solid-js";
+import { createSignal, For } from "solid-js";
 
 import style from "./tabs.module.css";
 

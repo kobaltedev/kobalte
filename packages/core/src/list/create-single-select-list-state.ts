@@ -7,7 +7,7 @@
  */
 
 import { access } from "@kobalte/utils";
-import { type Accessor, createMemo, mergeProps, splitProps } from "solid-js";
+import { type Accessor, createMemo, merge, omit } from "solid-js";
 
 import {
 	type CollectionBase,
@@ -17,8 +17,8 @@ import {
 import type { SingleSelection } from "../selection";
 import {
 	type CreateListStateProps,
-	type ListState,
 	createListState,
+	type ListState,
 } from "./create-list-state";
 
 export interface CreateSingleSelectListStateProps
@@ -57,17 +57,15 @@ export function createSingleSelectListState(
 		return selection != null ? [selection] : [];
 	});
 
-	const [, defaultCreateListStateProps] = splitProps(props, [
-		"onSelectionChange",
-	]);
+	const defaultCreateListStateProps = omit(props, "onSelectionChange");
 
-	const createListStateProps = mergeProps(defaultCreateListStateProps, {
+	const createListStateProps = merge(defaultCreateListStateProps, {
 		selectionMode: "single",
 		disallowEmptySelection: true,
 		allowDuplicateSelectionEvents: true,
 		selectedKeys,
 		onSelectionChange: (keys: Set<string>) => {
-			const key = (keys as Set<string>).values().next().value;
+			const key = (keys as Set<string>).values().next().value as string;
 
 			// Always fire onSelectionChange, even if the key is the same
 			// as the current key (createControllableSignal does not).

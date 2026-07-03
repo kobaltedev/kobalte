@@ -7,26 +7,31 @@
  */
 
 import {
-	type Orientation,
 	callHandler,
 	composeEventHandlers,
 	contains,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	Show,
-	type ValidComponent,
-	createEffect,
-	createUniqueId,
-	onCleanup,
-	onMount,
-	splitProps,
-} from "solid-js";
+import { createFocusTrap } from "@solid-primitives/focus";
+import type {
+	FocusOutsideEvent,
+	InteractOutsideEvent,
+	PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import {
+	type Component,
+	createEffect,
+	createUniqueId,
+	omit,
+	onCleanup,
+	onSettled,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
@@ -41,12 +46,6 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { Popper } from "../popper";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-	createFocusScope,
-} from "../primitives";
 import { type MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
 import { MENUBAR_KEYS } from "./menu-trigger";
@@ -108,7 +107,7 @@ export interface MenuContentBaseRenderProps
 		DismissableLayerRenderProps,
 		MenuDataSet {
 	role: "menu";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"aria-labelledby": string | undefined;
 	"data-orientation": Orientation;
 }
@@ -136,7 +135,8 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		props as MenuContentBaseProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"id",
 		"style",
@@ -150,7 +150,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		"onMouseDown",
 		"onFocusIn",
 		"onFocusOut",
-	]);
+	);
 
 	let lastPointerX = 0;
 
@@ -178,17 +178,15 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		() => ref,
 	);
 
-	createFocusScope(
-		{
-			trapFocus: () => isRootModalContent() && context.isOpen(),
-			onMountAutoFocus: (event) => {
-				if (optionalMenubarContext === undefined)
-					local.onOpenAutoFocus?.(event);
-			},
-			onUnmountAutoFocus: local.onCloseAutoFocus,
+	createFocusTrap({
+		element: () => ref,
+		enabled: () => isRootModalContent() && context.isOpen(),
+		onInitialFocus: (event) => {
+			if (optionalMenubarContext === undefined)
+				mergedProps.onOpenAutoFocus?.(event);
 		},
-		() => ref,
-	);
+		onFinalFocus: mergedProps.onCloseAutoFocus,
+	});
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		// Submenu key events bubble through portals. We only care about keys in this menu.
@@ -226,7 +224,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 	};
 
 	const onEscapeKeyDown = (e: KeyboardEvent) => {
-		local.onEscapeKeyDown?.(e);
+		mergedProps.onEscapeKeyDown?.(e);
 
 		optionalMenubarContext?.setAutoFocusMenu(false);
 
@@ -237,7 +235,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		mergedProps.onFocusOutside?.(e);
 
 		if (rootContext.isModal()) {
 			// When focus is trapped, a `focusout` event may still happen.
@@ -249,7 +247,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 	const onPointerEnter: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerEnter);
+		callHandler(e, mergedProps.onPointerEnter);
 
 		if (!context.isOpen()) {
 			return;
@@ -271,7 +269,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
 			return;
@@ -288,7 +286,10 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 		}
 	};
 
-	createEffect(() => onCleanup(context.registerContentId(local.id!)));
+	createEffect(
+		() => mergedProps.id!,
+		(id) => context.registerContentId(id),
+	);
 
 	onCleanup(() => context.setContentRef(undefined));
 
@@ -297,32 +298,32 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			ref: mergeRefs((el) => {
 				context.setContentRef(el);
 				ref = el;
-			}, local.ref),
+			}, mergedProps.ref),
 			role: "menu",
 			get id() {
-				return local.id;
+				return mergedProps.id;
 			},
-			get tabIndex() {
+			get tabindex() {
 				return selectableList.tabIndex();
 			},
 			get "aria-labelledby"() {
 				return context.triggerId();
 			},
 			onKeyDown: composeEventHandlers([
-				local.onKeyDown,
+				mergedProps.onKeyDown,
 				selectableList.onKeyDown,
 				onKeyDown,
 			]),
 			onMouseDown: composeEventHandlers([
-				local.onMouseDown,
+				mergedProps.onMouseDown,
 				selectableList.onMouseDown,
 			]),
 			onFocusIn: composeEventHandlers([
-				local.onFocusIn,
+				mergedProps.onFocusIn,
 				selectableList.onFocusIn,
 			]),
 			onFocusOut: composeEventHandlers([
-				local.onFocusOut,
+				mergedProps.onFocusOut,
 				selectableList.onFocusOut,
 			]),
 			onPointerEnter,
@@ -368,7 +369,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 									"var(--kb-popper-content-transform-origin)",
 								position: "relative",
 							},
-							local.style,
+							mergedProps.style,
 						)}
 						onEscapeKeyDown={onEscapeKeyDown}
 						onFocusOutside={onFocusOutside}

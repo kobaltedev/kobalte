@@ -19,16 +19,16 @@ import {
 } from "./breadcrumbs-separator";
 
 export type {
-	BreadcrumbsLinkOptions,
 	BreadcrumbsLinkCommonProps,
-	BreadcrumbsLinkRenderProps,
+	BreadcrumbsLinkOptions,
 	BreadcrumbsLinkProps,
+	BreadcrumbsLinkRenderProps,
 	BreadcrumbsRootOptions,
 	BreadcrumbsRootProps,
-	BreadcrumbsSeparatorOptions,
 	BreadcrumbsSeparatorCommonProps,
-	BreadcrumbsSeparatorRenderProps,
+	BreadcrumbsSeparatorOptions,
 	BreadcrumbsSeparatorProps,
+	BreadcrumbsSeparatorRenderProps,
 };
 export { Link, Root, Separator };
 
@@ -41,6 +41,6 @@ export const Breadcrumbs = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useBreadcrumbsContext,
 	type BreadcrumbsContextValue,
+	useBreadcrumbsContext,
 } from "./breadcrumbs-context";

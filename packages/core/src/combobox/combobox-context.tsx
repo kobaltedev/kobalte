@@ -1,4 +1,5 @@
-import { type Accessor, type JSX, createContext, useContext } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { type Accessor, createContext, useContext } from "solid-js";
 
 import type { ListState } from "../list";
 import type { CollectionNode } from "../primitives";

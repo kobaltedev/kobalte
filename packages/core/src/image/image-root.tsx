@@ -7,7 +7,8 @@
  */
 
 import { OverrideComponentProps } from "@kobalte/utils";
-import { type ValidComponent, createSignal, splitProps } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createSignal, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -46,26 +47,27 @@ export type ImageRootProps<
 export function ImageRoot<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, ImageRootProps<T>>,
 ) {
-	const [local, others] = splitProps(props as ImageRootProps, [
+	const others = omit(
+		props as ImageRootProps,
 		"fallbackDelay",
 		"onLoadingStatusChange",
-	]);
+	);
 
 	const [imageLoadingStatus, setImageLoadingStatus] =
 		createSignal<ImageLoadingStatus>("idle");
 
 	const context: ImageContextValue = {
-		fallbackDelay: () => local.fallbackDelay,
+		fallbackDelay: () => props.fallbackDelay,
 		imageLoadingStatus,
 		onImageLoadingStatusChange: (status) => {
 			setImageLoadingStatus(status);
-			local.onLoadingStatusChange?.(status);
+			props.onLoadingStatusChange?.(status);
 		},
 	};
 
 	return (
-		<ImageContext.Provider value={context}>
+		<ImageContext value={context}>
 			<Polymorphic<ImageRootRenderProps> as="span" {...others} />
-		</ImageContext.Provider>
+		</ImageContext>
 	);
 }

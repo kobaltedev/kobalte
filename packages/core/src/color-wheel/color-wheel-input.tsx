@@ -3,12 +3,12 @@ import {
 	mergeDefaultProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import { type ComponentProps, type JSX, splitProps } from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { ComponentProps, JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import {
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
+	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
 } from "../form-control";
 import { useColorWheelContext } from "./color-wheel-context";
@@ -28,18 +28,25 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 		props,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
+	const formControlFieldProps = omit(mergedProps, "style", "onChange");
+	const others = omit(
 		mergedProps,
-		["style", "onChange"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
+		"style",
+		"onChange",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
 	);
 
-	const { fieldProps } = createFormControlField(formControlFieldProps);
+	const { fieldProps } = createFormControlField(formControlFieldProps as any);
 
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e, local.onChange);
+		callHandler(
+			e as Event & { currentTarget: HTMLInputElement; target: Element },
+			mergedProps.onChange as
+				| JSX.EventHandlerUnion<HTMLInputElement, Event>
+				| undefined,
+		);
 
 		const target = e.target as HTMLInputElement;
 
@@ -58,7 +65,7 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 			type="range"
 			id={fieldProps.id()}
 			name={formControlContext.name()}
-			tabIndex={context.state.isDisabled() ? undefined : -1}
+			tabindex={context.state.isDisabled() ? undefined : -1}
 			min={context.state.minValue()}
 			max={context.state.maxValue()}
 			step={context.state.step()}
@@ -66,17 +73,17 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
+			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
 			aria-valuetext={context.getThumbValueLabel()}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
 			aria-invalid={
-				formControlContext.validationState() === "invalid" || undefined
+				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
+			aria-required={formControlContext.isRequired() ? "true" : undefined}
+			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onChange={onChange}
 			{...formControlContext.dataset()}
 			{...others}

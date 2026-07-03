@@ -1,5 +1,5 @@
 import { visuallyHiddenStyles } from "@kobalte/utils";
-import type { ComponentProps } from "solid-js";
+import type { ComponentProps } from "@solidjs/web";
 import { useFormControlContext } from "../form-control";
 import { useTimeFieldContext } from "./time-field-context";
 
@@ -13,13 +13,13 @@ export function TimeFieldHiddenInput(props: TimeFieldHiddenInputProps) {
 		// biome-ignore lint/a11y/noAriaHiddenOnFocusable: it is not focusable.
 		<input
 			type="text"
-			tabIndex={-1}
+			tabindex={-1}
 			style={visuallyHiddenStyles}
 			name={formControlContext.name()}
 			value={context.formattedValue() || ""}
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
-			readOnly={formControlContext.isReadOnly()}
+			readonly={formControlContext.isReadOnly()}
 			aria-hidden="true"
 			onChange={(e) => context.setValue(parseTime(e.currentTarget.value))}
 			{...props}

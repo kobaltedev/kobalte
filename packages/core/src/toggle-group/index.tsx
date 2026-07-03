@@ -13,17 +13,17 @@ import type {
 } from "./toggle-group-root";
 import { ToggleGroup as Root } from "./toggle-group-root";
 
-export { Item, Root };
 export type {
-	ToggleGroupItemOptions,
 	ToggleGroupItemCommonProps,
-	ToggleGroupItemRenderProps,
+	ToggleGroupItemOptions,
 	ToggleGroupItemProps,
-	ToggleGroupRootOptions,
+	ToggleGroupItemRenderProps,
 	ToggleGroupRootCommonProps,
-	ToggleGroupRootRenderProps,
+	ToggleGroupRootOptions,
 	ToggleGroupRootProps,
+	ToggleGroupRootRenderProps,
 };
+export { Item, Root };
 
 export const ToggleGroup = Object.assign(Root, {
 	Item,
@@ -33,6 +33,6 @@ export const ToggleGroup = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useToggleGroupContext,
 	type ToggleGroupContextValue,
+	useToggleGroupContext,
 } from "./toggle-group-context";

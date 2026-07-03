@@ -49,34 +49,34 @@ import {
 } from "./switch-thumb";
 
 export type {
-	SwitchControlOptions,
 	SwitchControlCommonProps,
-	SwitchControlRenderProps,
+	SwitchControlOptions,
 	SwitchControlProps,
-	SwitchDescriptionOptions,
+	SwitchControlRenderProps,
 	SwitchDescriptionCommonProps,
-	SwitchDescriptionRenderProps,
+	SwitchDescriptionOptions,
 	SwitchDescriptionProps,
-	SwitchErrorMessageOptions,
+	SwitchDescriptionRenderProps,
 	SwitchErrorMessageCommonProps,
-	SwitchErrorMessageRenderProps,
+	SwitchErrorMessageOptions,
 	SwitchErrorMessageProps,
-	SwitchInputOptions,
+	SwitchErrorMessageRenderProps,
 	SwitchInputCommonProps,
-	SwitchInputRenderProps,
+	SwitchInputOptions,
 	SwitchInputProps,
-	SwitchLabelOptions,
+	SwitchInputRenderProps,
 	SwitchLabelCommonProps,
-	SwitchLabelRenderProps,
+	SwitchLabelOptions,
 	SwitchLabelProps,
-	SwitchRootOptions,
+	SwitchLabelRenderProps,
 	SwitchRootCommonProps,
-	SwitchRootRenderProps,
+	SwitchRootOptions,
 	SwitchRootProps,
-	SwitchThumbOptions,
+	SwitchRootRenderProps,
 	SwitchThumbCommonProps,
-	SwitchThumbRenderProps,
+	SwitchThumbOptions,
 	SwitchThumbProps,
+	SwitchThumbRenderProps,
 };
 export { Control, Description, ErrorMessage, Input, Label, Root, Thumb };
 
@@ -92,4 +92,4 @@ export const Switch = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useSwitchContext, type SwitchContextValue } from "./switch-context";
+export { type SwitchContextValue, useSwitchContext } from "./switch-context";

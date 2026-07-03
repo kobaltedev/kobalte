@@ -7,23 +7,22 @@
  */
 
 import {
-	type MaybeAccessor,
-	type Orientation,
 	access,
 	callHandler,
 	createEventListener,
 	focusWithoutScrolling,
 	getFocusableTreeWalker,
+	type MaybeAccessor,
+	type Orientation,
 	scrollIntoView,
 } from "@kobalte/utils";
+import type { JSX } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
 	createEffect,
 	createMemo,
-	mergeProps,
-	on,
-	onMount,
+	merge,
+	onSettled,
 } from "solid-js";
 
 import { useLocale } from "../i18n";
@@ -98,7 +97,7 @@ export function createSelectableCollection<
 			access(props.selectionManager).selectionBehavior() === "replace",
 	};
 
-	const mergedProps = mergeProps(defaultProps, props);
+	const mergedProps = merge(defaultProps, props);
 
 	const finalScrollRef = () => scrollRef?.() ?? ref();
 
@@ -487,7 +486,7 @@ export function createSelectableCollection<
 		}
 	};
 
-	onMount(() => {
+	onSettled(() => {
 		if (mergedProps.deferAutoFocus) {
 			setTimeout(tryAutoFocus, 0); // TODO: does this work EVERY time ?
 		} else {
@@ -498,30 +497,25 @@ export function createSelectableCollection<
 	// If not virtualized, scroll the focused element into view when the focusedKey changes.
 	// When virtualized, the Virtualizer should handle this.
 	createEffect(
-		on(
+		() =>
 			[
-				finalScrollRef,
-				() => access(mergedProps.isVirtualized),
-				() => access(mergedProps.selectionManager).focusedKey(),
-			],
-			(newValue) => {
-				const [scrollEl, isVirtualized, focusedKey] = newValue;
+				finalScrollRef(),
+				access(mergedProps.isVirtualized),
+				access(mergedProps.selectionManager).focusedKey(),
+			] as const,
+		([scrollEl, isVirtualized, focusedKey]) => {
+			if (isVirtualized) {
+				focusedKey && mergedProps.scrollToKey?.(focusedKey);
+			} else {
+				if (focusedKey && scrollEl) {
+					const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
 
-				if (isVirtualized) {
-					focusedKey && mergedProps.scrollToKey?.(focusedKey);
-				} else {
-					if (focusedKey && scrollEl) {
-						const element = scrollEl.querySelector(
-							`[data-key="${focusedKey}"]`,
-						);
-
-						if (element) {
-							scrollIntoView(scrollEl, element as HTMLElement);
-						}
+					if (element) {
+						scrollIntoView(scrollEl, element as HTMLElement);
 					}
 				}
-			},
-		),
+			}
+		},
 	);
 
 	// If nothing is focused within the collection, make the collection itself tabbable.

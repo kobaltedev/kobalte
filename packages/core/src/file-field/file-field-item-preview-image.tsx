@@ -1,10 +1,4 @@
-import {
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	onCleanup,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -32,37 +26,15 @@ export type FileFieldItemPreviewImageProps<
 export function FileFieldItemPreviewImage<T extends ValidComponent = "img">(
 	props: PolymorphicProps<T, FileFieldItemPreviewImageProps<T>>,
 ) {
+	const { file } = useFileFieldItemContext();
+
 	return (
 		<FileFieldItemPreview type="image/*">
-			{
-				(() => {
-					const [url, setUrl] = createSignal("");
-
-					const { file } = useFileFieldItemContext();
-
-					const createFileUrl = (
-						file: File,
-						callback: (url: string) => void,
-					) => {
-						const win = window;
-						const url = win.URL.createObjectURL(file);
-						callback(url);
-						return () => win.URL.revokeObjectURL(url);
-					};
-
-					createEffect(() => {
-						onCleanup(createFileUrl(file, (url) => setUrl(url)));
-					});
-
-					return (
-						<Polymorphic<FileFieldItemPreviewImageRenderProps>
-							as="img"
-							src={url()}
-							{...(props as FileFieldItemPreviewImageProps)}
-						/>
-					);
-				}) as unknown as JSX.Element
-			}
+			<Polymorphic<FileFieldItemPreviewImageRenderProps>
+				as="img"
+				src={file.source}
+				{...(props as FileFieldItemPreviewImageProps)}
+			/>
 		</FileFieldItemPreview>
 	);
 }

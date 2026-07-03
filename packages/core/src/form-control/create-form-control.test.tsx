@@ -23,9 +23,9 @@ function FormControl(props: ParentProps<CreateFormControlProps>) {
 	const { formControlContext } = createFormControl(props);
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
+		<FormControlContext value={formControlContext}>
 			{props.children}
-		</FormControlContext.Provider>
+		</FormControlContext>
 	);
 }
 

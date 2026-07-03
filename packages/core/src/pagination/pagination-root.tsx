@@ -1,12 +1,11 @@
 import { mergeDefaultProps } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	type JSX,
-	type Setter,
-	type ValidComponent,
 	createUniqueId,
-	splitProps,
+	omit,
+	type Setter,
 } from "solid-js";
 
 import {
@@ -91,7 +90,8 @@ export function PaginationRoot<T extends ValidComponent = "nav">(
 		props as PaginationRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"page",
 		"defaultPage",
 		"onPageChange",
@@ -104,36 +104,36 @@ export function PaginationRoot<T extends ValidComponent = "nav">(
 		"ellipsisComponent",
 		"disabled",
 		"children",
-	]);
+	);
 
 	const state = createControllableSignal({
-		defaultValue: () => local.defaultPage ?? 1,
-		onChange: local.onPageChange,
-		value: () => local.page,
+		defaultValue: () => mergedProps.defaultPage ?? 1,
+		onChange: mergedProps.onPageChange,
+		value: () => mergedProps.page,
 	});
 
 	const context: PaginationContextValue = {
-		count: () => local.count,
-		siblingCount: () => local.siblingCount ?? 1,
-		showFirst: () => local.showFirst ?? true,
-		showLast: () => local.showLast ?? true,
-		fixedItems: () => local.fixedItems ?? false,
-		isDisabled: () => local.disabled ?? false,
-		renderItem: (page) => local.itemComponent({ page }),
-		renderEllipsis: local.ellipsisComponent,
-		page: () => Math.min(state[0]() ?? 1, local.count),
+		count: () => mergedProps.count,
+		siblingCount: () => mergedProps.siblingCount ?? 1,
+		showFirst: () => mergedProps.showFirst ?? true,
+		showLast: () => mergedProps.showLast ?? true,
+		fixedItems: () => mergedProps.fixedItems ?? false,
+		isDisabled: () => mergedProps.disabled ?? false,
+		renderItem: (page) => mergedProps.itemComponent({ page }),
+		renderEllipsis: mergedProps.ellipsisComponent,
+		page: () => Math.min(state[0]() ?? 1, mergedProps.count),
 		setPage: state[1] as Setter<number>,
 	};
 
 	return (
-		<PaginationContext.Provider value={context}>
+		<PaginationContext value={context}>
 			<Polymorphic<PaginationRootRenderProps>
 				as="nav"
-				data-disabled={local.disabled ? "" : undefined}
+				data-disabled={mergedProps.disabled ? "" : undefined}
 				{...others}
 			>
-				<ul>{local.children}</ul>
+				<ul>{mergedProps.children}</ul>
 			</Polymorphic>
-		</PaginationContext.Provider>
+		</PaginationContext>
 	);
 }

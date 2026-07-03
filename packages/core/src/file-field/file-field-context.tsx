@@ -1,7 +1,8 @@
+import type { UploadFile } from "@solid-primitives/upload";
 import {
 	type Accessor,
-	type Setter,
 	createContext,
+	type Setter,
 	useContext,
 } from "solid-js";
 import type { FileFieldIntlTranslations } from "./file-field.intl";
@@ -19,9 +20,9 @@ export interface FileFieldContextValue {
 	accept: Accessor<string | undefined>;
 	allowDragAndDrop: Accessor<boolean | undefined>;
 	processFiles: (files: File[]) => void;
-	acceptedFiles: File[]; // store
-	rejectedFiles: FileRejection[]; // store
-	removeFile: (file: File) => void;
+	acceptedFiles: readonly UploadFile[]; // store
+	rejectedFiles: readonly FileRejection[]; // store
+	removeFile: (file: UploadFile) => void;
 }
 
 export const FileFieldContext = createContext<FileFieldContextValue>();

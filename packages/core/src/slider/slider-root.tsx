@@ -7,26 +7,26 @@
  */
 
 import {
-	type ValidationState,
 	access,
 	clamp,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
-
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
-	createFormControl,
 } from "../form-control";
 import { createNumberFormatter, useLocale } from "../i18n";
 import {
@@ -34,10 +34,7 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import {
-	type CollectionItemWithRef,
-	createFormResetListener,
-} from "../primitives";
+import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
 import { createSliderState } from "./create-slider-state";
 import {
@@ -175,49 +172,46 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		props as SliderRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
+	const others = omit(
 		mergedProps as typeof mergedProps & { id: string },
-		[
-			"ref",
-			"value",
-			"defaultValue",
-			"onChange",
-			"onChangeEnd",
-			"inverted",
-			"minValue",
-			"maxValue",
-			"step",
-			"minStepsBetweenThumbs",
-			"getValueLabel",
-			"orientation",
-		],
-		FORM_CONTROL_PROP_NAMES,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"onChangeEnd",
+		"inverted",
+		"minValue",
+		"maxValue",
+		"step",
+		"minStepsBetweenThumbs",
+		"getValueLabel",
+		"orientation",
+		...FORM_CONTROL_PROP_NAMES,
 	);
 
-	const { formControlContext } = createFormControl(formControlProps);
+	const { formControlContext } = createFormControl(
+		mergedProps as typeof mergedProps & { id: string },
+	);
 
 	const defaultFormatter = createNumberFormatter(() => ({ style: "decimal" }));
 	const { direction } = useLocale();
 
 	const state = createSliderState({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue ?? [local.minValue!],
-		maxValue: () => local.maxValue!,
-		minValue: () => local.minValue!,
-		minStepsBetweenThumbs: () => local.minStepsBetweenThumbs!,
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue ?? [mergedProps.minValue!],
+		maxValue: () => mergedProps.maxValue!,
+		minValue: () => mergedProps.minValue!,
+		minStepsBetweenThumbs: () => mergedProps.minStepsBetweenThumbs!,
 		isDisabled: () => formControlContext.isDisabled() ?? false,
-		orientation: () => local.orientation!,
-		step: () => local.step!,
+		orientation: () => mergedProps.orientation!,
+		step: () => mergedProps.step!,
 		numberFormatter: defaultFormatter(),
-		onChange: local.onChange,
-		onChangeEnd: local.onChangeEnd,
+		onChange: mergedProps.onChange,
+		onChangeEnd: mergedProps.onChangeEnd,
 	});
 
-	const [thumbs, setThumbs] = createSignal<CollectionItemWithRef[]>([]);
-	const { DomCollectionProvider } = createDomCollection({
-		items: thumbs,
-		onItemsChange: setThumbs,
-	});
+	const { DomCollectionProvider, items: thumbs } =
+		createDomCollection<CollectionItemWithRef>();
 
 	createFormResetListener(
 		() => ref,
@@ -227,16 +221,18 @@ export function SliderRoot<T extends ValidComponent = "div">(
 	const isLTR = () => direction() === "ltr";
 
 	const isSlidingFromLeft = () => {
-		return (isLTR() && !local.inverted!) || (!isLTR() && local.inverted!);
+		return (
+			(isLTR() && !mergedProps.inverted!) || (!isLTR() && mergedProps.inverted!)
+		);
 	};
-	const isSlidingFromBottom = () => !local.inverted!;
+	const isSlidingFromBottom = () => !mergedProps.inverted!;
 
 	const isVertical = () => state.orientation() === "vertical";
 
 	const dataset: Accessor<SliderDataSet> = createMemo(() => {
 		return {
 			...formControlContext.dataset(),
-			"data-orientation": local.orientation,
+			"data-orientation": mergedProps.orientation,
 		};
 	});
 
@@ -253,7 +249,10 @@ export function SliderRoot<T extends ValidComponent = "div">(
 	const onSlideMove = ({
 		deltaX,
 		deltaY,
-	}: { deltaX: number; deltaY: number }) => {
+	}: {
+		deltaX: number;
+		deltaY: number;
+	}) => {
 		const active = state.focusedThumb();
 
 		if (active === undefined) {
@@ -269,7 +268,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 
 		let delta = isVertical() ? deltaY : deltaX;
 		if (
-			(!isVertical() && local.inverted!) ||
+			(!isVertical() && mergedProps.inverted!) ||
 			(isVertical() && isSlidingFromBottom())
 		) {
 			delta = -delta;
@@ -286,11 +285,11 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		if (
 			hasMinStepsBetweenValues(
 				nextValues,
-				local.minStepsBetweenThumbs! * state.step(),
+				mergedProps.minStepsBetweenThumbs! * state.step(),
 			)
 		) {
 			state.setThumbPercent(state.focusedThumb()!, percent);
-			local.onChange?.(state.values());
+			mergedProps.onChange?.(state.values());
 		}
 	};
 
@@ -396,7 +395,6 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		dataset,
 		state,
 		thumbs,
-		setThumbs,
 		onSlideStart,
 		onSlideMove,
 		onSlideEnd,
@@ -404,30 +402,30 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		isSlidingFromLeft,
 		isSlidingFromBottom,
 		trackRef,
-		minValue: () => local.minValue!,
-		maxValue: () => local.maxValue!,
-		inverted: () => local.inverted!,
+		minValue: () => mergedProps.minValue!,
+		maxValue: () => mergedProps.maxValue!,
+		inverted: () => mergedProps.inverted!,
 		startEdge,
 		endEdge,
 		registerTrack: (ref: HTMLElement) => setTrackRef(ref),
-		generateId: createGenerateId(() => access(formControlProps.id)!),
-		getValueLabel: local.getValueLabel,
+		generateId: createGenerateId(() => access(mergedProps.id)!),
+		getValueLabel: mergedProps.getValueLabel,
 	};
 
 	return (
 		<DomCollectionProvider>
-			<FormControlContext.Provider value={formControlContext}>
-				<SliderContext.Provider value={context}>
+			<FormControlContext value={formControlContext}>
+				<SliderContext value={context}>
 					<Polymorphic<SliderRootRenderProps>
 						as="div"
-						ref={mergeRefs((el) => (ref = el), local.ref)}
+						ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 						role="group"
-						id={access(formControlProps.id)}
+						id={access(mergedProps.id)!}
 						{...dataset()}
 						{...others}
 					/>
-				</SliderContext.Provider>
-			</FormControlContext.Provider>
+				</SliderContext>
+			</FormControlContext>
 		</DomCollectionProvider>
 	);
 }

@@ -13,23 +13,15 @@
  */
 
 import {
-	type Orientation,
 	callHandler,
 	composeEventHandlers,
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
-import {
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	createUniqueId,
-	on,
-	onCleanup,
-	splitProps,
-} from "solid-js";
-import { isServer } from "solid-js/web";
+import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
+import { createEffect, createUniqueId, omit, onCleanup } from "solid-js";
 
 import { type Direction, useLocale } from "../i18n";
 import {
@@ -40,7 +32,7 @@ import {
 import { createSelectableItem } from "../selection";
 import { type MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { type Side, getPointerGraceArea } from "./utils";
+import { getPointerGraceArea, type Side } from "./utils";
 
 export interface MenuSubTriggerOptions {
 	/**
@@ -73,11 +65,11 @@ export interface MenuSubTriggerRenderProps
 	extends MenuSubTriggerCommonProps,
 		MenuDataSet {
 	role: "menuitem";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"aria-haspopup": "true";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
-	"aria-disabled": boolean | undefined;
+	"aria-disabled": "true" | undefined;
 	"data-key": string | undefined;
 	"data-highlighted": "" | undefined;
 	"data-disabled": "" | undefined;
@@ -121,7 +113,8 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		props as MenuSubTriggerProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"id",
 		"textValue",
@@ -134,7 +127,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		"onKeyDown",
 		"onMouseDown",
 		"onFocus",
-	]);
+	);
 
 	let openTimeoutId: number | null = null;
 
@@ -152,7 +145,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 
 	const { direction } = useLocale();
 
-	const key = () => local.id!;
+	const key = () => mergedProps.id!;
 
 	const parentSelectionManager = () => {
 		const parentMenuContext = context.parentMenuContext();
@@ -176,15 +169,15 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			selectionManager: parentSelectionManager,
 			shouldSelectOnPressUp: true,
 			allowsDifferentPressOrigin: true,
-			disabled: () => local.disabled,
+			disabled: () => mergedProps.disabled,
 		},
 		() => ref,
 	);
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
-		if (!context.isOpen() && !local.disabled) {
+		if (!context.isOpen() && !mergedProps.disabled) {
 			context.open(true);
 		}
 	};
@@ -192,7 +185,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		if (e.pointerType !== "mouse") {
 			return;
@@ -206,7 +199,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			return;
 		}
 
-		if (local.disabled) {
+		if (mergedProps.disabled) {
 			parentMenuContext?.onItemLeave(e);
 			return;
 		}
@@ -239,7 +232,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerLeave);
+		callHandler(e, mergedProps.onPointerLeave);
 
 		if (e.pointerType !== "mouse") {
 			return;
@@ -280,7 +273,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		// Ignore repeating events, which may have started on the menu trigger before moving
 		// focus to the menu item. We want to wait for a second complete key press sequence.
@@ -288,7 +281,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			return;
 		}
 
-		if (local.disabled) {
+		if (mergedProps.disabled) {
 			return;
 		}
 
@@ -317,40 +310,43 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
-	createEffect(() => {
-		// Not able to register the trigger as a menu item on parent menu means
-		// `Menu.SubTrigger` is not used in the correct place, so throw an error.
-		if (context.registerItemToParentDomCollection == null) {
-			throw new Error(
-				"[kobalte]: `Menu.SubTrigger` must be used within a `Menu.Sub` component",
-			);
-		}
-
-		// Register the item trigger on the parent menu that contains it.
-		const unregister = context.registerItemToParentDomCollection({
-			ref: () => ref,
-			type: "item",
-			key: key(),
-			textValue: local.textValue ?? ref?.textContent ?? "",
-			disabled: local.disabled ?? false,
-		});
-
-		onCleanup(unregister);
-	});
-
 	createEffect(
-		on(
-			() => context.parentMenuContext()?.pointerGraceTimeoutId(),
-			(pointerGraceTimer) => {
-				onCleanup(() => {
-					window.clearTimeout(pointerGraceTimer);
-					context.parentMenuContext()?.setPointerGraceIntent(null);
-				});
-			},
-		),
+		() => ({
+			textValue: mergedProps.textValue ?? ref?.textContent ?? "",
+			disabled: mergedProps.disabled ?? false,
+			key: key(),
+		}),
+		(data) => {
+			// Not able to register the trigger as a menu item on parent menu means
+			// `Menu.SubTrigger` is not used in the correct place, so throw an error.
+			if (context.registerItemToParentDomCollection == null) {
+				throw new Error(
+					"[kobalte]: `Menu.SubTrigger` must be used within a `Menu.Sub` component",
+				);
+			}
+			// Register the item trigger on the parent menu that contains it.
+			return context.registerItemToParentDomCollection({
+				ref: () => ref,
+				type: "item",
+				...data,
+			});
+		},
 	);
 
-	createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
+	createEffect(
+		() => context.parentMenuContext()?.pointerGraceTimeoutId(),
+		(pointerGraceTimer) => {
+			return () => {
+				window.clearTimeout(pointerGraceTimer);
+				context.parentMenuContext()?.setPointerGraceIntent(null);
+			};
+		},
+	);
+
+	createEffect(
+		() => mergedProps.id!,
+		(id) => context.registerTriggerId(id),
+	);
 
 	onCleanup(() => {
 		clearOpenTimeout();
@@ -362,32 +358,35 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			ref={mergeRefs((el) => {
 				context.setTriggerRef(el);
 				ref = el;
-			}, local.ref)}
-			id={local.id}
+			}, mergedProps.ref)}
+			id={mergedProps.id}
 			role="menuitem"
-			tabIndex={selectableItem.tabIndex()}
+			tabindex={selectableItem.tabIndex()}
 			aria-haspopup="true"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
-			aria-disabled={local.disabled}
+			aria-disabled={mergedProps.disabled ? "true" : undefined}
 			data-key={selectableItem.dataKey()}
 			data-highlighted={isHighlighted() ? "" : undefined}
-			data-disabled={local.disabled ? "" : undefined}
+			data-disabled={mergedProps.disabled ? "" : undefined}
 			onPointerDown={composeEventHandlers([
-				local.onPointerDown,
+				mergedProps.onPointerDown,
 				selectableItem.onPointerDown,
 			])}
 			onPointerUp={composeEventHandlers([
-				local.onPointerUp,
+				mergedProps.onPointerUp,
 				selectableItem.onPointerUp,
 			])}
 			onClick={composeEventHandlers([onClick, selectableItem.onClick])}
 			onKeyDown={composeEventHandlers([onKeyDown, selectableItem.onKeyDown])}
 			onMouseDown={composeEventHandlers([
-				local.onMouseDown,
+				mergedProps.onMouseDown,
 				selectableItem.onMouseDown,
 			])}
-			onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+			onFocus={composeEventHandlers([
+				mergedProps.onFocus,
+				selectableItem.onFocus,
+			])}
 			onPointerMove={onPointerMove}
 			onPointerLeave={onPointerLeave}
 			{...context.dataset()}

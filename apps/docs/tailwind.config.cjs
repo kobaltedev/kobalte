@@ -3,7 +3,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: ["./src/**/*.{html,js,jsx,ts,tsx,mdx}"],
-	darkMode: ["class", '[data-kb-theme="dark"]'],
+	darkMode: ["selector", '[data-kb-theme="dark"]'],
 	theme: {
 		fontSize: {
 			xs: ["0.75rem", { lineHeight: "1rem" }],
@@ -32,6 +32,6 @@ module.exports = {
 	},
 	plugins: [
 		require("@tailwindcss/typography"),
-		require("@kobalte/tailwindcss"),
+		require("@kobalte/tailwindcss")(),
 	],
 };

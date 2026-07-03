@@ -2,15 +2,16 @@ import { useLocation } from "@solidjs/router";
 import { clsx } from "clsx";
 import {
 	type Accessor,
-	For,
-	type Setter,
-	Suspense,
 	createEffect,
 	createSignal,
+	For,
 	on,
 	onCleanup,
+	type Setter,
+	Suspense,
 } from "solid-js";
 import { isServer } from "solid-js/web";
+
 //import { mods } from "../app";
 
 interface TocItem {
@@ -74,7 +75,7 @@ function useCurrentSection(tableOfContents: Accessor<TocItem[] | undefined>) {
 		onScroll();
 
 		onCleanup(() => {
-			// @ts-ignore
+			// @ts-expect-error
 			window.removeEventListener("scroll", onScroll, { passive: true });
 		});
 	});

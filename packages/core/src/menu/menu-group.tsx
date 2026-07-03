@@ -7,7 +7,8 @@
  */
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
-import { type ValidComponent, createSignal, createUniqueId } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createSignal, createUniqueId } from "solid-js";
 
 import {
 	type ElementOf,
@@ -51,7 +52,9 @@ export function MenuGroup<T extends ValidComponent = "div">(
 		props as MenuGroupProps,
 	);
 
-	const [labelId, setLabelId] = createSignal<string>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context: MenuGroupContextValue = {
 		generateId: createGenerateId(() => mergedProps.id!),
@@ -59,13 +62,13 @@ export function MenuGroup<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<MenuGroupContext.Provider value={context}>
+		<MenuGroupContext value={context}>
 			<Polymorphic<MenuGroupRenderProps>
 				as="div"
 				role="group"
 				aria-labelledby={labelId()}
 				{...mergedProps}
 			/>
-		</MenuGroupContext.Provider>
+		</MenuGroupContext>
 	);
 }

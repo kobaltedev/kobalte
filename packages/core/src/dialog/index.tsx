@@ -51,33 +51,33 @@ import {
 } from "./dialog-trigger";
 
 export type {
-	DialogCloseButtonOptions,
 	DialogCloseButtonCommonProps,
-	DialogCloseButtonRenderProps,
+	DialogCloseButtonOptions,
 	DialogCloseButtonProps,
-	DialogContentOptions,
+	DialogCloseButtonRenderProps,
 	DialogContentCommonProps,
-	DialogContentRenderProps,
+	DialogContentOptions,
 	DialogContentProps,
+	DialogContentRenderProps,
 	DialogDescriptionCommonProps,
 	DialogDescriptionOptions,
-	DialogDescriptionRenderProps,
 	DialogDescriptionProps,
-	DialogOverlayOptions,
+	DialogDescriptionRenderProps,
 	DialogOverlayCommonProps,
-	DialogOverlayRenderProps,
+	DialogOverlayOptions,
 	DialogOverlayProps,
+	DialogOverlayRenderProps,
 	DialogPortalProps,
 	DialogRootOptions,
 	DialogRootProps,
 	DialogTitleCommonProps,
 	DialogTitleOptions,
-	DialogTitleRenderProps,
 	DialogTitleProps,
+	DialogTitleRenderProps,
 	DialogTriggerCommonProps,
-	DialogTriggerRenderProps,
 	DialogTriggerOptions,
 	DialogTriggerProps,
+	DialogTriggerRenderProps,
 };
 
 export {
@@ -104,4 +104,4 @@ export const Dialog = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useDialogContext, type DialogContextValue } from "./dialog-context";
+export { type DialogContextValue, useDialogContext } from "./dialog-context";

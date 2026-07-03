@@ -13,26 +13,24 @@
  */
 
 import {
-	type Orientation,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
+import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type JSX,
-	type ValidComponent,
 	createContext,
 	createUniqueId,
-	onMount,
-	splitProps,
+	omit,
+	onSettled,
 	useContext,
 } from "solid-js";
-
-import { combineStyle } from "@solid-primitives/props";
 import {
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
+	FORM_CONTROL_FIELD_PROP_NAMES,
 } from "../form-control";
 import {
 	type ElementOf,
@@ -64,7 +62,7 @@ export interface SliderThumbRenderProps
 	extends SliderThumbCommonProps,
 		SliderDataSet {
 	role: "slider";
-	tabIndex: 0 | undefined;
+	tabindex: 0 | undefined;
 	"aria-valuetext": string;
 	"aria-valuemin": number;
 	"aria-valuenow": number | undefined;
@@ -90,22 +88,20 @@ export function SliderThumb<T extends ValidComponent = "span">(
 		props as SliderThumbProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
+	const others = omit(
 		mergedProps,
-		[
-			"ref",
-			"style",
-			"onKeyDown",
-			"onPointerDown",
-			"onPointerMove",
-			"onPointerUp",
-			"onFocus",
-			"onBlur",
-		],
-		FORM_CONTROL_FIELD_PROP_NAMES,
+		"ref",
+		"style",
+		"onKeyDown",
+		"onPointerDown",
+		"onPointerMove",
+		"onPointerUp",
+		"onFocus",
+		"onBlur",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
 	);
 
-	const { fieldProps } = createFormControlField(formControlFieldProps);
+	const { fieldProps } = createFormControlField(mergedProps);
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
@@ -150,12 +146,12 @@ export function SliderThumb<T extends ValidComponent = "span">(
 	let startPosition = 0;
 
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 		context.onStepKeyDown(e, index());
 	};
 
 	const onPointerDown: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		const target = e.currentTarget as HTMLElement;
 
@@ -174,7 +170,7 @@ export function SliderThumb<T extends ValidComponent = "span">(
 
 	const onPointerMove: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		e.stopPropagation();
-		callHandler(e, local.onPointerMove);
+		callHandler(e, mergedProps.onPointerMove);
 
 		const target = e.currentTarget as HTMLElement;
 
@@ -192,7 +188,7 @@ export function SliderThumb<T extends ValidComponent = "span">(
 
 	const onPointerUp: JSX.EventHandlerUnion<any, PointerEvent> = (e) => {
 		e.stopPropagation();
-		callHandler(e, local.onPointerUp);
+		callHandler(e, mergedProps.onPointerUp);
 
 		const target = e.currentTarget as HTMLElement;
 
@@ -203,27 +199,27 @@ export function SliderThumb<T extends ValidComponent = "span">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<any, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 		context.state.setFocusedThumb(index());
 	};
 
 	const onBlur: JSX.EventHandlerUnion<any, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 		context.state.setFocusedThumb(undefined);
 	};
 
-	onMount(() => {
+	onSettled(() => {
 		context.state.setThumbEditable(index(), !context.state.isDisabled());
 	});
 
 	return (
-		<ThumbContext.Provider value={{ index }}>
+		<ThumbContext value={{ index }}>
 			<Polymorphic<SliderThumbRenderProps>
 				as="span"
-				ref={mergeRefs((el) => (ref = el), local.ref)}
+				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 				role="slider"
 				id={fieldProps.id()}
-				tabIndex={context.state.isDisabled() ? undefined : 0}
+				tabindex={context.state.isDisabled() ? undefined : 0}
 				style={combineStyle(
 					{
 						display: value() === undefined ? "none" : undefined,
@@ -232,7 +228,7 @@ export function SliderThumb<T extends ValidComponent = "span">(
 						transform: transform(),
 						"touch-action": "none",
 					},
-					local.style,
+					mergedProps.style,
 				)}
 				aria-valuetext={context.state.getThumbValueLabel(index())}
 				aria-valuemin={context.minValue()}
@@ -251,7 +247,7 @@ export function SliderThumb<T extends ValidComponent = "span">(
 				{...context.dataset()}
 				{...others}
 			/>
-		</ThumbContext.Provider>
+		</ThumbContext>
 	);
 }
 

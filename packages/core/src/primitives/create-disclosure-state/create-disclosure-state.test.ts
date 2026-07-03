@@ -37,67 +37,69 @@ describe("createDisclosureState", () => {
 		});
 	});
 
-	it("should set 'isOpen' state with the value from 'setIsOpen'", () => {
-		createRoot((dispose) => {
+	it("should set 'isOpen' state with the value from 'setIsOpen'", () =>
+		createRoot(async (dispose) => {
 			const state = createDisclosureState({ defaultOpen: false });
 
 			expect(state.isOpen()).toBeFalsy();
 
 			state.setIsOpen(true);
+			await Promise.resolve();
 
 			expect(state.isOpen()).toBeTruthy();
 
 			state.setIsOpen(false);
+			await Promise.resolve();
 
 			expect(state.isOpen()).toBeFalsy();
 
 			dispose();
-		});
-	});
+		}));
 
-	it("should set 'isOpen' state to true when calling 'open'", () => {
-		createRoot((dispose) => {
+	it("should set 'isOpen' state to true when calling 'open'", () =>
+		createRoot(async (dispose) => {
 			const state = createDisclosureState({ defaultOpen: false });
 
 			expect(state.isOpen()).toBeFalsy();
 
 			state.open();
+			await Promise.resolve();
 
 			expect(state.isOpen()).toBeTruthy();
 
 			dispose();
-		});
-	});
+		}));
 
-	it("should set 'isOpen' state to false when calling 'close'", () => {
-		createRoot((dispose) => {
+	it("should set 'isOpen' state to false when calling 'close'", () =>
+		createRoot(async (dispose) => {
 			const state = createDisclosureState({ defaultOpen: true });
 
 			expect(state.isOpen()).toBeTruthy();
 
 			state.close();
+			await Promise.resolve();
 
 			expect(state.isOpen()).toBeFalsy();
 
 			dispose();
-		});
-	});
+		}));
 
-	it("should toggle 'isOpen' state when calling 'toggle'", () => {
-		createRoot((dispose) => {
+	it("should toggle 'isOpen' state when calling 'toggle'", () =>
+		createRoot(async (dispose) => {
 			const state = createDisclosureState({ defaultOpen: false });
 
 			expect(state.isOpen()).toBeFalsy();
 
 			state.toggle();
+			await Promise.resolve();
 
 			expect(state.isOpen()).toBeTruthy();
 
 			state.toggle();
+			await Promise.resolve();
 
 			expect(state.isOpen()).toBeFalsy();
 
 			dispose();
-		});
-	});
+		}));
 });

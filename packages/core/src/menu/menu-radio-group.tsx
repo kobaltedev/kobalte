@@ -8,12 +8,8 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import {
-	type Component,
-	type ValidComponent,
-	createUniqueId,
-	splitProps,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createUniqueId, omit } from "solid-js";
 
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
@@ -78,33 +74,34 @@ export function MenuRadioGroup<
 		props as MenuRadioGroupProps<T, TValue>,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"value",
 		"defaultValue",
 		"onChange",
 		"disabled",
-	]);
+	);
 
 	const [selected, setSelected] = createControllableSignal<TValue>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue,
-		onChange: (value) => local.onChange?.(value),
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue,
+		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
 	const context: MenuRadioGroupContextValue<TValue> = {
-		isDisabled: () => local.disabled,
+		isDisabled: () => mergedProps.disabled,
 		isSelectedValue: (value: TValue) => value === selected(),
 		setSelectedValue: (value: TValue) =>
 			setSelected(value as Exclude<TValue, Function>),
 	};
 
 	return (
-		<MenuRadioGroupContext.Provider value={context}>
+		<MenuRadioGroupContext value={context}>
 			<MenuGroup<
 				Component<Omit<MenuRadioGroupRenderProps, keyof MenuGroupRenderProps>>
 			>
 				{...others}
 			/>
-		</MenuRadioGroupContext.Provider>
+		</MenuRadioGroupContext>
 	);
 }

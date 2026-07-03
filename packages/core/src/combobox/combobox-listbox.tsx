@@ -1,11 +1,6 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import {
-	type Component,
-	type ValidComponent,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit, onCleanup } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import * as Listbox from "../listbox";
@@ -57,7 +52,7 @@ export function ComboboxListbox<
 		props as ComboboxListboxProps<Option, OptGroup>,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref"]);
+	const others = omit(mergedProps, "ref");
 
 	const ariaLabelledBy = () => {
 		return formControlContext.getAriaLabelledBy(
@@ -67,7 +62,10 @@ export function ComboboxListbox<
 		);
 	};
 
-	createEffect(() => onCleanup(context.registerListboxId(others.id!)));
+	createEffect(
+		() => others.id!,
+		(id) => context.registerListboxId(id),
+	);
 
 	return (
 		<Listbox.Root<
@@ -77,7 +75,7 @@ export function ComboboxListbox<
 				Omit<ComboboxListboxRenderProps, keyof Listbox.ListboxRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setListboxRef, local.ref)}
+			ref={mergeRefs(context.setListboxRef, mergedProps.ref)}
 			state={context.listState()}
 			autoFocus={context.autoFocus()}
 			shouldUseVirtualFocus

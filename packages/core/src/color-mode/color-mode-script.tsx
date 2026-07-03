@@ -6,7 +6,7 @@
  * https://github.com/chakra-ui/chakra-ui/blob/132a98958be64e46619b1e280ca6405d0a833cb0/packages/components/color-mode/src/color-mode-script.tsx
  */
 
-import { createMemo, mergeProps } from "solid-js";
+import { createMemo, merge } from "solid-js";
 
 import { COLOR_MODE_STORAGE_KEY } from "./storage-manager";
 import type { ColorModeScriptProps, ConfigColorMode } from "./types";
@@ -26,7 +26,7 @@ function normalize(initialColorMode: ConfigColorMode) {
 }
 
 export function ColorModeScript(props: ColorModeScriptProps) {
-	const mergedProps = mergeProps(
+	const mergedProps = merge(
 		{
 			initialColorMode: FALLBACK_COLOR_MODE_VALUE,
 			storageType: "localStorage",

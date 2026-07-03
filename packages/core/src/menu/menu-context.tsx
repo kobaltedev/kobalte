@@ -45,10 +45,10 @@ export interface MenuContextValue {
 	nestedMenus: Accessor<Element[]>;
 }
 
-export const MenuContext = createContext<MenuContextValue>();
+export const MenuContext = createContext<MenuContextValue | null>(null);
 
-export function useOptionalMenuContext() {
-	return useContext(MenuContext);
+export function useOptionalMenuContext(): MenuContextValue | undefined {
+	return useContext(MenuContext) ?? undefined;
 }
 
 export function useMenuContext() {

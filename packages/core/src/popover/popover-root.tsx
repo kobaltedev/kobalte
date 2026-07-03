@@ -7,27 +7,26 @@
  */
 
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { createPresence } from "@solid-primitives/presence";
 import {
 	type Accessor,
-	type ParentProps,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
+	type ParentProps,
 } from "solid-js";
-
-import createPresence from "solid-presence";
 import { Popper, type PopperRootOptions } from "../popper";
 import { createDisclosureState, createRegisterId } from "../primitives";
+import {
+	POPOVER_INTL_TRANSLATIONS,
+	type PopoverIntlTranslations,
+} from "./popover.intl";
 import {
 	PopoverContext,
 	type PopoverContextValue,
 	type PopoverDataSet,
 } from "./popover-context";
-import {
-	POPOVER_INTL_TRANSLATIONS,
-	type PopoverIntlTranslations,
-} from "./popover.intl";
 
 export interface PopoverRootOptions
 	extends Omit<
@@ -99,7 +98,8 @@ export function PopoverRoot(props: PopoverRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"translations",
 		"id",
 		"open",
@@ -109,30 +109,46 @@ export function PopoverRoot(props: PopoverRootProps) {
 		"preventScroll",
 		"forceMount",
 		"anchorRef",
-	]);
+	);
 
-	const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<HTMLElement>();
-	const [triggerRef, setTriggerRef] = createSignal<HTMLElement>();
-	const [contentRef, setContentRef] = createSignal<HTMLElement>();
+	const [defaultAnchorRef, setDefaultAnchorRef] = createSignal<
+		HTMLElement | undefined
+	>(undefined, { ownedWrite: true });
+	const [triggerRef, setTriggerRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [contentRef, setContentRef] = createSignal<HTMLElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
-	const [contentId, setContentId] = createSignal<string>();
-	const [titleId, setTitleId] = createSignal<string>();
-	const [descriptionId, setDescriptionId] = createSignal<string>();
+	const [contentId, setContentId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
+	const [titleId, setTitleId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
+	const [descriptionId, setDescriptionId] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
 	const anchorRef = () => {
-		return local.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef();
+		return mergedProps.anchorRef?.() ?? defaultAnchorRef() ?? triggerRef();
 	};
 
-	const { present: contentPresent } = createPresence({
-		show: () => local.forceMount || disclosureState.isOpen(),
-		element: () => contentRef() ?? null,
-	});
+	const { isMounted: contentPresent } = createPresence(
+		() => mergedProps.forceMount || disclosureState.isOpen() || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	const dataset: Accessor<PopoverDataSet> = createMemo(() => ({
 		"data-expanded": disclosureState.isOpen() ? "" : undefined,
@@ -140,11 +156,11 @@ export function PopoverRoot(props: PopoverRootProps) {
 	}));
 
 	const context: PopoverContextValue = {
-		translations: () => local.translations ?? POPOVER_INTL_TRANSLATIONS,
+		translations: () => mergedProps.translations ?? POPOVER_INTL_TRANSLATIONS,
 		dataset,
 		isOpen: disclosureState.isOpen,
-		isModal: () => local.modal ?? false,
-		preventScroll: () => local.preventScroll ?? context.isModal(),
+		isModal: () => mergedProps.modal ?? false,
+		preventScroll: () => mergedProps.preventScroll ?? context.isModal(),
 		contentPresent,
 		triggerRef,
 		contentId,
@@ -155,15 +171,15 @@ export function PopoverRoot(props: PopoverRootProps) {
 		setContentRef,
 		close: disclosureState.close,
 		toggle: disclosureState.toggle,
-		generateId: createGenerateId(() => local.id!),
+		generateId: createGenerateId(() => mergedProps.id!),
 		registerContentId: createRegisterId(setContentId),
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};
 
 	return (
-		<PopoverContext.Provider value={context}>
+		<PopoverContext value={context}>
 			<Popper anchorRef={anchorRef} contentRef={contentRef} {...others} />
-		</PopoverContext.Provider>
+		</PopoverContext>
 	);
 }

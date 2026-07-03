@@ -7,12 +7,8 @@
  */
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import {
-	type ValidComponent,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -52,15 +48,18 @@ export function MenuItemLabel<T extends ValidComponent = "div">(
 		props as MenuItemLabelProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "id"]);
+	const others = omit(mergedProps, "ref", "id");
 
-	createEffect(() => onCleanup(context.registerLabel(local.id)));
+	createEffect(
+		() => mergedProps.id,
+		(id) => context.registerLabel(id),
+	);
 
 	return (
 		<Polymorphic<MenuItemLabelRenderProps>
 			as="div"
-			ref={mergeRefs(context.setLabelRef, local.ref)}
-			id={local.id}
+			ref={mergeRefs(context.setLabelRef, mergedProps.ref)}
+			id={mergedProps.id}
 			{...context.dataset()}
 			{...others}
 		/>

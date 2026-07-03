@@ -1,5 +1,6 @@
 import { callHandler, mergeDefaultProps } from "@kobalte/utils";
-import { type JSX, type ValidComponent, splitProps } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 import { useFormControlContext } from "../form-control";
 import {
 	type ElementOf,
@@ -38,7 +39,7 @@ export function RatingControl<T extends ValidComponent = "div">(
 		props as RatingControlProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["onPointerLeave"]);
+	const others = omit(mergedProps, "onPointerLeave");
 
 	const onPointerLeave: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
@@ -46,7 +47,7 @@ export function RatingControl<T extends ValidComponent = "div">(
 		if (formControlContext.isDisabled() || formControlContext.isReadOnly())
 			return;
 
-		callHandler(e, local.onPointerLeave);
+		callHandler(e, mergedProps.onPointerLeave);
 
 		if (e.pointerType === "touch") {
 			return;

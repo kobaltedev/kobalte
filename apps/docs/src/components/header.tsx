@@ -2,12 +2,11 @@ import docsearch from "@docsearch/js";
 import { useMatch } from "@solidjs/router";
 import { clsx } from "clsx";
 import { onMount } from "solid-js";
-
+import type { NavSection } from "../model/navigation";
 import {
 	LATEST_CORE_CHANGELOG_URL,
 	LATEST_CORE_VERSION_NAME,
 } from "../VERSIONS";
-import type { NavSection } from "../model/navigation";
 import { GitHubIcon } from "./icons";
 import { MobileNavigation } from "./mobile-navigation";
 import { ThemeSelector } from "./theme-selector";

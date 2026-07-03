@@ -1,9 +1,4 @@
-import {
-	type Accessor,
-	type Setter,
-	createContext,
-	useContext,
-} from "solid-js";
+import { type Accessor, createContext, useContext } from "solid-js";
 
 import type { FormControlDataSet } from "../form-control";
 import type { CollectionItemWithRef } from "../primitives";
@@ -20,7 +15,6 @@ export interface SliderContextValue {
 	dataset: Accessor<SliderDataSet>;
 	state: SliderState;
 	thumbs: Accessor<CollectionItemWithRef[]>;
-	setThumbs: Setter<CollectionItemWithRef[]>;
 	onSlideStart: ((index: number, value: number) => void) | undefined;
 	onSlideMove:
 		| ((deltas: { deltaX: number; deltaY: number }) => void)

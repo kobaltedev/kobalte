@@ -49,30 +49,30 @@ import {
 } from "./checkbox-root";
 
 export type {
-	CheckboxControlOptions,
 	CheckboxControlCommonProps,
-	CheckboxControlRenderProps,
+	CheckboxControlOptions,
 	CheckboxControlProps,
-	CheckboxDescriptionOptions,
+	CheckboxControlRenderProps,
 	CheckboxDescriptionCommonProps,
-	CheckboxDescriptionRenderProps,
+	CheckboxDescriptionOptions,
 	CheckboxDescriptionProps,
-	CheckboxErrorMessageOptions,
+	CheckboxDescriptionRenderProps,
 	CheckboxErrorMessageCommonProps,
-	CheckboxErrorMessageRenderProps,
+	CheckboxErrorMessageOptions,
 	CheckboxErrorMessageProps,
-	CheckboxIndicatorOptions,
+	CheckboxErrorMessageRenderProps,
 	CheckboxIndicatorCommonProps,
-	CheckboxIndicatorRenderProps,
+	CheckboxIndicatorOptions,
 	CheckboxIndicatorProps,
-	CheckboxInputOptions,
+	CheckboxIndicatorRenderProps,
 	CheckboxInputCommonProps,
-	CheckboxInputRenderProps,
+	CheckboxInputOptions,
 	CheckboxInputProps,
-	CheckboxLabelOptions,
+	CheckboxInputRenderProps,
 	CheckboxLabelCommonProps,
-	CheckboxLabelRenderProps,
+	CheckboxLabelOptions,
 	CheckboxLabelProps,
+	CheckboxLabelRenderProps,
 	CheckboxRootOptions,
 	CheckboxRootProps,
 };
@@ -91,6 +91,6 @@ export const Checkbox = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useCheckboxContext,
 	type CheckboxContextValue,
+	useCheckboxContext,
 } from "./checkbox-context";

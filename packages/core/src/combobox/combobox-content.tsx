@@ -1,14 +1,16 @@
 import { focusWithoutScrolling, mergeRefs } from "@kobalte/utils";
+import { createFocusTrap } from "@solid-primitives/focus";
 import {
-	type Component,
-	type JSX,
-	Show,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
+	createHideOutside,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 
 import { combineStyle } from "@solid-primitives/props";
-import createPreventScroll from "solid-prevent-scroll";
+import { createPreventScroll } from "@solid-primitives/scroll";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -16,13 +18,6 @@ import {
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-	createFocusScope,
-	createHideOutside,
-} from "../primitives";
 import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
 
 export interface ComboboxContentOptions {
@@ -75,12 +70,13 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 
 	const context = useComboboxContext();
 
-	const [local, others] = splitProps(props as ComboboxContentProps, [
+	const others = omit(
+		props as ComboboxContentProps,
 		"ref",
 		"style",
 		"onCloseAutoFocus",
 		"onFocusOutside",
-	]);
+	);
 
 	const dismiss = () => {
 		context.resetInputValue(
@@ -93,7 +89,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		props.onFocusOutside?.(e);
 
 		// When focus is trapped (in modal mode), a `focusout` event may still happen.
 		// We make sure we don't trigger our `onDismiss` in such case.
@@ -104,7 +100,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
-		isDisabled: () => !(context.isOpen() && context.isModal()),
+		disabled: () => !(context.isOpen() && context.isModal()),
 		targets: () => {
 			const excludedElements = [];
 
@@ -119,31 +115,30 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 
 			return excludedElements;
 		},
+		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createPreventScroll({
-		element: () => ref ?? null,
+		element: () => ref ?? undefined,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
-	createFocusScope(
-		{
-			trapFocus: () => context.isOpen() && context.isModal(),
-			onMountAutoFocus: (e) => {
-				// We prevent open autofocus because it's handled by the `Listbox`.
-				e.preventDefault();
-			},
-			onUnmountAutoFocus: (e) => {
-				local.onCloseAutoFocus?.(e);
-
-				if (!e.defaultPrevented) {
-					focusWithoutScrolling(context.inputRef());
-					e.preventDefault();
-				}
-			},
+	createFocusTrap({
+		element: () => ref,
+		enabled: () => context.isOpen() && context.isModal(),
+		onInitialFocus: (e) => {
+			// We prevent open autofocus because it's handled by the `Listbox`.
+			e.preventDefault();
 		},
-		() => ref,
-	);
+		onFinalFocus: (e) => {
+			props.onCloseAutoFocus?.(e);
+
+			if (!e.defaultPrevented) {
+				focusWithoutScrolling(context.inputRef());
+				e.preventDefault();
+			}
+		},
+	});
 
 	return (
 		<Show when={context.contentPresent()}>
@@ -156,7 +151,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
 						ref = el;
-					}, local.ref)}
+					}, props.ref)}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.controlRef]}
 					style={combineStyle(
@@ -165,7 +160,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 								"var(--kb-popper-content-transform-origin)",
 							position: "relative",
 						},
-						local.style,
+						props.style,
 					)}
 					onFocusOutside={onFocusOutside}
 					onDismiss={dismiss}

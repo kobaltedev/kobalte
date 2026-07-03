@@ -39,27 +39,27 @@ import {
 } from "./pagination-root";
 
 export type {
-	PaginationEllipsisOptions,
 	PaginationEllipsisCommonProps,
-	PaginationEllipsisRenderProps,
+	PaginationEllipsisOptions,
 	PaginationEllipsisProps,
-	PaginationItemOptions,
+	PaginationEllipsisRenderProps,
 	PaginationItemCommonProps,
-	PaginationItemRenderProps,
+	PaginationItemOptions,
 	PaginationItemProps,
+	PaginationItemRenderProps,
 	PaginationItemsProps,
-	PaginationNextOptions,
 	PaginationNextCommonProps,
-	PaginationNextRenderProps,
+	PaginationNextOptions,
 	PaginationNextProps,
-	PaginationPreviousOptions,
+	PaginationNextRenderProps,
 	PaginationPreviousCommonProps,
-	PaginationPreviousRenderProps,
+	PaginationPreviousOptions,
 	PaginationPreviousProps,
-	PaginationRootOptions,
+	PaginationPreviousRenderProps,
 	PaginationRootCommonProps,
-	PaginationRootRenderProps,
+	PaginationRootOptions,
 	PaginationRootProps,
+	PaginationRootRenderProps,
 };
 export { Ellipsis, Item, Items, Next, Previous, Root };
 
@@ -75,6 +75,6 @@ export const Pagination = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	usePaginationContext,
 	type PaginationContextValue,
+	usePaginationContext,
 } from "./pagination-context";

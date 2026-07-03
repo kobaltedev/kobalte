@@ -1,18 +1,11 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
-
-import * as Listbox from "../listbox";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit } from "solid-js";
 import type {
 	ListboxRootCommonProps,
 	ListboxRootRenderProps,
 } from "../listbox";
+import * as Listbox from "../listbox";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useSelectContext } from "./select-context";
 
@@ -55,12 +48,15 @@ export function SelectListbox<
 		props as SelectListboxProps<Option, OptGroup>,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "id", "onKeyDown"]);
+	const others = omit(mergedProps, "ref", "id", "onKeyDown");
 
-	createEffect(() => onCleanup(context.registerListboxId(local.id)));
+	createEffect(
+		() => mergedProps.id,
+		(id) => context.registerListboxId(id),
+	);
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		// Prevent from clearing the selection by `createSelectableCollection` on escape.
 		if (e.key === "Escape") {
@@ -74,8 +70,8 @@ export function SelectListbox<
 			OptGroup,
 			Component<Omit<SelectListboxRenderProps, keyof ListboxRootRenderProps>>
 		>
-			ref={mergeRefs(context.setListboxRef, local.ref)}
-			id={local.id}
+			ref={mergeRefs(context.setListboxRef, mergedProps.ref)}
+			id={mergedProps.id}
 			state={context.listState()}
 			virtualized={context.isVirtualized()}
 			autoFocus={context.autoFocus()}

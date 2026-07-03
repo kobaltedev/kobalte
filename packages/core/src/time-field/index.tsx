@@ -44,34 +44,34 @@ import {
 } from "./time-field-segment";
 
 export type {
-	TimeFieldHiddenInputProps,
-	TimeFieldErrorMessageOptions,
-	TimeFieldErrorMessageCommonProps,
-	TimeFieldErrorMessageRenderProps,
-	TimeFieldErrorMessageProps,
-	TimeFieldDescriptionOptions,
 	TimeFieldDescriptionCommonProps,
-	TimeFieldDescriptionRenderProps,
+	TimeFieldDescriptionOptions,
 	TimeFieldDescriptionProps,
-	TimeFieldSegmentOptions,
-	TimeFieldSegmentCommonProps,
-	TimeFieldSegmentRenderProps,
-	TimeFieldSegmentProps,
+	TimeFieldDescriptionRenderProps,
+	TimeFieldErrorMessageCommonProps,
+	TimeFieldErrorMessageOptions,
+	TimeFieldErrorMessageProps,
+	TimeFieldErrorMessageRenderProps,
+	TimeFieldHiddenInputProps,
 	TimeFieldInputOptions,
 	TimeFieldInputCommonProps,
 	TimeFieldInputRenderProps,
 	TimeFieldInputProps,
-	TimeFieldLabelOptions,
 	TimeFieldLabelCommonProps,
-	TimeFieldLabelRenderProps,
+	TimeFieldLabelOptions,
 	TimeFieldLabelProps,
-	TimeFieldRootOptions,
+	TimeFieldLabelRenderProps,
 	TimeFieldRootCommonProps,
-	TimeFieldRootRenderProps,
+	TimeFieldRootOptions,
 	TimeFieldRootProps,
+	TimeFieldRootRenderProps,
+	TimeFieldSegmentCommonProps,
+	TimeFieldSegmentOptions,
+	TimeFieldSegmentProps,
+	TimeFieldSegmentRenderProps,
 };
 
-export { Root, Label, Input, Segment, Description, ErrorMessage, HiddenInput };
+export { Description, ErrorMessage, HiddenInput, Input, Label, Root, Segment };
 
 export const TimeField = Object.assign(Root, {
 	Label,

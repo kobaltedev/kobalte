@@ -1,5 +1,5 @@
+import { Portal } from "@solidjs/web";
 import { type ComponentProps, Show } from "solid-js";
-import { Portal } from "solid-js/web";
 
 import { usePopoverContext } from "./popover-context";
 

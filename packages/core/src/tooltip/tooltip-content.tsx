@@ -7,24 +7,16 @@
  */
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	Show,
-	type ValidComponent,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
-
+import type { PointerDownOutsideEvent } from "@solid-primitives/interaction";
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import type { PointerDownOutsideEvent } from "../primitives";
 import { type TooltipDataSet, useTooltipContext } from "./tooltip-context";
 
 export interface TooltipContentOptions {
@@ -75,9 +67,12 @@ export function TooltipContent<T extends ValidComponent = "div">(
 		props as TooltipContentProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "style"]);
+	const others = omit(mergedProps, "ref", "style");
 
-	createEffect(() => onCleanup(context.registerContentId(others.id!)));
+	createEffect(
+		() => others.id,
+		(id) => context.registerContentId(id!),
+	);
 
 	return (
 		<Show when={context.contentPresent()}>
@@ -89,7 +84,7 @@ export function TooltipContent<T extends ValidComponent = "div">(
 				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
-					}, local.ref)}
+					}, mergedProps.ref)}
 					role="tooltip"
 					disableOutsidePointerEvents={false}
 					style={combineStyle(
@@ -98,7 +93,7 @@ export function TooltipContent<T extends ValidComponent = "div">(
 								"var(--kb-popper-content-transform-origin)",
 							position: "relative",
 						},
-						local.style,
+						mergedProps.style,
 					)}
 					onFocusOutside={(e) => e.preventDefault()}
 					onDismiss={() => context.hideTooltip(true)}

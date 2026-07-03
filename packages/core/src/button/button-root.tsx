@@ -13,7 +13,8 @@
  */
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import { type ValidComponent, createMemo, splitProps } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createMemo, createSignal, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -30,12 +31,12 @@ export interface ButtonRootCommonProps<T extends HTMLElement = HTMLElement> {
 	disabled: boolean | undefined;
 	type: string | undefined;
 	ref: T | ((el: T) => void);
-	tabIndex: number | string | undefined;
+	tabindex: number | string | undefined;
 }
 
 export interface ButtonRootRenderProps extends ButtonRootCommonProps {
 	role: "menuitem" | "button" | undefined;
-	"aria-disabled": boolean | undefined;
+	"aria-disabled": "true" | undefined;
 	"data-disabled": string | undefined;
 }
 
@@ -51,19 +52,18 @@ export type ButtonRootProps<
 export function ButtonRoot<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, ButtonRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const mergedProps = mergeDefaultProps(
 		{ type: "button" },
 		props as ButtonRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["ref", "type", "disabled"]);
+	const others = omit(mergedProps, "ref", "type", "disabled");
 
-	const tagName = createTagName(
-		() => ref,
-		() => "button",
-	);
+	const tagName = createTagName(ref, () => "button");
 
 	const isNativeButton = createMemo(() => {
 		const elementTagName = tagName();
@@ -72,7 +72,7 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 			return false;
 		}
 
-		return isButton({ tagName: elementTagName, type: local.type });
+		return isButton({ tagName: elementTagName, type: mergedProps.type });
 	});
 
 	const isNativeInput = createMemo(() => {
@@ -80,27 +80,29 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 	});
 
 	const isNativeLink = createMemo(() => {
-		return tagName() === "a" && ref?.getAttribute("href") != null;
+		return tagName() === "a" && ref()?.getAttribute("href") != null;
 	});
 
 	return (
 		<Polymorphic<ButtonRootRenderProps>
 			as="button"
-			ref={mergeRefs((el) => (ref = el), local.ref)}
-			type={isNativeButton() || isNativeInput() ? local.type : undefined}
+			ref={mergeRefs(setRef, mergedProps.ref)}
+			type={isNativeButton() || isNativeInput() ? mergedProps.type : undefined}
 			role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
-			tabIndex={
-				!isNativeButton() && !isNativeLink() && !local.disabled ? 0 : undefined
-			}
-			disabled={
-				isNativeButton() || isNativeInput() ? local.disabled : undefined
-			}
-			aria-disabled={
-				!isNativeButton() && !isNativeInput() && local.disabled
-					? true
+			tabindex={
+				!isNativeButton() && !isNativeLink() && !mergedProps.disabled
+					? 0
 					: undefined
 			}
-			data-disabled={local.disabled ? "" : undefined}
+			disabled={
+				isNativeButton() || isNativeInput() ? mergedProps.disabled : undefined
+			}
+			aria-disabled={
+				!isNativeButton() && !isNativeInput() && mergedProps.disabled
+					? "true"
+					: undefined
+			}
+			data-disabled={mergedProps.disabled ? "" : undefined}
 			{...others}
 		/>
 	);

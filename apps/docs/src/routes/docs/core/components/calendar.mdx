@@ -1,0 +1,631 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import {
+	BasicExample,
+	MultipleExample,
+	RangeExample,
+	ControlledExample,
+	DisabledDatesExample,
+	DatePickerExample,
+} from "../../../../examples/calendar";
+
+# Calendar
+
+A calendar displays one or more date grids and allows users to select a single date, multiple dates, or a date range. Ported from [corvu/calendar](https://corvu.dev/docs/primitives/calendar) by Jasmin Noetzli (MIT).
+
+## Import
+
+```ts
+import { Calendar } from "@kobalte/core/calendar";
+// or
+import {
+  Root, Header, Heading, PrevTrigger, NextTrigger,
+  Body, Grid, GridHeader, GridHeaderRow, GridHeaderCell,
+  GridBody, GridBodyRow, GridBodyCell, GridBodyCellTrigger,
+} from "@kobalte/core/calendar";
+```
+
+## Features
+
+- Single, multiple, and range selection modes.
+- Keyboard navigation — arrow keys move focus, `Enter`/`Space` select.
+- `minValue` / `maxValue` constraints with disabled state for out-of-range dates.
+- `isDateUnavailable` callback marks specific dates as unavailable.
+- Controlled and uncontrolled value.
+- Internationalised via `@internationalized/date` — pluggable calendar systems (Gregorian, Buddhist, Hebrew, etc.).
+- Live region announcements for screen readers.
+- ARIA `role="group"` on root, `role="button"` on each day cell.
+
+## Anatomy
+
+- **Calendar.Root:** The root container. Manages all calendar state.
+- **Calendar.Header:** Wraps the heading and navigation triggers.
+- **Calendar.Heading:** Displays the visible date range label (e.g. "June 2025").
+- **Calendar.PrevTrigger:** Navigates to the previous page.
+- **Calendar.NextTrigger:** Navigates to the next page.
+- **Calendar.Body:** Wraps one or more `Calendar.Grid` elements.
+- **Calendar.Grid:** Renders a `<table>` for one visible month (or duration). Accepts an `offset` prop to show additional months.
+- **Calendar.GridHeader:** The `<thead>` section.
+- **Calendar.GridHeaderRow:** A row of day-name header cells.
+- **Calendar.GridHeaderCell:** A single day-name cell (e.g. "Mo").
+- **Calendar.GridBody:** The `<tbody>` section.
+- **Calendar.GridBodyRow:** A week row. Requires a `weekIndex` prop.
+- **Calendar.GridBodyCell:** A `<td>` wrapping one day. Requires a `date` prop.
+- **Calendar.GridBodyCellTrigger:** The interactive button inside each cell.
+
+```tsx
+<Calendar.Root createCalendar={...} selectionMode="single">
+  <Calendar.Header>
+    <Calendar.PrevTrigger />
+    <Calendar.Heading />
+    <Calendar.NextTrigger />
+  </Calendar.Header>
+  <Calendar.Body>
+    <Calendar.Grid>
+      <Calendar.GridHeader>
+        <Calendar.GridHeaderRow>
+          {(day) => <Calendar.GridHeaderCell>{day()}</Calendar.GridHeaderCell>}
+        </Calendar.GridHeaderRow>
+      </Calendar.GridHeader>
+      <Calendar.GridBody>
+        {(weekIndex) => (
+          <Calendar.GridBodyRow weekIndex={weekIndex()}>
+            {(date) => (
+              <Show when={date()} fallback={<td />}>
+                {(d) => (
+                  <Calendar.GridBodyCell date={d()}>
+                    <Calendar.GridBodyCellTrigger />
+                  </Calendar.GridBodyCell>
+                )}
+              </Show>
+            )}
+          </Calendar.GridBodyRow>
+        )}
+      </Calendar.GridBody>
+    </Calendar.Grid>
+  </Calendar.Body>
+</Calendar.Root>
+```
+
+## Example
+
+<Preview>
+  <BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Show } from "solid-js";
+    import { Calendar } from "@kobalte/core/calendar";
+    import { GregorianCalendar } from "@internationalized/date";
+    import "./style.css";
+
+    const createCalendar = () => new GregorianCalendar();
+
+    function App() {
+      return (
+        <Calendar.Root
+          createCalendar={createCalendar}
+          selectionMode="single"
+          class="calendar"
+        >
+          <Calendar.Header class="calendar__header">
+            <Calendar.PrevTrigger class="calendar__nav-button" aria-label="Previous month">
+              ‹
+            </Calendar.PrevTrigger>
+            <Calendar.Heading class="calendar__heading" />
+            <Calendar.NextTrigger class="calendar__nav-button" aria-label="Next month">
+              ›
+            </Calendar.NextTrigger>
+          </Calendar.Header>
+          <Calendar.Body class="calendar__body">
+            <Calendar.Grid class="calendar__grid">
+              <Calendar.GridHeader>
+                <Calendar.GridHeaderRow>
+                  {(day) => (
+                    <Calendar.GridHeaderCell class="calendar__day-name">
+                      {day().slice(0, 2)}
+                    </Calendar.GridHeaderCell>
+                  )}
+                </Calendar.GridHeaderRow>
+              </Calendar.GridHeader>
+              <Calendar.GridBody>
+                {(weekIndex) => (
+                  <Calendar.GridBodyRow weekIndex={weekIndex()}>
+                    {(date) => (
+                      <Show when={date()} fallback={<td />}>
+                        {(d) => (
+                          <Calendar.GridBodyCell date={d()}>
+                            <Calendar.GridBodyCellTrigger class="calendar__cell-trigger" />
+                          </Calendar.GridBodyCell>
+                        )}
+                      </Show>
+                    )}
+                  </Calendar.GridBodyRow>
+                )}
+              </Calendar.GridBody>
+            </Calendar.Grid>
+          </Calendar.Body>
+        </Calendar.Root>
+      );
+    }
+    ```
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .calendar {
+      display: inline-block;
+      background-color: white;
+      border: 1px solid hsl(214 32% 91%);
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .calendar__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .calendar__heading {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .calendar__nav-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid hsl(214 32% 91%);
+      background-color: white;
+      cursor: pointer;
+    }
+
+    .calendar__nav-button[disabled] {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .calendar__body {
+      display: flex;
+      gap: 24px;
+    }
+
+    .calendar__grid {
+      border-collapse: collapse;
+    }
+
+    .calendar__day-name {
+      font-size: 11px;
+      text-align: center;
+      padding: 4px 0 8px;
+      text-transform: uppercase;
+    }
+
+    .calendar__cell-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 9999px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .calendar__cell-trigger[data-selected] {
+      background-color: hsl(221 83% 53%);
+      color: white;
+    }
+
+    .calendar__cell-trigger[data-today] {
+      font-weight: 600;
+      color: hsl(221 83% 53%);
+    }
+
+    .calendar__cell-trigger[data-disabled] {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    .calendar__cell-trigger[data-unavailable] {
+      text-decoration: line-through;
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .calendar__cell-trigger[data-outside-month] {
+      opacity: 0.2;
+    }
+    ```
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Selection modes
+
+Use `selectionMode` to control what the user can pick.
+
+**Single** — default, picks one date at a time:
+
+```tsx
+<Calendar.Root createCalendar={createCalendar} selectionMode="single">
+  ...
+</Calendar.Root>
+```
+
+**Multiple** — click any day to toggle it; multiple dates can be selected simultaneously:
+
+<Preview>
+  <MultipleExample />
+</Preview>
+
+```tsx
+<Calendar.Root createCalendar={createCalendar} selectionMode="multiple">
+  ...
+</Calendar.Root>
+```
+
+**Range** — click a start date, then an end date to select a contiguous span. Show multiple months side-by-side by setting `visibleDuration` and rendering additional `Calendar.Grid` elements with an `offset`:
+
+<Preview>
+  <RangeExample />
+</Preview>
+
+```tsx
+<Calendar.Root
+  createCalendar={createCalendar}
+  selectionMode="range"
+  visibleDuration={{ months: 2 }}
+>
+  ...
+  <Calendar.Body>
+    <Calendar.Grid />
+    <Calendar.Grid offset={{ months: 1 }} />
+  </Calendar.Body>
+</Calendar.Root>
+```
+
+### Controlled value
+
+Pass `value` and `onChange` to control the selection externally. The value type matches the selection mode: `DateValue` for `"single"`, `DateValue[]` for `"multiple"`, and `RangeValue<DateValue>` for `"range"`.
+
+<Preview>
+  <ControlledExample />
+</Preview>
+
+```tsx
+import { createSignal } from "solid-js";
+import type { DateValue } from "@kobalte/core/calendar";
+
+function App() {
+  const [value, setValue] = createSignal<DateValue | null>(null);
+
+  return (
+    <Calendar.Root
+      createCalendar={createCalendar}
+      selectionMode="single"
+      value={value()}
+      onChange={(v) => setValue(v)}
+    >
+      ...
+    </Calendar.Root>
+  );
+}
+```
+
+### Unavailable dates
+
+Use `isDateUnavailable` to mark specific dates as unselectable. Unavailable dates receive `data-unavailable` and cannot be focused via keyboard navigation.
+
+<Preview>
+  <DisabledDatesExample />
+</Preview>
+
+```tsx
+import { isWeekend } from "@internationalized/date";
+
+<Calendar.Root
+  createCalendar={createCalendar}
+  selectionMode="single"
+  isDateUnavailable={(date) => isWeekend(date, "en-US")}
+>
+  ...
+</Calendar.Root>
+```
+
+In range mode, combine with `allowsNonContiguousRanges` to permit ranges that span unavailable dates:
+
+```tsx
+<Calendar.Root
+  selectionMode="range"
+  isDateUnavailable={(date) => isWeekend(date, "en-US")}
+  allowsNonContiguousRanges
+>
+  ...
+</Calendar.Root>
+```
+
+### Min / max dates
+
+Constrain selectable dates with `minValue` and `maxValue`. Dates outside the range are disabled.
+
+```tsx
+import { CalendarDate } from "@internationalized/date";
+
+<Calendar.Root
+  createCalendar={createCalendar}
+  selectionMode="single"
+  minValue={new CalendarDate(2025, 1, 1)}
+  maxValue={new CalendarDate(2025, 12, 31)}
+>
+  ...
+</Calendar.Root>
+```
+
+### Default value
+
+Use `defaultValue` for an uncontrolled calendar with an initial selection:
+
+```tsx
+import { CalendarDate } from "@internationalized/date";
+
+<Calendar.Root
+  createCalendar={createCalendar}
+  selectionMode="single"
+  defaultValue={new CalendarDate(2025, 6, 15)}
+>
+  ...
+</Calendar.Root>
+```
+
+### Read only
+
+Set `readOnly` to show the current selection without allowing changes:
+
+```tsx
+<Calendar.Root createCalendar={createCalendar} selectionMode="single" readOnly>
+  ...
+</Calendar.Root>
+```
+
+### Disabled
+
+Set `disabled` to render the calendar in a non-interactive state:
+
+```tsx
+<Calendar.Root createCalendar={createCalendar} selectionMode="single" disabled>
+  ...
+</Calendar.Root>
+```
+
+### Locale
+
+Pass a BCP 47 locale string to `locale` to control formatting (day names, month names, week start day):
+
+```tsx
+<Calendar.Root createCalendar={createCalendar} selectionMode="single" locale="fr-FR">
+  ...
+</Calendar.Root>
+```
+
+### Non-Gregorian calendars
+
+Supply any `@internationalized/date` calendar to `createCalendar`. The component adapts its grid logic automatically:
+
+```tsx
+import { HebrewCalendar } from "@internationalized/date";
+
+<Calendar.Root createCalendar={() => new HebrewCalendar()} selectionMode="single">
+  ...
+</Calendar.Root>
+```
+
+## Date picker pattern
+
+Combine `Calendar` with `Popover` to build a date picker — an input that shows the selected date and a button that opens the calendar in a floating panel.
+
+<Preview>
+  <DatePickerExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { createMemo, createSignal, Show } from "solid-js";
+    import { Calendar, type DateValue } from "@kobalte/core/calendar";
+    import { Popover } from "@kobalte/core/popover";
+    import { GregorianCalendar } from "@internationalized/date";
+    import "./style.css";
+
+    const createCalendar = () => new GregorianCalendar();
+
+    function DatePicker() {
+      const [open, setOpen] = createSignal(false);
+      const [value, setValue] = createSignal<DateValue | null>(null);
+
+      const formatted = createMemo(() => {
+        const v = value();
+        if (!v) return "";
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        return new Intl.DateTimeFormat("en-US", {
+          month: "long", day: "numeric", year: "numeric",
+        }).format(v.toDate(tz));
+      });
+
+      return (
+        <Popover open={open()} onOpenChange={setOpen} placement="bottom-start" gutter={4}>
+          <Popover.Anchor class="datepicker">
+            <input
+              class="datepicker__input"
+              readOnly
+              value={formatted()}
+              placeholder="Select a date…"
+              aria-label="Selected date"
+            />
+            <Popover.Trigger class="datepicker__button" aria-label="Open calendar">
+              {/* calendar icon */}
+            </Popover.Trigger>
+          </Popover.Anchor>
+          <Popover.Portal>
+            <Popover.Content class="datepicker__popover">
+              <Calendar.Root
+                createCalendar={createCalendar}
+                selectionMode="single"
+                value={value()}
+                onChange={(v) => {
+                  setValue(v as DateValue);
+                  setOpen(false);
+                }}
+                class="calendar"
+              >
+                <Calendar.Header class="calendar__header">
+                  <Calendar.PrevTrigger class="calendar__nav-button" aria-label="Previous month">‹</Calendar.PrevTrigger>
+                  <Calendar.Heading class="calendar__heading" />
+                  <Calendar.NextTrigger class="calendar__nav-button" aria-label="Next month">›</Calendar.NextTrigger>
+                </Calendar.Header>
+                <Calendar.Body class="calendar__body">
+                  <Calendar.Grid class="calendar__grid">
+                    <Calendar.GridHeader>
+                      <Calendar.GridHeaderRow>
+                        {(day) => <Calendar.GridHeaderCell class="calendar__day-name">{day().slice(0, 2)}</Calendar.GridHeaderCell>}
+                      </Calendar.GridHeaderRow>
+                    </Calendar.GridHeader>
+                    <Calendar.GridBody>
+                      {(weekIndex) => (
+                        <Calendar.GridBodyRow weekIndex={weekIndex()}>
+                          {(date) => (
+                            <Show when={date()} fallback={<td />}>
+                              {(d) => (
+                                <Calendar.GridBodyCell date={d()}>
+                                  <Calendar.GridBodyCellTrigger class="calendar__cell-trigger" />
+                                </Calendar.GridBodyCell>
+                              )}
+                            </Show>
+                          )}
+                        </Calendar.GridBodyRow>
+                      )}
+                    </Calendar.GridBody>
+                  </Calendar.Grid>
+                </Calendar.Body>
+              </Calendar.Root>
+            </Popover.Content>
+          </Popover.Portal>
+        </Popover>
+      );
+    }
+    ```
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .datepicker {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid hsl(214 32% 91%);
+      border-radius: 8px;
+      background-color: white;
+      overflow: hidden;
+    }
+
+    .datepicker:focus-within {
+      box-shadow: 0 0 0 2px hsl(221 83% 53% / 0.3);
+      border-color: hsl(221 83% 53%);
+    }
+
+    .datepicker__input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 0 12px;
+      height: 38px;
+      font-size: 14px;
+      background: transparent;
+      cursor: default;
+      min-width: 180px;
+    }
+
+    .datepicker__input::placeholder {
+      color: hsl(215 16% 65%);
+    }
+
+    .datepicker__button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 38px;
+      border: none;
+      border-left: 1px solid hsl(214 32% 91%);
+      background-color: white;
+      cursor: pointer;
+    }
+
+    .datepicker__button:hover,
+    .datepicker__button[data-expanded] {
+      background-color: hsl(210 40% 96%);
+      color: hsl(221 83% 53%);
+    }
+
+    .datepicker__popover {
+      z-index: 50;
+      transform-origin: var(--kb-popover-content-transform-origin);
+      animation: datepicker-hide 150ms ease-in forwards;
+    }
+
+    .datepicker__popover[data-expanded] {
+      animation: datepicker-show 150ms ease-out;
+    }
+
+    @keyframes datepicker-show {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes datepicker-hide {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(-4px); }
+    }
+    ```
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Data attributes
+
+### Calendar.GridBodyCellTrigger
+
+| Attribute | Value |
+|---|---|
+| `data-selected` | Present when the date is selected. |
+| `data-today` | Present when the date is today. |
+| `data-highlighted` | Present when the date is focused (keyboard). |
+| `data-disabled` | Present when the date is disabled. |
+| `data-unavailable` | Present when `isDateUnavailable` returns `true`. |
+| `data-invalid` | Present when `validationState="invalid"`. |
+| `data-weekend` | Present for weekend dates. |
+| `data-outside-month` | Present when the date falls outside the grid's month. |
+| `data-outside-visible-range` | Present when the date falls outside the visible range. |
+| `data-selection-start` | Present on the start date of a range selection. |
+| `data-selection-end` | Present on the end date of a range selection. |
+| `data-value` | The ISO string of the date (e.g. `"2025-06-15"`). |
+| `data-type` | Always `"day"`. |
+
+## Credits
+
+Calendar logic ported from [corvu/calendar](https://github.com/corvudev/corvu/tree/main/packages/calendar) by Jasmin Noetzli, licensed MIT. State management also draws on [React Spectrum's `useCalendarState`](https://github.com/adobe/react-spectrum), licensed Apache 2.0.

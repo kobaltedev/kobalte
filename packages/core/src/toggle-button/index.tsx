@@ -8,10 +8,10 @@ import {
 } from "./toggle-button-root";
 
 export type {
-	ToggleButtonRootOptions,
 	ToggleButtonRootCommonProps,
-	ToggleButtonRootRenderProps,
+	ToggleButtonRootOptions,
 	ToggleButtonRootProps,
+	ToggleButtonRootRenderProps,
 	ToggleButtonRootState,
 };
 export { Root };

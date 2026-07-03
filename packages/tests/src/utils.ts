@@ -15,7 +15,6 @@ import { afterAll, beforeAll, vi } from "vitest";
 
 export function installPointerEvent() {
 	beforeAll(() => {
-		// @ts-ignore
 		vi.stubGlobal(
 			"PointerEvent",
 			class FakePointerEvent extends MouseEvent {
@@ -61,7 +60,7 @@ export function installPointerEvent() {
 	});
 
 	afterAll(() => {
-		// @ts-ignore
+		// @ts-expect-error
 		global.PointerEvent = undefined;
 	});
 }

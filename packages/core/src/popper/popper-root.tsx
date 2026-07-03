@@ -7,12 +7,12 @@
  */
 
 import {
-	type Middleware,
 	arrow,
 	autoUpdate,
 	computePosition,
 	flip,
 	hide,
+	type Middleware,
 	offset,
 	platform,
 	shift,
@@ -21,10 +21,9 @@ import {
 import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Accessor,
-	type ParentProps,
-	createEffect,
 	createSignal,
-	onCleanup,
+	createTrackedEffect,
+	type ParentProps,
 } from "solid-js";
 
 import { useLocale } from "../i18n";
@@ -32,10 +31,10 @@ import { PopperContext, type PopperContextValue } from "./popper-context";
 import {
 	type AnchorRect,
 	type BasePlacement,
-	type Placement,
 	getAnchorElement,
 	getTransformOrigin,
 	isValidPlacement,
+	type Placement,
 } from "./utils";
 
 export interface PopperRootOptions {
@@ -165,7 +164,7 @@ export function PopperRoot(props: PopperRootProps) {
 		const finalGutter =
 			typeof mergedProps.gutter === "number"
 				? mergedProps.gutter + arrowOffset
-				: mergedProps.gutter ?? arrowOffset;
+				: (mergedProps.gutter ?? arrowOffset);
 
 		floatingEl.style.setProperty(
 			"--kb-popper-content-overflow-padding",
@@ -328,7 +327,7 @@ export function PopperRoot(props: PopperRootProps) {
 		}
 	}
 
-	createEffect(() => {
+	createTrackedEffect(() => {
 		const referenceEl = anchorRef();
 		const floatingEl = positionerRef();
 
@@ -337,29 +336,18 @@ export function PopperRoot(props: PopperRootProps) {
 		}
 
 		// https://floating-ui.com/docs/autoUpdate
-		const cleanupAutoUpdate = autoUpdate(
-			referenceEl,
-			floatingEl,
-			updatePosition,
-			{
-				// JSDOM doesn't support ResizeObserver
-				elementResize: typeof ResizeObserver === "function",
-			},
-		);
-
-		onCleanup(cleanupAutoUpdate);
+		return autoUpdate(referenceEl, floatingEl, updatePosition, {
+			// JSDOM doesn't support ResizeObserver
+			elementResize: typeof ResizeObserver === "function",
+		});
 	});
 
 	// Makes sure the positioner element has the same z-index as the popper content element,
 	// so users only need to set the z-index once.
-	createEffect(() => {
+	createTrackedEffect(() => {
 		const positioner = positionerRef();
 		const content = mergedProps.contentRef?.();
-
-		if (!positioner || !content) {
-			return;
-		}
-
+		if (!positioner || !content) return;
 		queueMicrotask(() => {
 			positioner.style.zIndex = getComputedStyle(content).zIndex;
 		});
@@ -372,9 +360,5 @@ export function PopperRoot(props: PopperRootProps) {
 		setArrowRef,
 	};
 
-	return (
-		<PopperContext.Provider value={context}>
-			{mergedProps.children}
-		</PopperContext.Provider>
-	);
+	return <PopperContext value={context}>{mergedProps.children}</PopperContext>;
 }

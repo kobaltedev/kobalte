@@ -6,13 +6,12 @@ import {
 	type SkeletonRootRenderProps,
 } from "./skeleton-root";
 
-export { Root };
-
 export type {
-	SkeletonRootOptions,
 	SkeletonRootCommonProps,
-	SkeletonRootRenderProps,
+	SkeletonRootOptions,
 	SkeletonRootProps,
+	SkeletonRootRenderProps,
 };
+export { Root };
 
 export const Skeleton = Root;

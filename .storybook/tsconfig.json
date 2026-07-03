@@ -1,0 +1,12 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"jsxImportSource": "@solidjs/web",
+		"customConditions": ["@solid-primitives/source"],
+		"verbatimModuleSyntax": false,
+		"types": ["vite/client"]
+	},
+	"include": ["./**/*", "../packages/core/src/*/stories/**/*"]
+}

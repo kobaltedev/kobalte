@@ -7,32 +7,30 @@
  */
 
 import {
-	type Orientation,
-	OverrideComponentProps,
 	contains,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
+	OverrideComponentProps,
 } from "@kobalte/utils";
+import { interactOutside } from "@solid-primitives/interaction";
+import { isServer, type ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
-	type Setter,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	onCleanup,
-	splitProps,
+	omit,
+	type Setter,
 } from "solid-js";
-import { isServer } from "solid-js/web";
-
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import { createControllableSignal, createInteractOutside } from "../primitives";
+import { createControllableSignal } from "../primitives";
 import {
 	MenubarContext,
 	type MenubarContextValue,
@@ -91,39 +89,37 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		props as MenubarRootProps,
 	);
 
-	const [local, others] = splitProps(
+	const others = omit(
 		mergedProps as typeof mergedProps & { id: string },
-		[
-			"ref",
-			"value",
-			"defaultValue",
-			"onValueChange",
-			"loop",
-			"focusOnAlt",
-			"autoFocusMenu",
-			"onAutoFocusMenuChange",
-			"orientation",
-		],
+		"ref",
+		"value",
+		"defaultValue",
+		"onValueChange",
+		"loop",
+		"focusOnAlt",
+		"autoFocusMenu",
+		"onAutoFocusMenuChange",
+		"orientation",
 	);
 
 	const [value, setValue] = createControllableSignal<string | null | undefined>(
 		{
-			value: () => local.value,
-			defaultValue: () => local.defaultValue,
-			onChange: (value) => local.onValueChange?.(value),
+			value: () => mergedProps.value,
+			defaultValue: () => mergedProps.defaultValue,
+			onChange: (value) => mergedProps.onValueChange?.(value),
 		},
 	);
 
-	const [lastValue, setLastValue] = createSignal<string | undefined>();
+	const [lastValue, setLastValue] = createSignal<string | undefined>(undefined, { ownedWrite: true });
 
 	const [menuRefs, setMenuRefs] = createSignal<Map<string, Array<HTMLElement>>>(
 		new Map<string, Array<HTMLElement>>(),
 	);
 
 	const [autoFocusMenu, setAutoFocusMenu] = createControllableSignal({
-		value: () => local.autoFocusMenu,
+		value: () => mergedProps.autoFocusMenu,
 		defaultValue: () => false,
-		onChange: local.onAutoFocusMenuChange,
+		onChange: mergedProps.onAutoFocusMenuChange,
 	});
 
 	const expanded = () => {
@@ -171,7 +167,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			const currentIndex = menusArray.indexOf(value()!);
 
 			if (currentIndex === menusArray.length - 1) {
-				if (local.loop) setValue(menusArray[0]);
+				if (mergedProps.loop) setValue(menusArray[0]);
 				return;
 			}
 
@@ -188,7 +184,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			const currentIndex = menusArray.indexOf(value()!);
 
 			if (currentIndex === 0) {
-				if (local.loop) setValue(menusArray[menusArray.length - 1]);
+				if (mergedProps.loop) setValue(menusArray[menusArray.length - 1]);
 				return;
 			}
 
@@ -201,27 +197,27 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		autoFocusMenu: () => autoFocusMenu()!,
 		setAutoFocusMenu,
 		generateId: createGenerateId(() => others.id!),
-		orientation: () => local.orientation!,
+		orientation: () => mergedProps.orientation!,
 	};
 
-	createEffect(() => {
-		if (value() == null) setAutoFocusMenu(false);
-	});
-
-	createInteractOutside(
-		{
-			onInteractOutside: () => {
-				context.closeMenu();
-				setTimeout(() => context.closeMenu());
-			},
-			shouldExcludeElement: (element) => {
-				return [ref, ...menuRefs().values()]
-					.flat()
-					.some((ref) => contains(ref, element));
-			},
+	createEffect(
+		() => value(),
+		(val) => {
+			if (val == null) setAutoFocusMenu(false);
 		},
-		() => ref,
 	);
+
+	const interactOutsideRef = interactOutside({
+		onInteractOutside: () => {
+			context.closeMenu();
+			setTimeout(() => context.closeMenu());
+		},
+		shouldExcludeElement: (element) => {
+			return [ref, ...menuRefs().values()]
+				.flat()
+				.some((ref) => contains(ref, element));
+		},
+	});
 
 	const keydownHandler = (e: KeyboardEvent) => {
 		if (e.key === "Alt") {
@@ -232,30 +228,33 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		}
 	};
 
-	createEffect(() => {
-		if (isServer) return;
-		if (local.focusOnAlt) window.addEventListener("keydown", keydownHandler);
-		else window.removeEventListener("keydown", keydownHandler);
+	createEffect(
+		() => mergedProps.focusOnAlt,
+		(focusOnAlt) => {
+			if (isServer) return;
+			if (focusOnAlt) window.addEventListener("keydown", keydownHandler);
+			else window.removeEventListener("keydown", keydownHandler);
+			return () => window.removeEventListener("keydown", keydownHandler);
+		},
+	);
 
-		onCleanup(() => {
-			window.removeEventListener("keydown", keydownHandler);
-		});
-	});
-
-	createEffect(() => {
-		if (value() != null) setLastValue(value()!);
-	});
+	createEffect(
+		() => value(),
+		(val) => {
+			if (val != null) setLastValue(val!);
+		},
+	);
 
 	return (
-		<MenubarContext.Provider value={context}>
+		<MenubarContext value={context}>
 			<Polymorphic<MenubarRootRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el), local.ref)}
+				ref={mergeRefs(interactOutsideRef, (el) => (ref = el), mergedProps.ref)}
 				role="menubar"
-				data-orientation={local.orientation!}
-				aria-orientation={local.orientation!}
+				data-orientation={mergedProps.orientation!}
+				aria-orientation={mergedProps.orientation!}
 				{...others}
 			/>
-		</MenubarContext.Provider>
+		</MenubarContext>
 	);
 }

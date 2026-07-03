@@ -8,20 +8,13 @@
  */
 
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit } from "solid-js";
 
 import * as Button from "../button";
 import {
-	FORM_CONTROL_FIELD_PROP_NAMES,
-	type FormControlDataSet,
 	createFormControlField,
+	type FormControlDataSet,
 	useFormControlContext,
 } from "../form-control";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -50,7 +43,7 @@ export interface SelectTriggerRenderProps
 		FormControlDataSet,
 		Button.ButtonRootRenderProps {
 	"aria-haspopup": "listbox";
-	"aria-expanded": boolean;
+	"aria-expanded": "true" | "false";
 	"aria-controls": string | undefined;
 }
 
@@ -71,26 +64,27 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		props as SelectTriggerProps,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
+	const others = omit(
 		mergedProps,
-		[
-			"ref",
-			"disabled",
-			"onPointerDown",
-			"onClick",
-			"onKeyDown",
-			"onFocus",
-			"onBlur",
-		],
-		FORM_CONTROL_FIELD_PROP_NAMES,
+		"ref",
+		"disabled",
+		"onPointerDown",
+		"onClick",
+		"onKeyDown",
+		"onFocus",
+		"onBlur",
+		"id",
+		"aria-label",
+		"aria-labelledby",
+		"aria-describedby",
 	);
 
 	const selectionManager = () => context.listState().selectionManager();
 	const keyboardDelegate = () => context.keyboardDelegate();
 
-	const isDisabled = () => local.disabled || context.isDisabled();
+	const isDisabled = () => mergedProps.disabled || context.isDisabled();
 
-	const { fieldProps } = createFormControlField(formControlFieldProps);
+	const { fieldProps } = createFormControlField(mergedProps);
 
 	const { typeSelectHandlers } = createTypeSelect({
 		keyboardDelegate: keyboardDelegate,
@@ -109,7 +103,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
 
@@ -123,7 +117,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
 		if (!isDisabled() && e.currentTarget.dataset.pointerType === "touch") {
 			context.toggle(true);
@@ -131,7 +125,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		if (isDisabled()) {
 			return;
@@ -198,7 +192,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 
 		if (selectionManager().isFocused()) {
 			return;
@@ -208,7 +202,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 
 		if (context.isOpen()) {
 			return;
@@ -217,10 +211,13 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		selectionManager().setFocused(false);
 	};
 
-	createEffect(() => onCleanup(context.registerTriggerId(fieldProps.id()!)));
+	createEffect(
+		() => fieldProps.id()!,
+		(id) => context.registerTriggerId(id),
+	);
 
-	createEffect(() => {
-		context.setListboxAriaLabelledBy(
+	createEffect(
+		() =>
 			[
 				fieldProps.ariaLabelledBy(),
 				fieldProps.ariaLabel() && !fieldProps.ariaLabelledBy()
@@ -229,8 +226,10 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 			]
 				.filter(Boolean)
 				.join(" ") || undefined,
-		);
-	});
+		(value) => {
+			context.setListboxAriaLabelledBy(value);
+		},
+	);
 
 	return (
 		<Button.Root<
@@ -238,11 +237,11 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 				Omit<SelectTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
 			id={fieldProps.id()}
 			disabled={isDisabled()}
 			aria-haspopup="listbox"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.listboxId() : undefined}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={ariaLabelledBy()}

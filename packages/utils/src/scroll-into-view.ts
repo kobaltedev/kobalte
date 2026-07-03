@@ -67,7 +67,6 @@ function relativeOffset(
 			sum -= ancestor[prop];
 			break;
 		}
-		// biome-ignore lint/style/noParameterAssign: used in loop
 		child = child.offsetParent as HTMLElement;
 	}
 	return sum;
@@ -120,7 +119,6 @@ export function scrollIntoViewport(
 					scrollParent as HTMLElement,
 					targetElement as HTMLElement,
 				);
-				// biome-ignore lint/style/noParameterAssign: used in loop
 				targetElement = scrollParent;
 				scrollParent = getScrollParent(targetElement);
 			}

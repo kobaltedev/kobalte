@@ -1,5 +1,5 @@
 import { Combobox } from "@kobalte/core/combobox";
-import { For, createSignal } from "solid-js";
+import { createSignal, For } from "solid-js";
 
 import { CaretSortIcon, CheckIcon, CrossIcon } from "../components";
 import style from "./combobox.module.css";

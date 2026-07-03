@@ -3,18 +3,12 @@ import {
 	mergeDefaultProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import {
-	type ComponentProps,
-	type JSX,
-	createEffect,
-	createSignal,
-	splitProps,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { ComponentProps, JSX } from "@solidjs/web";
+import { createEffect, createSignal, omit } from "solid-js";
 import {
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
+	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
 } from "../form-control";
 import { useSliderContext } from "./slider-context";
@@ -39,20 +33,27 @@ export function SliderInput(props: SliderInputProps) {
 		props,
 	);
 
-	const [local, formControlFieldProps, others] = splitProps(
+	const formControlFieldProps = omit(mergedProps, "style", "onChange");
+	const others = omit(
 		mergedProps,
-		["style", "onChange"],
-		FORM_CONTROL_FIELD_PROP_NAMES,
+		"style",
+		"onChange",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
 	);
 
-	const { fieldProps } = createFormControlField(formControlFieldProps);
+	const { fieldProps } = createFormControlField(formControlFieldProps as any);
 
 	const [valueText, setValueText] = createSignal("");
 
 	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e, local.onChange);
+		callHandler(
+			e as Event & { currentTarget: HTMLInputElement; target: Element },
+			mergedProps.onChange as
+				| JSX.EventHandlerUnion<HTMLInputElement, Event>
+				| undefined,
+		);
 
 		const target = e.target as HTMLInputElement;
 
@@ -66,20 +67,22 @@ export function SliderInput(props: SliderInputProps) {
 		target.value = String(context.state.values()[thumb.index()]) ?? "";
 	};
 
-	createEffect(() => {
-		setValueText(
+	createEffect(
+		() =>
 			thumb.index() === -1
 				? ""
 				: context.state.getThumbValueLabel(thumb.index()),
-		);
-	});
+		(value) => {
+			setValueText(value);
+		},
+	);
 
 	return (
 		<input
 			type="range"
 			id={fieldProps.id()}
 			name={formControlContext.name()}
-			tabIndex={context.state.isDisabled() ? undefined : -1}
+			tabindex={context.state.isDisabled() ? undefined : -1}
 			min={context.state.getThumbMinValue(thumb.index())}
 			max={context.state.getThumbMaxValue(thumb.index())}
 			step={context.state.step()}
@@ -87,18 +90,18 @@ export function SliderInput(props: SliderInputProps) {
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
+			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
 			aria-orientation={context.state.orientation()}
 			aria-valuetext={valueText()}
 			aria-label={fieldProps.ariaLabel()}
 			aria-labelledby={fieldProps.ariaLabelledBy()}
 			aria-describedby={fieldProps.ariaDescribedBy()}
 			aria-invalid={
-				formControlContext.validationState() === "invalid" || undefined
+				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() || undefined}
-			aria-disabled={formControlContext.isDisabled() || undefined}
-			aria-readonly={formControlContext.isReadOnly() || undefined}
+			aria-required={formControlContext.isRequired() ? "true" : undefined}
+			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onChange={onChange}
 			{...context.dataset()}
 			{...others}
