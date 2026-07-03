@@ -5,3 +5,5 @@ allowBuilds:
   "@biomejs/biome": false
   "@parcel/watcher": false
   esbuild: false
+minimumReleaseAgeExclude:
+  - '@kobalte/solidbase@0.6.4'

@@ -38,7 +38,7 @@
 		"@docsearch/js": "3.5.2",
 		"@internationalized/date": "3.4.0",
 		"@kobalte/core": "workspace:*",
-		"@kobalte/solidbase": "https://pkg.pr.new/kobaltedev/solidbase/@kobalte/solidbase@143",
+		"@kobalte/solidbase": "0.6.4",
 		"@solidjs/meta": "0.29.4",
 		"@solidjs/router": "0.15.3",
 		"@solidjs/start": "2.0.0-alpha.3",
