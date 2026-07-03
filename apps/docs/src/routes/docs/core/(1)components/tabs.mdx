@@ -174,7 +174,7 @@ A default selected tab can be provided using the `defaultValue` prop, which shou
 	<DefaultValueExample />
 </Preview>
 
-```tsx {0,3,9}
+```tsx {1,4,10}
 <Tabs defaultValue="dashboard">
 	<Tabs.List>
 		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
@@ -198,7 +198,7 @@ Selected tab can be controlled using the `value` prop, paired with the `onChange
 	<ControlledExample />
 </Preview>
 
-```tsx {3,7}
+```tsx {4,8}
 import { createSignal } from "solid-js";
 
 function ControlledExample() {
@@ -237,7 +237,7 @@ This example uses the same Tabs components from above. Try navigating from the t
 	<FocusableContentExample />
 </Preview>
 
-```tsx {10-12}
+```tsx {11-13}
 function FocusableContentExample() {
 	return (
 		<Tabs>
@@ -267,7 +267,7 @@ Tabs can be added/removed dynamically by using a signal and SolidJS `For`.
 	<DynamicContentExample />
 </Preview>
 
-```tsx {3-7,32,35}
+```tsx {4-8,33,36}
 import { createSignal } from "solid-js";
 
 function DynamicContentExample() {
@@ -320,7 +320,7 @@ If you would like to prevent selection change from happening automatically you c
 	<ManualActivationExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <Tabs activationMode="manual">
 	<Tabs.List>
 		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
@@ -344,7 +344,7 @@ By default, tabs are horizontally oriented. The `orientation` prop can be set to
 	<VerticalOrientationExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <Tabs orientation="vertical">
 	<Tabs.List>
 		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
@@ -368,7 +368,7 @@ All tabs can be disabled using the `disabled` prop.
 	<DisabledTabsExample />
 </Preview>
 
-```tsx {0}
+```tsx {1}
 <Tabs disabled>
 	<Tabs.List>
 		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>
@@ -390,7 +390,7 @@ Individual tab can be disabled using the `disabled` prop on the tab itself.
 	<SingleDisabledTabExample />
 </Preview>
 
-```tsx {4}
+```tsx {5}
 <Tabs>
 	<Tabs.List>
 		<Tabs.Trigger value="profile">Profile</Tabs.Trigger>

@@ -4,7 +4,7 @@ import "./root.css";
 
 import { Title } from "@solidjs/meta";
 import { Router } from "@solidjs/router";
-import { FileRoutes } from "@solidjs/start";
+import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
 import { Portal } from "solid-js/web";
 
@@ -19,19 +19,18 @@ export default function App() {
 		<Router
 			root={(props) => (
 				<SolidBaseRoot>
-					<Title>Kobalte</Title>
-							<Suspense>{props.children}</Suspense>
+					<Suspense>{props.children}</Suspense>
 
-							<Portal>
-								<Toast.Region>
-									<Toast.List class={toastStyles.toast__list} />
-								</Toast.Region>
-								<Toast.Region regionId="custom-region-id">
-									<Toast.List
-										class={toastStyles["toast__list-custom-region"]}
-									/>
-								</Toast.Region>
-							</Portal>
+					<Portal>
+						<Toast.Region>
+							<Toast.List class={toastStyles.toast__list} />
+						</Toast.Region>
+						<Toast.Region regionId="custom-region-id">
+							<Toast.List
+								class={toastStyles["toast__list-custom-region"]}
+							/>
+						</Toast.Region>
+					</Portal>
 				</SolidBaseRoot>
 			)}
 		>

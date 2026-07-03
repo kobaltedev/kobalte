@@ -1,3 +1,7 @@
 packages:
   - apps/*
   - packages/*
+allowBuilds:
+  "@biomejs/biome": false
+  "@parcel/watcher": false
+  esbuild: false
