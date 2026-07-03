@@ -1,5 +1,6 @@
 import { mergeRefs } from "@kobalte/utils";
-import { type ValidComponent, splitProps } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -31,12 +32,15 @@ export function PopoverAnchor<T extends ValidComponent = "div">(
 ) {
 	const context = usePopoverContext();
 
-	const [local, others] = splitProps(props as PopoverAnchorProps, ["ref"]);
+	const others = omit(props as PopoverAnchorProps, "ref");
 
 	return (
 		<Polymorphic<PopoverAnchorRenderProps>
 			as="div"
-			ref={mergeRefs(context.setDefaultAnchorRef, local.ref)}
+			ref={mergeRefs(
+				context.setDefaultAnchorRef,
+				(props as PopoverAnchorProps).ref,
+			)}
 			{...context.dataset()}
 			{...others}
 		/>

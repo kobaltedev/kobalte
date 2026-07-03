@@ -1,4 +1,5 @@
-import type { Component, ValidComponent } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import type { Component } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import {
 	NumberFieldVaryTrigger,

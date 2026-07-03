@@ -1,18 +1,20 @@
 import {
-	OverrideComponentProps,
 	focusWithoutScrolling,
 	mergeRefs,
+	OverrideComponentProps,
 } from "@kobalte/utils";
+import { createFocusTrap } from "@solid-primitives/focus";
 import {
-	type Component,
-	type JSX,
-	Show,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
+	createHideOutside,
+	type FocusOutsideEvent,
+	type InteractOutsideEvent,
+	type PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 
 import { combineStyle } from "@solid-primitives/props";
-import createPreventScroll from "solid-prevent-scroll";
+import { createPreventScroll } from "@solid-primitives/scroll";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -20,13 +22,6 @@ import {
 } from "../dismissable-layer";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import {
-	type FocusOutsideEvent,
-	type InteractOutsideEvent,
-	type PointerDownOutsideEvent,
-	createFocusScope,
-	createHideOutside,
-} from "../primitives";
 import { type SelectDataSet, useSelectContext } from "./select-context";
 
 export interface SelectContentOptions {
@@ -79,12 +74,13 @@ export function SelectContent<T extends ValidComponent = "div">(
 
 	const context = useSelectContext();
 
-	const [local, others] = splitProps(props as SelectContentProps, [
+	const others = omit(
+		props as SelectContentProps,
 		"ref",
 		"style",
 		"onCloseAutoFocus",
 		"onFocusOutside",
-	]);
+	);
 
 	const onEscapeKeyDown = (e: KeyboardEvent) => {
 		// `createSelectableList` prevent escape key down,
@@ -94,7 +90,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		local.onFocusOutside?.(e);
+		props.onFocusOutside?.(e);
 
 		// When focus is trapped (in modal mode), a `focusout` event may still happen.
 		// We make sure we don't trigger our `onDismiss` in such case.
@@ -105,33 +101,32 @@ export function SelectContent<T extends ValidComponent = "div">(
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
-		isDisabled: () => !(context.isOpen() && context.isModal()),
+		disabled: () => !(context.isOpen() && context.isModal()),
 		targets: () => (ref ? [ref] : []),
+		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createPreventScroll({
-		element: () => ref ?? null,
+		element: () => ref ?? undefined,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
-	createFocusScope(
-		{
-			trapFocus: () => context.isOpen() && context.isModal(),
-			onMountAutoFocus: (e) => {
-				// We prevent open autofocus because it's handled by the `Listbox`.
-				e.preventDefault();
-			},
-			onUnmountAutoFocus: (e) => {
-				local.onCloseAutoFocus?.(e);
-
-				if (!e.defaultPrevented) {
-					focusWithoutScrolling(context.triggerRef());
-					e.preventDefault();
-				}
-			},
+	createFocusTrap({
+		element: () => ref,
+		enabled: () => context.isOpen() && context.isModal(),
+		onInitialFocus: (e) => {
+			// We prevent open autofocus because it's handled by the `Listbox`.
+			e.preventDefault();
 		},
-		() => ref,
-	);
+		onFinalFocus: (e) => {
+			props.onCloseAutoFocus?.(e);
+
+			if (!e.defaultPrevented) {
+				focusWithoutScrolling(context.triggerRef());
+				e.preventDefault();
+			}
+		},
+	});
 
 	return (
 		<Show when={context.contentPresent()}>
@@ -144,7 +139,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
 						ref = el;
-					}, local.ref)}
+					}, props.ref)}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.triggerRef]}
 					style={combineStyle(
@@ -153,7 +148,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 								"var(--kb-popper-content-transform-origin)",
 							position: "relative",
 						},
-						local.style,
+						props.style,
 					)}
 					onEscapeKeyDown={onEscapeKeyDown}
 					onFocusOutside={onFocusOutside}

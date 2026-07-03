@@ -7,12 +7,8 @@
  */
 import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import {
-	type JSX,
-	type ValidComponent,
-	createUniqueId,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createUniqueId, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -68,7 +64,8 @@ export function Skeleton<T extends ValidComponent = "div">(
 		props as SkeletonRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"style",
 		"radius",
 		"animate",
@@ -76,29 +73,29 @@ export function Skeleton<T extends ValidComponent = "div">(
 		"width",
 		"visible",
 		"circle",
-	]);
+	);
 
 	return (
 		<Polymorphic<SkeletonRootRenderProps>
 			as="div"
 			role="group"
-			data-animate={local.animate || undefined}
-			data-visible={local.visible || undefined}
+			data-animate={mergedProps.animate || undefined}
+			data-visible={mergedProps.visible || undefined}
 			style={combineStyle(
 				{
-					"border-radius": local.circle
+					"border-radius": mergedProps.circle
 						? "9999px"
-						: local.radius
-							? `${local.radius}px`
+						: mergedProps.radius
+							? `${mergedProps.radius}px`
 							: undefined,
-					width: local.circle
-						? `${local.height}px`
-						: local.width
-							? `${local.width}px`
+					width: mergedProps.circle
+						? `${mergedProps.height}px`
+						: mergedProps.width
+							? `${mergedProps.width}px`
 							: "100%",
-					height: local.height ? `${local.height}px` : "auto",
+					height: mergedProps.height ? `${mergedProps.height}px` : "auto",
 				},
-				local.style,
+				mergedProps.style,
 			)}
 			{...others}
 		/>

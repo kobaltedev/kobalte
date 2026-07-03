@@ -7,7 +7,8 @@
  */
 
 import { mergeDefaultProps } from "@kobalte/utils";
-import { type ValidComponent, createEffect, onCleanup } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect } from "solid-js";
 
 import {
 	type ElementOf,
@@ -52,7 +53,10 @@ export function ListboxItemDescription<T extends ValidComponent = "div">(
 		props as ListboxItemDescriptionProps,
 	);
 
-	createEffect(() => onCleanup(context.registerDescriptionId(mergedProps.id)));
+	createEffect(
+		() => mergedProps.id,
+		(id) => context.registerDescriptionId(id),
+	);
 
 	return (
 		<Polymorphic<ListboxItemDescriptionRenderProps>

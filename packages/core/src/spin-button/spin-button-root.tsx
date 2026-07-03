@@ -6,18 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/99ca82e87ba2d7fdd54f5b49326fd242320b4b51/packages/%40react-aria/spinbutton/src/useSpinButton.ts
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
-import { type ValidationState, callHandler } from "@kobalte/utils";
 import {
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	createMemo,
-	on,
-	splitProps,
-} from "solid-js";
-
+	callHandler,
+	mergeDefaultProps,
+	type ValidationState,
+} from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, createMemo, omit } from "solid-js";
 import { announce, clearAnnouncer } from "../live-announcer";
 import {
 	type ElementOf,
@@ -79,7 +75,7 @@ export interface SpinButtonRootOptions {
 export interface SpinButtonRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	style?: JSX.CSSProperties | string;
+	style?: JSX.CSSProperties | string | false;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -91,10 +87,10 @@ export interface SpinButtonRootRenderProps extends SpinButtonRootCommonProps {
 	"aria-valuetext": string | undefined;
 	"aria-valuemin": number | undefined;
 	"aria-valuemax": number | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
-	"aria-invalid": boolean | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
+	"aria-invalid": "true" | undefined;
 }
 
 export type SpinButtonRootProps<
@@ -111,7 +107,8 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		props as SpinButtonRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"style",
 		"translations",
 		"value",
@@ -128,7 +125,7 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		"onKeyDown",
 		"onFocus",
 		"onBlur",
-	]);
+	);
 
 	let isFocused = false;
 
@@ -137,15 +134,18 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 	// and the number (e.g. currency symbol). Otherwise, it announces nothing because it assumes the character is a hyphen.
 	// In addition, replace the empty string with the word "Empty" so that iOS VoiceOver does not read "50%" for an empty field.
 	const textValue = createMemo(() => {
-		if (local.textValue === "") {
-			return local.translations?.empty;
+		if (mergedProps.textValue === "") {
+			return mergedProps.translations?.empty;
 		}
 
-		return (local.textValue || `${local.value}`).replace("-", "\u2212");
+		return (mergedProps.textValue || `${mergedProps.value}`).replace(
+			"-",
+			"\u2212",
+		);
 	});
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || props.readOnly) {
 			return;
@@ -154,68 +154,70 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 		switch (e.key) {
 			// biome-ignore lint/suspicious/noFallthroughSwitchClause: fallthrough
 			case "PageUp":
-				if (local.onIncrementPage) {
+				if (mergedProps.onIncrementPage) {
 					e.preventDefault();
-					local.onIncrementPage();
+					mergedProps.onIncrementPage();
 					break;
 				}
 			// fallthrough!
 			case "ArrowUp":
 			case "Up":
-				if (local.onIncrement) {
+				if (mergedProps.onIncrement) {
 					e.preventDefault();
-					local.onIncrement();
+					mergedProps.onIncrement();
 				}
 				break;
 			// biome-ignore lint/suspicious/noFallthroughSwitchClause: fallthrough
 			case "PageDown":
-				if (local.onDecrementPage) {
+				if (mergedProps.onDecrementPage) {
 					e.preventDefault();
-					local.onDecrementPage();
+					mergedProps.onDecrementPage();
 					break;
 				}
 			// fallthrough!
 			case "ArrowDown":
 			case "Down":
-				if (local.onDecrement) {
+				if (mergedProps.onDecrement) {
 					e.preventDefault();
-					local.onDecrement();
+					mergedProps.onDecrement();
 				}
 				break;
 			case "Home":
-				if (local.onDecrementToMin) {
+				if (mergedProps.onDecrementToMin) {
 					e.preventDefault();
-					local.onDecrementToMin();
+					mergedProps.onDecrementToMin();
 				}
 				break;
 			case "End":
-				if (local.onIncrementToMax) {
+				if (mergedProps.onIncrementToMax) {
 					e.preventDefault();
-					local.onIncrementToMax();
+					mergedProps.onIncrementToMax();
 				}
 				break;
 		}
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 
 		isFocused = true;
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 
 		isFocused = false;
 	};
 
 	createEffect(
-		on(textValue, (textValue) => {
+		() => textValue(),
+		(textValue) => {
 			if (isFocused) {
 				clearAnnouncer("assertive");
 				announce(textValue ?? "", "assertive");
 			}
-		}),
+		},
+		{ defer: true },
 	);
 
 	return (
@@ -226,20 +228,22 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 				{
 					"touch-action": "none",
 				},
-				local.style,
+				mergedProps.style || undefined,
 			)}
 			aria-valuenow={
-				local.value != null && !Number.isNaN(local.value)
-					? local.value
+				mergedProps.value != null && !Number.isNaN(mergedProps.value)
+					? mergedProps.value
 					: undefined
 			}
 			aria-valuetext={textValue()}
-			aria-valuemin={local.minValue}
-			aria-valuemax={local.maxValue}
-			aria-required={props.required || undefined}
-			aria-disabled={props.disabled || undefined}
-			aria-readonly={props.readOnly || undefined}
-			aria-invalid={local.validationState === "invalid" || undefined}
+			aria-valuemin={mergedProps.minValue}
+			aria-valuemax={mergedProps.maxValue}
+			aria-required={props.required ? "true" : undefined}
+			aria-disabled={props.disabled ? "true" : undefined}
+			aria-readonly={props.readOnly ? "true" : undefined}
+			aria-invalid={
+				mergedProps.validationState === "invalid" ? "true" : undefined
+			}
 			onKeyDown={onKeyDown}
 			onFocus={onFocus}
 			onBlur={onBlur}

@@ -1,6 +1,6 @@
 import { OverrideComponentProps } from "@kobalte/utils";
 
-import type { JSX, ValidComponent } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type ElementOf,
 	Polymorphic,

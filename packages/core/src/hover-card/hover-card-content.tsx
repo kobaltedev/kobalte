@@ -1,13 +1,7 @@
 import { mergeRefs } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	Show,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
@@ -48,10 +42,8 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 ) {
 	const context = useHoverCardContext();
 
-	const [local, others] = splitProps(props as HoverCardContentProps, [
-		"ref",
-		"style",
-	]);
+	const p = props as HoverCardContentProps;
+	const others = omit(p, "ref", "style");
 
 	return (
 		<Show when={context.contentPresent()}>
@@ -63,7 +55,7 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 				>
 					ref={mergeRefs((el) => {
 						context.setContentRef(el);
-					}, local.ref)}
+					}, p.ref)}
 					disableOutsidePointerEvents={false}
 					style={combineStyle(
 						{
@@ -71,7 +63,7 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 								"var(--kb-popper-content-transform-origin)",
 							position: "relative",
 						},
-						local.style,
+						p.style,
 					)}
 					onFocusOutside={(e) => e.preventDefault()}
 					onDismiss={context.close}

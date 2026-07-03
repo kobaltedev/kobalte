@@ -7,10 +7,10 @@ import {
 } from "./link-root";
 
 export type {
-	LinkRootOptions,
 	LinkRootCommonProps,
-	LinkRootRenderProps,
+	LinkRootOptions,
 	LinkRootProps,
+	LinkRootRenderProps,
 };
 export { Root };
 

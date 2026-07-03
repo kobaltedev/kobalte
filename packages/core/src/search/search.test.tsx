@@ -42,6 +42,7 @@ describe("Search", () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	it("debounce", () => {
@@ -255,7 +256,7 @@ describe("Search", () => {
 			const hiddenInput = getByRole("textbox", { hidden: true }); // get the hidden ones
 
 			expect(hiddenInput).toHaveAttribute("tabIndex", "0");
-			expect(hiddenInput).toHaveAttribute("style", "font-size: 16px;");
+			expect(hiddenInput).toHaveAttribute("style", "font-size:16px");
 			expect(hiddenInput.parentElement).toHaveAttribute("aria-hidden", "true");
 
 			hiddenInput.focus();
@@ -356,7 +357,7 @@ describe("Search", () => {
 			await Promise.resolve();
 
 			expect(onSubmit).toHaveBeenCalledTimes(1);
-			// @ts-ignore
+			// @ts-expect-error
 			expect(value).toBe("");
 		});
 
@@ -404,7 +405,7 @@ describe("Search", () => {
 			await Promise.resolve();
 
 			expect(onSubmit).toHaveBeenCalledTimes(1);
-			// @ts-ignore
+			// @ts-expect-error
 			expect(value).toEqual("1");
 		});
 	});

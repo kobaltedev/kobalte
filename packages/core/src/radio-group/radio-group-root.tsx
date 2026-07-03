@@ -8,29 +8,27 @@
  */
 
 import {
-	type Orientation,
-	type ValidationState,
 	access,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
+	type ValidationState,
 } from "@kobalte/utils";
-import { type ValidComponent, createUniqueId, splitProps } from "solid-js";
-
+import { createFormResetListener } from "@solid-primitives/form";
+import type { ValidComponent } from "@solidjs/web";
+import { createUniqueId, omit } from "solid-js";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import {
-	createControllableSignal,
-	createFormResetListener,
-} from "../primitives";
+import { createControllableSignal } from "../primitives";
 import {
 	RadioGroupContext,
 	type RadioGroupContextValue,
@@ -92,10 +90,10 @@ export interface RadioGroupRootRenderProps
 	extends RadioGroupRootCommonProps,
 		FormControlDataSet {
 	role: "radiogroup";
-	"aria-invalid": boolean | undefined;
-	"aria-required": boolean | undefined;
-	"aria-disabled": boolean | undefined;
-	"aria-readonly": boolean | undefined;
+	"aria-invalid": "true" | undefined;
+	"aria-required": "true" | undefined;
+	"aria-disabled": "true" | undefined;
+	"aria-readonly": "true" | undefined;
 	"aria-orientation": Orientation | undefined;
 }
 
@@ -122,43 +120,53 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 		props as RadioGroupRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
+	const formControlProps = omit(
 		mergedProps,
-		[
-			"ref",
-			"value",
-			"defaultValue",
-			"onChange",
-			"orientation",
-			"aria-labelledby",
-			"aria-describedby",
-		],
-		FORM_CONTROL_PROP_NAMES,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"orientation",
+		"aria-labelledby",
+		"aria-describedby",
+	) as unknown as typeof mergedProps;
+	const others = omit(
+		mergedProps,
+		"ref",
+		"value",
+		"defaultValue",
+		"onChange",
+		"orientation",
+		"aria-labelledby",
+		"aria-describedby",
+		...FORM_CONTROL_PROP_NAMES,
 	);
 
 	const [selected, setSelected] = createControllableSignal<string>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue,
-		onChange: (value) => local.onChange?.(value),
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue,
+		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
 	const { formControlContext } = createFormControl(formControlProps);
 
 	createFormResetListener(
 		() => ref,
-		() => setSelected(local.defaultValue ?? ""),
+		() => setSelected(mergedProps.defaultValue ?? ""),
 	);
 
 	const ariaLabelledBy = () => {
 		return formControlContext.getAriaLabelledBy(
 			access(formControlProps.id),
 			others["aria-label"],
-			local["aria-labelledby"],
+			mergedProps["aria-labelledby"],
 		);
 	};
 
 	const ariaDescribedBy = () => {
-		return formControlContext.getAriaDescribedBy(local["aria-describedby"]);
+		return formControlContext.getAriaDescribedBy(
+			mergedProps["aria-describedby"],
+		);
 	};
 
 	const isDefaultValue = (value: string) => {
@@ -194,26 +202,28 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<RadioGroupContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<RadioGroupContext value={context}>
 				<Polymorphic<RadioGroupRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
+					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 					role="radiogroup"
 					id={access(formControlProps.id)!}
 					aria-invalid={
-						formControlContext.validationState() === "invalid" || undefined
+						formControlContext.validationState() === "invalid"
+							? "true"
+							: undefined
 					}
-					aria-required={formControlContext.isRequired() || undefined}
-					aria-disabled={formControlContext.isDisabled() || undefined}
-					aria-readonly={formControlContext.isReadOnly() || undefined}
-					aria-orientation={local.orientation}
+					aria-required={formControlContext.isRequired() ? "true" : undefined}
+					aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
+					aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
+					aria-orientation={mergedProps.orientation}
 					aria-labelledby={ariaLabelledBy()}
 					aria-describedby={ariaDescribedBy()}
 					{...formControlContext.dataset()}
 					{...others}
 				/>
-			</RadioGroupContext.Provider>
-		</FormControlContext.Provider>
+			</RadioGroupContext>
+		</FormControlContext>
 	);
 }

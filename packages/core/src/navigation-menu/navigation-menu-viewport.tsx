@@ -1,19 +1,23 @@
 import {
-	type Orientation,
 	composeEventHandlers,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
+import type {
+	FocusOutsideEvent,
+	InteractOutsideEvent,
+	PointerDownOutsideEvent,
+} from "@solid-primitives/interaction";
 import { combineStyle } from "@solid-primitives/props";
+import { createElementSize } from "@solid-primitives/resize-observer";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
-	type JSX,
-	Show,
-	type ValidComponent,
 	createEffect,
 	createMemo,
 	createSignal,
-	on,
-	splitProps,
+	omit,
+	Show,
 } from "solid-js";
 import {
 	DismissableLayer,
@@ -25,12 +29,6 @@ import {
 } from "../menubar/menubar-context";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Popper } from "../popper";
-import type {
-	FocusOutsideEvent,
-	InteractOutsideEvent,
-	PointerDownOutsideEvent,
-} from "../primitives/create-interact-outside";
-import { createSize } from "../primitives/create-size";
 import { useNavigationMenuContext } from "./navigation-menu-context";
 
 export interface NavigationMenuViewportOptions {
@@ -70,6 +68,7 @@ export interface NavigationMenuViewportRenderProps
 	extends NavigationMenuViewportCommonProps,
 		DismissableLayerRenderProps,
 		MenubarDataSet {
+	role: "presentation";
 	"data-orientation": Orientation;
 }
 
@@ -86,11 +85,12 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 
 	const [ref, setRef] = createSignal<HTMLElement>();
 
-	const [local, others] = splitProps(props as NavigationMenuViewportProps, [
+	const others = omit(
+		props as NavigationMenuViewportProps,
 		"ref",
 		"style",
 		"onEscapeKeyDown",
-	]);
+	);
 
 	const close = () => {
 		menubarContext.setAutoFocusMenu(false);
@@ -101,30 +101,28 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 		close();
 	};
 
-	const size = createSize(ref);
+	const size = createElementSize(ref);
 
 	createEffect(
-		on(
-			() =>
-				menubarContext.value()
-					? menubarContext.menuRefMap().get(menubarContext.value()!)
-					: undefined,
-			(menu) => {
-				if (menu === undefined || menu[0] === undefined) return;
-				setRef(menu[0]);
-			},
-		),
+		() =>
+			menubarContext.value()
+				? menubarContext.menuRefMap().get(menubarContext.value()!)
+				: undefined,
+		(menu) => {
+			if (menu === undefined || menu[0] === undefined) return;
+			setRef(menu[0]);
+		},
 	);
 
 	const height = createMemo((prev) => {
 		if (ref() === undefined || !context.viewportPresent()) return undefined;
-		if (size.height() === 0) return prev;
-		return size.height();
+		if (size.height === null) return prev;
+		return size.height;
 	});
 	const width = createMemo((prev) => {
 		if (ref() === undefined || !context.viewportPresent()) return undefined;
-		if (size.width() === 0) return prev;
-		return size.width();
+		if (size.width === null) return prev;
+		return size.width;
 	});
 
 	return (
@@ -139,7 +137,8 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 					>
 				>
 					as="li"
-					ref={mergeRefs(context.setViewportRef, local.ref)}
+					role="presentation"
+					ref={mergeRefs(context.setViewportRef, props.ref)}
 					excludedElements={[context.rootRef]}
 					bypassTopMostLayerCheck
 					style={combineStyle(
@@ -154,10 +153,10 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 								: undefined,
 							position: "relative",
 						},
-						local.style,
+						props.style,
 					)}
 					onEscapeKeyDown={composeEventHandlers([
-						local.onEscapeKeyDown,
+						props.onEscapeKeyDown,
 						onEscapeKeyDown,
 					])}
 					onDismiss={close}

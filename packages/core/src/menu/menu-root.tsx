@@ -1,9 +1,9 @@
 import {
-	type Orientation,
 	createGenerateId,
 	mergeDefaultProps,
+	type Orientation,
 } from "@kobalte/utils";
-import { type ParentProps, createUniqueId, splitProps } from "solid-js";
+import { createUniqueId, omit, type ParentProps } from "solid-js";
 
 import { useOptionalMenubarContext } from "../menubar/menubar-context";
 import { createDisclosureState } from "../primitives";
@@ -71,7 +71,8 @@ export function MenuRoot(props: MenuRootProps) {
 		props,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"id",
 		"modal",
 		"preventScroll",
@@ -81,33 +82,33 @@ export function MenuRoot(props: MenuRootProps) {
 		"onOpenChange",
 		"value",
 		"orientation",
-	]);
+	);
 
 	const disclosureState = createDisclosureState({
-		open: () => local.open,
-		defaultOpen: () => local.defaultOpen,
-		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
+		open: () => mergedProps.open,
+		defaultOpen: () => mergedProps.defaultOpen,
+		onOpenChange: (isOpen) => mergedProps.onOpenChange?.(isOpen),
 	});
 
 	const context: MenuRootContextValue = {
-		isModal: () => local.modal ?? true,
-		preventScroll: () => local.preventScroll ?? context.isModal(),
-		forceMount: () => local.forceMount ?? false,
-		generateId: createGenerateId(() => local.id!),
-		value: () => local.value,
+		isModal: () => mergedProps.modal ?? true,
+		preventScroll: () => mergedProps.preventScroll ?? context.isModal(),
+		forceMount: () => mergedProps.forceMount ?? false,
+		generateId: createGenerateId(() => mergedProps.id!),
+		value: () => mergedProps.value,
 		orientation: () =>
-			local.orientation ??
+			mergedProps.orientation ??
 			optionalMenubarContext?.orientation() ??
 			"horizontal",
 	};
 
 	return (
-		<MenuRootContext.Provider value={context}>
+		<MenuRootContext value={context}>
 			<Menu
 				open={disclosureState.isOpen()}
 				onOpenChange={disclosureState.setIsOpen}
 				{...others}
 			/>
-		</MenuRootContext.Provider>
+		</MenuRootContext>
 	);
 }

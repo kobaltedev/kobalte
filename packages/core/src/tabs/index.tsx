@@ -35,26 +35,26 @@ import {
 } from "./tabs-trigger";
 
 export type {
-	TabsContentOptions,
 	TabsContentCommonProps,
-	TabsContentRenderProps,
+	TabsContentOptions,
 	TabsContentProps,
-	TabsIndicatorOptions,
+	TabsContentRenderProps,
 	TabsIndicatorCommonProps,
-	TabsIndicatorRenderProps,
+	TabsIndicatorOptions,
 	TabsIndicatorProps,
-	TabsListOptions,
+	TabsIndicatorRenderProps,
 	TabsListCommonProps,
-	TabsListRenderProps,
+	TabsListOptions,
 	TabsListProps,
-	TabsRootOptions,
+	TabsListRenderProps,
 	TabsRootCommonProps,
-	TabsRootRenderProps,
+	TabsRootOptions,
 	TabsRootProps,
-	TabsTriggerOptions,
+	TabsRootRenderProps,
 	TabsTriggerCommonProps,
-	TabsTriggerRenderProps,
+	TabsTriggerOptions,
 	TabsTriggerProps,
+	TabsTriggerRenderProps,
 };
 export { Content, Indicator, List, Root, Trigger };
 
@@ -68,4 +68,4 @@ export const Tabs = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useTabsContext, type TabsContextValue } from "./tabs-context";
+export { type TabsContextValue, useTabsContext } from "./tabs-context";

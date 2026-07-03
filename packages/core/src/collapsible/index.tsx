@@ -21,18 +21,18 @@ import {
 } from "./collapsible-trigger";
 
 export type {
-	CollapsibleContentOptions,
 	CollapsibleContentCommonProps,
-	CollapsibleContentRenderProps,
+	CollapsibleContentOptions,
 	CollapsibleContentProps,
-	CollapsibleRootOptions,
+	CollapsibleContentRenderProps,
 	CollapsibleRootCommonProps,
-	CollapsibleRootRenderProps,
+	CollapsibleRootOptions,
 	CollapsibleRootProps,
-	CollapsibleTriggerOptions,
+	CollapsibleRootRenderProps,
 	CollapsibleTriggerCommonProps,
-	CollapsibleTriggerRenderProps,
+	CollapsibleTriggerOptions,
 	CollapsibleTriggerProps,
+	CollapsibleTriggerRenderProps,
 };
 export { Content, Root, Trigger };
 
@@ -45,6 +45,6 @@ export const Collapsible = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useCollapsibleContext,
 	type CollapsibleContextValue,
+	useCollapsibleContext,
 } from "./collapsible-context";

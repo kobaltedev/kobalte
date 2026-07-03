@@ -17,14 +17,14 @@
 		"isolatedModules": true,
 		"ignoreDeprecations": "6.0",
 		"jsx": "preserve",
-		"jsxImportSource": "solid-js",
-		"moduleResolution": "bundler",
+		"jsxImportSource": "@solidjs/web",
+		"moduleResolution": "Bundler",
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,
+		"ignoreDeprecations": "6.0",
 		"sourceMap": true,
 		"types": [
-			"solid-js",
 			"vite/client",
 			"node",
 			"vitest/globals"

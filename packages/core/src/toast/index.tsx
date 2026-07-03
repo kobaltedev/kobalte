@@ -65,44 +65,44 @@ import type {
 } from "./types";
 
 export type {
-	ToastCloseButtonOptions,
 	ToastCloseButtonCommonProps,
-	ToastCloseButtonRenderProps,
+	ToastCloseButtonOptions,
 	ToastCloseButtonProps,
+	ToastCloseButtonRenderProps,
 	ToastComponent,
 	ToastComponentProps,
-	ToastDescriptionOptions,
 	ToastDescriptionCommonProps,
-	ToastDescriptionRenderProps,
+	ToastDescriptionOptions,
 	ToastDescriptionProps,
-	ToastListOptions,
+	ToastDescriptionRenderProps,
 	ToastListCommonProps,
-	ToastListRenderProps,
+	ToastListOptions,
 	ToastListProps,
-	ToastProgressFillOptions,
+	ToastListRenderProps,
 	ToastProgressFillCommonProps,
-	ToastProgressFillRenderProps,
+	ToastProgressFillOptions,
 	ToastProgressFillProps,
-	ToastProgressTrackOptions,
+	ToastProgressFillRenderProps,
 	ToastProgressTrackCommonProps,
-	ToastProgressTrackRenderProps,
+	ToastProgressTrackOptions,
 	ToastProgressTrackProps,
+	ToastProgressTrackRenderProps,
 	ToastPromiseComponent,
 	ToastPromiseComponentProps,
 	ToastPromiseState,
-	ToastRegionOptions,
 	ToastRegionCommonProps,
-	ToastRegionRenderProps,
+	ToastRegionOptions,
 	ToastRegionProps,
-	ToastRootOptions,
+	ToastRegionRenderProps,
 	ToastRootCommonProps,
-	ToastRootRenderProps,
+	ToastRootOptions,
 	ToastRootProps,
+	ToastRootRenderProps,
 	ToastSwipeDirection,
-	ToastTitleOptions,
 	ToastTitleCommonProps,
-	ToastTitleRenderProps,
+	ToastTitleOptions,
 	ToastTitleProps,
+	ToastTitleRenderProps,
 };
 
 export {
@@ -131,4 +131,4 @@ export const Toast = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useToastContext, type ToastContextValue } from "./toast-context";
+export { type ToastContextValue, useToastContext } from "./toast-context";

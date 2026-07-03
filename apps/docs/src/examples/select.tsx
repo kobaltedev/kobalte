@@ -1,5 +1,5 @@
 import { createVirtualizer } from "@tanstack/solid-virtual";
-import { For, createSignal } from "solid-js";
+import { createSignal, For } from "solid-js";
 
 import { CaretSortIcon, CheckIcon, CrossIcon } from "../components";
 import style from "./select.module.css";

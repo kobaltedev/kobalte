@@ -7,22 +7,14 @@
  */
 
 import {
-	type Orientation,
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 	scrollIntoViewport,
 } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	createMemo,
-	on,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, createMemo, omit, untrack } from "solid-js";
 
 import * as Button from "../button";
 import { useLocale } from "../i18n/i18n-provider";
@@ -96,7 +88,8 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		props as MenuTriggerProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"id",
 		"disabled",
@@ -105,13 +98,13 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		"onKeyDown",
 		"onMouseOver",
 		"onFocus",
-	]);
+	);
 
 	let key = () => rootContext.value();
 
 	if (optionalMenubarContext !== undefined) {
-		key = () => rootContext.value() ?? local.id!;
-		if (optionalMenubarContext.lastValue() === undefined)
+		key = () => rootContext.value() ?? mergedProps.id!;
+		if (untrack(() => optionalMenubarContext.lastValue()) === undefined)
 			optionalMenubarContext.setLastValue(key);
 	}
 
@@ -128,13 +121,11 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 
 	// When native link focus the trigger instead of the content when current menu is active.
 	createEffect(
-		on(
-			() => optionalMenubarContext?.value(),
-			(value) => {
-				if (!isNativeLink()) return;
-				if (value === key()) context.triggerRef()?.focus();
-			},
-		),
+		() => optionalMenubarContext?.value(),
+		(value) => {
+			if (!isNativeLink()) return;
+			if (value === key()) context.triggerRef()?.focus();
+		},
 	);
 
 	const handleClick = () => {
@@ -155,28 +146,28 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(e, mergedProps.onPointerDown);
 
 		e.currentTarget.dataset.pointerType = e.pointerType;
 
 		// For consistency with native, open the select on mouse down (main button), but touch up.
-		if (!local.disabled && e.pointerType !== "touch" && e.button === 0) {
+		if (!mergedProps.disabled && e.pointerType !== "touch" && e.button === 0) {
 			handleClick();
 		}
 	};
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, mergedProps.onClick);
 
-		if (!local.disabled) {
+		if (!mergedProps.disabled) {
 			if (e.currentTarget.dataset.pointerType === "touch") handleClick();
 		}
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
-		if (local.disabled) {
+		if (mergedProps.disabled) {
 			return;
 		}
 
@@ -221,14 +212,14 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onMouseOver: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, local.onMouseOver);
+		callHandler(e, mergedProps.onMouseOver);
 
 		// Skip touch event
 		if (context.triggerRef()?.dataset.pointerType === "touch") return;
 
 		// When one of the menubar menus is open, automatically open others on trigger hover
 		if (
-			!local.disabled &&
+			!mergedProps.disabled &&
 			optionalMenubarContext !== undefined &&
 			optionalMenubarContext.value() !== undefined
 		) {
@@ -237,7 +228,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 
 		if (
 			optionalMenubarContext !== undefined &&
@@ -246,7 +237,10 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			optionalMenubarContext.setValue(key);
 	};
 
-	createEffect(() => onCleanup(context.registerTriggerId(local.id!)));
+	createEffect(
+		() => mergedProps.id!,
+		(id) => context.registerTriggerId(id),
+	);
 
 	return (
 		<Button.Root<
@@ -257,19 +251,19 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, local.ref)}
+			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
 			data-kb-menu-value-trigger={rootContext.value()}
-			id={local.id}
-			disabled={local.disabled}
+			id={mergedProps.id}
+			disabled={mergedProps.disabled}
 			aria-haspopup="true"
-			aria-expanded={context.isOpen()}
+			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
 			data-highlighted={
 				key() !== undefined && optionalMenubarContext?.value() === key()
 					? true
 					: undefined
 			}
-			tabIndex={
+			tabindex={
 				optionalMenubarContext !== undefined
 					? optionalMenubarContext.value() === key() ||
 						optionalMenubarContext.lastValue() === key()

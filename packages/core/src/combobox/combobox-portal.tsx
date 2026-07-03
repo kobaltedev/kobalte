@@ -1,5 +1,5 @@
-import { type ComponentProps, Show } from "solid-js";
-import { Portal } from "solid-js/web";
+import { type ComponentProps, Portal } from "@solidjs/web";
+import { Show } from "solid-js";
 
 import { useComboboxContext } from "./combobox-context";
 

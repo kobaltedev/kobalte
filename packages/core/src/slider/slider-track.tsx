@@ -1,10 +1,6 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
-import {
-	type JSX,
-	type ValidComponent,
-	createSignal,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createSignal, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -39,11 +35,12 @@ export function SliderTrack<T extends ValidComponent = "div">(
 ) {
 	const context = useSliderContext();
 
-	const [local, others] = splitProps(props as SliderTrackProps, [
+	const others = omit(
+		props as SliderTrackProps,
 		"onPointerDown",
 		"onPointerMove",
 		"onPointerUp",
-	]);
+	);
 
 	const [sRect, setRect] = createSignal<DOMRect>();
 
@@ -80,7 +77,12 @@ export function SliderTrack<T extends ValidComponent = "div">(
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerDown);
+		callHandler(
+			e,
+			props.onPointerDown as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		const target = e.target as HTMLElement;
 		target.setPointerCapture(e.pointerId);
@@ -98,7 +100,12 @@ export function SliderTrack<T extends ValidComponent = "div">(
 	const onPointerMove: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		e,
 	) => {
-		callHandler(e, local.onPointerMove);
+		callHandler(
+			e,
+			props.onPointerMove as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		const target = e.target as HTMLElement;
 
@@ -113,7 +120,12 @@ export function SliderTrack<T extends ValidComponent = "div">(
 	};
 
 	const onPointerUp: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (e) => {
-		callHandler(e, local.onPointerUp);
+		callHandler(
+			e,
+			props.onPointerUp as
+				| JSX.EventHandlerUnion<HTMLElement, PointerEvent>
+				| undefined,
+		);
 
 		const target = e.target as HTMLElement;
 

@@ -1,5 +1,6 @@
-import { OverrideComponentProps, mergeDefaultProps } from "@kobalte/utils";
-import { type Component, type ValidComponent, splitProps } from "solid-js";
+import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 
 import {
@@ -45,11 +46,11 @@ export function MenuRadioItem<
 		props as MenuRadioItemProps<T, TValue>,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["value", "onSelect"]);
+	const others = omit(mergedProps, "value", "onSelect");
 
 	const onSelect = () => {
-		local.onSelect?.();
-		context.setSelectedValue(local.value);
+		mergedProps.onSelect?.();
+		context.setSelectedValue(mergedProps.value);
 	};
 
 	return (
@@ -57,7 +58,7 @@ export function MenuRadioItem<
 			Component<Omit<MenuRadioItemRenderProps, keyof MenuItemBaseRenderProps>>
 		>
 			role="menuitemradio"
-			checked={context.isSelectedValue(local.value)}
+			checked={context.isSelectedValue(mergedProps.value)}
 			onSelect={onSelect}
 			{...others}
 		/>

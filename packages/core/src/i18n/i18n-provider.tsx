@@ -6,14 +6,19 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/i18n/src/context.tsx
  */
 
-import { type Accessor, type JSX, createContext, useContext } from "solid-js";
+import {
+	type Accessor,
+	createContext,
+	type Element,
+	useContext,
+} from "solid-js";
 
-import { createDefaultLocale } from "./create-default-locale";
+import { createDefaultLocale, getDefaultLocale } from "./create-default-locale";
 import { type Direction, getReadingDirection } from "./utils";
 
 interface I18nProviderProps {
 	/** Contents that should have the locale applied. */
-	children?: JSX.Element;
+	children?: Element;
 
 	/** The locale to apply to the children. */
 	locale?: string;
@@ -27,7 +32,10 @@ interface I18nContextValue {
 	direction: Accessor<Direction>;
 }
 
-const I18nContext = createContext<I18nContextValue>();
+const I18nContext = createContext<I18nContextValue>({
+	locale: () => getDefaultLocale().locale,
+	direction: () => getDefaultLocale().direction,
+});
 
 /**
  * Provides the locale for the application to all child components.
@@ -43,20 +51,12 @@ export function I18nProvider(props: I18nProviderProps) {
 				: defaultLocale.direction(),
 	};
 
-	return (
-		<I18nContext.Provider value={context}>
-			{props.children}
-		</I18nContext.Provider>
-	);
+	return <I18nContext value={context}>{props.children}</I18nContext>;
 }
 
 /**
  * Returns an accessor for the current locale and layout direction.
  */
 export function useLocale() {
-	const defaultLocale = createDefaultLocale();
-
-	const context = useContext(I18nContext);
-
-	return context || defaultLocale;
+	return useContext(I18nContext);
 }

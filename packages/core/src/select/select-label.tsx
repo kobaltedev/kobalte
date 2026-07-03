@@ -1,10 +1,6 @@
 import { callHandler } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 
 import {
 	FormControlLabel,
@@ -37,10 +33,10 @@ export function SelectLabel<T extends ValidComponent = "span">(
 ) {
 	const context = useSelectContext();
 
-	const [local, others] = splitProps(props as SelectLabelProps, ["onClick"]);
+	const others = omit(props as SelectLabelProps, "onClick");
 
 	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+		callHandler(e, props.onClick);
 
 		if (!context.isDisabled()) {
 			context.triggerRef()?.focus();

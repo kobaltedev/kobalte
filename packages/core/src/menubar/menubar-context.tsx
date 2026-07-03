@@ -1,8 +1,8 @@
 import type { Orientation } from "@kobalte/utils";
 import {
 	type Accessor,
-	type Setter,
 	createContext,
+	type Setter,
 	useContext,
 } from "solid-js";
 
@@ -42,10 +42,10 @@ export interface MenubarContextValue {
 	orientation: Accessor<Orientation>;
 }
 
-export const MenubarContext = createContext<MenubarContextValue>();
+export const MenubarContext = createContext<MenubarContextValue | null>(null);
 
-export function useOptionalMenubarContext() {
-	return useContext(MenubarContext);
+export function useOptionalMenubarContext(): MenubarContextValue | undefined {
+	return useContext(MenubarContext) ?? undefined;
 }
 
 export function useMenubarContext() {

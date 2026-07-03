@@ -42,30 +42,30 @@ import {
 } from "./listbox-section";
 
 export type {
-	ListboxItemDescriptionOptions,
-	ListboxItemDescriptionCommonProps,
-	ListboxItemDescriptionRenderProps,
-	ListboxItemDescriptionProps,
-	ListboxItemIndicatorOptions,
-	ListboxItemIndicatorCommonProps,
-	ListboxItemIndicatorRenderProps,
-	ListboxItemIndicatorProps,
-	ListboxItemLabelOptions,
-	ListboxItemLabelCommonProps,
-	ListboxItemLabelRenderProps,
-	ListboxItemLabelProps,
-	ListboxItemOptions,
 	ListboxItemCommonProps,
-	ListboxItemRenderProps,
+	ListboxItemDescriptionCommonProps,
+	ListboxItemDescriptionOptions,
+	ListboxItemDescriptionProps,
+	ListboxItemDescriptionRenderProps,
+	ListboxItemIndicatorCommonProps,
+	ListboxItemIndicatorOptions,
+	ListboxItemIndicatorProps,
+	ListboxItemIndicatorRenderProps,
+	ListboxItemLabelCommonProps,
+	ListboxItemLabelOptions,
+	ListboxItemLabelProps,
+	ListboxItemLabelRenderProps,
+	ListboxItemOptions,
 	ListboxItemProps,
-	ListboxRootOptions,
+	ListboxItemRenderProps,
 	ListboxRootCommonProps,
-	ListboxRootRenderProps,
+	ListboxRootOptions,
 	ListboxRootProps,
-	ListboxSectionOptions,
+	ListboxRootRenderProps,
 	ListboxSectionCommonProps,
-	ListboxSectionRenderProps,
+	ListboxSectionOptions,
 	ListboxSectionProps,
+	ListboxSectionRenderProps,
 };
 
 export { Item, ItemDescription, ItemIndicator, ItemLabel, Root, Section };
@@ -81,4 +81,4 @@ export const Listbox = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useListboxContext, type ListboxContextValue } from "./listbox-context";
+export { type ListboxContextValue, useListboxContext } from "./listbox-context";

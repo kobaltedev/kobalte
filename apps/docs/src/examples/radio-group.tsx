@@ -1,8 +1,7 @@
-import { For, createSignal } from "solid-js";
+import { RadioGroup } from "@kobalte/core/radio-group";
+import { createSignal, For } from "solid-js";
 
 import style from "./radio-group.module.css";
-
-import { RadioGroup } from "@kobalte/core/radio-group";
 
 export function BasicExample() {
 	return (

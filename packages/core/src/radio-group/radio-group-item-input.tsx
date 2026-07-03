@@ -12,17 +12,9 @@ import {
 	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
-import {
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	on,
-	onCleanup,
-	splitProps,
-} from "solid-js";
-
 import { combineStyle } from "@solid-primitives/props";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, omit, onCleanup } from "solid-js";
 import { useFormControlContext } from "../form-control";
 import {
 	type ElementOf,
@@ -85,7 +77,8 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 		props as RadioGroupItemInputProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"style",
 		"aria-labelledby",
@@ -93,15 +86,15 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 		"onChange",
 		"onFocus",
 		"onBlur",
-	]);
+	);
 
 	const ariaLabelledBy = () => {
 		return (
 			[
-				local["aria-labelledby"],
+				mergedProps["aria-labelledby"],
 				radioContext.labelId(),
 				// If there is both an aria-label and aria-labelledby, add the input itself has an aria-labelledby
-				local["aria-labelledby"] != null && others["aria-label"] != null
+				mergedProps["aria-labelledby"] != null && others["aria-label"] != null
 					? others.id
 					: undefined,
 			]
@@ -113,7 +106,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	const ariaDescribedBy = () => {
 		return (
 			[
-				local["aria-describedby"],
+				mergedProps["aria-describedby"],
 				radioContext.descriptionId(),
 				radioGroupContext.ariaDescribedBy(),
 			]
@@ -125,7 +118,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
 
 	const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (e) => {
-		callHandler(e, local.onChange);
+		callHandler(e, mergedProps.onChange);
 
 		e.stopPropagation();
 
@@ -147,41 +140,42 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 		radioContext.setIsFocused(true);
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, local.onBlur);
+		callHandler(e, mergedProps.onBlur);
 		radioContext.setIsFocused(false);
 	};
 
 	createEffect(
-		on(
-			[() => radioContext.isSelected(), () => radioContext.value()],
-			(c) => {
-				if (!c[0] && c[1] === radioContext.value()) return;
-				setIsInternalChangeEvent(true);
+		() => [radioContext.isSelected(), radioContext.value()] as const,
+		([isSelected]) => {
+			if (!isSelected) return;
+			setIsInternalChangeEvent(true);
 
-				const ref = radioContext.inputRef();
-				ref?.dispatchEvent(
-					new Event("input", { bubbles: true, cancelable: true }),
-				);
-				ref?.dispatchEvent(
-					new Event("change", { bubbles: true, cancelable: true }),
-				);
-			},
-			{
-				defer: true,
-			},
-		),
+			const ref = radioContext.inputRef();
+			ref?.dispatchEvent(
+				new Event("input", { bubbles: true, cancelable: true }),
+			);
+			ref?.dispatchEvent(
+				new Event("change", { bubbles: true, cancelable: true }),
+			);
+		},
+		{ defer: true },
 	);
-	createEffect(() => onCleanup(radioContext.registerInput(others.id!)));
+	createEffect(
+		() => others.id,
+		(id) => {
+			onCleanup(radioContext.registerInput(id!));
+		},
+	);
 
 	return (
 		<Polymorphic<RadioGroupItemInputRenderProps>
 			as="input"
-			ref={mergeRefs(radioContext.setInputRef, local.ref)}
+			ref={mergeRefs(radioContext.setInputRef, mergedProps.ref)}
 			type="radio"
 			name={formControlContext.name()}
 			value={radioContext.value()}
@@ -189,7 +183,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 			required={formControlContext.isRequired()}
 			disabled={radioContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
-			style={combineStyle({ ...visuallyHiddenStyles }, local.style)}
+			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
 			aria-labelledby={ariaLabelledBy()}
 			aria-describedby={ariaDescribedBy()}
 			onChange={onChange}

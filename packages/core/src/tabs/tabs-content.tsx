@@ -7,21 +7,13 @@
  */
 
 import {
-	type Orientation,
 	getFocusableTreeWalker,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
-import {
-	Show,
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	on,
-	onCleanup,
-	splitProps,
-} from "solid-js";
-
-import createPresence from "solid-presence";
+import { createPresence } from "@solid-primitives/presence";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, omit, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -47,7 +39,7 @@ export interface TabsContentCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface TabsContentRenderProps extends TabsContentCommonProps {
 	role: "tabpanel";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"aria-labelledby": string | undefined;
 	"data-orientation": Orientation;
 	"data-selected": string | undefined;
@@ -67,33 +59,35 @@ export function TabsContent<T extends ValidComponent = "div">(
 
 	const context = useTabsContext();
 
-	const [local, others] = splitProps(props as TabsContentProps, [
+	const others = omit(
+		props as TabsContentProps,
 		"ref",
 		"id",
 		"value",
 		"forceMount",
-	]);
+	);
 
 	const [tabIndex, setTabIndex] = createSignal<number | undefined>(0);
 
-	const id = () => local.id ?? context.generateContentId(local.value);
+	const id = () => props.id ?? context.generateContentId(props.value);
 
-	const isSelected = () => context.listState().selectedKey() === local.value;
+	const isSelected = () => context.listState().selectedKey() === props.value;
 
-	const { present } = createPresence({
-		show: () => local.forceMount || isSelected(),
-		element: () => ref() ?? null,
-	});
+	const { isMounted: present } = createPresence(
+		() => props.forceMount || isSelected() || undefined,
+		{ transitionDuration: 0 },
+	);
 
 	createEffect(
-		on([() => ref(), () => present()], ([ref, isPresent]) => {
-			if (ref == null || !isPresent) {
+		() => [ref(), present()] as const,
+		([refEl, isPresent]) => {
+			if (refEl == null || !isPresent) {
 				return;
 			}
 
 			const updateTabIndex = () => {
 				// Detect if there are any tabbable elements and update the tabIndex accordingly.
-				const walker = getFocusableTreeWalker(ref, { tabbable: true });
+				const walker = getFocusableTreeWalker(refEl, { tabbable: true });
 				setTabIndex(walker.nextNode() ? undefined : 0);
 			};
 
@@ -102,34 +96,33 @@ export function TabsContent<T extends ValidComponent = "div">(
 			const observer = new MutationObserver(updateTabIndex);
 
 			// Update when new elements are inserted, or the tabindex/disabled attribute updates.
-			observer.observe(ref, {
+			observer.observe(refEl, {
 				subtree: true,
 				childList: true,
 				attributes: true,
 				attributeFilter: ["tabindex", "disabled"],
 			});
 
-			onCleanup(() => {
-				observer.disconnect();
-			});
-		}),
+			return () => observer.disconnect();
+		},
 	);
 
 	createEffect(
-		on([() => local.value, id], ([value, id]) => {
-			context.contentIdsMap().set(value, id);
-		}),
+		() => [props.value, id()] as const,
+		([value, contentId]) => {
+			context.contentIdsMap().set(value, contentId);
+		},
 	);
 
 	return (
 		<Show when={present()}>
 			<Polymorphic<TabsContentRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, local.ref)}
+				ref={mergeRefs(setRef, (props as TabsContentProps).ref)}
 				id={id()}
 				role="tabpanel"
-				tabIndex={tabIndex()}
-				aria-labelledby={context.triggerIdsMap().get(local.value)}
+				tabindex={tabIndex()}
+				aria-labelledby={context.triggerIdsMap().get(props.value)}
 				data-orientation={context.orientation()}
 				data-selected={isSelected() ? "" : undefined}
 				{...others}

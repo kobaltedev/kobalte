@@ -1,17 +1,12 @@
 import {
-	type Orientation,
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type Orientation,
 } from "@kobalte/utils";
-import {
-	type JSX,
-	type ValidComponent,
-	createSignal,
-	createUniqueId,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { createSignal, createUniqueId, omit } from "solid-js";
 import { useLocale } from "../i18n";
 import { createListState } from "../list";
 import {
@@ -21,7 +16,7 @@ import {
 } from "../polymorphic";
 import type { CollectionItemWithRef } from "../primitives";
 import { createDomCollection } from "../primitives/create-dom-collection";
-import { type SelectionMode, createSelectableCollection } from "../selection";
+import { createSelectableCollection, type SelectionMode } from "../selection";
 import { TabsKeyboardDelegate } from "../tabs/tabs-keyboard-delegate";
 import {
 	ToggleGroupContext,
@@ -64,7 +59,7 @@ export interface ToggleGroupBaseCommonProps<
 
 export interface ToggleGroupBaseRenderProps extends ToggleGroupBaseCommonProps {
 	role: "group";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	"data-orientation": Orientation | undefined;
 }
 
@@ -88,7 +83,8 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 		props as ToggleGroupBaseProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"value",
 		"defaultValue",
@@ -100,7 +96,7 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 		"onMouseDown",
 		"onFocusIn",
 		"onFocusOut",
-	]);
+	);
 
 	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
 
@@ -110,11 +106,11 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 	});
 
 	const listState = createListState({
-		selectedKeys: () => local.value,
-		defaultSelectedKeys: () => local.defaultValue,
-		onSelectionChange: (key) => local.onChange?.(Array.from(key)),
+		selectedKeys: () => mergedProps.value,
+		defaultSelectedKeys: () => mergedProps.defaultValue,
+		onSelectionChange: (key) => mergedProps.onChange?.(Array.from(key)),
 		disallowEmptySelection: false,
-		selectionMode: () => local.selectionMode,
+		selectionMode: () => mergedProps.selectionMode,
 		dataSource: items,
 	});
 
@@ -123,7 +119,7 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 	const delegate = new TabsKeyboardDelegate(
 		() => context.listState().collection(),
 		direction,
-		() => local.orientation!,
+		() => mergedProps.orientation!,
 	);
 
 	const selectableList = createSelectableCollection(
@@ -139,40 +135,42 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 
 	const context: ToggleGroupContextValue = {
 		listState: () => listState,
-		isDisabled: () => local.disabled ?? false,
-		isMultiple: () => local.selectionMode === "multiple",
+		isDisabled: () => mergedProps.disabled ?? false,
+		isMultiple: () => mergedProps.selectionMode === "multiple",
 		generateId: createGenerateId(() => others.id!),
-		orientation: () => local.orientation!,
+		orientation: () => mergedProps.orientation!,
 	};
 
 	return (
 		<DomCollectionProvider>
-			<ToggleGroupContext.Provider value={context}>
+			<ToggleGroupContext value={context}>
 				<Polymorphic<ToggleGroupBaseRenderProps>
 					as="div"
 					role="group"
-					ref={mergeRefs((el) => (ref = el), local.ref)}
-					tabIndex={!local.disabled ? selectableList.tabIndex() : undefined}
-					data-orientation={local.orientation}
+					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					tabindex={
+						!mergedProps.disabled ? selectableList.tabIndex() : undefined
+					}
+					data-orientation={mergedProps.orientation}
 					onKeyDown={composeEventHandlers([
-						local.onKeyDown,
+						mergedProps.onKeyDown,
 						selectableList.onKeyDown,
 					])}
 					onMouseDown={composeEventHandlers([
-						local.onMouseDown,
+						mergedProps.onMouseDown,
 						selectableList.onMouseDown,
 					])}
 					onFocusIn={composeEventHandlers([
-						local.onFocusIn,
+						mergedProps.onFocusIn,
 						selectableList.onFocusIn,
 					])}
 					onFocusOut={composeEventHandlers([
-						local.onFocusOut,
+						mergedProps.onFocusOut,
 						selectableList.onFocusOut,
 					])}
 					{...(others as { id: string })}
 				/>
-			</ToggleGroupContext.Provider>
+			</ToggleGroupContext>
 		</DomCollectionProvider>
 	);
 }

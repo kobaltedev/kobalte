@@ -1,4 +1,5 @@
-import { type JSX, Show, type ValidComponent, splitProps } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { omit, Show } from "solid-js";
 
 import {
 	type ElementOf,
@@ -26,16 +27,16 @@ export type SearchIndicatorProps<
 export function SearchIndicator<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SearchIndicatorProps<T>>,
 ) {
-	const [local, other] = splitProps(props, ["loadingComponent"]);
+	const other = omit(props, "loadingComponent");
 	const context = useSearchContext();
 
 	return (
 		<Polymorphic as="span" aria-hidden="true" {...other}>
 			<Show
 				when={
-					context.isLoadingSuggestions() === false || !local.loadingComponent
+					context.isLoadingSuggestions() === false || !props.loadingComponent
 				}
-				fallback={local.loadingComponent}
+				fallback={props.loadingComponent}
 			>
 				{props.children}
 			</Show>

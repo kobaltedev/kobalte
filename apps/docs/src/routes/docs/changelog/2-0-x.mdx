@@ -1,0 +1,46 @@
+# v2.0.x
+
+## v2.0.0
+
+**Breaking changes**
+
+- **Solid 2.0 is now required.** Peer dependencies are `solid-js@^2.0.0` and `@solidjs/web@^2.0.0`. Solid 1.x is no longer supported.
+- The JSX import source has changed from `solid-js` to `@solidjs/web`. Update your `tsconfig.json`:
+  ```json
+  { "compilerOptions": { "jsxImportSource": "@solidjs/web" } }
+  ```
+- `JSX` namespace types and DOM-specific component types must now be imported from `@solidjs/web` instead of `solid-js`.
+- Context providers now use the `value` prop directly — `<Context.Provider value={...}>` is replaced by `<Context value={...}>`.
+- `tabIndex` prop renamed to lowercase `tabindex` to match the Solid 2.0 DOM attribute convention.
+
+**New features**
+
+- [New `Drawer` component](/docs/core/components/drawer) — a panel that slides in from any edge of the screen with drag-to-dismiss, snap-point support, and real-time overlay opacity tracking. Adapted from [corvu/drawer](https://github.com/corvudev/corvu/tree/main/packages/drawer) by Jasmin Noetzli (MIT).
+- [New `Resizable` component](/docs/core/components/resizable) — a set of panels that can be resized by dragging the handles between them. Supports horizontal and vertical layouts, collapsible panels, pixel or fraction sizes, nested layouts, and full keyboard navigation. Adapted from [corvu/resizable](https://github.com/corvudev/corvu/tree/main/packages/resizable) by Jasmin Noetzli (MIT).
+- [New `OTPField` component](/docs/core/components/otp-field) — an accessible one-time password input built from a hidden native `<input>` and fully customisable visual slots. Supports autofill, custom character patterns, caret tracking, and Kobalte's standard form control system.
+
+**Solid Primitives integration**
+
+Internal primitives have been replaced with their `@solid-primitives` equivalents, reducing the custom code surface and aligning with the broader Solid ecosystem:
+
+- `createControllableSignal` → `@solid-primitives/controlled-signal`
+- `createFormResetListener` → `@solid-primitives/form`
+- `createSize` / `createElementSize` → `@solid-primitives/resize-observer`
+- Reduced-motion detection → `@solid-primitives/media` (via interaction)
+- Presence/exit animation management → `@solid-primitives/presence`
+- i18n utilities → `@solid-primitives/i18n`
+- Keyboard shortcut tracking → `@solid-primitives/keyboard`
+- `combineStyle` / prop utilities → `@solid-primitives/props`
+- Scroll locking → `@solid-primitives/scroll`
+- A11y helpers → `@solid-primitives/a11y`
+- Focus management → `@solid-primitives/focus`
+
+**Internal changes**
+
+- All components ported to the Solid 2.0 API: split `createEffect(compute, apply)` form, `omit` replacing `splitProps`, `merge` replacing `mergeProps`, auto-batched writes, and `<Loading>` / `<Errored>` replacing `<Suspense>` / `<ErrorBoundary>` in internal use.
+- `createTransition` removed — superseded by Solid 2.0's built-in transition model.
+- TypeScript updated to 6.0 with stricter type checking applied across all components.
+- Biome updated to 2.5.1 for formatting and linting.
+- pnpm updated to 11.
+- Vite updated to 6, Vitest to 2, Storybook to 10, Tailwind CSS to 4.
+- `@solidjs/testing-library` updated to 1.0.0-beta.2.

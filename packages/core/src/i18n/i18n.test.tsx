@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createRoot, onCleanup, onMount } from "solid-js";
+import { createRoot, onSettled } from "solid-js";
 
 import { vi } from "vitest";
 import { createDefaultLocale } from "./create-default-locale";
@@ -64,18 +64,18 @@ describe("createDefaultLocale", () => {
 
 			createDefaultLocale();
 
-			onMount(() => {
+			onSettled(() => {
 				expect(window.addEventListener).toHaveBeenCalledWith(
 					"languagechange",
 					expect.any(Function),
 				);
 
-				onCleanup(() => {
+				return () => {
 					expect(window.removeEventListener).toHaveBeenCalledWith(
 						"languagechange",
 						expect.any(Function),
 					);
-				});
+				};
 			});
 
 			dispose();

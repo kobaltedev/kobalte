@@ -4112,7 +4112,7 @@ describe.skip("Select", () => {
 			await Promise.resolve();
 
 			expect(onSubmit).toHaveBeenCalledTimes(1);
-			// @ts-ignore
+			// @ts-expect-error
 			expect(value).toBe("");
 		});
 
@@ -4161,7 +4161,7 @@ describe.skip("Select", () => {
 			await Promise.resolve();
 
 			expect(onSubmit).toHaveBeenCalledTimes(1);
-			// @ts-ignore
+			// @ts-expect-error
 			expect(value).toEqual("1");
 		});
 	});

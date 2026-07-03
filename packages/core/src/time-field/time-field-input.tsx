@@ -1,13 +1,6 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
-import {
-	type Accessor,
-	Index,
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	createMemo,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Accessor, createEffect, For, omit } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import { useLocale } from "../i18n";
@@ -17,7 +10,7 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { useTimeFieldContext } from "./time-field-context";
-import type { SegmentType, Time } from "./types";
+import type { SegmentType } from "./types";
 
 export interface TimeFieldInputOptions {
 	children?: (segment: Accessor<SegmentType>) => JSX.Element;
@@ -57,39 +50,43 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 		props as TimeFieldInputProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"children",
 		"onKeyDown",
 		"onFocusOut",
 		"aria-labelledby",
 		"aria-describedby",
-	]);
+	);
 
-	createEffect(() => timeFieldContext.setFieldAriaLabel(others["aria-label"]));
+	createEffect(
+		() => others["aria-label"],
+		(label) => timeFieldContext.setFieldAriaLabel(label),
+	);
 
-	createEffect(() => {
-		timeFieldContext.setFieldAriaLabelledBy(
+	createEffect(
+		() =>
 			formControlContext.getAriaLabelledBy(
 				others.id,
 				others["aria-label"],
-				local["aria-labelledby"],
+				mergedProps["aria-labelledby"],
 			),
-		);
-	});
+		(labelledBy) => timeFieldContext.setFieldAriaLabelledBy(labelledBy),
+	);
 
-	createEffect(() => {
-		timeFieldContext.setFieldAriaDescribedBy(
-			[local["aria-describedby"], timeFieldContext.ariaDescribedBy()]
+	createEffect(
+		() =>
+			[mergedProps["aria-describedby"], timeFieldContext.ariaDescribedBy()]
 				.filter(Boolean)
 				.join(" "),
-		);
-	});
+		(describedBy) => timeFieldContext.setFieldAriaDescribedBy(describedBy),
+	);
 
 	const { direction } = useLocale();
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		switch (e.key) {
 			case "ArrowLeft":
@@ -114,7 +111,7 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 	};
 
 	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocusOut);
+		callHandler(e, mergedProps.onFocusOut);
 
 		if (formControlContext.isDisabled() || formControlContext.isReadOnly()) {
 			return;
@@ -125,7 +122,7 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 		<Polymorphic<TimeFieldInputRenderProps>
 			as="div"
 			role="presentation"
-			ref={mergeRefs(timeFieldContext.setInputRef, local.ref)}
+			ref={mergeRefs(timeFieldContext.setInputRef, mergedProps.ref)}
 			aria-labelledby={timeFieldContext.fieldAriaLabelledBy()}
 			aria-describedby={timeFieldContext.fieldAriaDescribedBy()}
 			onKeyDown={onKeyDown}
@@ -133,9 +130,9 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 			{...formControlContext.dataset()}
 			{...others}
 		>
-			<Index each={timeFieldContext.segments()}>
-				{(segment) => local.children?.(segment)}
-			</Index>
+			<For each={timeFieldContext.segments()} keyed={false}>
+				{(segment) => mergedProps.children?.(segment)}
+			</For>
 		</Polymorphic>
 	);
 }

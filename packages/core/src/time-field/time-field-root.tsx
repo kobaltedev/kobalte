@@ -1,45 +1,41 @@
 import {
-	type ValidationState,
 	access,
 	createFocusManager,
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
+	type ValidationState,
 } from "@kobalte/utils";
+import { createFormResetListener } from "@solid-primitives/form";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import {
-	type JSX,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	mergeProps,
-	splitProps,
+	merge,
+	omit,
 } from "solid-js";
 import {
+	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-	createFormControl,
 } from "../form-control";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
+import { createControllableSignal, createRegisterId } from "../primitives";
 import {
-	createControllableSignal,
-	createFormResetListener,
-	createRegisterId,
-} from "../primitives";
+	TIME_FIELD_INTL_MESSAGES,
+	type TimeFieldIntlTranslations,
+} from "./time-field.intl";
 import {
 	TimeFieldContext,
 	type TimeFieldContextValue,
 } from "./time-field-context";
 import { TimeFieldValueDescription } from "./time-field-value-description";
-import {
-	TIME_FIELD_INTL_MESSAGES,
-	type TimeFieldIntlTranslations,
-} from "./time-field.intl";
 import type {
 	SegmentType,
 	Time,
@@ -154,26 +150,42 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		props as TimeFieldRootProps,
 	);
 
-	const [local, formControlProps, others] = splitProps(
+	const formControlProps = omit(
 		mergedProps,
-		[
-			"ref",
-			"translations",
-			"min",
-			"max",
-			"placeholder",
-			"hourCycle",
-			"granularity",
-			"forceLeadingZeros",
-			"validationState",
-			"value",
-			"defaultValue",
-			"onChange",
-			"aria-labelledby",
-			"aria-describedby",
-			"children",
-		],
-		FORM_CONTROL_PROP_NAMES,
+		"ref",
+		"translations",
+		"min",
+		"max",
+		"placeholder",
+		"hourCycle",
+		"granularity",
+		"forceLeadingZeros",
+		"validationState",
+		"value",
+		"defaultValue",
+		"onChange",
+		"aria-labelledby",
+		"aria-describedby",
+		"children",
+	);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"translations",
+		"min",
+		"max",
+		"placeholder",
+		"hourCycle",
+		"granularity",
+		"forceLeadingZeros",
+		"validationState",
+		"value",
+		"defaultValue",
+		"onChange",
+		"aria-labelledby",
+		"aria-describedby",
+		"children",
+		...FORM_CONTROL_PROP_NAMES,
 	);
 
 	const [inputRef, setInputRef] = createSignal<HTMLDivElement>();
@@ -189,10 +201,10 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	const [value, _setValue] = createControllableSignal<
 		Partial<Time> | undefined
 	>({
-		value: () => local.value,
-		defaultValue: () => local.defaultValue,
+		value: () => mergedProps.value,
+		defaultValue: () => mergedProps.defaultValue,
 		// @ts-ignore
-		onChange: (value) => local.onChange?.(value!),
+		onChange: (value) => mergedProps.onChange?.(value!),
 	});
 
 	const setValue = (v: Partial<Time> | undefined) => {
@@ -211,19 +223,19 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	};
 
 	createFormResetListener(ref, () => {
-		setValue(local.defaultValue);
+		setValue(mergedProps.defaultValue);
 	});
 
 	const validationState = createMemo(() => {
-		if (local.validationState) {
-			return local.validationState;
+		if (mergedProps.validationState) {
+			return mergedProps.validationState;
 		}
 
 		const minTime = Number.parseInt(
-			`${(local.min?.hour ?? "00").toString().padStart(2, "0")}${(local.min?.minute ?? "00").toString().padStart(2, "0")}${(local.min?.second ?? "00").toString().padStart(2, "0")}`,
+			`${(mergedProps.min?.hour ?? "00").toString().padStart(2, "0")}${(mergedProps.min?.minute ?? "00").toString().padStart(2, "0")}${(mergedProps.min?.second ?? "00").toString().padStart(2, "0")}`,
 		);
 		const maxTime = Number.parseInt(
-			`${(local.max?.hour ?? "23").toString().padStart(2, "0")}${(local.max?.minute ?? "59").toString().padStart(2, "0")}${(local.max?.second ?? "59").toString().padStart(2, "0")}`,
+			`${(mergedProps.max?.hour ?? "23").toString().padStart(2, "0")}${(mergedProps.max?.minute ?? "59").toString().padStart(2, "0")}${(mergedProps.max?.second ?? "59").toString().padStart(2, "0")}`,
 		);
 		const val = Number.parseInt(
 			`${(value()?.hour ?? "00").toString().padStart(2, "0")}${(value()?.minute ?? "00").toString().padStart(2, "0")}${(value()?.second ?? "00").toString().padStart(2, "0")}`,
@@ -235,7 +247,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	});
 
 	const { formControlContext } = createFormControl(
-		mergeProps(formControlProps, {
+		merge(formControlProps, {
 			get validationState() {
 				return validationState();
 			},
@@ -258,11 +270,11 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		let hour = value()?.hour ?? 0;
 		const pm = hour > 12;
 
-		if (local.hourCycle === 12 && pm) {
+		if (mergedProps.hourCycle === 12 && pm) {
 			hour -= 12;
 		}
 
-		const padding = local.forceLeadingZeros ? 2 : 1;
+		const padding = mergedProps.forceLeadingZeros ? 2 : 1;
 
 		const segments: string[] = [];
 
@@ -280,8 +292,8 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 		let val = segments.join(":");
 
-		if (local.hourCycle === 12) {
-			val += ` ${pm ? local.translations?.pm : local.translations?.am}`;
+		if (mergedProps.hourCycle === 12) {
+			val += ` ${pm ? mergedProps.translations?.pm : mergedProps.translations?.am}`;
 		}
 
 		return val;
@@ -289,9 +301,9 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 	const ariaLabelledBy = () => {
 		return formControlContext.getAriaLabelledBy(
-			access(formControlProps.id),
+			access(mergedProps.id),
 			others["aria-label"],
-			local["aria-labelledby"],
+			mergedProps["aria-labelledby"],
 		);
 	};
 
@@ -299,7 +311,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		return (
 			[
 				valueDescriptionId(),
-				formControlContext.getAriaDescribedBy(local["aria-describedby"]),
+				formControlContext.getAriaDescribedBy(mergedProps["aria-describedby"]),
 			]
 				.filter(Boolean)
 				.join(" ") || undefined
@@ -311,19 +323,20 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 			Object.keys(resolvedGranularity()) as Array<"hour" | "minute" | "second">
 		).filter((k) => resolvedGranularity()[k]);
 
-		if (seg.includes("hour") && local.hourCycle === 12) seg.push("dayPeriod");
+		if (seg.includes("hour") && mergedProps.hourCycle === 12)
+			seg.push("dayPeriod");
 
 		return seg;
 	});
 
 	const context: TimeFieldContextValue = {
-		translations: () => local.translations!,
+		translations: () => mergedProps.translations!,
 		value,
 		setValue,
-		hourCycle: () => local.hourCycle,
+		hourCycle: () => mergedProps.hourCycle,
 		resolvedGranularity,
-		forceLeadingZeros: () => local.forceLeadingZeros ?? false,
-		placeholder: () => local.placeholder,
+		forceLeadingZeros: () => mergedProps.forceLeadingZeros ?? false,
+		placeholder: () => mergedProps.placeholder,
 		formattedValue,
 		focusManager: () => focusManager,
 		isDisabled: () => formControlContext.isDisabled() ?? false,
@@ -332,7 +345,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		setInputRef,
 		valueDescriptionId,
 		registerValueDescriptionId: createRegisterId(setValueDescriptionId),
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: createGenerateId(() => access(mergedProps.id)!),
 		segments,
 		fieldAriaLabel,
 		fieldAriaLabelledBy,
@@ -343,13 +356,13 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<FormControlContext.Provider value={formControlContext}>
-			<TimeFieldContext.Provider value={context}>
+		<FormControlContext value={formControlContext}>
+			<TimeFieldContext value={context}>
 				<Polymorphic<TimeFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs(setRef, local.ref)}
+					ref={mergeRefs(setRef, mergedProps.ref)}
 					role="group"
-					id={access(formControlProps.id)!}
+					id={access(mergedProps.id)!}
 					aria-invalid={
 						formControlContext.validationState() === "invalid" || undefined
 					}
@@ -361,10 +374,10 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 					{...formControlContext.dataset()}
 					{...others}
 				>
-					{local.children}
+					{mergedProps.children}
 					<TimeFieldValueDescription />
 				</Polymorphic>
-			</TimeFieldContext.Provider>
-		</FormControlContext.Provider>
+			</TimeFieldContext>
+		</FormControlContext>
 	);
 }

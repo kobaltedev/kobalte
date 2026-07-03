@@ -7,15 +7,8 @@
  */
 
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
-import {
-	type ComponentProps,
-	For,
-	Show,
-	createEffect,
-	createSignal,
-	on,
-	splitProps,
-} from "solid-js";
+import type { ComponentProps, JSX } from "@solidjs/web";
+import { createEffect, For, omit, Show } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
 import type { Collection, CollectionNode } from "../primitives";
@@ -57,7 +50,8 @@ export interface HiddenSelectBaseProps extends ComponentProps<"select"> {
 export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 	let ref: HTMLSelectElement | undefined;
 
-	const [local, others] = splitProps(props, [
+	const others = omit(
+		props,
 		"ref",
 		"onChange",
 		"collection",
@@ -66,18 +60,18 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 		"isMultiple",
 		"isVirtualized",
 		"focusTrigger",
-	]);
+	);
 
 	const formControlContext = useFormControlContext();
 
-	const [isInternalChangeEvent, setIsInternalChangeEvent] = createSignal(false);
+	let isInternalChangeEvent = false;
 
 	const renderOption = (key: string) => {
-		const item = local.collection.getItem(key);
+		const item = props.collection.getItem(key);
 
 		return (
 			<Show when={item?.type === "item"}>
-				<option value={key} selected={local.selectionManager.isSelected(key)}>
+				<option value={key} selected={props.selectionManager.isSelected(key)}>
 					{item?.textValue}
 				</option>
 			</Show>
@@ -86,26 +80,22 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 
 	// Dispatch native event on selection change for form libraries.
 	createEffect(
-		on(
-			() => local.selectionManager.selectedKeys(),
-			(keys, prevKeys) => {
-				if (prevKeys && isSameSelection(keys, prevKeys)) {
-					return;
-				}
+		() => props.selectionManager.selectedKeys(),
+		(keys, prevKeys) => {
+			if (prevKeys && isSameSelection(keys, prevKeys)) {
+				return;
+			}
 
-				setIsInternalChangeEvent(true);
+			isInternalChangeEvent = true;
 
-				ref?.dispatchEvent(
-					new Event("input", { bubbles: true, cancelable: true }),
-				);
-				ref?.dispatchEvent(
-					new Event("change", { bubbles: true, cancelable: true }),
-				);
-			},
-			{
-				defer: true,
-			},
-		),
+			ref?.dispatchEvent(
+				new Event("input", { bubbles: true, cancelable: true }),
+			);
+			ref?.dispatchEvent(
+				new Event("change", { bubbles: true, cancelable: true }),
+			);
+		},
+		{ defer: true },
 	);
 
 	// If virtualized, only render the selected options in the hidden <select> so the value can be submitted to a server.
@@ -114,46 +104,51 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 		<div style={visuallyHiddenStyles} aria-hidden="true">
 			<input
 				type="text"
-				tabIndex={local.selectionManager.isFocused() || local.isOpen ? -1 : 0}
+				tabindex={props.selectionManager.isFocused() || props.isOpen ? -1 : 0}
 				style={{ "font-size": "16px" }}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
-				readOnly={formControlContext.isReadOnly()}
-				onFocus={() => local.focusTrigger()}
+				readonly={formControlContext.isReadOnly()}
+				onFocus={() => props.focusTrigger()}
 			/>
 			<select
-				ref={mergeRefs((el) => (ref = el), local.ref)}
-				tabIndex={-1}
-				multiple={local.isMultiple}
+				ref={mergeRefs((el) => (ref = el), props.ref as any)}
+				tabindex={-1}
+				multiple={props.isMultiple}
 				name={formControlContext.name()}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
-				size={local.collection.getSize()}
-				value={local.selectionManager.firstSelectedKey() ?? ""}
+				size={props.collection.getSize()}
+				value={props.selectionManager.firstSelectedKey() ?? ""}
 				onChange={(e) => {
-					callHandler(e, local.onChange);
+					callHandler(
+						e as Event & { currentTarget: HTMLSelectElement; target: Element },
+						props.onChange as
+							| JSX.EventHandlerUnion<HTMLSelectElement, Event>
+							| undefined,
+					);
 
 					// Prevent internally fired change event to update the selection
 					// which would result in an infinite loop.
-					if (!isInternalChangeEvent()) {
+					if (!isInternalChangeEvent) {
 						// enable form autofill
-						local.selectionManager.setSelectedKeys(
+						props.selectionManager.setSelectedKeys(
 							new Set([(e.target as HTMLSelectElement).value]),
 						);
 					}
 
-					setIsInternalChangeEvent(false);
+					isInternalChangeEvent = false;
 				}}
 				{...others}
 			>
 				<option />
 				<Show
-					when={local.isVirtualized}
+					when={props.isVirtualized}
 					fallback={
-						<For each={[...local.collection.getKeys()]}>{renderOption}</For>
+						<For each={[...props.collection.getKeys()]}>{renderOption}</For>
 					}
 				>
-					<For each={[...local.selectionManager.selectedKeys()]}>
+					<For each={[...props.selectionManager.selectedKeys()]}>
 						{renderOption}
 					</For>
 				</Show>

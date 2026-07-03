@@ -1,11 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
-import {
-	Show,
-	type ValidComponent,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, omit, onCleanup, Show } from "solid-js";
 
 import {
 	type ElementOf,
@@ -55,20 +50,20 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 		props as FormControlErrorMessageProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, ["forceMount"]);
+	const others = omit(mergedProps, "forceMount");
 
 	const isInvalid = () => context.validationState() === "invalid";
 
-	createEffect(() => {
-		if (!isInvalid()) {
-			return;
-		}
-
-		onCleanup(context.registerErrorMessage(others.id!));
-	});
+	createEffect(
+		() => (isInvalid() ? others.id! : undefined),
+		(id) => {
+			if (!id) return;
+			onCleanup(context.registerErrorMessage(id));
+		},
+	);
 
 	return (
-		<Show when={local.forceMount || isInvalid()}>
+		<Show when={mergedProps.forceMount || isInvalid()}>
 			<Polymorphic<FormControlErrorMessageRenderProps>
 				as="div"
 				{...context.dataset()}

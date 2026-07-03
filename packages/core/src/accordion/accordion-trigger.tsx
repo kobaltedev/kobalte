@@ -12,14 +12,8 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 } from "@kobalte/utils";
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	createEffect,
-	onCleanup,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, createEffect, omit } from "solid-js";
 
 import * as Collapsible from "../collapsible";
 import { useCollapsibleContext } from "../collapsible/collapsible-context";
@@ -73,7 +67,8 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 		props as AccordionTriggerProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"ref",
 		"onPointerDown",
 		"onPointerUp",
@@ -81,7 +76,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 		"onKeyDown",
 		"onMouseDown",
 		"onFocus",
-	]);
+	);
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
@@ -109,11 +104,14 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 			e.preventDefault();
 		}
 
-		callHandler(e, local.onKeyDown as typeof onKeyDown);
+		callHandler(e, mergedProps.onKeyDown as typeof onKeyDown);
 		callHandler(e, selectableItem.onKeyDown);
 	};
 
-	createEffect(() => onCleanup(itemContext.registerTriggerId(others.id!)));
+	createEffect(
+		() => others.id!,
+		(id) => itemContext.registerTriggerId(id),
+	);
 
 	return (
 		<Collapsible.Trigger<
@@ -124,23 +122,29 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={mergeRefs((el) => (ref = el), local.ref)}
+			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
 			data-key={selectableItem.dataKey()}
 			onPointerDown={composeEventHandlers([
-				local.onPointerDown,
+				mergedProps.onPointerDown,
 				selectableItem.onPointerDown,
 			])}
 			onPointerUp={composeEventHandlers([
-				local.onPointerUp,
+				mergedProps.onPointerUp,
 				selectableItem.onPointerUp,
 			])}
-			onClick={composeEventHandlers([local.onClick, selectableItem.onClick])}
+			onClick={composeEventHandlers([
+				mergedProps.onClick,
+				selectableItem.onClick,
+			])}
 			onKeyDown={onKeyDown}
 			onMouseDown={composeEventHandlers([
-				local.onMouseDown,
+				mergedProps.onMouseDown,
 				selectableItem.onMouseDown,
 			])}
-			onFocus={composeEventHandlers([local.onFocus, selectableItem.onFocus])}
+			onFocus={composeEventHandlers([
+				mergedProps.onFocus,
+				selectableItem.onFocus,
+			])}
 			{...others}
 		/>
 	);

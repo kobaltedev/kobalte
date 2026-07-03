@@ -7,10 +7,10 @@ import {
 } from "./color-swatch-root";
 
 export type {
-	ColorSwatchRootOptions,
 	ColorSwatchRootCommonProps,
-	ColorSwatchRootRenderProps,
+	ColorSwatchRootOptions,
 	ColorSwatchRootProps,
+	ColorSwatchRootRenderProps,
 };
 
 export { Root };

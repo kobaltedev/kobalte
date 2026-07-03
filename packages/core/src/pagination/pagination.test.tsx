@@ -4,7 +4,7 @@ import { vi } from "vitest";
 import * as Pagination from ".";
 
 describe("Pagination", () => {
-	it("renders correctly when changing page", () => {
+	it("renders correctly when changing page", async () => {
 		const { getByText, queryAllByText } = render(() => (
 			<Pagination.Root
 				count={7}
@@ -28,6 +28,7 @@ describe("Pagination", () => {
 		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
+		await Promise.resolve();
 
 		expect(getByText("Page 1")).toBeVisible();
 		expect(getByText("Page 2")).toBeVisible();
@@ -36,6 +37,7 @@ describe("Pagination", () => {
 		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
+		await Promise.resolve();
 
 		expect(getByText("Page 1")).toBeVisible();
 		expect(getByText("Page 2")).toBeVisible();
@@ -45,6 +47,7 @@ describe("Pagination", () => {
 		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
+		await Promise.resolve();
 
 		expect(getByText("Page 1")).toBeVisible();
 		expect(getByText("Page 3")).toBeVisible();
@@ -54,6 +57,7 @@ describe("Pagination", () => {
 		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
+		await Promise.resolve();
 
 		expect(getByText("Page 1")).toBeVisible();
 		expect(queryAllByText("Ellipsis")).toHaveLength(1);
@@ -63,6 +67,7 @@ describe("Pagination", () => {
 		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
+		await Promise.resolve();
 
 		expect(getByText("Page 1")).toBeVisible();
 		expect(queryAllByText("Ellipsis")).toHaveLength(1);
@@ -71,6 +76,7 @@ describe("Pagination", () => {
 		expect(getByText("Page 7")).toBeVisible();
 
 		fireEvent.click(next);
+		await Promise.resolve();
 
 		expect(getByText("Page 1")).toBeVisible();
 		expect(queryAllByText("Ellipsis")).toHaveLength(1);

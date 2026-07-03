@@ -1,4 +1,5 @@
-import { type JSX, Show, type ValidComponent, splitProps } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { omit, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -27,12 +28,10 @@ export function FileFieldItemPreview<T extends ValidComponent = "div">(
 ) {
 	const { file } = useFileFieldItemContext();
 
-	const [local, others] = splitProps(props as FileFieldItemPreviewProps, [
-		"type",
-	]);
+	const others = omit(props as FileFieldItemPreviewProps, "type");
 
 	return (
-		<Show when={file.type.match(local.type ?? ".*")}>
+		<Show when={file.file.type.match(props.type ?? ".*")}>
 			<Polymorphic<FileFieldItemPreviewRenderProps> as="div" {...others} />
 		</Show>
 	);

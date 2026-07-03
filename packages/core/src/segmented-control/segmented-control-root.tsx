@@ -1,11 +1,6 @@
 import { mergeRefs } from "@kobalte/utils";
-import {
-	type ValidComponent,
-	createEffect,
-	createSignal,
-	mergeProps,
-	splitProps,
-} from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { createEffect, createSignal, merge, omit } from "solid-js";
 import type { PolymorphicProps } from "../polymorphic";
 import { RadioGroup, type RadioGroupRootProps } from "../radio-group";
 import {
@@ -18,7 +13,7 @@ export type SegmentedControlRootProps = RadioGroupRootProps;
 export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SegmentedControlRootProps>,
 ) => {
-	const mergedProps = mergeProps(
+	const mergedProps = merge(
 		{
 			defaultValue: props.value,
 			orientation: "horizontal",
@@ -26,7 +21,7 @@ export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 		props,
 	);
 
-	const [localProps, otherProps] = splitProps(mergedProps, ["ref"]);
+	const otherProps = omit(mergedProps, "ref");
 
 	const [ref, setRef] = createSignal<HTMLElement>();
 	const [selectedItem, setSelectedItem] = createSignal<HTMLElement>();
@@ -40,15 +35,19 @@ export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 		setSelectedItem: setSelectedItem,
 	};
 
-	createEffect(() => {
-		if (context.value()) return;
-
-		setSelectedItem(undefined);
-	});
+	createEffect(
+		() => context.value(),
+		(value, prev) => {
+			// Only clear the visual selection when a controlled value transitions to nothing.
+			// Skipping the first run (prev === undefined) prevents racing with item effects
+			// that establish the initial selection from defaultValue.
+			if (prev !== undefined && !value) setSelectedItem(undefined);
+		},
+	);
 
 	return (
-		<SegmentedControlContext.Provider value={context}>
-			<RadioGroup ref={mergeRefs(setRef, localProps.ref)} {...otherProps} />
-		</SegmentedControlContext.Provider>
+		<SegmentedControlContext value={context}>
+			<RadioGroup ref={mergeRefs(setRef, mergedProps.ref)} {...otherProps} />
+		</SegmentedControlContext>
 	);
 };

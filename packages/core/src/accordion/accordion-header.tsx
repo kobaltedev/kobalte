@@ -1,5 +1,5 @@
 import { OverrideComponentProps } from "@kobalte/utils";
-import type { ValidComponent } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
 
 import {
 	type CollapsibleDataSet,

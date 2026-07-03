@@ -1,20 +1,22 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, within } from "@solidjs/testing-library";
-import { vi } from "vitest";
-
+import { cleanup, fireEvent, render, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
+import { vi } from "vitest";
 import * as ToggleGroup from ".";
 
 describe("ToggleGroup", () => {
-	const user = userEvent.setup({ delay: null });
+	let user: ReturnType<typeof userEvent.setup>;
 
 	beforeEach(() => {
 		vi.useFakeTimers();
+		user = userEvent.setup({ delay: null });
 	});
 
 	afterEach(() => {
+		cleanup();
 		vi.clearAllMocks();
 		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	afterAll(() => {
@@ -87,6 +89,7 @@ describe("ToggleGroup", () => {
 
 		expect(selectedItem).toHaveAttribute("tabindex", "-1");
 		selectedItem.focus();
+		await Promise.resolve();
 
 		fireEvent.keyDown(selectedItem, {
 			key: "ArrowRight",
@@ -146,6 +149,7 @@ describe("ToggleGroup", () => {
 
 		expect(selectedItem).toHaveAttribute("tabindex", "-1");
 		selectedItem.focus();
+		await Promise.resolve();
 
 		fireEvent.keyDown(selectedItem, {
 			key: "ArrowDown",
@@ -206,6 +210,7 @@ describe("ToggleGroup", () => {
 		const firstItem = toggles[0];
 
 		firstItem.focus();
+		await Promise.resolve();
 
 		expect(toggleGroup).toHaveAttribute("data-orientation", "horizontal");
 

@@ -1,8 +1,8 @@
 import type { Orientation } from "@kobalte/utils";
 import {
 	type Accessor,
-	type Setter,
 	createContext,
+	type Setter,
 	useContext,
 } from "solid-js";
 import type { CollectionItemWithRef } from "../primitives";

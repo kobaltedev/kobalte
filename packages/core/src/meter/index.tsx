@@ -35,26 +35,26 @@ import {
 } from "./meter-value-label";
 
 export type {
-	MeterFillOptions,
 	MeterFillCommonProps,
-	MeterFillRenderProps,
+	MeterFillOptions,
 	MeterFillProps,
-	MeterLabelOptions,
+	MeterFillRenderProps,
 	MeterLabelCommonProps,
-	MeterLabelRenderProps,
+	MeterLabelOptions,
 	MeterLabelProps,
-	MeterRootOptions,
+	MeterLabelRenderProps,
 	MeterRootCommonProps,
-	MeterRootRenderProps,
+	MeterRootOptions,
 	MeterRootProps,
-	MeterTrackOptions,
+	MeterRootRenderProps,
 	MeterTrackCommonProps,
-	MeterTrackRenderProps,
+	MeterTrackOptions,
 	MeterTrackProps,
-	MeterValueLabelOptions,
+	MeterTrackRenderProps,
 	MeterValueLabelCommonProps,
-	MeterValueLabelRenderProps,
+	MeterValueLabelOptions,
 	MeterValueLabelProps,
+	MeterValueLabelRenderProps,
 };
 export { Fill, Label, Root, Track, ValueLabel };
 
@@ -68,4 +68,4 @@ export const Meter = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useMeterContext, type MeterContextValue } from "./meter-context";
+export { type MeterContextValue, useMeterContext } from "./meter-context";

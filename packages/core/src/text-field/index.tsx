@@ -38,30 +38,30 @@ import {
 } from "./text-field-text-area";
 
 export type {
-	TextFieldDescriptionOptions,
 	TextFieldDescriptionCommonProps,
-	TextFieldDescriptionRenderProps,
+	TextFieldDescriptionOptions,
 	TextFieldDescriptionProps,
-	TextFieldErrorMessageOptions,
+	TextFieldDescriptionRenderProps,
 	TextFieldErrorMessageCommonProps,
-	TextFieldErrorMessageRenderProps,
+	TextFieldErrorMessageOptions,
 	TextFieldErrorMessageProps,
-	TextFieldInputOptions,
+	TextFieldErrorMessageRenderProps,
 	TextFieldInputCommonProps,
-	TextFieldInputRenderProps,
+	TextFieldInputOptions,
 	TextFieldInputProps,
-	TextFieldLabelOptions,
+	TextFieldInputRenderProps,
 	TextFieldLabelCommonProps,
-	TextFieldLabelRenderProps,
+	TextFieldLabelOptions,
 	TextFieldLabelProps,
-	TextFieldRootOptions,
+	TextFieldLabelRenderProps,
 	TextFieldRootCommonProps,
-	TextFieldRootRenderProps,
+	TextFieldRootOptions,
 	TextFieldRootProps,
-	TextFieldTextAreaOptions,
+	TextFieldRootRenderProps,
 	TextFieldTextAreaCommonProps,
-	TextFieldTextAreaRenderProps,
+	TextFieldTextAreaOptions,
 	TextFieldTextAreaProps,
+	TextFieldTextAreaRenderProps,
 };
 export { Description, ErrorMessage, Input, Label, Root, TextArea };
 
@@ -77,6 +77,6 @@ export const TextField = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useTextFieldContext,
 	type TextFieldContextValue,
+	useTextFieldContext,
 } from "./text-field-context";

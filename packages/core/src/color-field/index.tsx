@@ -31,26 +31,26 @@ import {
 } from "./color-field-root";
 
 export type {
-	ColorFieldDescriptionOptions,
 	ColorFieldDescriptionCommonProps,
-	ColorFieldDescriptionRenderProps,
+	ColorFieldDescriptionOptions,
 	ColorFieldDescriptionProps,
-	ColorFieldErrorMessageOptions,
+	ColorFieldDescriptionRenderProps,
 	ColorFieldErrorMessageCommonProps,
-	ColorFieldErrorMessageRenderProps,
+	ColorFieldErrorMessageOptions,
 	ColorFieldErrorMessageProps,
-	ColorFieldInputOptions,
+	ColorFieldErrorMessageRenderProps,
 	ColorFieldInputCommonProps,
-	ColorFieldInputRenderProps,
+	ColorFieldInputOptions,
 	ColorFieldInputProps,
-	ColorFieldLabelOptions,
+	ColorFieldInputRenderProps,
 	ColorFieldLabelCommonProps,
-	ColorFieldLabelRenderProps,
+	ColorFieldLabelOptions,
 	ColorFieldLabelProps,
-	ColorFieldRootOptions,
+	ColorFieldLabelRenderProps,
 	ColorFieldRootCommonProps,
-	ColorFieldRootRenderProps,
+	ColorFieldRootOptions,
 	ColorFieldRootProps,
+	ColorFieldRootRenderProps,
 };
 export { Description, ErrorMessage, Input, Label, Root };
 
@@ -65,6 +65,6 @@ export const ColorField = Object.assign(Root, {
  * API will most probably change
  */
 export {
-	useColorFieldContext,
 	type ColorFieldContextValue,
+	useColorFieldContext,
 } from "./color-field-context";

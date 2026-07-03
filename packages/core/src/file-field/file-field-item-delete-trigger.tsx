@@ -1,14 +1,8 @@
-import {
-	type Component,
-	type JSX,
-	type ValidComponent,
-	splitProps,
-} from "solid-js";
-
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-
 import { composeEventHandlers } from "@kobalte/utils";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Component, omit } from "solid-js";
 import * as Button from "../button";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { useFileFieldContext } from "./file-field-context";
 import { useFileFieldItemContext } from "./file-field-item-context";
 
@@ -36,9 +30,7 @@ export function FileFieldItemDeleteTrigger<T extends ValidComponent = "button">(
 	const context = useFileFieldContext();
 	const { file } = useFileFieldItemContext();
 
-	const [local, others] = splitProps(props as FileFieldItemDeleteTriggerProps, [
-		"onClick",
-	]);
+	const others = omit(props as FileFieldItemDeleteTriggerProps, "onClick");
 
 	const handleDelete = () => {
 		context.removeFile(file);
@@ -53,7 +45,7 @@ export function FileFieldItemDeleteTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			onClick={composeEventHandlers([local.onClick, handleDelete])}
+			onClick={composeEventHandlers([props.onClick, handleDelete])}
 			disabled={context.disabled()}
 			{...others}
 		/>

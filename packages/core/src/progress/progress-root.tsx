@@ -7,14 +7,14 @@
  */
 
 import { clamp, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
-	type ValidComponent,
 	createMemo,
 	createSignal,
 	createUniqueId,
-	splitProps,
+	omit,
 } from "solid-js";
 
 import { createNumberFormatter } from "../i18n";
@@ -69,36 +69,46 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 		props as ProgressRootProps,
 	);
 
-	const [local, others] = splitProps(mergedProps, [
+	const others = omit(
+		mergedProps,
 		"value",
 		"minValue",
 		"maxValue",
 		"indeterminate",
 		"getValueLabel",
-	]);
+	);
 
-	const [labelId, setLabelId] = createSignal<string>();
+	const [labelId, setLabelId] = createSignal<string | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultFormatter = createNumberFormatter(() => ({ style: "percent" }));
 
 	const value = () => {
-		return clamp(local.value!, local.minValue!, local.maxValue!);
+		return clamp(
+			mergedProps.value!,
+			mergedProps.minValue!,
+			mergedProps.maxValue!,
+		);
 	};
 
 	const valuePercent = () => {
-		return (value() - local.minValue!) / (local.maxValue! - local.minValue!);
+		return (
+			(value() - mergedProps.minValue!) /
+			(mergedProps.maxValue! - mergedProps.minValue!)
+		);
 	};
 
 	const valueLabel = () => {
-		if (local.indeterminate) {
+		if (mergedProps.indeterminate) {
 			return undefined;
 		}
 
-		if (local.getValueLabel) {
-			return local.getValueLabel({
+		if (mergedProps.getValueLabel) {
+			return mergedProps.getValueLabel({
 				value: value(),
-				min: local.minValue!,
-				max: local.maxValue!,
+				min: mergedProps.minValue!,
+				max: mergedProps.maxValue!,
 			});
 		}
 
@@ -106,19 +116,19 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 	};
 
 	const progressFillWidth = () => {
-		return local.indeterminate ? undefined : `${valuePercent() * 100}%`;
+		return mergedProps.indeterminate ? undefined : `${valuePercent() * 100}%`;
 	};
 
 	const dataset: Accessor<ProgressDataSet> = createMemo(() => {
-		let dataProgress: ProgressDataSet["data-progress"] = undefined;
+		let dataProgress: ProgressDataSet["data-progress"];
 
-		if (!local.indeterminate) {
+		if (!mergedProps.indeterminate) {
 			dataProgress = valuePercent() === 1 ? "complete" : "loading";
 		}
 
 		return {
 			"data-progress": dataProgress,
-			"data-indeterminate": local.indeterminate ? "" : undefined,
+			"data-indeterminate": mergedProps.indeterminate ? "" : undefined,
 		};
 	});
 
@@ -134,15 +144,15 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 	};
 
 	return (
-		<ProgressContext.Provider value={context}>
+		<ProgressContext value={context}>
 			<Meter<
 				Component<Omit<ProgressRootRenderProps, keyof MeterRootRenderProps>>
 			>
 				role="progressbar"
-				indeterminate={local.indeterminate || false}
+				indeterminate={mergedProps.indeterminate || false}
 				{...dataset()}
 				{...mergedProps}
 			/>
-		</ProgressContext.Provider>
+		</ProgressContext>
 	);
 }

@@ -1,4 +1,5 @@
-import { For, createSignal } from "solid-js";
+import { Combobox } from "@kobalte/core/combobox";
+import { createSignal, For } from "solid-js";
 
 import { CaretSortIcon, CheckIcon, CrossIcon } from "../components";
 import style from "./combobox.module.css";
@@ -10,8 +11,6 @@ const ALL_STRING_OPTIONS = [
 	"Grapes",
 	"Pineapple",
 ];
-
-import { Combobox } from "@kobalte/core/combobox";
 
 export function BasicExample() {
 	return (

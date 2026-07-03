@@ -13,18 +13,12 @@
  */
 
 import {
-	OverrideComponentProps,
 	callHandler,
 	isFunction,
+	OverrideComponentProps,
 } from "@kobalte/utils";
-import {
-	type Accessor,
-	type Component,
-	type JSX,
-	type ValidComponent,
-	children,
-	splitProps,
-} from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { type Accessor, type Component, children, omit } from "solid-js";
 
 import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
@@ -66,7 +60,7 @@ export interface ToggleButtonRootRenderProps
 	extends ToggleButtonRootCommonProps,
 		Button.ButtonRootRenderProps {
 	children: JSX.Element;
-	"aria-pressed": boolean;
+	"aria-pressed": "true" | "false";
 	"data-pressed": "" | undefined;
 }
 
@@ -82,23 +76,25 @@ export type ToggleButtonRootProps<
 export function ToggleButtonRoot<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, ToggleButtonRootProps<T>>,
 ) {
-	const [local, others] = splitProps(props as ToggleButtonRootProps, [
+	const p = props as ToggleButtonRootProps;
+	const others = omit(
+		p,
 		"children",
 		"pressed",
 		"defaultPressed",
 		"onChange",
 		"onClick",
-	]);
+	);
 
 	const state = createToggleState({
-		isSelected: () => local.pressed,
-		defaultIsSelected: () => local.defaultPressed,
-		onSelectedChange: (selected) => local.onChange?.(selected),
+		isSelected: () => props.pressed,
+		defaultIsSelected: () => props.defaultPressed,
+		onSelectedChange: (selected) => props.onChange?.(selected),
 		isDisabled: () => others.disabled,
 	});
 
-	const onClick: JSX.EventHandlerUnion<any, MouseEvent> = (e) => {
-		callHandler(e, local.onClick);
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
+		callHandler(e, p.onClick);
 		state.toggle();
 	};
 
@@ -108,13 +104,13 @@ export function ToggleButtonRoot<T extends ValidComponent = "button">(
 				Omit<ToggleButtonRootRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			aria-pressed={state.isSelected()}
+			aria-pressed={state.isSelected() ? "true" : "false"}
 			data-pressed={state.isSelected() ? "" : undefined}
 			onClick={onClick}
 			{...others}
 		>
 			<ToggleButtonRootChild state={{ pressed: state.isSelected }}>
-				{local.children}
+				{props.children}
 			</ToggleButtonRootChild>
 		</Button.Root>
 	);

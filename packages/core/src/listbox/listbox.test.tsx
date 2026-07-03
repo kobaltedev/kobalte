@@ -28,7 +28,7 @@ describe("Listbox", () => {
 	});
 
 	afterEach(() => {
-		// @ts-ignore
+		// @ts-expect-error
 		window.requestAnimationFrame.mockRestore();
 		vi.clearAllTimers();
 	});

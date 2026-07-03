@@ -8,10 +8,14 @@
  * https://github.com/ariakit/ariakit/blob/da142672eddefa99365773ced72171facc06fdcb/packages/ariakit/src/collection/collection-item.ts
  */
 
-import { type MaybeAccessor, access, addItemToArray } from "@kobalte/utils";
-import { type FlowComponent, createComponent } from "solid-js";
+import { addItemToArray, type MaybeAccessor } from "@kobalte/utils";
+import {
+	createComponent,
+	createEffect,
+	createSignal,
+	type FlowComponent,
+} from "solid-js";
 
-import { createControllableArraySignal } from "../index";
 import {
 	DomCollectionContext,
 	type DomCollectionContextValue,
@@ -22,7 +26,10 @@ import { createSortBasedOnDOMPosition, findDOMIndex } from "./utils";
 export interface CreateDomCollectionProps<
 	T extends DomCollectionItem = DomCollectionItem,
 > {
-	/** The controlled items state of the collection. */
+	/**
+	 * @deprecated Not used internally. Callers should use the `items` accessor
+	 * returned by `createDomCollection` as the data source instead.
+	 */
 	items?: MaybeAccessor<Array<T> | undefined>;
 
 	/** Event handler called when the items state of the collection changes. */
@@ -32,12 +39,22 @@ export interface CreateDomCollectionProps<
 export function createDomCollection<
 	T extends DomCollectionItem = DomCollectionItem,
 >(props: CreateDomCollectionProps<T> = {}) {
-	const [items, setItems] = createControllableArraySignal({
-		value: () => access(props.items),
-		onChange: (value) => props.onItemsChange?.(value),
-	});
+	// Use a plain signal so function-form setters accumulate correctly across a
+	// Solid 2.0 microtask flush. createControllableArraySignal eagerly resolved
+	// the prev-value, causing each concurrent registerItem call to see the stale
+	// empty array — the last write won and earlier items were lost.
+	const [items, setItems] = createSignal<T[]>([]);
 
 	createSortBasedOnDOMPosition(items, setItems);
+
+	// Notify external listeners after items settle (defer skips the initial [] state).
+	createEffect(
+		() => items(),
+		(currentItems) => {
+			props.onItemsChange?.(currentItems);
+		},
+		{ defer: true },
+	);
 
 	const registerItem = (item: T) => {
 		setItems((prevItems) => {
@@ -63,7 +80,7 @@ export function createDomCollection<
 	};
 
 	const DomCollectionProvider: FlowComponent = (props) => {
-		return createComponent(DomCollectionContext.Provider, {
+		return createComponent(DomCollectionContext, {
 			value: { registerItem } as DomCollectionContextValue,
 			get children() {
 				return props.children;
@@ -71,5 +88,5 @@ export function createDomCollection<
 		});
 	};
 
-	return { DomCollectionProvider };
+	return { DomCollectionProvider, items };
 }

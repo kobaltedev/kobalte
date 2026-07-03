@@ -18,19 +18,14 @@ import {
 	mergeRefs,
 	scrollIntoViewport,
 } from "@kobalte/utils";
+import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
 import {
-	type Component,
-	type ComponentProps,
-	type JSX,
-	Show,
-	type ValidComponent,
 	children,
 	createEffect,
 	createMemo,
 	createUniqueId,
-	on,
-	onCleanup,
-	splitProps,
+	omit,
+	Show,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control";
@@ -64,7 +59,20 @@ export interface TimeFieldSegmentCommonProps<
 
 export interface TimeFieldSegmentRenderProps
 	extends TimeFieldSegmentCommonProps,
-		SpinButton.SpinButtonRootRenderProps {}
+		SpinButton.SpinButtonRootRenderProps {
+	tabindex: string | number | false | undefined;
+	contentEditable: boolean | undefined;
+	inputMode: string | false | undefined;
+	autocorrect: string | false | undefined;
+	autoCapitalize: string | false | undefined;
+	spellcheck: boolean | "" | "false" | "true" | undefined;
+	enterkeyhint: string | false | undefined;
+	"aria-label": string | undefined;
+	"aria-labelledby": string | undefined;
+	"aria-describedby": string | undefined;
+	"data-placeholder": string | undefined;
+	"data-type": string;
+}
 
 export type TimeFieldSegmentProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -86,22 +94,20 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		props as TimeFieldSegmentProps,
 	);
 
-	const [local, others] = splitProps(
-		mergedProps as TimeFieldSegmentProps & { id: string },
-		[
-			"ref",
-			"segment",
-			"onKeyDown",
-			"onBeforeInput",
-			"onInput",
-			"onFocus",
-			"children",
-		],
+	const others = omit(
+		mergedProps,
+		"ref",
+		"segment",
+		"onKeyDown",
+		"onBeforeInput",
+		"onInput",
+		"onFocus",
+		"children",
 	);
 
 	const { locale } = useLocale();
 
-	const resolvedChildren = children(() => local.children);
+	const resolvedChildren = children(() => mergedProps.children);
 
 	let enteredKeys = "";
 	let composition: string | null = "";
@@ -126,7 +132,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	// Prepend the label passed from the field to each segment name.
 	// This is needed because VoiceOver on iOS does not announce groups.
 	const name = createMemo(() => {
-		return context.translations()[local.segment];
+		return context.translations()[mergedProps.segment];
 	});
 
 	const ariaLabel = createMemo(() => {
@@ -137,7 +143,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		// Only apply aria-describedby to the first segment, unless the field is invalid. This avoids it being
 		// read every time the user navigates to a new segment.
 		if (
-			local.segment !== firstSegment() &&
+			mergedProps.segment !== firstSegment() &&
 			formControlContext.validationState() !== "invalid"
 		) {
 			return undefined;
@@ -155,7 +161,8 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	});
 
 	const inputMode = createMemo(() => {
-		return formControlContext.isDisabled() || local.segment === "dayPeriod"
+		return formControlContext.isDisabled() ||
+			mergedProps.segment === "dayPeriod"
 			? undefined
 			: "numeric";
 	});
@@ -169,17 +176,17 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		});
 	});
 
-	const maxValue = () => (local.segment === "hour" ? 23 : 59);
+	const maxValue = () => (mergedProps.segment === "hour" ? 23 : 59);
 
 	const onBackspaceKeyDown = () => {
 		if (
-			local.segment !== "dayPeriod" &&
-			context.value()?.[local.segment] === undefined
+			mergedProps.segment !== "dayPeriod" &&
+			context.value()?.[mergedProps.segment] === undefined
 		) {
 			context.focusManager().focusPrevious();
 			return;
 		}
-		if (local.segment === "dayPeriod") {
+		if (mergedProps.segment === "dayPeriod") {
 			if ((context.value()?.hour ?? 0) >= 12) {
 				if (!formControlContext.isReadOnly())
 					context.setValue({ hour: context.value()!.hour! - 12 });
@@ -189,22 +196,22 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		if (formControlContext.isReadOnly()) return;
 
-		let newValue = (context.value()?.[local.segment] ?? 0)
+		let newValue = (context.value()?.[mergedProps.segment] ?? 0)
 			.toString()
 			.slice(0, -1);
 		const parsed = numberParser().parse(newValue);
 		newValue = parsed === 0 ? "" : newValue;
 
 		if (newValue.length === 0 || parsed === 0) {
-			context.setValue({ [local.segment]: undefined });
+			context.setValue({ [mergedProps.segment]: undefined });
 		} else {
-			context.setValue({ [local.segment]: parsed });
+			context.setValue({ [mergedProps.segment]: parsed });
 		}
 		enteredKeys = newValue;
 	};
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
-		callHandler(e, local.onKeyDown);
+		callHandler(e, mergedProps.onKeyDown);
 
 		// Firefox does not fire selectstart for Ctrl/Cmd + A
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=1742153
@@ -235,7 +242,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		const newValue = enteredKeys + key;
 
-		switch (local.segment) {
+		switch (mergedProps.segment) {
 			case "dayPeriod":
 				if (filter.startsWith(context.translations().am, key)) {
 					if ((context.value()?.hour ?? 0) >= 12)
@@ -258,7 +265,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				let numberValue = numberParser().parse(newValue);
 				let allowsZero = true;
 
-				if (local.segment === "hour" && context.hourCycle() === 12) {
+				if (mergedProps.segment === "hour" && context.hourCycle() === 12) {
 					allowsZero = false;
 					if (numberValue >= 12) {
 						numberValue = numberParser().parse(key);
@@ -278,7 +285,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				const shouldSetValue = numberValue !== 0 || allowsZero;
 
 				if (shouldSetValue) {
-					context.setValue({ [local.segment]: numberValue });
+					context.setValue({ [mergedProps.segment]: numberValue });
 				}
 
 				if (
@@ -298,7 +305,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	};
 
 	const onBeforeInput: JSX.EventHandlerUnion<HTMLElement, InputEvent> = (e) => {
-		callHandler(e, local.onBeforeInput);
+		callHandler(e, mergedProps.onBeforeInput);
 
 		e.preventDefault();
 
@@ -306,8 +313,8 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			case "deleteContentBackward":
 			case "deleteContentForward":
 				if (
-					local.segment !== "dayPeriod" &&
-					context.value()?.[local.segment] !== undefined &&
+					mergedProps.segment !== "dayPeriod" &&
+					context.value()?.[mergedProps.segment] !== undefined &&
 					!formControlContext.isReadOnly()
 				) {
 					onBackspaceKeyDown();
@@ -333,7 +340,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	};
 
 	const onInput: JSX.EventHandlerUnion<HTMLElement, InputEvent> = (e) => {
-		callHandler(e, local.onInput);
+		callHandler(e, mergedProps.onInput);
 
 		const { inputType, data } = e;
 
@@ -356,7 +363,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	};
 
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, local.onFocus);
+		callHandler(e, mergedProps.onFocus);
 
 		if (ref) {
 			enteredKeys = "";
@@ -379,7 +386,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	const adjust = (delta: number) => {
 		const hour = context.value()?.hour ?? context.placeholder()?.hour ?? 0;
 
-		if (local.segment === "hour" && context.hourCycle() === 12) {
+		if (mergedProps.segment === "hour" && context.hourCycle() === 12) {
 			const isPM = hour >= 12;
 			const h12 = hour % 12;
 
@@ -391,8 +398,8 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		const max = maxValue();
 
 		return (
-			((context.value()?.[local.segment as keyof Time] ??
-				context.placeholder()?.[local.segment as keyof Time] ??
+			((context.value()?.[mergedProps.segment as keyof Time] ??
+				context.placeholder()?.[mergedProps.segment as keyof Time] ??
 				0) +
 				delta +
 				(max + 1)) %
@@ -402,97 +409,96 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 	const onIncrement = () => {
 		enteredKeys = "";
-		if (local.segment === "dayPeriod") {
+		if (mergedProps.segment === "dayPeriod") {
 			cycleDayPeriod();
 			return;
 		}
 		context.setValue({
-			[local.segment]: adjust(1),
+			[mergedProps.segment]: adjust(1),
 		});
 	};
 
 	const onDecrement = () => {
 		enteredKeys = "";
-		if (local.segment === "dayPeriod") {
+		if (mergedProps.segment === "dayPeriod") {
 			cycleDayPeriod();
 			return;
 		}
 		context.setValue({
-			[local.segment]: adjust(-1),
+			[mergedProps.segment]: adjust(-1),
 		});
 	};
 
 	const onIncrementPage = () => {
 		enteredKeys = "";
-		if (local.segment === "dayPeriod") {
+		if (mergedProps.segment === "dayPeriod") {
 			cycleDayPeriod();
 			return;
 		}
 		context.setValue({
-			[local.segment]: adjust(PAGE_STEP[local.segment]),
+			[mergedProps.segment]: adjust(PAGE_STEP[mergedProps.segment]),
 		});
 	};
 
 	const onDecrementPage = () => {
 		enteredKeys = "";
-		if (local.segment === "dayPeriod") {
+		if (mergedProps.segment === "dayPeriod") {
 			cycleDayPeriod();
 			return;
 		}
 		context.setValue({
-			[local.segment]: adjust(-PAGE_STEP[local.segment]),
+			[mergedProps.segment]: adjust(-PAGE_STEP[mergedProps.segment]),
 		});
 	};
 
 	const onDecrementToMin = () => {
 		enteredKeys = "";
-		if (local.segment === "dayPeriod") {
+		if (mergedProps.segment === "dayPeriod") {
 			cycleDayPeriod();
 			return;
 		}
-		if (local.segment === "hour" && context.hourCycle() === 12) {
+		if (mergedProps.segment === "hour" && context.hourCycle() === 12) {
 			if ((context.value()?.hour ?? 0) >= 12) context.setValue({ hour: 12 });
 			else context.setValue({ hour: 0 });
-		} else context.setValue({ [local.segment]: 0 });
+		} else context.setValue({ [mergedProps.segment]: 0 });
 	};
 
 	const onIncrementToMax = () => {
 		enteredKeys = "";
-		if (local.segment === "dayPeriod") {
+		if (mergedProps.segment === "dayPeriod") {
 			cycleDayPeriod();
 			return;
 		}
-		if (local.segment === "hour" && context.hourCycle() === 12) {
+		if (mergedProps.segment === "hour" && context.hourCycle() === 12) {
 			if ((context.value()?.hour ?? 0) >= 12) context.setValue({ hour: 24 });
 			else context.setValue({ hour: 12 });
-		} else context.setValue({ [local.segment]: maxValue() });
+		} else context.setValue({ [mergedProps.segment]: maxValue() });
 	};
 
 	createEffect(
-		on([() => ref, () => context.focusManager()], ([ref, focusManager]) => {
+		() => context.focusManager(),
+		(focusManager) => {
 			const element = ref;
-
-			onCleanup(() => {
+			return () => {
 				if (getActiveElement(element) === element) {
 					const prev = focusManager.focusPrevious();
-
 					if (!prev) {
 						focusManager.focusNext();
 					}
 				}
-			});
-		}),
+			};
+		},
 	);
 
 	const getValue = () => {
-		if (local.segment === "dayPeriod")
+		if (mergedProps.segment === "dayPeriod")
 			return context.translations()[
 				(context.value()?.hour ?? context.placeholder()?.hour ?? 0) >= 12
 					? "pm"
 					: "am"
 			];
 
-		if (local.segment === "hour") {
+		if (mergedProps.segment === "hour") {
 			const val = context.value()?.hour ?? context.placeholder()?.hour;
 			if (val === undefined) return undefined;
 			if (context.hourCycle() === 12) {
@@ -502,12 +508,13 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			return val;
 		}
 		return (
-			context.value()?.[local.segment] ?? context.placeholder()?.[local.segment]
+			context.value()?.[mergedProps.segment] ??
+			context.placeholder()?.[mergedProps.segment]
 		);
 	};
 
 	const padding = () =>
-		local.segment !== "hour" ? 2 : context.forceLeadingZeros() ? 2 : 1;
+		mergedProps.segment !== "hour" ? 2 : context.forceLeadingZeros() ? 2 : 1;
 	const textValue = () =>
 		(getValue()?.toString() ?? "-".padStart(padding(), "-")).padStart(
 			padding(),
@@ -516,19 +523,9 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 	return (
 		<>
-			<SpinButton.Root<
-				Component<
-					Omit<
-						TimeFieldSegmentRenderProps,
-						| keyof SpinButton.SpinButtonRootRenderProps
-						| "ref"
-						| "onBeforeInput"
-						| "onInput"
-					>
-				>
-			>
-				ref={mergeRefs((el: HTMLElement) => (ref = el), local.ref)}
-				tabIndex={formControlContext.isDisabled() ? undefined : 0}
+			<SpinButton.Root
+				ref={mergeRefs((el: HTMLElement) => (ref = el), mergedProps.ref)}
+				tabindex={formControlContext.isDisabled() ? undefined : 0}
 				value={getValue()}
 				textValue={textValue()}
 				minValue={0}
@@ -539,7 +536,6 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				readOnly={formControlContext.isReadOnly()}
 				contentEditable={!formControlContext.isReadOnly()}
 				inputMode={inputMode()}
-				// @ts-ignore
 				autocorrect={!formControlContext.isReadOnly() ? "off" : undefined}
 				autoCapitalize={!formControlContext.isReadOnly() ? "off" : undefined}
 				spellcheck={!formControlContext.isReadOnly() ? false : undefined}
@@ -550,12 +546,12 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				aria-describedby={ariaDescribedBy()}
 				data-placeholder={
 					context.value()?.[
-						local.segment === "dayPeriod" ? "hour" : local.segment
+						mergedProps.segment === "dayPeriod" ? "hour" : mergedProps.segment
 					] === undefined
 						? ""
 						: undefined
 				}
-				data-type={local.segment}
+				data-type={mergedProps.segment}
 				onKeyDown={onKeyDown}
 				onBeforeInput={onBeforeInput}
 				onInput={onInput}
@@ -580,10 +576,11 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 			<Show
 				when={
-					(local.segment === "hour" &&
+					(mergedProps.segment === "hour" &&
 						(context.resolvedGranularity().minute ||
 							context.resolvedGranularity().second)) ||
-					(local.segment === "minute" && context.resolvedGranularity().second)
+					(mergedProps.segment === "minute" &&
+						context.resolvedGranularity().second)
 				}
 			>
 				<span>:</span>

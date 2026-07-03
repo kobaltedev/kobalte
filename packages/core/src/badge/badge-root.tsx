@@ -6,7 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-spectrum/badge/src/Badge.tsx
  */
 
-import { type ValidComponent, splitProps } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 import { Polymorphic, type PolymorphicProps } from "../polymorphic";
 
 export interface BadgeRootOptions {
@@ -16,11 +17,13 @@ export interface BadgeRootOptions {
 	textValue?: string;
 }
 
-export interface BadgeRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface BadgeRootCommonProps {
 	"aria-label"?: string;
 }
 
-export interface BadgeRootRenderProps extends BadgeRootCommonProps {}
+export interface BadgeRootRenderProps extends BadgeRootCommonProps {
+	role: "status";
+}
 
 export type BadgeRootProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -29,16 +32,14 @@ export type BadgeRootProps<
 export function BadgeRoot<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, BadgeRootProps<T>>,
 ) {
-	const [local, others] = splitProps(props, ["textValue"]);
+	const others = omit(props as BadgeRootProps, "textValue", "aria-label");
 
 	return (
 		<Polymorphic<BadgeRootRenderProps>
 			as="span"
 			role="status"
-			aria-label={local.textValue}
+			aria-label={(props as BadgeRootProps)["aria-label"] ?? props.textValue}
 			{...others}
-		>
-			{others.children}
-		</Polymorphic>
+		/>
 	);
 }
