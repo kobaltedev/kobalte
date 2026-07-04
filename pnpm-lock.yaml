@@ -253,10 +253,10 @@ importers:
         specifier: ^1.7.6
         version: 1.7.6
       '@internationalized/date':
-        specifier: ^3.12.2
+        specifier: ^3.4.0
         version: 3.12.2
       '@internationalized/number':
-        specifier: ^3.6.7
+        specifier: ^3.2.1
         version: 3.6.7
       '@kobalte/utils':
         specifier: ^0.9.2
