@@ -38,13 +38,16 @@
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"source": "src/index.ts",
-	"files": ["dist", "src"],
+	"files": [
+		"dist",
+		"src"
+	],
 	"scripts": {
 		"build": "tsup",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
 	},
 	"devDependencies": {
-		"tailwindcss": "^4.3.1"
+		"tailwindcss": "^4.3.2"
 	},
 	"peerDependencies": {
 		"tailwindcss": ">=3"
