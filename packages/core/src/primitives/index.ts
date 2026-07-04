@@ -3,4 +3,8 @@ export * from "./create-collection";
 export * from "./create-disclosure-state";
 export * from "./create-register-id";
 export * from "./create-tag-name";
-export * from "./create-toggle-state";
+export {
+	createToggleState,
+	type CreateToggleStateProps,
+	type ToggleState,
+} from "./create-toggle-state";

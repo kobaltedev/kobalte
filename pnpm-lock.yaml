@@ -7,7 +7,7 @@ settings:
 overrides:
   '@solidjs/testing-library': 1.0.0-beta.2
   '@solid-primitives/a11y': next
-  '@solid-primitives/controlled-signal': next
+  '@solid-primitives/controlled-signal': 1.0.0-next.1
   '@solid-primitives/event-listener': next
   '@solid-primitives/focus': next
   '@solid-primitives/form': next
@@ -265,8 +265,8 @@ importers:
         specifier: next
         version: 1.0.0-next.0(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
       '@solid-primitives/controlled-signal':
-        specifier: next
-        version: 1.0.0-next.0(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
+        specifier: 1.0.0-next.1
+        version: 1.0.0-next.1(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
       '@solid-primitives/focus':
         specifier: next
         version: 1.0.0-next.0(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
@@ -2914,8 +2914,8 @@ packages:
       '@solidjs/web': ^2.0.0-beta.15
       solid-js: ^2.0.0-beta.15
 
-  '@solid-primitives/controlled-signal@1.0.0-next.0':
-    resolution: {integrity: sha512-KLTFljQFM63WEMrzFFXSOO24nm+uSz2Mj79WYH8qdKSWRquuQPgVDJQnmVjaODJLHiZb2Z17s26oPKly0rVqGw==}
+  '@solid-primitives/controlled-signal@1.0.0-next.1':
+    resolution: {integrity: sha512-AE4HFWqOGr95FoabFgAFqyTjw8mBUXUISxxPCMbbU4id15mcyeIW/+cSzBq8b8n8so7V8SvvPnYn7TKyM9Eb5g==}
     peerDependencies:
       solid-js: ^2.0.0-beta.15
 
@@ -10166,7 +10166,7 @@ snapshots:
       '@solidjs/web': 2.0.0-beta.15(solid-js@2.0.0-beta.15)
       solid-js: 2.0.0-beta.15
 
-  '@solid-primitives/controlled-signal@1.0.0-next.0(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)':
+  '@solid-primitives/controlled-signal@1.0.0-next.1(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)':
     dependencies:
       '@solid-primitives/utils': 7.0.0-next.0(@solidjs/web@2.0.0-beta.15(solid-js@2.0.0-beta.15))(solid-js@2.0.0-beta.15)
       solid-js: 2.0.0-beta.15
