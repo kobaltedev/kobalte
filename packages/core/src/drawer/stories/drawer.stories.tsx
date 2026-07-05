@@ -7,7 +7,7 @@
  */
 
 import { createSignal } from "solid-js";
-import preview from "../../../../../.storybook/preview.ts";
+import preview from "../../../../../.storybook/preview";
 import {
 	CloseButton,
 	Content,

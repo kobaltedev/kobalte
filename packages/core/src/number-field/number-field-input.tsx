@@ -244,13 +244,10 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			onFocus={onFocus}
 			onBlur={onBlur}
 			onChange={(e) => {
-				// @ts-expect-error: Polymorphic event type
 				callHandler(e, mergedProps.onChange);
 				context.format();
 			}}
-			// @ts-expect-error: Polymorphic event type
 			onWheel={(e) => {
-				// @ts-expect-error: Polymorphic event type
 				callHandler(e, mergedProps.onWheel);
 				if (
 					!context.changeOnWheel() ||

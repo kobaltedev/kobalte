@@ -25,7 +25,7 @@ function CalendarExample(props: Partial<ComponentProps<typeof Calendar.Root>>) {
 			createCalendar={createGregorianCalendar}
 			selectionMode="single"
 			defaultFocusedValue={JAN_2024}
-			{...props}
+			{...(props as any)}
 		>
 			<Calendar.Header>
 				<Calendar.PrevTrigger data-testid="prev">‹</Calendar.PrevTrigger>

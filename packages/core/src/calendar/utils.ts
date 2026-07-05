@@ -15,7 +15,6 @@
 import {
 	type CalendarDate,
 	type DateDuration,
-	type DateFormatter,
 	endOfMonth,
 	endOfWeek,
 	isSameDay,
@@ -47,14 +46,14 @@ export function constrainStart(
 		computedDate = maxDate(
 			computedDate,
 			alignStart(toCalendarDate(min), duration, locale),
-		);
+		)!;
 	}
 
 	if (max && date.compare(max) <= 0) {
 		computedDate = minDate(
 			computedDate,
 			alignEnd(toCalendarDate(max), duration, locale),
-		);
+		)!;
 	}
 
 	return computedDate;
@@ -68,11 +67,11 @@ export function constrainValue(
 	let computedDate = date;
 
 	if (min) {
-		computedDate = maxDate(computedDate, toCalendarDate(min));
+		computedDate = maxDate(computedDate, toCalendarDate(min))!;
 	}
 
 	if (max) {
-		computedDate = minDate(computedDate, toCalendarDate(max));
+		computedDate = minDate(computedDate, toCalendarDate(max))!;
 	}
 
 	return computedDate;
@@ -375,7 +374,7 @@ export function getArrayValueOfSelection(
 
 
 function formatRange(
-	dateFormatter: DateFormatter,
+	dateFormatter: Intl.DateTimeFormat,
 	translations: CalendarIntlTranslations,
 	start: DateValue,
 	end: DateValue,
@@ -701,7 +700,6 @@ export function getSectionEnd(
 
 	if (visibleDuration.weeks) {
 		return adjust({
-			//@ts-expect-error - endOfWeek is loosely typed
 			focusedDate: endOfWeek(focusedDate, locale),
 			startDate,
 		});

@@ -316,24 +316,26 @@ export function CalendarRoot<T extends ValidComponent = "div">(
 		return merged.selectionAlignment ?? "center";
 	});
 
-	const min = createMemo(() => {
+	const min = createMemo((): DateValue | undefined => {
 		const startRange = availableRange()?.start;
+		const minValue = merged.minValue ?? undefined;
 
-		if (merged.selectionMode === "range" && merged.minValue && startRange) {
-			return maxDate(merged.minValue, startRange);
+		if (merged.selectionMode === "range" && minValue && startRange) {
+			return maxDate(minValue, startRange) ?? undefined;
 		}
 
-		return merged.minValue;
+		return minValue;
 	});
 
-	const max = createMemo(() => {
+	const max = createMemo((): DateValue | undefined => {
 		const endRange = availableRange()?.end;
+		const maxValue = merged.maxValue ?? undefined;
 
-		if (merged.selectionMode === "range" && merged.maxValue && endRange) {
-			return minDate(merged.maxValue, endRange);
+		if (merged.selectionMode === "range" && maxValue && endRange) {
+			return minDate(maxValue, endRange) ?? undefined;
 		}
 
-		return merged.maxValue;
+		return maxValue;
 	});
 
 	const calendarDateValue = createMemo(() => {

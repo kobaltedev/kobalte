@@ -109,6 +109,7 @@ export const Default = meta.story({
 		<Root
 			class={wrapClass}
 			options={fruits}
+			placeholder="Pick a fruit…"
 			itemComponent={(props) => (
 				<Item item={props.item} class={itemClass}>
 					<ItemIndicator class={itemIndicatorClass}>
@@ -119,7 +120,7 @@ export const Default = meta.story({
 			)}
 		>
 			<Trigger class={triggerClass}>
-				<Value<string> placeholder="Pick a fruit…">
+				<Value<string>>
 					{(state) => state.selectedOption()}
 				</Value>
 				<Icon class={iconClass}>
@@ -143,6 +144,7 @@ export const DefaultValue = meta.story({
 			class={wrapClass}
 			options={fruits}
 			defaultValue="Cherry"
+			placeholder="Pick a fruit…"
 			itemComponent={(props) => (
 				<Item item={props.item} class={itemClass}>
 					<ItemIndicator class={itemIndicatorClass}>
@@ -153,7 +155,7 @@ export const DefaultValue = meta.story({
 			)}
 		>
 			<Trigger class={triggerClass}>
-				<Value<string> placeholder="Pick a fruit…">
+				<Value<string>>
 					{(state) => state.selectedOption()}
 				</Value>
 				<Icon class={iconClass}>
@@ -176,6 +178,7 @@ export const WithLabel = meta.story({
 		<Root
 			class={wrapClass}
 			options={fruits}
+			placeholder="Pick a fruit…"
 			itemComponent={(props) => (
 				<Item item={props.item} class={itemClass}>
 					<ItemIndicator class={itemIndicatorClass}>
@@ -187,7 +190,7 @@ export const WithLabel = meta.story({
 		>
 			<Label class={labelClass}>Favorite fruit</Label>
 			<Trigger class={triggerClass}>
-				<Value<string> placeholder="Pick a fruit…">
+				<Value<string>>
 					{(state) => state.selectedOption()}
 				</Value>
 				<Icon class={iconClass}>
@@ -215,6 +218,7 @@ export const Disabled = meta.story({
 			options={fruits}
 			disabled
 			defaultValue="Mango"
+			placeholder="Pick a fruit…"
 			itemComponent={(props) => (
 				<Item item={props.item} class={itemClass}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
@@ -223,7 +227,7 @@ export const Disabled = meta.story({
 		>
 			<Label class={labelClass}>Favorite fruit</Label>
 			<Trigger class={triggerClass}>
-				<Value<string> placeholder="Pick a fruit…">
+				<Value<string>>
 					{(state) => state.selectedOption()}
 				</Value>
 				<Icon class={iconClass}>
@@ -248,6 +252,7 @@ function ControlledDemo() {
 				options={fruits}
 				value={value()}
 				onChange={setValue}
+				placeholder="Pick a fruit…"
 				itemComponent={(props) => (
 					<Item item={props.item} class={itemClass}>
 						<ItemIndicator class={itemIndicatorClass}>
@@ -259,7 +264,7 @@ function ControlledDemo() {
 			>
 				<Label class={labelClass}>Favorite fruit</Label>
 				<Trigger class={triggerClass}>
-					<Value<string> placeholder="Pick a fruit…">
+					<Value<string>>
 						{(state) => state.selectedOption()}
 					</Value>
 					<Icon class={iconClass}>
@@ -310,6 +315,7 @@ export const ObjectOptions = meta.story({
 			options={people}
 			optionValue="id"
 			optionTextValue="name"
+			placeholder="Select a person…"
 			itemComponent={(props) => (
 				<Item item={props.item} class={itemClass}>
 					<ItemIndicator class={itemIndicatorClass}>
@@ -321,7 +327,7 @@ export const ObjectOptions = meta.story({
 		>
 			<Label class={labelClass}>Assign to</Label>
 			<Trigger class={triggerClass}>
-				<Value<Person> placeholder="Select a person…">
+				<Value<Person>>
 					{(state) => state.selectedOption().name}
 				</Value>
 				<Icon class={iconClass}>
@@ -346,6 +352,7 @@ export const ItemWithDescription = meta.story({
 			options={people}
 			optionValue="id"
 			optionTextValue="name"
+			placeholder="Select a person…"
 			itemComponent={(props) => (
 				<Item item={props.item} class={itemClass}>
 					<ItemIndicator class={itemIndicatorClass}>
@@ -362,7 +369,7 @@ export const ItemWithDescription = meta.story({
 		>
 			<Label class={labelClass}>Assign to</Label>
 			<Trigger class={triggerClass}>
-				<Value<Person> placeholder="Select a person…">
+				<Value<Person>>
 					{(state) => state.selectedOption().name}
 				</Value>
 				<Icon class={iconClass}>
@@ -394,8 +401,9 @@ export const WithGroups = meta.story({
 			class={wrapClass}
 			options={fruitGroups}
 			optionGroupChildren="fruits"
+			placeholder="Pick a fruit…"
 			sectionComponent={(props) => (
-				<Section section={props.section}>
+				<Section>
 					<span class={sectionLabelClass}>
 						{(props.section.rawValue as FruitGroup).label}
 					</span>
@@ -412,7 +420,7 @@ export const WithGroups = meta.story({
 		>
 			<Label class={labelClass}>Favorite fruit</Label>
 			<Trigger class={triggerClass}>
-				<Value<string> placeholder="Pick a fruit…">
+				<Value<string>>
 					{(state) => state.selectedOption()}
 				</Value>
 				<Icon class={iconClass}>
@@ -432,12 +440,13 @@ function MultipleDemo() {
 	const [values, setValues] = createSignal<string[]>([]);
 	return (
 		<div class="flex flex-col gap-3 font-sans">
-			<Root
+			<Root<string>
 				class={wrapClass}
 				options={fruits}
 				multiple
 				value={values()}
 				onChange={setValues}
+				placeholder="Pick fruits…"
 				itemComponent={(props) => (
 					<Item item={props.item} class={itemClass}>
 						<ItemIndicator class={itemIndicatorClass}>
@@ -449,7 +458,7 @@ function MultipleDemo() {
 			>
 				<Label class={labelClass}>Favorite fruits</Label>
 				<Trigger class={triggerClass}>
-					<Value<string> placeholder="Pick fruits…">
+					<Value<string>>
 						{(state) =>
 							state.selectedOptions().length > 0
 								? `${state.selectedOptions().length} selected`
@@ -489,6 +498,7 @@ function ValidationDemo() {
 			value={value()}
 			onChange={setValue}
 			validationState={isInvalid() ? "invalid" : "valid"}
+			placeholder="Pick a fruit…"
 			itemComponent={(props) => (
 				<Item item={props.item} class={itemClass}>
 					<ItemIndicator class={itemIndicatorClass}>
@@ -502,7 +512,7 @@ function ValidationDemo() {
 			<Trigger
 				class={`${triggerClass} data-[invalid]:border-red-500 data-[invalid]:ring-red-500`}
 			>
-				<Value<string> placeholder="Pick a fruit…">
+				<Value<string>>
 					{(state) => state.selectedOption()}
 				</Value>
 				<Icon class={iconClass}>

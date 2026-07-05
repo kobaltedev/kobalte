@@ -17,7 +17,7 @@ export default defineConfig({
 		environment: "jsdom",
 		globals: true,
 		setupFiles: ["@testing-library/jest-dom/vitest"],
-		isolate: false,
+		isolate: true,
 		transformMode: {
 			web: [/\.[jt]sx$/],
 		},
