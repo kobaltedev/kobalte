@@ -3,14 +3,7 @@ import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 import { version as KBVersion } from "../../packages/core/package.json";
 import { solidBase } from "@kobalte/solidbase/config";
-import { createFilesystemSidebar } from "@kobalte/solidbase/config/sidebar";
-
-// const theme = defineTheme({
-// 	componentsPath: import.meta.resolve("./src/solidbase-theme"),
-// 	extends: defaultTheme,
-// });
-
-// const solidBase = createSolidBase(theme);
+import { createDefaultThemeFilesystemSidebar } from "@kobalte/solidbase/default-theme";
 
 export default defineConfig({
 	plugins: [
@@ -61,8 +54,8 @@ export default defineConfig({
 					},
 				],
 				sidebar: {
-					"/docs/core": createFilesystemSidebar("./src/routes/docs/core"),
-					"/docs/changelog": createFilesystemSidebar("./src/routes/docs/changelog"),
+					"/docs/core": createDefaultThemeFilesystemSidebar("./src/routes/docs/core"),
+					"/docs/changelog": createDefaultThemeFilesystemSidebar("./src/routes/docs/changelog"),
 				},
 			},
 		}),
