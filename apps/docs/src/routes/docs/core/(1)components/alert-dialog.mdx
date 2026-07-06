@@ -1,7 +1,11 @@
+---
+title: Alert Dialog
+---
+
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
 import { BasicExample } from "../../../../examples/alert-dialog";
 
-# Alert Dialog
+# {frontmatter.title}
 
 A modal dialog that interrupts the user's workflow to communicate an important message and acquire a response. Examples include action confirmation prompts and error message confirmations. The alertdialog role enables assistive technologies and browsers to distinguish alert dialogs from other dialogs so they have the option of giving alert dialogs special treatment, such as playing a system alert sound.
 
@@ -21,7 +25,7 @@ import { AlertDialog } from "@kobalte/core";
 - Supports modal and non-modal modes.
 - Provides screen reader announcements via rendered title and description.
 - Focus is trapped and scrolling is blocked while it is open.
-- Pressing <Kbd>Esc</Kbd> closes the alert dialog.
+- Pressing <kbd>Esc</kbd> closes the alert dialog.
 - Can be controlled or uncontrolled.
 
 ## Anatomy
@@ -53,9 +57,9 @@ The alert dialog consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -317,8 +321,8 @@ function ControlledExample() {
 
 | Key                               | Description                                            |
 | :-------------------------------- | :----------------------------------------------------- |
-| <Kbd>Space</Kbd>                  | When focus is on the trigger, opens/closes the dialog. |
-| <Kbd>Enter</Kbd>                  | When focus is on the trigger, opens/closes the dialog. |
-| <Kbd>Tab</Kbd>                    | Moves focus to the next focusable element.             |
-| <Kbd>Shift</Kbd> + <Kbd>Tab</Kbd> | Moves focus to the previous focusable element.         |
-| <Kbd>Esc</Kbd>                    | Closes the dialog and moves focus to the trigger.      |
+| <kbd>Space</kbd>                  | When focus is on the trigger, opens/closes the dialog. |
+| <kbd>Enter</kbd>                  | When focus is on the trigger, opens/closes the dialog. |
+| <kbd>Tab</kbd>                    | Moves focus to the next focusable element.             |
+| <kbd>Shift</kbd> + <kbd>Tab</kbd> | Moves focus to the previous focusable element.         |
+| <kbd>Esc</kbd>                    | Closes the dialog and moves focus to the trigger.      |

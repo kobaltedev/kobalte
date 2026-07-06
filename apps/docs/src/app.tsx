@@ -1,6 +1,6 @@
 // @refresh reload
 import "@docsearch/css";
-import "./root.css";
+import "./docsearch.css";
 
 import { Title } from "@solidjs/meta";
 import { Router } from "@solidjs/router";
@@ -9,10 +9,8 @@ import { Suspense } from "solid-js";
 import { Portal } from "solid-js/web";
 
 import { Toast } from "@kobalte/core/toast";
-import toastStyles from "./examples/toast.module.css";
 import { SolidBaseRoot } from "@kobalte/solidbase/client";
-
-
+import toastStyles from "./examples/toast.module.css";
 
 export default function App() {
 	return (
@@ -26,9 +24,7 @@ export default function App() {
 							<Toast.List class={toastStyles.toast__list} />
 						</Toast.Region>
 						<Toast.Region regionId="custom-region-id">
-							<Toast.List
-								class={toastStyles["toast__list-custom-region"]}
-							/>
+							<Toast.List class={toastStyles["toast__list-custom-region"]} />
 						</Toast.Region>
 					</Portal>
 				</SolidBaseRoot>

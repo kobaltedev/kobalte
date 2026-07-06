@@ -1,3 +1,7 @@
+---
+title: Checkbox
+---
+
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
 	BasicExample,
@@ -8,7 +12,7 @@ import {
 	HTMLFormExample,
 } from "../../../../examples/checkbox";
 
-# Checkbox
+# {frontmatter.title}
 
 A control that allows the user to toggle between checked and not checked.
 
@@ -56,9 +60,9 @@ The checkbox consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -132,9 +136,9 @@ The checkbox consists of:
 
 An initial, uncontrolled value can be provided using the `defaultChecked` prop.
 
-<Preview>
-	<DefaultCheckedExample />
-</Preview>
+:::preview
+<DefaultCheckedExample />
+:::
 
 ```tsx
 <Checkbox defaultChecked>...</Checkbox>
@@ -144,9 +148,9 @@ An initial, uncontrolled value can be provided using the `defaultChecked` prop.
 
 The `checked` prop can be used to make the checked state controlled. The `onChange` event is fired when the user presses the checkbox, and receives the new value.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -169,9 +173,9 @@ function ControlledExample() {
 
 The `Checkbox.Description` component can be used to associate additional help text with a checkbox.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+<DescriptionExample />
+:::
 
 ```tsx {9}
 <Checkbox>
@@ -192,9 +196,9 @@ The `Checkbox.ErrorMessage` component can be used to help the user fix a validat
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+<ErrorMessageExample />
+:::
 
 ```tsx {10,18}
 import { createSignal } from "solid-js";
@@ -225,9 +229,9 @@ function ErrorMessageExample() {
 
 The `name` and `value` props can be used for integration with HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {8}
 function HTMLFormExample() {
@@ -316,4 +320,4 @@ function HTMLFormExample() {
 
 | Key              | Description                      |
 | :--------------- | :------------------------------- |
-| <Kbd>Space</Kbd> | Toggles the checkbox on and off. |
+| <kbd>Space</kbd> | Toggles the checkbox on and off. |

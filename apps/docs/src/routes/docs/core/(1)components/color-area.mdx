@@ -1,3 +1,7 @@
+---
+title: Color Area
+---
+
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
 	BasicExample,
@@ -7,7 +11,7 @@ import {
 	HTMLFormExample,
 } from "../../../../examples/color-area";
 
-# Color Area
+# {frontmatter.title}
 
 Allows users to adjust two channels of an RGB, HSL, or HSB color value against a two-dimensional gradient background.
 
@@ -57,9 +61,9 @@ The color area consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -140,9 +144,9 @@ If no `xChannel` or `yChannel` is provided, for the RGB color space, the red col
 
 ### Default value
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 ```tsx {1}
 <ColorArea defaultValue={parseColor("rgb(2, 132, 197)")}>
@@ -158,9 +162,9 @@ If no `xChannel` or `yChannel` is provided, for the RGB color space, the red col
 
 ### Controlled value
 
-<Preview>
-	<ControlledValueExample />
-</Preview>
+:::preview
+<ControlledValueExample />
+:::
 
 ```tsx {3,5}
 import { createSignal } from "solid-js";
@@ -184,9 +188,9 @@ const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
 
 The color channel for each axis of a color area can be specified using the `xChannel` and `yChannel` props. An array of channel names for a color can be returned using the color.getColorChannels method.
 
-<Preview>
-	<XAndYChannelExample />
-</Preview>
+:::preview
+<XAndYChannelExample />
+:::
 
 ```tsx {2,4}
 const [value, setValue] = createSignal(parseColor("rgb(100, 149, 237)"));
@@ -207,9 +211,9 @@ const [rChannel, gChannel, bChannel] = value().getColorChannels();
 
 ColorArea supports the `xName` and `yName` props for integration with HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {1}
 <ColorArea defaultValue={parseColor("rgb(100, 149, 237)")} xName="red" yName="green">
@@ -292,11 +296,11 @@ The current color is available on the thumb using the custom css property `--kb-
 
 | Key                   | Description                                                                  |
 | :-------------------- | :--------------------------------------------------------------------------- |
-| <Kbd>PageUp</Kbd>     | Increments the value of the thumb in the vertical axis by a larger step.     |
-| <Kbd>PageDown</Kbd>   | Decrements the value of the thumb in the vertical axis by a larger step.     |
-| <Kbd>ArrowDown</Kbd>  | Decrements the value of the thumb in the vertical axis by the step amount.   |
-| <Kbd>ArrowUp</Kbd>    | Increments the value of the thumb in the vertical axis by the step amount.   |
-| <Kbd>ArrowRight</Kbd> | Increments the value of the thumb in the horizontal axis by the step amount. |
-| <Kbd>ArrowLeft</Kbd>  | Decrements the value of the thumb in the vertical axis by the step amount.   |
-| <Kbd>Home</Kbd>       | Decrements the value of the thumb in the horizontal axis by a larger step.   |
-| <Kbd>End</Kbd>        | Increments the value of the thumb in the horizontal axis by a larger step.   |
+| <kbd>PageUp</kbd>     | Increments the value of the thumb in the vertical axis by a larger step.     |
+| <kbd>PageDown</kbd>   | Decrements the value of the thumb in the vertical axis by a larger step.     |
+| <kbd>ArrowDown</kbd>  | Decrements the value of the thumb in the vertical axis by the step amount.   |
+| <kbd>ArrowUp</kbd>    | Increments the value of the thumb in the vertical axis by the step amount.   |
+| <kbd>ArrowRight</kbd> | Increments the value of the thumb in the horizontal axis by the step amount. |
+| <kbd>ArrowLeft</kbd>  | Decrements the value of the thumb in the vertical axis by the step amount.   |
+| <kbd>Home</kbd>       | Decrements the value of the thumb in the horizontal axis by a larger step.   |
+| <kbd>End</kbd>        | Increments the value of the thumb in the horizontal axis by a larger step.   |

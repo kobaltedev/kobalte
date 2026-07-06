@@ -1,7 +1,11 @@
+---
+title: Context Menu
+---
+
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
 import { BasicExample } from "../../../../examples/context-menu";
 
-# Context Menu
+# {frontmatter.title}
 
 Displays a menu located at the pointer, triggered by a right-click or a long-press.
 
@@ -106,9 +110,9 @@ The checkable menu item consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -607,11 +611,11 @@ The popper positioner will copy the same `z-index` as the `ContextMenu.Content`.
 
 | Key                                          | Description                                                                                      |
 | :------------------------------------------- | :----------------------------------------------------------------------------------------------- |
-| <Kbd>Space</Kbd>                             | When focus is on an item, activates the item.                                                    |
-| <Kbd>Enter</Kbd>                             | When focus is on an item, activates the item.                                                    |
-| <Kbd>ArrowDown</Kbd>                         | When focus is on an item, moves focus to the next item.                                          |
-| <Kbd>ArrowUp</Kbd>                           | When focus is on an item, moves focus to the previous item.                                      |
-| <Kbd>ArrowRight</Kbd> / <Kbd>ArrowLeft</Kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction. |
-| <Kbd>Home</Kbd>                              | When focus is on an item, moves focus to first item.                                             |
-| <Kbd>End</Kbd>                               | When focus is on an item, moves focus to last item.                                              |
-| <Kbd>Esc</Kbd>                               | Closes the context menu.                                                                         |
+| <kbd>Space</kbd>                             | When focus is on an item, activates the item.                                                    |
+| <kbd>Enter</kbd>                             | When focus is on an item, activates the item.                                                    |
+| <kbd>ArrowDown</kbd>                         | When focus is on an item, moves focus to the next item.                                          |
+| <kbd>ArrowUp</kbd>                           | When focus is on an item, moves focus to the previous item.                                      |
+| <kbd>ArrowRight</kbd> / <kbd>ArrowLeft</kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction. |
+| <kbd>Home</kbd>                              | When focus is on an item, moves focus to first item.                                             |
+| <kbd>End</kbd>                               | When focus is on an item, moves focus to last item.                                              |
+| <kbd>Esc</kbd>                               | Closes the context menu.                                                                         |

@@ -1,7 +1,11 @@
+---
+title: Navigation Menu
+---
+
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
 import { BasicExample, AnimationExample } from "../../../../examples/navigation-menu";
 
-# Navigation Menu
+# {frontmatter.title}
 
 A collection of links for navigating websites.
 
@@ -114,7 +118,7 @@ The checkable menu item consists of:
 
 <Preview class="bg-[#f6f6f6]">
 	<BasicExample />
-</Preview>
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -830,7 +834,7 @@ For animating the content of the viewport we apply the attribute `data-motion` o
 
 <Preview class="bg-[#f6f6f6]">
 	<AnimationExample />
-</Preview>
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -1254,13 +1258,13 @@ For animating the content of the viewport we apply the attribute `data-motion` o
 
 | Key                                          | Description                                                                                      |
 | :------------------------------------------- | :----------------------------------------------------------------------------------------------- |
-| <Kbd>Space</Kbd>                             | When focus is on an item, activates the item.                                                    |
-| <Kbd>Enter</Kbd>                             | When focus is on an item, activates the item.                                                    |
-| <Kbd>ArrowDown</Kbd>                         | When focus is on an item, moves focus to the next item.                                          |
-| <Kbd>ArrowUp</Kbd>                           | When focus is on an item, moves focus to the previous item.                                      |
-| <Kbd>ArrowRight</Kbd>                        | When focus is on an item (not sub menu trigger), moves focus to the next menu.                   |
-| <Kbd>ArrowLeft</Kbd>                         | When focus is on an item (not sub menu item), moves focus to the previous menu.                  |
-| <Kbd>ArrowRight</Kbd> / <Kbd>ArrowLeft</Kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction. |
-| <Kbd>Home</Kbd>                              | When focus is on an item, moves focus to first item.                                             |
-| <Kbd>End</Kbd>                               | When focus is on an item, moves focus to last item.                                              |
-| <Kbd>Esc</Kbd>                               | Closes the menu.                                                                                 |
+| <kbd>Space</kbd>                             | When focus is on an item, activates the item.                                                    |
+| <kbd>Enter</kbd>                             | When focus is on an item, activates the item.                                                    |
+| <kbd>ArrowDown</kbd>                         | When focus is on an item, moves focus to the next item.                                          |
+| <kbd>ArrowUp</kbd>                           | When focus is on an item, moves focus to the previous item.                                      |
+| <kbd>ArrowRight</kbd>                        | When focus is on an item (not sub menu trigger), moves focus to the next menu.                   |
+| <kbd>ArrowLeft</kbd>                         | When focus is on an item (not sub menu item), moves focus to the previous menu.                  |
+| <kbd>ArrowRight</kbd> / <kbd>ArrowLeft</kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction. |
+| <kbd>Home</kbd>                              | When focus is on an item, moves focus to first item.                                             |
+| <kbd>End</kbd>                               | When focus is on an item, moves focus to last item.                                              |
+| <kbd>Esc</kbd>                               | Closes the menu.                                                                                 |

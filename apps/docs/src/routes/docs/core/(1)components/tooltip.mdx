@@ -1,7 +1,11 @@
+---
+title: Tooltip
+---
+
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import { BasicExample, ControlledExample } from "../../../../examples/tooltip";
 
-# Tooltip
+# {frontmatter.title}
 
 A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
 
@@ -48,9 +52,9 @@ The tooltip consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -170,9 +174,9 @@ An initial, uncontrolled open value can be provided using the `defaultOpen` prop
 
 The `open` prop can be used to make the open state controlled. The `onOpenChange` event is fired when the user presses the trigger, close button or interact outside, and receives the new value.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,9}
 import { createSignal } from "solid-js";
@@ -312,7 +316,7 @@ The popper positioner will copy the same `z-index` as the `Tooltip.Content`.
 
 | Key              | Description                                  |
 | :--------------- | :------------------------------------------- |
-| <Kbd>Tab</Kbd>   | Opens/closes the tooltip without delay.      |
-| <Kbd>Space</Kbd> | When open, closes the tooltip without delay. |
-| <Kbd>Enter</Kbd> | When open, closes the tooltip without delay. |
-| <Kbd>Esc</Kbd>   | When open, closes the tooltip without delay. |
+| <kbd>Tab</kbd>   | Opens/closes the tooltip without delay.      |
+| <kbd>Space</kbd> | When open, closes the tooltip without delay. |
+| <kbd>Enter</kbd> | When open, closes the tooltip without delay. |
+| <kbd>Esc</kbd>   | When open, closes the tooltip without delay. |

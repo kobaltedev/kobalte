@@ -1,3 +1,7 @@
+---
+title: Meter
+---
+
 import { Preview, TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
@@ -5,7 +9,7 @@ import {
 	CustomValueScaleExample,
 } from "../../../../examples/meter";
 
-# Meter
+# {frontmatter.title}
 
 Displays numeric value that varies within a defined range
 
@@ -45,9 +49,9 @@ The meter consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -120,9 +124,9 @@ The meter consists of:
 
 By default, the `value` prop represents the current value of meter, as the minimum and maximum values default to 0 and 100, respectively. Alternatively, a different scale can be used by setting the `minValue` and `maxValue` props.
 
-<Preview>
-	<CustomValueScaleExample />
-</Preview>
+:::preview
+<CustomValueScaleExample />
+:::
 
 ```tsx {1}
 <Meter value={100} minValue={0} maxValue={250} class="meter">
@@ -140,9 +144,9 @@ By default, the `value` prop represents the current value of meter, as the minim
 
 The `getValueLabel` prop allows the formatted value used in `Meter.ValueLabel` and ARIA to be replaced with a custom string. It receives the current value, min and max values as parameters.
 
-<Preview>
-	<CustomValueLabelExample />
-</Preview>
+:::preview
+<CustomValueLabelExample />
+:::
 
 ```tsx {5}
 <Meter

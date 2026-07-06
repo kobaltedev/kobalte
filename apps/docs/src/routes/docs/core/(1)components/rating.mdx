@@ -1,4 +1,5 @@
 ---
+title: Rating
 status: new
 ---
 
@@ -13,7 +14,7 @@ import {
 	HTMLFormExample,
 } from "../../../../examples/rating";
 
-# Rating
+# {frontmatter.title}
 
 Allows users to rate items using a set of icons.
 
@@ -68,9 +69,9 @@ The rating item consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -158,9 +159,9 @@ fill: hsl(200 98% 39%);
 
 An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
-<Preview>
+:::preview
 	<DefaultValueExample />
-</Preview>
+:::
 
 ```tsx {1}
 <Rating defaultValue={3}>
@@ -182,9 +183,9 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user selects a rating, and receives the new value.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -217,9 +218,9 @@ function ControlledExample() {
 
 Allow 0.5 value steps by setting the `allowHalf` prop to true.
 
-<Preview>
-	<HalfRatingsExample />
-</Preview>
+:::preview
+<HalfRatingsExample />
+:::
 
 ```tsx {1}
 <Rating allowHalf>
@@ -228,7 +229,7 @@ Allow 0.5 value steps by setting the `allowHalf` prop to true.
 			{_ => (
 				<Rating.Item>
 					<Rating.ItemControl>
-						{(state) => (state.half() ? <StarHalfIcon /> : <StarIcon />)}
+						{state => (state.half() ? <StarHalfIcon /> : <StarIcon />)}
 					</Rating.ItemControl>
 				</Rating.Item>
 			)}
@@ -241,9 +242,9 @@ Allow 0.5 value steps by setting the `allowHalf` prop to true.
 
 The `Rating.Description` component can be used to associate additional help text with a rating.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+<DescriptionExample />
+:::
 
 ```tsx {14}
 <Rating>
@@ -269,9 +270,9 @@ The `Rating.ErrorMessage` component can be used to help the user fix a validatio
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+<ErrorMessageExample />
+:::
 
 ```tsx {10,24-26}
 import { createSignal } from "solid-js";
@@ -307,9 +308,9 @@ function ErrorMessageExample() {
 
 The `name` prop can be used for integration with HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {8,20}
 function HTMLFormExample() {
@@ -418,10 +419,10 @@ function HTMLFormExample() {
 
 | Key                   | Description                                                                                      |
 | :-------------------- | :----------------------------------------------------------------------------------------------- |
-| <Kbd>ArrowDown</Kbd>  | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.     |
-| <Kbd>ArrowRight</Kbd> | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.     |
-| <Kbd>ArrowUp</Kbd>    | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property. |
-| <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property. |
-| <Kbd>Space</Kbd>      | Selects the focused item in the rating.                                                          |
-| <Kbd>Home</Kbd>       | Sets the value of the rating to 1.                                                               |
-| <Kbd>End</Kbd>        | Sets the value of the rating to the maximum value.                                               |
+| <kbd>ArrowDown</kbd>  | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.     |
+| <kbd>ArrowRight</kbd> | Moves focus to the next item, increasing the rating value based on the `allowHalf` property.     |
+| <kbd>ArrowUp</kbd>    | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property. |
+| <kbd>ArrowLeft</kbd>  | Moves focus to the previous item, decreasing the rating value based on the `allowHalf` property. |
+| <kbd>Space</kbd>      | Selects the focused item in the rating.                                                          |
+| <kbd>Home</kbd>       | Sets the value of the rating to 1.                                                               |
+| <kbd>End</kbd>        | Sets the value of the rating to the maximum value.                                               |

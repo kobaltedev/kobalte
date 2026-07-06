@@ -1,6 +1,10 @@
+---
+title: Polymorphism
+---
+
 import { Callout } from "../../../../components/callout.tsx";
 
-# Polymorphism
+# {frontmatter.title}
 
 Kobalte components that render a DOM element support polymorphism via the `as` prop. This allows you to change the rendered element or component while preserving behavior, accessibility, and state management.
 
@@ -111,9 +115,9 @@ Custom event handlers defined on a Kobalte component are called _before_ Kobalte
 
 ## Component Prop Types
 
-<Callout type={"warning"}>
-	This section is intended for **library authors** building on top of Kobalte.
-</Callout>
+:::warning
+This section is intended for **library authors** building on top of Kobalte.
+:::
 
 Every Kobalte component that renders an element exposes four core types:
 
@@ -192,10 +196,10 @@ function CustomTabsTrigger<T extends ValidComponent = "button">(
 }
 ```
 
-<Callout type="info">
-	When using generics, TypeScript can lose some precision; splitting local props and spreading the
-	remaining props helps preserve usability.
-</Callout>
+:::info
+When using generics, TypeScript can lose some precision; splitting local props and spreading the
+remaining props helps preserve usability.
+:::
 
 Note:
 

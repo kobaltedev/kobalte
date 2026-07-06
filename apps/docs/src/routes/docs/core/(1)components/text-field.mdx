@@ -1,3 +1,7 @@
+---
+title: Text Field
+---
+
 import { Preview, TabsSnippets } from "../../../../components";
 import {
 	ControlledExample,
@@ -10,7 +14,7 @@ import {
 	TextAreaAutoResizeExample,
 } from "../../../../examples/text-field";
 
-# Text Field
+# {frontmatter.title}
 
 A text input that allow users to input custom text entries with a keyboard.
 
@@ -55,9 +59,9 @@ The text field consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -150,9 +154,9 @@ The text field consists of:
 
 An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 ```tsx {1}
 <TextField defaultValue="Apple">
@@ -165,9 +169,9 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user type into the input and receive the new value.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -191,9 +195,9 @@ function ControlledExample() {
 
 Use the `TextField.TextArea` component instead of `TextField.Input` to create a multiline text field.
 
-<Preview>
-	<TextAreaExample />
-</Preview>
+:::preview
+<TextAreaExample />
+:::
 
 ```tsx {3}
 <TextField>
@@ -204,9 +208,9 @@ Use the `TextField.TextArea` component instead of `TextField.Input` to create a 
 
 In addition, the `autoResize` prop can be used to make the textarea height adjust to it's content. Try typing in the text field below to see it in action.
 
-<Preview>
-	<TextAreaAutoResizeExample />
-</Preview>
+:::preview
+<TextAreaAutoResizeExample />
+:::
 
 ```tsx {3}
 <TextField>
@@ -219,9 +223,9 @@ In addition, the `autoResize` prop can be used to make the textarea height adjus
 
 The `TextField.Description` component can be used to associate additional help text with a text field.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+<DescriptionExample />
+:::
 
 ```tsx {4}
 <TextField>
@@ -237,9 +241,9 @@ The `TextField.ErrorMessage` component can be used to help the user fix a valida
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+<ErrorMessageExample />
+:::
 
 ```tsx {10,13}
 import { createSignal } from "solid-js";
@@ -265,9 +269,9 @@ function ErrorMessageExample() {
 
 The text field `name` prop can be used for integration with HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {8}
 function HTMLFormExample() {

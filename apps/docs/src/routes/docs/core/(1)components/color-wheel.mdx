@@ -1,3 +1,7 @@
+---
+title: Color Wheel
+---
+
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
 	BasicExample,
@@ -8,7 +12,7 @@ import {
 	HTMLFormExample,
 } from "../../../../examples/color-wheel";
 
-# Color Wheel
+# {frontmatter.title}
 
 Allows users to adjust the hue of an HSL or HSB color value on a circular track.
 
@@ -54,9 +58,9 @@ The color wheel consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -131,9 +135,9 @@ The color wheel consists of:
 
 By default, `ColorWheel` is uncontrolled with a default value of red (hue = 0). You can change the default value using the `defaultValue` prop.
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 ```tsx {7}
 import { ColorWheel } from "@kobalte/core/color-wheel";
@@ -157,9 +161,9 @@ function App() {
 
 A `ColorWheel` can be made controlled using the `value` prop. The `onChange` event is fired when the user drags the thumb and receive the new value.
 
-<Preview>
-	<ControlledValueExample />
-</Preview>
+:::preview
+<ControlledValueExample />
+:::
 
 ```tsx {4,9-10}
 import { createSignal } from "solid-js";
@@ -187,9 +191,9 @@ function ControlledValueExample() {
 
 The `thickness` prop controls the width of the `ColorWheel`'s circular track. This prop is required.
 
-<Preview>
-	<ThicknessExample />
-</Preview>
+:::preview
+<ThicknessExample />
+:::
 
 ```tsx {1}
 <ColorWheel thickness={60}>
@@ -204,9 +208,9 @@ The `thickness` prop controls the width of the `ColorWheel`'s circular track. Th
 
 ### Custom Value Label
 
-<Preview>
-	<CustomValueLabelExample />
-</Preview>
+:::preview
+<CustomValueLabelExample />
+:::
 
 ```tsx {3-9}
 <ColorWheel
@@ -235,9 +239,9 @@ The `thickness` prop controls the width of the `ColorWheel`'s circular track. Th
 
 `ColorWheel` supports the `name` prop for integration with HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {8}
 function HTMLFormExample() {
@@ -313,11 +317,11 @@ The current color is available on the thumb using the custom css property `--kb-
 
 | Key                   | Description                                           |
 | :-------------------- | :---------------------------------------------------- |
-| <Kbd>PageUp</Kbd>     | Increments the value of the thumb by a larger step.   |
-| <Kbd>PageDown</Kbd>   | Decrements the value of the thumb by a larger step.   |
-| <Kbd>ArrowDown</Kbd>  | Decrements the value of the thumb by the step amount. |
-| <Kbd>ArrowUp</Kbd>    | Increments the value of the thumb by the step amount. |
-| <Kbd>ArrowRight</Kbd> | Increments the value of the thumb by the step value.  |
-| <Kbd>ArrowLeft</Kbd>  | Decrements the value of the thumb by the step value.  |
-| <Kbd>Home</Kbd>       | Sets the value of the thumb to the minimum value.     |
-| <Kbd>End</Kbd>        | Sets the value of the thumb to the maximum value.     |
+| <kbd>PageUp</kbd>     | Increments the value of the thumb by a larger step.   |
+| <kbd>PageDown</kbd>   | Decrements the value of the thumb by a larger step.   |
+| <kbd>ArrowDown</kbd>  | Decrements the value of the thumb by the step amount. |
+| <kbd>ArrowUp</kbd>    | Increments the value of the thumb by the step amount. |
+| <kbd>ArrowRight</kbd> | Increments the value of the thumb by the step value.  |
+| <kbd>ArrowLeft</kbd>  | Decrements the value of the thumb by the step value.  |
+| <kbd>Home</kbd>       | Sets the value of the thumb to the minimum value.     |
+| <kbd>End</kbd>        | Sets the value of the thumb to the maximum value.     |

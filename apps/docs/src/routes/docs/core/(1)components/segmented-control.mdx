@@ -1,3 +1,7 @@
+---
+title: Segmented Control
+---
+
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
 	ControlledExample,
@@ -8,7 +12,7 @@ import {
 	VerticalExample,
 } from "../../../../examples/segmented-control";
 
-# Segmented Control
+# {frontmatter.title}
 
 A linear set of two or more segments, each of which functions as a radio input, and a default value is required.
 
@@ -67,9 +71,9 @@ The segmented control item consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -298,9 +302,9 @@ The `role="presentation"` is required for all non content elements between the `
 
 The `value` prop, which accepts a value corresponding with the `value` prop of each radio, can be used to make the value controlled. The `onChange` event is fired when the user selects a radio, and receives the new value.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {1,4,8}
 import { createSignal } from "solid-js";
@@ -336,9 +340,9 @@ function ControlledExample() {
 
 The `SegmentedControl.Description` component can be used to associate additional help text with a segmented control.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+<DescriptionExample />
+:::
 
 ```tsx {11}
 <SegmentedControl defaultValue="Apple">
@@ -361,9 +365,9 @@ The `SegmentedControl.ErrorMessage` component can be used to help the user fix a
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+<ErrorMessageExample />
+:::
 
 ```tsx {10,21}
 import { createSignal } from "solid-js";
@@ -396,9 +400,9 @@ function ErrorMessageExample() {
 
 The segmented control `name` prop, paired with the item's radio `value` prop, can be used for integration with HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {8,14}
 function HTMLFormExample() {
@@ -432,9 +436,9 @@ function HTMLFormExample() {
 
 The segmented control `orientation` prop can be used to change the segmented control's orientation.
 
-<Preview>
-	<VerticalExample />
-</Preview>
+:::preview
+<VerticalExample />
+:::
 
 ```tsx {1}
 <SegmentedControl orientation="vertical" defaultValue="Apple">
@@ -529,9 +533,9 @@ The segmented control `orientation` prop can be used to change the segmented con
 
 | Key                   | Description                                                                                          |
 | :-------------------- | :--------------------------------------------------------------------------------------------------- |
-| <Kbd>Tab</Kbd>        | Moves focus to either the checked item's radio button or the first item's radio button in the group. |
-| <Kbd>Space</Kbd>      | When focus is on an unchecked item's radio button, checks it.                                        |
-| <Kbd>ArrowDown</Kbd>  | Moves focus and checks the next item's radio button in the group.                                    |
-| <Kbd>ArrowRight</Kbd> | Moves focus and checks the next item's radio button in the group.                                    |
-| <Kbd>ArrowUp</Kbd>    | Moves focus and checks the previous item's radio button in the group.                                |
-| <Kbd>ArrowLeft</Kbd>  | Moves focus and checks the previous item's radio button in the group.                                |
+| <kbd>Tab</kbd>        | Moves focus to either the checked item's radio button or the first item's radio button in the group. |
+| <kbd>Space</kbd>      | When focus is on an unchecked item's radio button, checks it.                                        |
+| <kbd>ArrowDown</kbd>  | Moves focus and checks the next item's radio button in the group.                                    |
+| <kbd>ArrowRight</kbd> | Moves focus and checks the next item's radio button in the group.                                    |
+| <kbd>ArrowUp</kbd>    | Moves focus and checks the previous item's radio button in the group.                                |
+| <kbd>ArrowLeft</kbd>  | Moves focus and checks the previous item's radio button in the group.                                |

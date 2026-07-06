@@ -1,5 +1,5 @@
-import { StartServer, createHandler } from "@solidjs/start/server";
 import { getHtmlProps } from "@kobalte/solidbase/server";
+import { StartServer, createHandler } from "@solidjs/start/server";
 
 export default createHandler(() => (
 	<StartServer

@@ -1,3 +1,7 @@
+---
+title: Slider
+---
+
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
 	BasicExample,
@@ -9,7 +13,7 @@ import {
 	ControlledExample,
 } from "../../../../examples/slider";
 
-# Slider
+# {frontmatter.title}
 
 An input where the user selects a value from within a given range.
 
@@ -64,9 +68,9 @@ The slider consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -158,9 +162,9 @@ The slider consists of:
 
 ### Multiple Thumbs
 
-<Preview>
-	<MultipleThumbsExample />
-</Preview>
+:::preview
+<MultipleThumbsExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -253,9 +257,9 @@ The slider consists of:
 
 ### Modify step size
 
-<Preview>
-	<StepExample />
-</Preview>
+:::preview
+<StepExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -380,9 +384,9 @@ The slider consists of:
 
 ### Steps between thumbs
 
-<Preview>
-	<MinStepsBetweenExample />
-</Preview>
+:::preview
+<MinStepsBetweenExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -475,9 +479,9 @@ The slider consists of:
 
 ### Vertical Slider
 
-<Preview>
-	<VerticalSliderExample />
-</Preview>
+:::preview
+<VerticalSliderExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -567,9 +571,9 @@ The slider consists of:
 
 ### Custom Value Label
 
-<Preview>
-	<CustomValueLabelExample />
-</Preview>
+:::preview
+<CustomValueLabelExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -667,9 +671,9 @@ The slider consists of:
 
 ### Controlled Value
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -815,11 +819,11 @@ The slider consists of:
 
 | Key                   | Description                                                           |
 | :-------------------- | :-------------------------------------------------------------------- |
-| <Kbd>PageUp</Kbd>     | Increases the value of the focused thumb by a larger `step`.          |
-| <Kbd>PageDown</Kbd>   | Decreases the value of the focused thumb by a larger `step`.          |
-| <Kbd>ArrowDown</Kbd>  | Decreases the value of the focused thumb by the `step` amount.        |
-| <Kbd>ArrowUp</Kbd>    | Increases the value of the focused thumb by the `step` amount.        |
-| <Kbd>ArrowRight</Kbd> | Increments/decrements by the `step` value depending on `orientation`. |
-| <Kbd>ArrowLeft</Kbd>  | Increments/decrements by the `step` value depending on `orientation`. |
-| <Kbd>Home</Kbd>       | Sets the value of the first thumb to the minimum value.               |
-| <Kbd>End</Kbd>        | Sets the value of the last thumb to the maximum value.                |
+| <kbd>PageUp</kbd>     | Increases the value of the focused thumb by a larger `step`.          |
+| <kbd>PageDown</kbd>   | Decreases the value of the focused thumb by a larger `step`.          |
+| <kbd>ArrowDown</kbd>  | Decreases the value of the focused thumb by the `step` amount.        |
+| <kbd>ArrowUp</kbd>    | Increases the value of the focused thumb by the `step` amount.        |
+| <kbd>ArrowRight</kbd> | Increments/decrements by the `step` value depending on `orientation`. |
+| <kbd>ArrowLeft</kbd>  | Increments/decrements by the `step` value depending on `orientation`. |
+| <kbd>Home</kbd>       | Sets the value of the first thumb to the minimum value.               |
+| <kbd>End</kbd>        | Sets the value of the last thumb to the maximum value.                |

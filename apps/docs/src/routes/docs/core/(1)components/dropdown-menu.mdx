@@ -1,7 +1,11 @@
+---
+title: Dropdown Menu
+---
+
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
 import { BasicExample, ControlledExample } from "../../../../examples/dropdown-menu";
 
-# Dropdown Menu
+# {frontmatter.title}
 
 Displays a menu to the user —such as a set of actions or functions— triggered by a button.
 
@@ -106,9 +110,9 @@ The checkable menu item consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -409,9 +413,9 @@ An initial, uncontrolled open value can be provided using the `defaultOpen` prop
 
 The `open` prop can be used to make the open state controlled. The `onOpenChange` event is fired when the user presses the trigger, an item or interact outside, and receives the new value.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,7}
 import { createSignal } from "solid-js";
@@ -675,11 +679,11 @@ The popper positioner will copy the same `z-index` as the `DropdownMenu.Content`
 
 | Key                                          | Description                                                                                                                               |
 | :------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| <Kbd>Space</Kbd>                             | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, activates the item.              |
-| <Kbd>Enter</Kbd>                             | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, activates the item.              |
-| <Kbd>ArrowDown</Kbd>                         | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, moves focus to the next item.    |
-| <Kbd>ArrowUp</Kbd>                           | When focus is on the trigger, opens the menu and focuses the last item. <br/> When focus is on an item, moves focus to the previous item. |
-| <Kbd>ArrowRight</Kbd> / <Kbd>ArrowLeft</Kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction.                                          |
-| <Kbd>Home</Kbd>                              | When focus is on an item, moves focus to first item.                                                                                      |
-| <Kbd>End</Kbd>                               | When focus is on an item, moves focus to last item.                                                                                       |
-| <Kbd>Esc</Kbd>                               | Closes the menu and moves focus to the trigger.                                                                                           |
+| <kbd>Space</kbd>                             | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, activates the item.              |
+| <kbd>Enter</kbd>                             | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, activates the item.              |
+| <kbd>ArrowDown</kbd>                         | When focus is on the trigger, opens the menu and focuses the first item. <br/> When focus is on an item, moves focus to the next item.    |
+| <kbd>ArrowUp</kbd>                           | When focus is on the trigger, opens the menu and focuses the last item. <br/> When focus is on an item, moves focus to the previous item. |
+| <kbd>ArrowRight</kbd> / <kbd>ArrowLeft</kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction.                                          |
+| <kbd>Home</kbd>                              | When focus is on an item, moves focus to first item.                                                                                      |
+| <kbd>End</kbd>                               | When focus is on an item, moves focus to last item.                                                                                       |
+| <kbd>Esc</kbd>                               | Closes the menu and moves focus to the trigger.                                                                                           |

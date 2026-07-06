@@ -1,4 +1,5 @@
 ---
+title: Time Field
 status: new
 ---
 
@@ -16,7 +17,7 @@ import {
 	HTMLFormExample,
 } from "../../../../examples/time-field";
 
-# Time Field
+# {frontmatter.title}
 
 A time field allows users to enter and edit time values using a keyboard. Each part of a time value is displayed in an individually editable segment.
 
@@ -63,9 +64,9 @@ The time field consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -176,9 +177,9 @@ A TimeField displays a placeholder by default. An initial, uncontrolled value ca
 
 Time values are objects: `{ hour?: number; minute?: number; second?: number; }`.
 
-<Preview>
+:::preview
 	<DefaultValueExample />
-</Preview>
+:::
 
 ```tsx {3}
 <TimeField defaultValue={{hour: 11, minute: 45}}>
@@ -194,9 +195,9 @@ Time values are objects: `{ hour?: number; minute?: number; second?: number; }`.
 
 The `value` prop can be used to make the value controlled. The `onChange` event is fired when the time value changes.
 
-<Preview>
-	<ControlledValueExample />
-</Preview>
+:::preview
+<ControlledValueExample />
+:::
 
 ```tsx {6,15}
 import { createSignal, Show } from "solid-js";
@@ -224,9 +225,9 @@ function ControlledValueExample() {
 
 The `granularity` prop allows you to control the smallest unit that is displayed by a TimeField. By default, times are displayed with "minute" granularity. More granular time values can be displayed by setting the `granularity` prop to "second" or an object with time slots as keys and boolean values.
 
-<Preview>
-	<GranularityExample />
-</Preview>
+:::preview
+<GranularityExample />
+:::
 
 ```tsx {1}
 <TimeField granularity="second">
@@ -238,9 +239,9 @@ The `granularity` prop allows you to control the smallest unit that is displayed
 
 The `min` and `max` props can be used to perform builtin validation. This marks the time field as invalid using ARIA if the user enters an invalid time.
 
-<Preview>
-	<MinMaxExample />
-</Preview>
+:::preview
+<MinMaxExample />
+:::
 
 ```tsx {3,4}
 <TimeField
@@ -258,9 +259,9 @@ The `min` and `max` props can be used to perform builtin validation. This marks 
 
 A placeholder time can be shown instead of dashes, also influences the starting time.
 
-<Preview>
-	<PlaceholderValueExample />
-</Preview>
+:::preview
+<PlaceholderValueExample />
+:::
 
 ```tsx {1}
 <TimeField placeholder={{ hour: 9 }}>
@@ -272,9 +273,9 @@ A placeholder time can be shown instead of dashes, also influences the starting 
 
 By default, TimeField displays times in either 12 or 24 hour format depending on the user's locale. This can be overridden using the `hourCycle` prop.
 
-<Preview>
-	<HourCycleExample />
-</Preview>
+:::preview
+<HourCycleExample />
+:::
 
 ```tsx {1}
 <TimeField hourCycle={12}>
@@ -286,9 +287,9 @@ By default, TimeField displays times in either 12 or 24 hour format depending on
 
 The `TimeField.Description` component can be used to associate additional help text with a time field.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+<DescriptionExample />
+:::
 
 ```tsx {4}
 <TimeField>
@@ -304,9 +305,9 @@ The `TimeField.ErrorMessage` component can be used to help the user fix a valida
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+<ErrorMessageExample />
+:::
 
 ```tsx {10,14}
 import { createSignal } from "solid-js";
@@ -332,9 +333,9 @@ function ErrorMessageExample() {
 
 The `name` prop can be used for integration with HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {8,10}
 function HTMLFormExample() {
@@ -427,13 +428,13 @@ function HTMLFormExample() {
 
 | Key                   | Description                                                                                                                                                                                                                                                                          |
 | :-------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <Kbd>Backspace</Kbd>  | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                         |
-| <Kbd>Delete</Kbd>     | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                         |
-| <Kbd>ArrowRight</Kbd> | Moves focus to the next segment.                                                                                                                                                                                                                                                     |
-| <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous segment.                                                                                                                                                                                                                                                 |
-| <Kbd>ArrowUp</Kbd>    | Increments the given segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                                              |
-| <Kbd>ArrowDown</Kbd>  | Decrements the given segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                                              |
-| <Kbd>PageUp</Kbd>     | Increments the given segment by a larger amount, rounding it to the nearest increment. The amount to increment by depends on the segment, for example 2 hours, 15 minutes, and 15 seconds. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
-| <Kbd>PageDown</Kbd>   | Decrements the given segment by a larger amount, rounding it to the nearest decrement. The amount to decrement by depends on the segment, for example 2 hours, 15 minutes, and 15 seconds. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
-| <Kbd>Home</Kbd>       | Decrements the given segment by the segment's minimum value.                                                                                                                                                                                                                         |
-| <Kbd>End</Kbd>        | Increments the given segment by the segment's maximum value.                                                                                                                                                                                                                         |
+| <kbd>Backspace</kbd>  | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                         |
+| <kbd>Delete</kbd>     | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                         |
+| <kbd>ArrowRight</kbd> | Moves focus to the next segment.                                                                                                                                                                                                                                                     |
+| <kbd>ArrowLeft</kbd>  | Moves focus to the previous segment.                                                                                                                                                                                                                                                 |
+| <kbd>ArrowUp</kbd>    | Increments the given segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                                              |
+| <kbd>ArrowDown</kbd>  | Decrements the given segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                                              |
+| <kbd>PageUp</kbd>     | Increments the given segment by a larger amount, rounding it to the nearest increment. The amount to increment by depends on the segment, for example 2 hours, 15 minutes, and 15 seconds. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
+| <kbd>PageDown</kbd>   | Decrements the given segment by a larger amount, rounding it to the nearest decrement. The amount to decrement by depends on the segment, for example 2 hours, 15 minutes, and 15 seconds. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
+| <kbd>Home</kbd>       | Decrements the given segment by the segment's minimum value.                                                                                                                                                                                                                         |
+| <kbd>End</kbd>        | Increments the given segment by the segment's maximum value.                                                                                                                                                                                                                         |

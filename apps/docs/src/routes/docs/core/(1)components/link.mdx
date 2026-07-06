@@ -1,7 +1,11 @@
+---
+title: Link
+---
+
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
 import { BasicExample, DisabledExample } from "../../../../examples/link";
 
-# Link
+# {frontmatter.title}
 
 Allows a user to navigate to another page or resource within a web page or application.
 
@@ -33,9 +37,9 @@ The link consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -89,9 +93,9 @@ The link consists of:
 
 Use the `disabled` prop to disable a link while keeping it accessible for screen readers.
 
-<Preview>
-	<DisabledExample />
-</Preview>
+:::preview
+<DisabledExample />
+:::
 
 ```tsx
 <Link href="https://kobalte.dev" disabled>
@@ -125,4 +129,4 @@ Use the `disabled` prop to disable a link while keeping it accessible for screen
 
 | Key              | Description         |
 | :--------------- | :------------------ |
-| <Kbd>Enter</Kbd> | Activates the link. |
+| <kbd>Enter</kbd> | Activates the link. |

@@ -1,3 +1,7 @@
+---
+title: Color Field
+---
+
 import { Preview, TabsSnippets } from "../../../../components";
 import {
 	ControlledExample,
@@ -8,7 +12,7 @@ import {
 	ErrorMessageExample,
 } from "../../../../examples/color-field";
 
-# Color Field
+# {frontmatter.title}
 
 Allows users to enter and adjust a hex color value.
 
@@ -51,9 +55,9 @@ The color field consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -146,9 +150,9 @@ The color field consists of:
 
 An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 ```tsx {1}
 <ColorField class="color-field" defaultValue="#7f007f">
@@ -161,9 +165,9 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user type into the input and receive the new value.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -187,9 +191,9 @@ function ControlledExample() {
 
 The `ColorField.Description` component can be used to associate additional help text with a color field.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+<DescriptionExample />
+:::
 
 ```tsx {4}
 <ColorField class="color-field">
@@ -207,9 +211,9 @@ The `ColorField.ErrorMessage` component can be used to help the user fix a valid
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+<ErrorMessageExample />
+:::
 
 ```tsx {10,15}
 import { createSignal } from "solid-js";
@@ -235,9 +239,9 @@ function ErrorMessageExample() {
 
 The color field `name` prop can be used for integration with HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {8}
 function HTMLFormExample() {

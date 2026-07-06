@@ -1,3 +1,7 @@
+---
+title: Number Field
+---
+
 import { Preview, TabsSnippets } from "../../../../components";
 import {
 	ControlledExample,
@@ -10,7 +14,7 @@ import {
 	TriggersExample,
 } from "../../../../examples/number-field";
 
-# Number Field
+# {frontmatter.title}
 
 A number input that allow users to input custom number entries with a keyboard.
 
@@ -65,9 +69,9 @@ The number field consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -181,9 +185,9 @@ The number field consists of:
 
 An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 ```tsx {1}
 <NumberField defaultValue={40}>
@@ -203,9 +207,9 @@ It is recommended to only use the `rawValue` as it is of type `number`.
 The `onChange` event is fired when the user type into the input and receive the new value.
 The `onRawValueChange` prop is called when the value changes and receives a `number`.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,5,10-13}
 import { createSignal } from "solid-js";
@@ -241,9 +245,9 @@ function ControlledExample() {
 
 The `NumberField.Description` component can be used to associate additional help text with a number field.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+<DescriptionExample />
+:::
 
 ```tsx {8}
 <NumberField>
@@ -263,9 +267,9 @@ The `NumberField.ErrorMessage` component can be used to help the user fix a vali
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+<ErrorMessageExample />
+:::
 
 ```tsx {9,17}
 import { createSignal } from "solid-js";
@@ -296,9 +300,9 @@ The number field `name` prop along with `<NumberField.HiddenInput/>` can be used
 
 If the formatted value is wanted (unrecommended) set the `name` attribute on `<NumberField.Input/>`.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {8,10}
 function HTMLFormExample() {
@@ -330,9 +334,9 @@ function HTMLFormExample() {
 
 The number field supports optional increment/decrement triggers that are easily customizable.
 
-<Preview>
-	<TriggersExample />
-</Preview>
+:::preview
+<TriggersExample />
+:::
 
 ```tsx {4,6}
 <NumberField>
@@ -349,9 +353,9 @@ The number field supports optional increment/decrement triggers that are easily 
 
 The value of the number field component can be formatted based on the [locale with the `I18NProvider`](/docs/core/components/i18n-provider) and `formatOptions`. For more information see [React Spectrum NumberField](https://react-spectrum.adobe.com/react-spectrum/NumberField.html).
 
-<Preview>
-	<FormatExample />
-</Preview>
+:::preview
+<FormatExample />
+:::
 
 ```tsx {1}
 <NumberField formatOptions={{ style: "currency", currency: "USD" }} defaultValue={4}>

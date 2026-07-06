@@ -1,7 +1,11 @@
+---
+title: File Field
+---
+
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import { BasicExample, HTMLFormExample } from "../../../../examples/file-field";
 
-# File Field
+# {frontmatter.title}
 
 A file input to upload multiple files, with ability to drag and drop files.
 
@@ -69,9 +73,9 @@ The File Field consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -235,9 +239,9 @@ The File Field consists of:
 
 By passing name prop to FileField.HiddenInput, you can use FileField in HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx
 function HTMLFormExample() {
@@ -357,5 +361,5 @@ function HTMLFormExample() {
 
 | Key              | Description                                                                                              |
 | :--------------- | :------------------------------------------------------------------------------------------------------- |
-| <Kbd>Space</Kbd> | When focus is on dropzone, opens the file dialog.<br /> When focus is on trigger, opens the file dialog. |
-| <Kbd>Enter</Kbd> | When focus is on dropzone, opens the file dialog.<br /> When focus is on trigger, opens the file dialog. |
+| <kbd>Space</kbd> | When focus is on dropzone, opens the file dialog.<br /> When focus is on trigger, opens the file dialog. |
+| <kbd>Enter</kbd> | When focus is on dropzone, opens the file dialog.<br /> When focus is on trigger, opens the file dialog. |

@@ -1,17 +1,19 @@
+import { solidBase } from "@kobalte/solidbase/config";
+import { createDefaultThemeFilesystemSidebar } from "@kobalte/solidbase/default-theme";
 import { solidStart } from "@solidjs/start/config";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 import { version as KBVersion } from "../../packages/core/package.json";
-import { solidBase } from "@kobalte/solidbase/config";
-import { createDefaultThemeFilesystemSidebar } from "@kobalte/solidbase/default-theme";
 
 export default defineConfig({
 	plugins: [
 		solidBase.plugin({
 			title: "Kobalte",
+			titleTemplate: ":title – Kobalte",
 			description:
 				"Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
 			siteUrl: "https://kobalte.dev",
+			logo: "/kobalte.svg",
 			llms: true,
 			sitemap: true,
 			robots: true,
@@ -54,8 +56,22 @@ export default defineConfig({
 					},
 				],
 				sidebar: {
-					"/docs/core": createDefaultThemeFilesystemSidebar("./src/routes/docs/core"),
-					"/docs/changelog": createDefaultThemeFilesystemSidebar("./src/routes/docs/changelog"),
+					"/docs/core": createDefaultThemeFilesystemSidebar(
+						"./src/routes/docs/core",
+						{
+							sort: (a, b) => {
+								if (a.filePath.includes("i18n-provider")) return 1;
+								if (b.filePath.includes("i18n-provider")) return -1;
+								if (a.filePath.includes("index")) return -1;
+								if (a.filePath > b.filePath) return 1;
+								if (b.filePath > a.filePath) return -1;
+								return 0;
+							},
+						},
+					),
+					"/docs/changelog": createDefaultThemeFilesystemSidebar(
+						"./src/routes/docs/changelog",
+					),
 				},
 			},
 		}),

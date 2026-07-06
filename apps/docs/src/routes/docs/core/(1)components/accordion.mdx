@@ -1,3 +1,7 @@
+---
+title: Accordion
+---
+
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import {
 	BasicExample,
@@ -7,7 +11,7 @@ import {
 	AllowMultipleExample,
 } from "../../../../examples/accordion";
 
-# Accordion
+# {frontmatter.title}
 
 A vertically stacked set of interactive headings that each reveal an associated section of content.
 
@@ -51,9 +55,9 @@ The accordion consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -217,9 +221,9 @@ The accordion consists of:
 
 A default expanded item can be provided using the `defaultValue` prop, which should correspond to the `value` prop provided to each accordion item.
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 ```tsx {1,3}
 <Accordion defaultValue={["item-2"]}>
@@ -229,17 +233,17 @@ A default expanded item can be provided using the `defaultValue` prop, which sho
 </Accordion>
 ```
 
-<Callout>
-	<span>The `value` and `defaultValue` props always take a `string[]`.</span>
-</Callout>
+:::info[]
+The `value` and `defaultValue` props always take a `string[]`.
+:::
 
 ### Controlled value
 
 Expanded item can be controlled using the `value` prop, paired with the `onChange` event. The `value` prop from the accordion item will be passed into the callback when the item is expanded, allowing you to update state accordingly.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -264,9 +268,9 @@ function ControlledExample() {
 
 By default, accordion items are not collapsible, meaning you can't toggle them from open to close and vice-versa. Use the `collapsible` prop to enable this behavior.
 
-<Preview>
-	<CollapsibleExample />
-</Preview>
+:::preview
+<CollapsibleExample />
+:::
 
 ```tsx {1}
 <Accordion collapsible>
@@ -280,9 +284,9 @@ By default, accordion items are not collapsible, meaning you can't toggle them f
 
 Use the `multiple` to allow expanding multiple accordion items at the same time. This also make all accordion items collapsible.
 
-<Preview>
-	<AllowMultipleExample />
-</Preview>
+:::preview
+<AllowMultipleExample />
+:::
 
 ```tsx {1}
 <Accordion multiple>
@@ -384,11 +388,11 @@ We expose the CSS custom properties `--kb-accordion-content-width` and `--kb-acc
 
 | Key                               | Description                                                                            |
 | :-------------------------------- | :------------------------------------------------------------------------------------- |
-| <Kbd>Space</Kbd>                  | When focus is on an `Accordion.Trigger` of a collapsed section, expands the section.   |
-| <Kbd>Enter</Kbd>                  | When focus is on an `Accordion.Trigger` of a collapsed section, expands the section.   |
-| <Kbd>Tab</Kbd>                    | Moves focus to the next focusable element.                                             |
-| <Kbd>Shift</Kbd> + <Kbd>Tab</Kbd> | Moves focus to the previous focusable element.                                         |
-| <Kbd>ArrowDown</Kbd>              | Moves focus to the next `Accordion.Trigger`.                                           |
-| <Kbd>ArrowUp</Kbd>                | Moves focus to the previous `Accordion.Trigger`.                                       |
-| <Kbd>Home</Kbd>                   | When focus is on an `Accordion.Trigger`, moves focus to the first `Accordion.Trigger`. |
-| <Kbd>End</Kbd>                    | When focus is on an `Accordion.Trigger`, moves focus to the last `Accordion.Trigger`.  |
+| <kbd>Space</kbd>                  | When focus is on an `Accordion.Trigger` of a collapsed section, expands the section.   |
+| <kbd>Enter</kbd>                  | When focus is on an `Accordion.Trigger` of a collapsed section, expands the section.   |
+| <kbd>Tab</kbd>                    | Moves focus to the next focusable element.                                             |
+| <kbd>Shift</kbd> + <kbd>Tab</kbd> | Moves focus to the previous focusable element.                                         |
+| <kbd>ArrowDown</kbd>              | Moves focus to the next `Accordion.Trigger`.                                           |
+| <kbd>ArrowUp</kbd>                | Moves focus to the previous `Accordion.Trigger`.                                       |
+| <kbd>Home</kbd>                   | When focus is on an `Accordion.Trigger`, moves focus to the first `Accordion.Trigger`. |
+| <kbd>End</kbd>                    | When focus is on an `Accordion.Trigger`, moves focus to the last `Accordion.Trigger`.  |

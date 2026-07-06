@@ -1,3 +1,7 @@
+---
+title: Toggle Button
+---
+
 import { Show } from "solid-js";
 
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
@@ -7,7 +11,7 @@ import {
 	DefaultPressedExample,
 } from "../../../../examples/toggle-button";
 
-# Toggle Button
+# {frontmatter.title}
 
 A two-state button that can be either on (pressed) or off (not pressed).
 
@@ -26,7 +30,7 @@ import { ToggleButton } from "@kobalte/core";
 - Native HTML `<button>`, `<a>`, and custom element type support.
 - Exposed as a toggle button via the [WAI ARIA Button](https://www.w3.org/WAI/ARIA/apg/patterns/button/) design pattern.
 - Mouse and touch event handling, and press state management.
-- Keyboard event support for <Kbd>Space</Kbd> and <Kbd>Enter</Kbd> keys.
+- Keyboard event support for <kbd>Space</kbd> and <kbd>Enter</kbd> keys.
 - Can be controlled or uncontrolled.
 
 ## Anatomy
@@ -41,9 +45,9 @@ The toggle button consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -109,9 +113,9 @@ The toggle button consists of:
 
 An initial, uncontrolled value can be provided using the `defaultPressed` prop.
 
-<Preview>
-	<DefaultPressedExample />
-</Preview>
+:::preview
+<DefaultPressedExample />
+:::
 
 ```tsx
 <ToggleButton defaultPressed>...</ToggleButton>
@@ -121,9 +125,9 @@ An initial, uncontrolled value can be provided using the `defaultPressed` prop.
 
 The `pressed` prop can be used to make the pressed state controlled. The `onChange` event is fired when the user toggle the button, and receives the new value.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -177,5 +181,5 @@ function ControlledExample() {
 
 | Key              | Description                              |
 | :--------------- | :--------------------------------------- |
-| <Kbd>Space</Kbd> | Activates/deactivates the toggle button. |
-| <Kbd>Enter</Kbd> | Activates/deactivates the toggle button. |
+| <kbd>Space</kbd> | Activates/deactivates the toggle button. |
+| <kbd>Enter</kbd> | Activates/deactivates the toggle button. |

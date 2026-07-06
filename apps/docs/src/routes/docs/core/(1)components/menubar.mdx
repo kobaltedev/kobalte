@@ -1,8 +1,12 @@
+---
+title: Menubar
+---
+
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
 import { BasicExample } from "../../../../examples/menubar";
 import { Callout } from "../../../../components/callout";
 
-# Menubar
+# {frontmatter.title}
 
 A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.
 
@@ -112,9 +116,9 @@ The checkable menu item consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -776,13 +780,13 @@ The popper positioner will copy the same `z-index` as the `Menubar.Content`.
 
 | Key                                          | Description                                                                                      |
 | :------------------------------------------- | :----------------------------------------------------------------------------------------------- |
-| <Kbd>Space</Kbd>                             | When focus is on an item, activates the item.                                                    |
-| <Kbd>Enter</Kbd>                             | When focus is on an item, activates the item.                                                    |
-| <Kbd>ArrowDown</Kbd>                         | When focus is on an item, moves focus to the next item.                                          |
-| <Kbd>ArrowUp</Kbd>                           | When focus is on an item, moves focus to the previous item.                                      |
-| <Kbd>ArrowRight</Kbd>                        | When focus is on an item (not sub menu trigger), moves focus to the next menu.                   |
-| <Kbd>ArrowLeft</Kbd>                         | When focus is on an item (not sub menu item), moves focus to the previous menu.                  |
-| <Kbd>ArrowRight</Kbd> / <Kbd>ArrowLeft</Kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction. |
-| <Kbd>Home</Kbd>                              | When focus is on an item, moves focus to first item.                                             |
-| <Kbd>End</Kbd>                               | When focus is on an item, moves focus to last item.                                              |
-| <Kbd>Esc</Kbd>                               | Closes the menu.                                                                                 |
+| <kbd>Space</kbd>                             | When focus is on an item, activates the item.                                                    |
+| <kbd>Enter</kbd>                             | When focus is on an item, activates the item.                                                    |
+| <kbd>ArrowDown</kbd>                         | When focus is on an item, moves focus to the next item.                                          |
+| <kbd>ArrowUp</kbd>                           | When focus is on an item, moves focus to the previous item.                                      |
+| <kbd>ArrowRight</kbd>                        | When focus is on an item (not sub menu trigger), moves focus to the next menu.                   |
+| <kbd>ArrowLeft</kbd>                         | When focus is on an item (not sub menu item), moves focus to the previous menu.                  |
+| <kbd>ArrowRight</kbd> / <kbd>ArrowLeft</kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction. |
+| <kbd>Home</kbd>                              | When focus is on an item, moves focus to first item.                                             |
+| <kbd>End</kbd>                               | When focus is on an item, moves focus to last item.                                              |
+| <kbd>Esc</kbd>                               | Closes the menu.                                                                                 |

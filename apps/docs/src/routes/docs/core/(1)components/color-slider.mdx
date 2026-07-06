@@ -1,3 +1,7 @@
+---
+title: Color Slider
+---
+
 import { Preview, TabsSnippets, Kbd } from "../../../../components";
 import {
 	BasicExample,
@@ -7,7 +11,7 @@ import {
 	CustomValueExample,
 } from "../../../../examples/color-slider";
 
-# Color Slider
+# {frontmatter.title}
 
 Adjusts an individual channel of a color value.
 
@@ -53,9 +57,9 @@ The color slider consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -138,9 +142,9 @@ This must be one of the channels included in the color value, for example, for R
 
 ### Default value
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -218,9 +222,9 @@ This must be one of the channels included in the color value, for example, for R
 
 ### Controlled value
 
-<Preview>
-	<ControlledValueExample />
-</Preview>
+:::preview
+<ControlledValueExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -300,9 +304,9 @@ This must be one of the channels included in the color value, for example, for R
 
 ### Vertical Slider
 
-<Preview>
-	<VerticalSliderExample />
-</Preview>
+:::preview
+<VerticalSliderExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -380,9 +384,9 @@ This must be one of the channels included in the color value, for example, for R
 
 ### Custom Value Label
 
-<Preview>
-	<CustomValueExample />
-</Preview>
+:::preview
+<CustomValueExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -515,11 +519,11 @@ The current color is available on the thumb using the custom css property `--kb-
 
 | Key                   | Description                                                         |
 | :-------------------- | :------------------------------------------------------------------ |
-| <Kbd>PageUp</Kbd>     | Increases the value of the thumb by a larger step.                  |
-| <Kbd>PageDown</Kbd>   | Decreases the value of the thumb by a larger step.                  |
-| <Kbd>ArrowDown</Kbd>  | Decreases the value of the thumb by the step amount.                |
-| <Kbd>ArrowUp</Kbd>    | Increases the value of the thumb by the step amount.                |
-| <Kbd>ArrowRight</Kbd> | Increments/decrements by the step value depending on `orientation`. |
-| <Kbd>ArrowLeft</Kbd>  | Increments/decrements by the step value depending on `orientation`. |
-| <Kbd>Home</Kbd>       | Sets the value of the thumb to the minimum value.                   |
-| <Kbd>End</Kbd>        | Sets the value of the thumb to the maximum value.                   |
+| <kbd>PageUp</kbd>     | Increases the value of the thumb by a larger step.                  |
+| <kbd>PageDown</kbd>   | Decreases the value of the thumb by a larger step.                  |
+| <kbd>ArrowDown</kbd>  | Decreases the value of the thumb by the step amount.                |
+| <kbd>ArrowUp</kbd>    | Increases the value of the thumb by the step amount.                |
+| <kbd>ArrowRight</kbd> | Increments/decrements by the step value depending on `orientation`. |
+| <kbd>ArrowLeft</kbd>  | Increments/decrements by the step value depending on `orientation`. |
+| <kbd>Home</kbd>       | Sets the value of the thumb to the minimum value.                   |
+| <kbd>End</kbd>        | Sets the value of the thumb to the maximum value.                   |

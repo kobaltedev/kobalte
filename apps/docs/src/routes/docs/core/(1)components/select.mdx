@@ -1,3 +1,7 @@
+---
+title: Select
+---
+
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import {
 	ControlledExample,
@@ -12,7 +16,7 @@ import {
 	VirtualizedExample,
 } from "../../../../examples/select";
 
-# Select
+# {frontmatter.title}
 
 Displays a list of options for the user to pick from — triggered by a button.
 
@@ -83,9 +87,9 @@ The select consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -289,9 +293,9 @@ The select consists of:
 
 An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `options`.
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 ```tsx {2}
 <Select
@@ -325,9 +329,9 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 
 The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onChange` event is fired when the user selects an option, and receives the selected option.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,9-10}
 import { createSignal } from "solid-js";
@@ -373,9 +377,9 @@ export function ControlledExample() {
 
 The `Select.Description` component can be used to associate additional help text with a select.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+<DescriptionExample />
+:::
 
 ```tsx {19}
 <Select
@@ -411,9 +415,9 @@ The `Select.ErrorMessage` component can be used to help the user fix a validatio
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+<ErrorMessageExample />
+:::
 
 ```tsx {10,28}
 import { createSignal } from "solid-js";
@@ -458,9 +462,9 @@ export function ErrorMessageExample() {
 
 The select `name` prop, paired with the `Select.HiddenSelect` component, can be used for integration with HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {9,21}
 function HTMLFormExample() {
@@ -513,9 +517,9 @@ Objects can be used as options instead of plain strings. In this case you have t
 - `optionTextValue`: The property name to use as the text value of an option for keyboard navigation.
 - `optionDisabled`: The property name to use as the disabled flag of an option.
 
-<Preview>
-	<ObjectExample />
-</Preview>
+:::preview
+<ObjectExample />
+:::
 
 ```tsx {19-21}
 interface Fruit {
@@ -573,9 +577,9 @@ When using option groups you have to tell the select how to distinguish an optio
 
 Additionally, the `sectionComponent` prop is used to display the option group label in the select.
 
-<Preview>
-	<OptionGroupExample />
-</Preview>
+:::preview
+<OptionGroupExample />
+:::
 
 ```tsx {36,41,51}
 interface Food {
@@ -646,9 +650,9 @@ function OptionGroupExample() {
 }
 ```
 
-<Callout type="note">
-	Notice the usage of generics on `Select` for proper TypeScript support.
-</Callout>
+:::note
+Notice the usage of generics on `Select` for proper TypeScript support.
+:::
 
 ### Multiple selection
 
@@ -658,9 +662,9 @@ The `Select.Value` children _render prop_ expose an array of selected options, a
 
 Additionally, the example below uses the `as` prop to render a `div` for the `Select.Trigger` since HTML button can't contain interactive elements according to the [W3C](https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element).
 
-<Preview>
-	<MultipleSelectionExample />
-</Preview>
+:::preview
+<MultipleSelectionExample />
+:::
 
 ```tsx {4,9-11,23-24,29,33,40}
 import { createSignal } from "solid-js";
@@ -729,9 +733,9 @@ When dealing with large collection of items, it's recommended to use a virtual s
 
 While Kobalte doesn't provide any built-in virtual scrolling API, it can easily be integrated with a 3rd party library. The example below demonstrate how to virtualize an array of 100,000 options using the [`@tanstack/solid-virtual`](https://tanstack.com/virtual/v3) package.
 
-<Preview>
-	<VirtualizedExample />
-</Preview>
+:::preview
+<VirtualizedExample />
+:::
 
 ```tsx {19-26,32-34,47,81,102}
 import { Select } from "@kobalte/core/select";
@@ -1043,18 +1047,18 @@ The popper positioner will copy the same `z-index` as the `Select.Content`.
 
 | Key                                                  | Description                                                                                                                                             |
 | :--------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| <Kbd>Space</Kbd>                                     | When focus is on the trigger, opens the select and focuses the first or selected item. <br/> When focus is on an item, selects the focused item.        |
-| <Kbd>Enter</Kbd>                                     | When focus is on the trigger, opens the select and focuses the first or selected item. <br/> When focus is on an item, selects the focused item.        |
-| <Kbd>ArrowDown</Kbd>                                 | When focus is on the trigger, opens the select and focuses the first or selected item. <br/> When focus is on an item, moves focus to the next item.    |
-| <Kbd>ArrowUp</Kbd>                                   | When focus is on the trigger, opens the select and focuses the last or selected item. <br/> When focus is on an item, moves focus to the previous item. |
-| <Kbd>Home</Kbd>                                      | When focus is on an item, moves focus to first item.                                                                                                    |
-| <Kbd>End</Kbd>                                       | When focus is on an item, moves focus to last item.                                                                                                     |
-| <Kbd>ArrowRight</Kbd>                                | In `Select`, when focus is on the trigger, change the selection to the next item.                                                                       |
-| <Kbd>ArrowLeft</Kbd>                                 | In `Select`, when focus is on the trigger, change the selection to the previous item.                                                                   |
-| <Kbd>Shift</Kbd> + <Kbd>ArrowDown</Kbd>              | In `Select`, moves focus to and toggles the selected state of the next item.                                                                            |
-| <Kbd>Shift</Kbd> + <Kbd>ArrowUp</Kbd>                | In `Select`, moves focus to and toggles the selected state of the previous item.                                                                        |
-| <Kbd>Shift</Kbd> + <Kbd>Space</Kbd>                  | In `Select`, selects contiguous items from the most recently selected item to the focused item.                                                         |
-| <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>Home</Kbd> | In `Select`, selects the focused item and all options up to the first item.                                                                             |
-| <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>End</Kbd>  | In `Select`, selects the focused item and all options down to the last item.                                                                            |
-| <Kbd>Ctrl</Kbd> + <Kbd>A</Kbd>                       | In `Select`, selects all item in the list.                                                                                                              |
-| <Kbd>Esc</Kbd>                                       | Closes the select and moves focus to the trigger.                                                                                                       |
+| <kbd>Space</kbd>                                     | When focus is on the trigger, opens the select and focuses the first or selected item. <br/> When focus is on an item, selects the focused item.        |
+| <kbd>Enter</kbd>                                     | When focus is on the trigger, opens the select and focuses the first or selected item. <br/> When focus is on an item, selects the focused item.        |
+| <kbd>ArrowDown</kbd>                                 | When focus is on the trigger, opens the select and focuses the first or selected item. <br/> When focus is on an item, moves focus to the next item.    |
+| <kbd>ArrowUp</kbd>                                   | When focus is on the trigger, opens the select and focuses the last or selected item. <br/> When focus is on an item, moves focus to the previous item. |
+| <kbd>Home</kbd>                                      | When focus is on an item, moves focus to first item.                                                                                                    |
+| <kbd>End</kbd>                                       | When focus is on an item, moves focus to last item.                                                                                                     |
+| <kbd>ArrowRight</kbd>                                | In `Select`, when focus is on the trigger, change the selection to the next item.                                                                       |
+| <kbd>ArrowLeft</kbd>                                 | In `Select`, when focus is on the trigger, change the selection to the previous item.                                                                   |
+| <kbd>Shift</kbd> + <kbd>ArrowDown</kbd>              | In `Select`, moves focus to and toggles the selected state of the next item.                                                                            |
+| <kbd>Shift</kbd> + <kbd>ArrowUp</kbd>                | In `Select`, moves focus to and toggles the selected state of the previous item.                                                                        |
+| <kbd>Shift</kbd> + <kbd>Space</kbd>                  | In `Select`, selects contiguous items from the most recently selected item to the focused item.                                                         |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Home</kbd> | In `Select`, selects the focused item and all options up to the first item.                                                                             |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>End</kbd>  | In `Select`, selects the focused item and all options down to the last item.                                                                            |
+| <kbd>Ctrl</kbd> + <kbd>A</kbd>                       | In `Select`, selects all item in the list.                                                                                                              |
+| <kbd>Esc</kbd>                                       | Closes the select and moves focus to the trigger.                                                                                                       |

@@ -1,57 +1,29 @@
+---
+title: Getting Started
+---
+
 import { Preview, TabsSnippets } from "../../../../components";
 import { PopoverDemo } from "../../../../examples/getting-started";
 
-# Getting started
+# {frontmatter.title}
 
 ## Installation
 
-Install Kobalte by running either of the following:
+Install Kobalte by running:
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="npm">npm</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="yarn">yarn</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="pnpm">pnpm</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  <TabsSnippets.Content value="npm">
-    {/* <!-- prettier-ignore-start --> */}
-    ```bash
-    npm install @kobalte/core
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="yarn">
-    {/* <!-- prettier-ignore-start --> */}
-    ```bash
-    yarn add @kobalte/core
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="pnpm">
-    {/* <!-- prettier-ignore-start --> */}
-    ```bash
-    pnpm add @kobalte/core
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-  </TabsSnippets.Content>
-</TabsSnippets>
+```package-install
+@kobalte/core
+```
 
 ## Using the components
 
 The example below demonstrate how to create a Popover component with Kobalte.
 
-<Preview>
-	<PopoverDemo />
-</Preview>
+:::preview
+<PopoverDemo />
+:::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
+    ```tsx title="index.tsx" tab
     import { Popover } from "@kobalte/core/popover";
     import { CrossIcon } from "some-icon-library";
     import "./style.css";
@@ -77,9 +49,7 @@ The example below demonstrate how to create a Popover component with Kobalte.
     }
     ```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
+    ```css title="style.css" tab
     .popover__trigger {
       appearance: none;
       display: inline-flex;
@@ -144,10 +114,6 @@ The example below demonstrate how to create a Popover component with Kobalte.
       color: hsl(240 5% 26%);
     }
     ```
-
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end --> */}
-</TabsSnippets>
 
 In a few lines of code, we've implemented a fully accessible Popover component that :
 

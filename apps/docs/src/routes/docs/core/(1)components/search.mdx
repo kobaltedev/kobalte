@@ -1,7 +1,11 @@
+---
+title: Search
+---
+
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import { BasicExample, DebounceExample, InlineStyleExample } from "../../../../examples/search";
 
-# Search
+# {frontmatter.title}
 
 Search a searchbox text input with a menu.
 Handle the case where dataset filtering needs to occur outside the combobox component.
@@ -66,9 +70,9 @@ The search consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -339,9 +343,9 @@ Set `debounceOptionsMillisecond`, to prevent new search queries immediately on i
 
 Show a debouncing icon by adding a `loadingComponent` to `Search.Indicator`.
 
-<Preview>
-	<DebounceExample />
-</Preview>
+:::preview
+<DebounceExample />
+:::
 
       ```tsx
       <Search
@@ -388,9 +392,9 @@ Show a debouncing icon by adding a `loadingComponent` to `Search.Indicator`.
 
 To achieve the command menu look, add the `open` prop to permanently open dropdown. Replace `Search.Portal` and `Search.Content` with a `div` to directly mount your content below the search input.
 
-<Preview>
-	<InlineStyleExample />
-</Preview>
+:::preview
+<InlineStyleExample />
+:::
 
       ```tsx
       <Search
@@ -579,11 +583,11 @@ To achieve the command menu look, add the `open` prop to permanently open dropdo
 
 | Key                                   | Description                                                                                                                                                                                |
 | :------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <Kbd>Enter</Kbd>                      | When focus is virtually on an item, selects the focused item.                                                                                                                              |
-| <Kbd>ArrowDown</Kbd>                  | When focus is on the input, opens the search suggestion and virtual focuses the first or selected item. <br/> When focus is virtually on an item, moves virtual focus to the next item.    |
-| <Kbd>ArrowUp</Kbd>                    | When focus is on the input, opens the search suggestion and virtual focuses the last or selected item. <br/> When focus is virtually on an item, moves virtual focus to the previous item. |
-| <Kbd>Alt</Kbd> + <Kbd>ArrowDown</Kbd> | When focus is on the input, opens the search suggestion.                                                                                                                                   |
-| <Kbd>Alt</Kbd> + <Kbd>ArrowUp</Kbd>   | When focus is on the input, closes the search suggestion.                                                                                                                                  |
-| <Kbd>Home</Kbd>                       | When focus is on the input, moves virtual focus to first item.                                                                                                                             |
-| <Kbd>End</Kbd>                        | When focus is on the input, moves virtual focus to last item.                                                                                                                              |
-| <Kbd>Esc</Kbd>                        | When the search suggestion is open, closes the search suggestion. <br/> When the search suggestion is closed, clear the input and selection.                                               |
+| <kbd>Enter</kbd>                      | When focus is virtually on an item, selects the focused item.                                                                                                                              |
+| <kbd>ArrowDown</kbd>                  | When focus is on the input, opens the search suggestion and virtual focuses the first or selected item. <br/> When focus is virtually on an item, moves virtual focus to the next item.    |
+| <kbd>ArrowUp</kbd>                    | When focus is on the input, opens the search suggestion and virtual focuses the last or selected item. <br/> When focus is virtually on an item, moves virtual focus to the previous item. |
+| <kbd>Alt</kbd> + <kbd>ArrowDown</kbd> | When focus is on the input, opens the search suggestion.                                                                                                                                   |
+| <kbd>Alt</kbd> + <kbd>ArrowUp</kbd>   | When focus is on the input, closes the search suggestion.                                                                                                                                  |
+| <kbd>Home</kbd>                       | When focus is on the input, moves virtual focus to first item.                                                                                                                             |
+| <kbd>End</kbd>                        | When focus is on the input, moves virtual focus to last item.                                                                                                                              |
+| <kbd>Esc</kbd>                        | When the search suggestion is open, closes the search suggestion. <br/> When the search suggestion is closed, clear the input and selection.                                               |

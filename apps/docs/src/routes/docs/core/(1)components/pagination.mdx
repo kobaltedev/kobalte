@@ -1,3 +1,7 @@
+---
+title: Pagination
+---
+
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import {
 	BasicExample,
@@ -9,7 +13,7 @@ import {
 	FixedItemsExample,
 } from "../../../../examples/pagination";
 
-# Pagination
+# {frontmatter.title}
 
 Allows the user to select a specific page from a range of pages.
 
@@ -51,9 +55,9 @@ The pagination consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -161,9 +165,9 @@ The pagination consists of:
 
 An initial, uncontrolled page can be provided using the `defaultPage` prop, which accepts a number smaller or equal to the `count` and starts at 1.
 
-<Preview>
-	<DefaultPageExample />
-</Preview>
+:::preview
+<DefaultPageExample />
+:::
 
 ```tsx {3}
 <Pagination
@@ -182,9 +186,9 @@ An initial, uncontrolled page can be provided using the `defaultPage` prop, whic
 
 The `page` prop, which accepts a page number, can be used to make the value controlled. The `onPageChange` event is fired when the user selects an item, and receives the new page number.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,8-9}
 import { createSignal } from "solid-js";
@@ -212,9 +216,9 @@ export function ControlledExample() {
 
 The appearance can be customized by omitting the Next and Previous Button.
 
-<Preview>
-	<ButtonsExample />
-</Preview>
+:::preview
+<ButtonsExample />
+:::
 
 ```tsx {6}
 <Pagination
@@ -230,9 +234,9 @@ The appearance can be customized by omitting the Next and Previous Button.
 
 The First and Last item can be hidden instead of displaying at all times.
 
-<Preview>
-	<FirstLastExample />
-</Preview>
+:::preview
+<FirstLastExample />
+:::
 
 ```tsx {3-4}
 <Pagination
@@ -252,9 +256,9 @@ The First and Last item can be hidden instead of displaying at all times.
 
 The number of items around the current page item can be customized.
 
-<Preview>
-	<SiblingsExample />
-</Preview>
+:::preview
+<SiblingsExample />
+:::
 
 ```tsx {3}
 <Pagination
@@ -273,9 +277,9 @@ The number of items around the current page item can be customized.
 
 The total number of items can be fixed to avoid content shift. If ellipsis are disabled (by returning an empty component) use `fixedItems="no-ellipsis"` instead.
 
-<Preview>
-	<FixedItemsExample />
-</Preview>
+:::preview
+<FixedItemsExample />
+:::
 
 ```tsx {3}
 <Pagination

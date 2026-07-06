@@ -1,7 +1,11 @@
+---
+title: Toast
+---
+
 import { Preview, TabsSnippets, Callout, Kbd } from "../../../../components";
 import { BasicExample, MultipleRegionsExample } from "../../../../examples/toast";
 
-# Toast
+# {frontmatter.title}
 
 A succinct message that is displayed temporarily.
 
@@ -62,9 +66,9 @@ The toast consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -285,10 +289,10 @@ The `toaster.update()` method can be used to update a toast by providing a toast
 toaster.update(id, props => <Toast toastId={props.toastId}>...</Toast>);
 ```
 
-<Callout>
-	Notice that you always need to pass the `toastId` to `Toast`, because it doesn't know anything
-	about the `toaster` nor the toast it is supposed to represent.
-</Callout>
+:::note
+Notice that you always need to pass the `toastId` to `Toast`, because it doesn't know anything
+about the `toaster` nor the toast it is supposed to represent.
+:::
 
 ### Dismissing a toast
 
@@ -556,7 +560,7 @@ Inside your application, use add your custom region:
 
 <Preview isRounded>
 	<MultipleRegionsExample />
-</Preview>
+:::
 
 ## API reference
 
@@ -638,9 +642,9 @@ Inside your application, use add your custom region:
 
 | Key                               | Description                                               |
 | :-------------------------------- | :-------------------------------------------------------- |
-| <Kbd>Alt</Kbd> + <Kbd>T</Kbd>     | Focuses toasts region.                                    |
-| <Kbd>Tab</Kbd>                    | Moves focus to the next focusable element.                |
-| <Kbd>Shift</Kbd> + <Kbd>Tab</Kbd> | Moves focus to the previous focusable element.            |
-| <Kbd>Space</Kbd>                  | When focus is on a `Toast.CloseButton`, closes the toast. |
-| <Kbd>Enter</Kbd>                  | When focus is on a `Toast.CloseButton`, closes the toast. |
-| <Kbd>Esc</Kbd>                    | When focus is on a toast, closes the toast.               |
+| <kbd>Alt</kbd> + <kbd>T</kbd>     | Focuses toasts region.                                    |
+| <kbd>Tab</kbd>                    | Moves focus to the next focusable element.                |
+| <kbd>Shift</kbd> + <kbd>Tab</kbd> | Moves focus to the previous focusable element.            |
+| <kbd>Space</kbd>                  | When focus is on a `Toast.CloseButton`, closes the toast. |
+| <kbd>Enter</kbd>                  | When focus is on a `Toast.CloseButton`, closes the toast. |
+| <kbd>Esc</kbd>                    | When focus is on a toast, closes the toast.               |

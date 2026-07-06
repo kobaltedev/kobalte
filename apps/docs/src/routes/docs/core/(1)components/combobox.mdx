@@ -1,3 +1,7 @@
+---
+title: Combobox
+---
+
 import { Preview, TabsSnippets, Kbd, Callout } from "../../../../components";
 import {
 	BasicExample,
@@ -11,7 +15,7 @@ import {
 	MultipleSelectionExample,
 } from "../../../../examples/combobox";
 
-# Combobox
+# {frontmatter.title}
 
 Combines a text input with a listbox, allowing users to filter a list of options to items matching a query.
 
@@ -86,9 +90,9 @@ The combobox consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -344,9 +348,9 @@ function FilteringExample() {
 
 An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `options`.
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 ```tsx {9}
 import { Combobox } from "@kobalte/core/combobox";
@@ -391,9 +395,9 @@ function DefaultValueExample() {
 
 The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onChange` event is fired when the user selects an option, and receives the selected option.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {8,21-22}
 import { Combobox } from "@kobalte/core/combobox";
@@ -453,9 +457,9 @@ function ControlledExample() {
 
 The `Combobox.Description` component can be used to associate additional help text with a combobox.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+<DescriptionExample />
+:::
 
 ```tsx {28}
 import { Combobox } from "@kobalte/core/combobox";
@@ -502,9 +506,9 @@ The `Combobox.ErrorMessage` component can be used to help the user fix a validat
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+<ErrorMessageExample />
+:::
 
 ```tsx {23,42}
 import { Combobox } from "@kobalte/core/combobox";
@@ -563,9 +567,9 @@ function ErrorMessageExample() {
 
 The combobox `name` prop, paired with the `Combobox.HiddenSelect` component, can be used for integration with HTML forms.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {14,26}
 import { Combobox } from "@kobalte/core/combobox";
@@ -626,9 +630,9 @@ Objects can be used as options instead of plain strings. In this case you have t
 - `optionLabel`: The property name to use as the label of an option, displayed in the combobox input.
 - `optionDisabled`: The property name to use as the disabled flag of an option.
 
-<Preview>
-	<ObjectExample />
-</Preview>
+:::preview
+<ObjectExample />
+:::
 
 ```tsx {22-25}
 import { Combobox } from "@kobalte/core/combobox";
@@ -692,9 +696,9 @@ When using option groups you have to tell the combobox how to distinguish an opt
 
 Additionally, the `sectionComponent` prop is used to display the option group label in the combobox.
 
-<Preview>
-	<OptionGroupExample />
-</Preview>
+:::preview
+<OptionGroupExample />
+:::
 
 ```tsx {45}
 import { Combobox } from "@kobalte/core/combobox";
@@ -773,9 +777,9 @@ export function OptionGroupExample() {
 }
 ```
 
-<Callout type="note">
-	Notice the usage of generics on `Combobox` for proper TypeScript support.
-</Callout>
+:::note
+Notice the usage of generics on `Combobox` for proper TypeScript support.
+:::
 
 ### Multiple selection
 
@@ -783,9 +787,9 @@ The `multiple` prop can be used to create a combobox that allow multi-selection.
 
 In this case `Combobox.Input` can't display the values, instead the `Combobox.Control` children _render prop_ expose an array of selected options, and two method for removing an option from the selection and clear the selection.
 
-<Preview>
-	<MultipleSelectionExample />
-</Preview>
+:::preview
+<MultipleSelectionExample />
+:::
 
 ```tsx {8,13,15-16,31,35,43}
 import { Combobox } from "@kobalte/core/combobox";
@@ -1063,11 +1067,11 @@ We expose a CSS custom property `--kb-combobox-content-transform-origin` which c
 
 | Key                                   | Description                                                                                                                                                                       |
 | :------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <Kbd>Enter</Kbd>                      | When focus is virtually on an item, selects the focused item.                                                                                                                     |
-| <Kbd>ArrowDown</Kbd>                  | When focus is on the input, opens the combobox and virtual focuses the first or selected item. <br/> When focus is virtually on an item, moves virtual focus to the next item.    |
-| <Kbd>ArrowUp</Kbd>                    | When focus is on the input, opens the combobox and virtual focuses the last or selected item. <br/> When focus is virtually on an item, moves virtual focus to the previous item. |
-| <Kbd>Alt</Kbd> + <Kbd>ArrowDown</Kbd> | When focus is on the input, opens the combobox.                                                                                                                                   |
-| <Kbd>Alt</Kbd> + <Kbd>ArrowUp</Kbd>   | When focus is on the input, closes the combobox.                                                                                                                                  |
-| <Kbd>Home</Kbd>                       | When focus is on the input, moves virtual focus to first item.                                                                                                                    |
-| <Kbd>End</Kbd>                        | When focus is on the input, moves virtual focus to last item.                                                                                                                     |
-| <Kbd>Esc</Kbd>                        | When the combobox is open, closes the combobox. <br/> When the combobox is closed, clear the input and selection unless `noResetInputOnBlur` is set to `true`.                    |
+| <kbd>Enter</kbd>                      | When focus is virtually on an item, selects the focused item.                                                                                                                     |
+| <kbd>ArrowDown</kbd>                  | When focus is on the input, opens the combobox and virtual focuses the first or selected item. <br/> When focus is virtually on an item, moves virtual focus to the next item.    |
+| <kbd>ArrowUp</kbd>                    | When focus is on the input, opens the combobox and virtual focuses the last or selected item. <br/> When focus is virtually on an item, moves virtual focus to the previous item. |
+| <kbd>Alt</kbd> + <kbd>ArrowDown</kbd> | When focus is on the input, opens the combobox.                                                                                                                                   |
+| <kbd>Alt</kbd> + <kbd>ArrowUp</kbd>   | When focus is on the input, closes the combobox.                                                                                                                                  |
+| <kbd>Home</kbd>                       | When focus is on the input, moves virtual focus to first item.                                                                                                                    |
+| <kbd>End</kbd>                        | When focus is on the input, moves virtual focus to last item.                                                                                                                     |
+| <kbd>Esc</kbd>                        | When the combobox is open, closes the combobox. <br/> When the combobox is closed, clear the input and selection unless `noResetInputOnBlur` is set to `true`.                    |

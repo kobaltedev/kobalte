@@ -1,7 +1,11 @@
+---
+title: Breadcrumbs
+---
+
 import { Preview, TabsSnippets, Callout } from "../../../../components";
 import { BasicExample, CustomSeparatorExample } from "../../../../examples/breadcrumbs";
 
-# Breadcrumbs
+# {frontmatter.title}
 
 Show hierarchy and navigational context for a user’s location within an application.
 
@@ -44,9 +48,9 @@ The breadcrumbs consist of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -133,9 +137,9 @@ The breadcrumbs consist of:
 
 Use the `separator` prop to provide a default content for all `Breadcrumbs.Separator`. You can pass it a `string` or a SolidJS component.
 
-<Preview>
-	<CustomSeparatorExample />
-</Preview>
+:::preview
+<CustomSeparatorExample />
+:::
 
 ```tsx {1,5}
 import { ChevronRightIcon } from "some-icon-library";
@@ -167,11 +171,9 @@ function App() {
 }
 ```
 
-<Callout>
-	<span>
-		You can also override each `Breadcrumbs.Separator` content by providing your own `children`.
-	</span>
-</Callout>
+:::tip
+You can also override each `Breadcrumbs.Separator` content by providing your own `children`.
+:::
 
 ## API Reference
 

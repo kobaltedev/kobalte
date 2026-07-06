@@ -1,3 +1,7 @@
+---
+title: Toggle Group
+---
+
 import { Kbd, Preview, TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
@@ -6,7 +10,7 @@ import {
 	MultipleSelectionExample,
 } from "../../../../examples/toggle-group";
 
-# Toggle Group
+# {frontmatter.title}
 
 A set of two-state buttons that can be toggled on (pressed) or off (not pressed).
 
@@ -23,7 +27,7 @@ import { ToggleGroup } from "@kobalte/core";
 ## Features
 
 - Supports horizontal/vertical orientation.
-- Keyboard event support for <Kbd>Space</Kbd> and <Kbd>Enter</Kbd> keys.
+- Keyboard event support for <kbd>Space</kbd> and <kbd>Enter</kbd> keys.
 - Can be controlled or uncontrolled.
 
 ## Anatomy
@@ -44,9 +48,9 @@ The toggle item consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -123,9 +127,9 @@ The toggle item consists of:
 
 An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 ```tsx {1,8-10}
 <ToggleGroup defaultValue="underline">
@@ -145,9 +149,9 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 The `value` prop can be used to make the pressed state controlled. The `onChange` event is fired when the user toggle the button, and receives the new value.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -170,9 +174,9 @@ function ControlledExample() {
 
 The `multiple` prop can be used to create a select that allow multi-selection.
 
-<Preview>
-	<MultipleSelectionExample />
-</Preview>
+:::preview
+<MultipleSelectionExample />
+:::
 
 ```tsx {4,9-11,23-24,29,33,40}
 import { createSignal } from "solid-js";
@@ -248,12 +252,12 @@ function MultipleSelectionExample() {
 
 | Key                   | Description                                                           |
 | :-------------------- | :-------------------------------------------------------------------- |
-| <Kbd>Tab</Kbd>        | Move focus to either the pressed item or the first item in the group. |
-| <Kbd>ArrowDown</Kbd>  | If orientation is vertical, moves focus to the next item.             |
-| <Kbd>ArrowRight</Kbd> | If orientation is horizontal, Moves focus to the next item.           |
-| <Kbd>ArrowUp</Kbd>    | If orientation is vertical, moves focus to the previous item.         |
-| <Kbd>ArrowLeft</Kbd>  | If orientation is vertical, moves focus to the previous item.         |
-| <Kbd>Home</Kbd>       | Moves focus to the first item.                                        |
-| <Kbd>End</Kbd>        | Moves focus to the last item.                                         |
-| <Kbd>Enter</Kbd>      | Activates/deactivates the item.                                       |
-| <Kbd>Space</Kbd>      | Activates/deactivates the item.                                       |
+| <kbd>Tab</kbd>        | Move focus to either the pressed item or the first item in the group. |
+| <kbd>ArrowDown</kbd>  | If orientation is vertical, moves focus to the next item.             |
+| <kbd>ArrowRight</kbd> | If orientation is horizontal, Moves focus to the next item.           |
+| <kbd>ArrowUp</kbd>    | If orientation is vertical, moves focus to the previous item.         |
+| <kbd>ArrowLeft</kbd>  | If orientation is vertical, moves focus to the previous item.         |
+| <kbd>Home</kbd>       | Moves focus to the first item.                                        |
+| <kbd>End</kbd>        | Moves focus to the last item.                                         |
+| <kbd>Enter</kbd>      | Activates/deactivates the item.                                       |
+| <kbd>Space</kbd>      | Activates/deactivates the item.                                       |

@@ -1,3 +1,7 @@
+---
+title: Color Channel Field
+---
+
 import { Preview, TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
@@ -9,7 +13,7 @@ import {
 	TriggersExample,
 } from "../../../../examples/color-channel-field";
 
-# Color Channel Field
+# {frontmatter.title}
 
 A number input that allow users to edit individual color channel value.
 
@@ -61,9 +65,9 @@ The color channel field consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
+<BasicExample />
+:::
 
 <TabsSnippets>
   <TabsSnippets.List>
@@ -189,9 +193,9 @@ This must be one of the channels included in the color value, for example, for R
 
 ### Default value
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+<DefaultValueExample />
+:::
 
 ```tsx {1}
 <ColorChannelField defaultValue={parseColor("hsl(200, 98%, 39%)")} channel="saturation">
@@ -206,9 +210,9 @@ This must be one of the channels included in the color value, for example, for R
 
 ### Controlled value
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+<ControlledExample />
+:::
 
 ```tsx {4,9-10}
 import { createSignal } from "solid-js";
@@ -236,9 +240,9 @@ function ControlledExample() {
 
 The `ColorChannelField.Description` component can be used to associate additional help text with a color channel field.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+<DescriptionExample />
+:::
 
 ```tsx {8}
 <ColorChannelField defaultValue={parseColor("hsl(0, 98%, 39%)")} channel="hue">
@@ -258,9 +262,9 @@ The `ColorChannelField.ErrorMessage` component can be used to help the user fix 
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+<ErrorMessageExample />
+:::
 
 ```tsx {11,19}
 import { createSignal } from "solid-js";
@@ -293,9 +297,9 @@ The color channel field `name` prop along with `<ColorChannelField.HiddenInput/>
 
 If the formatted value is wanted (unrecommended) set the `name` attribute on `<ColorChannelField.Input/>`.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+<HTMLFormExample />
+:::
 
 ```tsx {8,10}
 function HTMLFormExample() {
@@ -327,9 +331,9 @@ function HTMLFormExample() {
 
 The color channel field supports optional increment/decrement triggers that are easily customizable.
 
-<Preview>
-	<TriggersExample />
-</Preview>
+:::preview
+<TriggersExample />
+:::
 
 ```tsx {4,6}
 <ColorChannelField defaultValue={parseColor("hsb(10, 98%, 50%)")} channel="brightness">
