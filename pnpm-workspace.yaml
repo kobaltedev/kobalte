@@ -4,7 +4,7 @@ packages:
 overrides:
   "@solidjs/testing-library": "1.0.0-beta.2"
   "@solid-primitives/a11y": "next"
-  "@solid-primitives/controlled-signal": "next"
+  "@solid-primitives/controlled-signal": "1.0.0-next.1"
   "@solid-primitives/event-listener": "next"
   "@solid-primitives/focus": "next"
   "@solid-primitives/form": "next"
@@ -29,7 +29,7 @@ allowBuilds:
   esbuild: false
 minimumReleaseAgeExclude:
   - '@solid-primitives/a11y@1.0.0-next.0'
-  - '@solid-primitives/controlled-signal@1.0.0-next.0'
+  - '@solid-primitives/controlled-signal@1.0.0-next.1'
   - '@solid-primitives/event-listener@3.0.0-next.0'
   - '@solid-primitives/focus@1.0.0-next.0'
   - '@solid-primitives/form@1.0.0-next.0'
