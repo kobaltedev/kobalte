@@ -74,7 +74,7 @@
 		"@internationalized/number": "^3.2.1",
 		"@kobalte/utils": "^0.9.2",
 		"@solid-primitives/a11y": "next",
-		"@solid-primitives/controlled-signal": "next",
+		"@solid-primitives/controlled-signal": "1.0.0-next.1",
 		"@solid-primitives/i18n": "next",
 		"@solid-primitives/focus": "next",
 		"@solid-primitives/form": "next",
