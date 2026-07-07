@@ -65,6 +65,7 @@ The time field consists of:
 ## Example
 
 :::preview
+
 <BasicExample />
 :::
 
@@ -196,6 +197,7 @@ Time values are objects: `{ hour?: number; minute?: number; second?: number; }`.
 The `value` prop can be used to make the value controlled. The `onChange` event is fired when the time value changes.
 
 :::preview
+
 <ControlledValueExample />
 :::
 
@@ -226,6 +228,7 @@ function ControlledValueExample() {
 The `granularity` prop allows you to control the smallest unit that is displayed by a TimeField. By default, times are displayed with "minute" granularity. More granular time values can be displayed by setting the `granularity` prop to "second" or an object with time slots as keys and boolean values.
 
 :::preview
+
 <GranularityExample />
 :::
 
@@ -240,6 +243,7 @@ The `granularity` prop allows you to control the smallest unit that is displayed
 The `min` and `max` props can be used to perform builtin validation. This marks the time field as invalid using ARIA if the user enters an invalid time.
 
 :::preview
+
 <MinMaxExample />
 :::
 
@@ -260,6 +264,7 @@ The `min` and `max` props can be used to perform builtin validation. This marks 
 A placeholder time can be shown instead of dashes, also influences the starting time.
 
 :::preview
+
 <PlaceholderValueExample />
 :::
 
@@ -274,6 +279,7 @@ A placeholder time can be shown instead of dashes, also influences the starting 
 By default, TimeField displays times in either 12 or 24 hour format depending on the user's locale. This can be overridden using the `hourCycle` prop.
 
 :::preview
+
 <HourCycleExample />
 :::
 
@@ -288,6 +294,7 @@ By default, TimeField displays times in either 12 or 24 hour format depending on
 The `TimeField.Description` component can be used to associate additional help text with a time field.
 
 :::preview
+
 <DescriptionExample />
 :::
 
@@ -306,6 +313,7 @@ The `TimeField.ErrorMessage` component can be used to help the user fix a valida
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
 :::preview
+
 <ErrorMessageExample />
 :::
 
@@ -334,6 +342,7 @@ function ErrorMessageExample() {
 The `name` prop can be used for integration with HTML forms.
 
 :::preview
+
 <HTMLFormExample />
 :::
 

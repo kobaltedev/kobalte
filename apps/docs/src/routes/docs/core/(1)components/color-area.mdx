@@ -62,6 +62,7 @@ The color area consists of:
 ## Example
 
 :::preview
+
 <BasicExample />
 :::
 
@@ -145,6 +146,7 @@ If no `xChannel` or `yChannel` is provided, for the RGB color space, the red col
 ### Default value
 
 :::preview
+
 <DefaultValueExample />
 :::
 
@@ -163,6 +165,7 @@ If no `xChannel` or `yChannel` is provided, for the RGB color space, the red col
 ### Controlled value
 
 :::preview
+
 <ControlledValueExample />
 :::
 
@@ -189,6 +192,7 @@ const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
 The color channel for each axis of a color area can be specified using the `xChannel` and `yChannel` props. An array of channel names for a color can be returned using the color.getColorChannels method.
 
 :::preview
+
 <XAndYChannelExample />
 :::
 
@@ -212,6 +216,7 @@ const [rChannel, gChannel, bChannel] = value().getColorChannels();
 ColorArea supports the `xName` and `yName` props for integration with HTML forms.
 
 :::preview
+
 <HTMLFormExample />
 :::
 

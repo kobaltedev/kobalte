@@ -88,6 +88,7 @@ The select consists of:
 ## Example
 
 :::preview
+
 <BasicExample />
 :::
 
@@ -294,6 +295,7 @@ The select consists of:
 An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `options`.
 
 :::preview
+
 <DefaultValueExample />
 :::
 
@@ -330,6 +332,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onChange` event is fired when the user selects an option, and receives the selected option.
 
 :::preview
+
 <ControlledExample />
 :::
 
@@ -378,6 +381,7 @@ export function ControlledExample() {
 The `Select.Description` component can be used to associate additional help text with a select.
 
 :::preview
+
 <DescriptionExample />
 :::
 
@@ -416,6 +420,7 @@ The `Select.ErrorMessage` component can be used to help the user fix a validatio
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
 :::preview
+
 <ErrorMessageExample />
 :::
 
@@ -463,6 +468,7 @@ export function ErrorMessageExample() {
 The select `name` prop, paired with the `Select.HiddenSelect` component, can be used for integration with HTML forms.
 
 :::preview
+
 <HTMLFormExample />
 :::
 
@@ -518,6 +524,7 @@ Objects can be used as options instead of plain strings. In this case you have t
 - `optionDisabled`: The property name to use as the disabled flag of an option.
 
 :::preview
+
 <ObjectExample />
 :::
 
@@ -578,6 +585,7 @@ When using option groups you have to tell the select how to distinguish an optio
 Additionally, the `sectionComponent` prop is used to display the option group label in the select.
 
 :::preview
+
 <OptionGroupExample />
 :::
 
@@ -663,6 +671,7 @@ The `Select.Value` children _render prop_ expose an array of selected options, a
 Additionally, the example below uses the `as` prop to render a `div` for the `Select.Trigger` since HTML button can't contain interactive elements according to the [W3C](https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element).
 
 :::preview
+
 <MultipleSelectionExample />
 :::
 
@@ -734,6 +743,7 @@ When dealing with large collection of items, it's recommended to use a virtual s
 While Kobalte doesn't provide any built-in virtual scrolling API, it can easily be integrated with a 3rd party library. The example below demonstrate how to virtualize an array of 100,000 options using the [`@tanstack/solid-virtual`](https://tanstack.com/virtual/v3) package.
 
 :::preview
+
 <VirtualizedExample />
 :::
 

@@ -1,5 +1,8 @@
 import { createSolidBase, defineTheme } from "@kobalte/solidbase/config";
-import { createDefaultThemeFilesystemSidebar, default as defaultTheme } from "@kobalte/solidbase/default-theme";
+import {
+	createDefaultThemeFilesystemSidebar,
+	default as defaultTheme,
+} from "@kobalte/solidbase/default-theme";
 import { solidStart } from "@solidjs/start/config";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
