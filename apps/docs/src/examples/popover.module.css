@@ -6,6 +6,7 @@
 	height: 40px;
 	width: auto;
 	outline: none;
+	border: none;
 	border-radius: 6px;
 	padding: 0 16px;
 	background-color: hsl(200 98% 39%);
