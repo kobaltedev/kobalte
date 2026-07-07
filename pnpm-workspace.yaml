@@ -3,6 +3,10 @@ packages:
   - packages/*
 overrides:
   "@solidjs/testing-library": "1.0.0-beta.2"
+  "h3": ">=1.15.9"
+  "vite": ">=6.4.3"
+  "vitest": ">=3.2.6"
+  "esbuild": ">=0.28.1"
   "@solid-primitives/a11y": "next"
   "@solid-primitives/controlled-signal": "1.0.0-next.1"
   "@solid-primitives/event-listener": "next"
