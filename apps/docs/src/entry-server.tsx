@@ -6,6 +6,11 @@ export default createHandler(() => (
 		document={({ assets, children, scripts }) => (
 			<html {...getHtmlProps()}>
 				<head>
+					<title>Kobalte</title>
+					<meta
+						name="description"
+						content="Unstyled components and primitives for building accessible web apps and design systems with SolidJS."
+					/>
 					<meta charset="utf-8" />
 					<meta name="viewport" content="width=device-width, initial-scale=1" />
 					<link rel="icon" href="/favicon.ico" />
