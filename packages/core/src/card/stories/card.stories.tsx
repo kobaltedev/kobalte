@@ -147,7 +147,7 @@ export const ListContent = meta.story({
 export const DashboardGrid = meta.story({
 	name: "Dashboard Grid",
 	render: () => (
-		<div class="grid grid-cols-3 grid-rows-2 gap-4 font-sans w-[46rem]">
+		<div class="grid grid-cols-3 grid-rows-2 gap-4 font-sans w-184">
 			<Root class="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
 				<Header class="mb-2">
 					<Title class="text-sm font-semibold text-slate-800">Security</Title>
