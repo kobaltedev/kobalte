@@ -12,15 +12,14 @@ import { CHIP_INTL_TRANSLATIONS, type ChipIntlTranslations } from "./chip.intl";
 import { ChipContext, type ChipContextValue } from "./chip-context";
 
 export interface ChipRootOptions {
-	/** Whether the chip is disabled. */
-	disabled?: boolean;
-
 	/** The localized strings of the component. */
 	translations?: ChipIntlTranslations;
 }
 
 export interface ChipRootCommonProps<T extends HTMLElement = HTMLElement> {
 	ref: T | ((el: T) => void);
+	/** Whether the chip is disabled. */
+	disabled: boolean | undefined;
 	onClick?: JSX.EventHandlerUnion<T, MouseEvent>;
 	onKeyDown?: JSX.EventHandlerUnion<T, KeyboardEvent>;
 }
@@ -64,15 +63,15 @@ export function ChipRoot<T extends ValidComponent = "span">(
 
 	const tagName = createTagName(ref, () => "span");
 
-	const isNativeInteractive = createMemo(() => {
-		const currentTagName = tagName();
+	const isNativeButton = createMemo(() => tagName() === "button");
 
-		if (currentTagName === "button") {
-			return true;
-		}
+	const isNativeLink = createMemo(
+		() => tagName() === "a" && ref()?.getAttribute("href") != null,
+	);
 
-		return currentTagName === "a" && ref()?.getAttribute("href") != null;
-	});
+	const isNativeInteractive = createMemo(
+		() => isNativeButton() || isNativeLink(),
+	);
 
 	const isClickable = createMemo(() => mergedProps.onClick != null);
 
@@ -111,11 +110,12 @@ export function ChipRoot<T extends ValidComponent = "span">(
 			<Polymorphic<ChipRootRenderProps>
 				as="span"
 				ref={mergeRefs(setRef, mergedProps.ref)}
+				disabled={isNativeButton() ? disabled() : undefined}
 				role={!isNativeInteractive() && isClickable() ? "button" : undefined}
 				tabindex={
 					!isNativeInteractive() && isClickable() && !disabled() ? 0 : undefined
 				}
-				aria-disabled={disabled() ? "true" : undefined}
+				aria-disabled={!isNativeButton() && disabled() ? "true" : undefined}
 				data-disabled={disabled() ? "" : undefined}
 				data-clickable={isClickable() ? "" : undefined}
 				onClick={onClick}

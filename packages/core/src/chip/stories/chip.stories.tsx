@@ -1,5 +1,6 @@
 import { createSignal, For } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
+import * as Checkbox from "../../checkbox";
 import { Delete, Root } from "../index";
 
 const meta = preview.meta({
@@ -33,28 +34,67 @@ export const Default = meta.story({
 	),
 });
 
-/** Passing `onClick` makes the chip keyboard-operable (`role="button"`, focusable, Enter/Space activate it). */
-function ClickableDemo() {
-	const [selected, setSelected] = createSignal<string[]>([]);
+/** Passing `onClick` makes the chip keyboard-operable (`role="button"`, focusable, Enter/Space activate it). Use this for one-off actions, not selection — see "Selectable" for that. */
+export const Clickable = meta.story({
+	name: "Clickable",
+	render: () => (
+		<div class="flex flex-wrap gap-2 font-sans">
+			<Root
+				class={`${baseClass} ${clickableClass}`}
+				onClick={() => alert("React repos")}
+			>
+				React
+			</Root>
+			<Root
+				class={`${baseClass} ${clickableClass}`}
+				onClick={() => alert("Solid repos")}
+			>
+				Solid
+			</Root>
+		</div>
+	),
+});
+
+/**
+ * `Chip` has no built-in `selected`/`pressed` prop. Selectable (filter) chips are built by
+ * composing `Chip` with `Checkbox` — the same approach MUI Joy's `Chip` uses
+ * (https://v7.mui.com/joy-ui/react-chip/#with-a-checkbox). A real checkbox input, stretched to
+ * invisibly cover the whole chip, owns interaction and ARIA state; the chip reacts to the nested
+ * checkbox's `data-checked` via the CSS `:has()` selector — no extra JS wiring needed.
+ */
+function SelectableDemo() {
 	const options = ["React", "Solid", "Vue", "Svelte"];
 
-	const toggle = (value: string) => {
-		setSelected((prev) =>
-			prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
-		);
-	};
+	const overlayStyle = {
+		position: "absolute",
+		inset: "0",
+		margin: "0",
+		width: "auto",
+		height: "auto",
+		padding: "0",
+		border: "0",
+		overflow: "visible",
+		clip: "auto",
+		"clip-path": "none",
+		"white-space": "normal",
+	} as const;
 
 	return (
 		<div class="flex flex-wrap gap-2 font-sans">
 			<For each={options}>
 				{(option) => (
 					<Root
-						class={`${baseClass} ${clickableClass} ${
-							selected().includes(option) ? "bg-blue-600 text-white" : ""
-						}`}
-						onClick={() => toggle(option)}
+						class={`${baseClass} relative has-[[data-checked]]:bg-blue-600 has-[[data-checked]]:text-white has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-blue-500`}
 					>
-						{option}
+						<Checkbox.Root class="contents">
+							<Checkbox.Input
+								class="opacity-0 cursor-pointer"
+								style={overlayStyle}
+							/>
+							<Checkbox.Label class="pointer-events-none">
+								{option}
+							</Checkbox.Label>
+						</Checkbox.Root>
 					</Root>
 				)}
 			</For>
@@ -62,9 +102,9 @@ function ClickableDemo() {
 	);
 }
 
-export const Clickable = meta.story({
-	name: "Clickable",
-	render: () => <ClickableDemo />,
+export const Selectable = meta.story({
+	name: "Selectable",
+	render: () => <SelectableDemo />,
 });
 
 /** `Chip.Delete` stops its click from bubbling to `Chip.Root`, so removal and selection can coexist. */

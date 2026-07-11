@@ -1,4 +1,5 @@
 .chip {
+	position: relative;
 	display: inline-flex;
 	align-items: center;
 	gap: 0.375rem;
@@ -27,13 +28,38 @@
 	cursor: not-allowed;
 }
 
-.chip--selected {
+/* Selectable chip — composes `Checkbox`, following the same pattern used by
+ * MUI Joy's Chip (https://v7.mui.com/joy-ui/react-chip/#with-a-checkbox):
+ * the chip itself stays a static container, and a real checkbox input
+ * (stretched to cover the whole chip) owns all interaction/ARIA semantics. */
+.chip:has([data-checked]) {
 	background-color: hsl(200 98% 39%);
 	color: white;
 }
 
-.chip--selected[data-clickable]:hover {
-	background-color: hsl(201 96% 32%);
+/* The real interactive element (`.chip__checkbox-input`) is invisible, so the
+ * focus ring must be drawn on the chip itself when that input has keyboard focus. */
+.chip:has(.chip__checkbox-input:focus-visible) {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
+
+.chip__checkbox {
+	display: contents;
+}
+
+.chip__checkbox-input {
+	/* The size/position overrides that stretch this over the whole chip are
+	 * passed via the `style` prop instead of here — see the component code —
+	 * since that's merged after (and so wins over) Kobalte's default
+	 * visually-hidden input styles, which are also set inline. */
+	opacity: 0;
+	cursor: pointer;
+}
+
+.chip__checkbox-label {
+	/* Text sits visually on top of the input but must not intercept clicks itself. */
+	pointer-events: none;
 }
 
 .chip__delete-button {

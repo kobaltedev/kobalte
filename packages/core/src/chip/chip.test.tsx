@@ -74,6 +74,19 @@ describe("Chip", () => {
 		expect(onClickSpy).not.toHaveBeenCalled();
 	});
 
+	it("forwards the native 'disabled' attribute when rendered as a native button", () => {
+		const { getByTestId } = render(() => (
+			<Chip.Root data-testid="chip" as="button" disabled onClick={() => {}}>
+				Clickable
+			</Chip.Root>
+		));
+
+		const chip = getByTestId("chip");
+
+		expect(chip).toHaveAttribute("disabled");
+		expect(chip).not.toHaveAttribute("aria-disabled");
+	});
+
 	describe("Chip.Delete", () => {
 		it("has a default 'aria-label' from translations", () => {
 			const { getByRole } = render(() => (

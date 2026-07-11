@@ -1,5 +1,5 @@
 import { Preview, Kbd, TabsSnippets } from "../../../../components";
-import { BasicExample, ClickableExample, DisabledExample } from "../../../../examples/chip";
+import { BasicExample, ClickableExample, SelectableExample, DisabledExample } from "../../../../examples/chip";
 
 # Chip
 
@@ -19,6 +19,7 @@ import { Root, Delete } from "@kobalte/core/chip";
 - Becomes keyboard-operable (`role="button"`, focusable, activatable with <Kbd>Space</Kbd> and <Kbd>Enter</Kbd>) as soon as an `onClick` handler is provided.
 - `Chip.Delete` stops its triggering event from propagating to `Chip`, so a chip can be clickable and deletable at the same time.
 - Localizable `aria-label` for `Chip.Delete` via the `translations` prop.
+- Selectable/filter chips are built by composing `Chip` with [Checkbox](/docs/core/components/checkbox) or a radio, the same way [MUI Joy's `Chip`](https://v7.mui.com/joy-ui/react-chip/#with-a-checkbox) does it — this gives selection real checkbox/radio ARIA semantics instead of a bespoke "pressed" state.
 
 ## Anatomy
 
@@ -63,7 +64,11 @@ The chip consists of:
           {(tag) => (
             <Chip class="chip">
               {tag}
-              <Chip.Delete class="chip__delete-button" onClick={() => removeTag(tag)}>
+              <Chip.Delete
+                class="chip__delete-button"
+                onClick={() => removeTag(tag)}
+                aria-label={`Remove ${tag}`}
+              >
                 ✕
               </Chip.Delete>
             </Chip>
@@ -123,6 +128,76 @@ Passing an `onClick` handler to `Chip` makes it keyboard-operable: it gets `role
 <Chip class="chip" onClick={() => console.log("clicked")}>
 	React
 </Chip>
+```
+
+### Selectable chip (filter chips)
+
+`Chip` intentionally has no built-in `selected`/`pressed` prop. For a selectable or filter chip, compose it with [Checkbox](/docs/core/components/checkbox) (multiple selection) or a radio (single selection) — this is the same approach [MUI Joy's `Chip`](https://v7.mui.com/joy-ui/react-chip/#with-a-checkbox) uses. `Chip` stays a static, non-interactive container; a real checkbox input — stretched to invisibly cover the whole chip — owns all interaction, keyboard support, and ARIA state (`aria-checked` via its native `checked` state, rather than a synthetic `aria-pressed`). The chip's own styling reacts to the nested checkbox's `data-checked` attribute using the CSS `:has()` selector, so no extra JavaScript wiring is needed.
+
+<Preview>
+	<SelectableExample />
+</Preview>
+
+```tsx
+import { Checkbox } from "@kobalte/core/checkbox";
+import { Chip } from "@kobalte/core/chip";
+
+<Chip class="chip">
+	<Checkbox class="chip__checkbox">
+		<Checkbox.Input
+			class="chip__checkbox-input"
+			style={{
+				position: "absolute",
+				inset: "0",
+				margin: "0",
+				width: "auto",
+				height: "auto",
+				padding: "0",
+				border: "0",
+				overflow: "visible",
+				clip: "auto",
+				"clip-path": "none",
+				"white-space": "normal",
+			}}
+		/>
+		<Checkbox.Label class="chip__checkbox-label">React</Checkbox.Label>
+	</Checkbox>
+</Chip>
+```
+
+```css
+.chip {
+	position: relative;
+	/* ...pill styles from the example above... */
+}
+
+/* Style the chip based on the nested checkbox's state. */
+.chip:has([data-checked]) {
+	background-color: hsl(200 98% 39%);
+	color: white;
+}
+
+/* The real interactive element is invisible, so draw focus on the chip itself. */
+.chip:has(.chip__checkbox-input:focus-visible) {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
+
+.chip__checkbox {
+	/* Removes the wrapper's own box so its children lay out as if they were
+	   direct children of `.chip`; the `style` prop above positions the input. */
+	display: contents;
+}
+
+.chip__checkbox-input {
+	opacity: 0;
+	cursor: pointer;
+}
+
+.chip__checkbox-label {
+	/* Must not intercept clicks itself — they should all reach the input underneath. */
+	pointer-events: none;
+}
 ```
 
 ### Disabled chip
