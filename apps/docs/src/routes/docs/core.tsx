@@ -109,6 +109,10 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/dialog",
 			},
 			{
+				title: "Divider",
+				href: "/docs/core/components/divider",
+			},
+			{
 				title: "Drawer",
 				href: "/docs/core/components/drawer",
 			},
