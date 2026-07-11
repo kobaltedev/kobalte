@@ -1,0 +1,126 @@
+.card {
+	border-radius: 12px;
+	border: 1px solid hsl(240 5% 90%);
+	background-color: white;
+	box-shadow: 0 1px 2px hsl(240 5% 84% / 0.4);
+	padding: 16px;
+	width: 260px;
+	font-size: 14px;
+}
+
+.card__title {
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+	color: hsl(240 6% 20%);
+	margin: 0 0 4px 0;
+}
+
+.card__description {
+	display: block;
+	font-size: 12px;
+	color: hsl(240 4% 46%);
+	margin: 0 0 12px 0;
+}
+
+.card__content {
+	color: hsl(240 4% 34%);
+}
+
+.card__stat {
+	font-size: 28px;
+	font-weight: 600;
+	color: hsl(240 6% 20%);
+}
+
+/* `Card.Header` ships no layout — this two-column grid is a CSS recipe
+   for positioning `Card.HeaderAction` against `Card.Title`. */
+.card__header-with-action {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: start;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.icon-button {
+	display: flex;
+	height: 24px;
+	width: 24px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	border: none;
+	background: transparent;
+	color: hsl(240 4% 46%);
+	cursor: pointer;
+}
+
+.icon-button:hover {
+	background-color: hsl(240 5% 96%);
+}
+
+/* Plain `<ul>`/`<li>` inside `Card.Content` — no `List` component needed,
+   native list semantics are already correct for static rows. */
+.list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.list__item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 8px 0;
+	border-top: 1px solid hsl(240 5% 94%);
+}
+
+.list__item:first-child {
+	border-top: none;
+	padding-top: 0;
+}
+
+.list__meta {
+	color: hsl(240 4% 60%);
+}
+
+/* `Card` ships no layout primitive for arranging multiple cards — this
+   grid (with `grid-row`/`grid-column` spans) is a plain CSS recipe. */
+.grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(2, auto);
+	gap: 16px;
+	width: 720px;
+}
+
+.grid .card {
+	width: auto;
+}
+
+.grid__tall-card {
+	grid-row: span 2;
+}
+
+.grid__wide-card {
+	grid-column: span 2;
+}
+
+[data-kb-theme="dark"] .card {
+	background-color: hsl(240 6% 10%);
+	border-color: hsl(240 5% 20%);
+}
+
+[data-kb-theme="dark"] .card__title {
+	color: hsl(240 5% 96%);
+}
+
+[data-kb-theme="dark"] .card__stat {
+	color: hsl(240 5% 96%);
+}
+
+[data-kb-theme="dark"] .list__item {
+	border-top-color: hsl(240 5% 20%);
+}

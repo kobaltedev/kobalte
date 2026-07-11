@@ -65,6 +65,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/calendar",
 			},
 			{
+				title: "Card",
+				href: "/docs/core/components/card",
+				status: "new",
+			},
+			{
 				title: "Checkbox",
 				href: "/docs/core/components/checkbox",
 			},
@@ -196,6 +201,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 			{
 				title: "Slider",
 				href: "/docs/core/components/slider",
+			},
+			{
+				title: "Statistic",
+				href: "/docs/core/components/statistic",
+				status: "new",
 			},
 			{
 				title: "Switch",

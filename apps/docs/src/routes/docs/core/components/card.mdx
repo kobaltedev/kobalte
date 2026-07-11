@@ -1,0 +1,378 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import {
+	BasicExample,
+	DashboardGridExample,
+	ListContentExample,
+	WithHeaderActionExample,
+} from "../../../../examples/card";
+
+# Card
+
+Groups related content and actions in a single container.
+
+## Import
+
+```ts
+import { Card } from "@kobalte/core/card";
+// or
+import {
+	Root,
+	Header,
+	HeaderAction,
+	Title,
+	Description,
+	Content,
+	Footer,
+} from "@kobalte/core/card";
+```
+
+## Features
+
+- Auto-wires `aria-labelledby`/`aria-describedby` from `Card.Title`/`Card.Description` onto `Card.Root`.
+- `role` is never forced — a dashboard with many cards defaulting to `role="region"` would clutter screen reader landmark navigation. Opt in explicitly when a card really is a landmark.
+- `Card.HeaderAction` is a structural slot for positioning a trailing action (e.g. an icon button) without an extra wrapper `div`.
+
+## Anatomy
+
+The card consists of:
+
+- **Card:** Contains all the parts of a card.
+- **Card.Header:** Groups the card's title, description and header action.
+- **Card.HeaderAction:** A structural slot for a trailing header action.
+- **Card.Title:** An accessible title for the card.
+- **Card.Description:** An optional accessible description for the card.
+- **Card.Content:** The main content of the card.
+- **Card.Footer:** The footer content of the card (e.g. actions).
+
+```tsx
+<Card>
+	<Card.Header>
+		<Card.Title />
+		<Card.Description />
+		<Card.HeaderAction />
+	</Card.Header>
+	<Card.Content />
+	<Card.Footer />
+</Card>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Card } from "@kobalte/core/card";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Card class="card">
+          <Card.Header>
+            <Card.Title class="card__title">Security</Card.Title>
+            <Card.Description class="card__description">
+              Security insights and blocked logins
+            </Card.Description>
+          </Card.Header>
+          <Card.Content class="card__content">
+            <p>Security insights: 40 (12 high, 28 low)</p>
+            <p>Logins blocked: 0</p>
+          </Card.Content>
+        </Card>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .card {
+      border-radius: 12px;
+      border: 1px solid hsl(240 5% 90%);
+      padding: 16px;
+    }
+
+    .card__title {
+      display: block;
+      font-weight: 600;
+    }
+
+    .card__description {
+      display: block;
+      font-size: 12px;
+      color: hsl(240 4% 46%);
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### With header action
+
+`Card.HeaderAction` ships no layout of its own — the two-column arrangement
+(title/description on the left, action on the right) is a plain CSS grid
+recipe applied to `Card.Header`, not something `Card` renders for you.
+
+<Preview>
+	<WithHeaderActionExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Card } from "@kobalte/core/card";
+    import "./style.css";
+
+    function App() {
+      return (
+        <Card class="card">
+          <Card.Header class="card__header">
+            <Card.Title class="card__title">Workers and Pages</Card.Title>
+            <Card.HeaderAction>
+              <button type="button" class="icon-button" aria-label="Add">
+                +
+              </button>
+            </Card.HeaderAction>
+          </Card.Header>
+          <Card.Content>8 deployed services</Card.Content>
+        </Card>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .card__header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 8px;
+    }
+
+    .icon-button {
+      display: flex;
+      height: 24px;
+      width: 24px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+### List content
+
+Static resource rows (like a list of domains or deployments) use plain
+`<ul>`/`<li>` inside `Card.Content` — Kobalte does not ship a dedicated
+`List` component for this. Its `Listbox` primitive forces `listbox`/`option`
+ARIA roles meant for selectable widgets, which is the wrong semantics for a
+read-only list of rows; native list semantics are already correct here for
+free.
+
+<Preview>
+	<ListContentExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Card } from "@kobalte/core/card";
+    import "./style.css";
+
+    const domains = [
+      { name: "solidjs.com", visits: "140K" },
+      { name: "solid-movies.app", visits: "39K" },
+    ];
+
+    function App() {
+      return (
+        <Card class="card">
+          <Card.Header>
+            <Card.Title class="card__title">Domains</Card.Title>
+          </Card.Header>
+          <Card.Content>
+            <ul class="list">
+              {domains.map((domain) => (
+                <li class="list__item">
+                  <span>{domain.name}</span>
+                  <span class="list__meta">{domain.visits}</span>
+                </li>
+              ))}
+            </ul>
+          </Card.Content>
+        </Card>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .list__item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0;
+      border-top: 1px solid hsl(240 5% 94%);
+    }
+
+    .list__item:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .list__meta {
+      color: hsl(240 4% 60%);
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+### Grid layout
+
+`Card` ships no layout primitive for arranging multiple cards into a
+dashboard — no `Stack`/`Grid` component exists anywhere in Kobalte, layout
+is always left to your own CSS. The "bento grid" look (narrow cards on top,
+a taller card spanning two rows, wide cards on the bottom) below is a plain
+CSS grid recipe using `grid-column`/`grid-row` spans.
+
+<Preview>
+	<DashboardGridExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Card } from "@kobalte/core/card";
+    import "./style.css";
+
+    function App() {
+      return (
+        <div class="grid">
+          <Card class="card">
+            <Card.Header>
+              <Card.Title class="card__title">Security</Card.Title>
+            </Card.Header>
+            <Card.Content class="card__stat">40</Card.Content>
+          </Card>
+          <Card class="card">
+            <Card.Header>
+              <Card.Title class="card__title">Performance</Card.Title>
+            </Card.Header>
+            <Card.Content class="card__stat">16.2%</Card.Content>
+          </Card>
+          <Card class="card grid__tall-card">
+            <Card.Header>
+              <Card.Title class="card__title">Zero Trust security</Card.Title>
+            </Card.Header>
+            <Card.Content>...</Card.Content>
+          </Card>
+          <Card class="card grid__wide-card">
+            <Card.Header>
+              <Card.Title class="card__title">Audit logs</Card.Title>
+            </Card.Header>
+            <Card.Content>...</Card.Content>
+          </Card>
+        </div>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, auto);
+      gap: 16px;
+    }
+
+    .grid__tall-card {
+      grid-row: span 2;
+    }
+
+    .grid__wide-card {
+      grid-column: span 2;
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## API Reference
+
+### Card
+
+`Card` is equivalent to the `Root` import from `@kobalte/core/card`.
+
+| Prop | Description                                                                                                                                                                   |
+| :--- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id   | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used. |
+
+`Card` also forwards any native attribute, including `role` — pass `role="region"` explicitly when a card is a meaningful landmark on the page.
+
+### Card.Title
+
+| Data attribute | Description |
+| :------------- | :---------- |
+
+`Card.Title`'s `id` is wired to `Card`'s `aria-labelledby`.
+
+### Card.Description
+
+`Card.Description`'s `id` is wired to `Card`'s `aria-describedby`.
+
+## Rendered elements
+
+| Component           | Default rendered element |
+| :------------------ | :----------------------- |
+| `Card`              | `div`                    |
+| `Card.Header`       | `div`                    |
+| `Card.HeaderAction` | `div`                    |
+| `Card.Title`        | `h3`                     |
+| `Card.Description`  | `p`                      |
+| `Card.Content`      | `div`                    |
+| `Card.Footer`       | `div`                    |
