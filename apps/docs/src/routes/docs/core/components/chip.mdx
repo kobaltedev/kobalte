@@ -1,0 +1,178 @@
+import { Preview, Kbd, TabsSnippets } from "../../../../components";
+import { BasicExample, ClickableExample, DisabledExample } from "../../../../examples/chip";
+
+# Chip
+
+A compact element that represents an input, attribute, or action, such as a filter, a tag, or a contact.
+
+## Import
+
+```ts
+import { Chip } from "@kobalte/core/chip";
+// or
+import { Root, Delete } from "@kobalte/core/chip";
+```
+
+## Features
+
+- Renders as a static, non-interactive element by default.
+- Becomes keyboard-operable (`role="button"`, focusable, activatable with <Kbd>Space</Kbd> and <Kbd>Enter</Kbd>) as soon as an `onClick` handler is provided.
+- `Chip.Delete` stops its triggering event from propagating to `Chip`, so a chip can be clickable and deletable at the same time.
+- Localizable `aria-label` for `Chip.Delete` via the `translations` prop.
+
+## Anatomy
+
+The chip consists of:
+
+- **Chip:** The root container for the chip.
+- **Chip.Delete:** The button that removes the chip.
+
+```tsx
+<Chip>
+	<Chip.Delete />
+</Chip>
+```
+
+## Example
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start -->*/}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Chip } from "@kobalte/core/chip";
+    import { createSignal, For } from "solid-js";
+    import "./style.css";
+
+    function App() {
+      const [tags, setTags] = createSignal(["Design", "Engineering", "Product"]);
+
+      const removeTag = (tag: string) => {
+        setTags((prev) => prev.filter((t) => t !== tag));
+      };
+
+      return (
+        <For each={tags()}>
+          {(tag) => (
+            <Chip class="chip">
+              {tag}
+              <Chip.Delete class="chip__delete-button" onClick={() => removeTag(tag)}>
+                ✕
+              </Chip.Delete>
+            </Chip>
+          )}
+        </For>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 9999px;
+      padding: 0.3em 0.4em 0.3em 0.8em;
+      background-color: hsl(240 5% 92%);
+      color: hsl(240 4% 16%);
+      font-size: 14px;
+    }
+
+    .chip__delete-button {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: none;
+      border-radius: 9999px;
+      background-color: transparent;
+      color: inherit;
+    }
+
+    .chip__delete-button:hover:not(:disabled) {
+      background-color: hsl(240 5% 74%);
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end -->*/}
+</TabsSnippets>
+
+## Usage
+
+### Clickable chip
+
+Passing an `onClick` handler to `Chip` makes it keyboard-operable: it gets `role="button"`, becomes focusable, and can be activated with <Kbd>Space</Kbd> or <Kbd>Enter</Kbd>, in addition to a `data-clickable` attribute for styling.
+
+<Preview>
+	<ClickableExample />
+</Preview>
+
+```tsx
+<Chip class="chip" onClick={() => console.log("clicked")}>
+	React
+</Chip>
+```
+
+### Disabled chip
+
+Setting `disabled` on `Chip` prevents its `onClick` from firing and removes it from the tab order. A nested `Chip.Delete` inherits the disabled state automatically.
+
+<Preview>
+	<DisabledExample />
+</Preview>
+
+```tsx
+<Chip class="chip" disabled>
+	Archived
+	<Chip.Delete class="chip__delete-button">✕</Chip.Delete>
+</Chip>
+```
+
+## API Reference
+
+### Chip
+
+`Chip` is equivalent to the `Root` import from `@kobalte/core/chip`.
+
+| Prop         | Description                                                                                       |
+| :----------- | :-------------------------------------------------------------------------------------------------- |
+| disabled     | `boolean` <br/> Whether the chip is disabled.                                                        |
+| onClick      | `JSX.EventHandlerUnion<T, MouseEvent>` <br/> Event handler called when the chip is clicked. Makes the chip keyboard-operable. |
+| translations | [`ChipIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/chip/chip.intl.ts) <br/> Localization strings. |
+
+| Data attribute | Description                                             |
+| :------------- | :------------------------------------------------------- |
+| data-disabled  | Present when the chip is disabled.                        |
+| data-clickable | Present when the chip has an `onClick` handler.           |
+
+### Chip.Delete
+
+`Chip.Delete` consists of [Button](/docs/core/components/button). It stops its triggering click/keyboard event from propagating to `Chip`, and inherits `Chip`'s `disabled` state unless overridden.
+
+## Rendered elements
+
+| Component      | Default rendered element |
+| :------------- | :------------------------ |
+| `Chip`         | `span`                     |
+| `Chip.Delete`  | `button`                   |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description                                                    |
+| :--------------- | :--------------------------------------------------------------- |
+| <Kbd>Space</Kbd> | When focus is on a clickable chip (has `onClick`), activates it. |
+| <Kbd>Enter</Kbd> | When focus is on a clickable chip (has `onClick`), activates it. |
