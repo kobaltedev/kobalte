@@ -14,7 +14,7 @@ const baseClass =
 	"inline-flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium bg-slate-100 text-slate-700";
 
 const clickableClass =
-	"data-[clickable]:cursor-pointer data-[clickable]:hover:bg-slate-200 data-[clickable]:focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500";
+	"data-[clickable]:cursor-pointer data-[clickable]:hover:bg-slate-200 data-[clickable]:focus-visible:outline-2 focus-visible:outline-blue-500";
 
 const disabledClass =
 	"data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed";
@@ -84,7 +84,7 @@ function SelectableDemo() {
 			<For each={options}>
 				{(option) => (
 					<Root
-						class={`${baseClass} relative has-[[data-checked]]:bg-blue-600 has-[[data-checked]]:text-white has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-blue-500`}
+						class={`${baseClass} relative has-data-checked:bg-blue-600 has-data-checked:text-white has-focus-visible:outline-2 has-focus-visible:outline-blue-500`}
 					>
 						<Checkbox.Root class="contents">
 							<Checkbox.Input
