@@ -101,21 +101,23 @@ import { parseColor } from "@kobalte/core/colors";
 import "./style.css";
 
 function App() {
-  return (
-    <ColorSwatch class="ColorSwatchRoot" value={parseColor("hsl(200, 98%, 39%)")} colorName="Kobalte blue" />
-  );
+	return (
+		<ColorSwatch
+			class="ColorSwatchRoot"
+			value={parseColor("hsl(200, 98%, 39%)")}
+			colorName="Kobalte blue"
+		/>
+	);
 }
 ```
 
 ```css title="style.css" tab
 .ColorSwatchRoot {
-  height: 56px;
-  width: 56px;
-  border-radius: 6px;
+	height: 56px;
+	width: 56px;
+	border-radius: 6px;
 }
 ```
-
-
 
 ## API Reference
 

@@ -77,8 +77,90 @@ import { Slider } from "@kobalte/core/slider";
 import "./style.css";
 
 function App() {
+	return (
+		<Slider class="SliderRoot">
+			<div class="SliderLabel">
+				<Slider.Label>Label</Slider.Label>
+				<Slider.ValueLabel />
+			</div>
+			<Slider.Track class="SliderTrack">
+				<Slider.Fill class="SliderRange" />
+				<Slider.Thumb class="SliderThumb">
+					<Slider.Input />
+				</Slider.Thumb>
+			</Slider.Track>
+		</Slider>
+	);
+}
+```
+
+```css title="style.css" tab
+.SliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
+
+.SliderTrack {
+	background-color: hsl(240 6% 90%);
+	position: relative;
+	border-radius: 9999px;
+	height: 8px;
+	width: 100%;
+}
+
+.SliderRange {
+	position: absolute;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	height: 100%;
+}
+
+.SliderThumb {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	top: -4px;
+}
+
+.SliderThumb:hover {
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
+
+.SliderThumb:focus {
+	outline: none;
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
+
+.SliderLabel {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+```
+
+## Usage
+
+### Multiple Thumbs
+
+:::preview
+
+<MultipleThumbsExample />
+:::
+
+```tsx title="index.tsx" tab
+import { Slider } from "@kobalte/core/slider";
+import "./style.css";
+
+function App() {
   return (
-    <Slider class="SliderRoot">
+    <Slider class="SliderRoot" defaultValue={[0, 20]}>
       <div class="SliderLabel">
         <Slider.Label>Label</Slider.Label>
         <Slider.ValueLabel />
@@ -86,6 +168,9 @@ function App() {
       <Slider.Track class="SliderTrack">
         <Slider.Fill class="SliderRange" />
         <Slider.Thumb class="SliderThumb">
+          <Slider.Input />
+        </Slider.Thumb>
+        <Slider.Thumb class="SliderThumb SliderThumb">
           <Slider.Input />
         </Slider.Thumb>
       </Slider.Track>
@@ -144,93 +229,6 @@ function App() {
   justify-content: space-between;
 }
 ```
-
-
-
-## Usage
-
-### Multiple Thumbs
-
-:::preview
-
-<MultipleThumbsExample />
-:::
-
-```tsx title="index.tsx" tab
-    import { Slider } from "@kobalte/core/slider";
-    import "./style.css";
-
-    function App() {
-      return (
-        <Slider class="SliderRoot" defaultValue={[0, 20]}>
-          <div class="SliderLabel">
-            <Slider.Label>Label</Slider.Label>
-            <Slider.ValueLabel />
-          </div>
-          <Slider.Track class="SliderTrack">
-            <Slider.Fill class="SliderRange" />
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-            <Slider.Thumb class="SliderThumb SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-          </Slider.Track>
-        </Slider>
-      );
-    }
-    ```
-
-```css title="style.css" tab
-    .SliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      width: 200px;
-    }
-
-    .SliderTrack {
-      background-color: hsl(240 6% 90%);
-      position: relative;
-      border-radius: 9999px;
-      height: 8px;
-      width: 100%;
-    }
-
-    .SliderRange {
-      position: absolute;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      height: 100%;
-    }
-
-    .SliderThumb {
-      display: block;
-      width: 16px;
-      height: 16px;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      top: -4px;
-    }
-
-    .SliderThumb:hover {
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
-
-    .SliderThumb:focus {
-      outline: none;
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
-
-    .SliderLabel {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-    ```
 
 
 

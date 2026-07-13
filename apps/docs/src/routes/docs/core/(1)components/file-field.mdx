@@ -81,45 +81,37 @@ The File Field consists of:
 import { FileField } from "@kobalte/core/file-field";
 import "./style.css";
 
-  function App() {
-    return (
-      <FileField
-        class={style.FileField}
-        multiple
-        maxFiles={5}
-        onFileAccept={(data) => console.log("data", data)}
-        onFileReject={(data) => console.log("data", data)}
-        onFileChange={(data) => console.log("data", data)}
-      >
-        <FileField.Label class={style.FileField__label}>
-          File Field
-        </FileField.Label>
-        <FileField.Dropzone class={style.FileField__dropzone}>
-          Drop your files here...
-          <FileField.Trigger class={style.FileField__trigger}>
-            Choose files!
-          </FileField.Trigger>
-        </FileField.Dropzone>
-        <FileField.HiddenInput />
-        <FileField.ItemList class={style.FileField__itemList}>
-          {(file) => (
-                <FileField.Item class={style.FileField__item}>
-                  <FileField.ItemPreviewImage
-                    class={style.FileField__itemPreviewImage}
-                  />
-                  <FileField.ItemName class={style.FileField__itemName} />
-                  <FileField.ItemSize class={style.FileField__itemSize} />
-                  <FileField.ItemDeleteTrigger
-                    class={style.FileField__itemDeleteTrigger}
-                  >
-                    Delete
-                  </FileField.ItemDeleteTrigger>
-                </FileField.Item>
-          )}
-        </FileField.ItemList>
-      </FileField>
-    );
-  }
+function App() {
+	return (
+		<FileField
+			class={style.FileField}
+			multiple
+			maxFiles={5}
+			onFileAccept={data => console.log("data", data)}
+			onFileReject={data => console.log("data", data)}
+			onFileChange={data => console.log("data", data)}
+		>
+			<FileField.Label class={style.FileField__label}>File Field</FileField.Label>
+			<FileField.Dropzone class={style.FileField__dropzone}>
+				Drop your files here...
+				<FileField.Trigger class={style.FileField__trigger}>Choose files!</FileField.Trigger>
+			</FileField.Dropzone>
+			<FileField.HiddenInput />
+			<FileField.ItemList class={style.FileField__itemList}>
+				{file => (
+					<FileField.Item class={style.FileField__item}>
+						<FileField.ItemPreviewImage class={style.FileField__itemPreviewImage} />
+						<FileField.ItemName class={style.FileField__itemName} />
+						<FileField.ItemSize class={style.FileField__itemSize} />
+						<FileField.ItemDeleteTrigger class={style.FileField__itemDeleteTrigger}>
+							Delete
+						</FileField.ItemDeleteTrigger>
+					</FileField.Item>
+				)}
+			</FileField.ItemList>
+		</FileField>
+	);
+}
 ```
 
 ```css title="style.css" tab

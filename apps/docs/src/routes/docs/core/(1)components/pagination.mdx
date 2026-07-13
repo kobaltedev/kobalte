@@ -64,89 +64,92 @@ import { Pagination } from "@kobalte/core/pagination";
 import "./style.css";
 
 function App() {
-  return (
-  <Pagination
-    class="pagination__root"
-    count={10}
-    itemComponent={props => (
-      <Pagination.Item class="pagination__item" page={props.page}>{props.page}</Pagination.Item>
-      )}
-    ellipsisComponent={() => (
-      <Pagination.Ellipsis class="pagination__ellipsis">...</Pagination.Ellipsis>
-      )}
-    >
-      <Pagination.Previous class="pagination__item">Previous</Pagination.Previous>
-      <Pagination.Items/>
-      <Pagination.Next class="pagination__item">Next</Pagination.Next>
-    </Pagination>
-  );
+	return (
+		<Pagination
+			class="pagination__root"
+			count={10}
+			itemComponent={props => (
+				<Pagination.Item class="pagination__item" page={props.page}>
+					{props.page}
+				</Pagination.Item>
+			)}
+			ellipsisComponent={() => (
+				<Pagination.Ellipsis class="pagination__ellipsis">...</Pagination.Ellipsis>
+			)}
+		>
+			<Pagination.Previous class="pagination__item">Previous</Pagination.Previous>
+			<Pagination.Items />
+			<Pagination.Next class="pagination__item">Next</Pagination.Next>
+		</Pagination>
+	);
 }
 ```
 
 ```css title="style.css" tab
 .pagination__root > ul {
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: .5rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
 }
 
 .pagination__item {
-  appearance: none;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  width: auto;
-  outline: none;
-  border-radius: 6px;
-  padding: 0 16px;
-  background-color: white;
-  color: hsl(240 4% 16%);
-  font-size: 16px;
-  line-height: 0;
-  transition: 250ms background-color, 250ms color, 250ms border-color;
-  cursor: pointer;
-  font-variant-numeric: tabular-nums;
-  border: 1px solid hsl(240 6% 90%);
+	appearance: none;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: auto;
+	outline: none;
+	border-radius: 6px;
+	padding: 0 16px;
+	background-color: white;
+	color: hsl(240 4% 16%);
+	font-size: 16px;
+	line-height: 0;
+	transition:
+		250ms background-color,
+		250ms color,
+		250ms border-color;
+	cursor: pointer;
+	font-variant-numeric: tabular-nums;
+	border: 1px solid hsl(240 6% 90%);
 }
 
 .pagination__ellipsis {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  width: auto;
-  outline: none;
-  border-radius: 6px;
-  padding: 0 16px;
-  background-color: white;
-  color: hsl(240 4% 16%);
-  font-size: 16px;
-  line-height: 0;
-  cursor: default;
-  border: 1px solid hsl(240 6% 90%);
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: auto;
+	outline: none;
+	border-radius: 6px;
+	padding: 0 16px;
+	background-color: white;
+	color: hsl(240 4% 16%);
+	font-size: 16px;
+	line-height: 0;
+	cursor: default;
+	border: 1px solid hsl(240 6% 90%);
 }
 
 .pagination__item[aria-current="page"] {
-  background-color: hsl(200 98% 39%);
+	background-color: hsl(200 98% 39%);
 }
 
 .pagination__item:hover {
-  background-color: hsl(200 98% 39%);
+	background-color: hsl(200 98% 39%);
 }
 
 .pagination__item:focus-visible {
-  outline: 2px solid hsl(200 98% 39%);
-  outline-offset: 2px;
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
 }
 
 .pagination__item:active {
-  background-color: hsl(201 90% 27%);
+	background-color: hsl(201 90% 27%);
 }
 ```
-
-
 
 ## Usage
 

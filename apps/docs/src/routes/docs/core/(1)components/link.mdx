@@ -46,35 +46,33 @@ import { Link } from "@kobalte/core/link";
 import "./style.css";
 
 function App() {
-  return (
-    <Link class="link" href="https://kobalte.dev">
-      Kobalte
-    </Link>
-  );
+	return (
+		<Link class="link" href="https://kobalte.dev">
+			Kobalte
+		</Link>
+	);
 }
 ```
 
 ```css title="style.css" tab
 .link {
-  font-weight: 600;
-  color: hsl(201 96% 32%);
+	font-weight: 600;
+	color: hsl(201 96% 32%);
 }
 
 .link:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 .link[data-disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
+	opacity: 0.5;
+	cursor: not-allowed;
 }
 
 .link[data-disabled]:hover {
-  text-decoration: none;
+	text-decoration: none;
 }
 ```
-
-
 
 ## Usage
 

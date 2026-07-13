@@ -121,272 +121,268 @@ import { CheckIcon, ChevronDownIcon, ChevronRightIcon, DotFilledIcon } from "som
 import "./style.css";
 
 function App() {
-  const [showGitLog, setShowGitLog] = createSignal(true);
-  const [showHistory, setShowHistory] = createSignal(false);
-  const [branch, setBranch] = createSignal("main");
+	const [showGitLog, setShowGitLog] = createSignal(true);
+	const [showHistory, setShowHistory] = createSignal(false);
+	const [branch, setBranch] = createSignal("main");
 
-  return (
-    <DropdownMenu>
-      <DropdownMenu.Trigger class="dropdown-menu__trigger">
-        <span>Git Settings</span>
-        <DropdownMenu.Icon class="dropdown-menu__trigger-icon">
-          <ChevronDownIcon />
-        </DropdownMenu.Icon>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Portal>
-        <DropdownMenu.Content class="dropdown-menu__content">
-          <DropdownMenu.Item class="dropdown-menu__item">
-            Commit <div class="dropdown-menu__item-right-slot">⌘+K</div>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item class="dropdown-menu__item">
-            Push <div class="dropdown-menu__item-right-slot">⇧+⌘+K</div>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item class="dropdown-menu__item" disabled>
-            Update Project <div class="dropdown-menu__item-right-slot">⌘+T</div>
-          </DropdownMenu.Item>
-          <DropdownMenu.Sub overlap gutter={4} shift={-8}>
-            <DropdownMenu.SubTrigger class="dropdown-menu__sub-trigger">
-              GitHub
-              <div class="dropdown-menu__item-right-slot">
-                <ChevronRightIcon width={20} height={20} />
-              </div>
-            </DropdownMenu.SubTrigger>
-            <DropdownMenu.Portal>
-              <DropdownMenu.SubContent class="dropdown-menu__sub-content">
-                <DropdownMenu.Item class="dropdown-menu__item">
-                  Create Pull Request…
-                </DropdownMenu.Item>
-                <DropdownMenu.Item class="dropdown-menu__item">
-                  View Pull Requests
-                </DropdownMenu.Item>
-                <DropdownMenu.Item class="dropdown-menu__item">
-                  Sync Fork
-                </DropdownMenu.Item>
-                <DropdownMenu.Separator class="dropdown-menu__separator" />
-                <DropdownMenu.Item class="dropdown-menu__item">
-                  Open on GitHub
-                </DropdownMenu.Item>
-              </DropdownMenu.SubContent>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Sub>
+	return (
+		<DropdownMenu>
+			<DropdownMenu.Trigger class="dropdown-menu__trigger">
+				<span>Git Settings</span>
+				<DropdownMenu.Icon class="dropdown-menu__trigger-icon">
+					<ChevronDownIcon />
+				</DropdownMenu.Icon>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Portal>
+				<DropdownMenu.Content class="dropdown-menu__content">
+					<DropdownMenu.Item class="dropdown-menu__item">
+						Commit <div class="dropdown-menu__item-right-slot">⌘+K</div>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item class="dropdown-menu__item">
+						Push <div class="dropdown-menu__item-right-slot">⇧+⌘+K</div>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item class="dropdown-menu__item" disabled>
+						Update Project <div class="dropdown-menu__item-right-slot">⌘+T</div>
+					</DropdownMenu.Item>
+					<DropdownMenu.Sub overlap gutter={4} shift={-8}>
+						<DropdownMenu.SubTrigger class="dropdown-menu__sub-trigger">
+							GitHub
+							<div class="dropdown-menu__item-right-slot">
+								<ChevronRightIcon width={20} height={20} />
+							</div>
+						</DropdownMenu.SubTrigger>
+						<DropdownMenu.Portal>
+							<DropdownMenu.SubContent class="dropdown-menu__sub-content">
+								<DropdownMenu.Item class="dropdown-menu__item">
+									Create Pull Request…
+								</DropdownMenu.Item>
+								<DropdownMenu.Item class="dropdown-menu__item">
+									View Pull Requests
+								</DropdownMenu.Item>
+								<DropdownMenu.Item class="dropdown-menu__item">Sync Fork</DropdownMenu.Item>
+								<DropdownMenu.Separator class="dropdown-menu__separator" />
+								<DropdownMenu.Item class="dropdown-menu__item">Open on GitHub</DropdownMenu.Item>
+							</DropdownMenu.SubContent>
+						</DropdownMenu.Portal>
+					</DropdownMenu.Sub>
 
-          <DropdownMenu.Separator class="dropdown-menu__separator" />
+					<DropdownMenu.Separator class="dropdown-menu__separator" />
 
-          <DropdownMenu.CheckboxItem
-            class="dropdown-menu__checkbox-item"
-            checked={showGitLog()}
-            onChange={setShowGitLog}
-          >
-            <DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
-              <CheckIcon />
-            </DropdownMenu.ItemIndicator>
-            Show Git Log
-          </DropdownMenu.CheckboxItem>
-          <DropdownMenu.CheckboxItem
-            class="dropdown-menu__checkbox-item"
-            checked={showHistory()}
-            onChange={setShowHistory}
-          >
-            <DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
-              <CheckIcon />
-            </DropdownMenu.ItemIndicator>
-            Show History
-          </DropdownMenu.CheckboxItem>
+					<DropdownMenu.CheckboxItem
+						class="dropdown-menu__checkbox-item"
+						checked={showGitLog()}
+						onChange={setShowGitLog}
+					>
+						<DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
+							<CheckIcon />
+						</DropdownMenu.ItemIndicator>
+						Show Git Log
+					</DropdownMenu.CheckboxItem>
+					<DropdownMenu.CheckboxItem
+						class="dropdown-menu__checkbox-item"
+						checked={showHistory()}
+						onChange={setShowHistory}
+					>
+						<DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
+							<CheckIcon />
+						</DropdownMenu.ItemIndicator>
+						Show History
+					</DropdownMenu.CheckboxItem>
 
-          <DropdownMenu.Separator class="dropdown-menu__separator" />
+					<DropdownMenu.Separator class="dropdown-menu__separator" />
 
-          <DropdownMenu.Group>
-            <DropdownMenu.GroupLabel class="dropdown-menu__group-label">
-              Branches
-            </DropdownMenu.GroupLabel>
-            <DropdownMenu.RadioGroup value={branch()} onChange={setBranch}>
-              <DropdownMenu.RadioItem class="dropdown-menu__radio-item" value="main">
-                <DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
-                  <DotFilledIcon />
-                </DropdownMenu.ItemIndicator>
-                main
-              </DropdownMenu.RadioItem>
-              <DropdownMenu.RadioItem class="dropdown-menu__radio-item" value="develop">
-                <DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
-                  <DotFilledIcon />
-                </DropdownMenu.ItemIndicator>
-                develop
-              </DropdownMenu.RadioItem>
-            </DropdownMenu.RadioGroup>
-          </DropdownMenu.Group>
+					<DropdownMenu.Group>
+						<DropdownMenu.GroupLabel class="dropdown-menu__group-label">
+							Branches
+						</DropdownMenu.GroupLabel>
+						<DropdownMenu.RadioGroup value={branch()} onChange={setBranch}>
+							<DropdownMenu.RadioItem class="dropdown-menu__radio-item" value="main">
+								<DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
+									<DotFilledIcon />
+								</DropdownMenu.ItemIndicator>
+								main
+							</DropdownMenu.RadioItem>
+							<DropdownMenu.RadioItem class="dropdown-menu__radio-item" value="develop">
+								<DropdownMenu.ItemIndicator class="dropdown-menu__item-indicator">
+									<DotFilledIcon />
+								</DropdownMenu.ItemIndicator>
+								develop
+							</DropdownMenu.RadioItem>
+						</DropdownMenu.RadioGroup>
+					</DropdownMenu.Group>
 
-          <DropdownMenu.Arrow />
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu>
-  );
+					<DropdownMenu.Arrow />
+				</DropdownMenu.Content>
+			</DropdownMenu.Portal>
+		</DropdownMenu>
+	);
 }
 ```
 
 ```css title="style.css" tab
 .dropdown-menu__trigger {
-  appearance: none;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  height: 40px;
-  width: auto;
-  outline: none;
-  border-radius: 6px;
-  padding: 0 16px;
-  background-color: hsl(200 98% 39%);
-  color: white;
-  font-size: 16px;
-  gap: 8px;
-  line-height: 0;
-  transition: 250ms background-color;
+	appearance: none;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: auto;
+	outline: none;
+	border-radius: 6px;
+	padding: 0 16px;
+	background-color: hsl(200 98% 39%);
+	color: white;
+	font-size: 16px;
+	gap: 8px;
+	line-height: 0;
+	transition: 250ms background-color;
 }
 
 .dropdown-menu__trigger:hover {
-  background-color: hsl(201 96% 32%);
+	background-color: hsl(201 96% 32%);
 }
 
 .dropdown-menu__trigger:focus-visible {
-  outline: 2px solid hsl(200 98% 39%);
-  outline-offset: 2px;
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
 }
 
 .dropdown-menu__trigger:active {
-  background-color: hsl(201 90% 27%);
+	background-color: hsl(201 90% 27%);
 }
 
 .dropdown-menu__trigger-icon {
-  height: 20px;
-  width: 20px;
-  flex: 0 0 20px;
-  transition: transform 250ms;
+	height: 20px;
+	width: 20px;
+	flex: 0 0 20px;
+	transition: transform 250ms;
 }
 
 .dropdown-menu__trigger-icon[data-expanded] {
-  transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 
 .dropdown-menu__content,
 .dropdown-menu__sub-content {
-  min-width: 220px;
-  padding: 8px;
-  background-color: white;
-  border-radius: 6px;
-  border: 1px solid hsl(240 6% 90%);
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  outline: none;
-  transform-origin: var(--kb-menu-content-transform-origin);
-  animation: contentHide 250ms ease-in forwards;
+	min-width: 220px;
+	padding: 8px;
+	background-color: white;
+	border-radius: 6px;
+	border: 1px solid hsl(240 6% 90%);
+	box-shadow:
+		0 4px 6px -1px rgb(0 0 0 / 0.1),
+		0 2px 4px -2px rgb(0 0 0 / 0.1);
+	outline: none;
+	transform-origin: var(--kb-menu-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
 }
 
 .dropdown-menu__content[data-expanded],
 .dropdown-menu__sub-content[data-expanded] {
-  animation: contentShow 250ms ease-out;
+	animation: contentShow 250ms ease-out;
 }
 
 .dropdown-menu__item,
 .dropdown-menu__checkbox-item,
 .dropdown-menu__radio-item,
 .dropdown-menu__sub-trigger {
-  font-size: 16px;
-  line-height: 1;
-  color: hsl(240 4% 16%);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  height: 32px;
-  padding: 0 8px 0 24px;
-  position: relative;
-  user-select: none;
-  outline: none;
+	font-size: 16px;
+	line-height: 1;
+	color: hsl(240 4% 16%);
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	height: 32px;
+	padding: 0 8px 0 24px;
+	position: relative;
+	user-select: none;
+	outline: none;
 }
 
 .dropdown-menu__sub-trigger[data-expanded] {
-  background-color: hsl(204 94% 94%);
-  color: hsl(201 96% 32%);
+	background-color: hsl(204 94% 94%);
+	color: hsl(201 96% 32%);
 }
 
 .dropdown-menu__item[data-disabled],
 .dropdown-menu__checkbox-item[data-disabled],
 .dropdown-menu__radio-item[data-disabled],
 .dropdown-menu__sub-trigger[data-disabled] {
-  color: hsl(240 5% 65%);
-  opacity: 0.5;
-  pointer-events: none;
+	color: hsl(240 5% 65%);
+	opacity: 0.5;
+	pointer-events: none;
 }
 
 .dropdown-menu__item[data-highlighted],
 .dropdown-menu__checkbox-item[data-highlighted],
 .dropdown-menu__radio-item[data-highlighted],
 .dropdown-menu__sub-trigger[data-highlighted] {
-  outline: none;
-  background-color: hsl(200 98% 39%);
-  color: white;
+	outline: none;
+	background-color: hsl(200 98% 39%);
+	color: white;
 }
 
 .dropdown-menu__group-label {
-  padding: 0 24px;
-  font-size: 14px;
-  line-height: 32px;
-  color: hsl(240 4% 46%);
+	padding: 0 24px;
+	font-size: 14px;
+	line-height: 32px;
+	color: hsl(240 4% 46%);
 }
 
 .dropdown-menu__separator {
-  height: 1px;
-  border-top: 1px solid hsl(240 6% 90%);
-  margin: 6px;
+	height: 1px;
+	border-top: 1px solid hsl(240 6% 90%);
+	margin: 6px;
 }
 
 .dropdown-menu__item-indicator {
-  position: absolute;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+	position: absolute;
+	left: 0;
+	height: 20px;
+	width: 20px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .dropdown-menu__item-right-slot {
-  margin-left: auto;
-  padding-left: 20px;
-  font-size: 14px;
-  color: hsl(240 4% 46%);
+	margin-left: auto;
+	padding-left: 20px;
+	font-size: 14px;
+	color: hsl(240 4% 46%);
 }
 
 [data-highlighted] > .dropdown-menu__item-right-slot {
-  color: white;
+	color: white;
 }
 
 [data-disabled] .dropdown-menu__item-right-slot {
-  color: hsl(240 5% 65%);
-  opacity: 0.5;
+	color: hsl(240 5% 65%);
+	opacity: 0.5;
 }
 
 @keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
 
 @keyframes contentHide {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.96);
-  }
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.96);
+	}
 }
 ```
-
-
 
 ## Usage
 

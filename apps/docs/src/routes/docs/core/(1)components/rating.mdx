@@ -78,22 +78,22 @@ import { Rating } from "@kobalte/core/rating";
 import "./style.css";
 
 function App() {
-  return (
-    <Rating class="rating">
-		<Rating.Label class="rating__label">Rate Us:</Rating.Label>
-		<Rating.Control class="rating__control">
- 			<Index each={Array(5)}>
-				{_ => (
- 					<Rating.Item class="rating-item">
-						<Rating.ItemControl>
- 							<StarIcon />
-						</Rating.ItemControl>
- 					</Rating.Item>
-				)}
- 			</Index>
-		</Rating.Control>
- 	</Rating>
-  );
+	return (
+		<Rating class="rating">
+			<Rating.Label class="rating__label">Rate Us:</Rating.Label>
+			<Rating.Control class="rating__control">
+				<Index each={Array(5)}>
+					{_ => (
+						<Rating.Item class="rating-item">
+							<Rating.ItemControl>
+								<StarIcon />
+							</Rating.ItemControl>
+						</Rating.Item>
+					)}
+				</Index>
+			</Rating.Control>
+		</Rating>
+	);
 }
 ```
 
@@ -137,7 +137,6 @@ function App() {
 .rating-item[data-highlighted] {
 	fill: hsl(200 98% 39%);
 }
-
 ```
 
 ## Usage
@@ -147,6 +146,7 @@ function App() {
 An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 :::preview
+
 <DefaultValueExample />
 :::
 

@@ -52,26 +52,25 @@ The toggle item consists of:
 <BasicExample />
 :::
 
-
 ```tsx title="index.tsx" tab
-import {ToggleButton} from "@kobalte/core/toggle-group";
-import {BoldIcon, ItalicIcon, UnderlineIcon} from "some-icon-library";
+import { ToggleButton } from "@kobalte/core/toggle-group";
+import { BoldIcon, ItalicIcon, UnderlineIcon } from "some-icon-library";
 import "./style.css";
 
 function App() {
-  return (
+	return (
 		<ToggleGroup class="toggle-group">
-		  <ToggleGroup.Item class="toggle-group__item" value="bold" aria-label="Bold">
-		    <BoldIcon/>
-		  </ToggleGroup.Item>
-		  <ToggleGroup.Item class="toggle-group__item" value="italic" aria-label="Italic">
-		    <ItalicIcon/>
-		  </ToggleGroup.Item>
-		  <ToggleGroup.Item class="toggle-group__item" value="underline" aria-label="Underline">
-		    <UnderlineIcon/>
-		  </ToggleGroup.Item>
+			<ToggleGroup.Item class="toggle-group__item" value="bold" aria-label="Bold">
+				<BoldIcon />
+			</ToggleGroup.Item>
+			<ToggleGroup.Item class="toggle-group__item" value="italic" aria-label="Italic">
+				<ItalicIcon />
+			</ToggleGroup.Item>
+			<ToggleGroup.Item class="toggle-group__item" value="underline" aria-label="Underline">
+				<UnderlineIcon />
+			</ToggleGroup.Item>
 		</ToggleGroup>
-  );
+	);
 }
 ```
 

@@ -46,29 +46,27 @@ import { Separator } from "@kobalte/core/separator";
 import "./style.css";
 
 function App() {
-  return (
-    <div>
-      <span>Content above</span>
-      <Separator class="separator" />
-      <span>Content below</span>
-    </div>
-  );
+	return (
+		<div>
+			<span>Content above</span>
+			<Separator class="separator" />
+			<span>Content below</span>
+		</div>
+	);
 }
 ```
 
 ```css title="style.css" tab
 .separator {
-  border: none;
-  background-color: hsl(240 5% 84%);
+	border: none;
+	background-color: hsl(240 5% 84%);
 }
 
 .separator[data-orientation="horizontal"] {
-  height: 1px;
-  width: 100%;
+	height: 1px;
+	width: 100%;
 }
 ```
-
-
 
 ## API Reference
 

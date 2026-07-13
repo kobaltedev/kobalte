@@ -73,14 +73,14 @@ import { TimeField } from "@kobalte/core/time-field";
 import "./style.css";
 
 function App() {
-  return (
-    <TimeField class="time-field">
-      <TimeField.Label class="time-field__label">Event time</TimeField.Label>
-      <TimeField.Input class="time-field__field">
-        {segment => <TimeField.Segment class="time-field__segment" segment={segment()} />}
-      </TimeField.Input>
- 	</TimeField>
-  );
+	return (
+		<TimeField class="time-field">
+			<TimeField.Label class="time-field__label">Event time</TimeField.Label>
+			<TimeField.Input class="time-field__field">
+				{segment => <TimeField.Segment class="time-field__segment" segment={segment()} />}
+			</TimeField.Input>
+		</TimeField>
+	);
 }
 ```
 
@@ -164,6 +164,7 @@ A TimeField displays a placeholder by default. An initial, uncontrolled value ca
 Time values are objects: `{ hour?: number; minute?: number; second?: number; }`.
 
 :::preview
+
 <DefaultValueExample />
 :::
 

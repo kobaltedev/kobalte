@@ -78,95 +78,97 @@ import { NumberField } from "@kobalte/core/number-field";
 import "./style.css";
 
 function App() {
-  return (
-    <NumberField class="number-field">
-      <NumberField.Label class="number-field__label">
-        Quantity
-      </NumberField.Label>
-      <div class="number-field__group">
-        <NumberField.Input class="number-field__input" />
-        <NumberField.IncrementTrigger aria-label="Increment" class="number-field__increment"><ArrowUpIcon/></NumberField.IncrementTrigger>
-        <NumberField.DecrementTrigger aria-label="Decrement" class="number-field__decrement"><ArrowDownIcon/></NumberField.DecrementTrigger>
-      </div>
-    </NumberField>
-  );
+	return (
+		<NumberField class="number-field">
+			<NumberField.Label class="number-field__label">Quantity</NumberField.Label>
+			<div class="number-field__group">
+				<NumberField.Input class="number-field__input" />
+				<NumberField.IncrementTrigger aria-label="Increment" class="number-field__increment">
+					<ArrowUpIcon />
+				</NumberField.IncrementTrigger>
+				<NumberField.DecrementTrigger aria-label="Decrement" class="number-field__decrement">
+					<ArrowDownIcon />
+				</NumberField.DecrementTrigger>
+			</div>
+		</NumberField>
+	);
 }
 ```
 
 ```css title="style.css" tab
 .number-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 
-  .number-field__label {
-    color: hsl(240 6% 10%);
-    font-size: 14px;
-    font-weight: 500;
-    user-select: none;
-  }
+.number-field__label {
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
+}
 
-  .number-field__input {
-    display: inline-flex;
-    width: 200px;
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 16px;
-    outline: none;
-    background-color: white;
-    border: 1px solid hsl(240 6% 90%);
-    color: hsl(240 4% 16%);
-    transition:
-    border-color 250ms,
-    color 250ms;
-  }
+.number-field__input {
+	display: inline-flex;
+	width: 200px;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 16px;
+	outline: none;
+	background-color: white;
+	border: 1px solid hsl(240 6% 90%);
+	color: hsl(240 4% 16%);
+	transition:
+		border-color 250ms,
+		color 250ms;
+}
 
-  .number-field__group {
-    position: relative;
-    border-radius: 6px;
-  }
+.number-field__group {
+	position: relative;
+	border-radius: 6px;
+}
 
-  .number-field__increment {
-    top: .25rem;
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
-  }
+.number-field__increment {
+	top: 0.25rem;
+	border-top-left-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
+}
 
-  .number-field__decrement {
-    bottom: .25rem;
-    border-bottom-left-radius: .25rem;
-    border-bottom-right-radius: .25rem;
-  }
+.number-field__decrement {
+	bottom: 0.25rem;
+	border-bottom-left-radius: 0.25rem;
+	border-bottom-right-radius: 0.25rem;
+}
 
-  .number-field__increment, .number-field__decrement {
-    right: .25rem;
-    position: absolute;
-    height: 1rem;
-    width: 1rem;
-    background: rgba(0,0,0,0.1);
-    cursor: default;
-  }
+.number-field__increment,
+.number-field__decrement {
+	right: 0.25rem;
+	position: absolute;
+	height: 1rem;
+	width: 1rem;
+	background: rgba(0, 0, 0, 0.1);
+	cursor: default;
+}
 
-  .number-field__increment:hover, .number-field__decrement:hover {
-    background: rgba(0,0,0,0.2);
-  }
+.number-field__increment:hover,
+.number-field__decrement:hover {
+	background: rgba(0, 0, 0, 0.2);
+}
 
-  .number-field__input:hover {
-    border-color: hsl(240 5% 65%);
-  }
+.number-field__input:hover {
+	border-color: hsl(240 5% 65%);
+}
 
-  .number-field__input:focus-visible {
-    outline: none;
-  }
+.number-field__input:focus-visible {
+	outline: none;
+}
 
-  .number-field__group:focus-within {
-    outline: 2px solid hsl(200 98% 39%);
-    outline-offset: 2px;
-  }
+.number-field__group:focus-within {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
 ```
-
-
 
 ## Usage
 
