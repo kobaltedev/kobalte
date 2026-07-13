@@ -21,6 +21,7 @@ import {
 	type Accessor,
 	createEffect,
 	createMemo,
+	flush,
 	merge,
 	onSettled,
 } from "solid-js";
@@ -383,6 +384,11 @@ export function createSelectableCollection<
 				}
 
 				manager.setFocusedKey(key);
+				// Solid 2.0 batches signal writes; flush so `focusedKey()` is
+				// synchronously up to date for the keydown handler that runs
+				// immediately after this focus event (e.g. arrow-key navigation
+				// right after the collection receives initial focus).
+				flush();
 
 				if (selectOnFocus) {
 					manager.replaceSelection(key);

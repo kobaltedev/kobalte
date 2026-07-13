@@ -150,6 +150,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 					])}
 					onFocusIn={composeEventHandlers([
 						mergedProps.onFocusIn, // TODO: remove next breaking
+						selectableList.onFocusIn,
 					])}
 					onFocusOut={composeEventHandlers([
 						mergedProps.onFocusOut,
