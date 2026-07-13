@@ -2,8 +2,6 @@
 title: Styling
 ---
 
-import { TabsSnippets } from "../../../../components";
-
 # {frontmatter.title}
 
 Kobalte components are unstyled, allowing you to completely customize the look and feel. Bring your preferred styling solution (vanilla CSS, Tailwind, CSS-in-JS libraries, etc...).
@@ -12,48 +10,29 @@ Kobalte components are unstyled, allowing you to completely customize the look a
 
 All components and their parts accept a `class` prop. This class will be passed through to the DOM element. You can style a component part by targeting the `class` that you provide.
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  <TabsSnippets.Content value="tsx">
-    {/* <!-- prettier-ignore-start --> */}
-    ```tsx
-    import { Popover as KPopover } from "@kobalte/core";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Popover as KPopover } from "@kobalte/core/popover";
+import "./style.css";
 
-    export const Popover = () => {
-      return (
-        <KPopover>
-          <KPopover.Trigger class="popover__trigger">
-            Open
-          </KPopover.Trigger>
-          <KPopover.Content class="popover__content">
-            ...
-          </KPopover.Content>
-        </KPopover>
-      );
-    };
-    ```
-    {/* <!-- prettier-ignore-end --> */}
+export const Popover = () => {
+	return (
+		<KPopover>
+			<KPopover.Trigger class="popover__trigger">Open</KPopover.Trigger>
+			<KPopover.Content class="popover__content">...</KPopover.Content>
+		</KPopover>
+	);
+};
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="css">
-    {/* <!-- prettier-ignore-start --> */}
-    ```css
-    .popover__trigger {
-      /* The popover trigger style. */
-    }
+```css title="style.css" tab
+.popover__trigger {
+	/* The popover trigger style. */
+}
 
-    .popover__content {
-      /* The popover content style. */
-    }
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-
-  </TabsSnippets.Content>
-</TabsSnippets>
+.popover__content {
+	/* The popover content style. */
+}
+```
 
 ## Styling a state
 
@@ -64,20 +43,11 @@ When a component or its parts can have multiple states, we automatically attach 
 
 You can style a component state by targeting the `data-*` attributes added by Kobalte.
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  <TabsSnippets.Content value="css">
-    {/* <!-- prettier-ignore-start --> */}
-    ```css
-    .popover__trigger[data-disabled] {
-      /* The popover trigger style when disabled. */
-    }
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-  </TabsSnippets.Content>
-</TabsSnippets>
+```css title="style.css"
+.popover__trigger[data-disabled] {
+	/* The popover trigger style when disabled. */
+}
+```
 
 ## Using the TailwindCSS plugin
 
@@ -85,34 +55,9 @@ If you are using [TailwindCSS](https://tailwindcss.com/), you can use the `@koba
 
 ### Installation
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="npm">npm</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="yarn">yarn</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="pnpm">pnpm</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  <TabsSnippets.Content value="npm">
-    {/* <!-- prettier-ignore-start --> */}
-    ```bash
-    npm install @kobalte/tailwindcss
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="yarn">
-    {/* <!-- prettier-ignore-start --> */}
-    ```bash
-    yarn add @kobalte/tailwindcss
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="pnpm">
-    {/* <!-- prettier-ignore-start --> */}
-    ```bash
-    pnpm add @kobalte/tailwindcss
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-  </TabsSnippets.Content>
-</TabsSnippets>
+```package-install
+@kobalte/tailwindcss
+```
 
 ### Usage
 
@@ -175,41 +120,15 @@ If you are using [Vanilla Extract](https://vanilla-extract.style/), you can use 
 
 ### Installation
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="npm">npm</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="yarn">yarn</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="pnpm">pnpm</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  <TabsSnippets.Content value="npm">
-    {/* <!-- prettier-ignore-start --> */}
-    ```bash
-    npm install @kobalte/vanilla-extract
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="yarn">
-    {/* <!-- prettier-ignore-start --> */}
-    ```bash
-    yarn add @kobalte/vanilla-extract
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="pnpm">
-    {/* <!-- prettier-ignore-start --> */}
-    ```bash
-    pnpm add @kobalte/vanilla-extract
-    ```
-    {/* <!-- prettier-ignore-end --> */}
-  </TabsSnippets.Content>
-</TabsSnippets>
+```package-install
+@kobalte/vanilla-extract
+```
 
 ### Usage
 
 Use the `componentStateStyles` utility function to create vanilla-extract styles that target `data-*` attributes of Kobalte components.
 
-```ts
-// styles.css
+```ts title="style.css.ts"
 import { componentStateStyles } from "@kobalte/vanilla-extract";
 import { style } from "@vanilla-extract/css";
 
@@ -242,9 +161,9 @@ const button = style([
 
 Then apply your styles to the component:
 
-```tsx
+```tsx title="MyButton.tsx"
 import { Button } from "@kobalte/core/button";
-import { button } from "./styles.css";
+import { button } from "./styles.css.ts";
 
 export const MyButton = () => <Button class={button}>...</Button>;
 ```
@@ -265,3 +184,5 @@ export const PopoverTrigger = (props: ComponentProps<typeof KPopover.Trigger>) =
 	return <KPopover.Trigger {...props} />;
 };
 ```
+
+Follow the [Polymorphism Guide](./polymorphism) for more advanced type control and additional props.

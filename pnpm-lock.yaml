@@ -114,8 +114,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/core
       '@kobalte/solidbase':
-        specifier: 0.6.9
-        version: 0.6.9(@solidjs/start@2.0.0-alpha.3(@testing-library/jest-dom@6.4.2(vitest@1.3.1(@types/node@20.5.4)(@vitest/ui@1.6.0(vitest@1.3.1))(jsdom@19.0.0)(lightningcss@1.32.0)(terser@5.31.0)))(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.9)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))
+        specifier: 0.6.9-next.0
+        version: 0.6.9-next.0(@solidjs/start@2.0.0-alpha.3(@testing-library/jest-dom@6.4.2(vitest@1.3.1(@types/node@20.5.4)(@vitest/ui@1.6.0(vitest@1.3.1))(jsdom@19.0.0)(lightningcss@1.32.0)(terser@5.31.0)))(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.9)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))
       '@solidjs/meta':
         specifier: 0.29.4
         version: 0.29.4(solid-js@1.9.9)
@@ -1800,8 +1800,8 @@ packages:
     peerDependencies:
       solid-js: ^1.8.15
 
-  '@kobalte/solidbase@0.6.9':
-    resolution: {integrity: sha512-SOtoe0rcAQprYxl79BKGpfZKntldAnoyYvM12ivA55f3SB6rHwWKlFQhTnjVXj8RFQDO1BmUICJRTvILyW0qyQ==}
+  '@kobalte/solidbase@0.6.9-next.0':
+    resolution: {integrity: sha512-Sm8O+2pRY0cSE5vY3bj5DTIChXS3F3861R5npy4p+iXhWrig7BpX+fDtQDus081OA+Bx6Wcn2NqvmZMcFmeLOw==}
     engines: {node: '>=22'}
     peerDependencies:
       '@solidjs/start': ^2.0.0
@@ -8587,7 +8587,7 @@ snapshots:
       solid-presence: 0.1.8(solid-js@1.9.9)
       solid-prevent-scroll: 0.1.7(solid-js@1.9.9)
 
-  '@kobalte/solidbase@0.6.9(@solidjs/start@2.0.0-alpha.3(@testing-library/jest-dom@6.4.2(vitest@1.3.1(@types/node@20.5.4)(@vitest/ui@1.6.0(vitest@1.3.1))(jsdom@19.0.0)(lightningcss@1.32.0)(terser@5.31.0)))(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.9)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))':
+  '@kobalte/solidbase@0.6.9-next.0(@solidjs/start@2.0.0-alpha.3(@testing-library/jest-dom@6.4.2(vitest@1.3.1(@types/node@20.5.4)(@vitest/ui@1.6.0(vitest@1.3.1))(jsdom@19.0.0)(lightningcss@1.32.0)(terser@5.31.0)))(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.9)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))':
     dependencies:
       '@alloc/quick-lru': 5.2.0
       '@bprogress/core': 1.3.4
