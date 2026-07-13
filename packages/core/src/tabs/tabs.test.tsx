@@ -521,7 +521,7 @@ describe("Tabs", () => {
 		},
 	);
 
-	it.skip("tabpanel should have tabIndex=0 only when there are no focusable elements", async () => {
+	it("tabpanel should have tabIndex=0 only when there are no focusable elements", async () => {
 		// TODO test create-presence
 		const { getByRole, getAllByRole } = render(() => (
 			<Tabs.Root>
@@ -557,6 +557,7 @@ describe("Tabs", () => {
 		await Promise.resolve();
 
 		vi.runAllTimers();
+		await Promise.resolve();
 
 		tabpanel = getByRole("tabpanel");
 		expect(tabpanel).toHaveAttribute("tabindex", "0");
@@ -574,6 +575,7 @@ describe("Tabs", () => {
 		await Promise.resolve();
 
 		vi.runAllTimers();
+		await Promise.resolve();
 
 		tabpanel = getByRole("tabpanel");
 		expect(tabpanel).not.toHaveAttribute("tabindex");

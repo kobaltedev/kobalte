@@ -211,7 +211,16 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 						break;
 					case MENUBAR_KEYS.previous(direction(), rootContext.orientation()):
-						if (e.currentTarget.hasAttribute("data-closed")) break;
+						// Skip if a nested handler (e.g. `MenuSubContent`'s own
+						// "close submenu" key handling) already handled this key.
+						// `context.isOpen()`/`data-closed` can't be used here because
+						// they reflect a signal write queued by that same handler,
+						// which isn't visible until the next microtask flush.
+						if (
+							e.currentTarget.hasAttribute("data-closed") ||
+							e.defaultPrevented
+						)
+							break;
 
 						e.stopPropagation();
 						e.preventDefault();
