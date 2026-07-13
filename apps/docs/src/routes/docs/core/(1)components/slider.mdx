@@ -159,78 +159,76 @@ import { Slider } from "@kobalte/core/slider";
 import "./style.css";
 
 function App() {
-  return (
-    <Slider class="SliderRoot" defaultValue={[0, 20]}>
-      <div class="SliderLabel">
-        <Slider.Label>Label</Slider.Label>
-        <Slider.ValueLabel />
-      </div>
-      <Slider.Track class="SliderTrack">
-        <Slider.Fill class="SliderRange" />
-        <Slider.Thumb class="SliderThumb">
-          <Slider.Input />
-        </Slider.Thumb>
-        <Slider.Thumb class="SliderThumb SliderThumb">
-          <Slider.Input />
-        </Slider.Thumb>
-      </Slider.Track>
-    </Slider>
-  );
+	return (
+		<Slider class="SliderRoot" defaultValue={[0, 20]}>
+			<div class="SliderLabel">
+				<Slider.Label>Label</Slider.Label>
+				<Slider.ValueLabel />
+			</div>
+			<Slider.Track class="SliderTrack">
+				<Slider.Fill class="SliderRange" />
+				<Slider.Thumb class="SliderThumb">
+					<Slider.Input />
+				</Slider.Thumb>
+				<Slider.Thumb class="SliderThumb SliderThumb">
+					<Slider.Input />
+				</Slider.Thumb>
+			</Slider.Track>
+		</Slider>
+	);
 }
 ```
 
 ```css title="style.css" tab
 .SliderRoot {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  user-select: none;
-  touch-action: none;
-  width: 200px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
 }
 
 .SliderTrack {
-  background-color: hsl(240 6% 90%);
-  position: relative;
-  border-radius: 9999px;
-  height: 8px;
-  width: 100%;
+	background-color: hsl(240 6% 90%);
+	position: relative;
+	border-radius: 9999px;
+	height: 8px;
+	width: 100%;
 }
 
 .SliderRange {
-  position: absolute;
-  background-color: hsl(200 98% 39%);
-  border-radius: 9999px;
-  height: 100%;
+	position: absolute;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	height: 100%;
 }
 
 .SliderThumb {
-  display: block;
-  width: 16px;
-  height: 16px;
-  background-color: hsl(200 98% 39%);
-  border-radius: 9999px;
-  top: -4px;
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	top: -4px;
 }
 
 .SliderThumb:hover {
-  box-shadow: 0 0 0 5px #2a91fe98;
+	box-shadow: 0 0 0 5px #2a91fe98;
 }
 
 .SliderThumb:focus {
-  outline: none;
-  box-shadow: 0 0 0 5px #2a91fe98;
+	outline: none;
+	box-shadow: 0 0 0 5px #2a91fe98;
 }
 
 .SliderLabel {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
 }
 ```
-
-
 
 ### Modify step size
 
@@ -240,114 +238,112 @@ function App() {
 :::
 
 ```tsx title="index.tsx" tab
-    import { Slider } from "@kobalte/core/slider";
-    import "./style.css";
+import { Slider } from "@kobalte/core/slider";
+import "./style.css";
 
-    function App() {
-      return (
-        <>
-        <Slider class="SliderRoot" step={8}>
-          <div class="SliderLabel">
-            <Slider.Label>Step size 8</Slider.Label>
-            <Slider.ValueLabel />
-          </div>
-          <Slider.Track class="SliderTrack">
-            <Slider.Fill class="SliderRange" />
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-          </Slider.Track>
-        </Slider>
-        <Slider class="SliderRoot" step={10}>
-          <div class="SliderLabel">
-            <Slider.Label>Step size 10</Slider.Label>
-            <Slider.ValueLabel />
-          </div>
-          <Slider.Track class="SliderTrack">
-            <Slider.Fill class="SliderRange" />
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-          </Slider.Track>
-        </Slider>
-        <Slider class="SliderRoot" step={20}>
-          <div class="SliderLabel">
-            <Slider.Label>Step size 20</Slider.Label>
-            <Slider.ValueLabel />
-          </div>
-          <Slider.Track class="SliderTrack">
-            <Slider.Fill class="SliderRange" />
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-          </Slider.Track>
-        </Slider>
-        </>
-      );
-    }
-    ```
+function App() {
+	return (
+		<>
+			<Slider class="SliderRoot" step={8}>
+				<div class="SliderLabel">
+					<Slider.Label>Step size 8</Slider.Label>
+					<Slider.ValueLabel />
+				</div>
+				<Slider.Track class="SliderTrack">
+					<Slider.Fill class="SliderRange" />
+					<Slider.Thumb class="SliderThumb">
+						<Slider.Input />
+					</Slider.Thumb>
+					<Slider.Thumb class="SliderThumb">
+						<Slider.Input />
+					</Slider.Thumb>
+				</Slider.Track>
+			</Slider>
+			<Slider class="SliderRoot" step={10}>
+				<div class="SliderLabel">
+					<Slider.Label>Step size 10</Slider.Label>
+					<Slider.ValueLabel />
+				</div>
+				<Slider.Track class="SliderTrack">
+					<Slider.Fill class="SliderRange" />
+					<Slider.Thumb class="SliderThumb">
+						<Slider.Input />
+					</Slider.Thumb>
+					<Slider.Thumb class="SliderThumb">
+						<Slider.Input />
+					</Slider.Thumb>
+				</Slider.Track>
+			</Slider>
+			<Slider class="SliderRoot" step={20}>
+				<div class="SliderLabel">
+					<Slider.Label>Step size 20</Slider.Label>
+					<Slider.ValueLabel />
+				</div>
+				<Slider.Track class="SliderTrack">
+					<Slider.Fill class="SliderRange" />
+					<Slider.Thumb class="SliderThumb">
+						<Slider.Input />
+					</Slider.Thumb>
+					<Slider.Thumb class="SliderThumb">
+						<Slider.Input />
+					</Slider.Thumb>
+				</Slider.Track>
+			</Slider>
+		</>
+	);
+}
+```
 
 ```css title="style.css" tab
-    .SliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      width: 200px;
-    }
+.SliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
 
-    .SliderTrack {
-      background-color: hsl(240 6% 90%);
-      position: relative;
-      border-radius: 9999px;
-      height: 8px;
-      width: 100%;
-    }
+.SliderTrack {
+	background-color: hsl(240 6% 90%);
+	position: relative;
+	border-radius: 9999px;
+	height: 8px;
+	width: 100%;
+}
 
-    .SliderRange {
-      position: absolute;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      height: 100%;
-    }
+.SliderRange {
+	position: absolute;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	height: 100%;
+}
 
-    .SliderThumb {
-      display: block;
-      width: 16px;
-      height: 16px;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      top: -4px;
-    }
+.SliderThumb {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	top: -4px;
+}
 
-    .SliderThumb:hover {
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:hover {
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderThumb:focus {
-      outline: none;
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:focus {
+	outline: none;
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderLabel {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-    ```
-
-
+.SliderLabel {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+```
 
 ### Steps between thumbs
 
@@ -357,82 +353,80 @@ function App() {
 :::
 
 ```tsx title="index.tsx" tab
-    import { Slider } from "@kobalte/core/slider";
-    import "./style.css";
+import { Slider } from "@kobalte/core/slider";
+import "./style.css";
 
-    function App() {
-      return (
-        <Slider class="SliderRoot" defaultValue={[10, 20]} minStepsBetweenThumbs={10}>
-          <div class="SliderLabel">
-            <Slider.Label>Label</Slider.Label>
-            <Slider.ValueLabel />
-          </div>
-          <Slider.Track class="SliderTrack">
-            <Slider.Fill class="SliderRange" />
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-            <Slider.Thumb class="SliderThumb SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-          </Slider.Track>
-        </Slider>
-      );
-    }
-    ```
+function App() {
+	return (
+		<Slider class="SliderRoot" defaultValue={[10, 20]} minStepsBetweenThumbs={10}>
+			<div class="SliderLabel">
+				<Slider.Label>Label</Slider.Label>
+				<Slider.ValueLabel />
+			</div>
+			<Slider.Track class="SliderTrack">
+				<Slider.Fill class="SliderRange" />
+				<Slider.Thumb class="SliderThumb">
+					<Slider.Input />
+				</Slider.Thumb>
+				<Slider.Thumb class="SliderThumb SliderThumb">
+					<Slider.Input />
+				</Slider.Thumb>
+			</Slider.Track>
+		</Slider>
+	);
+}
+```
 
 ```css title="style.css" tab
-    .SliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      width: 200px;
-    }
+.SliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
 
-    .SliderTrack {
-      background-color: hsl(240 6% 90%);
-      position: relative;
-      border-radius: 9999px;
-      height: 8px;
-      width: 100%;
-    }
+.SliderTrack {
+	background-color: hsl(240 6% 90%);
+	position: relative;
+	border-radius: 9999px;
+	height: 8px;
+	width: 100%;
+}
 
-    .SliderRange {
-      position: absolute;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      height: 100%;
-    }
+.SliderRange {
+	position: absolute;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	height: 100%;
+}
 
-    .SliderThumb {
-      display: block;
-      width: 16px;
-      height: 16px;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      top: -4px;
-    }
+.SliderThumb {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	top: -4px;
+}
 
-    .SliderThumb:hover {
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:hover {
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderThumb:focus {
-      outline: none;
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:focus {
+	outline: none;
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderLabel {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-    ```
-
-
+.SliderLabel {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+```
 
 ### Vertical Slider
 
@@ -442,79 +436,77 @@ function App() {
 :::
 
 ```tsx title="index.tsx" tab
-    import { Slider } from "@kobalte/core/slider";
-    import "./style.css";
+import { Slider } from "@kobalte/core/slider";
+import "./style.css";
 
-    function App() {
-      return (
-        <Slider class="SliderRoot" orientation="vertical">
-          <div class="SliderLabel">
-            <Slider.Label>Label</Slider.Label>
-            <Slider.ValueLabel />
-          </div>
-          <Slider.Track class="SliderTrack">
-            <Slider.Fill class="SliderRange" />
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-          </Slider.Track>
-        </Slider>
-      );
-    }
-    ```
+function App() {
+	return (
+		<Slider class="SliderRoot" orientation="vertical">
+			<div class="SliderLabel">
+				<Slider.Label>Label</Slider.Label>
+				<Slider.ValueLabel />
+			</div>
+			<Slider.Track class="SliderTrack">
+				<Slider.Fill class="SliderRange" />
+				<Slider.Thumb class="SliderThumb">
+					<Slider.Input />
+				</Slider.Thumb>
+			</Slider.Track>
+		</Slider>
+	);
+}
+```
 
 ```css title="style.css" tab
-    .SliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      height: 200px;
-    }
+.SliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	height: 200px;
+}
 
-    .SliderTrack {
-      background-color: hsl(240 6% 90%);
-      position: relative;
-      border-radius: 9999px;
-      width: 8px;
-      height: 100%;
-    }
+.SliderTrack {
+	background-color: hsl(240 6% 90%);
+	position: relative;
+	border-radius: 9999px;
+	width: 8px;
+	height: 100%;
+}
 
-    .SliderRange {
-      position: absolute;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      width: 100%;
-    }
+.SliderRange {
+	position: absolute;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	width: 100%;
+}
 
-    .SliderThumb {
-      display: block;
-      width: 16px;
-      height: 16px;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      left: -4px;
-    }
+.SliderThumb {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	left: -4px;
+}
 
-    .SliderThumb:hover {
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:hover {
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderThumb:focus {
-      outline: none;
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:focus {
+	outline: none;
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderLabel {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-    ```
-
-
+.SliderLabel {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+```
 
 ### Custom Value Label
 
@@ -524,87 +516,86 @@ function App() {
 :::
 
 ```tsx title="index.tsx" tab
-    import { Slider } from "@kobalte/core/slider";
-    import "./style.css";
+import { Slider } from "@kobalte/core/slider";
+import "./style.css";
 
-    function App() {
-      return (
-        <Slider class="SliderRoot"
-          minValue={10}
-          maxValue={2000}
-          defaultValue={[20, 500]}
-          getValueLabel={params => `$${params.values[0]} - $${params.values[1]}`}
-        >
-          <div class="SliderLabel">
-            <Slider.Label>Money</Slider.Label>
-            <Slider.ValueLabel />
-          </div>
-          <Slider.Track class="SliderTrack">
-            <Slider.Fill class="SliderRange" />
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-            <Slider.Thumb class="SliderThumb SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-          </Slider.Track>
-        </Slider>
-      );
-    }
-    ```
+function App() {
+	return (
+		<Slider
+			class="SliderRoot"
+			minValue={10}
+			maxValue={2000}
+			defaultValue={[20, 500]}
+			getValueLabel={params => `$${params.values[0]} - $${params.values[1]}`}
+		>
+			<div class="SliderLabel">
+				<Slider.Label>Money</Slider.Label>
+				<Slider.ValueLabel />
+			</div>
+			<Slider.Track class="SliderTrack">
+				<Slider.Fill class="SliderRange" />
+				<Slider.Thumb class="SliderThumb">
+					<Slider.Input />
+				</Slider.Thumb>
+				<Slider.Thumb class="SliderThumb SliderThumb">
+					<Slider.Input />
+				</Slider.Thumb>
+			</Slider.Track>
+		</Slider>
+	);
+}
+```
 
 ```css title="style.css" tab
-    .SliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      width: 200px;
-    }
+.SliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
 
-    .SliderTrack {
-      background-color: hsl(240 6% 90%);
-      position: relative;
-      border-radius: 9999px;
-      height: 8px;
-      width: 100%;
-    }
+.SliderTrack {
+	background-color: hsl(240 6% 90%);
+	position: relative;
+	border-radius: 9999px;
+	height: 8px;
+	width: 100%;
+}
 
-    .SliderRange {
-      position: absolute;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      height: 100%;
-    }
+.SliderRange {
+	position: absolute;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	height: 100%;
+}
 
-    .SliderThumb {
-      display: block;
-      width: 16px;
-      height: 16px;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      top: -4px;
-    }
+.SliderThumb {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	top: -4px;
+}
 
-    .SliderThumb:hover {
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:hover {
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderThumb:focus {
-      outline: none;
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:focus {
+	outline: none;
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderLabel {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-    ```
-
-
+.SliderLabel {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+```
 
 ### Controlled Value
 
@@ -614,81 +605,80 @@ function App() {
 :::
 
 ```tsx title="index.tsx" tab
-    import { createSignal } from 'solid-js'
-    import { Slider } from "@kobalte/core/slider";
-    import "./style.css";
+import { createSignal } from "solid-js";
+import { Slider } from "@kobalte/core/slider";
+import "./style.css";
 
-    function App() {
-      const [values, setValues] = createSignal<number[]>([40])
+function App() {
+	const [values, setValues] = createSignal<number[]>([40]);
 
-      return (
-        <Slider class="SliderRoot" value={values()} onChange={setValues}>
-          <div class="SliderLabel">
-            <Slider.Label>Label</Slider.Label>
-            <Slider.ValueLabel />
-          </div>
-          <Slider.Track class="SliderTrack">
-            <Slider.Fill class="SliderRange" />
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-          </Slider.Track>
-        </Slider>
-      );
-    }
-    ```
+	return (
+		<Slider class="SliderRoot" value={values()} onChange={setValues}>
+			<div class="SliderLabel">
+				<Slider.Label>Label</Slider.Label>
+				<Slider.ValueLabel />
+			</div>
+			<Slider.Track class="SliderTrack">
+				<Slider.Fill class="SliderRange" />
+				<Slider.Thumb class="SliderThumb">
+					<Slider.Input />
+				</Slider.Thumb>
+			</Slider.Track>
+		</Slider>
+	);
+}
+```
 
 ```css title="style.css" tab
-    .SliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      width: 200px;
-    }
+.SliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
 
-    .SliderTrack {
-      background-color: hsl(240 6% 90%);
-      position: relative;
-      border-radius: 9999px;
-      height: 8px;
-      width: 100%;
-    }
+.SliderTrack {
+	background-color: hsl(240 6% 90%);
+	position: relative;
+	border-radius: 9999px;
+	height: 8px;
+	width: 100%;
+}
 
-    .SliderRange {
-      position: absolute;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      height: 100%;
-    }
+.SliderRange {
+	position: absolute;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	height: 100%;
+}
 
-    .SliderThumb {
-      display: block;
-      width: 16px;
-      height: 16px;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      top: -4px;
-    }
+.SliderThumb {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-color: hsl(200 98% 39%);
+	border-radius: 9999px;
+	top: -4px;
+}
 
-    .SliderThumb:hover {
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:hover {
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderThumb:focus {
-      outline: none;
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:focus {
+	outline: none;
+	box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderLabel {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-    ```
-
+.SliderLabel {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+```
 
 ## API Reference
 
