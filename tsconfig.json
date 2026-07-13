@@ -15,6 +15,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"noFallthroughCasesInSwitch": false,
 		"isolatedModules": true,
+		"ignoreDeprecations": "6.0",
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
 		"moduleResolution": "bundler",

@@ -18,7 +18,7 @@
 	--kb-docsearch-brand: #0284c7;
 }
 
-[data-kb-theme="dark"] {
+[data-theme*="dark"] {
 	--kb-docsearch-bg: #1e1e20;
 	--kb-docsearch-bg-soft: #252529;
 	--kb-docsearch-bg-soft-mute: #313136;
@@ -41,7 +41,7 @@
 	--docsearch-footer-background: var(--kb-docsearch-bg);
 }
 
-[data-kb-theme="dark"] .DocSearch {
+[data-theme*="dark"] .DocSearch {
 	--docsearch-modal-shadow: none;
 	--docsearch-footer-shadow: none;
 	--docsearch-logo-color: var(--kb-docsearch-text-2);
@@ -155,7 +155,7 @@
 }
 
 .DocSearch-Button .DocSearch-Button-Key {
-	@apply font-sans;
+	font-family: var(--sb-font-text);
 	display: block;
 	margin: 2px 0 0 0;
 	border: 1px solid var(--kb-docsearch-divider);
@@ -201,7 +201,7 @@
 	display: none;
 }
 
-[data-kb-theme="dark"] .DocSearch-Footer {
+[data-theme*="dark"] .DocSearch-Footer {
 	border-top: 1px solid var(--kb-docsearch-divider);
 }
 
@@ -210,7 +210,7 @@
 	background-color: #fff;
 }
 
-[data-kb-theme="dark"] .DocSearch-Form {
+[data-theme*="dark"] .DocSearch-Form {
 	background-color: var(--kb-docsearch-bg-soft-mute);
 }
 
