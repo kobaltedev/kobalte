@@ -2,7 +2,6 @@
 title: Toggle Group
 ---
 
-import { TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	ControlledExample,
@@ -53,74 +52,65 @@ The toggle item consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  { /* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import {ToggleButton} from "@kobalte/core/toggle-group";
-    import {BoldIcon, ItalicIcon, UnderlineIcon} from "some-icon-library";
-    import "./style.css";
 
-      <ToggleGroup class="toggle-group">
-        <ToggleGroup.Item class="toggle-group__item" value="bold" aria-label="Bold">
-          <BoldIcon/>
-        </ToggleGroup.Item>
-        <ToggleGroup.Item class="toggle-group__item" value="italic" aria-label="Italic">
-          <ItalicIcon/>
-        </ToggleGroup.Item>
-        <ToggleGroup.Item class="toggle-group__item" value="underline" aria-label="Underline">
-          <UnderlineIcon/>
-        </ToggleGroup.Item>
-      </ToggleGroup>
-      ```
+```tsx title="index.tsx" tab
+import {ToggleButton} from "@kobalte/core/toggle-group";
+import {BoldIcon, ItalicIcon, UnderlineIcon} from "some-icon-library";
+import "./style.css";
 
-    </TabsSnippets.Content>
-    <TabsSnippets.Content value="style.css">
-      ```css
-      .toggle-group {
-      display: flex;
-      padding: .5rem;
-      gap: .5rem;
-    }
+function App() {
+  return (
+		<ToggleGroup class="toggle-group">
+		  <ToggleGroup.Item class="toggle-group__item" value="bold" aria-label="Bold">
+		    <BoldIcon/>
+		  </ToggleGroup.Item>
+		  <ToggleGroup.Item class="toggle-group__item" value="italic" aria-label="Italic">
+		    <ItalicIcon/>
+		  </ToggleGroup.Item>
+		  <ToggleGroup.Item class="toggle-group__item" value="underline" aria-label="Underline">
+		    <UnderlineIcon/>
+		  </ToggleGroup.Item>
+		</ToggleGroup>
+  );
+}
+```
 
-      .toggle-group[data-orientation="vertical"] {
-      flex - direction: column;
-    }
+```css title="style.css" tab
+.toggle-group {
+  display: flex;
+  padding: .5rem;
+  gap: .5rem;
+}
 
-      .toggle-group__item {
-      padding: .5rem;
-      border-radius: .5rem;
-      appearance: none;
-      user-select: none;
-      outline: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition-property: background-color, color;
-      transition-duration: 150ms;
-      transition-timing-function: ease-in-out
-    }
+.toggle-group[data-orientation="vertical"] {
+  flex - direction: column;
+}
 
-      .toggle-group__item:hover,
-      .toggle-group__item[data-pressed] {
-      background - color: hsl(200 98% 39%);
-      color: white;
-    }
+.toggle-group__item {
+  padding: .5rem;
+  border-radius: .5rem;
+  appearance: none;
+  user-select: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: background-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out
+}
 
-      .toggle-group__item:focus-visible {
-      outline: 2px solid hsl(200 98% 39%);
-      outline-offset: 2px;
-    }
-      ```
+.toggle-group__item:hover,
+.toggle-group__item[data-pressed] {
+  background - color: hsl(200 98% 39%);
+  color: white;
+}
 
-    </TabsSnippets.Content>
-    { /* <!-- prettier-ignore-end -->*/}
-
-</TabsSnippets>
+.toggle-group__item:focus-visible {
+  outline: 2px solid hsl(200 98% 39%);
+  outline-offset: 2px;
+}
+```
 
 ## Usage
 

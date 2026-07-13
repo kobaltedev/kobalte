@@ -2,7 +2,6 @@
 title: Popover
 ---
 
-import { TabsSnippets } from "../../../../components";
 import { BasicExample, ControlledExample, CustomAnchorExample } from "../../../../examples/popover";
 
 # {frontmatter.title}
@@ -64,139 +63,128 @@ The popover consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Popover } from "@kobalte/core/popover";
-    import { CrossIcon } from "some-icon-library";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Popover } from "@kobalte/core/popover";
+import { CrossIcon } from "some-icon-library";
+import "./style.css";
 
-    function App() {
-      return (
-        <Popover>
-          <Popover.Trigger class="popover__trigger">Open</Popover.Trigger>
-          <Popover.Portal>
-            <Popover.Content class="popover__content">
-              <Popover.Arrow />
-              <div class="popover__header">
-                <Popover.Title class="popover__title">About Kobalte</Popover.Title>
-                <Popover.CloseButton class="popover__close-button">
-                  <CrossIcon />
-                </Popover.CloseButton>
-              </div>
-              <Popover.Description class="popover__description">
-                A UI toolkit for building accessible web apps and design systems with SolidJS.
-              </Popover.Description>
-            </Popover.Content>
-          </Popover.Portal>
-        </Popover>
-      );
-    }
-    ```
+function App() {
+  return (
+    <Popover>
+      <Popover.Trigger class="popover__trigger">Open</Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content class="popover__content">
+          <Popover.Arrow />
+          <div class="popover__header">
+            <Popover.Title class="popover__title">About Kobalte</Popover.Title>
+            <Popover.CloseButton class="popover__close-button">
+              <CrossIcon />
+            </Popover.CloseButton>
+          </div>
+          <Popover.Description class="popover__description">
+            A UI toolkit for building accessible web apps and design systems with SolidJS.
+          </Popover.Description>
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover>
+  );
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .popover__trigger {
-      appearance: none;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      height: 40px;
-      width: auto;
-      outline: none;
-      border-radius: 6px;
-      padding: 0 16px;
-      background-color: hsl(200 98% 39%);
-      color: white;
-      font-size: 16px;
-      line-height: 0;
-      transition: 250ms background-color;
-    }
+```css title="style.css" tab
+.popover__trigger {
+  appearance: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: auto;
+  outline: none;
+  border-radius: 6px;
+  padding: 0 16px;
+  background-color: hsl(200 98% 39%);
+  color: white;
+  font-size: 16px;
+  line-height: 0;
+  transition: 250ms background-color;
+}
 
-    .popover__trigger:hover {
-      background-color: hsl(201 96% 32%);
-    }
+.popover__trigger:hover {
+  background-color: hsl(201 96% 32%);
+}
 
-    .popover__trigger:focus-visible {
-      outline: 2px solid hsl(200 98% 39%);
-      outline-offset: 2px;
-    }
+.popover__trigger:focus-visible {
+  outline: 2px solid hsl(200 98% 39%);
+  outline-offset: 2px;
+}
 
-    .popover__trigger:active {
-      background-color: hsl(201 90% 27%);
-    }
+.popover__trigger:active {
+  background-color: hsl(201 90% 27%);
+}
 
-    .popover__content {
-      z-index: 50;
-      max-width: min(calc(100vw - 16px), 380px);
-      border: 1px solid hsl(240 5% 84%);
-      border-radius: 6px;
-      padding: 12px;
-      background-color: white;
-      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-      transform-origin: var(--kb-popover-content-transform-origin);
-      animation: contentHide 250ms ease-in forwards;
-    }
+.popover__content {
+  z-index: 50;
+  max-width: min(calc(100vw - 16px), 380px);
+  border: 1px solid hsl(240 5% 84%);
+  border-radius: 6px;
+  padding: 12px;
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform-origin: var(--kb-popover-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
 
-    .popover__content[data-expanded] {
-      animation: contentShow 250ms ease-out;
-    }
-    .popover__header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 6px;
-    }
+.popover__content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
+.popover__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
 
-    .popover__close-button {
-      height: 16px;
-      width: 16px;
-      color: hsl(240 5% 34%);
-    }
+.popover__close-button {
+  height: 16px;
+  width: 16px;
+  color: hsl(240 5% 34%);
+}
 
-    .popover__title {
-      font-size: 16px;
-      font-weight: 500;
-      color: hsl(240 6% 10%);
-    }
+.popover__title {
+  font-size: 16px;
+  font-weight: 500;
+  color: hsl(240 6% 10%);
+}
 
-    .popover__description {
-      font-size: 14px;
-      color: hsl(240 5% 26%);
-    }
+.popover__description {
+  font-size: 14px;
+  color: hsl(240 5% 26%);
+}
 
-    @keyframes contentShow {
-      from {
-        opacity: 0;
-        transform: scale(0.96);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
-    @keyframes contentHide {
-      from {
-        opacity: 1;
-        transform: scale(1);
-      }
-      to {
-        opacity: 0;
-        transform: scale(0.96);
-      }
-    }
-    ```
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+```
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end --> */}
-</TabsSnippets>
+
 
 ## Usage
 

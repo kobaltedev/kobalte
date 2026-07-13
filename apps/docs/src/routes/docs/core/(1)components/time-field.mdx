@@ -3,7 +3,6 @@ title: Time Field
 status: new
 ---
 
-import { TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	DefaultValueExample,
@@ -69,106 +68,92 @@ The time field consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-	import { TimeField } from "@kobalte/core/time-field";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { TimeField } from "@kobalte/core/time-field";
+import "./style.css";
 
-    function App() {
-      return (
-        <TimeField class="time-field">
-          <TimeField.Label class="time-field__label">Event time</TimeField.Label>
-          <TimeField.Input class="time-field__field">
-            {segment => <TimeField.Segment class="time-field__segment" segment={segment()} />}
-          </TimeField.Input>
-    	</TimeField>
-      );
-    }
-    ```
+function App() {
+  return (
+    <TimeField class="time-field">
+      <TimeField.Label class="time-field__label">Event time</TimeField.Label>
+      <TimeField.Input class="time-field__field">
+        {segment => <TimeField.Segment class="time-field__segment" segment={segment()} />}
+      </TimeField.Input>
+ 	</TimeField>
+  );
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .time-field {
+```css title="style.css" tab
+.time-field {
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
 }
 
 .time-field\_\_label {
-color: hsl(240 6% 10%);
-font-size: 14px;
-font-weight: 500;
-user-select: none;
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
 }
 
 .time-field\_\_input {
-display: flex;
-padding: 4px 8px;
-border-radius: 6px;
-width: 150px;
-white-space: nowrap;
-forced-color-adjust: none;
-background-color: #fff;
-border: 1px solid hsl(240 6% 90%);
-color: hsl(240 4% 16%);
-font-size: 14px;
+	display: flex;
+	padding: 4px 8px;
+	border-radius: 6px;
+	width: 150px;
+	white-space: nowrap;
+	forced-color-adjust: none;
+	background-color: #fff;
+	border: 1px solid hsl(240 6% 90%);
+	color: hsl(240 4% 16%);
+	font-size: 14px;
 }
 
 .time-field\_\_input:focus-within {
-outline: 2px solid hsl(200 98% 39%);
-outline-offset: -1px;
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: -1px;
 }
 
 .time-field\_\_segment {
-padding: 0 2px;
-font-variant-numeric: tabular-nums;
-text-align: end;
+	padding: 0 2px;
+	font-variant-numeric: tabular-nums;
+	text-align: end;
 }
 
 .time-field\_\_segment[data-type="literal"] {
-padding: 0;
+	padding: 0;
 }
 
 .time-field\_\_segment[data-placeholder] {
-color: hsl(240 4% 46%);
-font-style: italic;
+	color: hsl(240 4% 46%);
+	font-style: italic;
 }
 
 .time-field\_\_segment:focus {
-color: #fff !important;
-background: hsl(200 98% 39%);
-outline: none;
-border-radius: 4px;
+	color: #fff !important;
+	background: hsl(200 98% 39%);
+	outline: none;
+	border-radius: 4px;
 }
 
 .time-field\_\_segment::selection {
-background-color: transparent;
+	background-color: transparent;
 }
 
 .time-field\_\_description {
-color: hsl(240 5% 26%);
-font-size: 12px;
-user-select: none;
+	color: hsl(240 5% 26%);
+	font-size: 12px;
+	user-select: none;
 }
 
 .time-field\_\_error-message {
-color: hsl(0 72% 51%);
-font-size: 12px;
-user-select: none;
+	color: hsl(0 72% 51%);
+	font-size: 12px;
+	user-select: none;
 }
-
-````
-
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end --> */}
-</TabsSnippets>
+```
 
 ## Usage
 
@@ -179,18 +164,14 @@ A TimeField displays a placeholder by default. An initial, uncontrolled value ca
 Time values are objects: `{ hour?: number; minute?: number; second?: number; }`.
 
 :::preview
-	<DefaultValueExample />
+<DefaultValueExample />
 :::
 
 ```tsx {3}
-<TimeField defaultValue={{hour: 11, minute: 45}}>
-	<TimeField.Input>
-		{(segment) => (
-			<TimeField.Segment segment={segment()} />
-		)}
-	</TimeField.Input>
+<TimeField defaultValue={{ hour: 11, minute: 45 }}>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
-````
+```
 
 ### Controlled Value
 

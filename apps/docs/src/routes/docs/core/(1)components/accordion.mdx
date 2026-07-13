@@ -2,7 +2,6 @@
 title: Accordion
 ---
 
-import { TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	DefaultValueExample,
@@ -60,161 +59,147 @@ The accordion consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Accordion } from "@kobalte/core/accordion";
-    import { ChevronDownIcon } from "some-icon-library";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Accordion } from "@kobalte/core/accordion";
+import { ChevronDownIcon } from "some-icon-library";
+import "./style.css";
 
-    function App() {
-      return (
-        <Accordion class="accordion" defaultValue={["item-1"]}>
-          <Accordion.Item class="accordion__item" value="item-1">
-            <Accordion.Header class="accordion__item-header">
-              <Accordion.Trigger class="accordion__item-trigger">
-                <span>Is it accessible?</span>
-                <ChevronDownIcon class="accordion__item-trigger-icon" aria-hidden />
-              </Accordion.Trigger>
-            </Accordion.Header>
-            <Accordion.Content class="accordion__item-content">
-              <p class="accordion__item-content-text">
-                Yes. It adheres to the WAI-ARIA design pattern.
-              </p>
-            </Accordion.Content>
-          </Accordion.Item>
+function App() {
+	return (
+		<Accordion class="accordion" defaultValue={["item-1"]}>
+			<Accordion.Item class="accordion__item" value="item-1">
+				<Accordion.Header class="accordion__item-header">
+					<Accordion.Trigger class="accordion__item-trigger">
+						<span>Is it accessible?</span>
+						<ChevronDownIcon class="accordion__item-trigger-icon" aria-hidden />
+					</Accordion.Trigger>
+				</Accordion.Header>
+				<Accordion.Content class="accordion__item-content">
+					<p class="accordion__item-content-text">
+						Yes. It adheres to the WAI-ARIA design pattern.
+					</p>
+				</Accordion.Content>
+			</Accordion.Item>
 
-          <Accordion.Item class="accordion__item" value="item-2">
-            <Accordion.Header class="accordion__item-header">
-              <Accordion.Trigger class="accordion__item-trigger">
-                <span>Is it unstyled?</span>
-                <ChevronDownIcon class="accordion__item-trigger-icon" aria-hidden />
-              </Accordion.Trigger>
-            </Accordion.Header>
-            <Accordion.Content class="accordion__item-content">
-              <p class="accordion__item-content-text">
-                Yes. It's unstyled by default, giving you freedom over the look and feel.
-              </p>
-            </Accordion.Content>
-          </Accordion.Item>
+			<Accordion.Item class="accordion__item" value="item-2">
+				<Accordion.Header class="accordion__item-header">
+					<Accordion.Trigger class="accordion__item-trigger">
+						<span>Is it unstyled?</span>
+						<ChevronDownIcon class="accordion__item-trigger-icon" aria-hidden />
+					</Accordion.Trigger>
+				</Accordion.Header>
+				<Accordion.Content class="accordion__item-content">
+					<p class="accordion__item-content-text">
+						Yes. It's unstyled by default, giving you freedom over the look and feel.
+					</p>
+				</Accordion.Content>
+			</Accordion.Item>
 
-          <Accordion.Item class="accordion__item" value="item-3">
-            <Accordion.Header class="accordion__item-header">
-              <Accordion.Trigger class="accordion__item-trigger">
-                <span>Can it be animated?</span>
-                <ChevronDownIcon class="accordion__item-trigger-icon" aria-hidden />
-              </Accordion.Trigger>
-            </Accordion.Header>
-            <Accordion.Content class="accordion__item-content">
-              <p class="accordion__item-content-text">
-                Yes! You can animate the Accordion with CSS or JavaScript.
-              </p>
-            </Accordion.Content>
-          </Accordion.Item>
-        </Accordion>
-      );
-    }
-    ```
+			<Accordion.Item class="accordion__item" value="item-3">
+				<Accordion.Header class="accordion__item-header">
+					<Accordion.Trigger class="accordion__item-trigger">
+						<span>Can it be animated?</span>
+						<ChevronDownIcon class="accordion__item-trigger-icon" aria-hidden />
+					</Accordion.Trigger>
+				</Accordion.Header>
+				<Accordion.Content class="accordion__item-content">
+					<p class="accordion__item-content-text">
+						Yes! You can animate the Accordion with CSS or JavaScript.
+					</p>
+				</Accordion.Content>
+			</Accordion.Item>
+		</Accordion>
+	);
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .accordion {
-      border-radius: 6px;
-      width: 300px;
-      border: 1px solid hsl(240 5% 84%);
-      color: hsl(240 4% 16%);
-    }
-
-    .accordion__item:first-child {
-      margin-top: 0;
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-    }
-
-    .accordion__item:last-child {
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
-    }
-
-    .accordion__item-header {
-      display: flex;
-    }
-
-    .accordion__item-trigger {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: 14px;
-      border-bottom: 1px solid hsl(240 5% 84%);
-      font-weight: 600;
-      text-align: left;
-      outline: none;
-    }
-
-    .accordion__item:last-child .accordion__item-trigger {
-      border-bottom: none;
-    }
-
-    .accordion__item-trigger:focus-visible {
-      z-index: 1;
-      outline: 2px solid hsl(200 98% 39%);
-      outline-offset: 2px;
-
+```css title="style.css" tab
+.accordion {
+	border-radius: 6px;
+	width: 300px;
+	border: 1px solid hsl(240 5% 84%);
+	color: hsl(240 4% 16%);
 }
 
-    .accordion__item-trigger-icon {
-      width: 24px;
-      height: 24px;
-      transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
-    }
+.accordion__item:first-child {
+	margin-top: 0;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+}
 
-    .accordion__item-trigger[data-expanded] > .accordion__item-trigger-icon {
-      transform: rotate(180deg);
-    }
+.accordion__item:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+}
 
-    .accordion__item-content {
-      overflow: hidden;
-      font-size: 16px;
-      animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
-    }
+.accordion__item-header {
+	display: flex;
+}
 
-    .accordion__item-content[data-expanded] {
-      animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
-    }
+.accordion__item-trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 14px;
+	border-bottom: 1px solid hsl(240 5% 84%);
+	font-weight: 600;
+	text-align: left;
+	outline: none;
+}
 
-    .accordion__item-content-text {
-      padding: 16px;
-    }
+.accordion__item:last-child .accordion__item-trigger {
+	border-bottom: none;
+}
 
-    @keyframes slideDown {
-      from {
-        height: 0;
-      }
-      to {
-        height: var(--kb-accordion-content-height);
-      }
-    }
+.accordion__item-trigger:focus-visible {
+	z-index: 1;
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
 
-    @keyframes slideUp {
-      from {
-        height: var(--kb-accordion-content-height);
-      }
-      to {
-        height: 0;
-      }
-    }
-    ```
+.accordion__item-trigger-icon {
+	width: 24px;
+	height: 24px;
+	transition: transform 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+.accordion__item-trigger[data-expanded] > .accordion__item-trigger-icon {
+	transform: rotate(180deg);
+}
+
+.accordion__item-content {
+	overflow: hidden;
+	font-size: 16px;
+	animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.accordion__item-content[data-expanded] {
+	animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.accordion__item-content-text {
+	padding: 16px;
+}
+
+@keyframes slideDown {
+	from {
+		height: 0;
+	}
+	to {
+		height: var(--kb-accordion-content-height);
+	}
+}
+
+@keyframes slideUp {
+	from {
+		height: var(--kb-accordion-content-height);
+	}
+	to {
+		height: 0;
+	}
+}
+```
 
 ## Usage
 

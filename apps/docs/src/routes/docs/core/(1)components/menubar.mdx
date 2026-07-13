@@ -2,7 +2,6 @@
 title: Menubar
 ---
 
-import { TabsSnippets } from "../../../../components";
 import { BasicExample } from "../../../../examples/menubar";
 
 # {frontmatter.title}
@@ -120,134 +119,37 @@ The checkable menu item consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Menubar } from "@kobalte/core/menubar";
-    import { createSignal } from "solid-js";
-    import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Menubar } from "@kobalte/core/menubar";
+import { createSignal } from "solid-js";
+import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
+import "./style.css";
 
-    function App() {
-      const [showGitLog, setShowGitLog] = createSignal(true);
-      const [showHistory, setShowHistory] = createSignal(false);
-      const [branch, setBranch] = createSignal("main");
+function App() {
+  const [showGitLog, setShowGitLog] = createSignal(true);
+  const [showHistory, setShowHistory] = createSignal(false);
+  const [branch, setBranch] = createSignal("main");
 
-      return (
-          <Menubar class="menubar__root">
-            <Menubar.Menu>
-              <Menubar.Trigger class="menubar__trigger">
-                Git
-              </Menubar.Trigger>
-              <Menubar.Portal>
-                <Menubar.Content class="menubar__content">
-                  <Menubar.Item class="menubar__item">
-                    Commit <div class="menubar__item-right-slot">⌘+K</div>
-                  </Menubar.Item>
-                  <Menubar.Item class="menubar__item">
-                    Push <div class="menubar__item-right-slot">⇧+⌘+K</div>
-                  </Menubar.Item>
-                  <Menubar.Item class="menubar__item" disabled>
-                    Update Project <div class="menubar__item-right-slot">⌘+T</div>
-                  </Menubar.Item>
-                  <Menubar.Sub overlap gutter={4} shift={-8}>
-                    <Menubar.SubTrigger class="menubar__sub-trigger">
-                      GitHub
-                      <div class="menubar__item-right-slot">
-                        <ChevronRightIcon width={20} height={20} />
-                      </div>
-                    </Menubar.SubTrigger>
-                    <Menubar.Portal>
-                      <Menubar.SubContent class="menubar__sub-content">
-                        <Menubar.Item class="menubar__item">
-                          Create Pull Request…
-                        </Menubar.Item>
-                        <Menubar.Item class="menubar__item">
-                          View Pull Requests
-                        </Menubar.Item>
-                        <Menubar.Item class="menubar__item">Sync Fork</Menubar.Item>
-                        <Menubar.Separator class="menubar__separator" />
-                        <Menubar.Item class="menubar__item">
-                          Open on GitHub
-                        </Menubar.Item>
-                      </Menubar.SubContent>
-                    </Menubar.Portal>
-                  </Menubar.Sub>
-
-                  <Menubar.Separator class="menubar__separator" />
-
-                  <Menubar.CheckboxItem
-                  class="menubar__checkbox-item"
-                  checked={showGitLog()}
-                  onChange={setShowGitLog}
-                  >
-                  <Menubar.ItemIndicator class="menubar__item-indicator">
-                    <CheckIcon />
-                  </Menubar.ItemIndicator>
-                  Show Git Log
-                </Menubar.CheckboxItem>
-                <Menubar.CheckboxItem
-                class="menubar__checkbox-item"
-                checked={showHistory()}
-                onChange={setShowHistory}
-                >
-                <Menubar.ItemIndicator class="menubar__item-indicator">
-                  <CheckIcon />
-                </Menubar.ItemIndicator>
-                Show History
-              </Menubar.CheckboxItem>
-
-              <Menubar.Separator class="menubar__separator" />
-
-              <Menubar.Group>
-                <Menubar.GroupLabel class="menubar__group-label">
-                  Branches
-                </Menubar.GroupLabel>
-                <Menubar.RadioGroup value={branch()} onChange={setBranch}>
-                  <Menubar.RadioItem class="menubar__radio-item" value="main">
-                    <Menubar.ItemIndicator class="menubar__item-indicator">
-                      <DotFilledIcon />
-                    </Menubar.ItemIndicator>
-                    main
-                  </Menubar.RadioItem>
-                  <Menubar.RadioItem class="menubar__radio-item" value="develop">
-                    <Menubar.ItemIndicator class="menubar__item-indicator">
-                      <DotFilledIcon />
-                    </Menubar.ItemIndicator>
-                    develop
-                  </Menubar.RadioItem>
-                </Menubar.RadioGroup>
-              </Menubar.Group>
-            </Menubar.Content>
-          </Menubar.Portal>
-        </Menubar.Menu>
-
+  return (
+      <Menubar class="menubar__root">
         <Menubar.Menu>
           <Menubar.Trigger class="menubar__trigger">
-            File
+            Git
           </Menubar.Trigger>
           <Menubar.Portal>
             <Menubar.Content class="menubar__content">
               <Menubar.Item class="menubar__item">
-                New Tab <div class="menubar__item-right-slot">⌘+T</div>
+                Commit <div class="menubar__item-right-slot">⌘+K</div>
               </Menubar.Item>
               <Menubar.Item class="menubar__item">
-                New Window <div class="menubar__item-right-slot">⌘+N</div>
+                Push <div class="menubar__item-right-slot">⇧+⌘+K</div>
               </Menubar.Item>
               <Menubar.Item class="menubar__item" disabled>
-                New Incognito Window
+                Update Project <div class="menubar__item-right-slot">⌘+T</div>
               </Menubar.Item>
-
-              <Menubar.Separator class="menubar__separator"/>
-
               <Menubar.Sub overlap gutter={4} shift={-8}>
                 <Menubar.SubTrigger class="menubar__sub-trigger">
-                  Share
+                  GitHub
                   <div class="menubar__item-right-slot">
                     <ChevronRightIcon width={20} height={20} />
                   </div>
@@ -255,13 +157,15 @@ The checkable menu item consists of:
                 <Menubar.Portal>
                   <Menubar.SubContent class="menubar__sub-content">
                     <Menubar.Item class="menubar__item">
-                      Email Link
+                      Create Pull Request…
                     </Menubar.Item>
                     <Menubar.Item class="menubar__item">
-                      Messages
+                      View Pull Requests
                     </Menubar.Item>
+                    <Menubar.Item class="menubar__item">Sync Fork</Menubar.Item>
+                    <Menubar.Separator class="menubar__separator" />
                     <Menubar.Item class="menubar__item">
-                      Notes
+                      Open on GitHub
                     </Menubar.Item>
                   </Menubar.SubContent>
                 </Menubar.Portal>
@@ -269,238 +173,322 @@ The checkable menu item consists of:
 
               <Menubar.Separator class="menubar__separator" />
 
-              <Menubar.Item class="menubar__item">
-                Print... <div class="menubar__item-right-slot">⌘+P</div>
-              </Menubar.Item>
-            </Menubar.Content>
-          </Menubar.Portal>
-        </Menubar.Menu>
+              <Menubar.CheckboxItem
+              class="menubar__checkbox-item"
+              checked={showGitLog()}
+              onChange={setShowGitLog}
+              >
+              <Menubar.ItemIndicator class="menubar__item-indicator">
+                <CheckIcon />
+              </Menubar.ItemIndicator>
+              Show Git Log
+            </Menubar.CheckboxItem>
+            <Menubar.CheckboxItem
+            class="menubar__checkbox-item"
+            checked={showHistory()}
+            onChange={setShowHistory}
+            >
+            <Menubar.ItemIndicator class="menubar__item-indicator">
+              <CheckIcon />
+            </Menubar.ItemIndicator>
+            Show History
+          </Menubar.CheckboxItem>
 
-        <Menubar.Menu>
-          <Menubar.Trigger class="menubar__trigger">
-            Edit
-          </Menubar.Trigger>
-          <Menubar.Portal>
-            <Menubar.Content class="menubar__content">
-              <Menubar.Item class="menubar__item">
-                Undo <div class="menubar__item-right-slot">⌘+Z</div>
-              </Menubar.Item>
-              <Menubar.Item class="menubar__item">
-                Redo <div class="menubar__item-right-slot">⇧+⌘+Z</div>
-              </Menubar.Item>
+          <Menubar.Separator class="menubar__separator" />
 
-              <Menubar.Separator class="menubar__separator"/>
+          <Menubar.Group>
+            <Menubar.GroupLabel class="menubar__group-label">
+              Branches
+            </Menubar.GroupLabel>
+            <Menubar.RadioGroup value={branch()} onChange={setBranch}>
+              <Menubar.RadioItem class="menubar__radio-item" value="main">
+                <Menubar.ItemIndicator class="menubar__item-indicator">
+                  <DotFilledIcon />
+                </Menubar.ItemIndicator>
+                main
+              </Menubar.RadioItem>
+              <Menubar.RadioItem class="menubar__radio-item" value="develop">
+                <Menubar.ItemIndicator class="menubar__item-indicator">
+                  <DotFilledIcon />
+                </Menubar.ItemIndicator>
+                develop
+              </Menubar.RadioItem>
+            </Menubar.RadioGroup>
+          </Menubar.Group>
+        </Menubar.Content>
+      </Menubar.Portal>
+    </Menubar.Menu>
 
-              <Menubar.Sub overlap gutter={4} shift={-8}>
-                <Menubar.SubTrigger class="menubar__sub-trigger">
-                  Find
-                  <div class="menubar__item-right-slot">
-                    <ChevronRightIcon width={20} height={20} />
-                  </div>
-                </Menubar.SubTrigger>
-                <Menubar.Portal>
-                  <Menubar.SubContent class="menubar__sub-content">
-                    <Menubar.Item class="menubar__item">
-                      Search The Web
-                    </Menubar.Item>
-                    <Menubar.Separator class="menubar__separator"/>
-                    <Menubar.Item class="menubar__item">
-                      Find...
-                    </Menubar.Item>
-                    <Menubar.Item class="menubar__item">
-                      Find Next
-                    </Menubar.Item>
-                    <Menubar.Item class="menubar__item">
-                      Find Previous
-                    </Menubar.Item>
-                  </Menubar.SubContent>
-                </Menubar.Portal>
-              </Menubar.Sub>
+    <Menubar.Menu>
+      <Menubar.Trigger class="menubar__trigger">
+        File
+      </Menubar.Trigger>
+      <Menubar.Portal>
+        <Menubar.Content class="menubar__content">
+          <Menubar.Item class="menubar__item">
+            New Tab <div class="menubar__item-right-slot">⌘+T</div>
+          </Menubar.Item>
+          <Menubar.Item class="menubar__item">
+            New Window <div class="menubar__item-right-slot">⌘+N</div>
+          </Menubar.Item>
+          <Menubar.Item class="menubar__item" disabled>
+            New Incognito Window
+          </Menubar.Item>
 
-              <Menubar.Separator class="menubar__separator" />
+          <Menubar.Separator class="menubar__separator"/>
 
-              <Menubar.Item class="menubar__item">
-                Cut
-              </Menubar.Item>
-              <Menubar.Item class="menubar__item">
-                Copy
-              </Menubar.Item>
-              <Menubar.Item class="menubar__item">
-                Paste
-              </Menubar.Item>
-            </Menubar.Content>
-          </Menubar.Portal>
-        </Menubar.Menu>
-      </Menubar>
-      );
-    }
-    ```
+          <Menubar.Sub overlap gutter={4} shift={-8}>
+            <Menubar.SubTrigger class="menubar__sub-trigger">
+              Share
+              <div class="menubar__item-right-slot">
+                <ChevronRightIcon width={20} height={20} />
+              </div>
+            </Menubar.SubTrigger>
+            <Menubar.Portal>
+              <Menubar.SubContent class="menubar__sub-content">
+                <Menubar.Item class="menubar__item">
+                  Email Link
+                </Menubar.Item>
+                <Menubar.Item class="menubar__item">
+                  Messages
+                </Menubar.Item>
+                <Menubar.Item class="menubar__item">
+                  Notes
+                </Menubar.Item>
+              </Menubar.SubContent>
+            </Menubar.Portal>
+          </Menubar.Sub>
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .menubar__root {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+          <Menubar.Separator class="menubar__separator" />
 
-    .menubar__trigger {
-      appearance: none;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      height: 40px;
-      width: auto;
-      outline: none;
-      padding: 0 16px;
-      background-color: #f6f6f7;
-      color: hsl(240 4% 16%);
-      font-size: 16px;
-      gap: 8px;
-      line-height: 0;
-      transition: 250ms background-color;
-    }
+          <Menubar.Item class="menubar__item">
+            Print... <div class="menubar__item-right-slot">⌘+P</div>
+          </Menubar.Item>
+        </Menubar.Content>
+      </Menubar.Portal>
+    </Menubar.Menu>
 
-    .menubar__trigger[data-highlighted="true"] {
-      background-color: hsl(200 98% 39%);
-      color: white;
-    }
+    <Menubar.Menu>
+      <Menubar.Trigger class="menubar__trigger">
+        Edit
+      </Menubar.Trigger>
+      <Menubar.Portal>
+        <Menubar.Content class="menubar__content">
+          <Menubar.Item class="menubar__item">
+            Undo <div class="menubar__item-right-slot">⌘+Z</div>
+          </Menubar.Item>
+          <Menubar.Item class="menubar__item">
+            Redo <div class="menubar__item-right-slot">⇧+⌘+Z</div>
+          </Menubar.Item>
 
-    .menubar__trigger:first-child {
-      border-radius: 4px 0 0 4px;
-    }
+          <Menubar.Separator class="menubar__separator"/>
 
-    .menubar__trigger:last-child {
-      border-left: 2px dashed hsl(240 4% 46%);
-      border-radius: 0 4px 4px 0;
-    }
+          <Menubar.Sub overlap gutter={4} shift={-8}>
+            <Menubar.SubTrigger class="menubar__sub-trigger">
+              Find
+              <div class="menubar__item-right-slot">
+                <ChevronRightIcon width={20} height={20} />
+              </div>
+            </Menubar.SubTrigger>
+            <Menubar.Portal>
+              <Menubar.SubContent class="menubar__sub-content">
+                <Menubar.Item class="menubar__item">
+                  Search The Web
+                </Menubar.Item>
+                <Menubar.Separator class="menubar__separator"/>
+                <Menubar.Item class="menubar__item">
+                  Find...
+                </Menubar.Item>
+                <Menubar.Item class="menubar__item">
+                  Find Next
+                </Menubar.Item>
+                <Menubar.Item class="menubar__item">
+                  Find Previous
+                </Menubar.Item>
+              </Menubar.SubContent>
+            </Menubar.Portal>
+          </Menubar.Sub>
 
-    .menubar__content,
-    .menubar__sub-content {
-      min-width: 220px;
-      padding: 8px;
-      background-color: white;
-      border-radius: 6px;
-      border: 1px solid hsl(240 6% 90%);
-      box-shadow:
-      0 4px 6px -1px rgb(0 0 0 / 0.1),
-      0 2px 4px -2px rgb(0 0 0 / 0.1);
-      outline: none;
-      transform-origin: var(--kb-menu-content-transform-origin);
-      animation: contentHide 250ms ease-in forwards;
-    }
+          <Menubar.Separator class="menubar__separator" />
 
-    .menubar__content[data-expanded],
-    .menubar__sub-content[data-expanded] {
-      animation: contentShow 250ms ease-out;
-    }
+          <Menubar.Item class="menubar__item">
+            Cut
+          </Menubar.Item>
+          <Menubar.Item class="menubar__item">
+            Copy
+          </Menubar.Item>
+          <Menubar.Item class="menubar__item">
+            Paste
+          </Menubar.Item>
+        </Menubar.Content>
+      </Menubar.Portal>
+    </Menubar.Menu>
+  </Menubar>
+  );
+}
+```
 
-    .menubar__item,
-    .menubar__checkbox-item,
-    .menubar__radio-item,
-    .menubar__sub-trigger {
-      font-size: 16px;
-      line-height: 1;
-      color: hsl(240 4% 16%);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      height: 32px;
-      padding: 0 8px 0 24px;
-      position: relative;
-      user-select: none;
-      outline: none;
-    }
+```css title="style.css" tab
+.menubar__root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .menubar__sub-trigger[data-expanded] {
-      background-color: hsl(204 94% 94%);
-      color: hsl(201 96% 32%);
-    }
+.menubar__trigger {
+  appearance: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: auto;
+  outline: none;
+  padding: 0 16px;
+  background-color: #f6f6f7;
+  color: hsl(240 4% 16%);
+  font-size: 16px;
+  gap: 8px;
+  line-height: 0;
+  transition: 250ms background-color;
+}
 
-    .menubar__item[data-disabled],
-    .menubar__checkbox-item[data-disabled],
-    .menubar__radio-item[data-disabled],
-    .menubar__sub-trigger[data-disabled] {
-      color: hsl(240 5% 65%);
-      opacity: 0.5;
-      pointer-events: none;
-    }
+.menubar__trigger[data-highlighted="true"] {
+  background-color: hsl(200 98% 39%);
+  color: white;
+}
 
-    .menubar__item[data-highlighted],
-    .menubar__checkbox-item[data-highlighted],
-    .menubar__radio-item[data-highlighted],
-    .menubar__sub-trigger[data-highlighted] {
-      outline: none;
-      background-color: hsl(200 98% 39%);
-      color: white;
-    }
+.menubar__trigger:first-child {
+  border-radius: 4px 0 0 4px;
+}
 
-    .menubar__group-label {
-      padding: 0 24px;
-      font-size: 14px;
-      line-height: 32px;
-      color: hsl(240 4% 46%);
-    }
+.menubar__trigger:last-child {
+  border-left: 2px dashed hsl(240 4% 46%);
+  border-radius: 0 4px 4px 0;
+}
 
-    .menubar__separator {
-      height: 1px;
-      border-top: 1px solid hsl(240 6% 90%);
-      margin: 6px;
-    }
+.menubar__content,
+.menubar__sub-content {
+  min-width: 220px;
+  padding: 8px;
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid hsl(240 6% 90%);
+  box-shadow:
+  0 4px 6px -1px rgb(0 0 0 / 0.1),
+  0 2px 4px -2px rgb(0 0 0 / 0.1);
+  outline: none;
+  transform-origin: var(--kb-menu-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
 
-    .menubar__item-indicator {
-      position: absolute;
-      left: 0;
-      height: 20px;
-      width: 20px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
+.menubar__content[data-expanded],
+.menubar__sub-content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
 
-    .menubar__item-right-slot {
-      margin-left: auto;
-      padding-left: 20px;
-      font-size: 14px;
-      color: hsl(240 4% 46%);
-    }
+.menubar__item,
+.menubar__checkbox-item,
+.menubar__radio-item,
+.menubar__sub-trigger {
+  font-size: 16px;
+  line-height: 1;
+  color: hsl(240 4% 16%);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 8px 0 24px;
+  position: relative;
+  user-select: none;
+  outline: none;
+}
 
-    [data-highlighted] > .menubar__item-right-slot {
-      color: white;
-    }
+.menubar__sub-trigger[data-expanded] {
+  background-color: hsl(204 94% 94%);
+  color: hsl(201 96% 32%);
+}
 
-    [data-disabled] .menubar__item-right-slot {
-      color: hsl(240 5% 65%);
-      opacity: 0.5;
-    }
+.menubar__item[data-disabled],
+.menubar__checkbox-item[data-disabled],
+.menubar__radio-item[data-disabled],
+.menubar__sub-trigger[data-disabled] {
+  color: hsl(240 5% 65%);
+  opacity: 0.5;
+  pointer-events: none;
+}
 
-    @keyframes contentShow {
-      from {
-        opacity: 0;
-        transform: scale(0.96);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
+.menubar__item[data-highlighted],
+.menubar__checkbox-item[data-highlighted],
+.menubar__radio-item[data-highlighted],
+.menubar__sub-trigger[data-highlighted] {
+  outline: none;
+  background-color: hsl(200 98% 39%);
+  color: white;
+}
 
-    @keyframes contentHide {
-      from {
-        opacity: 1;
-        transform: scale(1);
-      }
-      to {
-        opacity: 0;
-        transform: scale(0.96);
-      }
-    }
-    ```
+.menubar__group-label {
+  padding: 0 24px;
+  font-size: 14px;
+  line-height: 32px;
+  color: hsl(240 4% 46%);
+}
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end --> */}
-</TabsSnippets>
+.menubar__separator {
+  height: 1px;
+  border-top: 1px solid hsl(240 6% 90%);
+  margin: 6px;
+}
+
+.menubar__item-indicator {
+  position: absolute;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menubar__item-right-slot {
+  margin-left: auto;
+  padding-left: 20px;
+  font-size: 14px;
+  color: hsl(240 4% 46%);
+}
+
+[data-highlighted] > .menubar__item-right-slot {
+  color: white;
+}
+
+[data-disabled] .menubar__item-right-slot {
+  color: hsl(240 5% 65%);
+  opacity: 0.5;
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+```
+
+
 
 ## Usage
 

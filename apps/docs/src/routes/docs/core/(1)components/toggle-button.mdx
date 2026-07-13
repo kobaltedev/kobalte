@@ -4,7 +4,6 @@ title: Toggle Button
 
 import { Show } from "solid-js";
 
-import { TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	ControlledExample,
@@ -50,63 +49,52 @@ The toggle button consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { ToggleButton } from "@kobalte/core/toggle-button";
-    import { Show } from "solid-js";
-    import { VolumeOffIcon, VolumeOnIcon } from "some-icon-library";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { ToggleButton } from "@kobalte/core/toggle-button";
+import { Show } from "solid-js";
+import { VolumeOffIcon, VolumeOnIcon } from "some-icon-library";
+import "./style.css";
 
-    function App() {
-      return (
-        <ToggleButton class="toggle-button" aria-label="Mute">
-          {state => (
-            <Show when={state.pressed()} fallback={<VolumeOnIcon />}>
-              <VolumeOffIcon />
-            </Show>
-          )}
-        </ToggleButton>
-      );
-    }
-    ```
+function App() {
+  return (
+    <ToggleButton class="toggle-button" aria-label="Mute">
+      {state => (
+        <Show when={state.pressed()} fallback={<VolumeOnIcon />}>
+          <VolumeOffIcon />
+        </Show>
+      )}
+    </ToggleButton>
+  );
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .toggle-button {
-      appearance: none;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      height: 40px;
-      width: 40px;
-      outline: none;
-      border-radius: 6px;
-      background-color: hsl(200 98% 39%);
-      color: white;
-      font-size: 16px;
-      line-height: 0;
-    }
+```css title="style.css" tab
+.toggle-button {
+  appearance: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+  outline: none;
+  border-radius: 6px;
+  background-color: hsl(200 98% 39%);
+  color: white;
+  font-size: 16px;
+  line-height: 0;
+}
 
-    .toggle-button:focus-visible {
-      outline: 2px solid hsl(200 98% 39%);
-      outline-offset: 2px;
-    }
+.toggle-button:focus-visible {
+  outline: 2px solid hsl(200 98% 39%);
+  outline-offset: 2px;
+}
 
-    .toggle-button[data-pressed] {
-      background-color: hsl(0 72% 51%);
-    }
-    ```
+.toggle-button[data-pressed] {
+  background-color: hsl(0 72% 51%);
+}
+```
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+
 
 ## Usage
 

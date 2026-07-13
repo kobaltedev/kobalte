@@ -2,7 +2,6 @@
 title: Progress
 ---
 
-import { TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	CustomValueLabelExample,
@@ -57,73 +56,62 @@ The progress consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Progress } from "@kobalte/core/progress";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Progress } from "@kobalte/core/progress";
+import "./style.css";
 
-    function App() {
-      return (
-        <Progress value={80} class="progress">
-          <div class="progress__label-container">
-            <Progress.Label class="progress__label">Loading...</Progress.Label>
-            <Progress.ValueLabel class="progress__value-label" />
-          </div>
-          <Progress.Track class="progress__track">
-            <Progress.Fill class="progress__fill" />
-          </Progress.Track>
-        </Progress>
-      );
-    }
-    ```
+function App() {
+  return (
+    <Progress value={80} class="progress">
+      <div class="progress__label-container">
+        <Progress.Label class="progress__label">Loading...</Progress.Label>
+        <Progress.ValueLabel class="progress__value-label" />
+      </div>
+      <Progress.Track class="progress__track">
+        <Progress.Fill class="progress__fill" />
+      </Progress.Track>
+    </Progress>
+  );
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .progress {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      width: 300px;
-    }
+```css title="style.css" tab
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 300px;
+}
 
-    .progress__label-container {
-      display: flex;
-      justify-content: space-between;
-    }
+.progress__label-container {
+  display: flex;
+  justify-content: space-between;
+}
 
-    .progress__label,
-    .progress__value-label {
-      color: hsl(240 4% 16%);
-      font-size: 14px;
-    }
+.progress__label,
+.progress__value-label {
+  color: hsl(240 4% 16%);
+  font-size: 14px;
+}
 
-    .progress__track {
-      height: 10px;
-      background-color: hsl(240 6% 90%);
-    }
+.progress__track {
+  height: 10px;
+  background-color: hsl(240 6% 90%);
+}
 
-    .progress__fill {
-      background-color: hsl(200 98% 39%);
-      height: 100%;
-      width: var(--kb-progress-fill-width);
-      transition: width 250ms linear;
-    }
+.progress__fill {
+  background-color: hsl(200 98% 39%);
+  height: 100%;
+  width: var(--kb-progress-fill-width);
+  transition: width 250ms linear;
+}
 
-    .progress__fill[data-progress="complete"] {
-      background-color: #16a34a;
-    }
-    ```
+.progress__fill[data-progress="complete"] {
+  background-color: #16a34a;
+}
+```
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+
 
 ## Usage
 

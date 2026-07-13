@@ -2,7 +2,6 @@
 title: Hover Card
 ---
 
-import { TabsSnippets } from "../../../../components";
 import { BasicExample } from "../../../../examples/hover-card";
 
 # {frontmatter.title}
@@ -55,122 +54,111 @@ The hovercard consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { HoverCard } from "@kobalte/core/hover-card";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { HoverCard } from "@kobalte/core/hover-card";
+import "./style.css";
 
-    function App() {
-      return (
-        <HoverCard>
-          <HoverCard.Trigger
-            class="hovercard__trigger"
-            href="https://twitter.com/mlfabien"
-            target="_blank"
-            >
-            @MLFabien
-          </HoverCard.Trigger>
-          <HoverCard.Portal>
-            <HoverCard.Content class="hovercard__content">
-              <HoverCard.Arrow />
-              <img
-                src="https://pbs.twimg.com/profile_images/1509139491671445507/pzWYjlYN_400x400.jpg"
-                alt="Fabien MARIE-LOUISE"
-                class="hovercard__avatar"
-              />
-              <h2 class="hovercard__title">Fabien MARIE-LOUISE</h2>
-              <p class="hovercard__description">
-                Developer and UI Design enthusiast. Building UI related stuffs for @solid_js
-              </p>
-            </HoverCard.Content>
-          </HoverCard.Portal>
-        </HoverCard>
-      );
-    }
-    ```
+function App() {
+  return (
+    <HoverCard>
+      <HoverCard.Trigger
+        class="hovercard__trigger"
+        href="https://twitter.com/mlfabien"
+        target="_blank"
+        >
+        @MLFabien
+      </HoverCard.Trigger>
+      <HoverCard.Portal>
+        <HoverCard.Content class="hovercard__content">
+          <HoverCard.Arrow />
+          <img
+            src="https://pbs.twimg.com/profile_images/1509139491671445507/pzWYjlYN_400x400.jpg"
+            alt="Fabien MARIE-LOUISE"
+            class="hovercard__avatar"
+          />
+          <h2 class="hovercard__title">Fabien MARIE-LOUISE</h2>
+          <p class="hovercard__description">
+            Developer and UI Design enthusiast. Building UI related stuffs for @solid_js
+          </p>
+        </HoverCard.Content>
+      </HoverCard.Portal>
+    </HoverCard>
+  );
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .hovercard__trigger {
-      outline: none;
-      color: hsl(201 96% 32%);
-      font-size: 16px;
-    }
+```css title="style.css" tab
+.hovercard__trigger {
+  outline: none;
+  color: hsl(201 96% 32%);
+  font-size: 16px;
+}
 
-    .hovercard__trigger:hover {
-      text-decoration: underline;
-    }
+.hovercard__trigger:hover {
+  text-decoration: underline;
+}
 
-    .hovercard__trigger:focus-visible {
-      outline: 2px solid hsl(200 98% 39%);
-      outline-offset: 2px;
-    }
+.hovercard__trigger:focus-visible {
+  outline: 2px solid hsl(200 98% 39%);
+  outline-offset: 2px;
+}
 
-    .hovercard__content {
-      z-index: 50;
-      max-width: min(calc(100vw - 16px), 380px);
-      border: 1px solid hsl(240 5% 84%);
-      border-radius: 6px;
-      padding: 16px;
-      background-color: white;
-      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-      transform-origin: var(--kb-hovercard-content-transform-origin);
-      animation: contentHide 250ms ease-in forwards;
-    }
+.hovercard__content {
+  z-index: 50;
+  max-width: min(calc(100vw - 16px), 380px);
+  border: 1px solid hsl(240 5% 84%);
+  border-radius: 6px;
+  padding: 16px;
+  background-color: white;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform-origin: var(--kb-hovercard-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
 
-    .hovercard__content[data-expanded] {
-      animation: contentShow 250ms ease-out;
-    }
+.hovercard__content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
 
-    .hovercard__title {
-      color: hsl(240 6% 10%);
-      font-size: 16px;
-      font-weight: 600;
-    }
+.hovercard__title {
+  color: hsl(240 6% 10%);
+  font-size: 16px;
+  font-weight: 600;
+}
 
-    .hovercard__description {
-      font-size: 14px;
-      color: hsl(240 5% 26%);
-    }
+.hovercard__description {
+  font-size: 14px;
+  color: hsl(240 5% 26%);
+}
 
-    .hovercard__avatar {
-      height: 56px;
-      width: 56px;
-    }
+.hovercard__avatar {
+  height: 56px;
+  width: 56px;
+}
 
-    @keyframes contentShow {
-      from {
-        opacity: 0;
-        transform: scale(0.96);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
-    @keyframes contentHide {
-      from {
-        opacity: 1;
-        transform: scale(1);
-      }
-      to {
-        opacity: 0;
-        transform: scale(0.96);
-      }
-    }
-    ```
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+```
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end --> */}
-</TabsSnippets>
+
 
 ## Usage
 

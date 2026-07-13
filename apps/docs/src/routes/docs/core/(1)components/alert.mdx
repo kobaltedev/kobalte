@@ -2,7 +2,6 @@
 title: Alert
 ---
 
-import { TabsSnippets } from "../../../../components";
 import { BasicExample } from "../../../../examples/alert";
 
 # {frontmatter.title}
@@ -40,36 +39,24 @@ The alert consists of :
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Alert } from "@kobalte/core/alert";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Alert } from "@kobalte/core/alert";
+import "./style.css";
 
-    function App() {
-      return <Alert class="alert">Kobalte is going live soon, get ready!</Alert>;
-    }
-    ```
+function App() {
+	return <Alert class="alert">Kobalte is going live soon, get ready!</Alert>;
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .alert {
-      border-radius: 6px;
-      padding: 12px 16px;
-      background-color: hsl(204 100% 97%);
-      color: hsl(201 96% 32%);
-      font-size: 16px;
-    }
-    ```
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+```css title="style.css" tab
+.alert {
+	border-radius: 6px;
+	padding: 12px 16px;
+	background-color: hsl(204 100% 97%);
+	color: hsl(201 96% 32%);
+	font-size: 16px;
+}
+```
 
 ## API reference
 

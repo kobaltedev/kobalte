@@ -2,7 +2,6 @@
 title: Collapsible
 ---
 
-import { TabsSnippets } from "../../../../components";
 import { BasicExample } from "../../../../examples/collapsible";
 
 # {frontmatter.title}
@@ -46,111 +45,98 @@ The collapsible consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Collapsible } from "@kobalte/core/collapsible";
-    import { ChevronDownIcon } from "some-icon-library";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Collapsible } from "@kobalte/core/collapsible";
+import { ChevronDownIcon } from "some-icon-library";
+import "./style.css";
 
-    function App() {
-      return (
-        <Collapsible class="collapsible">
-          <Collapsible.Trigger class="collapsible__trigger">
-            <span>What is Kobalte?</span>
-            <ChevronDownIcon class="collapsible__trigger-icon" />
-          </Collapsible.Trigger>
-          <Collapsible.Content class="collapsible__content">
-            <p class="collapsible__content-text">
-              Kobalte is a UI toolkit for building accessible web apps and design systems with SolidJS.
-              It provides a set of low-level UI components and primitives which can be the foundation
-              for your design system implementation.
-            </p>
-          </Collapsible.Content>
-        </Collapsible>
-      );
-    }
-    ```
+function App() {
+	return (
+		<Collapsible class="collapsible">
+			<Collapsible.Trigger class="collapsible__trigger">
+				<span>What is Kobalte?</span>
+				<ChevronDownIcon class="collapsible__trigger-icon" />
+			</Collapsible.Trigger>
+			<Collapsible.Content class="collapsible__content">
+				<p class="collapsible__content-text">
+					Kobalte is a UI toolkit for building accessible web apps and design systems with SolidJS.
+					It provides a set of low-level UI components and primitives which can be the foundation
+					for your design system implementation.
+				</p>
+			</Collapsible.Content>
+		</Collapsible>
+	);
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .collapsible {
-      width: 300px;
-    }
+```css title="style.css" tab
+.collapsible {
+	width: 300px;
+}
 
-    .collapsible__trigger {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: 14px;
-      font-weight: 600;
-      border: 1px solid hsl(240 5% 84%);
-      color: hsl(240 4% 16%);
-      text-align: left;
-      outline: none;
-    }
+.collapsible__trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 14px;
+	font-weight: 600;
+	border: 1px solid hsl(240 5% 84%);
+	color: hsl(240 4% 16%);
+	text-align: left;
+	outline: none;
+}
 
-    .collapsible__trigger:focus-visible {
-      outline: 2px solid hsl(200 98% 39%);
-      outline-offset: 2px;
-    }
+.collapsible__trigger:focus-visible {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
 
-    .collapsible__trigger-icon {
-      width: 20px;
-      height: 20px;
-      transition: transform 250ms;
-    }
+.collapsible__trigger-icon {
+	width: 20px;
+	height: 20px;
+	transition: transform 250ms;
+}
 
-    .collapsible__trigger[data-expanded] .collapsible__trigger-icon {
-      transform: rotateZ(180deg);
-    }
+.collapsible__trigger[data-expanded] .collapsible__trigger-icon {
+	transform: rotateZ(180deg);
+}
 
-    .collapsible__content {
-      width: 100%;
-      overflow: hidden;
-      border: 1px solid hsl(240 5% 84%);
-      border-top: none;
-      color: hsl(240 4% 16%);
-      animation: slideUp 300ms ease-out;
-    }
+.collapsible__content {
+	width: 100%;
+	overflow: hidden;
+	border: 1px solid hsl(240 5% 84%);
+	border-top: none;
+	color: hsl(240 4% 16%);
+	animation: slideUp 300ms ease-out;
+}
 
-    .collapsible__content[data-expanded] {
-      animation: slideDown 300ms ease-out;
-    }
+.collapsible__content[data-expanded] {
+	animation: slideDown 300ms ease-out;
+}
 
-    .collapsible__content-text {
-      padding: 16px;
-    }
+.collapsible__content-text {
+	padding: 16px;
+}
 
-    @keyframes slideDown {
-      from {
-        height: 0;
-      }
-      to {
-        height: var(--kb-collapsible-content-height);
-      }
-    }
+@keyframes slideDown {
+	from {
+		height: 0;
+	}
+	to {
+		height: var(--kb-collapsible-content-height);
+	}
+}
 
-    @keyframes slideUp {
-      from {
-        height: var(--kb-collapsible-content-height);
-      }
-      to {
-        height: 0;
-      }
-    }
-    ```
-
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+@keyframes slideUp {
+	from {
+		height: var(--kb-collapsible-content-height);
+	}
+	to {
+		height: 0;
+	}
+}
+```
 
 ## Usage
 

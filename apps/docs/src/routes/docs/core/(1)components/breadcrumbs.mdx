@@ -2,7 +2,6 @@
 title: Breadcrumbs
 ---
 
-import { TabsSnippets } from "../../../../components";
 import { BasicExample, CustomSeparatorExample } from "../../../../examples/breadcrumbs";
 
 # {frontmatter.title}
@@ -53,84 +52,71 @@ The breadcrumbs consist of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Breadcrumbs } from "@kobalte/core/breadcrumbs";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Breadcrumbs } from "@kobalte/core/breadcrumbs";
+import "./style.css";
 
-    function App() {
-      return (
-        <Breadcrumbs>
-          <ol class="breadcrumbs__list">
-            <li class="breadcrumbs__item">
-              <Breadcrumbs.Link href="/" class="breadcrumbs__link">
-                Home
-              </Breadcrumbs.Link>
-              <Breadcrumbs.Separator class="breadcrumbs__separator" />
-            </li>
-            <li class="breadcrumbs__item">
-              <Breadcrumbs.Link href="/components" class="breadcrumbs__link">
-                Components
-              </Breadcrumbs.Link>
-              <Breadcrumbs.Separator class="breadcrumbs__separator" />
-            </li>
-            <li class="breadcrumbs__item">
-              <Breadcrumbs.Link current class="breadcrumbs__link">
-                Breadcrumbs
-              </Breadcrumbs.Link>
-            </li>
-          </ol>
-        </Breadcrumbs>
-      );
-    }
-    ```
+function App() {
+	return (
+		<Breadcrumbs>
+			<ol class="breadcrumbs__list">
+				<li class="breadcrumbs__item">
+					<Breadcrumbs.Link href="/" class="breadcrumbs__link">
+						Home
+					</Breadcrumbs.Link>
+					<Breadcrumbs.Separator class="breadcrumbs__separator" />
+				</li>
+				<li class="breadcrumbs__item">
+					<Breadcrumbs.Link href="/components" class="breadcrumbs__link">
+						Components
+					</Breadcrumbs.Link>
+					<Breadcrumbs.Separator class="breadcrumbs__separator" />
+				</li>
+				<li class="breadcrumbs__item">
+					<Breadcrumbs.Link current class="breadcrumbs__link">
+						Breadcrumbs
+					</Breadcrumbs.Link>
+				</li>
+			</ol>
+		</Breadcrumbs>
+	);
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .breadcrumbs__list {
-      display: inline-flex;
-      align-items: center;
-    }
+```css title="style.css" tab
+.breadcrumbs__list {
+	display: inline-flex;
+	align-items: center;
+}
 
-    .breadcrumbs__item {
-      display: inline-flex;
-      align-items: center;
-    }
+.breadcrumbs__item {
+	display: inline-flex;
+	align-items: center;
+}
 
-    .breadcrumbs__link {
-      font-weight: 500;
-      color: hsl(240 4% 16%);
-    }
+.breadcrumbs__link {
+	font-weight: 500;
+	color: hsl(240 4% 16%);
+}
 
-    .breadcrumbs__link[data-disabled] {
-      color: hsl(240 4% 46%);
-    }
+.breadcrumbs__link[data-disabled] {
+	color: hsl(240 4% 46%);
+}
 
-    .breadcrumbs__link:hover {
-      color: hsl(201 96% 32%);
-    }
+.breadcrumbs__link:hover {
+	color: hsl(201 96% 32%);
+}
 
-    .breadcrumbs__link[data-current] {
-      font-weight: 400;
-    }
+.breadcrumbs__link[data-current] {
+	font-weight: 400;
+}
 
-    .breadcrumbs__separator {
-      display: inline-block;
-      margin: 0 4px;
-      color: hsl(240 5% 65%);
-    }
-    ```
-
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+.breadcrumbs__separator {
+	display: inline-block;
+	margin: 0 4px;
+	color: hsl(240 5% 65%);
+}
+```
 
 ## Usage
 

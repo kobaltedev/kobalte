@@ -2,7 +2,6 @@
 title: Context Menu
 ---
 
-import { TabsSnippets } from "../../../../components";
 import { BasicExample } from "../../../../examples/context-menu";
 
 # {frontmatter.title}
@@ -115,255 +114,244 @@ The checkable menu item consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { ContextMenu } from "@kobalte/core/context-menu";
-    import { createSignal } from "solid-js";
-    import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { ContextMenu } from "@kobalte/core/context-menu";
+import { createSignal } from "solid-js";
+import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "some-icon-library";
+import "./style.css";
 
-    function App() {
-      const [showGitLog, setShowGitLog] = createSignal(true);
-      const [showHistory, setShowHistory] = createSignal(false);
-      const [branch, setBranch] = createSignal("main");
+function App() {
+  const [showGitLog, setShowGitLog] = createSignal(true);
+  const [showHistory, setShowHistory] = createSignal(false);
+  const [branch, setBranch] = createSignal("main");
 
-      return (
-        <ContextMenu>
-          <ContextMenu.Trigger class="context-menu__trigger">
-            Right click here.
-          </ContextMenu.Trigger>
-          <ContextMenu.Portal>
-            <ContextMenu.Content class="context-menu__content">
-              <ContextMenu.Item class="context-menu__item">
-                Commit <div class="context-menu__item-right-slot">⌘+K</div>
-              </ContextMenu.Item>
-              <ContextMenu.Item class="context-menu__item">
-                Push <div class="context-menu__item-right-slot">⇧+⌘+K</div>
-              </ContextMenu.Item>
-              <ContextMenu.Item class="context-menu__item" disabled>
-                Update Project <div class="context-menu__item-right-slot">⌘+T</div>
-              </ContextMenu.Item>
-              <ContextMenu.Sub overlap gutter={4} shift={-8}>
-                <ContextMenu.SubTrigger class="context-menu__sub-trigger">
-                  GitHub
-                  <div class="context-menu__item-right-slot">
-                    <ChevronRightIcon width={20} height={20} />
-                  </div>
-                </ContextMenu.SubTrigger>
-                <ContextMenu.Portal>
-                  <ContextMenu.SubContent class="context-menu__sub-content">
-                    <ContextMenu.Item class="context-menu__item">
-                      Create Pull Request…
-                    </ContextMenu.Item>
-                    <ContextMenu.Item class="context-menu__item">
-                      View Pull Requests
-                    </ContextMenu.Item>
-                    <ContextMenu.Item class="context-menu__item">
-                      Sync Fork
-                    </ContextMenu.Item>
-                    <ContextMenu.Separator class="context-menu__separator" />
-                    <ContextMenu.Item class="context-menu__item">
-                      Open on GitHub
-                    </ContextMenu.Item>
-                  </ContextMenu.SubContent>
-                </ContextMenu.Portal>
-              </ContextMenu.Sub>
+  return (
+    <ContextMenu>
+      <ContextMenu.Trigger class="context-menu__trigger">
+        Right click here.
+      </ContextMenu.Trigger>
+      <ContextMenu.Portal>
+        <ContextMenu.Content class="context-menu__content">
+          <ContextMenu.Item class="context-menu__item">
+            Commit <div class="context-menu__item-right-slot">⌘+K</div>
+          </ContextMenu.Item>
+          <ContextMenu.Item class="context-menu__item">
+            Push <div class="context-menu__item-right-slot">⇧+⌘+K</div>
+          </ContextMenu.Item>
+          <ContextMenu.Item class="context-menu__item" disabled>
+            Update Project <div class="context-menu__item-right-slot">⌘+T</div>
+          </ContextMenu.Item>
+          <ContextMenu.Sub overlap gutter={4} shift={-8}>
+            <ContextMenu.SubTrigger class="context-menu__sub-trigger">
+              GitHub
+              <div class="context-menu__item-right-slot">
+                <ChevronRightIcon width={20} height={20} />
+              </div>
+            </ContextMenu.SubTrigger>
+            <ContextMenu.Portal>
+              <ContextMenu.SubContent class="context-menu__sub-content">
+                <ContextMenu.Item class="context-menu__item">
+                  Create Pull Request…
+                </ContextMenu.Item>
+                <ContextMenu.Item class="context-menu__item">
+                  View Pull Requests
+                </ContextMenu.Item>
+                <ContextMenu.Item class="context-menu__item">
+                  Sync Fork
+                </ContextMenu.Item>
+                <ContextMenu.Separator class="context-menu__separator" />
+                <ContextMenu.Item class="context-menu__item">
+                  Open on GitHub
+                </ContextMenu.Item>
+              </ContextMenu.SubContent>
+            </ContextMenu.Portal>
+          </ContextMenu.Sub>
 
-              <ContextMenu.Separator class="context-menu__separator" />
+          <ContextMenu.Separator class="context-menu__separator" />
 
-              <ContextMenu.CheckboxItem
-                class="context-menu__checkbox-item"
-                checked={showGitLog()}
-                onChange={setShowGitLog}
-              >
+          <ContextMenu.CheckboxItem
+            class="context-menu__checkbox-item"
+            checked={showGitLog()}
+            onChange={setShowGitLog}
+          >
+            <ContextMenu.ItemIndicator class="context-menu__item-indicator">
+              <CheckIcon />
+            </ContextMenu.ItemIndicator>
+            Show Git Log
+          </ContextMenu.CheckboxItem>
+          <ContextMenu.CheckboxItem
+            class="context-menu__checkbox-item"
+            checked={showHistory()}
+            onChange={setShowHistory}
+          >
+            <ContextMenu.ItemIndicator class="context-menu__item-indicator">
+              <CheckIcon />
+            </ContextMenu.ItemIndicator>
+            Show History
+          </ContextMenu.CheckboxItem>
+
+          <ContextMenu.Separator class="context-menu__separator" />
+
+          <ContextMenu.Group>
+            <ContextMenu.GroupLabel class="context-menu__group-label">
+              Branches
+            </ContextMenu.GroupLabel>
+            <ContextMenu.RadioGroup value={branch()} onChange={setBranch}>
+              <ContextMenu.RadioItem class="context-menu__radio-item" value="main">
                 <ContextMenu.ItemIndicator class="context-menu__item-indicator">
-                  <CheckIcon />
+                  <DotFilledIcon />
                 </ContextMenu.ItemIndicator>
-                Show Git Log
-              </ContextMenu.CheckboxItem>
-              <ContextMenu.CheckboxItem
-                class="context-menu__checkbox-item"
-                checked={showHistory()}
-                onChange={setShowHistory}
-              >
+                main
+              </ContextMenu.RadioItem>
+              <ContextMenu.RadioItem class="context-menu__radio-item" value="develop">
                 <ContextMenu.ItemIndicator class="context-menu__item-indicator">
-                  <CheckIcon />
+                  <DotFilledIcon />
                 </ContextMenu.ItemIndicator>
-                Show History
-              </ContextMenu.CheckboxItem>
+                develop
+              </ContextMenu.RadioItem>
+            </ContextMenu.RadioGroup>
+          </ContextMenu.Group>
+        </ContextMenu.Content>
+      </ContextMenu.Portal>
+    </ContextMenu>
+  );
+}
+```
 
-              <ContextMenu.Separator class="context-menu__separator" />
+```css title="style.css" tab
+.context-menu__trigger {
+  display: block;
+  border: 2px dashed hsl(240 4% 46%);
+  color: hsl(240 5% 34%);
+  border-radius: 4px;
+  font-size: 15px;
+  user-select: none;
+  padding: 45px 0;
+  width: 300px;
+  text-align: center;
+}
 
-              <ContextMenu.Group>
-                <ContextMenu.GroupLabel class="context-menu__group-label">
-                  Branches
-                </ContextMenu.GroupLabel>
-                <ContextMenu.RadioGroup value={branch()} onChange={setBranch}>
-                  <ContextMenu.RadioItem class="context-menu__radio-item" value="main">
-                    <ContextMenu.ItemIndicator class="context-menu__item-indicator">
-                      <DotFilledIcon />
-                    </ContextMenu.ItemIndicator>
-                    main
-                  </ContextMenu.RadioItem>
-                  <ContextMenu.RadioItem class="context-menu__radio-item" value="develop">
-                    <ContextMenu.ItemIndicator class="context-menu__item-indicator">
-                      <DotFilledIcon />
-                    </ContextMenu.ItemIndicator>
-                    develop
-                  </ContextMenu.RadioItem>
-                </ContextMenu.RadioGroup>
-              </ContextMenu.Group>
-            </ContextMenu.Content>
-          </ContextMenu.Portal>
-        </ContextMenu>
-      );
-    }
-    ```
+.context-menu__content,
+.context-menu__sub-content {
+  min-width: 220px;
+  padding: 8px;
+  background-color: white;
+  border-radius: 6px;
+  border: 1px solid hsl(240 6% 90%);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  outline: none;
+  transform-origin: var(--kb-menu-content-transform-origin);
+  animation: contentHide 250ms ease-in forwards;
+}
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .context-menu__trigger {
-      display: block;
-      border: 2px dashed hsl(240 4% 46%);
-      color: hsl(240 5% 34%);
-      border-radius: 4px;
-      font-size: 15px;
-      user-select: none;
-      padding: 45px 0;
-      width: 300px;
-      text-align: center;
-    }
+.context-menu__content[data-expanded],
+.context-menu__sub-content[data-expanded] {
+  animation: contentShow 250ms ease-out;
+}
 
-    .context-menu__content,
-    .context-menu__sub-content {
-      min-width: 220px;
-      padding: 8px;
-      background-color: white;
-      border-radius: 6px;
-      border: 1px solid hsl(240 6% 90%);
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-      outline: none;
-      transform-origin: var(--kb-menu-content-transform-origin);
-      animation: contentHide 250ms ease-in forwards;
-    }
+.context-menu__item,
+.context-menu__checkbox-item,
+.context-menu__radio-item,
+.context-menu__sub-trigger {
+  font-size: 16px;
+  line-height: 1;
+  color: hsl(240 4% 16%);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 8px 0 24px;
+  position: relative;
+  user-select: none;
+  outline: none;
+}
 
-    .context-menu__content[data-expanded],
-    .context-menu__sub-content[data-expanded] {
-      animation: contentShow 250ms ease-out;
-    }
+.context-menu__sub-trigger[data-expanded] {
+  background-color: hsl(204 94% 94%);
+  color: hsl(201 96% 32%);
+}
 
-    .context-menu__item,
-    .context-menu__checkbox-item,
-    .context-menu__radio-item,
-    .context-menu__sub-trigger {
-      font-size: 16px;
-      line-height: 1;
-      color: hsl(240 4% 16%);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      height: 32px;
-      padding: 0 8px 0 24px;
-      position: relative;
-      user-select: none;
-      outline: none;
-    }
+.context-menu__item[data-disabled],
+.context-menu__checkbox-item[data-disabled],
+.context-menu__radio-item[data-disabled],
+.context-menu__sub-trigger[data-disabled] {
+  color: hsl(240 5% 65%);
+  opacity: 0.5;
+  pointer-events: none;
+}
 
-    .context-menu__sub-trigger[data-expanded] {
-      background-color: hsl(204 94% 94%);
-      color: hsl(201 96% 32%);
-    }
+.context-menu__item[data-highlighted],
+.context-menu__checkbox-item[data-highlighted],
+.context-menu__radio-item[data-highlighted],
+.context-menu__sub-trigger[data-highlighted] {
+  outline: none;
+  background-color: hsl(200 98% 39%);
+  color: white;
+}
 
-    .context-menu__item[data-disabled],
-    .context-menu__checkbox-item[data-disabled],
-    .context-menu__radio-item[data-disabled],
-    .context-menu__sub-trigger[data-disabled] {
-      color: hsl(240 5% 65%);
-      opacity: 0.5;
-      pointer-events: none;
-    }
+.context-menu__group-label {
+  padding: 0 24px;
+  font-size: 14px;
+  line-height: 32px;
+  color: hsl(240 4% 46%);
+}
 
-    .context-menu__item[data-highlighted],
-    .context-menu__checkbox-item[data-highlighted],
-    .context-menu__radio-item[data-highlighted],
-    .context-menu__sub-trigger[data-highlighted] {
-      outline: none;
-      background-color: hsl(200 98% 39%);
-      color: white;
-    }
+.context-menu__separator {
+  height: 1px;
+  border-top: 1px solid hsl(240 6% 90%);
+  margin: 6px;
+}
 
-    .context-menu__group-label {
-      padding: 0 24px;
-      font-size: 14px;
-      line-height: 32px;
-      color: hsl(240 4% 46%);
-    }
+.context-menu__item-indicator {
+  position: absolute;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .context-menu__separator {
-      height: 1px;
-      border-top: 1px solid hsl(240 6% 90%);
-      margin: 6px;
-    }
+.context-menu__item-right-slot {
+  margin-left: auto;
+  padding-left: 20px;
+  font-size: 14px;
+  color: hsl(240 4% 46%);
+}
 
-    .context-menu__item-indicator {
-      position: absolute;
-      left: 0;
-      height: 20px;
-      width: 20px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
+[data-highlighted] > .context-menu__item-right-slot {
+  color: white;
+}
 
-    .context-menu__item-right-slot {
-      margin-left: auto;
-      padding-left: 20px;
-      font-size: 14px;
-      color: hsl(240 4% 46%);
-    }
+[data-disabled] .context-menu__item-right-slot {
+  color: hsl(240 5% 65%);
+  opacity: 0.5;
+}
 
-    [data-highlighted] > .context-menu__item-right-slot {
-      color: white;
-    }
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
-    [data-disabled] .context-menu__item-right-slot {
-      color: hsl(240 5% 65%);
-      opacity: 0.5;
-    }
+@keyframes contentHide {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+```
 
-    @keyframes contentShow {
-      from {
-        opacity: 0;
-        transform: scale(0.96);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
 
-    @keyframes contentHide {
-      from {
-        opacity: 1;
-        transform: scale(1);
-      }
-      to {
-        opacity: 0;
-        transform: scale(0.96);
-      }
-    }
-    ```
-
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end --> */}
-</TabsSnippets>
 
 ## Usage
 

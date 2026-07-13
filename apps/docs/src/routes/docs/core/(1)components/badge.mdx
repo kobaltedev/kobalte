@@ -2,7 +2,6 @@
 title: Badge
 ---
 
-import { TabsSnippets } from "../../../../components";
 import { BasicExample } from "../../../../examples/badge";
 
 # {frontmatter.title}
@@ -39,41 +38,29 @@ The badge consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Badge } from "@kobalte/core/badge";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Badge } from "@kobalte/core/badge";
+import "./style.css";
 
-    function App() {
-      return (
-        <Badge class="badge" textValue="5 unread messages">
-          5 messages
-        </Badge>
-      );
-    }
-    ```
+function App() {
+	return (
+		<Badge class="badge" textValue="5 unread messages">
+			5 messages
+		</Badge>
+	);
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .badge {
-      display: inline-block;
-      padding: 0.2em 0.4em;
-      background-color: hsl(201 96% 32%);
-      color: white; border-radius: 12px;
-      font-size: 0.875rem;
-    }
-    ```
-
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+```css title="style.css" tab
+.badge {
+	display: inline-block;
+	padding: 0.2em 0.4em;
+	background-color: hsl(201 96% 32%);
+	color: white;
+	border-radius: 12px;
+	font-size: 0.875rem;
+}
+```
 
 ## API Reference
 

@@ -3,7 +3,6 @@ title: Rating
 status: new
 ---
 
-import { TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	DefaultValueExample,
@@ -74,40 +73,31 @@ The rating item consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-	import { Rating } from "@kobalte/core/rating";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Rating } from "@kobalte/core/rating";
+import "./style.css";
 
-    function App() {
-      return (
-        <Rating class="rating">
-    		<Rating.Label class="rating__label">Rate Us:</Rating.Label>
-    		<Rating.Control class="rating__control">
-    			<Index each={Array(5)}>
-    				{_ => (
-    					<Rating.Item class="rating-item">
-    						<Rating.ItemControl>
-    							<StarIcon />
-    						</Rating.ItemControl>
-    					</Rating.Item>
-    				)}
-    			</Index>
-    		</Rating.Control>
-    	</Rating>
-      );
-    }
-    ```
+function App() {
+  return (
+    <Rating class="rating">
+		<Rating.Label class="rating__label">Rate Us:</Rating.Label>
+		<Rating.Control class="rating__control">
+ 			<Index each={Array(5)}>
+				{_ => (
+ 					<Rating.Item class="rating-item">
+						<Rating.ItemControl>
+ 							<StarIcon />
+						</Rating.ItemControl>
+ 					</Rating.Item>
+				)}
+ 			</Index>
+		</Rating.Control>
+ 	</Rating>
+  );
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-```css
+```css title="style.css" tab
 .rating {
 	display: flex;
 	flex-direction: column;
@@ -115,44 +105,40 @@ The rating item consists of:
 }
 
 .rating\_\_label {
-color: hsl(240 6% 10%);
-font-size: 14px;
-font-weight: 500;
-user-select: none;
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
 }
 
 .rating\_\_description {
-color: hsl(240 5% 26%);
-font-size: 12px;
-user-select: none;
+	color: hsl(240 5% 26%);
+	font-size: 12px;
+	user-select: none;
 }
 
 .rating\_\_error-message {
-color: hsl(0 72% 51%);
-font-size: 12px;
-user-select: none;
+	color: hsl(0 72% 51%);
+	font-size: 12px;
+	user-select: none;
 }
 
 .rating\_\_control {
-display: flex;
-gap: 4px;
+	display: flex;
+	gap: 4px;
 }
 
 .rating-item {
-cursor: pointer;
-fill: hsl(240 6% 90%);
-transition: fill 200ms cubic-bezier(0.2, 0, 0, 1);
+	cursor: pointer;
+	fill: hsl(240 6% 90%);
+	transition: fill 200ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .rating-item[data-highlighted] {
-fill: hsl(200 98% 39%);
+	fill: hsl(200 98% 39%);
 }
 
-````
-
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end --> */}
-</TabsSnippets>
+```
 
 ## Usage
 
@@ -161,7 +147,7 @@ fill: hsl(200 98% 39%);
 An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 :::preview
-	<DefaultValueExample />
+<DefaultValueExample />
 :::
 
 ```tsx {1}
@@ -178,7 +164,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 		</Index>
 	</Rating.Control>
 </Rating>
-````
+```
 
 ### Controlled value
 

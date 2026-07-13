@@ -2,7 +2,6 @@
 title: Color Slider
 ---
 
-import { TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	DefaultValueExample,
@@ -62,79 +61,66 @@ The color slider consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { ColorSlider } from "@kobalte/core/color-slider";
-    import { parseColor } from "@kobalte/core/colors";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { ColorSlider } from "@kobalte/core/color-slider";
+import { parseColor } from "@kobalte/core/colors";
+import "./style.css";
 
-    function App() {
-      return (
-        <ColorSlider class="ColorSliderRoot" channel="blue">
-          <div class="ColorSliderLabel">
-            <ColorSlider.Label>Blue</ColorSlider.Label>
-            <ColorSlider.ValueLabel />
-          </div>
-          <ColorSlider.Track class="ColorSliderTrack">
-            <ColorSlider.Thumb class="ColorSliderThumb">
-              <ColorSlider.Input />
-            </ColorSlider.Thumb>
-          </ColorSlider.Track>
-        </ColorSlider>
-      );
-    }
-    ```
+function App() {
+	return (
+		<ColorSlider class="ColorSliderRoot" channel="blue">
+			<div class="ColorSliderLabel">
+				<ColorSlider.Label>Blue</ColorSlider.Label>
+				<ColorSlider.ValueLabel />
+			</div>
+			<ColorSlider.Track class="ColorSliderTrack">
+				<ColorSlider.Thumb class="ColorSliderThumb">
+					<ColorSlider.Input />
+				</ColorSlider.Thumb>
+			</ColorSlider.Track>
+		</ColorSlider>
+	);
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .ColorSliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      width: 200px;
-    }
+```css title="style.css" tab
+.ColorSliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
 
-    .ColorSliderTrack {
-      position: relative;
-      border-radius: 6px;
-      height: 24px;
-      width: 100%;
-    }
+.ColorSliderTrack {
+	position: relative;
+	border-radius: 6px;
+	height: 24px;
+	width: 100%;
+}
 
-    .ColorSliderThumb {
-      display: block;
-      top: 4px;
-      width: 16px;
-      height: 16px;
-      border-radius: 9999px;
-      border: 2px solid #fff;
-      background: var(--kb-color-current);
-    }
+.ColorSliderThumb {
+	display: block;
+	top: 4px;
+	width: 16px;
+	height: 16px;
+	border-radius: 9999px;
+	border: 2px solid #fff;
+	background: var(--kb-color-current);
+}
 
-    .ColorSliderThumb:focus {
-      outline: none;
-    }
+.ColorSliderThumb:focus {
+	outline: none;
+}
 
-    .ColorSliderLabel {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-    }
-    ```
-
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+.ColorSliderLabel {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+```
 
 ## Usage
 
@@ -148,79 +134,70 @@ This must be one of the channels included in the color value, for example, for R
 <DefaultValueExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { ColorSlider } from "@kobalte/core/color-slider";
-    import { parseColor } from "@kobalte/core/colors";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { ColorSlider } from "@kobalte/core/color-slider";
+import { parseColor } from "@kobalte/core/colors";
+import "./style.css";
 
-    function App() {
-      return (
-        <ColorSlider class="ColorSliderRoot" defaultValue={parseColor("hsl(0, 100%, 50%)")} channel="hue">
-          <div class="ColorSliderLabel">
-            <ColorSlider.Label>Hue</ColorSlider.Label>
-            <ColorSlider.ValueLabel />
-          </div>
-          <ColorSlider.Track class="ColorSliderTrack">
-            <ColorSlider.Thumb class="ColorSliderThumb">
-              <ColorSlider.Input />
-            </ColorSlider.Thumb>
-          </ColorSlider.Track>
-        </ColorSlider>
-      );
-    }
-    ```
+function App() {
+	return (
+		<ColorSlider
+			class="ColorSliderRoot"
+			defaultValue={parseColor("hsl(0, 100%, 50%)")}
+			channel="hue"
+		>
+			<div class="ColorSliderLabel">
+				<ColorSlider.Label>Hue</ColorSlider.Label>
+				<ColorSlider.ValueLabel />
+			</div>
+			<ColorSlider.Track class="ColorSliderTrack">
+				<ColorSlider.Thumb class="ColorSliderThumb">
+					<ColorSlider.Input />
+				</ColorSlider.Thumb>
+			</ColorSlider.Track>
+		</ColorSlider>
+	);
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .ColorSliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      width: 200px;
-    }
+```css title="style.css" tab
+.ColorSliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
 
-    .ColorSliderTrack {
-      position: relative;
-      border-radius: 6px;
-      height: 24px;
-      width: 100%;
-    }
+.ColorSliderTrack {
+	position: relative;
+	border-radius: 6px;
+	height: 24px;
+	width: 100%;
+}
 
-    .ColorSliderThumb {
-      display: block;
-      top: 4px;
-      width: 16px;
-      height: 16px;
-      border-radius: 9999px;
-      border: 2px solid #fff;
-      box-shadow: 0 0 0 1px #0000006b;
-    }
+.ColorSliderThumb {
+	display: block;
+	top: 4px;
+	width: 16px;
+	height: 16px;
+	border-radius: 9999px;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 1px #0000006b;
+}
 
-    .ColorSliderThumb:focus {
-      outline: none;
-    }
+.ColorSliderThumb:focus {
+	outline: none;
+}
 
-    .ColorSliderLabel {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-    }
-    ```
-
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+.ColorSliderLabel {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+```
 
 ### Controlled value
 
@@ -229,81 +206,68 @@ This must be one of the channels included in the color value, for example, for R
 <ControlledValueExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { createSignal } from "solid-js";
-    import { ColorSlider } from "@kobalte/core/color-slider";
-    import { parseColor } from "@kobalte/core/colors";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { createSignal } from "solid-js";
+import { ColorSlider } from "@kobalte/core/color-slider";
+import { parseColor } from "@kobalte/core/colors";
+import "./style.css";
 
-    function App() {
-      const [value, setValue] = createSignal(parseColor('hsl(0, 100%, 50%)'));
-      return (
-        <ColorSlider class="ColorSliderRoot" value={value()} onChange={setValue} channel="hue">
-          <div class="ColorSliderLabel">
-            <ColorSlider.Label>Hue</ColorSlider.Label>
-            <ColorSlider.ValueLabel />
-          </div>
-          <ColorSlider.Track class="ColorSliderTrack">
-            <ColorSlider.Thumb class="ColorSliderThumb">
-              <ColorSlider.Input />
-            </ColorSlider.Thumb>
-          </ColorSlider.Track>
-        </ColorSlider>
-      );
-    }
-    ```
+function App() {
+	const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
+	return (
+		<ColorSlider class="ColorSliderRoot" value={value()} onChange={setValue} channel="hue">
+			<div class="ColorSliderLabel">
+				<ColorSlider.Label>Hue</ColorSlider.Label>
+				<ColorSlider.ValueLabel />
+			</div>
+			<ColorSlider.Track class="ColorSliderTrack">
+				<ColorSlider.Thumb class="ColorSliderThumb">
+					<ColorSlider.Input />
+				</ColorSlider.Thumb>
+			</ColorSlider.Track>
+		</ColorSlider>
+	);
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .ColorSliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      width: 200px;
-    }
+```css title="style.css" tab
+.ColorSliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
 
-    .ColorSliderTrack {
-      position: relative;
-      border-radius: 6px;
-      height: 24px;
-      width: 100%;
-    }
+.ColorSliderTrack {
+	position: relative;
+	border-radius: 6px;
+	height: 24px;
+	width: 100%;
+}
 
-    .ColorSliderThumb {
-      display: block;
-      top: 4px;
-      width: 16px;
-      height: 16px;
-      border-radius: 9999px;
-      border: 2px solid #fff;
-      box-shadow: 0 0 0 1px #0000006b;
-    }
+.ColorSliderThumb {
+	display: block;
+	top: 4px;
+	width: 16px;
+	height: 16px;
+	border-radius: 9999px;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 1px #0000006b;
+}
 
-    .ColorSliderThumb:focus {
-      outline: none;
-    }
+.ColorSliderThumb:focus {
+	outline: none;
+}
 
-    .ColorSliderLabel {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-    }
-    ```
-
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+.ColorSliderLabel {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+```
 
 ### Vertical Slider
 
@@ -312,79 +276,71 @@ This must be one of the channels included in the color value, for example, for R
 <VerticalSliderExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { ColorSlider } from "@kobalte/core/color-slider";
-    import { parseColor } from "@kobalte/core/colors";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { ColorSlider } from "@kobalte/core/color-slider";
+import { parseColor } from "@kobalte/core/colors";
+import "./style.css";
 
-    function App() {
-      return (
-        <ColorSlider class="ColorSliderRoot" defaultValue={parseColor('#ff00ff')} channel="red" orientation="vertical">
-          <div class="ColorSliderLabel">
-            <ColorSlider.Label>Hue</ColorSlider.Label>
-            <ColorSlider.ValueLabel />
-          </div>
-          <ColorSlider.Track class="ColorSliderTrack">
-            <ColorSlider.Thumb class="ColorSliderThumb">
-              <ColorSlider.Input />
-            </ColorSlider.Thumb>
-          </ColorSlider.Track>
-        </ColorSlider>
-      );
-    }
-    ```
+function App() {
+	return (
+		<ColorSlider
+			class="ColorSliderRoot"
+			defaultValue={parseColor("#ff00ff")}
+			channel="red"
+			orientation="vertical"
+		>
+			<div class="ColorSliderLabel">
+				<ColorSlider.Label>Hue</ColorSlider.Label>
+				<ColorSlider.ValueLabel />
+			</div>
+			<ColorSlider.Track class="ColorSliderTrack">
+				<ColorSlider.Thumb class="ColorSliderThumb">
+					<ColorSlider.Input />
+				</ColorSlider.Thumb>
+			</ColorSlider.Track>
+		</ColorSlider>
+	);
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .ColorSliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      height: 200px;
-    }
+```css title="style.css" tab
+.ColorSliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	height: 200px;
+}
 
-    .ColorSliderTrack {
-      position: relative;
-      border-radius: 6px;
-      height: 100%;
-      width: 24px;
-    }
+.ColorSliderTrack {
+	position: relative;
+	border-radius: 6px;
+	height: 100%;
+	width: 24px;
+}
 
-    .ColorSliderThumb {
-      display: block;
-      left: 4px;
-      width: 16px;
-      height: 16px;
-      border-radius: 9999px;
-      border: 2px solid #fff;
-      box-shadow: 0 0 0 1px #0000006b;
-    }
+.ColorSliderThumb {
+	display: block;
+	left: 4px;
+	width: 16px;
+	height: 16px;
+	border-radius: 9999px;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 1px #0000006b;
+}
 
-    .ColorSliderThumb:focus {
-      outline: none;
-    }
+.ColorSliderThumb:focus {
+	outline: none;
+}
 
-    .ColorSliderLabel {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-    }
-    ```
-
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+.ColorSliderLabel {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+```
 
 ### Custom Value Label
 
@@ -393,78 +349,70 @@ This must be one of the channels included in the color value, for example, for R
 <CustomValueExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { ColorSlider } from "@kobalte/core/color-slider";
-    import { parseColor } from "@kobalte/core/colors";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { ColorSlider } from "@kobalte/core/color-slider";
+import { parseColor } from "@kobalte/core/colors";
+import "./style.css";
 
-    function App() {
-      return (
-        <ColorSlider class="ColorSliderRoot" defaultValue={parseColor("#ff00ff")} channel="green" getValueLabel={param => `${param.toFormat("rgb")}`}>
-          <div class="ColorSliderLabel">
-            <ColorSlider.ValueLabel />
-          </div>
-          <ColorSlider.Track class="ColorSliderTrack">
-            <ColorSlider.Thumb class="ColorSliderThumb">
-              <ColorSlider.Input />
-            </ColorSlider.Thumb>
-          </ColorSlider.Track>
-        </ColorSlider>
-      );
-    }
-    ```
+function App() {
+	return (
+		<ColorSlider
+			class="ColorSliderRoot"
+			defaultValue={parseColor("#ff00ff")}
+			channel="green"
+			getValueLabel={param => `${param.toFormat("rgb")}`}
+		>
+			<div class="ColorSliderLabel">
+				<ColorSlider.ValueLabel />
+			</div>
+			<ColorSlider.Track class="ColorSliderTrack">
+				<ColorSlider.Thumb class="ColorSliderThumb">
+					<ColorSlider.Input />
+				</ColorSlider.Thumb>
+			</ColorSlider.Track>
+		</ColorSlider>
+	);
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .ColorSliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      width: 200px;
-    }
+```css title="style.css" tab
+.ColorSliderRoot {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	user-select: none;
+	touch-action: none;
+	width: 200px;
+}
 
-    .ColorSliderTrack {
-      position: relative;
-      border-radius: 6px;
-      height: 24px;
-      width: 100%;
-    }
+.ColorSliderTrack {
+	position: relative;
+	border-radius: 6px;
+	height: 24px;
+	width: 100%;
+}
 
-    .ColorSliderThumb {
-      display: block;
-      top: 4px;
-      width: 16px;
-      height: 16px;
-      border-radius: 9999px;
-      border: 2px solid #fff;
-      box-shadow: 0 0 0 1px #0000006b;
-    }
+.ColorSliderThumb {
+	display: block;
+	top: 4px;
+	width: 16px;
+	height: 16px;
+	border-radius: 9999px;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 1px #0000006b;
+}
 
-    .ColorSliderThumb:focus {
-      outline: none;
-    }
+.ColorSliderThumb:focus {
+	outline: none;
+}
 
-    .ColorSliderLabel {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-    }
-    ```
-
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+.ColorSliderLabel {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+```
 
 ## API Reference
 

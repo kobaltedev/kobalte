@@ -2,7 +2,6 @@
 title: Slider
 ---
 
-import { TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	MultipleThumbsExample,
@@ -73,91 +72,80 @@ The slider consists of:
 <BasicExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Slider } from "@kobalte/core/slider";
-    import "./style.css";
+```tsx title="index.tsx" tab
+import { Slider } from "@kobalte/core/slider";
+import "./style.css";
 
-    function App() {
-      return (
-        <Slider class="SliderRoot">
-          <div class="SliderLabel">
-            <Slider.Label>Label</Slider.Label>
-            <Slider.ValueLabel />
-          </div>
-          <Slider.Track class="SliderTrack">
-            <Slider.Fill class="SliderRange" />
-            <Slider.Thumb class="SliderThumb">
-              <Slider.Input />
-            </Slider.Thumb>
-          </Slider.Track>
-        </Slider>
-      );
-    }
-    ```
+function App() {
+  return (
+    <Slider class="SliderRoot">
+      <div class="SliderLabel">
+        <Slider.Label>Label</Slider.Label>
+        <Slider.ValueLabel />
+      </div>
+      <Slider.Track class="SliderTrack">
+        <Slider.Fill class="SliderRange" />
+        <Slider.Thumb class="SliderThumb">
+          <Slider.Input />
+        </Slider.Thumb>
+      </Slider.Track>
+    </Slider>
+  );
+}
+```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .SliderRoot {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      user-select: none;
-      touch-action: none;
-      width: 200px;
-    }
+```css title="style.css" tab
+.SliderRoot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  touch-action: none;
+  width: 200px;
+}
 
-    .SliderTrack {
-      background-color: hsl(240 6% 90%);
-      position: relative;
-      border-radius: 9999px;
-      height: 8px;
-      width: 100%;
-    }
+.SliderTrack {
+  background-color: hsl(240 6% 90%);
+  position: relative;
+  border-radius: 9999px;
+  height: 8px;
+  width: 100%;
+}
 
-    .SliderRange {
-      position: absolute;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      height: 100%;
-    }
+.SliderRange {
+  position: absolute;
+  background-color: hsl(200 98% 39%);
+  border-radius: 9999px;
+  height: 100%;
+}
 
-    .SliderThumb {
-      display: block;
-      width: 16px;
-      height: 16px;
-      background-color: hsl(200 98% 39%);
-      border-radius: 9999px;
-      top: -4px;
-    }
+.SliderThumb {
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-color: hsl(200 98% 39%);
+  border-radius: 9999px;
+  top: -4px;
+}
 
-    .SliderThumb:hover {
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:hover {
+  box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderThumb:focus {
-      outline: none;
-      box-shadow: 0 0 0 5px #2a91fe98;
-    }
+.SliderThumb:focus {
+  outline: none;
+  box-shadow: 0 0 0 5px #2a91fe98;
+}
 
-    .SliderLabel {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-    }
-    ```
+.SliderLabel {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+```
 
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+
 
 ## Usage
 
@@ -168,14 +156,7 @@ The slider consists of:
 <MultipleThumbsExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
+```tsx title="index.tsx" tab
     import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
@@ -200,9 +181,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
+```css title="style.css" tab
     .SliderRoot {
       position: relative;
       display: flex;
@@ -253,9 +232,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+
 
 ### Modify step size
 
@@ -264,14 +241,7 @@ The slider consists of:
 <StepExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
+```tsx title="index.tsx" tab
     import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
@@ -328,9 +298,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
+```css title="style.css" tab
     .SliderRoot {
       position: relative;
       display: flex;
@@ -381,9 +349,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+
 
 ### Steps between thumbs
 
@@ -392,14 +358,7 @@ The slider consists of:
 <MinStepsBetweenExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
+```tsx title="index.tsx" tab
     import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
@@ -424,9 +383,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
+```css title="style.css" tab
     .SliderRoot {
       position: relative;
       display: flex;
@@ -477,9 +434,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+
 
 ### Vertical Slider
 
@@ -488,14 +443,7 @@ The slider consists of:
 <VerticalSliderExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
+```tsx title="index.tsx" tab
     import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
@@ -517,9 +465,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
+```css title="style.css" tab
     .SliderRoot {
       position: relative;
       display: flex;
@@ -570,9 +516,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+
 
 ### Custom Value Label
 
@@ -581,14 +525,7 @@ The slider consists of:
 <CustomValueLabelExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
+```tsx title="index.tsx" tab
     import { Slider } from "@kobalte/core/slider";
     import "./style.css";
 
@@ -618,9 +555,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
+```css title="style.css" tab
     .SliderRoot {
       position: relative;
       display: flex;
@@ -671,9 +606,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+
 
 ### Controlled Value
 
@@ -682,14 +615,7 @@ The slider consists of:
 <ControlledExample />
 :::
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-{/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
+```tsx title="index.tsx" tab
     import { createSignal } from 'solid-js'
     import { Slider } from "@kobalte/core/slider";
     import "./style.css";
@@ -714,9 +640,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
+```css title="style.css" tab
     .SliderRoot {
       position: relative;
       display: flex;
@@ -767,9 +691,7 @@ The slider consists of:
     }
     ```
 
-  </TabsSnippets.Content>
-{/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+
 ## API Reference
 
 ### Slider
