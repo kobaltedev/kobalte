@@ -201,6 +201,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -301,6 +302,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -412,6 +414,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -512,6 +515,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -601,6 +605,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -693,6 +698,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -782,6 +788,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("3");
@@ -874,6 +881,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("3");
@@ -1508,6 +1516,7 @@ describe("Select", () => {
 			await Promise.resolve();
 
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -1664,6 +1673,7 @@ describe("Select", () => {
 			expect(onOpenChange).toHaveBeenCalledWith(false);
 
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 		});
@@ -2187,6 +2197,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -2266,6 +2277,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("One");
@@ -2435,6 +2447,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -2553,6 +2566,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -2633,6 +2647,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Two");
@@ -2728,6 +2743,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Two");
@@ -2813,6 +2829,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("One");
@@ -2905,6 +2922,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -3091,6 +3109,7 @@ describe("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Two");

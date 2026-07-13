@@ -14,7 +14,7 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, Show } from "solid-js";
+import { type Component, createEffect, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -111,6 +111,15 @@ export function SelectContent<T extends ValidComponent = "div">(
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
+	const onFinalFocus = (e: Event) => {
+		props.onCloseAutoFocus?.(e);
+
+		if (!e.defaultPrevented) {
+			focusWithoutScrolling(context.triggerRef());
+			e.preventDefault();
+		}
+	};
+
 	createFocusTrap({
 		element: () => ref,
 		enabled: () => context.isOpen() && context.isModal(),
@@ -118,15 +127,30 @@ export function SelectContent<T extends ValidComponent = "div">(
 			// We prevent open autofocus because it's handled by the `Listbox`.
 			e.preventDefault();
 		},
-		onFinalFocus: (e) => {
-			props.onCloseAutoFocus?.(e);
-
-			if (!e.defaultPrevented) {
-				focusWithoutScrolling(context.triggerRef());
-				e.preventDefault();
-			}
-		},
+		onFinalFocus,
 	});
+
+	// `createFocusTrap`'s `enabled` flag gates both Tab-trapping AND focus
+	// restoration behind modal mode, so a non-modal select (Select's default)
+	// never gets `onFinalFocus`. Restore focus to the trigger ourselves when
+	// content closes while non-modal.
+	createEffect(
+		() => context.contentPresent() && !context.isModal(),
+		(isNonModalAndPresent) => {
+			if (!isNonModalAndPresent) {
+				return;
+			}
+
+			return () => {
+				onFinalFocus(
+					new CustomEvent("selectCloseAutoFocus", {
+						bubbles: false,
+						cancelable: true,
+					}),
+				);
+			};
+		},
+	);
 
 	return (
 		<Show when={context.contentPresent()}>

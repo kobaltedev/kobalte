@@ -104,6 +104,12 @@ export function createSelectableCollection<
 
 	const { direction } = useLocale();
 
+	// Set while `tryAutoFocus` synchronously focuses the collection itself
+	// (no specific item), so `onFocusIn` below can recognize the resulting
+	// native focus event as self-inflicted rather than a real user
+	// tabbing-in, and skip its own "auto-focus first item" logic for it.
+	let isSelfFocusing = false;
+
 	// Store the scroll position, so we can restore it later.
 	let scrollPos = { top: 0, left: 0 };
 	createEventListener(
@@ -357,6 +363,12 @@ export function createSelectableCollection<
 	};
 
 	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+		// This is `tryAutoFocus` focusing the collection itself; it already
+		// set `isFocused`/`focusedKey` as intended, so skip re-deriving them.
+		if (isSelfFocusing) {
+			return;
+		}
+
 		const manager = access(mergedProps.selectionManager);
 		const delegate = access(mergedProps.keyboardDelegate);
 		const selectOnFocus = access(mergedProps.selectOnFocus);
@@ -488,7 +500,17 @@ export function createSelectableCollection<
 			focusedKey == null &&
 			!access(mergedProps.shouldUseVirtualFocus)
 		) {
+			// `focusWithoutScrolling` below synchronously dispatches a native
+			// focus event back into this same collection's `onFocusIn`. Solid
+			// batches the `setFocused(true)` write above, so without this guard
+			// `onFocusIn` would read stale (pre-write) state and re-run its own
+			// "auto-focus first item" logic, stealing focus from the collection
+			// itself. A local flag (rather than a global `flush()`) avoids
+			// forcing unrelated pending effects elsewhere to run before their
+			// DOM refs are ready (e.g. Menu's own deferred submenu auto-focus).
+			isSelfFocusing = true;
 			focusWithoutScrolling(refEl);
+			isSelfFocusing = false;
 		}
 	};
 

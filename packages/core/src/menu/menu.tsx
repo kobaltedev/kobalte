@@ -261,7 +261,7 @@ export function Menu(props: MenuProps) {
 			if (!state) return;
 			if (state.menubarValue === state.rootValue) {
 				state.trigger?.focus();
-				if (state.autoFocus) open(true);
+				if (state.autoFocus) open("first");
 			} else {
 				close();
 			}
