@@ -91,7 +91,7 @@
 	"devDependencies": {
 		"@kobalte/tests": "workspace:*",
 		"tsdown": "0.22.7",
-		"typescript": "6.0.3",
+		"typescript": "7.0.2",
 		"unplugin-solid": "1.0.0"
 	},
 	"peerDependencies": {
