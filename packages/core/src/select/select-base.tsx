@@ -32,32 +32,32 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
-import { createCollator } from "../i18n";
-import { createListState, ListKeyboardDelegate } from "../list";
+} from "../form-control/index.ts";
+import { createCollator } from "../i18n/index.tsx";
+import { createListState, ListKeyboardDelegate } from "../list/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { Popper, type PopperRootOptions } from "../popper";
+} from "../polymorphic/index.tsx";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
 import {
 	type CollectionNode,
 	createDisclosureState,
 	createRegisterId,
-} from "../primitives";
+} from "../primitives/index.ts";
 import {
 	type FocusStrategy,
 	type KeyboardDelegate,
 	Selection,
 	type SelectionBehavior,
 	type SelectionMode,
-} from "../selection";
+} from "../selection/index.ts";
 import {
 	SelectContext,
 	type SelectContextValue,
 	type SelectDataSet,
-} from "./select-context";
+} from "./select-context.tsx";
 
 export interface SelectBaseItemComponentProps<T> {
 	/** The item to render. */

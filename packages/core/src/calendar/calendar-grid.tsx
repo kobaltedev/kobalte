@@ -16,18 +16,18 @@ import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createMemo, omit } from "solid-js";
 
-import { createDateFormatter } from "../i18n";
+import { createDateFormatter } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useCalendarContext } from "./calendar-context";
+} from "../polymorphic/index.tsx";
+import { useCalendarContext } from "./calendar-context.tsx";
 import {
 	CalendarGridContext,
 	type CalendarGridContextValue,
-} from "./calendar-grid-context";
-import { getVisibleRangeDescription } from "./utils";
+} from "./calendar-grid-context.tsx";
+import { getVisibleRangeDescription } from "./utils.ts";
 
 export interface CalendarGridOptions {
 	/**

@@ -1,7 +1,7 @@
 import { type ComponentProps, Portal } from "@solidjs/web";
 import { Show } from "solid-js";
 
-import { useMenuContext } from "./menu-context";
+import { useMenuContext } from "./menu-context.tsx";
 
 export interface MenuPortalProps extends ComponentProps<typeof Portal> {}
 

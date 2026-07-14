@@ -1,6 +1,6 @@
 import { type Accessor, createContext, useContext } from "solid-js";
 
-import type { DateValue } from "./types";
+import type { DateValue } from "./types.ts";
 
 export interface CalendarGridBodyCellContextValue {
 	date: Accessor<DateValue>;

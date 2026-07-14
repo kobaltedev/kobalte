@@ -7,7 +7,7 @@
  */
 
 import { type Accessor, createContext, useContext } from "solid-js";
-import type { ResizableSize, ResizeStrategy } from "./resizable-lib";
+import type { ResizableSize, ResizeStrategy } from "./resizable-lib.ts";
 
 export interface ResizablePanelContextValue {
 	/** Current size of the panel as a fraction (0–1). */

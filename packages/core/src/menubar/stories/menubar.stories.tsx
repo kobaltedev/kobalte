@@ -19,7 +19,7 @@ import {
 	SubContent,
 	SubTrigger,
 	Trigger,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Menubar",

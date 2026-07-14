@@ -1,15 +1,15 @@
 import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 import {
 	MenuItemBase,
 	type MenuItemBaseCommonProps,
 	type MenuItemBaseOptions,
 	type MenuItemBaseRenderProps,
-} from "./menu-item-base";
-import { useMenuRadioGroupContext } from "./menu-radio-group-context";
+} from "./menu-item-base.tsx";
+import { useMenuRadioGroupContext } from "./menu-radio-group-context.tsx";
 
 export interface MenuRadioItemOptions<TValue = string>
 	extends Omit<MenuItemBaseOptions, "checked" | "indeterminate"> {

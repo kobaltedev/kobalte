@@ -13,7 +13,7 @@ import {
 	createNumberFormatter,
 	I18nProvider,
 	useLocale,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Primitives/I18n",

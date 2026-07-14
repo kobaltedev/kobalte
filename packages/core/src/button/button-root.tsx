@@ -20,9 +20,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createTagName } from "../primitives";
-import { isButton } from "./is-button";
+} from "../polymorphic/index.tsx";
+import { createTagName } from "../primitives/index.ts";
+import { isButton } from "./is-button.ts";
 
 export interface ButtonRootOptions {}
 

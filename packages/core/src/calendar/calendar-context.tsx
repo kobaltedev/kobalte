@@ -2,9 +2,9 @@ import type { CalendarDate, DateDuration } from "@internationalized/date";
 import type { RangeValue, ValidationState } from "@kobalte/utils";
 import { type Accessor, createContext, useContext } from "solid-js";
 
-import type { Direction } from "../i18n";
-import type { CalendarIntlTranslations } from "./calendar.intl";
-import type { CalendarSelectionMode, DateValue } from "./types";
+import type { Direction } from "../i18n/index.tsx";
+import type { CalendarIntlTranslations } from "./calendar.intl.ts";
+import type { CalendarSelectionMode, DateValue } from "./types.ts";
 
 export interface CalendarDataSet {}
 

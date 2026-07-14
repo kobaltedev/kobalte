@@ -14,7 +14,7 @@ import {
 	FormControlDescription as Description,
 	FormControlErrorMessage as ErrorMessage,
 	FormControlLabel as Label,
-} from "../form-control";
+} from "../form-control/index.ts";
 
 import {
 	type NumberFieldDecrementTriggerCommonProps as ColorChannelFieldDecrementTriggerCommonProps,
@@ -34,14 +34,14 @@ import {
 	HiddenInput,
 	IncrementTrigger,
 	Input,
-} from "../number-field";
+} from "../number-field/index.tsx";
 import {
 	type ColorChannelFieldRootCommonProps,
 	type ColorChannelFieldRootOptions,
 	type ColorChannelFieldRootProps,
 	type ColorChannelFieldRootRenderProps,
 	ColorChannelFieldRoot as Root,
-} from "./color-channel-field-root";
+} from "./color-channel-field-root.tsx";
 
 export type {
 	ColorChannelFieldDecrementTriggerCommonProps,

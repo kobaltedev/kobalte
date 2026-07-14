@@ -6,8 +6,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type PopoverDataSet, usePopoverContext } from "./popover-context";
+} from "../polymorphic/index.tsx";
+import { type PopoverDataSet, usePopoverContext } from "./popover-context.tsx";
 
 export interface PopoverTitleOptions {}
 

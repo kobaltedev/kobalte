@@ -5,13 +5,13 @@ import { createMemo, createSignal, omit } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useColorWheelContext } from "./color-wheel-context";
+} from "../polymorphic/index.tsx";
+import { useColorWheelContext } from "./color-wheel-context.tsx";
 
 export interface ColorWheelTrackOptions {}
 

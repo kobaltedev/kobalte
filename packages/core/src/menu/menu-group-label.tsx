@@ -14,8 +14,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useMenuGroupContext } from "./menu-group-context";
+} from "../polymorphic/index.tsx";
+import { useMenuGroupContext } from "./menu-group-context.tsx";
 
 export interface MenuGroupLabelOptions {}
 

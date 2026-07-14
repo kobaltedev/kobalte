@@ -2,6 +2,10 @@ packages:
   - apps/*
   - packages/*
 overrides:
+  # unplugin-solid@1.0.0's own babel-preset-solid dependency (^1.9.9) predates
+  # Solid 2.0's rename of the `use:` directive runtime helper (`use` ->
+  # `ref`/`applyRef`), which crashes at runtime against @solidjs/web@2.x.
+  "babel-preset-solid": "2.0.0-beta.15"
   "@solidjs/testing-library": "1.0.0-beta.2"
   "@solid-primitives/a11y": "next"
   "@solid-primitives/controlled-signal": "1.0.0-next.1"
@@ -49,3 +53,5 @@ minimumReleaseAgeExclude:
   - '@solid-primitives/trigger@3.0.0-next.0'
   - '@solid-primitives/upload@1.0.0-next.0'
   - '@solid-primitives/utils@7.0.0-next.0'
+  - rolldown-plugin-dts@0.27.8
+  - tsdown@0.22.7

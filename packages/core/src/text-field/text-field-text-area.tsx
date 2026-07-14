@@ -14,14 +14,14 @@ import {
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, createEffect, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
-import { useTextFieldContext } from "./text-field-context";
+import { useTextFieldContext } from "./text-field-context.tsx";
 import {
 	TextFieldInputBase,
 	type TextFieldInputCommonProps,
 	type TextFieldInputRenderProps,
-} from "./text-field-input";
+} from "./text-field-input.tsx";
 
 export interface TextFieldTextAreaOptions {
 	/** Whether the textarea should adjust its height when the value changes. */

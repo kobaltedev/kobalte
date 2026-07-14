@@ -2,8 +2,8 @@ import { combineStyle } from "@solid-primitives/props";
 import { createResizeObserver } from "@solid-primitives/resize-observer";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createEffect, createSignal, omit } from "solid-js";
-import { Polymorphic, type PolymorphicProps } from "../polymorphic";
-import { useSegmentedControlContext } from "./segmented-control-context";
+import { Polymorphic, type PolymorphicProps } from "../polymorphic/index.tsx";
+import { useSegmentedControlContext } from "./segmented-control-context.tsx";
 
 export interface SegmentedControlIndicatorOptions {}
 

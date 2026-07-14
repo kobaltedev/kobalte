@@ -19,10 +19,10 @@ import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
-import { type SelectDataSet, useSelectContext } from "./select-context";
+} from "../dismissable-layer/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
+import { type SelectDataSet, useSelectContext } from "./select-context.tsx";
 
 export interface SelectContentOptions {
 	/**

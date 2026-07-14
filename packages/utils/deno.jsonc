@@ -1,0 +1,22 @@
+{
+	"name": "@kobalte/utils",
+	"version": "0.9.2",
+	"description": "Common utilities and types for Kobalte.",
+	"license": "MIT",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"publish": {
+		"include": [
+			"README.md",
+			"src/**/*.ts",
+			"src/**/*.tsx",
+			"package.json"
+		],
+		"exclude": [
+			"dist",
+			"node_modules",
+			"tsconfig.json"
+		]
+	}
+}

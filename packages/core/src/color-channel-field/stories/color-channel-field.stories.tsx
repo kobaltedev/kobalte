@@ -10,7 +10,7 @@ import {
 	Input,
 	Label,
 	Root,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/ColorChannelField",

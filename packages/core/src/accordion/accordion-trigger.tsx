@@ -15,14 +15,14 @@ import {
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, createEffect, omit } from "solid-js";
 
-import * as Collapsible from "../collapsible";
-import { useCollapsibleContext } from "../collapsible/collapsible-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { createSelectableItem } from "../selection";
-import { useAccordionContext } from "./accordion-context";
-import { useAccordionItemContext } from "./accordion-item-context";
+import * as Collapsible from "../collapsible/index.tsx";
+import { useCollapsibleContext } from "../collapsible/collapsible-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import { createSelectableItem } from "../selection/index.ts";
+import { useAccordionContext } from "./accordion-context.tsx";
+import { useAccordionItemContext } from "./accordion-item-context.tsx";
 
 export interface AccordionTriggerOptions {}
 
