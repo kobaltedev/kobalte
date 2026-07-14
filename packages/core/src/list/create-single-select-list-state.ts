@@ -13,13 +13,13 @@ import {
 	type CollectionBase,
 	type CollectionNode,
 	createControllableSignal,
-} from "../primitives";
-import type { SingleSelection } from "../selection";
+} from "../primitives/index.ts";
+import type { SingleSelection } from "../selection/index.ts";
 import {
 	type CreateListStateProps,
 	createListState,
 	type ListState,
-} from "./create-list-state";
+} from "./create-list-state.ts";
 
 export interface CreateSingleSelectListStateProps
 	extends CollectionBase,

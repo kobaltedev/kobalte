@@ -5,8 +5,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useBreadcrumbsContext } from "./breadcrumbs-context";
+} from "../polymorphic/index.tsx";
+import { useBreadcrumbsContext } from "./breadcrumbs-context.tsx";
 
 export interface BreadcrumbsSeparatorOptions {}
 

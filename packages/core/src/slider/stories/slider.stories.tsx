@@ -10,7 +10,7 @@ import {
 	Thumb,
 	Track,
 	ValueLabel,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Slider",

@@ -12,12 +12,12 @@ export {
 	type ResizableSize,
 	type ResizeStrategy,
 	useResizableContext as useContext,
-} from "./resizable-context";
+} from "./resizable-context.tsx";
 
 export {
 	type ResizablePanelContextValue,
 	useResizablePanelContext as usePanelContext,
-} from "./resizable-panel-context";
+} from "./resizable-panel-context.tsx";
 
 export {
 	ResizableHandle as Handle,
@@ -25,7 +25,7 @@ export {
 	type ResizableHandleOptions as HandleOptions,
 	type ResizableHandleProps as HandleProps,
 	type ResizableHandleRenderProps as HandleRenderProps,
-} from "./resizable-handle";
+} from "./resizable-handle.tsx";
 
 export {
 	ResizablePanel as Panel,
@@ -34,7 +34,7 @@ export {
 	type ResizablePanelOptions as PanelOptions,
 	type ResizablePanelProps as PanelProps,
 	type ResizablePanelRenderProps as PanelRenderProps,
-} from "./resizable-panel";
+} from "./resizable-panel.tsx";
 
 export {
 	ResizableRoot as Root,
@@ -43,15 +43,15 @@ export {
 	type ResizableRootOptions as RootOptions,
 	type ResizableRootProps as RootProps,
 	type ResizableRootRenderProps as RootRenderProps,
-} from "./resizable-root";
+} from "./resizable-root.tsx";
 
-import { ResizableHandle as Handle } from "./resizable-handle";
-import { ResizablePanel as Panel } from "./resizable-panel";
+import { ResizableHandle as Handle } from "./resizable-handle.tsx";
+import { ResizablePanel as Panel } from "./resizable-panel.tsx";
 import {
 	ResizableRoot as Root,
-} from "./resizable-root";
-import { useResizableContext as useContext } from "./resizable-context";
-import { useResizablePanelContext as usePanelContext } from "./resizable-panel-context";
+} from "./resizable-root.tsx";
+import { useResizableContext as useContext } from "./resizable-context.tsx";
+import { useResizablePanelContext as usePanelContext } from "./resizable-panel-context.tsx";
 
 export const Resizable = Object.assign(Root, {
 	Handle,

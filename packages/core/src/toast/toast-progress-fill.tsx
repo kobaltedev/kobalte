@@ -5,9 +5,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useToastContext } from "./toast-context";
-import { useToastRegionContext } from "./toast-region-context";
+} from "../polymorphic/index.tsx";
+import { useToastContext } from "./toast-context.tsx";
+import { useToastRegionContext } from "./toast-region-context.tsx";
 
 export interface ToastProgressFillOptions {}
 

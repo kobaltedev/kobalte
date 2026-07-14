@@ -14,8 +14,8 @@
 
 import {
 	type CalendarDate,
+	DateFormatter,
 	type DateDuration,
-	type DateFormatter,
 	endOfMonth,
 	endOfWeek,
 	isSameDay,
@@ -26,11 +26,26 @@ import {
 	startOfYear,
 	toCalendarDate,
 } from "@internationalized/date";
-import type { RangeValue } from "@kobalte/utils";
+import { type MaybeAccessor, access, type RangeValue } from "@kobalte/utils";
+import { type Accessor, createMemo } from "solid-js";
 
-import { createDateFormatter } from "../i18n";
-import type { CalendarIntlTranslations } from "./calendar.intl";
-import type { CalendarSelectionMode, DateAlignment, DateValue } from "./types";
+import { useLocale } from "../i18n/i18n-provider.tsx";
+import { createDateFormatter } from "../i18n/index.tsx";
+import type { CalendarIntlTranslations } from "./calendar.intl.ts";
+import type { CalendarSelectionMode, DateAlignment, DateValue } from "./types.ts";
+
+/**
+ * Like `createDateFormatter`, but returns `@internationalized/date`'s richer
+ * `DateFormatter` (needed by `formatRange`'s `formatRangeToParts` below)
+ * instead of the plain `Intl.DateTimeFormat` the shared i18n primitive uses.
+ */
+function createRangeDateFormatter(
+	options: MaybeAccessor<Intl.DateTimeFormatOptions>,
+): Accessor<DateFormatter> {
+	const { locale } = useLocale();
+
+	return createMemo(() => new DateFormatter(locale(), access(options)));
+}
 
 
 export function constrainStart(
@@ -47,14 +62,14 @@ export function constrainStart(
 		computedDate = maxDate(
 			computedDate,
 			alignStart(toCalendarDate(min), duration, locale),
-		);
+		) as DateValue;
 	}
 
 	if (max && date.compare(max) <= 0) {
 		computedDate = minDate(
 			computedDate,
 			alignEnd(toCalendarDate(max), duration, locale),
-		);
+		) as DateValue;
 	}
 
 	return computedDate;
@@ -68,11 +83,11 @@ export function constrainValue(
 	let computedDate = date;
 
 	if (min) {
-		computedDate = maxDate(computedDate, toCalendarDate(min));
+		computedDate = maxDate(computedDate, toCalendarDate(min)) as DateValue;
 	}
 
 	if (max) {
-		computedDate = minDate(computedDate, toCalendarDate(max));
+		computedDate = minDate(computedDate, toCalendarDate(max)) as DateValue;
 	}
 
 	return computedDate;
@@ -445,7 +460,7 @@ export function getSelectedDateRangeDescription(
 	const end = highlightedRange.end;
 
 	if (!anchorDate && start && end) {
-		const dateFormatter = createDateFormatter(() => ({
+		const dateFormatter = createRangeDateFormatter(() => ({
 			weekday: "long",
 			month: "long",
 			year: "numeric",
@@ -483,7 +498,7 @@ export function getVisibleRangeDescription(
 ) {
 	const era = getEraFormat(startDate) || getEraFormat(endDate);
 
-	const monthFormatter = createDateFormatter(() => ({
+	const monthFormatter = createRangeDateFormatter(() => ({
 		month: "long",
 		year: "numeric",
 		era,
@@ -491,7 +506,7 @@ export function getVisibleRangeDescription(
 		timeZone,
 	}));
 
-	const dateFormatter = createDateFormatter(() => ({
+	const dateFormatter = createRangeDateFormatter(() => ({
 		month: "long",
 		year: "numeric",
 		day: "numeric",
@@ -701,8 +716,8 @@ export function getSectionEnd(
 
 	if (visibleDuration.weeks) {
 		return adjust({
-			//@ts-expect-error - endOfWeek is loosely typed
-			focusedDate: endOfWeek(focusedDate, locale),
+			// endOfWeek's overloads don't distribute over the DateValue union.
+			focusedDate: endOfWeek(focusedDate as any, locale) as DateValue,
 			startDate,
 		});
 	}

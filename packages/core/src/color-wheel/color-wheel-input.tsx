@@ -10,8 +10,8 @@ import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
-} from "../form-control";
-import { useColorWheelContext } from "./color-wheel-context";
+} from "../form-control/index.ts";
+import { useColorWheelContext } from "./color-wheel-context.tsx";
 
 export interface ColorWheelInputProps extends ComponentProps<"input"> {
 	style?: JSX.CSSProperties | string;

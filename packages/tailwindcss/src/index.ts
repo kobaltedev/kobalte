@@ -6,7 +6,15 @@
  * https://github.com/tailwindlabs/headlessui/blob/8e1e19f94c28af68c05becc80bf89575e1fa1d36/packages/@headlessui-tailwindcss/src/index.ts
  */
 
-import plugin from "tailwindcss/plugin";
+import plugin, { type PluginWithConfig } from "tailwindcss/plugin";
+
+// `tailwindcss/plugin` doesn't publicly re-export `PluginWithOptions`, so this
+// mirrors its shape using only publicly exported types, giving `tsdown`'s dts
+// generation a nameable annotation instead of an unexported internal type.
+type PluginWithOptions<T> = {
+	(options?: T): PluginWithConfig;
+	__isOptionsFunction: true;
+};
 
 const STATES = [
 	"valid",
@@ -36,8 +44,8 @@ export interface KobalteTailwindPluginOptions {
 	prefix?: string;
 }
 
-export default plugin.withOptions<KobalteTailwindPluginOptions>(
-	({ prefix = "ui" } = {}) => {
+const kobaltePlugin: PluginWithOptions<KobalteTailwindPluginOptions> =
+	plugin.withOptions<KobalteTailwindPluginOptions>(({ prefix = "ui" } = {}) => {
 		return ({ addVariant }) => {
 			for (const state of STATES) {
 				addVariant(`${prefix}-${state}`, [`&[data-${state}]`]);
@@ -101,5 +109,6 @@ export default plugin.withOptions<KobalteTailwindPluginOptions>(
 				);
 			}
 		};
-	},
-);
+	});
+
+export default kobaltePlugin;

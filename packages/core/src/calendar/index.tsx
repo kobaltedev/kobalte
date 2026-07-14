@@ -1,59 +1,59 @@
-import { useCalendarContext as useContext } from "./calendar-context";
+import { useCalendarContext as useContext } from "./calendar-context.tsx";
 import {
 	CalendarBody as Body,
 	type CalendarBodyProps,
-} from "./calendar-body";
+} from "./calendar-body.tsx";
 import {
 	CalendarGrid as Grid,
 	type CalendarGridOptions,
 	type CalendarGridProps,
-} from "./calendar-grid";
+} from "./calendar-grid.tsx";
 import {
 	CalendarGridBody as GridBody,
 	type CalendarGridBodyProps,
-} from "./calendar-grid-body";
+} from "./calendar-grid-body.tsx";
 import {
 	CalendarGridBodyCell as GridBodyCell,
 	type CalendarGridBodyCellProps,
-} from "./calendar-grid-body-cell";
+} from "./calendar-grid-body-cell.tsx";
 import {
 	CalendarGridBodyCellTrigger as GridBodyCellTrigger,
 	type CalendarGridBodyCellTriggerProps,
-} from "./calendar-grid-body-cell-trigger";
+} from "./calendar-grid-body-cell-trigger.tsx";
 import {
 	CalendarGridBodyRow as GridBodyRow,
 	type CalendarGridBodyRowProps,
-} from "./calendar-grid-body-row";
+} from "./calendar-grid-body-row.tsx";
 import {
 	CalendarGridHeader as GridHeader,
 	type CalendarGridHeaderProps,
-} from "./calendar-grid-header";
+} from "./calendar-grid-header.tsx";
 import {
 	CalendarGridHeaderCell as GridHeaderCell,
 	type CalendarGridHeaderCellProps,
-} from "./calendar-grid-header-cell";
+} from "./calendar-grid-header-cell.tsx";
 import {
 	CalendarGridHeaderRow as GridHeaderRow,
 	type CalendarGridHeaderRowProps,
-} from "./calendar-grid-header-row";
+} from "./calendar-grid-header-row.tsx";
 import {
 	CalendarHeader as Header,
 	type CalendarHeaderProps,
-} from "./calendar-header";
+} from "./calendar-header.tsx";
 import {
 	CalendarHeading as Heading,
 	type CalendarHeadingProps,
-} from "./calendar-heading";
+} from "./calendar-heading.tsx";
 import {
 	CalendarNextTrigger as NextTrigger,
 	type CalendarNextTriggerOptions,
 	type CalendarNextTriggerProps,
-} from "./calendar-next-trigger";
+} from "./calendar-next-trigger.tsx";
 import {
 	CalendarPrevTrigger as PrevTrigger,
 	type CalendarPrevTriggerOptions,
 	type CalendarPrevTriggerProps,
-} from "./calendar-prev-trigger";
+} from "./calendar-prev-trigger.tsx";
 import {
 	CalendarRoot as Root,
 	type CalendarMultipleSelectionOptions,
@@ -61,8 +61,8 @@ import {
 	type CalendarRootOptions,
 	type CalendarRootProps,
 	type CalendarSingleSelectionOptions,
-} from "./calendar-root";
-import type { DateAlignment, DateValue } from "./types";
+} from "./calendar-root.tsx";
+import type { DateAlignment, DateValue } from "./types.ts";
 
 export type {
 	CalendarBodyProps,

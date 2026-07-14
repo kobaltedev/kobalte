@@ -1,6 +1,6 @@
 import { createMemo, For, Show } from "solid-js";
 
-import { usePaginationContext } from "./pagination-context";
+import { usePaginationContext } from "./pagination-context.tsx";
 
 export interface PaginationItemsProps {}
 

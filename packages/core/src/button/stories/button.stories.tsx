@@ -1,6 +1,6 @@
 import { createSignal, type ValidComponent } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Button } from "../index";
+import { Button } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Button",

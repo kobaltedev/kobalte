@@ -6,11 +6,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type RatingItemState,
 	useRatingItemContext,
-} from "./rating-item-context";
+} from "./rating-item-context.tsx";
 
 export interface RatingItemControlOptions {
 	/**

@@ -7,11 +7,11 @@ import {
 	type MenuContentCommonProps,
 	type MenuContentOptions,
 	type MenuContentRenderProps,
-} from "../menu";
-import { useMenuRootContext } from "../menu/menu-root-context";
-import { useMenubarContext } from "../menubar/menubar-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useNavigationMenuContext } from "./navigation-menu-context";
+} from "../menu/index.ts";
+import { useMenuRootContext } from "../menu/menu-root-context.tsx";
+import { useMenubarContext } from "../menubar/menubar-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useNavigationMenuContext } from "./navigation-menu-context.tsx";
 
 export type Motion = "to-start" | "to-end" | "from-start" | "from-end";
 

@@ -11,7 +11,7 @@ import { fireEvent, render, within } from "@solidjs/testing-library";
 import { vi } from "vitest";
 
 import * as Search from ".";
-import { DebouncerTimeout } from "./utils";
+import { DebouncerTimeout } from "./utils.ts";
 
 interface DataSourceItem {
 	key: string;

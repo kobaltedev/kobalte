@@ -16,7 +16,7 @@ import {
 	Root,
 	Section,
 	Trigger,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Combobox",

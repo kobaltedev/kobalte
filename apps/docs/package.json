@@ -30,7 +30,7 @@
 	"scripts": {
 		"build": "vite build",
 		"build:dev": "DEVELOPMENT=1 vite build",
-		"clean": "rm -rf .solid && rm -rf netlify && rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+		"clean": "rm -rf .solid && rm -rf netlify && rm -rf node_modules && rm -rf dist",
 		"dev": "vite dev"
 	},
 	"dependencies": {
@@ -50,6 +50,6 @@
 		"@iconify-json/ri": "^1.2.10"
 	},
 	"engines": {
-		"node": ">=22"
+		"node": "^22.18.0 || >=24.11.0"
 	}
 }

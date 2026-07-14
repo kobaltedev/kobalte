@@ -6,7 +6,7 @@ import {
 } from "@solid-primitives/utils/colors";
 import { createSignal, For } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Root } from "../index";
+import { Root } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/ColorSwatch",

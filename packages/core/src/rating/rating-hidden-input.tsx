@@ -1,8 +1,8 @@
 import { visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps } from "@solidjs/web";
 
-import { useFormControlContext } from "../form-control";
-import { useRatingContext } from "./rating-context";
+import { useFormControlContext } from "../form-control/index.ts";
+import { useRatingContext } from "./rating-context.tsx";
 
 export interface RatingHiddenInputProps extends ComponentProps<"input"> {}
 

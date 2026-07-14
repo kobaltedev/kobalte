@@ -13,7 +13,7 @@ import {
 } from "@internationalized/date";
 import { createMemo, createSignal, Show } from "solid-js";
 // biome-ignore lint/style/useImportType: storybook meta helper
-import preview from "../../../../../.storybook/preview";
+import preview from "../../../../../.storybook/preview.ts";
 import {
 	Body,
 	Grid,
@@ -29,9 +29,9 @@ import {
 	NextTrigger,
 	PrevTrigger,
 	Root,
-} from "../index";
-import { Popover } from "../../popover";
-import type { DateValue } from "../types";
+} from "../index.tsx";
+import { Popover } from "../../popover/index.tsx";
+import type { DateValue } from "../types.ts";
 import type { RangeValue } from "@kobalte/utils";
 
 const meta = preview.meta({
