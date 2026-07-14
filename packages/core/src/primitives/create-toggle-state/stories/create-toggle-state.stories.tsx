@@ -28,17 +28,19 @@ function ToggleButton(props: {
 	return (
 		<button
 			type="button"
-			aria-pressed={state.isSelected()}
+			aria-pressed={state.isSelected() ? "true" : "false"}
 			onClick={state.toggle}
 			disabled={props.isDisabled}
-			class="inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium font-sans transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-			classList={{
-				"border-blue-500 bg-blue-50 text-blue-700": state.isSelected(),
-				"border-slate-200 bg-white text-slate-700 hover:bg-slate-50":
-					!state.isSelected(),
-				"opacity-50 cursor-not-allowed": !!props.isDisabled,
-				"cursor-default": !!props.isReadOnly,
-			}}
+			class={[
+				"inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm font-medium font-sans transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+				{
+					"border-blue-500 bg-blue-50 text-blue-700": state.isSelected(),
+					"border-slate-200 bg-white text-slate-700 hover:bg-slate-50":
+						!state.isSelected(),
+					"opacity-50 cursor-not-allowed": !!props.isDisabled,
+					"cursor-default": !!props.isReadOnly,
+				},
+			]}
 		>
 			{props.label}
 			<span class="text-xs opacity-60">
@@ -135,13 +137,15 @@ export const Toolbar = meta.story({
 				{tools.map(({ label, state }) => (
 					<button
 						type="button"
-						aria-pressed={state.isSelected()}
+						aria-pressed={state.isSelected() ? "true" : "false"}
 						onClick={state.toggle}
-						class="rounded px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-						classList={{
-							"bg-blue-50 text-blue-700": state.isSelected(),
-							"text-slate-600 hover:bg-slate-100": !state.isSelected(),
-						}}
+						class={[
+							"rounded px-3 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+							{
+								"bg-blue-50 text-blue-700": state.isSelected(),
+								"text-slate-600 hover:bg-slate-100": !state.isSelected(),
+							},
+						]}
 					>
 						{label}
 					</button>
