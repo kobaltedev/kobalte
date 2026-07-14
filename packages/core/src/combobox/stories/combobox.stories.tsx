@@ -368,7 +368,7 @@ export const MultiSelect = meta.story({
 
 		return (
 			<div class="flex flex-col gap-3 font-sans">
-				<Root
+				<Root<string>
 					class={wrapClass}
 					options={fruits}
 					multiple
