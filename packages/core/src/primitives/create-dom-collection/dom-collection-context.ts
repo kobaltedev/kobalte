@@ -1,6 +1,6 @@
 import { createContext, useContext } from "solid-js";
 
-import type { DomCollectionItem } from "./types";
+import type { DomCollectionItem } from "./types.ts";
 
 export interface DomCollectionContextValue<
 	T extends DomCollectionItem = DomCollectionItem,

@@ -5,7 +5,7 @@ import {
 	useContext,
 } from "solid-js";
 
-import type { DialogIntlTranslations } from "./dialog.intl";
+import type { DialogIntlTranslations } from "./dialog.intl.ts";
 
 export interface DialogContextValue {
 	translations: Accessor<DialogIntlTranslations>;

@@ -27,20 +27,20 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { type ListState, createListState, createSelectableList } from "../list";
+import { type ListState, createListState, createSelectableList } from "../list/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { Collection, CollectionNode } from "../primitives";
+} from "../polymorphic/index.tsx";
+import type { Collection, CollectionNode } from "../primitives/index.ts";
 import type {
 	FocusStrategy,
 	KeyboardDelegate,
 	SelectionBehavior,
 	SelectionMode,
-} from "../selection";
-import { ListboxContext, type ListboxContextValue } from "./listbox-context";
+} from "../selection/index.ts";
+import { ListboxContext, type ListboxContextValue } from "./listbox-context.tsx";
 
 export interface ListboxRootOptions<Option, OptGroup = never> {
 	/** The controlled value of the listbox. */

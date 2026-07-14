@@ -1,10 +1,10 @@
 import { type Accessor, createContext, useContext } from "solid-js";
 
-import type { ListState } from "../list";
-import type { Placement } from "../popper/utils";
-import type { CollectionItemWithRef } from "../primitives";
-import type { FocusStrategy } from "../selection";
-import type { GraceIntent, Side } from "./utils";
+import type { ListState } from "../list/index.ts";
+import type { Placement } from "../popper/utils.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import type { FocusStrategy } from "../selection/index.ts";
+import type { GraceIntent, Side } from "./utils.ts";
 
 export interface MenuDataSet {
 	"data-expanded": string | undefined;

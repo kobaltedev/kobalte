@@ -4,7 +4,7 @@ import {
 	type AlertRootProps,
 	type AlertRootRenderProps,
 	AlertRoot as Root,
-} from "./alert-root";
+} from "./alert-root.tsx";
 
 export type {
 	AlertRootOptions,

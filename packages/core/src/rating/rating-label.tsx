@@ -1,7 +1,7 @@
 import type { Component, ValidComponent } from "solid-js";
 
-import { FormControlLabel } from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { FormControlLabel } from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 export interface RatingLabelOptions {}
 

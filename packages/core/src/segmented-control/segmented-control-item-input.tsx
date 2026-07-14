@@ -6,15 +6,15 @@ import {
 	splitProps,
 } from "solid-js";
 
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createFormResetListener } from "../primitives";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createFormResetListener } from "../primitives/index.ts";
 import {
 	RadioGroup,
 	type RadioGroupItemInputCommonProps,
 	type RadioGroupItemInputOptions,
 	type RadioGroupItemInputRenderProps,
-} from "../radio-group";
-import { useRadioGroupItemContext } from "../radio-group/radio-group-item-context";
+} from "../radio-group/index.tsx";
+import { useRadioGroupItemContext } from "../radio-group/radio-group-item-context.tsx";
 
 export interface SegmentedControlItemInputOptions
 	extends RadioGroupItemInputOptions {}

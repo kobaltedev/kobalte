@@ -21,11 +21,11 @@ import { combineStyle } from "@solid-primitives/props";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
-import type { PointerDownOutsideEvent } from "../primitives";
-import { type TooltipDataSet, useTooltipContext } from "./tooltip-context";
+} from "../dismissable-layer/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
+import type { PointerDownOutsideEvent } from "../primitives/index.ts";
+import { type TooltipDataSet, useTooltipContext } from "./tooltip-context.tsx";
 
 export interface TooltipContentOptions {
 	/**

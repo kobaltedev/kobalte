@@ -7,16 +7,16 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
-import type { Color, ColorChannel, ColorSpace } from "../colors";
-import { parseColor } from "../colors";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createControllableSignal } from "../primitives/create-controllable-signal";
-import * as Slider from "../slider";
+import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors/index.tsx";
+import type { Color, ColorChannel, ColorSpace } from "../colors/index.tsx";
+import { parseColor } from "../colors/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/create-controllable-signal/index.ts";
+import * as Slider from "../slider/index.tsx";
 import {
 	ColorSliderContext,
 	type ColorSliderContextValue,
-} from "./color-slider-context";
+} from "./color-slider-context.tsx";
 
 export interface ColorSliderRootOptions {
 	/** The controlled values of the slider. */

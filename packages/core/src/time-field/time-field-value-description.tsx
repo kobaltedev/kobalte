@@ -1,5 +1,5 @@
 import { Show, createEffect, onCleanup } from "solid-js";
-import { useTimeFieldContext } from "./time-field-context";
+import { useTimeFieldContext } from "./time-field-context.tsx";
 
 export function TimeFieldValueDescription() {
 	const context = useTimeFieldContext();

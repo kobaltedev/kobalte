@@ -8,8 +8,8 @@
 
 import type { ComponentProps } from "solid-js";
 
-import { HiddenSelectBase } from "../select/hidden-select-base";
-import { useComboboxContext } from "./combobox-context";
+import { HiddenSelectBase } from "../select/hidden-select-base.tsx";
+import { useComboboxContext } from "./combobox-context.tsx";
 
 export type ComboboxHiddenSelectProps = ComponentProps<"select">;
 

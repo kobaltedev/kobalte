@@ -6,11 +6,11 @@ import {
 	createMemo,
 	splitProps,
 } from "solid-js";
-import { useLocale } from "../i18n";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import * as Slider from "../slider";
-import { useSliderContext } from "../slider/slider-context";
-import { useColorSliderContext } from "./color-slider-context";
+import { useLocale } from "../i18n/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import * as Slider from "../slider/index.tsx";
+import { useSliderContext } from "../slider/slider-context.tsx";
+import { useColorSliderContext } from "./color-slider-context.tsx";
 
 export interface ColorSliderTrackOptions extends Slider.SliderTrackOptions {}
 

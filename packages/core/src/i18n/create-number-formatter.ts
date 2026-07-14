@@ -13,7 +13,7 @@ import {
 import { type MaybeAccessor, access } from "@kobalte/utils";
 import { type Accessor, createMemo } from "solid-js";
 
-import { useLocale } from "./i18n-provider";
+import { useLocale } from "./i18n-provider.tsx";
 
 /**
  * Provides localized number formatting for the current locale. Automatically updates when the locale changes,

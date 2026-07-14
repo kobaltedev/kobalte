@@ -20,17 +20,17 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { type Direction, useLocale } from "../i18n";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import type { FocusOutsideEvent } from "../primitives";
+import { type Direction, useLocale } from "../i18n/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import type { FocusOutsideEvent } from "../primitives/index.ts";
 import {
 	MenuContentBase,
 	type MenuContentBaseCommonProps,
 	type MenuContentBaseOptions,
 	type MenuContentBaseRenderProps,
-} from "./menu-content-base";
-import { useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
+} from "./menu-content-base.tsx";
+import { useMenuContext } from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuSubContentOptions
 	extends Omit<

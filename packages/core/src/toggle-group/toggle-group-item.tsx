@@ -12,12 +12,12 @@ import {
 	createUniqueId,
 	splitProps,
 } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { createSelectableItem } from "../selection";
-import * as ToggleButton from "../toggle-button";
-import { useToggleGroupContext } from "./toggle-group-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import { createSelectableItem } from "../selection/index.ts";
+import * as ToggleButton from "../toggle-button/index.tsx";
+import { useToggleGroupContext } from "./toggle-group-context.tsx";
 
 export interface ToggleGroupItemOptions
 	extends Omit<

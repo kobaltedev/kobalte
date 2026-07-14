@@ -18,8 +18,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useImageContext } from "./image-context";
+} from "../polymorphic/index.tsx";
+import { useImageContext } from "./image-context.tsx";
 
 export interface ImageFallbackOptions {}
 

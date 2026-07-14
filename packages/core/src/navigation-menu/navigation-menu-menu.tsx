@@ -7,10 +7,10 @@ import {
 	on,
 	splitProps,
 } from "solid-js";
-import type { MenubarMenuOptions, MenubarMenuProps } from "../menubar";
-import { useMenubarContext } from "../menubar/menubar-context";
-import { MenubarMenu } from "../menubar/menubar-menu";
-import { useNavigationMenuContext } from "./navigation-menu-context";
+import type { MenubarMenuOptions, MenubarMenuProps } from "../menubar/index.tsx";
+import { useMenubarContext } from "../menubar/menubar-context.tsx";
+import { MenubarMenu } from "../menubar/menubar-menu.tsx";
+import { useNavigationMenuContext } from "./navigation-menu-context.tsx";
 
 export interface NavigationMenuMenuOptions extends MenubarMenuOptions {}
 

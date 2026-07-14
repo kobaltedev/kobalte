@@ -16,14 +16,14 @@ import {
 	splitProps,
 } from "solid-js";
 
-import * as Collapsible from "../collapsible";
-import { ElementOf, type PolymorphicProps } from "../polymorphic";
-import { createRegisterId } from "../primitives";
-import { useAccordionContext } from "./accordion-context";
+import * as Collapsible from "../collapsible/index.tsx";
+import { ElementOf, type PolymorphicProps } from "../polymorphic/index.tsx";
+import { createRegisterId } from "../primitives/index.ts";
+import { useAccordionContext } from "./accordion-context.tsx";
 import {
 	AccordionItemContext,
 	type AccordionItemContextValue,
-} from "./accordion-item-context";
+} from "./accordion-item-context.tsx";
 
 export interface AccordionItemOptions {
 	/** A unique value for the item. */

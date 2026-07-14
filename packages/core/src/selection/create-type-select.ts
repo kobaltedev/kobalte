@@ -9,7 +9,7 @@
 import { type MaybeAccessor, access } from "@kobalte/utils";
 import { createSignal } from "solid-js";
 
-import type { KeyboardDelegate, MultipleSelectionManager } from "./types";
+import type { KeyboardDelegate, MultipleSelectionManager } from "./types.ts";
 
 interface CreateTypeSelectProps {
 	/** Whether the type to select should be disabled. */

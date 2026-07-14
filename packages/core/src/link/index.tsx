@@ -4,7 +4,7 @@ import {
 	type LinkRootProps,
 	type LinkRootRenderProps,
 	LinkRoot as Root,
-} from "./link-root";
+} from "./link-root.tsx";
 
 export type {
 	LinkRootOptions,

@@ -28,7 +28,7 @@ import {
 import { type Accessor, createEffect, createSignal, onCleanup } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
+import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack.tsx";
 
 const AUTOFOCUS_ON_MOUNT_EVENT = "focusScope.autoFocusOnMount";
 const AUTOFOCUS_ON_UNMOUNT_EVENT = "focusScope.autoFocusOnUnmount";

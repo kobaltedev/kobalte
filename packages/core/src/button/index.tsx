@@ -4,7 +4,7 @@ import {
 	type ButtonRootProps,
 	type ButtonRootRenderProps,
 	ButtonRoot as Root,
-} from "./button-root";
+} from "./button-root.tsx";
 
 export type {
 	ButtonRootOptions,

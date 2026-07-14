@@ -18,16 +18,16 @@ import {
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
-import { announce, clearAnnouncer } from "../live-announcer";
+import { announce, clearAnnouncer } from "../live-announcer/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	SPIN_BUTTON_INTL_TRANSLATIONS,
 	type SpinButtonIntlTranslations,
-} from "./spin-button.intl";
+} from "./spin-button.intl.ts";
 
 export interface SpinButtonRootOptions {
 	/** The localized strings of the component. */

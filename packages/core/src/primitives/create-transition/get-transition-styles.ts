@@ -8,7 +8,7 @@
 
 import type { JSX } from "solid-js";
 
-import type { TransitionStyles } from "./types";
+import type { TransitionStyles } from "./types.ts";
 
 const TRANSITION_PHASES_MAP = {
 	beforeEnter: "out",

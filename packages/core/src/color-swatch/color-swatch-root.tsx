@@ -6,17 +6,17 @@ import {
 	createUniqueId,
 	splitProps,
 } from "solid-js";
-import { COLOR_INTL_TRANSLATIONS } from "../colors";
-import type { Color } from "../colors";
+import { COLOR_INTL_TRANSLATIONS } from "../colors/index.tsx";
+import type { Color } from "../colors/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	COLOR_SWATCH_INTL_TRANSLATIONS,
 	type ColorSwatchIntlTranslations,
-} from "./color-swatch.intl";
+} from "./color-swatch.intl.ts";
 
 export interface ColorSwatchRootOptions {
 	/** The color value to display in the swatch. */

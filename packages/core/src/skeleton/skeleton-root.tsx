@@ -17,7 +17,7 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
 export interface SkeletonRootOptions {
 	/** Whether the skeleton is visible. Sets data attribute. */

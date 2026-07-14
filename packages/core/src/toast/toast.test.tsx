@@ -3,9 +3,9 @@ import { fireEvent, render } from "@solidjs/testing-library";
 import { vi } from "vitest";
 
 import * as Toast from ".";
-import { I18nProvider } from "../i18n";
-import { toaster } from "./toaster";
-import type { ShowToastOptions } from "./types";
+import { I18nProvider } from "../i18n/index.tsx";
+import { toaster } from "./toaster.ts";
+import type { ShowToastOptions } from "./types.ts";
 
 describe("Toast", () => {
 	installPointerEvent();

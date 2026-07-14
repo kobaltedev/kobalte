@@ -5,10 +5,10 @@ import {
 	type ValidComponent,
 	splitProps,
 } from "solid-js";
-import * as Button from "../button";
+import * as Button from "../button/index.tsx";
 
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { usePaginationContext } from "./pagination-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { usePaginationContext } from "./pagination-context.tsx";
 
 export interface PaginationPreviousOptions {}
 

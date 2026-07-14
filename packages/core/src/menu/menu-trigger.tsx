@@ -24,14 +24,14 @@ import {
 	splitProps,
 } from "solid-js";
 
-import * as Button from "../button";
-import { useLocale } from "../i18n/i18n-provider";
-import type { Direction } from "../i18n/utils";
-import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createTagName } from "../primitives/create-tag-name";
-import { type MenuDataSet, useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
+import * as Button from "../button/index.tsx";
+import { useLocale } from "../i18n/i18n-provider.tsx";
+import type { Direction } from "../i18n/utils.ts";
+import { useOptionalMenubarContext } from "../menubar/menubar-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createTagName } from "../primitives/create-tag-name/index.ts";
+import { type MenuDataSet, useMenuContext } from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuTriggerOptions {}
 

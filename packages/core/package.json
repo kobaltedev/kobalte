@@ -63,7 +63,7 @@
 		"build": "pnpm build:cp && pnpm build:tsup",
 		"build:cp": "cp ../../NOTICE.txt .",
 		"build:tsup": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsup",
-		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
+		"clean": "rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
 		"dev": "vite serve dev --host",
 		"test-old": "jest --passWithNoTests",
 		"test": "vitest run",
@@ -81,7 +81,8 @@
 	"devDependencies": {
 		"@kobalte/tests": "workspace:*",
 		"esbuild-plugin-solid": "^0.5.0",
-		"tsup": "7.2.0"
+		"tsup": "8.5.1",
+		"typescript": "6.0.3"
 	},
 	"peerDependencies": {
 		"solid-js": "^1.8.15"

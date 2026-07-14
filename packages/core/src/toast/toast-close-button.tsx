@@ -14,9 +14,9 @@ import {
 	splitProps,
 } from "solid-js";
 
-import * as Button from "../button";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useToastContext } from "./toast-context";
+import * as Button from "../button/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useToastContext } from "./toast-context.tsx";
 
 export interface ToastCloseButtonOptions {}
 

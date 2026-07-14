@@ -15,15 +15,15 @@ import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	PolymorphicCallbackProps,
 	type PolymorphicProps,
-} from "../polymorphic";
-import * as SpinButton from "../spin-button";
-import { useNumberFieldContext } from "./number-field-context";
+} from "../polymorphic/index.tsx";
+import * as SpinButton from "../spin-button/index.tsx";
+import { useNumberFieldContext } from "./number-field-context.tsx";
 
 export interface NumberFieldInputOptions {}
 

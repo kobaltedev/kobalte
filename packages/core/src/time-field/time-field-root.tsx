@@ -20,32 +20,32 @@ import {
 	FormControlContext,
 	type FormControlDataSet,
 	createFormControl,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	createControllableSignal,
 	createFormResetListener,
 	createRegisterId,
-} from "../primitives";
+} from "../primitives/index.ts";
 import {
 	TimeFieldContext,
 	type TimeFieldContextValue,
-} from "./time-field-context";
-import { TimeFieldValueDescription } from "./time-field-value-description";
+} from "./time-field-context.tsx";
+import { TimeFieldValueDescription } from "./time-field-value-description.tsx";
 import {
 	TIME_FIELD_INTL_MESSAGES,
 	type TimeFieldIntlTranslations,
-} from "./time-field.intl";
+} from "./time-field.intl.ts";
 import type {
 	SegmentType,
 	Time,
 	TimeFieldGranularity,
 	TimeFieldHourCycle,
-} from "./types";
+} from "./types.ts";
 
 export interface TimeFieldRootOptions {
 	/** The current value (controlled). */

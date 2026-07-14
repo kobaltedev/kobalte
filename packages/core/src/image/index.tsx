@@ -4,21 +4,21 @@ import {
 	type ImageFallbackOptions,
 	type ImageFallbackProps,
 	type ImageFallbackRenderProps,
-} from "./image-fallback";
+} from "./image-fallback.tsx";
 import {
 	type ImageImgCommonProps,
 	type ImageImgOptions,
 	type ImageImgProps,
 	type ImageImgRenderProps,
 	ImageImg as Img,
-} from "./image-img";
+} from "./image-img.tsx";
 import {
 	type ImageRootCommonProps,
 	type ImageRootOptions,
 	type ImageRootProps,
 	type ImageRootRenderProps,
 	ImageRoot as Root,
-} from "./image-root";
+} from "./image-root.tsx";
 
 export type {
 	ImageFallbackOptions,
@@ -44,4 +44,4 @@ export const Image = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useImageContext, type ImageContextValue } from "./image-context";
+export { useImageContext, type ImageContextValue } from "./image-context.tsx";

@@ -20,11 +20,11 @@ import {
 	createUniqueId,
 } from "solid-js";
 
-import { createRegisterId } from "../primitives";
+import { createRegisterId } from "../primitives/index.ts";
 import type {
 	FormControlContextValue,
 	FormControlDataSet,
-} from "./form-control-context";
+} from "./form-control-context.tsx";
 
 export interface CreateFormControlProps {
 	/**

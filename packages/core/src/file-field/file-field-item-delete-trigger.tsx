@@ -5,12 +5,12 @@ import {
 	splitProps,
 } from "solid-js";
 
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 import { composeEventHandlers } from "@kobalte/utils";
-import * as Button from "../button";
-import { useFileFieldContext } from "./file-field-context";
-import { useFileFieldItemContext } from "./file-field-item-context";
+import * as Button from "../button/index.tsx";
+import { useFileFieldContext } from "./file-field-context.tsx";
+import { useFileFieldItemContext } from "./file-field-item-context.tsx";
 
 export interface FileFieldItemDeleteTriggerOptions {}
 

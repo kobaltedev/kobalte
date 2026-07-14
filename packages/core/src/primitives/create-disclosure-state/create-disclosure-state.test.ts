@@ -1,7 +1,7 @@
 import { createRoot } from "solid-js";
 import { vi } from "vitest";
 
-import { createDisclosureState } from "./create-disclosure-state";
+import { createDisclosureState } from "./create-disclosure-state.ts";
 
 describe("createDisclosureState", () => {
 	it("can be default 'open' (uncontrolled)", () => {

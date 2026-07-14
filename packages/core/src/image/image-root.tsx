@@ -13,9 +13,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { ImageContext, type ImageContextValue } from "./image-context";
-import type { ImageLoadingStatus } from "./types";
+} from "../polymorphic/index.tsx";
+import { ImageContext, type ImageContextValue } from "./image-context.tsx";
+import type { ImageLoadingStatus } from "./types.ts";
 
 export interface ImageRootOptions {
 	/**

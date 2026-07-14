@@ -8,12 +8,12 @@
 
 import type { Accessor } from "solid-js";
 
-import { focusWithoutScrolling } from "./focus-without-scrolling";
+import { focusWithoutScrolling } from "./focus-without-scrolling.ts";
 import {
 	FOCUSABLE_ELEMENT_SELECTOR,
 	TABBABLE_ELEMENT_SELECTOR,
 	isElementVisible,
-} from "./tabbable";
+} from "./tabbable.ts";
 
 export interface FocusManager {
 	/** Moves focus to the next focusable or tabbable element in the focus scope. */

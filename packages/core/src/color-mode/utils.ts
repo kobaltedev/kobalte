@@ -12,7 +12,7 @@ import type {
 	ColorMode,
 	ColorModeStorageManager,
 	ConfigColorMode,
-} from "./types";
+} from "./types.ts";
 
 export const FALLBACK_COLOR_MODE_VALUE: ConfigColorMode = "system";
 

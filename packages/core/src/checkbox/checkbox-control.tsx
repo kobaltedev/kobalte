@@ -4,13 +4,13 @@ import { type JSX, type ValidComponent, splitProps } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
+} from "../polymorphic/index.tsx";
+import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context.tsx";
 
 export interface CheckboxControlOptions {}
 

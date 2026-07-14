@@ -7,20 +7,20 @@ import {
 	createSignal,
 	splitProps,
 } from "solid-js";
-import type { Color, ColorChannel } from "../colors";
-import { parseColor } from "../colors";
+import type { Color, ColorChannel } from "../colors/index.tsx";
+import { parseColor } from "../colors/index.tsx";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
-import { useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { linearScale } from "../slider/utils";
-import { useColorAreaContext } from "./color-area-context";
+} from "../polymorphic/index.tsx";
+import { linearScale } from "../slider/utils.ts";
+import { useColorAreaContext } from "./color-area-context.tsx";
 
 export interface ColorAreaBackgroundOptions {}
 

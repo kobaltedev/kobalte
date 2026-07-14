@@ -14,15 +14,15 @@ import {
 	type FormControlLabelOptions as SliderLabelOptions,
 	type FormControlLabelProps as SliderLabelProps,
 	type FormControlLabelRenderProps as SliderLabelRenderProps,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	SliderFill as Fill,
 	type SliderFillCommonProps,
 	type SliderFillOptions,
 	type SliderFillProps,
 	type SliderFillRenderProps,
-} from "./slider-fill";
-import { SliderInput as Input, type SliderInputProps } from "./slider-input";
+} from "./slider-fill.tsx";
+import { SliderInput as Input, type SliderInputProps } from "./slider-input.tsx";
 import {
 	SliderRoot as Root,
 	type GetValueLabelParams as SliderGetValueLabelParams,
@@ -30,28 +30,28 @@ import {
 	type SliderRootOptions,
 	type SliderRootProps,
 	type SliderRootRenderProps,
-} from "./slider-root";
+} from "./slider-root.tsx";
 import {
 	type SliderThumbCommonProps,
 	type SliderThumbOptions,
 	type SliderThumbProps,
 	type SliderThumbRenderProps,
 	SliderThumb as Thumb,
-} from "./slider-thumb";
+} from "./slider-thumb.tsx";
 import {
 	type SliderTrackCommonProps,
 	type SliderTrackOptions,
 	type SliderTrackProps,
 	type SliderTrackRenderProps,
 	SliderTrack as Track,
-} from "./slider-track";
+} from "./slider-track.tsx";
 import {
 	type SliderValueLabelCommonProps,
 	type SliderValueLabelOptions,
 	type SliderValueLabelProps,
 	type SliderValueLabelRenderProps,
 	SliderValueLabel as ValueLabel,
-} from "./slider-value-label";
+} from "./slider-value-label.tsx";
 
 export type {
 	SliderDescriptionProps,
@@ -115,4 +115,4 @@ export const Slider = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useSliderContext, type SliderContextValue } from "./slider-context";
+export { useSliderContext, type SliderContextValue } from "./slider-context.tsx";

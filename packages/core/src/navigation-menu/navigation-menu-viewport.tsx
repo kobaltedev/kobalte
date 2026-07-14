@@ -18,20 +18,20 @@ import {
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
+} from "../dismissable-layer/index.ts";
 import {
 	type MenubarDataSet,
 	useMenubarContext,
-} from "../menubar/menubar-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
+} from "../menubar/menubar-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
 import type {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
 	PointerDownOutsideEvent,
-} from "../primitives/create-interact-outside";
-import { createSize } from "../primitives/create-size";
-import { useNavigationMenuContext } from "./navigation-menu-context";
+} from "../primitives/create-interact-outside/index.ts";
+import { createSize } from "../primitives/create-size/index.ts";
+import { useNavigationMenuContext } from "./navigation-menu-context.tsx";
 
 export interface NavigationMenuViewportOptions {
 	/**

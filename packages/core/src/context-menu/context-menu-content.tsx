@@ -13,10 +13,10 @@ import {
 	type MenuContentCommonProps,
 	type MenuContentOptions,
 	type MenuContentRenderProps,
-} from "../menu";
-import { useMenuRootContext } from "../menu/menu-root-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import type { InteractOutsideEvent } from "../primitives";
+} from "../menu/index.ts";
+import { useMenuRootContext } from "../menu/menu-root-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import type { InteractOutsideEvent } from "../primitives/index.ts";
 
 export interface ContextMenuContentOptions extends MenuContentOptions {}
 

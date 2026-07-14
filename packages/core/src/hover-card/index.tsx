@@ -4,30 +4,30 @@ import {
 	type PopperArrowOptions as HoverCardArrowOptions,
 	type PopperArrowProps as HoverCardArrowProps,
 	type PopperArrowRenderProps as HoverCardArrowRenderProps,
-} from "../popper";
+} from "../popper/index.tsx";
 import {
 	HoverCardContent as Content,
 	type HoverCardContentCommonProps,
 	type HoverCardContentOptions,
 	type HoverCardContentProps,
 	type HoverCardContentRenderProps,
-} from "./hover-card-content";
+} from "./hover-card-content.tsx";
 import {
 	type HoverCardPortalProps,
 	HoverCardPortal as Portal,
-} from "./hover-card-portal";
+} from "./hover-card-portal.tsx";
 import {
 	type HoverCardRootOptions,
 	type HoverCardRootProps,
 	HoverCardRoot as Root,
-} from "./hover-card-root";
+} from "./hover-card-root.tsx";
 import {
 	type HoverCardTriggerCommonProps,
 	type HoverCardTriggerOptions,
 	type HoverCardTriggerProps,
 	type HoverCardTriggerRenderProps,
 	HoverCardTrigger as Trigger,
-} from "./hover-card-trigger";
+} from "./hover-card-trigger.tsx";
 
 export type {
 	HoverCardArrowOptions,
@@ -62,4 +62,4 @@ export const HoverCard = Object.assign(Root, {
 export {
 	useHoverCardContext,
 	type HoverCardContextValue,
-} from "./hover-card-context";
+} from "./hover-card-context.tsx";

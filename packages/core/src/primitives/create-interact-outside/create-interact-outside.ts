@@ -24,7 +24,7 @@ import {
 import { type Accessor, createEffect, onCleanup } from "solid-js";
 import { isServer } from "solid-js/web";
 
-import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
+import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack.tsx";
 
 type EventDetails<T> = {
 	originalEvent: T;

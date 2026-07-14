@@ -4,9 +4,9 @@ import {
 	type FormControlDescriptionCommonProps,
 	type FormControlDescriptionProps,
 	type FormControlDescriptionRenderProps,
-} from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
+} from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context.tsx";
 
 export interface CheckboxDescriptionOptions
 	extends FormControlDescriptionProps {}

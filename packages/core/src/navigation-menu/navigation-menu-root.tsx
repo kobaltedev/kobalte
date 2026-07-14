@@ -16,17 +16,17 @@ import type {
 	MenubarRootCommonProps,
 	MenubarRootOptions,
 	MenubarRootRenderProps,
-} from "../menubar";
-import { MenubarRoot } from "../menubar/menubar-root";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper, type PopperRootOptions } from "../popper";
-import type { Placement } from "../popper/utils";
-import { createControllableSignal } from "../primitives/create-controllable-signal";
+} from "../menubar/index.tsx";
+import { MenubarRoot } from "../menubar/menubar-root.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
+import type { Placement } from "../popper/utils.ts";
+import { createControllableSignal } from "../primitives/create-controllable-signal/index.ts";
 import {
 	NavigationMenuContext,
 	type NavigationMenuContextValue,
 	type NavigationMenuDataSet,
-} from "./navigation-menu-context";
+} from "./navigation-menu-context.tsx";
 
 export interface NavigationMenuRootOptions
 	extends MenubarRootOptions,

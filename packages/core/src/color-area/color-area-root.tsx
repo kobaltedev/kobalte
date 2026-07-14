@@ -13,30 +13,30 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { parseColor } from "../colors";
-import type { Color, ColorChannel, ColorSpace } from "../colors/types";
+import { parseColor } from "../colors/index.tsx";
+import type { Color, ColorChannel, ColorSpace } from "../colors/types.ts";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
 	createFormControl,
-} from "../form-control";
-import { useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createFormResetListener } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createFormResetListener } from "../primitives/index.ts";
 import {
 	ColorAreaContext,
 	type ColorAreaContextValue,
-} from "./color-area-context";
+} from "./color-area-context.tsx";
 import {
 	COLOR_AREA_INTL_TRANSLATIONS,
 	type ColorAreaIntlTranslations,
-} from "./color-area.intl";
-import { createColorAreaState } from "./create-color-area-state";
+} from "./color-area.intl.ts";
+import { createColorAreaState } from "./create-color-area-state.ts";
 
 export interface ColorAreaRootOptions {
 	/** The localized strings of the component. */

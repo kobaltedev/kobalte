@@ -8,8 +8,8 @@
 
 import type { ComponentProps } from "solid-js";
 
-import { HiddenSelectBase } from "./hidden-select-base";
-import { useSelectContext } from "./select-context";
+import { HiddenSelectBase } from "./hidden-select-base.tsx";
+import { useSelectContext } from "./select-context.tsx";
 
 export type SelectHiddenSelectProps = ComponentProps<"select">;
 

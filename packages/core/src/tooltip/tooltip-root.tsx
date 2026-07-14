@@ -34,15 +34,15 @@ import {
 import { isServer } from "solid-js/web";
 
 import createPresence from "solid-presence";
-import { Popper, type PopperRootOptions } from "../popper";
-import type { Placement } from "../popper/utils";
-import { createDisclosureState, createRegisterId } from "../primitives";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
+import type { Placement } from "../popper/utils.ts";
+import { createDisclosureState, createRegisterId } from "../primitives/index.ts";
 import {
 	TooltipContext,
 	type TooltipContextValue,
 	type TooltipDataSet,
-} from "./tooltip-context";
-import { getTooltipSafeArea } from "./utils";
+} from "./tooltip-context.tsx";
+import { getTooltipSafeArea } from "./utils.ts";
 
 const tooltips: any = {};
 let tooltipsCounter = 0;

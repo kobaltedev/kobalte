@@ -31,13 +31,13 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal, createInteractOutside } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createControllableSignal, createInteractOutside } from "../primitives/index.ts";
 import {
 	MenubarContext,
 	type MenubarContextValue,
 	type MenubarDataSet,
-} from "./menubar-context";
+} from "./menubar-context.tsx";
 
 export interface MenubarRootOptions {
 	/** The value of the menu that should be open when initially rendered. Use when you do not need to control the value state. */

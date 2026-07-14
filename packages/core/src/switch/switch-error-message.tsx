@@ -4,9 +4,9 @@ import {
 	type FormControlErrorMessageCommonProps,
 	type FormControlErrorMessageOptions,
 	type FormControlErrorMessageRenderProps,
-} from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type SwitchDataSet, useSwitchContext } from "./switch-context";
+} from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context.tsx";
 
 export interface SwitchErrorMessageOptions
 	extends FormControlErrorMessageOptions {}

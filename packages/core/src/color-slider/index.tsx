@@ -14,7 +14,7 @@ import {
 	FormControlDescription as Description,
 	FormControlErrorMessage as ErrorMessage,
 	FormControlLabel as Label,
-} from "../form-control";
+} from "../form-control/index.ts";
 
 import {
 	type SliderInputProps as ColorSliderInputProps,
@@ -24,28 +24,28 @@ import {
 	type SliderValueLabelRenderProps as ColorSliderValueLabelRenderProps,
 	Input,
 	ValueLabel,
-} from "../slider";
+} from "../slider/index.tsx";
 import {
 	type ColorSliderRootCommonProps,
 	type ColorSliderRootOptions,
 	type ColorSliderRootProps,
 	type ColorSliderRootRenderProps,
 	ColorSliderRoot as Root,
-} from "./color-slider-root";
+} from "./color-slider-root.tsx";
 import {
 	type ColorSliderThumbCommonProps,
 	type ColorSliderThumbOptions,
 	type ColorSliderThumbProps,
 	type ColorSliderThumbRenderProps,
 	ColorSliderThumb as Thumb,
-} from "./color-slider-thumb";
+} from "./color-slider-thumb.tsx";
 import {
 	type ColorSliderTrackCommonProps,
 	type ColorSliderTrackOptions,
 	type ColorSliderTrackProps,
 	type ColorSliderTrackRenderProps,
 	ColorSliderTrack as Track,
-} from "./color-slider-track";
+} from "./color-slider-track.tsx";
 
 export type {
 	ColorSliderDescriptionProps,
@@ -105,4 +105,4 @@ export const ColorSlider = Object.assign(Root, {
 export {
 	useColorSliderContext,
 	type ColorSliderContextValue,
-} from "./color-slider-context";
+} from "./color-slider-context.tsx";

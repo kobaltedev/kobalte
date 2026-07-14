@@ -1,4 +1,4 @@
-import type { Accept, FileError, FileRejection } from "./types";
+import type { Accept, FileError, FileRejection } from "./types.ts";
 
 const isFileAccepted = (file: File | null, accept: string | undefined) => {
 	if (file && accept) {

@@ -18,11 +18,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type ListboxItemDataSet,
 	useListboxItemContext,
-} from "./listbox-item-context";
+} from "./listbox-item-context.tsx";
 
 export interface ListboxItemLabelOptions {}
 

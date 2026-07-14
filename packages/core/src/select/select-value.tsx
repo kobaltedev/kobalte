@@ -17,13 +17,13 @@ import {
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useSelectContext } from "./select-context";
+} from "../polymorphic/index.tsx";
+import { useSelectContext } from "./select-context.tsx";
 
 export interface SelectValueState<Option> {
 	/** The first (or only, in case of single select) selected option. */

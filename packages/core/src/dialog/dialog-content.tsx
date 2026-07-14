@@ -26,16 +26,16 @@ import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+} from "../dismissable-layer/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
 	type PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
-} from "../primitives";
-import { useDialogContext } from "./dialog-context";
+} from "../primitives/index.ts";
+import { useDialogContext } from "./dialog-context.tsx";
 
 export interface DialogContentOptions {
 	/**

@@ -2,12 +2,12 @@ import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { type ParentProps, createSignal, createUniqueId } from "solid-js";
 
 import createPresence from "solid-presence";
-import { createDisclosureState, createRegisterId } from "../primitives";
-import { DialogContext, type DialogContextValue } from "./dialog-context";
+import { createDisclosureState, createRegisterId } from "../primitives/index.ts";
+import { DialogContext, type DialogContextValue } from "./dialog-context.tsx";
 import {
 	DIALOG_INTL_TRANSLATIONS,
 	type DialogIntlTranslations,
-} from "./dialog.intl";
+} from "./dialog.intl.ts";
 
 export interface DialogRootOptions {
 	/** The localized strings of the component. */

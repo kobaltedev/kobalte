@@ -6,9 +6,9 @@ import {
 	type MeterFillCommonProps,
 	type MeterFillOptions,
 	type MeterFillRenderProps,
-} from "../meter";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type ProgressDataSet, useProgressContext } from "./progress-context";
+} from "../meter/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { type ProgressDataSet, useProgressContext } from "./progress-context.tsx";
 
 export interface ProgressFillOptions extends MeterFillOptions {}
 

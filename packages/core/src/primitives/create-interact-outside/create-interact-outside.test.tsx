@@ -5,7 +5,7 @@ import type { JSX } from "solid-js";
 import {
 	type CreateInteractOutsideProps,
 	createInteractOutside,
-} from "./create-interact-outside";
+} from "./create-interact-outside.ts";
 
 describe("createInteractOutside", () => {
 	installPointerEvent();

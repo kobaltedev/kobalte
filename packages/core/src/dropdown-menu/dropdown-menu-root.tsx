@@ -1,7 +1,7 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { type ParentProps, createUniqueId } from "solid-js";
 
-import { MenuRoot, type MenuRootOptions } from "../menu";
+import { MenuRoot, type MenuRootOptions } from "../menu/index.ts";
 
 export interface DropdownMenuRootOptions extends MenuRootOptions {}
 

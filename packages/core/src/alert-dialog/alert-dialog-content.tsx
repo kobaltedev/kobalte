@@ -4,8 +4,8 @@ import {
 	type DialogContentCommonProps,
 	type DialogContentOptions,
 	type DialogContentRenderProps,
-} from "../dialog/dialog-content";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+} from "../dialog/dialog-content.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 export interface AlertDialogContentOptions extends DialogContentOptions {}
 

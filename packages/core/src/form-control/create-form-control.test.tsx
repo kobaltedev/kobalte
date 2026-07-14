@@ -13,11 +13,11 @@ import type { ParentProps } from "solid-js";
 import {
 	type CreateFormControlProps,
 	createFormControl,
-} from "./create-form-control";
-import { FormControlContext } from "./form-control-context";
-import { FormControlDescription } from "./form-control-description";
-import { FormControlErrorMessage } from "./form-control-error-message";
-import { FormControlLabel } from "./form-control-label";
+} from "./create-form-control.tsx";
+import { FormControlContext } from "./form-control-context.tsx";
+import { FormControlDescription } from "./form-control-description.tsx";
+import { FormControlErrorMessage } from "./form-control-error-message.tsx";
+import { FormControlLabel } from "./form-control-label.tsx";
 
 function FormControl(props: ParentProps<CreateFormControlProps>) {
 	const { formControlContext } = createFormControl(props);

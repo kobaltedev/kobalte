@@ -6,15 +6,15 @@ import {
 	createSignal,
 	splitProps,
 } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	RadioGroup,
 	type RadioGroupItemCommonProps,
 	type RadioGroupItemOptions,
 	type RadioGroupItemRenderProps,
-} from "../radio-group";
-import { useRadioGroupContext } from "../radio-group/radio-group-context";
-import { useSegmentedControlContext } from "./segmented-control-context";
+} from "../radio-group/index.tsx";
+import { useRadioGroupContext } from "../radio-group/radio-group-context.tsx";
+import { useSegmentedControlContext } from "./segmented-control-context.tsx";
 
 export interface SegmentedControlItemOptions extends RadioGroupItemOptions {}
 

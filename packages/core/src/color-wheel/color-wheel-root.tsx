@@ -14,27 +14,27 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors";
-import type { Color } from "../colors";
+import { COLOR_INTL_TRANSLATIONS, type ColorIntlTranslations } from "../colors/index.tsx";
+import type { Color } from "../colors/index.tsx";
 import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
 	createFormControl,
-} from "../form-control";
-import { useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createFormResetListener } from "../primitives";
-import { createSize } from "../primitives/create-size";
+} from "../polymorphic/index.tsx";
+import { createFormResetListener } from "../primitives/index.ts";
+import { createSize } from "../primitives/create-size/index.ts";
 import {
 	ColorWheelContext,
 	type ColorWheelContextValue,
-} from "./color-wheel-context";
-import { createColorWheelState } from "./create-color-wheel-state";
+} from "./color-wheel-context.tsx";
+import { createColorWheelState } from "./create-color-wheel-state.ts";
 
 export interface ColorWheelRootOptions {
 	/** The localized strings of the component. */

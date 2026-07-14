@@ -5,7 +5,7 @@ import {
 	type ToggleButtonRootProps,
 	type ToggleButtonRootRenderProps,
 	type ToggleButtonRootState,
-} from "./toggle-button-root";
+} from "./toggle-button-root.tsx";
 
 export type {
 	ToggleButtonRootOptions,

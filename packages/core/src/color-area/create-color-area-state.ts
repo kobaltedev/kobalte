@@ -5,8 +5,8 @@ import {
 	type ColorChannel,
 	type ColorSpace,
 	parseColor,
-} from "../colors";
-import { createControllableSignal } from "../primitives";
+} from "../colors/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 
 export interface ColorAreaState {
 	readonly value: Accessor<Color>;

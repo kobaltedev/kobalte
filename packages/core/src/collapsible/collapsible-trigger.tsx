@@ -14,9 +14,9 @@ import {
 	splitProps,
 } from "solid-js";
 
-import * as Button from "../button";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useCollapsibleContext } from "./collapsible-context";
+import * as Button from "../button/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useCollapsibleContext } from "./collapsible-context.tsx";
 
 export interface CollapsibleTriggerOptions {}
 

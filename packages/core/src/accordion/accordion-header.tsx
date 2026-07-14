@@ -4,12 +4,12 @@ import type { ValidComponent } from "solid-js";
 import {
 	type CollapsibleDataSet,
 	useCollapsibleContext,
-} from "../collapsible/collapsible-context";
+} from "../collapsible/collapsible-context.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
 export interface AccordionHeaderOptions {}
 

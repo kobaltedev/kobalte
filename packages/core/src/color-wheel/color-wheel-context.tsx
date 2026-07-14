@@ -1,6 +1,6 @@
 import { type Accessor, createContext, useContext } from "solid-js";
-import type { Color } from "../colors";
-import type { ColorWheelState } from "./create-color-wheel-state";
+import type { Color } from "../colors/index.tsx";
+import type { ColorWheelState } from "./create-color-wheel-state.ts";
 
 export interface ColorWheelContextValue {
 	state: ColorWheelState;

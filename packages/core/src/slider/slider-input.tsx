@@ -16,9 +16,9 @@ import {
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	createFormControlField,
 	useFormControlContext,
-} from "../form-control";
-import { useSliderContext } from "./slider-context";
-import { useThumbContext } from "./slider-thumb";
+} from "../form-control/index.ts";
+import { useSliderContext } from "./slider-context.tsx";
+import { useThumbContext } from "./slider-thumb.tsx";
 
 export interface SliderInputProps extends ComponentProps<"input"> {
 	style?: JSX.CSSProperties | string;

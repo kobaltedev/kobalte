@@ -26,14 +26,14 @@ import {
 	onMount,
 } from "solid-js";
 
-import { useLocale } from "../i18n";
-import { createTypeSelect } from "./create-type-select";
+import { useLocale } from "../i18n/index.tsx";
+import { createTypeSelect } from "./create-type-select.ts";
 import type {
 	FocusStrategy,
 	KeyboardDelegate,
 	MultipleSelectionManager,
-} from "./types";
-import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
+} from "./types.ts";
+import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils.ts";
 
 interface CreateSelectableCollectionProps {
 	/** An interface for reading and updating multiple selection state. */

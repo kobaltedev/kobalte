@@ -17,20 +17,20 @@ import {
 	FormControlContext,
 	type FormControlDataSet,
 	createFormControl,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	createControllableSignal,
 	createFormResetListener,
-} from "../primitives";
+} from "../primitives/index.ts";
 import {
 	TextFieldContext,
 	type TextFieldContextValue,
-} from "./text-field-context";
+} from "./text-field-context.tsx";
 
 export interface TextFieldRootOptions {
 	/** The controlled value of the text field. */

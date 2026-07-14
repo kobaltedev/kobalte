@@ -34,19 +34,19 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
 import { combineStyle } from "@solid-primitives/props";
 import createPresence from "solid-presence";
-import { createRegisterId } from "../primitives";
-import { ToastContext, type ToastContextValue } from "./toast-context";
-import { useToastRegionContext } from "./toast-region-context";
-import { toastStore } from "./toast-store";
+import { createRegisterId } from "../primitives/index.ts";
+import { ToastContext, type ToastContextValue } from "./toast-context.tsx";
+import { useToastRegionContext } from "./toast-region-context.tsx";
+import { toastStore } from "./toast-store.ts";
 import {
 	TOAST_INTL_TRANSLATIONS,
 	type ToastIntlTranslations,
-} from "./toast.intl";
-import type { ToastSwipeDirection } from "./types";
+} from "./toast.intl.ts";
+import type { ToastSwipeDirection } from "./types.ts";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
 const TOAST_SWIPE_MOVE_EVENT = "toast.swipeMove";

@@ -7,7 +7,7 @@
  *
  */
 
-import type { ColorIntlTranslations } from "./intl";
+import type { ColorIntlTranslations } from "./intl.ts";
 
 /** A list of supported color formats. */
 export type ColorFormat =

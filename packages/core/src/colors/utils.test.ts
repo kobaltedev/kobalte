@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { ColorChannel } from "./types";
-import { parseColor } from "./utils";
+import type { ColorChannel } from "./types.ts";
+import { parseColor } from "./utils.ts";
 
 const hexValues = [{ raw: "#000000", string: "#000000" }];
 const hexaValues = [{ raw: "#00000080", string: "#00000080" }];

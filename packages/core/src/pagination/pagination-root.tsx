@@ -13,12 +13,12 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	PaginationContext,
 	type PaginationContextValue,
-} from "./pagination-context";
+} from "./pagination-context.tsx";
 
 export interface PaginationRootOptions {
 	/** The controlled page number of the pagination. (1-indexed) */

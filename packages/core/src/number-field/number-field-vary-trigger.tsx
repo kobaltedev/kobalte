@@ -5,11 +5,11 @@ import {
 	type ValidComponent,
 	splitProps,
 } from "solid-js";
-import * as Button from "../button";
-import { useFormControlContext } from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import * as Button from "../button/index.tsx";
+import { useFormControlContext } from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
-import { useNumberFieldContext } from "./number-field-context";
+import { useNumberFieldContext } from "./number-field-context.tsx";
 
 export interface NumberFieldVaryTriggerOptions {
 	numberFieldVaryType: "increment" | "decrement";

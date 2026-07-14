@@ -3,15 +3,15 @@ import type {
 	ToggleGroupItemOptions,
 	ToggleGroupItemProps,
 	ToggleGroupItemRenderProps,
-} from "./toggle-group-item";
-import { ToggleGroupItem as Item } from "./toggle-group-item";
+} from "./toggle-group-item.tsx";
+import { ToggleGroupItem as Item } from "./toggle-group-item.tsx";
 import type {
 	ToggleGroupRootCommonProps,
 	ToggleGroupRootOptions,
 	ToggleGroupRootProps,
 	ToggleGroupRootRenderProps,
-} from "./toggle-group-root";
-import { ToggleGroup as Root } from "./toggle-group-root";
+} from "./toggle-group-root.tsx";
+import { ToggleGroup as Root } from "./toggle-group-root.tsx";
 
 export { Item, Root };
 export type {
@@ -35,4 +35,4 @@ export const ToggleGroup = Object.assign(Root, {
 export {
 	useToggleGroupContext,
 	type ToggleGroupContextValue,
-} from "./toggle-group-context";
+} from "./toggle-group-context.tsx";

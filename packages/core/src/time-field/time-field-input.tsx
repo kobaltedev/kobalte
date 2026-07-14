@@ -9,15 +9,15 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { useLocale } from "../i18n";
+import { useFormControlContext } from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useTimeFieldContext } from "./time-field-context";
-import type { SegmentType, Time } from "./types";
+} from "../polymorphic/index.tsx";
+import { useTimeFieldContext } from "./time-field-context.tsx";
+import type { SegmentType, Time } from "./types.ts";
 
 export interface TimeFieldInputOptions {
 	children?: (segment: Accessor<SegmentType>) => JSX.Element;

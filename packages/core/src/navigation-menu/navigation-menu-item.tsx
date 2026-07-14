@@ -1,7 +1,7 @@
 import type { ValidComponent } from "solid-js";
-import type { PolymorphicProps } from "../polymorphic";
+import type { PolymorphicProps } from "../polymorphic/index.tsx";
 
-import { MenuItem, type MenuItemProps } from "../menu/menu-item";
+import { MenuItem, type MenuItemProps } from "../menu/menu-item.tsx";
 
 /**
  * An item of the navigation menu.

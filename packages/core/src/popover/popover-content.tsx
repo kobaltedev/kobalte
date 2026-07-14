@@ -20,17 +20,17 @@ import createPreventScroll from "solid-prevent-scroll";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
+} from "../dismissable-layer/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
 import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
 	type PointerDownOutsideEvent,
 	createFocusScope,
 	createHideOutside,
-} from "../primitives";
-import { type PopoverDataSet, usePopoverContext } from "./popover-context";
+} from "../primitives/index.ts";
+import { type PopoverDataSet, usePopoverContext } from "./popover-context.tsx";
 
 export interface PopoverContentOptions {
 	/**

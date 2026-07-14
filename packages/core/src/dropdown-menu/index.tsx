@@ -69,33 +69,33 @@ import {
 	MenuSubContent as SubContent,
 	MenuSubTrigger as SubTrigger,
 	MenuTrigger as Trigger,
-} from "../menu";
+} from "../menu/index.ts";
 import {
 	Arrow,
 	type PopperArrowCommonProps as DropdownMenuArrowCommonProps,
 	type PopperArrowOptions as DropdownMenuArrowOptions,
 	type PopperArrowProps as DropdownMenuArrowProps,
 	type PopperArrowRenderProps as DropdownMenuArrowRenderProps,
-} from "../popper";
+} from "../popper/index.tsx";
 import {
 	type SeparatorRootCommonProps as DropdownMenuSeparatorCommonProps,
 	type SeparatorRootOptions as DropdownMenuSeparatorOptions,
 	type SeparatorRootProps as DropdownMenuSeparatorProps,
 	type SeparatorRootRenderProps as DropdownMenuSeparatorRenderProps,
 	Root as Separator,
-} from "../separator";
+} from "../separator/index.tsx";
 import {
 	DropdownMenuContent as Content,
 	type DropdownMenuContentCommonProps,
 	type DropdownMenuContentOptions,
 	type DropdownMenuContentProps,
 	type DropdownMenuContentRenderProps,
-} from "./dropdown-menu-content";
+} from "./dropdown-menu-content.tsx";
 import {
 	type DropdownMenuRootOptions,
 	type DropdownMenuRootProps,
 	DropdownMenuRoot as Root,
-} from "./dropdown-menu-root";
+} from "./dropdown-menu-root.tsx";
 
 export type {
 	DropdownMenuArrowOptions,

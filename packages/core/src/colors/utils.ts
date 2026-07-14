@@ -8,8 +8,8 @@
  */
 
 import { clamp } from "@kobalte/utils";
-import { createNumberFormatter } from "../i18n";
-import type { ColorIntlTranslations } from "./intl";
+import { createNumberFormatter } from "../i18n/index.tsx";
+import type { ColorIntlTranslations } from "./intl.ts";
 import type {
 	ColorAxes,
 	ColorChannel,
@@ -17,7 +17,7 @@ import type {
 	ColorFormat,
 	ColorSpace,
 	Color as IColor,
-} from "./types";
+} from "./types.ts";
 
 /** Parses a color from a string value. Throws an error if the string could not be parsed. */
 export function parseColor(value: string): IColor {
@@ -352,7 +352,7 @@ class RGBColor extends Color {
 		}
 	}
 
-	toHexInt(): number {
+	override toHexInt(): number {
 		return (this.red << 16) | (this.green << 8) | this.blue;
 	}
 

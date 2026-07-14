@@ -5,13 +5,13 @@ import {
 } from "@kobalte/utils";
 import { type ParentProps, createUniqueId, splitProps } from "solid-js";
 
-import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { createDisclosureState } from "../primitives";
-import { Menu, type MenuOptions } from "./menu";
+import { useOptionalMenubarContext } from "../menubar/menubar-context.tsx";
+import { createDisclosureState } from "../primitives/index.ts";
+import { Menu, type MenuOptions } from "./menu.tsx";
 import {
 	MenuRootContext,
 	type MenuRootContextValue,
-} from "./menu-root-context";
+} from "./menu-root-context.tsx";
 
 export interface MenuRootOptions extends MenuOptions {
 	/**

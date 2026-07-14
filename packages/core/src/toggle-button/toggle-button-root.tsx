@@ -26,9 +26,9 @@ import {
 	splitProps,
 } from "solid-js";
 
-import * as Button from "../button";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createToggleState } from "../primitives";
+import * as Button from "../button/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createToggleState } from "../primitives/index.ts";
 
 export interface ToggleButtonRootState {
 	/** Whether the toggle button is on (pressed) or off (not pressed). */

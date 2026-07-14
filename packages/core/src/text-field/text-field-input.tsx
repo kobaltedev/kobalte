@@ -14,13 +14,13 @@ import {
 	type FormControlDataSet,
 	createFormControlField,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useTextFieldContext } from "./text-field-context";
+} from "../polymorphic/index.tsx";
+import { useTextFieldContext } from "./text-field-context.tsx";
 
 export interface TextFieldInputOptions {}
 

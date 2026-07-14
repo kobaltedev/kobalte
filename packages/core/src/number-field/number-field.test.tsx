@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { expect, vi } from "vitest";
 
 import * as NumberField from ".";
-import { I18nProvider } from "../i18n";
+import { I18nProvider } from "../i18n/index.tsx";
 
 describe("NumberField", () => {
 	it("can have a default value", async () => {

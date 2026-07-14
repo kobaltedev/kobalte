@@ -5,11 +5,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "./form-control-context";
+} from "./form-control-context.tsx";
 
 export interface FormControlDescriptionOptions {}
 

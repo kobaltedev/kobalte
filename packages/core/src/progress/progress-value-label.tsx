@@ -5,9 +5,9 @@ import {
 	type MeterValueLabelCommonProps,
 	type MeterValueLabelOptions,
 	type MeterValueLabelRenderProps,
-} from "../meter";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type ProgressDataSet, useProgressContext } from "./progress-context";
+} from "../meter/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { type ProgressDataSet, useProgressContext } from "./progress-context.tsx";
 
 export interface ProgressValueLabelOptions extends MeterValueLabelOptions {}
 

@@ -30,26 +30,26 @@ import { combineStyle } from "@solid-primitives/props";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import { useLocale } from "../i18n/i18n-provider";
-import { createSelectableList } from "../list";
-import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
+} from "../dismissable-layer/index.ts";
+import { useLocale } from "../i18n/i18n-provider.tsx";
+import { createSelectableList } from "../list/index.ts";
+import { useOptionalMenubarContext } from "../menubar/menubar-context.tsx";
+import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { Popper } from "../popper";
+} from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
 import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
 	type PointerDownOutsideEvent,
 	createFocusScope,
-} from "../primitives";
-import { type MenuDataSet, useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
-import { MENUBAR_KEYS } from "./menu-trigger";
+} from "../primitives/index.ts";
+import { type MenuDataSet, useMenuContext } from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
+import { MENUBAR_KEYS } from "./menu-trigger.tsx";
 
 export interface MenuContentBaseOptions {
 	/**

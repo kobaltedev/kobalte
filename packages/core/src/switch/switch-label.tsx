@@ -4,10 +4,10 @@ import {
 	type FormControlLabelCommonProps,
 	type FormControlLabelOptions,
 	type FormControlLabelRenderProps,
-} from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type SwitchDataSet, useSwitchContext } from "./switch-context";
-import type { SwitchDescriptionCommonProps } from "./switch-description";
+} from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context.tsx";
+import type { SwitchDescriptionCommonProps } from "./switch-description.tsx";
 
 export interface SwitchLabelOptions extends FormControlLabelOptions {}
 

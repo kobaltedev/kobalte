@@ -48,7 +48,7 @@
 	],
 	"scripts": {
 		"build": "tsup",
-		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+		"clean": "rm -rf node_modules && rm -rf dist",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
@@ -62,6 +62,9 @@
 	},
 	"peerDependencies": {
 		"solid-js": "^1.8.8"
+	},
+	"devDependencies": {
+		"solid-js": "1.8.15"
 	},
 	"publishConfig": {
 		"access": "public"

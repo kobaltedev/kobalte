@@ -2,8 +2,8 @@ import { render } from "@solidjs/testing-library";
 import { createRoot, onCleanup, onMount } from "solid-js";
 
 import { vi } from "vitest";
-import { createDefaultLocale } from "./create-default-locale";
-import { I18nProvider, useLocale } from "./i18n-provider";
+import { createDefaultLocale } from "./create-default-locale.ts";
+import { I18nProvider, useLocale } from "./i18n-provider.tsx";
 
 function Example() {
 	const { locale, direction } = useLocale();

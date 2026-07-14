@@ -73,34 +73,34 @@ import {
 	MenuSub as Sub,
 	MenuSubContent as SubContent,
 	MenuSubTrigger as SubTrigger,
-} from "../menu";
+} from "../menu/index.ts";
 import {
 	Arrow,
 	type PopperArrowCommonProps as MenubarArrowCommonProps,
 	type PopperArrowOptions as MenubarArrowOptions,
 	type PopperArrowProps as MenubarArrowProps,
 	type PopperArrowRenderProps as MenubarArrowRenderProps,
-} from "../popper";
+} from "../popper/index.tsx";
 import {
 	type SeparatorRootCommonProps as MenubarSeparatorCommonProps,
 	type SeparatorRootOptions as MenubarSeparatorOptions,
 	type SeparatorRootProps as MenubarSeparatorProps,
 	type SeparatorRootRenderProps as MenubarSeparatorRenderProps,
 	Root as Separator,
-} from "../separator";
+} from "../separator/index.tsx";
 import {
 	MenubarMenu as Menu,
 	type MenubarMenuOptions,
 	type MenubarMenuProps,
-} from "./menubar-menu";
+} from "./menubar-menu.tsx";
 import {
 	type MenubarRootCommonProps,
 	type MenubarRootOptions,
 	type MenubarRootProps,
 	type MenubarRootRenderProps,
 	MenubarRoot as Root,
-} from "./menubar-root";
-import { MenubarTrigger as Trigger } from "./menubar-trigger";
+} from "./menubar-root.tsx";
+import { MenubarTrigger as Trigger } from "./menubar-trigger.tsx";
 
 export type {
 	MenubarRootOptions,
@@ -226,4 +226,4 @@ export const Menubar = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useMenubarContext, type MenubarContextValue } from "./menubar-context";
+export { useMenubarContext, type MenubarContextValue } from "./menubar-context.tsx";

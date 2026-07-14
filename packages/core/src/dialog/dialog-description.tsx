@@ -10,8 +10,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useDialogContext } from "./dialog-context";
+} from "../polymorphic/index.tsx";
+import { useDialogContext } from "./dialog-context.tsx";
 
 export interface DialogDescriptionOptions {}
 

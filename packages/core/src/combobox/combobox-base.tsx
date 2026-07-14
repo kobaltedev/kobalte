@@ -35,16 +35,16 @@ import {
 	FormControlContext,
 	type FormControlDataSet,
 	createFormControl,
-} from "../form-control";
-import { createFilter } from "../i18n";
-import { ListKeyboardDelegate, createListState } from "../list";
-import { announce } from "../live-announcer";
+} from "../form-control/index.ts";
+import { createFilter } from "../i18n/index.tsx";
+import { ListKeyboardDelegate, createListState } from "../list/index.ts";
+import { announce } from "../live-announcer/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { Popper, type PopperRootOptions } from "../popper";
+} from "../polymorphic/index.tsx";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
 import {
 	type CollectionNode,
 	createControllableSignal,
@@ -52,7 +52,7 @@ import {
 	createFormResetListener,
 	createRegisterId,
 	getItemCount,
-} from "../primitives";
+} from "../primitives/index.ts";
 import {
 	type FocusStrategy,
 	type KeyboardDelegate,
@@ -60,17 +60,17 @@ import {
 	type SelectionBehavior,
 	type SelectionMode,
 	createSelectableCollection,
-} from "../selection";
+} from "../selection/index.ts";
 import {
 	ComboboxContext,
 	type ComboboxContextValue,
 	type ComboboxDataSet,
-} from "./combobox-context";
+} from "./combobox-context.tsx";
 import {
 	COMBOBOX_INTL_TRANSLATIONS,
 	type ComboboxIntlTranslations,
-} from "./combobox.intl";
-import type { ComboboxTriggerMode } from "./types";
+} from "./combobox.intl.ts";
+import type { ComboboxTriggerMode } from "./types.ts";
 
 export interface ComboboxBaseItemComponentProps<Option> {
 	/** The item to render. */

@@ -17,19 +17,19 @@ import {
 	FormControlContext,
 	type FormControlDataSet,
 	createFormControl,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type CollectionItemWithRef,
 	createControllableSignal,
 	createFormResetListener,
-} from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
-import { RatingContext, type RatingContextValue } from "./rating-context";
+} from "../primitives/index.ts";
+import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
+import { RatingContext, type RatingContextValue } from "./rating-context.tsx";
 
 export interface RatingRootOptions {
 	/** The current rating value. */

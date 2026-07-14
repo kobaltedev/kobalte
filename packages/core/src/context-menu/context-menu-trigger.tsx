@@ -11,14 +11,14 @@ import { type JSX, type ValidComponent, onCleanup, splitProps } from "solid-js";
 import { isServer } from "solid-js/web";
 
 import { combineStyle } from "@solid-primitives/props";
-import { type MenuDataSet, useMenuContext } from "../menu/menu-context";
-import { useMenuRootContext } from "../menu/menu-root-context";
+import { type MenuDataSet, useMenuContext } from "../menu/menu-context.tsx";
+import { useMenuRootContext } from "../menu/menu-root-context.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useContextMenuContext } from "./context-menu-context";
+} from "../polymorphic/index.tsx";
+import { useContextMenuContext } from "./context-menu-context.tsx";
 
 export interface ContextMenuTriggerOptions {
 	/** Whether the context menu trigger is disabled. */

@@ -1,1 +1,1 @@
-export * from "./create-size";
+export * from "./create-size.ts";

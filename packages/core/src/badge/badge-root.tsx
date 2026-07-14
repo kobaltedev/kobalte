@@ -7,7 +7,7 @@
  */
 
 import { type ValidComponent, splitProps } from "solid-js";
-import { Polymorphic, type PolymorphicProps } from "../polymorphic";
+import { Polymorphic, type PolymorphicProps } from "../polymorphic/index.tsx";
 
 export interface BadgeRootOptions {
 	/**

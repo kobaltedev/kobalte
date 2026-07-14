@@ -27,23 +27,23 @@ import {
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
-import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack";
+import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	ToastRegionContext,
 	type ToastRegionContextValue,
-} from "./toast-region-context";
-import { toastStore } from "./toast-store";
+} from "./toast-region-context.tsx";
+import { toastStore } from "./toast-store.ts";
 import {
 	TOAST_HOTKEY_PLACEHOLDER,
 	TOAST_REGION_INTL_TRANSLATIONS,
 	type ToastRegionIntlTranslations,
-} from "./toast.intl";
-import type { ToastSwipeDirection } from "./types";
+} from "./toast.intl.ts";
+import type { ToastSwipeDirection } from "./types.ts";
 
 export interface ToastRegionOptions {
 	/** The localized strings of the component. */

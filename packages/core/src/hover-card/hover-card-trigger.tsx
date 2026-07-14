@@ -15,12 +15,12 @@ import {
 	splitProps,
 } from "solid-js";
 
-import * as Link from "../link";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import * as Link from "../link/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	type HoverCardDataSet,
 	useHoverCardContext,
-} from "./hover-card-context";
+} from "./hover-card-context.tsx";
 
 export interface HoverCardTriggerOptions {}
 

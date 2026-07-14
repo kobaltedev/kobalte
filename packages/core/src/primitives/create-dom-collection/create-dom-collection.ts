@@ -11,13 +11,13 @@
 import { type MaybeAccessor, access, addItemToArray } from "@kobalte/utils";
 import { type FlowComponent, createComponent } from "solid-js";
 
-import { createControllableArraySignal } from "../index";
+import { createControllableArraySignal } from "../index.ts";
 import {
 	DomCollectionContext,
 	type DomCollectionContextValue,
-} from "./dom-collection-context";
-import type { DomCollectionItem } from "./types";
-import { createSortBasedOnDOMPosition, findDOMIndex } from "./utils";
+} from "./dom-collection-context.ts";
+import type { DomCollectionItem } from "./types.ts";
+import { createSortBasedOnDOMPosition, findDOMIndex } from "./utils.ts";
 
 export interface CreateDomCollectionProps<
 	T extends DomCollectionItem = DomCollectionItem,

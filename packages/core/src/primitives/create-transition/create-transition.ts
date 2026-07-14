@@ -22,8 +22,8 @@ import { isServer } from "solid-js/web";
 import {
 	type TransitionPhase,
 	getTransitionStyles,
-} from "./get-transition-styles";
-import type { TransitionStyles } from "./types";
+} from "./get-transition-styles.ts";
+import type { TransitionStyles } from "./types.ts";
 
 export interface TransitionOptions {
 	/** The transition styles. */

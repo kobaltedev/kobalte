@@ -26,8 +26,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useTabsContext } from "./tabs-context";
+} from "../polymorphic/index.tsx";
+import { useTabsContext } from "./tabs-context.tsx";
 
 export interface TabsContentOptions {
 	/** The unique key that associates the tab panel with a tab. */

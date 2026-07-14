@@ -1,6 +1,6 @@
 import { type Accessor, createContext, useContext } from "solid-js";
-import type { ColorIntlTranslations } from "../colors";
-import type { Color, ColorChannel } from "../colors";
+import type { ColorIntlTranslations } from "../colors/index.tsx";
+import type { Color, ColorChannel } from "../colors/index.tsx";
 
 export interface ColorSliderContextValue {
 	readonly value: Accessor<Color>;

@@ -1,15 +1,15 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { type Accessor, createMemo, createSignal } from "solid-js";
-import type { Color } from "../colors";
-import { parseColor } from "../colors";
-import { createControllableSignal } from "../primitives";
+import type { Color } from "../colors/index.tsx";
+import { parseColor } from "../colors/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	angleToCartesian,
 	cartesianToAngle,
 	mod,
 	roundDown,
 	roundToStep,
-} from "./utils";
+} from "./utils.ts";
 
 export interface ColorWheelState {
 	readonly value: Accessor<Color>;

@@ -1,10 +1,10 @@
 import { type ValidComponent, createUniqueId } from "solid-js";
 
-import { MenuTrigger, type MenuTriggerProps } from "../menu";
-import { useOptionalMenuContext } from "../menu/menu-context";
-import type { PolymorphicProps } from "../polymorphic";
-import { useMenubarContext } from "./menubar-context";
-import { MenubarMenu } from "./menubar-menu";
+import { MenuTrigger, type MenuTriggerProps } from "../menu/index.ts";
+import { useOptionalMenuContext } from "../menu/menu-context.tsx";
+import type { PolymorphicProps } from "../polymorphic/index.tsx";
+import { useMenubarContext } from "./menubar-context.tsx";
+import { MenubarMenu } from "./menubar-menu.tsx";
 
 /**
  * The button that toggles the menubar menu or a menubar link.

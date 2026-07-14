@@ -9,7 +9,7 @@
 import { fireEvent, render, waitFor } from "@solidjs/testing-library";
 import { createSignal, onMount } from "solid-js";
 
-import { ariaHideOutside } from "./create-hide-outside";
+import { ariaHideOutside } from "./create-hide-outside.ts";
 
 describe("ariaHideOutside", () => {
 	it("should hide everything except the provided element [button]", () => {

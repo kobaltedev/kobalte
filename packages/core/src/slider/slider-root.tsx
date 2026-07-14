@@ -27,29 +27,29 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	createFormControl,
-} from "../form-control";
-import { createNumberFormatter, useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { createNumberFormatter, useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type CollectionItemWithRef,
 	createFormResetListener,
-} from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
-import { createSliderState } from "./create-slider-state";
+} from "../primitives/index.ts";
+import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
+import { createSliderState } from "./create-slider-state.ts";
 import {
 	SliderContext,
 	type SliderContextValue,
 	type SliderDataSet,
-} from "./slider-context";
+} from "./slider-context.tsx";
 import {
 	getNextSortedValues,
 	hasMinStepsBetweenValues,
 	stopEventDefaultAndPropagation,
-} from "./utils";
+} from "./utils.ts";
 
 export interface GetValueLabelParams {
 	values: number[];

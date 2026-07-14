@@ -6,9 +6,9 @@ import {
 	createMemo,
 	splitProps,
 } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import * as Slider from "../slider";
-import { useColorSliderContext } from "./color-slider-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import * as Slider from "../slider/index.tsx";
+import { useColorSliderContext } from "./color-slider-context.tsx";
 
 export interface ColorSliderThumbOptions extends Slider.SliderThumbOptions {}
 

@@ -7,10 +7,10 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import * as Listbox from "../listbox";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useComboboxContext } from "./combobox-context";
+import { useFormControlContext } from "../form-control/index.ts";
+import * as Listbox from "../listbox/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useComboboxContext } from "./combobox-context.tsx";
 
 export interface ComboboxListboxOptions<Option, OptGroup = never>
 	extends Pick<

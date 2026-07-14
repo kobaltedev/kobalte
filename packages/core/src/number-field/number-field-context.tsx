@@ -5,7 +5,7 @@ import {
 	createContext,
 	useContext,
 } from "solid-js";
-import type { SpinButtonIntlTranslations } from "../spin-button/spin-button.intl";
+import type { SpinButtonIntlTranslations } from "../spin-button/spin-button.intl.ts";
 
 export interface NumberFieldContextValue {
 	value: Accessor<number | string | undefined>;

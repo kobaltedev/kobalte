@@ -1,7 +1,7 @@
 import { type ComponentProps, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 
-import { useHoverCardContext } from "./hover-card-context";
+import { useHoverCardContext } from "./hover-card-context.tsx";
 
 export interface HoverCardPortalProps extends ComponentProps<typeof Portal> {}
 

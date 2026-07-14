@@ -4,8 +4,8 @@ import {
 	createContext,
 	useContext,
 } from "solid-js";
-import type { FileFieldIntlTranslations } from "./file-field.intl";
-import type { FileRejection } from "./types";
+import type { FileFieldIntlTranslations } from "./file-field.intl.ts";
+import type { FileRejection } from "./types.ts";
 
 export interface FileFieldContextValue {
 	translations: Accessor<FileFieldIntlTranslations>;

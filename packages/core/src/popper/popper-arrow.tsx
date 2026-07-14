@@ -22,9 +22,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { usePopperContext } from "./popper-context";
-import type { BasePlacement } from "./utils";
+} from "../polymorphic/index.tsx";
+import { usePopperContext } from "./popper-context.tsx";
+import type { BasePlacement } from "./utils.ts";
 
 const DEFAULT_SIZE = 30;
 const HALF_DEFAULT_SIZE = DEFAULT_SIZE / 2;

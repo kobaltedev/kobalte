@@ -17,20 +17,20 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { createNumberFormatter } from "../i18n";
+import { createNumberFormatter } from "../i18n/index.tsx";
 import {
 	Meter,
 	type MeterRootCommonProps,
 	type MeterRootOptions,
 	type MeterRootRenderProps,
-} from "../meter";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createRegisterId } from "../primitives";
+} from "../meter/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createRegisterId } from "../primitives/index.ts";
 import {
 	ProgressContext,
 	type ProgressContextValue,
 	type ProgressDataSet,
-} from "./progress-context";
+} from "./progress-context.tsx";
 
 export interface ProgressRootOptions
 	extends Omit<MeterRootOptions, "indeterminate"> {

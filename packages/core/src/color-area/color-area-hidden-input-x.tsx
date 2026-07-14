@@ -1,5 +1,5 @@
 import type { ComponentProps } from "solid-js";
-import { ColorAreaHiddenInputBase } from "./color-area-hidden-input-base";
+import { ColorAreaHiddenInputBase } from "./color-area-hidden-input-base.tsx";
 
 export type ColorAreaHiddenInputXProps = ComponentProps<"input">;
 

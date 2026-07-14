@@ -13,8 +13,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createTagName } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createTagName } from "../primitives/index.ts";
 
 export interface SeparatorRootOptions {
 	/** The orientation of the separator. */

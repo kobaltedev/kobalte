@@ -12,7 +12,7 @@ import type {
 	ColorModeStorageManager,
 	ConfigColorMode,
 	MaybeConfigColorMode,
-} from "./types";
+} from "./types.ts";
 
 export const COLOR_MODE_STORAGE_KEY = "kb-color-mode";
 

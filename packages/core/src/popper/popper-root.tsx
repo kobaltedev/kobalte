@@ -27,8 +27,8 @@ import {
 	onCleanup,
 } from "solid-js";
 
-import { useLocale } from "../i18n";
-import { PopperContext, type PopperContextValue } from "./popper-context";
+import { useLocale } from "../i18n/index.tsx";
+import { PopperContext, type PopperContextValue } from "./popper-context.tsx";
 import {
 	type AnchorRect,
 	type BasePlacement,
@@ -36,7 +36,7 @@ import {
 	getAnchorElement,
 	getTransformOrigin,
 	isValidPlacement,
-} from "./utils";
+} from "./utils.ts";
 
 export interface PopperRootOptions {
 	/** A ref for the anchor element. */

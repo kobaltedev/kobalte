@@ -8,7 +8,7 @@
 
 import { createRoot } from "solid-js";
 
-import { getTransitionStyles } from "./get-transition-styles";
+import { getTransitionStyles } from "./get-transition-styles.ts";
 
 describe("getTransitionStyles", () => {
 	it("supports custom transitions", () =>

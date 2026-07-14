@@ -30,32 +30,32 @@ import {
 	type RadioGroupItemLabelOptions as SegmentedControlItemLabelOptions,
 	type RadioGroupItemLabelProps as SegmentedControlItemLabelProps,
 	type RadioGroupItemLabelRenderProps as SegmentedControlItemLabelRenderProps,
-} from "../radio-group";
+} from "../radio-group/index.tsx";
 import {
 	SegmentedControlIndicator as Indicator,
 	type SegmentedControlIndicatorCommonProps,
 	type SegmentedControlIndicatorOptions,
 	type SegmentedControlIndicatorProps,
 	type SegmentedControlIndicatorRenderProps,
-} from "./segmented-control-indicator";
+} from "./segmented-control-indicator.tsx";
 import {
 	SegmentedControlItem as Item,
 	type SegmentedControlItemCommonProps,
 	type SegmentedControlItemOptions,
 	type SegmentedControlItemProps,
 	type SegmentedControlItemRenderProps,
-} from "./segmented-control-item";
+} from "./segmented-control-item.tsx";
 import {
 	SegmentedControlItemInput as ItemInput,
 	type SegmentedControlItemInputCommonProps,
 	type SegmentedControlItemInputOptions,
 	type SegmentedControlItemInputProps,
 	type SegmentedControlItemInputRenderProps,
-} from "./segmented-control-item-input";
+} from "./segmented-control-item-input.tsx";
 import {
 	SegmentedControlRoot as Root,
 	type SegmentedControlRootProps,
-} from "./segmented-control-root";
+} from "./segmented-control-root.tsx";
 
 export type {
 	SegmentedControlDescriptionCommonProps,
@@ -130,4 +130,4 @@ export const SegmentedControl = Object.assign(Root, {
 export {
 	useSegmentedControlContext,
 	type SegmentedControlContextValue,
-} from "./segmented-control-context";
+} from "./segmented-control-context.tsx";

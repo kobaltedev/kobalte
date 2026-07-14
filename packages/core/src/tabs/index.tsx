@@ -4,35 +4,35 @@ import {
 	type TabsContentOptions,
 	type TabsContentProps,
 	type TabsContentRenderProps,
-} from "./tabs-content";
+} from "./tabs-content.tsx";
 import {
 	TabsIndicator as Indicator,
 	type TabsIndicatorCommonProps,
 	type TabsIndicatorOptions,
 	type TabsIndicatorProps,
 	type TabsIndicatorRenderProps,
-} from "./tabs-indicator";
+} from "./tabs-indicator.tsx";
 import {
 	TabsList as List,
 	type TabsListCommonProps,
 	type TabsListOptions,
 	type TabsListProps,
 	type TabsListRenderProps,
-} from "./tabs-list";
+} from "./tabs-list.tsx";
 import {
 	TabsRoot as Root,
 	type TabsRootCommonProps,
 	type TabsRootOptions,
 	type TabsRootProps,
 	type TabsRootRenderProps,
-} from "./tabs-root";
+} from "./tabs-root.tsx";
 import {
 	type TabsTriggerCommonProps,
 	type TabsTriggerOptions,
 	type TabsTriggerProps,
 	type TabsTriggerRenderProps,
 	TabsTrigger as Trigger,
-} from "./tabs-trigger";
+} from "./tabs-trigger.tsx";
 
 export type {
 	TabsContentOptions,
@@ -68,4 +68,4 @@ export const Tabs = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useTabsContext, type TabsContextValue } from "./tabs-context";
+export { useTabsContext, type TabsContextValue } from "./tabs-context.tsx";

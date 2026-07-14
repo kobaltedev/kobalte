@@ -20,18 +20,18 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { createListState, createSelectableList } from "../list";
+import { createListState, createSelectableList } from "../list/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
+} from "../polymorphic/index.tsx";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
 import {
 	AccordionContext,
 	type AccordionContextValue,
-} from "./accordion-context";
+} from "./accordion-context.tsx";
 
 export interface AccordionRootOptions {
 	/** The controlled value of the accordion item(s) to expand. */

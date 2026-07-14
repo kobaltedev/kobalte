@@ -3,9 +3,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useFileFieldContext } from "./file-field-context";
-import { FileFieldItemContext } from "./file-field-item-context";
+} from "../polymorphic/index.tsx";
+import { useFileFieldContext } from "./file-field-context.tsx";
+import { FileFieldItemContext } from "./file-field-item-context.tsx";
 
 export interface FileFieldItemListOptions {
 	children: (file: File) => JSX.Element;

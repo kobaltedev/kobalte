@@ -20,10 +20,10 @@ import {
 	splitProps,
 } from "solid-js";
 
-import * as Button from "../button";
-import { useFormControlContext } from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
+import * as Button from "../button/index.tsx";
+import { useFormControlContext } from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { type ComboboxDataSet, useComboboxContext } from "./combobox-context.tsx";
 
 export interface ComboboxTriggerOptions {}
 

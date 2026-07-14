@@ -4,7 +4,7 @@ import {
 	type SpinButtonRootOptions,
 	type SpinButtonRootProps,
 	type SpinButtonRootRenderProps,
-} from "./spin-button-root";
+} from "./spin-button-root.tsx";
 
 export type {
 	SpinButtonRootOptions,

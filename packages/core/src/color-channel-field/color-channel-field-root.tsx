@@ -6,11 +6,11 @@ import {
 	createUniqueId,
 	splitProps,
 } from "solid-js";
-import type { Color, ColorChannel, ColorSpace } from "../colors";
-import { parseColor } from "../colors";
-import * as NumberField from "../number-field";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+import type { Color, ColorChannel, ColorSpace } from "../colors/index.tsx";
+import { parseColor } from "../colors/index.tsx";
+import * as NumberField from "../number-field/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 
 export interface ColorChannelFieldRootOptions
 	extends Omit<

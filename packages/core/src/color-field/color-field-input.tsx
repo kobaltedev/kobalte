@@ -5,9 +5,9 @@ import {
 	type ValidComponent,
 	splitProps,
 } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import * as TextField from "../text-field";
-import { useColorFieldContext } from "./color-field-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import * as TextField from "../text-field/index.tsx";
+import { useColorFieldContext } from "./color-field-context.tsx";
 
 export interface ColorFieldInputOptions
 	extends TextField.TextFieldInputOptions {}

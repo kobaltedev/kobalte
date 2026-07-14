@@ -8,8 +8,8 @@
 
 import { type Component, type ValidComponent, splitProps } from "solid-js";
 
-import * as Link from "../link";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import * as Link from "../link/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 export interface BreadcrumbsLinkOptions {
 	/** Whether the breadcrumb link represents the current page. */

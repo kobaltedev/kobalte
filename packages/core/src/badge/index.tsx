@@ -4,7 +4,7 @@ import {
 	type BadgeRootProps,
 	type BadgeRootRenderProps,
 	BadgeRoot as Root,
-} from "./badge-root";
+} from "./badge-root.tsx";
 
 export type {
 	BadgeRootOptions,

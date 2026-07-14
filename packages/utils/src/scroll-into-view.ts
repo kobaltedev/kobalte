@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/utils/src/scrollIntoView.ts
  */
 
-import { getScrollParent } from "./get-scroll-parent";
+import { getScrollParent } from "./get-scroll-parent.ts";
 
 interface ScrollIntoViewportOpts {
 	/** The optional containing element of the target to be centered in the viewport. */

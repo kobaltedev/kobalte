@@ -5,8 +5,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type SelectDataSet, useSelectContext } from "./select-context";
+} from "../polymorphic/index.tsx";
+import { type SelectDataSet, useSelectContext } from "./select-context.tsx";
 
 export interface SelectIconOptions {}
 

@@ -12,22 +12,22 @@ import {
 	FormControlContext,
 	type FormControlDataSet,
 	createFormControl,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	FileFieldContext,
 	type FileFieldContextValue,
-} from "./file-field-context";
+} from "./file-field-context.tsx";
 import {
 	FILE_FIELD_INTL_TRANSLATIONS,
 	type FileFieldIntlTranslations,
-} from "./file-field.intl";
-import type { Accept, Details, FileError, FileRejection } from "./types";
-import { getFiles, parseAcceptedTypes } from "./util";
+} from "./file-field.intl.ts";
+import type { Accept, Details, FileError, FileRejection } from "./types.ts";
+import { getFiles, parseAcceptedTypes } from "./util.ts";
 
 export interface FileFieldRootOptions {
 	/** The localized strings of the component. */

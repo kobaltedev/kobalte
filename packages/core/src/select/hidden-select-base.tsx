@@ -17,10 +17,10 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import type { Collection, CollectionNode } from "../primitives";
-import type { SelectionManager } from "../selection";
-import { isSameSelection } from "../selection/utils";
+import { useFormControlContext } from "../form-control/index.ts";
+import type { Collection, CollectionNode } from "../primitives/index.ts";
+import type { SelectionManager } from "../selection/index.ts";
+import { isSameSelection } from "../selection/utils.ts";
 
 // In Safari, the <select> cannot have `display: none` or `hidden` for autofill to work.
 // In Firefox, there must be a <label> to identify the <select> whereas other browsers

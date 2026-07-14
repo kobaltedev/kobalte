@@ -4,7 +4,7 @@ import {
 	createContext,
 	useContext,
 } from "solid-js";
-import type { Placement } from "../popper/utils";
+import type { Placement } from "../popper/utils.ts";
 
 export interface NavigationMenuDataSet {
 	"data-expanded": string | undefined;

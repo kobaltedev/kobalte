@@ -4,49 +4,49 @@ import {
 	type SwitchControlOptions,
 	type SwitchControlProps,
 	type SwitchControlRenderProps,
-} from "./switch-control";
+} from "./switch-control.tsx";
 import {
 	SwitchDescription as Description,
 	type SwitchDescriptionCommonProps,
 	type SwitchDescriptionOptions,
 	type SwitchDescriptionProps,
 	type SwitchDescriptionRenderProps,
-} from "./switch-description";
+} from "./switch-description.tsx";
 import {
 	SwitchErrorMessage as ErrorMessage,
 	type SwitchErrorMessageCommonProps,
 	type SwitchErrorMessageOptions,
 	type SwitchErrorMessageProps,
 	type SwitchErrorMessageRenderProps,
-} from "./switch-error-message";
+} from "./switch-error-message.tsx";
 import {
 	SwitchInput as Input,
 	type SwitchInputCommonProps,
 	type SwitchInputOptions,
 	type SwitchInputProps,
 	type SwitchInputRenderProps,
-} from "./switch-input";
+} from "./switch-input.tsx";
 import {
 	SwitchLabel as Label,
 	type SwitchLabelCommonProps,
 	type SwitchLabelOptions,
 	type SwitchLabelProps,
 	type SwitchLabelRenderProps,
-} from "./switch-label";
+} from "./switch-label.tsx";
 import {
 	SwitchRoot as Root,
 	type SwitchRootCommonProps,
 	type SwitchRootOptions,
 	type SwitchRootProps,
 	type SwitchRootRenderProps,
-} from "./switch-root";
+} from "./switch-root.tsx";
 import {
 	type SwitchThumbCommonProps,
 	type SwitchThumbOptions,
 	type SwitchThumbProps,
 	type SwitchThumbRenderProps,
 	SwitchThumb as Thumb,
-} from "./switch-thumb";
+} from "./switch-thumb.tsx";
 
 export type {
 	SwitchControlOptions,
@@ -92,4 +92,4 @@ export const Switch = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { useSwitchContext, type SwitchContextValue } from "./switch-context";
+export { useSwitchContext, type SwitchContextValue } from "./switch-context.tsx";

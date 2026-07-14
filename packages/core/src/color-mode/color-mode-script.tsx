@@ -8,9 +8,9 @@
 
 import { createMemo, mergeProps } from "solid-js";
 
-import { COLOR_MODE_STORAGE_KEY } from "./storage-manager";
-import type { ColorModeScriptProps, ConfigColorMode } from "./types";
-import { FALLBACK_COLOR_MODE_VALUE } from "./utils";
+import { COLOR_MODE_STORAGE_KEY } from "./storage-manager.ts";
+import type { ColorModeScriptProps, ConfigColorMode } from "./types.ts";
+import { FALLBACK_COLOR_MODE_VALUE } from "./utils.ts";
 
 const VALID_VALUES = new Set<ConfigColorMode>(["light", "dark", "system"]);
 

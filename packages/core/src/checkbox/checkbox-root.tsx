@@ -32,18 +32,18 @@ import {
 	FormControlContext,
 	type FormControlDataSet,
 	createFormControl,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createFormResetListener, createToggleState } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createFormResetListener, createToggleState } from "../primitives/index.ts";
 import {
 	CheckboxContext,
 	type CheckboxContextValue,
 	type CheckboxDataSet,
-} from "./checkbox-context";
+} from "./checkbox-context.tsx";
 
 interface CheckboxRootState {
 	/** Whether the checkbox is checked or not. */

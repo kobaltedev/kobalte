@@ -10,8 +10,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useToastContext } from "./toast-context";
+} from "../polymorphic/index.tsx";
+import { useToastContext } from "./toast-context.tsx";
 
 export interface ToastDescriptionOptions {}
 

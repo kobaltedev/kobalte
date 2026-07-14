@@ -1,12 +1,12 @@
 import type { Component, ValidComponent } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 import {
 	MenuItemBase,
 	type MenuItemBaseCommonProps,
 	type MenuItemBaseOptions,
 	type MenuItemBaseRenderProps,
-} from "./menu-item-base";
+} from "./menu-item-base.tsx";
 
 export interface MenuItemOptions
 	extends Omit<MenuItemBaseOptions, "checked" | "indeterminate"> {}

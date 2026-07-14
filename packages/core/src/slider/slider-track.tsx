@@ -10,9 +10,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type SliderDataSet, useSliderContext } from "./slider-context";
-import { getClosestValueIndex, linearScale } from "./utils";
+} from "../polymorphic/index.tsx";
+import { type SliderDataSet, useSliderContext } from "./slider-context.tsx";
+import { getClosestValueIndex, linearScale } from "./utils.ts";
 
 export interface SliderTrackOptions {}
 

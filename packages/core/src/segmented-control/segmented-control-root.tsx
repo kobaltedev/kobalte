@@ -6,12 +6,12 @@ import {
 	mergeProps,
 	splitProps,
 } from "solid-js";
-import type { PolymorphicProps } from "../polymorphic";
-import { RadioGroup, type RadioGroupRootProps } from "../radio-group";
+import type { PolymorphicProps } from "../polymorphic/index.tsx";
+import { RadioGroup, type RadioGroupRootProps } from "../radio-group/index.tsx";
 import {
 	SegmentedControlContext,
 	type SegmentedControlContextValue,
-} from "./segmented-control-context";
+} from "./segmented-control-context.tsx";
 
 export type SegmentedControlRootProps = RadioGroupRootProps;
 

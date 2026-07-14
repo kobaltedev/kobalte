@@ -16,18 +16,18 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { createNumberFormatter } from "../i18n";
+import { createNumberFormatter } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createRegisterId } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createRegisterId } from "../primitives/index.ts";
 import {
 	MeterContext,
 	type MeterContextValue,
 	type MeterDataSet,
-} from "./meter-context";
+} from "./meter-context.tsx";
 
 interface GetValueLabelParams {
 	value: number;

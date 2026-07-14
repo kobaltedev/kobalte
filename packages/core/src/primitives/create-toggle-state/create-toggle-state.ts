@@ -9,7 +9,7 @@
 import { type MaybeAccessor, access } from "@kobalte/utils";
 import type { Accessor } from "solid-js";
 
-import { createControllableBooleanSignal } from "../create-controllable-signal";
+import { createControllableBooleanSignal } from "../create-controllable-signal/index.ts";
 
 export interface CreateToggleStateProps {
 	/** The controlled selected state. */

@@ -1,5 +1,5 @@
 import { type Accessor, createContext, useContext } from "solid-js";
-import type { MeterContextValue, MeterDataSet } from "../meter/meter-context";
+import type { MeterContextValue, MeterDataSet } from "../meter/meter-context.tsx";
 
 export interface ProgressDataSet extends MeterDataSet {
 	"data-progress": "loading" | "complete" | undefined;

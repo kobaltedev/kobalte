@@ -16,9 +16,9 @@ import {
 } from "solid-js";
 
 import { combineStyle } from "@solid-primitives/props";
-import * as Collapsible from "../collapsible";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useAccordionItemContext } from "./accordion-item-context";
+import * as Collapsible from "../collapsible/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useAccordionItemContext } from "./accordion-item-context.tsx";
 
 export interface AccordionContentOptions {}
 

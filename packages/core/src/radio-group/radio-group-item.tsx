@@ -21,19 +21,19 @@ import {
 	splitProps,
 } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
+import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createRegisterId } from "../primitives";
-import { useRadioGroupContext } from "./radio-group-context";
+} from "../polymorphic/index.tsx";
+import { createRegisterId } from "../primitives/index.ts";
+import { useRadioGroupContext } from "./radio-group-context.tsx";
 import {
 	RadioGroupItemContext,
 	type RadioGroupItemContextValue,
 	type RadioGroupItemDataSet,
-} from "./radio-group-item-context";
+} from "./radio-group-item-context.tsx";
 
 export interface RadioGroupItemOptions {
 	/**

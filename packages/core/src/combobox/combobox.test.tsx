@@ -2401,7 +2401,7 @@ describe.skip("Combobox", () => {
 		});
 
 		it("supports controlled selection", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2657,7 +2657,7 @@ describe.skip("Combobox", () => {
 		});
 
 		it("does not deselect when pressing an already selected item when 'disallowEmptySelection' is true", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2950,7 +2950,7 @@ describe.skip("Combobox", () => {
 		it("supports multiple value (controlled)", async () => {
 			const value = [DATA_SOURCE[0], DATA_SOURCE[1]];
 
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root<DataSourceItem>
 					multiple
 					options={DATA_SOURCE}
