@@ -6,7 +6,7 @@ overrides:
   # unplugin-solid@1.0.0's own babel-preset-solid dependency (^1.9.9) predates
   # Solid 2.0's rename of the `use:` directive runtime helper (`use` ->
   # `ref`/`applyRef`), which crashes at runtime against @solidjs/web@2.x.
-  "babel-preset-solid": "2.0.0-beta.15"
+  "babel-preset-solid": "2.0.0-beta.17"
   "@solidjs/testing-library": "1.0.0-beta.2"
   "@solid-primitives/a11y": "next"
   "@solid-primitives/controlled-signal": "1.0.0-next.1"
