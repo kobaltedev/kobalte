@@ -33,17 +33,16 @@
 			"import": {
 				"types": "./dist/index.d.ts",
 				"default": "./dist/index.js"
-			},
-			"require": "./dist/index.cjs"
+			}
 		}
 	},
-	"main": "./dist/index.cjs",
+	"main": "./dist/index.js",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"source": "src/index.ts",
 	"files": ["dist", "src"],
 	"scripts": {
-		"build": "tsup",
+		"build": "tsdown",
 		"clean": "rm -rf node_modules && rm -rf dist",
 		"typecheck": "tsc --noEmit"
 	},

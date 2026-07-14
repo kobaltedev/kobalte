@@ -30,7 +30,6 @@ const isValidFileSize = (
 	minSize: number,
 	maxSize: number,
 ): [boolean, FileError | null] => {
-	console.log({ fileSize: file.size, minSize, maxSize });
 	if (file.size) {
 		if (minSize && maxSize) {
 			if (file.size > maxSize) {

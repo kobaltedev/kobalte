@@ -47,7 +47,7 @@
 		"src"
 	],
 	"scripts": {
-		"build": "tsup",
+		"build": "tsdown",
 		"clean": "rm -rf node_modules && rm -rf dist",
 		"typecheck": "tsc --noEmit"
 	},

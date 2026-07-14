@@ -16,10 +16,10 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      - name: Setup Node.js 21.6.1
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 21.6.1
+          node-version: "22"
           cache: pnpm
 
       - name: Install Dependencies
