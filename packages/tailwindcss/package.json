@@ -44,7 +44,7 @@
 		"clean": "rm -rf node_modules && rm -rf dist"
 	},
 	"devDependencies": {
-		"tailwindcss": "^4.3.1"
+		"tailwindcss": "catalog:"
 	},
 	"peerDependencies": {
 		"tailwindcss": ">=3"
