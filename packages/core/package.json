@@ -74,29 +74,29 @@
 		"@internationalized/date": "^3.4.0",
 		"@internationalized/number": "^3.2.1",
 		"@kobalte/utils": "workspace:*",
-		"@solid-primitives/a11y": "next",
-		"@solid-primitives/controlled-signal": "1.0.0-next.1",
-		"@solid-primitives/i18n": "next",
-		"@solid-primitives/focus": "next",
-		"@solid-primitives/form": "next",
-		"@solid-primitives/interaction": "next",
-		"@solid-primitives/keyboard": "next",
-		"@solid-primitives/props": "next",
-		"@solid-primitives/resize-observer": "next",
-		"@solid-primitives/presence": "next",
-		"@solid-primitives/scroll": "next",
-		"@solid-primitives/upload": "next",
-		"@solid-primitives/utils": "next"
+		"@solid-primitives/a11y": "catalog:",
+		"@solid-primitives/controlled-signal": "catalog:",
+		"@solid-primitives/i18n": "catalog:",
+		"@solid-primitives/focus": "catalog:",
+		"@solid-primitives/form": "catalog:",
+		"@solid-primitives/interaction": "catalog:",
+		"@solid-primitives/keyboard": "catalog:",
+		"@solid-primitives/props": "catalog:",
+		"@solid-primitives/resize-observer": "catalog:",
+		"@solid-primitives/presence": "catalog:",
+		"@solid-primitives/scroll": "catalog:",
+		"@solid-primitives/upload": "catalog:",
+		"@solid-primitives/utils": "catalog:"
 	},
 	"devDependencies": {
 		"@kobalte/tests": "workspace:*",
-		"tsdown": "0.22.7",
-		"typescript": "7.0.2",
-		"unplugin-solid": "1.0.0"
+		"tsdown": "catalog:",
+		"typescript": "catalog:",
+		"unplugin-solid": "catalog:"
 	},
 	"peerDependencies": {
-		"@solidjs/web": "^2.0.0-beta.17",
-		"solid-js": "^2.0.0-beta.17"
+		"@solidjs/web": "catalog:",
+		"solid-js": "catalog:"
 	},
 	"publishConfig": {
 		"access": "public"

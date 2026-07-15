@@ -1,5 +1,5 @@
-import { Portal } from "@solidjs/web";
-import { type ComponentProps, Show } from "solid-js";
+import { type ComponentProps, Portal } from "@solidjs/web";
+import { Show } from "solid-js";
 
 import { useTooltipContext } from "./tooltip-context.tsx";
 
