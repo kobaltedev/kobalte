@@ -1,7 +1,8 @@
-import { Switch } from "@kobalte/core/switch";
 import { createSignal } from "solid-js";
 
 import style from "./switch.module.css";
+
+import { Switch } from "@kobalte/core/switch";
 
 export function BasicExample() {
 	return (

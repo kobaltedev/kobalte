@@ -1,7 +1,8 @@
-import { SegmentedControl } from "@kobalte/core/segmented-control";
 import { For, createSignal } from "solid-js";
 
 import style from "./segmented-control.module.css";
+
+import { SegmentedControl } from "@kobalte/core/segmented-control";
 
 export function BasicExample() {
 	return (

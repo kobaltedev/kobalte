@@ -1,7 +1,8 @@
 import { Index, createSignal } from "solid-js";
-import { Rating } from "../../../../packages/core/src/rating";
 
 import style from "./rating.module.css";
+
+import { Rating } from "../../../../packages/core/src/rating";
 
 export function BasicExample() {
 	return (

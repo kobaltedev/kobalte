@@ -1,7 +1,8 @@
-import { TextField } from "@kobalte/core/text-field";
 import { createSignal } from "solid-js";
 
 import style from "./text-field.module.css";
+
+import { TextField } from "@kobalte/core/text-field";
 
 export function BasicExample() {
 	return (

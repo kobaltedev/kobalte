@@ -1,4 +1,3 @@
-import { Select } from "@kobalte/core/select";
 import { createVirtualizer } from "@tanstack/solid-virtual";
 import { For, createSignal } from "solid-js";
 
@@ -6,6 +5,8 @@ import { CaretSortIcon, CheckIcon, CrossIcon } from "../components";
 import style from "./select.module.css";
 
 const STRING_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+
+import { Select } from "@kobalte/core/select";
 
 export function BasicExample() {
 	return (

@@ -1,6 +1,7 @@
 import { Show, createSignal } from "solid-js";
-import { TimeField } from "../../../../packages/core/src/time-field";
 import style from "./time-field.module.css";
+
+import { TimeField } from "../../../../packages/core/src/time-field";
 
 export function BasicExample() {
 	return (

@@ -1,13 +1,14 @@
-import {
-	NavigationMenu,
-	type Orientation,
-} from "@kobalte/core/navigation-menu";
 import { RadioGroup } from "@kobalte/core/radio-group";
 import { For, createSignal } from "solid-js";
 
 import { ChevronDownIcon } from "../components";
 import style from "./navigation-menu.module.css";
 import radioStyle from "./radio-group.module.css";
+
+import {
+	NavigationMenu,
+	type Orientation,
+} from "@kobalte/core/navigation-menu";
 
 export function BasicExample() {
 	const [orientation, setOrientation] = createSignal<Orientation>("horizontal");

@@ -1,6 +1,6 @@
-import { Progress } from "@kobalte/core/progress";
-
 import style from "./progress.module.css";
+
+import { Progress } from "@kobalte/core/progress";
 
 export function BasicExample() {
 	return (

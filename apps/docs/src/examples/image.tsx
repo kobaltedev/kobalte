@@ -1,6 +1,6 @@
-import { Image } from "@kobalte/core/image";
-
 import style from "./image.module.css";
+
+import { Image } from "@kobalte/core/image";
 
 export function BasicExample() {
 	return (

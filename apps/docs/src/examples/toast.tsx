@@ -1,7 +1,7 @@
-import { Toast, toaster } from "@kobalte/core/toast";
-
 import { CrossIcon } from "../components";
 import style from "./toast.module.css";
+
+import { Toast, toaster } from "@kobalte/core/toast";
 
 export function BasicExample() {
 	let id: number;

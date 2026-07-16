@@ -1,7 +1,7 @@
-import { Dialog } from "@kobalte/core/dialog";
-
 import { CrossIcon } from "../components";
 import style from "./dialog.module.css";
+
+import { Dialog } from "@kobalte/core/dialog";
 
 export function BasicExample() {
 	return (

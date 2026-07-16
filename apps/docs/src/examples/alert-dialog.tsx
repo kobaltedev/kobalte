@@ -1,7 +1,7 @@
-import { AlertDialog } from "@kobalte/core/alert-dialog";
-
 import { CrossIcon } from "../components";
 import style from "./alert-dialog.module.css";
+
+import { AlertDialog } from "@kobalte/core/alert-dialog";
 
 export function BasicExample() {
 	return (

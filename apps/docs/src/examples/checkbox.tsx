@@ -1,9 +1,10 @@
-import { Checkbox } from "@kobalte/core/checkbox";
 import { clsx } from "clsx";
 import { createSignal } from "solid-js";
 
 import { CheckIcon } from "../components";
 import style from "./checkbox.module.css";
+
+import { Checkbox } from "@kobalte/core/checkbox";
 
 export function BasicExample() {
 	return (

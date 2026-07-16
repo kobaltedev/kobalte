@@ -1,7 +1,7 @@
-import { Collapsible } from "@kobalte/core/collapsible";
-
 import { ChevronDownIcon } from "../components";
 import style from "./collapsible.module.css";
+
+import { Collapsible } from "@kobalte/core/collapsible";
 
 export function BasicExample() {
 	return (
