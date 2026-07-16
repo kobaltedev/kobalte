@@ -42,6 +42,7 @@ export * as Skeleton from "./skeleton";
 export * as Slider from "./slider";
 export * as Switch from "./switch";
 export * as Tabs from "./tabs";
+export * as TagsInput from "./tags-input";
 export * as TextField from "./text-field";
 export * as Toast from "./toast";
 export * from "./toast/toaster";
