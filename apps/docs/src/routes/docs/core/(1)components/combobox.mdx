@@ -102,7 +102,8 @@ The combobox consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Combobox } from "@kobalte/core/combobox";
@@ -317,6 +318,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Filtering options
@@ -352,7 +355,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {9}
 import { Combobox } from "@kobalte/core/combobox";
@@ -393,6 +397,8 @@ function DefaultValueExample() {
 }
 ```
 
+:::
+
 ### Controlled value
 
 The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onChange` event is fired when the user selects an option, and receives the selected option.
@@ -400,7 +406,8 @@ The `value` prop, which accepts a value corresponding with the `options` prop, c
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {8,21-22}
 import { Combobox } from "@kobalte/core/combobox";
@@ -456,6 +463,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Description
 
 The `Combobox.Description` component can be used to associate additional help text with a combobox.
@@ -463,7 +472,8 @@ The `Combobox.Description` component can be used to associate additional help te
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {28}
 import { Combobox } from "@kobalte/core/combobox";
@@ -504,6 +514,8 @@ function DescriptionExample() {
 }
 ```
 
+:::
+
 ### Error message
 
 The `Combobox.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the combobox as invalid for assistive technologies.
@@ -513,7 +525,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {23,42}
 import { Combobox } from "@kobalte/core/combobox";
@@ -568,6 +581,8 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The combobox `name` prop, paired with the `Combobox.HiddenSelect` component, can be used for integration with HTML forms.
@@ -575,7 +590,8 @@ The combobox `name` prop, paired with the `Combobox.HiddenSelect` component, can
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {14,26}
 import { Combobox } from "@kobalte/core/combobox";
@@ -627,6 +643,8 @@ function HTMLFormExample() {
 }
 ```
 
+:::
+
 ### Using object as options
 
 Objects can be used as options instead of plain strings. In this case you have to tell the combobox how it should work with the provided options. For this you **have to use** the following props:
@@ -639,7 +657,8 @@ Objects can be used as options instead of plain strings. In this case you have t
 :::preview
 
 <ObjectExample />
-:::
+
+---
 
 ```tsx {22-25}
 import { Combobox } from "@kobalte/core/combobox";
@@ -695,6 +714,8 @@ function ObjectExample() {
 }
 ```
 
+:::
+
 ### Using option groups
 
 When using option groups you have to tell the combobox how to distinguish an option from a group. For this you **have to use** the following props:
@@ -706,7 +727,8 @@ Additionally, the `sectionComponent` prop is used to display the option group la
 :::preview
 
 <OptionGroupExample />
-:::
+
+---
 
 ```tsx {45}
 import { Combobox } from "@kobalte/core/combobox";
@@ -785,6 +807,7 @@ export function OptionGroupExample() {
 }
 ```
 
+:::
 :::note
 Notice the usage of generics on `Combobox` for proper TypeScript support.
 :::
@@ -798,7 +821,8 @@ In this case `Combobox.Input` can't display the values, instead the `Combobox.Co
 :::preview
 
 <MultipleSelectionExample />
-:::
+
+---
 
 ```tsx {8,13,15-16,31,35,43}
 import { Combobox } from "@kobalte/core/combobox";
@@ -865,6 +889,8 @@ function MultipleSelectionExample() {
 	);
 }
 ```
+
+:::
 
 ### Origin-aware animations
 

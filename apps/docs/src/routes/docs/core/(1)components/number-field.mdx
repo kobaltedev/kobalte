@@ -81,7 +81,8 @@ The number field consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { NumberField } from "@kobalte/core/number-field";
@@ -180,6 +181,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default value
@@ -189,7 +192,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {1}
 <NumberField defaultValue={40}>
@@ -202,6 +206,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 </NumberField>
 ```
 
+:::
+
 ### Controlled value
 
 The `value` and `rawValue` props can be used to make the value controlled.
@@ -212,7 +218,8 @@ The `onRawValueChange` prop is called when the value changes and receives a `num
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,5,10-13}
 import { createSignal } from "solid-js";
@@ -244,6 +251,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Description
 
 The `NumberField.Description` component can be used to associate additional help text with a number field.
@@ -251,7 +260,8 @@ The `NumberField.Description` component can be used to associate additional help
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {8}
 <NumberField>
@@ -265,6 +275,8 @@ The `NumberField.Description` component can be used to associate additional help
 </NumberField>
 ```
 
+:::
+
 ### Error message
 
 The `NumberField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the text field as invalid for assistive technologies.
@@ -274,7 +286,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {9,17}
 import { createSignal } from "solid-js";
@@ -299,6 +312,8 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The number field `name` prop along with `<NumberField.HiddenInput/>` can be used for integration with HTML forms. Only the raw value is passed to the form.
@@ -308,7 +323,8 @@ If the formatted value is wanted (unrecommended) set the `name` attribute on `<N
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {8,10}
 function HTMLFormExample() {
@@ -336,6 +352,8 @@ function HTMLFormExample() {
 }
 ```
 
+:::
+
 ### Triggers
 
 The number field supports optional increment/decrement triggers that are easily customizable.
@@ -343,7 +361,8 @@ The number field supports optional increment/decrement triggers that are easily 
 :::preview
 
 <TriggersExample />
-:::
+
+---
 
 ```tsx {4,6}
 <NumberField>
@@ -356,6 +375,8 @@ The number field supports optional increment/decrement triggers that are easily 
 </NumberField>
 ```
 
+:::
+
 ### Format
 
 The value of the number field component can be formatted based on the [locale with the `I18NProvider`](/docs/core/components/i18n-provider) and `formatOptions`. For more information see [React Spectrum NumberField](https://react-spectrum.adobe.com/react-spectrum/NumberField.html).
@@ -363,7 +384,8 @@ The value of the number field component can be formatted based on the [locale wi
 :::preview
 
 <FormatExample />
-:::
+
+---
 
 ```tsx {1}
 <NumberField formatOptions={{ style: "currency", currency: "USD" }} defaultValue={4}>
@@ -375,6 +397,8 @@ The value of the number field component can be formatted based on the [locale wi
 	</div>
 </NumberField>
 ```
+
+:::
 
 ### Autofill
 

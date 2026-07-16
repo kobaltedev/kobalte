@@ -78,7 +78,8 @@ The rating item consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Rating } from "@kobalte/core/rating";
@@ -146,6 +147,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default value
@@ -155,7 +158,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {1}
 <Rating defaultValue={3}>
@@ -173,6 +177,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 </Rating>
 ```
 
+:::
+
 ### Controlled value
 
 The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user selects a rating, and receives the new value.
@@ -180,7 +186,8 @@ The `value` prop can be used to make the value controlled. The `onChange` event 
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -209,6 +216,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Half Ratings
 
 Allow 0.5 value steps by setting the `allowHalf` prop to true.
@@ -216,7 +225,8 @@ Allow 0.5 value steps by setting the `allowHalf` prop to true.
 :::preview
 
 <HalfRatingsExample />
-:::
+
+---
 
 ```tsx {1}
 <Rating allowHalf>
@@ -234,6 +244,8 @@ Allow 0.5 value steps by setting the `allowHalf` prop to true.
 </Rating>
 ```
 
+:::
+
 ### Description
 
 The `Rating.Description` component can be used to associate additional help text with a rating.
@@ -241,7 +253,8 @@ The `Rating.Description` component can be used to associate additional help text
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {14}
 <Rating>
@@ -261,6 +274,8 @@ The `Rating.Description` component can be used to associate additional help text
 </Rating>
 ```
 
+:::
+
 ### Error message
 
 The `Rating.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the rating as invalid for assistive technologies.
@@ -270,7 +285,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {10,24-26}
 import { createSignal } from "solid-js";
@@ -302,6 +318,8 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The `name` prop can be used for integration with HTML forms.
@@ -309,7 +327,8 @@ The `name` prop can be used for integration with HTML forms.
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {8,20}
 function HTMLFormExample() {
@@ -341,6 +360,8 @@ function HTMLFormExample() {
 	);
 }
 ```
+
+:::
 
 ## API Reference
 

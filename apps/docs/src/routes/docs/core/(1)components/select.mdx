@@ -99,7 +99,8 @@ The select consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Select } from "@kobalte/core/select";
@@ -286,6 +287,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default value
@@ -295,7 +298,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {2}
 <Select
@@ -325,6 +329,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 </Select>
 ```
 
+:::
+
 ### Controlled value
 
 The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onChange` event is fired when the user selects an option, and receives the selected option.
@@ -332,7 +338,8 @@ The `value` prop, which accepts a value corresponding with the `options` prop, c
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,9-10}
 import { createSignal } from "solid-js";
@@ -374,6 +381,8 @@ export function ControlledExample() {
 }
 ```
 
+:::
+
 ### Description
 
 The `Select.Description` component can be used to associate additional help text with a select.
@@ -381,7 +390,8 @@ The `Select.Description` component can be used to associate additional help text
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {19}
 <Select
@@ -411,6 +421,8 @@ The `Select.Description` component can be used to associate additional help text
 </Select>
 ```
 
+:::
+
 ### Error message
 
 The `Select.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the select as invalid for assistive technologies.
@@ -420,7 +432,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {10,28}
 import { createSignal } from "solid-js";
@@ -461,6 +474,8 @@ export function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The select `name` prop, paired with the `Select.HiddenSelect` component, can be used for integration with HTML forms.
@@ -468,7 +483,8 @@ The select `name` prop, paired with the `Select.HiddenSelect` component, can be 
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {9,21}
 function HTMLFormExample() {
@@ -513,6 +529,8 @@ function HTMLFormExample() {
 }
 ```
 
+:::
+
 ### Using object as options
 
 Objects can be used as options instead of plain strings. In this case you have to tell the select how it should work with the provided options. For this you **have to use** the following props :
@@ -524,7 +542,8 @@ Objects can be used as options instead of plain strings. In this case you have t
 :::preview
 
 <ObjectExample />
-:::
+
+---
 
 ```tsx {19-21}
 interface Fruit {
@@ -574,6 +593,8 @@ function ObjectExample() {
 }
 ```
 
+:::
+
 ### Using option groups
 
 When using option groups you have to tell the select how to distinguish an option from a group. For this you **have to use** the following props :
@@ -585,7 +606,8 @@ Additionally, the `sectionComponent` prop is used to display the option group la
 :::preview
 
 <OptionGroupExample />
-:::
+
+---
 
 ```tsx {36,41,51}
 interface Food {
@@ -656,6 +678,7 @@ function OptionGroupExample() {
 }
 ```
 
+:::
 :::note
 Notice the usage of generics on `Select` for proper TypeScript support.
 :::
@@ -671,7 +694,8 @@ Additionally, the example below uses the `as` prop to render a `div` for the `Se
 :::preview
 
 <MultipleSelectionExample />
-:::
+
+---
 
 ```tsx {4,9-11,23-24,29,33,40}
 import { createSignal } from "solid-js";
@@ -734,6 +758,8 @@ function MultipleSelectionExample() {
 }
 ```
 
+:::
+
 ### Virtual scrolling
 
 When dealing with large collection of items, it's recommended to use a virtual scrolling solution to improve performance.
@@ -743,7 +769,8 @@ While Kobalte doesn't provide any built-in virtual scrolling API, it can easily 
 :::preview
 
 <VirtualizedExample />
-:::
+
+---
 
 ```tsx {19-26,32-34,47,81,102}
 import { Select } from "@kobalte/core/select";
@@ -846,6 +873,8 @@ function VirtualizedExample() {
 	);
 }
 ```
+
+:::
 
 ### Origin-aware animations
 

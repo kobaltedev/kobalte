@@ -61,7 +61,8 @@ The progress consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Progress } from "@kobalte/core/progress";
@@ -118,6 +119,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Custom value scale
@@ -127,7 +130,8 @@ By default, the `value` prop represents the current percentage of progress, as t
 :::preview
 
 <CustomValueScaleExample />
-:::
+
+---
 
 ```tsx {1}
 <Progress value={100} minValue={50} maxValue={150} class="progress">
@@ -141,6 +145,8 @@ By default, the `value` prop represents the current percentage of progress, as t
 </Progress>
 ```
 
+:::
+
 ### Custom value label
 
 The `getValueLabel` prop allows the formatted value used in `Progress.ValueLabel` and ARIA to be replaced with a custom string. It receives the current value, min and max values as parameters.
@@ -148,7 +154,8 @@ The `getValueLabel` prop allows the formatted value used in `Progress.ValueLabel
 :::preview
 
 <CustomValueLabelExample />
-:::
+
+---
 
 ```tsx {5}
 <Progress
@@ -167,6 +174,8 @@ The `getValueLabel` prop allows the formatted value used in `Progress.ValueLabel
 	</Progress.Track>
 </Progress>
 ```
+
+:::
 
 ### Progress bar fill width
 

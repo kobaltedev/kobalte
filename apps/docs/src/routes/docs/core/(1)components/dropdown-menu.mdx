@@ -122,7 +122,8 @@ The checkable menu item consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { DropdownMenu } from "@kobalte/core/dropdown-menu";
@@ -394,6 +395,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default open
@@ -411,7 +414,8 @@ The `open` prop can be used to make the open state controlled. The `onOpenChange
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,7}
 import { createSignal } from "solid-js";
@@ -429,6 +433,8 @@ function ControlledExample() {
 	);
 }
 ```
+
+:::
 
 ### Origin-aware animations
 

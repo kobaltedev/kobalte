@@ -71,7 +71,8 @@ The popover consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Popover } from "@kobalte/core/popover";
@@ -196,6 +197,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default open
@@ -213,7 +216,8 @@ The `open` prop can be used to make the open state controlled. The `onOpenChange
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,7}
 import { createSignal } from "solid-js";
@@ -232,6 +236,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### With custom anchor
 
 Use the `Popover.Anchor` component to anchor the content to another element if you do not want to use the trigger as the anchor.
@@ -239,7 +245,8 @@ Use the `Popover.Anchor` component to anchor the content to another element if y
 :::preview
 
 <CustomAnchorExample />
-:::
+
+---
 
 ```tsx {2,7}
 <Popover>
@@ -254,6 +261,8 @@ Use the `Popover.Anchor` component to anchor the content to another element if y
 	</Popover.Portal>
 </Popover>
 ```
+
+:::
 
 ### Origin-aware animations
 

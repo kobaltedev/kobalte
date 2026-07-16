@@ -68,7 +68,8 @@ The text field consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { TextField } from "@kobalte/core/text-field";
@@ -144,6 +145,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default value
@@ -153,7 +156,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {1}
 <TextField defaultValue="Apple">
@@ -162,6 +166,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 </TextField>
 ```
 
+:::
+
 ### Controlled value
 
 The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user type into the input and receive the new value.
@@ -169,7 +175,8 @@ The `value` prop can be used to make the value controlled. The `onChange` event 
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -189,6 +196,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Multiline
 
 Use the `TextField.TextArea` component instead of `TextField.Input` to create a multiline text field.
@@ -196,7 +205,8 @@ Use the `TextField.TextArea` component instead of `TextField.Input` to create a 
 :::preview
 
 <TextAreaExample />
-:::
+
+---
 
 ```tsx {3}
 <TextField>
@@ -205,12 +215,14 @@ Use the `TextField.TextArea` component instead of `TextField.Input` to create a 
 </TextField>
 ```
 
+:::
 In addition, the `autoResize` prop can be used to make the textarea height adjust to it's content. Try typing in the text field below to see it in action.
 
 :::preview
 
 <TextAreaAutoResizeExample />
-:::
+
+---
 
 ```tsx {3}
 <TextField>
@@ -219,6 +231,8 @@ In addition, the `autoResize` prop can be used to make the textarea height adjus
 </TextField>
 ```
 
+:::
+
 ### Description
 
 The `TextField.Description` component can be used to associate additional help text with a text field.
@@ -226,7 +240,8 @@ The `TextField.Description` component can be used to associate additional help t
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {4}
 <TextField>
@@ -235,6 +250,8 @@ The `TextField.Description` component can be used to associate additional help t
 	<TextField.Description>Choose the fruit you like the most.</TextField.Description>
 </TextField>
 ```
+
+:::
 
 ### Error message
 
@@ -245,7 +262,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {10,13}
 import { createSignal } from "solid-js";
@@ -267,6 +285,8 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The text field `name` prop can be used for integration with HTML forms.
@@ -274,7 +294,8 @@ The text field `name` prop can be used for integration with HTML forms.
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {8}
 function HTMLFormExample() {
@@ -296,6 +317,8 @@ function HTMLFormExample() {
 	);
 }
 ```
+
+:::
 
 ## API Reference
 

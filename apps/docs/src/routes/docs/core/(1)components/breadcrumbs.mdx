@@ -60,7 +60,8 @@ The breadcrumbs consist of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Breadcrumbs } from "@kobalte/core/breadcrumbs";
@@ -128,6 +129,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Custom separator
@@ -137,7 +140,8 @@ Use the `separator` prop to provide a default content for all `Breadcrumbs.Separ
 :::preview
 
 <CustomSeparatorExample />
-:::
+
+---
 
 ```tsx {1,5}
 import { ChevronRightIcon } from "some-icon-library";
@@ -169,6 +173,7 @@ function App() {
 }
 ```
 
+:::
 :::tip
 You can also override each `Breadcrumbs.Separator` content by providing your own `children`.
 :::

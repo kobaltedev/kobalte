@@ -83,7 +83,8 @@ The segmented control item consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { SegmentedControl } from "@kobalte/core/segmented-control";
@@ -297,6 +298,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 The `role="presentation"` is required for all non content elements between the `SegmentedControl` and `SegmentedControl.Item` due to a bug in Chromium based browsers that incorrectly parse semantics and break screen readers.
@@ -308,7 +311,8 @@ The `value` prop, which accepts a value corresponding with the `value` prop of e
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {1,4,8}
 import { createSignal } from "solid-js";
@@ -340,6 +344,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Description
 
 The `SegmentedControl.Description` component can be used to associate additional help text with a segmented control.
@@ -347,7 +353,8 @@ The `SegmentedControl.Description` component can be used to associate additional
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {11}
 <SegmentedControl defaultValue="Apple">
@@ -364,6 +371,8 @@ The `SegmentedControl.Description` component can be used to associate additional
 </SegmentedControl>
 ```
 
+:::
+
 ### Error message
 
 The `SegmentedControl.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the segmented control as invalid for assistive technologies.
@@ -373,7 +382,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {10,21}
 import { createSignal } from "solid-js";
@@ -402,6 +412,8 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The segmented control `name` prop, paired with the item's radio `value` prop, can be used for integration with HTML forms.
@@ -409,7 +421,8 @@ The segmented control `name` prop, paired with the item's radio `value` prop, ca
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {8,14}
 function HTMLFormExample() {
@@ -439,6 +452,8 @@ function HTMLFormExample() {
 }
 ```
 
+:::
+
 ### Orientation
 
 The segmented control `orientation` prop can be used to change the segmented control's orientation.
@@ -446,7 +461,8 @@ The segmented control `orientation` prop can be used to change the segmented con
 :::preview
 
 <VerticalExample />
-:::
+
+---
 
 ```tsx {1}
 <SegmentedControl orientation="vertical" defaultValue="Apple">
@@ -462,6 +478,8 @@ The segmented control `orientation` prop can be used to change the segmented con
 	<SegmentedControl.Description>Choose the fruit you like the most.</SegmentedControl.Description>
 </SegmentedControl>
 ```
+
+:::
 
 ## API Reference
 

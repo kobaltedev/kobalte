@@ -73,7 +73,8 @@ The tabs consist of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Tabs } from "@kobalte/core/tabs";
@@ -181,6 +182,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default value
@@ -190,7 +193,8 @@ A default selected tab can be provided using the `defaultValue` prop, which shou
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {1,4,10}
 <Tabs defaultValue="dashboard">
@@ -208,6 +212,8 @@ A default selected tab can be provided using the `defaultValue` prop, which shou
 </Tabs>
 ```
 
+:::
+
 ### Controlled value
 
 Selected tab can be controlled using the `value` prop, paired with the `onChange` event. The `value` prop from the selected tab will be passed into the callback when the tab is selected, allowing you to update state accordingly.
@@ -215,7 +221,8 @@ Selected tab can be controlled using the `value` prop, paired with the `onChange
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -244,6 +251,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Focusable content
 
 When the tab content doesn't contain any focusable content, the entire content is given a `tabIndex=0` so that the content can be navigated to with the keyboard.
@@ -255,7 +264,8 @@ This example uses the same Tabs components from above. Try navigating from the t
 :::preview
 
 <FocusableContentExample />
-:::
+
+---
 
 ```tsx {11-13}
 function FocusableContentExample() {
@@ -279,6 +289,8 @@ function FocusableContentExample() {
 }
 ```
 
+:::
+
 ### Dynamic tabs
 
 Tabs can be added/removed dynamically by using a signal and SolidJS `For`.
@@ -286,7 +298,8 @@ Tabs can be added/removed dynamically by using a signal and SolidJS `For`.
 :::preview
 
 <DynamicContentExample />
-:::
+
+---
 
 ```tsx {4-8,33,36}
 import { createSignal } from "solid-js";
@@ -331,6 +344,8 @@ function DynamicContentExample() {
 }
 ```
 
+:::
+
 ### Activation mode
 
 By default, pressing the arrow keys while focus is on a Tab will switch selection to the adjacent Tab in that direction, updating the content displayed accordingly.
@@ -340,7 +355,8 @@ If you would like to prevent selection change from happening automatically you c
 :::preview
 
 <ManualActivationExample />
-:::
+
+---
 
 ```tsx {1}
 <Tabs activationMode="manual">
@@ -358,6 +374,8 @@ If you would like to prevent selection change from happening automatically you c
 </Tabs>
 ```
 
+:::
+
 ### Orientation
 
 By default, tabs are horizontally oriented. The `orientation` prop can be set to `vertical` to change this. This affects keyboard navigation. You are responsible for styling your tabs accordingly.
@@ -365,7 +383,8 @@ By default, tabs are horizontally oriented. The `orientation` prop can be set to
 :::preview
 
 <VerticalOrientationExample />
-:::
+
+---
 
 ```tsx {1}
 <Tabs orientation="vertical">
@@ -383,6 +402,8 @@ By default, tabs are horizontally oriented. The `orientation` prop can be set to
 </Tabs>
 ```
 
+:::
+
 ### Disabled
 
 All tabs can be disabled using the `disabled` prop.
@@ -390,7 +411,8 @@ All tabs can be disabled using the `disabled` prop.
 :::preview
 
 <DisabledTabsExample />
-:::
+
+---
 
 ```tsx {1}
 <Tabs disabled>
@@ -408,12 +430,14 @@ All tabs can be disabled using the `disabled` prop.
 </Tabs>
 ```
 
+:::
 Individual tab can be disabled using the `disabled` prop on the tab itself.
 
 :::preview
 
 <SingleDisabledTabExample />
-:::
+
+---
 
 ```tsx {5}
 <Tabs>
@@ -432,6 +456,8 @@ Individual tab can be disabled using the `disabled` prop on the tab itself.
 	<Tabs.Content value="contact">Contact details</Tabs.Content>
 </Tabs>
 ```
+
+:::
 
 ## API Reference
 

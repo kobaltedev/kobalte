@@ -73,7 +73,8 @@ The switch consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Switch } from "@kobalte/core/switch";
@@ -140,6 +141,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default checked
@@ -149,11 +152,14 @@ An initial, uncontrolled value can be provided using the `defaultChecked` prop.
 :::preview
 
 <DefaultCheckedExample />
-:::
+
+---
 
 ```tsx
 <Switch defaultChecked>...</Switch>
 ```
+
+:::
 
 ### Controlled checked
 
@@ -162,7 +168,8 @@ The `checked` prop can be used to make the checked state controlled. The `onChan
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -181,6 +188,8 @@ export function ControlledExample() {
 }
 ```
 
+:::
+
 ### Description
 
 The `Switch.Description` component can be used to associate additional help text with a switch.
@@ -188,7 +197,8 @@ The `Switch.Description` component can be used to associate additional help text
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {3}
 <Switch>
@@ -201,6 +211,8 @@ The `Switch.Description` component can be used to associate additional help text
 </Switch>
 ```
 
+:::
+
 ### Error message
 
 The `Switch.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the switch as invalid for assistive technologies.
@@ -210,7 +222,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {10,13}
 import { createSignal } from "solid-js";
@@ -235,6 +248,8 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The `name` and `value` props can be used for integration with HTML forms.
@@ -242,7 +257,8 @@ The `name` and `value` props can be used for integration with HTML forms.
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {7}
 function HTMLFormExample() {
@@ -262,6 +278,8 @@ function HTMLFormExample() {
 	);
 }
 ```
+
+:::
 
 ## API Reference
 

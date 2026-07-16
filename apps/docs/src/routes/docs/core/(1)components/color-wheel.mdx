@@ -67,7 +67,8 @@ The color wheel consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { ColorWheel } from "@kobalte/core/color-wheel";
@@ -123,6 +124,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default value
@@ -132,7 +135,8 @@ By default, `ColorWheel` is uncontrolled with a default value of red (hue = 0). 
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {7}
 import { ColorWheel } from "@kobalte/core/color-wheel";
@@ -152,6 +156,8 @@ function App() {
 }
 ```
 
+:::
+
 ### Controlled value
 
 A `ColorWheel` can be made controlled using the `value` prop. The `onChange` event is fired when the user drags the thumb and receive the new value.
@@ -159,7 +165,8 @@ A `ColorWheel` can be made controlled using the `value` prop. The `onChange` eve
 :::preview
 
 <ControlledValueExample />
-:::
+
+---
 
 ```tsx {4,9-10}
 import { createSignal } from "solid-js";
@@ -183,6 +190,8 @@ function ControlledValueExample() {
 }
 ```
 
+:::
+
 ### Thickness
 
 The `thickness` prop controls the width of the `ColorWheel`'s circular track. This prop is required.
@@ -190,7 +199,8 @@ The `thickness` prop controls the width of the `ColorWheel`'s circular track. Th
 :::preview
 
 <ThicknessExample />
-:::
+
+---
 
 ```tsx {1}
 <ColorWheel thickness={60}>
@@ -203,12 +213,15 @@ The `thickness` prop controls the width of the `ColorWheel`'s circular track. Th
 </ColorWheel>
 ```
 
+:::
+
 ### Custom Value Label
 
 :::preview
 
 <CustomValueLabelExample />
-:::
+
+---
 
 ```tsx {3-9}
 <ColorWheel
@@ -233,6 +246,8 @@ The `thickness` prop controls the width of the `ColorWheel`'s circular track. Th
 </ColorWheel>
 ```
 
+:::
+
 ### HTML forms
 
 `ColorWheel` supports the `name` prop for integration with HTML forms.
@@ -240,7 +255,8 @@ The `thickness` prop controls the width of the `ColorWheel`'s circular track. Th
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {8}
 function HTMLFormExample() {
@@ -261,6 +277,8 @@ function HTMLFormExample() {
 	);
 }
 ```
+
+:::
 
 ## API Reference
 

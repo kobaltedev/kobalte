@@ -73,7 +73,8 @@ The time field consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { TimeField } from "@kobalte/core/time-field";
@@ -162,6 +163,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default Value
@@ -173,13 +176,16 @@ Time values are objects: `{ hour?: number; minute?: number; second?: number; }`.
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {3}
 <TimeField defaultValue={{ hour: 11, minute: 45 }}>
 	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
 ```
+
+:::
 
 ### Controlled Value
 
@@ -188,7 +194,8 @@ The `value` prop can be used to make the value controlled. The `onChange` event 
 :::preview
 
 <ControlledValueExample />
-:::
+
+---
 
 ```tsx {6,15}
 import { createSignal, Show } from "solid-js";
@@ -212,6 +219,8 @@ function ControlledValueExample() {
 }
 ```
 
+:::
+
 ### Granularity
 
 The `granularity` prop allows you to control the smallest unit that is displayed by a TimeField. By default, times are displayed with "minute" granularity. More granular time values can be displayed by setting the `granularity` prop to "second" or an object with time slots as keys and boolean values.
@@ -219,13 +228,16 @@ The `granularity` prop allows you to control the smallest unit that is displayed
 :::preview
 
 <GranularityExample />
-:::
+
+---
 
 ```tsx {1}
 <TimeField granularity="second">
 	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
 ```
+
+:::
 
 ### Minimum and Maximum Values
 
@@ -234,7 +246,8 @@ The `min` and `max` props can be used to perform builtin validation. This marks 
 :::preview
 
 <MinMaxExample />
-:::
+
+---
 
 ```tsx {3,4}
 <TimeField
@@ -248,6 +261,8 @@ The `min` and `max` props can be used to perform builtin validation. This marks 
 </TimeField>
 ```
 
+:::
+
 ### Placeholder Value
 
 A placeholder time can be shown instead of dashes, also influences the starting time.
@@ -255,13 +270,16 @@ A placeholder time can be shown instead of dashes, also influences the starting 
 :::preview
 
 <PlaceholderValueExample />
-:::
+
+---
 
 ```tsx {1}
 <TimeField placeholder={{ hour: 9 }}>
 	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
 ```
+
+:::
 
 ### Hour Cycle
 
@@ -270,13 +288,16 @@ By default, TimeField displays times in either 12 or 24 hour format depending on
 :::preview
 
 <HourCycleExample />
-:::
+
+---
 
 ```tsx {1}
 <TimeField hourCycle={12}>
 	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
 </TimeField>
 ```
+
+:::
 
 ### Description
 
@@ -285,7 +306,8 @@ The `TimeField.Description` component can be used to associate additional help t
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {4}
 <TimeField>
@@ -294,6 +316,8 @@ The `TimeField.Description` component can be used to associate additional help t
 	<TimeField.Description>Select a meeting time.</TimeField.Description>
 </TimeField>
 ```
+
+:::
 
 ### Error message
 
@@ -304,7 +328,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {10,14}
 import { createSignal } from "solid-js";
@@ -326,6 +351,8 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The `name` prop can be used for integration with HTML forms.
@@ -333,7 +360,8 @@ The `name` prop can be used for integration with HTML forms.
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {8,10}
 function HTMLFormExample() {
@@ -355,6 +383,8 @@ function HTMLFormExample() {
 	);
 }
 ```
+
+:::
 
 ## API Reference
 

@@ -61,7 +61,8 @@ The meter consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Meter } from "@kobalte/core/meter";
@@ -114,6 +115,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Custom value scale
@@ -123,7 +126,8 @@ By default, the `value` prop represents the current value of meter, as the minim
 :::preview
 
 <CustomValueScaleExample />
-:::
+
+---
 
 ```tsx {1}
 <Meter value={100} minValue={0} maxValue={250} class="meter">
@@ -137,6 +141,8 @@ By default, the `value` prop represents the current value of meter, as the minim
 </Meter>
 ```
 
+:::
+
 ### Custom value label
 
 The `getValueLabel` prop allows the formatted value used in `Meter.ValueLabel` and ARIA to be replaced with a custom string. It receives the current value, min and max values as parameters.
@@ -144,7 +150,8 @@ The `getValueLabel` prop allows the formatted value used in `Meter.ValueLabel` a
 :::preview
 
 <CustomValueLabelExample />
-:::
+
+---
 
 ```tsx {5}
 <Meter
@@ -163,6 +170,8 @@ The `getValueLabel` prop allows the formatted value used in `Meter.ValueLabel` a
 	</Meter.Track>
 </Meter>
 ```
+
+:::
 
 ### Meter fill width
 

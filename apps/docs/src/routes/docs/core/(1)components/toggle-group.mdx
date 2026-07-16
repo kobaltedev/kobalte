@@ -57,7 +57,8 @@ The toggle item consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { ToggleButton } from "@kobalte/core/toggle-group";
@@ -118,6 +119,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default pressed
@@ -127,7 +130,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {1,8-10}
 <ToggleGroup defaultValue="underline">
@@ -143,6 +147,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 </ToggleGroup>
 ```
 
+:::
+
 ### Controlled pressed
 
 The `value` prop can be used to make the pressed state controlled. The `onChange` event is fired when the user toggle the button, and receives the new value.
@@ -150,7 +156,8 @@ The `value` prop can be used to make the pressed state controlled. The `onChange
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -169,6 +176,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Multiple selection
 
 The `multiple` prop can be used to create a select that allow multi-selection.
@@ -176,7 +185,8 @@ The `multiple` prop can be used to create a select that allow multi-selection.
 :::preview
 
 <MultipleSelectionExample />
-:::
+
+---
 
 ```tsx {4,9-11,23-24,29,33,40}
 import { createSignal } from "solid-js";
@@ -199,6 +209,8 @@ function MultipleSelectionExample() {
 	);
 }
 ```
+
+:::
 
 ## API Reference
 

@@ -82,7 +82,8 @@ The radio item consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { RadioGroup } from "@kobalte/core/radio-group";
@@ -187,6 +188,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default value
@@ -196,7 +199,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {1,5}
 <RadioGroup defaultValue="Orange">
@@ -209,6 +213,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop, wh
 </RadioGroup>
 ```
 
+:::
 The `role="presentation"` is required for all non content elements between the `RadioGroup` and `RadioGroup.Item` due to a bug in Chromium based browsers that incorrectly parse semantics and break screen readers.
 
 ### Controlled value
@@ -218,7 +223,8 @@ The `value` prop, which accepts a value corresponding with the `value` prop of e
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,8,12}
 import { createSignal } from "solid-js";
@@ -242,6 +248,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Description
 
 The `RadioGroup.Description` component can be used to associate additional help text with a radio group.
@@ -249,7 +257,8 @@ The `RadioGroup.Description` component can be used to associate additional help 
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {8}
 <RadioGroup>
@@ -263,6 +272,8 @@ The `RadioGroup.Description` component can be used to associate additional help 
 </RadioGroup>
 ```
 
+:::
+
 ### Error message
 
 The `RadioGroup.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the radio group as invalid for assistive technologies.
@@ -272,7 +283,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {10,18}
 import { createSignal } from "solid-js";
@@ -298,6 +310,8 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The radio group `name` prop, paired with the radio `value` prop, can be used for integration with HTML forms.
@@ -305,7 +319,8 @@ The radio group `name` prop, paired with the radio `value` prop, can be used for
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {8,12}
 function HTMLFormExample() {
@@ -331,6 +346,8 @@ function HTMLFormExample() {
 	);
 }
 ```
+
+:::
 
 ## API Reference
 

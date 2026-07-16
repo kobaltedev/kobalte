@@ -70,7 +70,8 @@ The color area consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { ColorArea } from "@kobalte/core/color-area";
@@ -130,6 +131,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 The value provided to `defaultValue` or `value` should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string.
@@ -141,7 +144,8 @@ If no `xChannel` or `yChannel` is provided, for the RGB color space, the red col
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {1}
 <ColorArea defaultValue={parseColor("rgb(2, 132, 197)")}>
@@ -155,12 +159,15 @@ If no `xChannel` or `yChannel` is provided, for the RGB color space, the red col
 </ColorArea>
 ```
 
+:::
+
 ### Controlled value
 
 :::preview
 
 <ControlledValueExample />
-:::
+
+---
 
 ```tsx {3,5}
 import { createSignal } from "solid-js";
@@ -180,6 +187,8 @@ const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
 </>;
 ```
 
+:::
+
 ### xChannel and yChannel
 
 The color channel for each axis of a color area can be specified using the `xChannel` and `yChannel` props. An array of channel names for a color can be returned using the color.getColorChannels method.
@@ -187,7 +196,8 @@ The color channel for each axis of a color area can be specified using the `xCha
 :::preview
 
 <XAndYChannelExample />
-:::
+
+---
 
 ```tsx {2,4}
 const [value, setValue] = createSignal(parseColor("rgb(100, 149, 237)"));
@@ -204,6 +214,8 @@ const [rChannel, gChannel, bChannel] = value().getColorChannels();
 </ColorArea>;
 ```
 
+:::
+
 ### HTML forms
 
 ColorArea supports the `xName` and `yName` props for integration with HTML forms.
@@ -211,7 +223,8 @@ ColorArea supports the `xName` and `yName` props for integration with HTML forms
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {1}
 <ColorArea defaultValue={parseColor("rgb(100, 149, 237)")} xName="red" yName="green">
@@ -224,6 +237,8 @@ ColorArea supports the `xName` and `yName` props for integration with HTML forms
 	</ColorArea.Background>
 </ColorArea>
 ```
+
+:::
 
 ## API Reference
 

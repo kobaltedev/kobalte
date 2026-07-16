@@ -82,7 +82,8 @@ The search consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Search } from "@kobalte/core/search";
@@ -330,6 +331,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Debounce
@@ -341,7 +344,8 @@ Show a debouncing icon by adding a `loadingComponent` to `Search.Indicator`.
 :::preview
 
 <DebounceExample />
-:::
+
+---
 
 ```tsx
 <Search
@@ -382,6 +386,8 @@ Show a debouncing icon by adding a `loadingComponent` to `Search.Indicator`.
 </Search>
 ```
 
+:::
+
 ### Inline style
 
 To achieve the command menu look, add the `open` prop to permanently open dropdown. Replace `Search.Portal` and `Search.Content` with a `div` to directly mount your content below the search input.
@@ -389,7 +395,8 @@ To achieve the command menu look, add the `open` prop to permanently open dropdo
 :::preview
 
 <InlineStyleExample />
-:::
+
+---
 
 ```tsx
 <Search
@@ -421,6 +428,8 @@ To achieve the command menu look, add the `open` prop to permanently open dropdo
 	</div>
 </Search>
 ```
+
+:::
 
 ## API Reference
 

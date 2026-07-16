@@ -77,7 +77,8 @@ The color channel field consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { ColorChannelField } from "@kobalte/core/color-channel-field";
@@ -185,6 +186,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 The value provided to `defaultValue` or `value` should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string. The `channel` prop must also be provided to specify which color channel the field manipulates.
@@ -195,7 +198,8 @@ This must be one of the channels included in the color value, for example, for R
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {1}
 <ColorChannelField defaultValue={parseColor("hsl(200, 98%, 39%)")} channel="saturation">
@@ -208,12 +212,15 @@ This must be one of the channels included in the color value, for example, for R
 </ColorChannelField>
 ```
 
+:::
+
 ### Controlled value
 
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,9-10}
 import { createSignal } from "solid-js";
@@ -237,6 +244,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Description
 
 The `ColorChannelField.Description` component can be used to associate additional help text with a color channel field.
@@ -244,7 +253,8 @@ The `ColorChannelField.Description` component can be used to associate additiona
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {8}
 <ColorChannelField defaultValue={parseColor("hsl(0, 98%, 39%)")} channel="hue">
@@ -258,6 +268,8 @@ The `ColorChannelField.Description` component can be used to associate additiona
 </ColorChannelField>
 ```
 
+:::
+
 ### Error message
 
 The `ColorChannelField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the field as invalid for assistive technologies.
@@ -267,7 +279,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {11,19}
 import { createSignal } from "solid-js";
@@ -294,6 +307,8 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The color channel field `name` prop along with `<ColorChannelField.HiddenInput/>` can be used for integration with HTML forms. Only the raw value is passed to the form.
@@ -303,7 +318,8 @@ If the formatted value is wanted (unrecommended) set the `name` attribute on `<C
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {8,10}
 function HTMLFormExample() {
@@ -331,6 +347,8 @@ function HTMLFormExample() {
 }
 ```
 
+:::
+
 ### Triggers
 
 The color channel field supports optional increment/decrement triggers that are easily customizable.
@@ -338,7 +356,8 @@ The color channel field supports optional increment/decrement triggers that are 
 :::preview
 
 <TriggersExample />
-:::
+
+---
 
 ```tsx {4,6}
 <ColorChannelField defaultValue={parseColor("hsb(10, 98%, 50%)")} channel="brightness">
@@ -354,6 +373,8 @@ The color channel field supports optional increment/decrement triggers that are 
 	</div>
 </ColorChannelField>
 ```
+
+:::
 
 ## API Reference
 

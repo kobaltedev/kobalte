@@ -57,7 +57,8 @@ The toggle button consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { ToggleButton } from "@kobalte/core/toggle-button";
@@ -104,6 +105,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default pressed
@@ -113,11 +116,14 @@ An initial, uncontrolled value can be provided using the `defaultPressed` prop.
 :::preview
 
 <DefaultPressedExample />
-:::
+
+---
 
 ```tsx
 <ToggleButton defaultPressed>...</ToggleButton>
 ```
+
+:::
 
 ### Controlled pressed
 
@@ -126,7 +132,8 @@ The `pressed` prop can be used to make the pressed state controlled. The `onChan
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -144,6 +151,8 @@ function ControlledExample() {
 	);
 }
 ```
+
+:::
 
 ## API Reference
 

@@ -64,7 +64,8 @@ The color field consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { ColorField } from "@kobalte/core/color-field";
@@ -140,6 +141,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default value
@@ -149,7 +152,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {1}
 <ColorField class="color-field" defaultValue="#7f007f">
@@ -158,6 +162,8 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 </ColorField>
 ```
 
+:::
+
 ### Controlled value
 
 The `value` prop can be used to make the value controlled. The `onChange` event is fired when the user type into the input and receive the new value.
@@ -165,7 +171,8 @@ The `value` prop can be used to make the value controlled. The `onChange` event 
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -185,6 +192,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Description
 
 The `ColorField.Description` component can be used to associate additional help text with a color field.
@@ -192,7 +201,8 @@ The `ColorField.Description` component can be used to associate additional help 
 :::preview
 
 <DescriptionExample />
-:::
+
+---
 
 ```tsx {4}
 <ColorField class="color-field">
@@ -204,6 +214,8 @@ The `ColorField.Description` component can be used to associate additional help 
 </ColorField>
 ```
 
+:::
+
 ### Error message
 
 The `ColorField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the color field as invalid for assistive technologies.
@@ -213,7 +225,8 @@ By default, it will render only when the `validationState` prop is set to `inval
 :::preview
 
 <ErrorMessageExample />
-:::
+
+---
 
 ```tsx {10,15}
 import { createSignal } from "solid-js";
@@ -235,6 +248,8 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 The color field `name` prop can be used for integration with HTML forms.
@@ -242,7 +257,8 @@ The color field `name` prop can be used for integration with HTML forms.
 :::preview
 
 <HTMLFormExample />
-:::
+
+---
 
 ```tsx {8}
 function HTMLFormExample() {
@@ -260,6 +276,8 @@ function HTMLFormExample() {
 	);
 }
 ```
+
+:::
 
 ## API Reference
 
