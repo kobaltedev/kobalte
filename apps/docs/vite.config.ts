@@ -17,7 +17,7 @@ const solidBase = createSolidBase(theme);
 
 export default defineConfig({
 	resolve: {
-		dedupe: ["@solidjs/router"],
+		dedupe: ["solid-js", "@solidjs/router"],
 	},
 	plugins: [
 		solidBase.plugin({
