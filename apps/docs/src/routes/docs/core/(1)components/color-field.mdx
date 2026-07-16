@@ -67,78 +67,10 @@ The color field consists of:
 
 ---
 
-```tsx title="index.tsx" tab
-import { ColorField } from "@kobalte/core/color-field";
-import "./style.css";
-
-function App() {
-	return (
-		<ColorField class="color-field">
-			<ColorField.Label class="color-field__label">Favorite hex color</ColorField.Label>
-			<ColorField.Input class="color-field__input" />
-		</ColorField>
-	);
-}
+```tsx title="index.tsx" tab file="../../../../examples/color-field.tsx#L1-L15"
 ```
 
-```css title="style.css" tab
-.color-field {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-}
-
-.color-field__label {
-	color: hsl(240 6% 10%);
-	font-size: 14px;
-	font-weight: 500;
-	user-select: none;
-}
-
-.color-field__input {
-	display: inline-flex;
-	width: 200px;
-	border-radius: 6px;
-	padding: 6px 12px;
-	font-size: 16px;
-	outline: none;
-	background-color: white;
-	border: 1px solid hsl(240 6% 90%);
-	color: hsl(240 4% 16%);
-	transition:
-		border-color 250ms,
-		color 250ms;
-}
-
-.color-field__input:hover {
-	border-color: hsl(240 5% 65%);
-}
-
-.color-field__input:focus-visible {
-	outline: 2px solid hsl(200 98% 39%);
-	outline-offset: 2px;
-}
-
-.color-field__input[data-invalid] {
-	border-color: hsl(0 72% 51%);
-	color: hsl(0 72% 51%);
-}
-
-.color-field__input::placeholder {
-	color: hsl(240 4% 46%);
-}
-
-.color-field__description {
-	color: hsl(240 5% 26%);
-	font-size: 12px;
-	user-select: none;
-}
-
-.color-field__error-message {
-	color: hsl(0 72% 51%);
-	font-size: 12px;
-	user-select: none;
-}
+```css title="style.css" tab file="../../../../examples/color-field.module.css"
 ```
 
 :::

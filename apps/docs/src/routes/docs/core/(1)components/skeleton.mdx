@@ -53,60 +53,10 @@ The skeleton consists of:
 
 ---
 
-```tsx title="index.tsx" tab
-import { Skeleton } from "@kobalte/core/skeleton";
-import "./style.css";
-
-function App() {
-	return (
-		<Skeleton class="skeleton" radius={10}>
-			<p>A UI toolkit for building accessible web apps and design systems with SolidJS.</p>
-		</Skeleton>
-	);
-}
+```tsx title="index.tsx" tab file="../../../../examples/skeleton.tsx#L1-L17"
 ```
 
-```css title="style.css" tab
-@keyframes skeleton-fade {
-	0%,
-	100% {
-		opacity: 0.4;
-	}
-
-	50% {
-		opacity: 1;
-	}
-}
-
-.skeleton {
-	height: auto;
-	width: 100%;
-	position: relative;
-	transform: translateZ(0);
-	-webkit-transform: translateZ(0);
-}
-.skeleton[data-animate="true"]::after {
-	animation: skeleton-fade 1500ms linear infinite;
-}
-
-.skeleton[data-visible="true"] {
-	overflow: hidden;
-}
-.skeleton[data-visible="true"]::before {
-	position: absolute;
-	content: "";
-	inset: 0;
-	z-index: 10;
-	background-color: white;
-}
-
-.skeleton[data-visible="true"]::after {
-	position: absolute;
-	content: "";
-	inset: 0;
-	z-index: 11;
-	background-color: gray;
-}
+```css title="style.css" tab file="../../../../examples/skeleton.module.css"
 ```
 
 :::

@@ -69,65 +69,10 @@ The color slider consists of:
 
 ---
 
-```tsx title="index.tsx" tab
-import { ColorSlider } from "@kobalte/core/color-slider";
-import { parseColor } from "@kobalte/core/colors";
-import "./style.css";
-
-function App() {
-	return (
-		<ColorSlider class="ColorSliderRoot" channel="blue">
-			<div class="ColorSliderLabel">
-				<ColorSlider.Label>Blue</ColorSlider.Label>
-				<ColorSlider.ValueLabel />
-			</div>
-			<ColorSlider.Track class="ColorSliderTrack">
-				<ColorSlider.Thumb class="ColorSliderThumb">
-					<ColorSlider.Input />
-				</ColorSlider.Thumb>
-			</ColorSlider.Track>
-		</ColorSlider>
-	);
-}
+```tsx title="index.tsx" tab file="../../../../examples/color-slider.tsx#L1-L24"
 ```
 
-```css title="style.css" tab
-.ColorSliderRoot {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	user-select: none;
-	touch-action: none;
-	width: 200px;
-}
-
-.ColorSliderTrack {
-	position: relative;
-	border-radius: 6px;
-	height: 24px;
-	width: 100%;
-}
-
-.ColorSliderThumb {
-	display: block;
-	top: 4px;
-	width: 16px;
-	height: 16px;
-	border-radius: 9999px;
-	border: 2px solid #fff;
-	background: var(--kb-color-current);
-}
-
-.ColorSliderThumb:focus {
-	outline: none;
-}
-
-.ColorSliderLabel {
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-}
+```css title="style.css" tab file="../../../../examples/color-slider.module.css"
 ```
 
 :::

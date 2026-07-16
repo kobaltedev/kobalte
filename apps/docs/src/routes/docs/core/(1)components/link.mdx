@@ -52,37 +52,10 @@ The link consists of:
 
 ---
 
-```tsx title="index.tsx" tab
-import { Link } from "@kobalte/core/link";
-import "./style.css";
-
-function App() {
-	return (
-		<Link class="link" href="https://kobalte.dev">
-			Kobalte
-		</Link>
-	);
-}
+```tsx title="index.tsx" tab file="../../../../examples/link.tsx#L1-L11"
 ```
 
-```css title="style.css" tab
-.link {
-	font-weight: 600;
-	color: hsl(201 96% 32%);
-}
-
-.link:hover {
-	text-decoration: underline;
-}
-
-.link[data-disabled] {
-	opacity: 0.5;
-	cursor: not-allowed;
-}
-
-.link[data-disabled]:hover {
-	text-decoration: none;
-}
+```css title="style.css" tab file="../../../../examples/link.module.css"
 ```
 
 :::

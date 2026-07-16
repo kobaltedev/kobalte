@@ -52,45 +52,10 @@ The button consists of:
 
 ---
 
-```tsx title="index.tsx" tab
-import { Button } from "@kobalte/core/button";
-import "./style.css";
-
-function App() {
-	return <Button class="button">Click me</Button>;
-}
+```tsx title="index.tsx" tab file="../../../../examples/button.tsx#L1-L6"
 ```
 
-```css title="style.css" tab
-.button {
-	appearance: none;
-	display: inline-flex;
-	justify-content: center;
-	align-items: center;
-	height: 40px;
-	width: auto;
-	outline: none;
-	border-radius: 6px;
-	padding: 0 16px;
-	background-color: hsl(200 98% 39%);
-	color: white;
-	font-size: 16px;
-	line-height: 0;
-	transition: 250ms background-color;
-}
-
-.button:hover {
-	background-color: hsl(201 96% 32%);
-}
-
-.button:focus-visible {
-	outline: 2px solid hsl(200 98% 39%);
-	outline-offset: 2px;
-}
-
-.button:active {
-	background-color: hsl(201 90% 27%);
-}
+```css title="style.css" tab file="../../../../examples/button.module.css"
 ```
 
 :::

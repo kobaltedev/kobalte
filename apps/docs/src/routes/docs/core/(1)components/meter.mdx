@@ -64,55 +64,10 @@ The meter consists of:
 
 ---
 
-```tsx title="index.tsx" tab
-import { Meter } from "@kobalte/core/meter";
-import "./style.css";
-
-function App() {
-	return (
-		<Meter value={80} class="meter">
-			<div class="meter__label-container">
-				<Meter.Label class="meter__label">Battery Level:</Meter.Label>
-				<Meter.ValueLabel class="meter__value-label" />
-			</div>
-			<Meter.Track class="meter__track">
-				<Meter.Fill class="meter__fill" />
-			</Meter.Track>
-		</Meter>
-	);
-}
+```tsx title="index.tsx" tab file="../../../../examples/meter.tsx#L1-L17"
 ```
 
-```css title="style.css" tab
-.meter {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-	width: 300px;
-}
-
-.meter__label-container {
-	display: flex;
-	justify-content: space-between;
-}
-
-.meter__label,
-.meter__value-label {
-	color: hsl(240 4% 16%);
-	font-size: 14px;
-}
-
-.meter__track {
-	height: 10px;
-	background-color: hsl(240 6% 90%);
-}
-
-.meter__fill {
-	background-color: hsl(200 98% 39%);
-	height: 100%;
-	width: var(--kb-meter-fill-width);
-	transition: width 250ms linear;
-}
+```css title="style.css" tab file="../../../../examples/meter.module.css"
 ```
 
 :::

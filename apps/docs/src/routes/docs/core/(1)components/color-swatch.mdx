@@ -49,22 +49,10 @@ The color swatch consists of:
 
 ---
 
-```tsx title="index.tsx" tab
-import { ColorSwatch } from "@kobalte/core/color-swatch";
-import { parseColor } from "@kobalte/core/colors";
-import "./style.css";
-
-function App() {
-	return <ColorSwatch class="ColorSwatchRoot" value={parseColor("hsl(200, 98%, 39%)")} />;
-}
+```tsx title="index.tsx" tab file="../../../../examples/color-swatch.tsx#L1-L12"
 ```
 
-```css title="style.css" tab
-.ColorSwatchRoot {
-	height: 56px;
-	width: 56px;
-	border-radius: 6px;
-}
+```css title="style.css" tab file="../../../../examples/color-swatch.module.css"
 ```
 
 :::

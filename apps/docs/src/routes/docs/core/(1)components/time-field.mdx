@@ -76,91 +76,10 @@ The time field consists of:
 
 ---
 
-```tsx title="index.tsx" tab
-import { TimeField } from "@kobalte/core/time-field";
-import "./style.css";
-
-function App() {
-	return (
-		<TimeField class="time-field">
-			<TimeField.Label class="time-field__label">Event time</TimeField.Label>
-			<TimeField.Input class="time-field__field">
-				{segment => <TimeField.Segment class="time-field__segment" segment={segment()} />}
-			</TimeField.Input>
-		</TimeField>
-	);
-}
+```tsx title="index.tsx" tab file="../../../../examples/time-field.tsx#L1-L21"
 ```
 
-```css title="style.css" tab
-.time-field {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-}
-
-.time-field\_\_label {
-	color: hsl(240 6% 10%);
-	font-size: 14px;
-	font-weight: 500;
-	user-select: none;
-}
-
-.time-field\_\_input {
-	display: flex;
-	padding: 4px 8px;
-	border-radius: 6px;
-	width: 150px;
-	white-space: nowrap;
-	forced-color-adjust: none;
-	background-color: #fff;
-	border: 1px solid hsl(240 6% 90%);
-	color: hsl(240 4% 16%);
-	font-size: 14px;
-}
-
-.time-field\_\_input:focus-within {
-	outline: 2px solid hsl(200 98% 39%);
-	outline-offset: -1px;
-}
-
-.time-field\_\_segment {
-	padding: 0 2px;
-	font-variant-numeric: tabular-nums;
-	text-align: end;
-}
-
-.time-field\_\_segment[data-type="literal"] {
-	padding: 0;
-}
-
-.time-field\_\_segment[data-placeholder] {
-	color: hsl(240 4% 46%);
-	font-style: italic;
-}
-
-.time-field\_\_segment:focus {
-	color: #fff !important;
-	background: hsl(200 98% 39%);
-	outline: none;
-	border-radius: 4px;
-}
-
-.time-field\_\_segment::selection {
-	background-color: transparent;
-}
-
-.time-field\_\_description {
-	color: hsl(240 5% 26%);
-	font-size: 12px;
-	user-select: none;
-}
-
-.time-field\_\_error-message {
-	color: hsl(0 72% 51%);
-	font-size: 12px;
-	user-select: none;
-}
+```css title="style.css" tab file="../../../../examples/time-field.module.css"
 ```
 
 :::

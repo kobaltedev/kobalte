@@ -81,70 +81,10 @@ The rating item consists of:
 
 ---
 
-```tsx title="index.tsx" tab
-import { Rating } from "@kobalte/core/rating";
-import "./style.css";
-
-function App() {
-	return (
-		<Rating class="rating">
-			<Rating.Label class="rating__label">Rate Us:</Rating.Label>
-			<Rating.Control class="rating__control">
-				<Index each={Array(5)}>
-					{_ => (
-						<Rating.Item class="rating-item">
-							<Rating.ItemControl>
-								<StarIcon />
-							</Rating.ItemControl>
-						</Rating.Item>
-					)}
-				</Index>
-			</Rating.Control>
-		</Rating>
-	);
-}
+```tsx title="index.tsx" tab file="../../../../examples/rating.tsx#L1-L23"
 ```
 
-```css title="style.css" tab
-.rating {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-
-.rating\_\_label {
-	color: hsl(240 6% 10%);
-	font-size: 14px;
-	font-weight: 500;
-	user-select: none;
-}
-
-.rating\_\_description {
-	color: hsl(240 5% 26%);
-	font-size: 12px;
-	user-select: none;
-}
-
-.rating\_\_error-message {
-	color: hsl(0 72% 51%);
-	font-size: 12px;
-	user-select: none;
-}
-
-.rating\_\_control {
-	display: flex;
-	gap: 4px;
-}
-
-.rating-item {
-	cursor: pointer;
-	fill: hsl(240 6% 90%);
-	transition: fill 200ms cubic-bezier(0.2, 0, 0, 1);
-}
-
-.rating-item[data-highlighted] {
-	fill: hsl(200 98% 39%);
-}
+```css title="style.css" tab file="../../../../examples/rating.module.css"
 ```
 
 :::
