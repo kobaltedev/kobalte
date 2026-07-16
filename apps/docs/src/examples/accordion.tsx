@@ -1,8 +1,9 @@
-import { Accordion } from "@kobalte/core/accordion";
 import { createSignal } from "solid-js";
 
 import { ChevronDownIcon } from "../components";
 import style from "./accordion.module.css";
+
+import { Accordion } from "@kobalte/core/accordion";
 
 export function BasicExample() {
 	return (
