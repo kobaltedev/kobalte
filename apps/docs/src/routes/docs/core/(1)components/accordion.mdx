@@ -67,7 +67,8 @@ The accordion consists of:
 :::preview
 
 <BasicExample />
-:::
+
+---
 
 ```tsx title="index.tsx" tab
 import { Accordion } from "@kobalte/core/accordion";
@@ -211,6 +212,8 @@ function App() {
 }
 ```
 
+:::
+
 ## Usage
 
 ### Default value
@@ -220,7 +223,8 @@ A default expanded item can be provided using the `defaultValue` prop, which sho
 :::preview
 
 <DefaultValueExample />
-:::
+
+---
 
 ```tsx {1,3}
 <Accordion defaultValue={["item-2"]}>
@@ -229,6 +233,8 @@ A default expanded item can be provided using the `defaultValue` prop, which sho
 	<Accordion.Item value="item-3">{/* ... */}</Accordion.Item>
 </Accordion>
 ```
+
+:::
 
 :::info[]
 The `value` and `defaultValue` props always take a `string[]`.
@@ -241,7 +247,8 @@ Expanded item can be controlled using the `value` prop, paired with the `onChang
 :::preview
 
 <ControlledExample />
-:::
+
+---
 
 ```tsx {4,8}
 import { createSignal } from "solid-js";
@@ -262,6 +269,8 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Collapsible item
 
 By default, accordion items are not collapsible, meaning you can't toggle them from open to close and vice-versa. Use the `collapsible` prop to enable this behavior.
@@ -269,7 +278,8 @@ By default, accordion items are not collapsible, meaning you can't toggle them f
 :::preview
 
 <CollapsibleExample />
-:::
+
+---
 
 ```tsx {1}
 <Accordion collapsible>
@@ -279,6 +289,8 @@ By default, accordion items are not collapsible, meaning you can't toggle them f
 </Accordion>
 ```
 
+:::
+
 ### Allow expanding multiple items
 
 Use the `multiple` to allow expanding multiple accordion items at the same time. This also make all accordion items collapsible.
@@ -286,7 +298,8 @@ Use the `multiple` to allow expanding multiple accordion items at the same time.
 :::preview
 
 <AllowMultipleExample />
-:::
+
+---
 
 ```tsx {1}
 <Accordion multiple>
@@ -296,12 +309,13 @@ Use the `multiple` to allow expanding multiple accordion items at the same time.
 </Accordion>
 ```
 
+:::
+
 ### Animating content size
 
 We expose the CSS custom properties `--kb-accordion-content-width` and `--kb-accordion-content-height` which you can use to animate the size of the content when it opens/closes.
 
-```css {16,22}
-/* style.css */
+```css {16,22} title="style.css"
 .accordion__item-content {
 	overflow: hidden;
 	font-size: 16px;
