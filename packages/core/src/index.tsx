@@ -40,6 +40,7 @@ export * from "./selection";
 export * as Separator from "./separator";
 export * as Skeleton from "./skeleton";
 export * as Slider from "./slider";
+export * as Steps from "./steps";
 export * as Switch from "./switch";
 export * as Tabs from "./tabs";
 export * as TextField from "./text-field";

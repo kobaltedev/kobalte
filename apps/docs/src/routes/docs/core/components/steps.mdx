@@ -1,0 +1,386 @@
+import { Preview, TabsSnippets } from "../../../../components";
+import {
+	BasicExample,
+	ControlledExample,
+	LinearExample,
+	ProgressExample,
+	SkippableExample,
+} from "../../../../examples/steps";
+
+# Steps
+
+An accessible step indicator ("stepper" / wizard) for guiding a user through a sequence of steps.
+
+## Import
+
+```ts
+import { Steps } from "@kobalte/core/steps";
+// or
+import {
+	Root,
+	List,
+	Item,
+	Trigger,
+	Indicator,
+	Separator,
+	Content,
+	CompletedContent,
+	Progress,
+	NextTrigger,
+	PrevTrigger,
+} from "@kobalte/core/steps";
+// or (deprecated)
+import { Steps } from "@kobalte/core";
+```
+
+## Features
+
+- A fixed number of steps (`count`), navigated by index.
+- Click a step's trigger to jump directly to it, or use `NextTrigger`/`PrevTrigger`.
+- Optional `linear` mode: forward navigation is blocked unless the current step is valid (`isStepValid`).
+- Steps can be marked `isStepSkippable`, bypassing them during next/prev navigation.
+- A dedicated completed state (`CompletedContent`) once every step is done.
+- A `Progress` part (and a `--percent` CSS variable on the root) for visualizing completion.
+- Can be controlled or uncontrolled.
+- Horizontal or vertical orientation.
+
+## Anatomy
+
+The steps component consists of:
+
+- **Steps**: The root container that manages the current step and provides context.
+- **Steps.List**: Wrapper for the step items.
+- **Steps.Item**: The container for a single step.
+- **Steps.Trigger**: A button that navigates directly to the step it belongs to.
+- **Steps.Indicator**: A visual marker for a step's status (e.g. its number or a checkmark).
+- **Steps.Separator**: A divider between two steps, rendered inside `Steps.Item`.
+- **Steps.Content**: The content shown while its associated step is current.
+- **Steps.CompletedContent**: The content shown once every step has been completed.
+- **Steps.Progress**: A progress bar reflecting how many steps have been completed.
+- **Steps.PrevTrigger**: A button that returns to the previous step.
+- **Steps.NextTrigger**: A button that advances to the next step.
+
+```tsx
+<Steps>
+	<Steps.List>
+		{/* one Steps.Item per step */}
+		<Steps.Item index={0}>
+			<Steps.Trigger>
+				<Steps.Indicator />
+			</Steps.Trigger>
+			<Steps.Separator />
+		</Steps.Item>
+	</Steps.List>
+	<Steps.Content index={0} />
+	<Steps.CompletedContent />
+	<Steps.Progress />
+	<Steps.PrevTrigger />
+	<Steps.NextTrigger />
+</Steps>
+```
+
+## Example
+
+Like the tag list in [Tags Input](/docs/core/components/tags-input), the list of steps isn't a fixed anatomy part — render one `Steps.Item` (and one `Steps.Content`) per step yourself, since `count` is just a number and Kobalte doesn't know what each step should contain.
+
+<Preview>
+	<BasicExample />
+</Preview>
+
+<TabsSnippets>
+  <TabsSnippets.List>
+    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
+    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
+  </TabsSnippets.List>
+  {/* <!-- prettier-ignore-start --> */}
+  <TabsSnippets.Content value="index.tsx">
+    ```tsx
+    import { Steps } from "@kobalte/core/steps";
+    import { For } from "solid-js";
+    import "./style.css";
+
+    const STEP_TITLES = ["Account", "Profile", "Confirmation"];
+
+    function StepIndicator(props: { index: number }) {
+      return (
+        <Steps.Indicator class="steps__indicator">
+          {props.index + 1}
+        </Steps.Indicator>
+      );
+    }
+
+    function App() {
+      return (
+        <Steps count={3}>
+          <Steps.List class="steps__list">
+            <For each={STEP_TITLES}>
+              {(title, index) => (
+                <Steps.Item index={index()} class="steps__item">
+                  <Steps.Trigger class="steps__trigger">
+                    <StepIndicator index={index()} />
+                    <span class="steps__label">{title}</span>
+                  </Steps.Trigger>
+                  {index() < STEP_TITLES.length - 1 && (
+                    <Steps.Separator class="steps__separator" />
+                  )}
+                </Steps.Item>
+              )}
+            </For>
+          </Steps.List>
+
+          <Steps.Content index={0} class="steps__content">
+            Create your account by choosing a username and password.
+          </Steps.Content>
+          <Steps.Content index={1} class="steps__content">
+            Tell us a bit about yourself.
+          </Steps.Content>
+          <Steps.Content index={2} class="steps__content">
+            Review your details and confirm.
+          </Steps.Content>
+          <Steps.CompletedContent class="steps__content">
+            🎉 All steps completed — you're all set!
+          </Steps.CompletedContent>
+
+          <div class="steps__actions">
+            <Steps.PrevTrigger>Back</Steps.PrevTrigger>
+            <Steps.NextTrigger>Next</Steps.NextTrigger>
+          </div>
+        </Steps>
+      );
+    }
+    ```
+
+  </TabsSnippets.Content>
+  <TabsSnippets.Content value="style.css">
+    ```css
+    .steps__list {
+      display: flex;
+      align-items: center;
+    }
+
+    .steps__item {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .steps__item:last-child {
+      flex: none;
+    }
+
+    .steps__indicator {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1.5px solid hsl(240 6% 90%);
+      color: hsl(240 4% 46%);
+      font-weight: 600;
+    }
+
+    .steps__indicator[data-current],
+    .steps__indicator[data-complete] {
+      border-color: hsl(200 98% 39%);
+      background-color: hsl(200 98% 39%);
+      color: white;
+    }
+
+    .steps__separator {
+      flex: 1;
+      height: 2px;
+      margin: 0 8px;
+      background-color: hsl(240 6% 90%);
+    }
+
+    .steps__separator[data-complete] {
+      background-color: hsl(200 98% 39%);
+    }
+    ```
+
+  </TabsSnippets.Content>
+  {/* <!-- prettier-ignore-end --> */}
+</TabsSnippets>
+
+## Usage
+
+### Controlled value
+
+The `value` and `onChange` props can be used to make the current step controlled.
+
+<Preview>
+	<ControlledExample />
+</Preview>
+
+```tsx {3,4,7-9}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal(0);
+
+	return (
+		<>
+			<Steps count={3} value={value()} onChange={setValue}>
+				{/* ...list, content... */}
+			</Steps>
+			<p>Current step index: {value()}</p>
+		</>
+	);
+}
+```
+
+### Progress
+
+`Steps.Progress` renders as the fill of a progress bar (sized via `width`) — wrap it in your own track element. The root also exposes a `--percent` CSS variable for custom styling.
+
+<Preview>
+	<ProgressExample />
+</Preview>
+
+```tsx {0}
+<Steps count={4}>
+	<div class="steps__progress-track">
+		<Steps.Progress class="steps__progress-fill" />
+	</div>
+	{/* ...list... */}
+</Steps>
+```
+
+```css
+.steps__progress-track {
+	height: 6px;
+	border-radius: 999px;
+	background-color: hsl(240 5% 94%);
+	overflow: hidden;
+}
+
+.steps__progress-fill {
+	height: 100%;
+	background-color: hsl(200 98% 39%);
+	transition: width 200ms;
+}
+```
+
+### Linear mode
+
+Set `linear` to require the steps to be completed in order. Provide `isStepValid` to gate forward navigation — clicking a step's trigger more than one step ahead, or calling `Steps.NextTrigger` while the current step is invalid, is blocked and fires `onStepInvalid` instead. Going backward is always allowed.
+
+<Preview>
+	<LinearExample />
+</Preview>
+
+```tsx {3-8}
+function LinearExample() {
+	const [email, setEmail] = createSignal("");
+
+	return (
+		<Steps
+			count={3}
+			linear
+			isStepValid={(index) => index !== 0 || email().includes("@")}
+			onStepInvalid={() => alert("Enter a valid email first.")}
+		>
+			<Steps.Content index={0}>
+				<input value={email()} onInput={(e) => setEmail(e.currentTarget.value)} />
+			</Steps.Content>
+			{/* ...remaining steps... */}
+		</Steps>
+	);
+}
+```
+
+### Skippable steps
+
+Provide `isStepSkippable` to bypass certain steps when navigating with `Steps.NextTrigger`/`Steps.PrevTrigger`. A skippable step is still reachable by clicking its `Steps.Trigger` directly.
+
+<Preview>
+	<SkippableExample />
+</Preview>
+
+```tsx {0}
+<Steps count={4} isStepSkippable={(index) => index === 2}>
+	{/* ...list, content... */}
+</Steps>
+```
+
+## API Reference
+
+### Steps
+
+`Steps` is equivalent to the `Root` import from `@kobalte/core/steps` (and deprecated `Steps.Root`).
+
+| Prop            | Description                                                                                                                    |
+| :--------------- | :------------------------------------------------------------------------------------------------------------------------------ |
+| count            | `number` <br/> The total number of steps. **Required.**                                                                        |
+| value            | `number` <br/> The controlled index of the current step.                                                                       |
+| defaultValue     | `number` <br/> The index of the current step when initially rendered. Useful when you do not need to control the state.        |
+| onChange         | `(value: number) => void` <br/> Event handler called when the current step changes.                                            |
+| orientation      | `'horizontal' \| 'vertical'` <br/> The orientation of the steps. Defaults to `'horizontal'`.                                     |
+| linear           | `boolean` <br/> Whether the user must complete the steps in order. Defaults to `false`.                                        |
+| isStepValid      | `(index: number) => boolean` <br/> Returns whether the step at `index` is valid, used to gate forward navigation when `linear` is `true`. Defaults to always `true`. |
+| isStepSkippable  | `(index: number) => boolean` <br/> Returns whether the step at `index` should be skipped over by next/prev navigation. Defaults to always `false`. |
+| onStepComplete   | `() => void` <br/> Event handler called once when every step has been completed.                                               |
+| onStepInvalid    | `(details: { step: number }) => void` <br/> Event handler called when navigation is blocked by an invalid step in `linear` mode. |
+| id               | `string` <br/> A unique identifier. Auto-generated if not provided.                                                            |
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-orientation` | Reflects the `orientation` prop. |
+
+### Steps.Item
+
+| Prop  | Description                                                             |
+| :---- | :------------------------------------------------------------------------ |
+| index | `number` <br/> The index of this step. **Required.**                    |
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-complete` / `data-current` / `data-incomplete` | Reflects the step's status relative to the current step. |
+
+`Steps.Trigger`, `Steps.Indicator`, and `Steps.Separator` read this status from context — `Steps.Separator` should be rendered as a child of `Steps.Item`, alongside `Steps.Trigger`. `Steps.Separator` is purely decorative and is hidden from assistive technology (`aria-hidden="true"`), matching `Breadcrumbs.Separator`.
+
+`Steps.Trigger` and `Steps.Content` for the same `index` are automatically cross-referenced for assistive technology: `Steps.Trigger` gets `aria-controls` pointing at its `Steps.Content`'s `id`, and `Steps.Content` gets `aria-labelledby` pointing back at the trigger — an `id` is generated for both if you don't provide one yourself. `Steps.Trigger` also sets `aria-current="step"` while it's the current step.
+
+### Steps.Content / Steps.CompletedContent
+
+| Prop         | Description                                                                                                                              |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| index        | `number` <br/> (`Steps.Content` only) The index of the step this content belongs to. **Required.**                                       |
+| `forceMount` | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### useStepsContext
+
+Returns the `StepsContextValue` object. Must be called inside a `Steps`. Used to build custom sub-components, or to drive navigation programmatically.
+
+| Property        | Type                                        | Description                                                    |
+| :-------------- | :------------------------------------------- | :--------------------------------------------------------------- |
+| value           | `Accessor<number>`                           | The index of the current step (equals `count` once completed).  |
+| count           | `Accessor<number>`                           | The total number of steps.                                       |
+| percent         | `Accessor<number>`                           | The completion percentage, between 0 and 100.                    |
+| hasNextStep     | `Accessor<boolean>`                          | Whether there is a step after the current one.                   |
+| hasPrevStep     | `Accessor<boolean>`                          | Whether there is a step before the current one.                  |
+| isCompleted     | `Accessor<boolean>`                          | Whether every step has been completed.                            |
+| getItemState    | `(index: number) => "complete" \| "current" \| "incomplete"` | Returns the current status of the step at `index`. |
+| setStep         | `(index: number) => void`                    | Directly sets the current step, clamped to `[0, count]`. Not subject to `linear` validation. |
+| goToNextStep    | `() => void`                                 | Advances to the next (non-skipped) step, subject to `linear` validation. |
+| goToPrevStep    | `() => void`                                 | Returns to the previous (non-skipped) step.                       |
+| resetStep       | `() => void`                                 | Resets to the first step.                                         |
+
+## Rendered elements
+
+| Component                | Default rendered element |
+| :----------------------- | :----------------------- |
+| `Steps`                  | `div`                    |
+| `Steps.List`             | `div`                    |
+| `Steps.Item`              | `div`                    |
+| `Steps.Trigger`          | `button`                 |
+| `Steps.Indicator`        | `div`                    |
+| `Steps.Separator`        | `div`                    |
+| `Steps.Content`          | `div`                    |
+| `Steps.CompletedContent` | `div`                    |
+| `Steps.Progress`         | `div`                    |
+| `Steps.PrevTrigger`      | `button`                 |
+| `Steps.NextTrigger`      | `button`                 |

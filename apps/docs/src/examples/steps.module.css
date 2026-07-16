@@ -1,0 +1,118 @@
+.steps__list {
+	display: flex;
+	align-items: center;
+}
+
+.steps__item {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	gap: 8px;
+}
+
+.steps__item:last-child {
+	flex: none;
+}
+
+.steps__trigger {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	border: none;
+	background: transparent;
+	padding: 0;
+	cursor: pointer;
+	outline: none;
+	border-radius: 999px;
+}
+
+.steps__trigger:focus-visible {
+	box-shadow: 0 0 0 2px hsl(200 98% 39% / 0.4);
+}
+
+.steps__indicator {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 999px;
+	border: 1.5px solid hsl(240 6% 90%);
+	color: hsl(240 4% 46%);
+	font-size: 14px;
+	font-weight: 600;
+	transition:
+		border-color 150ms,
+		background-color 150ms,
+		color 150ms;
+}
+
+.steps__indicator[data-current],
+.steps__indicator[data-complete] {
+	border-color: hsl(200 98% 39%);
+	background-color: hsl(200 98% 39%);
+	color: white;
+}
+
+.steps__label {
+	font-size: 14px;
+	font-weight: 500;
+	color: hsl(240 4% 16%);
+}
+
+.steps__separator {
+	flex: 1;
+	height: 2px;
+	margin: 0 8px;
+	background-color: hsl(240 6% 90%);
+}
+
+.steps__separator[data-complete] {
+	background-color: hsl(200 98% 39%);
+}
+
+.steps__content {
+	margin-top: 20px;
+	border-radius: 8px;
+	border: 1px solid hsl(240 6% 90%);
+	padding: 16px;
+	font-size: 14px;
+	color: hsl(240 4% 16%);
+}
+
+.steps__progress-track {
+	height: 6px;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 999px;
+	background-color: hsl(240 5% 94%);
+}
+
+.steps__progress-fill {
+	height: 100%;
+	background-color: hsl(200 98% 39%);
+	transition: width 200ms;
+}
+
+[data-kb-theme="dark"] .steps__indicator {
+	border-color: hsl(240 5% 34%);
+	color: hsl(0 100% 100% / 0.6);
+}
+
+[data-kb-theme="dark"] .steps__label {
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .steps__separator {
+	background-color: hsl(240 5% 34%);
+}
+
+[data-kb-theme="dark"] .steps__content {
+	border-color: hsl(240 5% 34%);
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .steps__progress-track {
+	background-color: hsl(240 4% 24%);
+}
