@@ -16,6 +16,9 @@ const theme = defineTheme({
 const solidBase = createSolidBase(theme);
 
 export default defineConfig({
+	resolve: {
+		dedupe: ["@solidjs/router"],
+	},
 	plugins: [
 		solidBase.plugin({
 			title: "Kobalte",

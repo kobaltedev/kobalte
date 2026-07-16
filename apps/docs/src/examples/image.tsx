@@ -4,7 +4,7 @@ import { Image } from "@kobalte/core/image";
 
 export function BasicExample() {
 	return (
-		<div class="flex items-center space-x-2">
+		<div style={{ display: "flex", "align-items": "center", gap: "8px" }}>
 			<Image fallbackDelay={600} class={style.image}>
 				<Image.Img
 					class={style.image__img}

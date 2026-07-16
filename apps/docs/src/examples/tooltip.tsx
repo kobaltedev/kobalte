@@ -23,7 +23,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<p class="not-prose text-sm mb-2">
+			<p style={{ "font-size": "14px", "margin-bottom": "8px" }}>
 				Tooltip is {open() ? "showing" : "not showing"}.
 			</p>
 			<Tooltip open={open()} onOpenChange={setOpen}>

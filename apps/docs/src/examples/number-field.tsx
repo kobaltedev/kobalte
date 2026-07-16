@@ -88,7 +88,13 @@ export function ControlledExample() {
 				</div>
 			</NumberField>
 
-			<p class="not-prose text-sm mt-4">
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
 				Quantity: {value()}. Raw: {rawValue()}.
 			</p>
 		</>
@@ -173,7 +179,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<NumberField class={style["number-field"]} name="quantity">
 				<NumberField.Label class={style["number-field__label"]}>
@@ -196,7 +207,7 @@ export function HTMLFormExample() {
 					</NumberField.DecrementTrigger>
 				</div>
 			</NumberField>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>

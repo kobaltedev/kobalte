@@ -42,7 +42,7 @@ export function MultipleThumbsExample() {
 
 export function StepExample() {
 	return (
-		<div class="flex flex-col space-y-4">
+		<div style={{ display: "flex", "flex-direction": "column", gap: "16px" }}>
 			<Slider class={style.SliderRoot} step={8}>
 				<div class={style.SliderLabel}>
 					<Slider.Label>Step size 8</Slider.Label>

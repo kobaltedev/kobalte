@@ -53,7 +53,7 @@ export function BasicExample() {
 	};
 
 	return (
-		<div class="flex items-center space-x-4">
+		<div style={{ display: "flex", "align-items": "center", gap: "16px" }}>
 			<button type="button" class="kb-button-primary" onClick={showToast}>
 				Show toast
 			</button>
@@ -96,7 +96,7 @@ export function MultipleRegionsExample() {
 	};
 
 	return (
-		<div class="flex items-center space-x-4">
+		<div style={{ display: "flex", "align-items": "center", gap: "16px" }}>
 			<button
 				type="button"
 				class="kb-button-primary"

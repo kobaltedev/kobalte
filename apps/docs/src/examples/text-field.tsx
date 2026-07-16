@@ -41,7 +41,15 @@ export function ControlledExample() {
 				</TextField.Label>
 				<TextField.Input class={style["text-field__input"]} />
 			</TextField>
-			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
+				Your favorite fruit is: {value()}.
+			</p>
 		</>
 	);
 }
@@ -119,7 +127,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<TextField class={style["text-field"]} name="favorite-fruit">
 				<TextField.Label class={style["text-field__label"]}>
@@ -127,7 +140,7 @@ export function HTMLFormExample() {
 				</TextField.Label>
 				<TextField.Input class={style["text-field__input"]} />
 			</TextField>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>

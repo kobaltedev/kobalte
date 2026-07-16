@@ -47,7 +47,7 @@ export interface ColorWheelRootOptions {
 	defaultValue?: Color;
 
 	/** The thickness of the track. */
-	thickness: number;
+	thickness?: number;
 
 	/** Event handler called when the value changes. */
 	onChange?: (value: Color) => void;

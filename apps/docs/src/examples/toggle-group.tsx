@@ -236,8 +236,9 @@ export function ControlledExample() {
 					</svg>
 				</ToggleGroup.Item>
 			</ToggleGroup>
-			<div class="text-sm">
-				Your text style is: <span class="capitalize">{render()}.</span>
+			<div style={{ "font-size": "14px" }}>
+				Your text style is:{" "}
+				<span style={{ "text-transform": "capitalize" }}>{render()}.</span>
 			</div>
 		</>
 	);

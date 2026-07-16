@@ -225,10 +225,10 @@ export function BasicExample() {
 
 			<div style="height: 2rem;" />
 
-			<RadioGroup<Orientation>
+			<RadioGroup
 				class={radioStyle["radio-group"]}
 				value={orientation()}
-				onChange={(value) => setOrientation(value)}
+				onChange={(value) => setOrientation(value as Orientation)}
 			>
 				<RadioGroup.Label class={radioStyle["radio-group__label"]}>
 					Orientation

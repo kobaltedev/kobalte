@@ -83,7 +83,15 @@ export function ControlledExample() {
 					</For>
 				</div>
 			</RadioGroup>
-			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
+				Your favorite fruit is: {value()}.
+			</p>
 		</>
 	);
 }
@@ -167,7 +175,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<RadioGroup class={style["radio-group"]} name="favorite-fruit">
 				<RadioGroup.Label class={style["radio-group__label"]}>
@@ -189,7 +202,7 @@ export function HTMLFormExample() {
 					</For>
 				</div>
 			</RadioGroup>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>

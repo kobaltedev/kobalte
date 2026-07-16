@@ -104,7 +104,15 @@ export function ControlledExample() {
 					</Select.Content>
 				</Select.Portal>
 			</Select>
-			<p class="not-prose text-sm mt-4">Your favorite fruit is: {value()}.</p>
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
+				Your favorite fruit is: {value()}.
+			</p>
 		</>
 	);
 }
@@ -198,7 +206,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<Select
 				name="fruit"
@@ -228,7 +241,7 @@ export function HTMLFormExample() {
 					</Select.Content>
 				</Select.Portal>
 			</Select>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>
@@ -383,20 +396,43 @@ export function MultipleSelectionExample() {
 					<Select.Value<string> class={style.select__value}>
 						{(state) => (
 							<>
-								<div class="flex items-center gap-2 flex-wrap">
+								<div
+									style={{
+										display: "flex",
+										"align-items": "center",
+										gap: "8px",
+										"flex-wrap": "wrap",
+									}}
+								>
 									<For each={state.selectedOptions()}>
 										{(option) => (
 											<span
-												class="bg-zinc-100 dark:bg-zinc-700 text-sm px-2 py-0.5 rounded inline-flex items-center gap-x-2"
+												style={{
+													"background-color": "hsl(240 6% 97%)",
+													"font-size": "14px",
+													padding: "2px 8px",
+													"border-radius": "6px",
+													display: "inline-flex",
+													"align-items": "center",
+													gap: "8px",
+												}}
 												onPointerDown={(e) => e.stopPropagation()}
 											>
 												{option}
 												<button
 													type="button"
 													onClick={() => state.remove(option)}
-													class="rounded-full hover:bg-zinc-300 dark:hover:bg-zinc-600 p-1"
+													style={{
+														"border-radius": "9999px",
+														padding: "4px",
+														cursor: "pointer",
+														background: "none",
+														border: "none",
+													}}
 												>
-													<CrossIcon class="h3 w-3" />
+													<CrossIcon
+														style={{ width: "12px", height: "12px" }}
+													/>
 												</button>
 											</span>
 										)}
@@ -406,9 +442,17 @@ export function MultipleSelectionExample() {
 									type="button"
 									onPointerDown={(e) => e.stopPropagation()}
 									onClick={state.clear}
-									class="ml-auto mr-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-600 p-1"
+									style={{
+										"margin-left": "auto",
+										"margin-right": "8px",
+										"border-radius": "9999px",
+										padding: "4px",
+										cursor: "pointer",
+										background: "none",
+										border: "none",
+									}}
 								>
-									<CrossIcon class="h-3.5 w-3.5" />
+									<CrossIcon style={{ width: "14px", height: "14px" }} />
 								</button>
 							</>
 						)}
@@ -423,7 +467,13 @@ export function MultipleSelectionExample() {
 					</Select.Content>
 				</Select.Portal>
 			</Select>
-			<p class="not-prose text-sm mt-4">
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
 				Your favorite fruits are: {values().join(", ")}.
 			</p>
 		</>

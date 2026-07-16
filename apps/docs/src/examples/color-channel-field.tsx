@@ -92,7 +92,13 @@ export function ControlledExample() {
 				</div>
 			</ColorChannelField>
 
-			<p class="not-prose text-sm mt-4">
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
 				Lightness: {value().getChannelValue("lightness")}%
 			</p>
 		</>
@@ -189,7 +195,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<ColorChannelField
 				class={style["color-channel-field"]}
@@ -219,7 +230,7 @@ export function HTMLFormExample() {
 					</ColorChannelField.DecrementTrigger>
 				</div>
 			</ColorChannelField>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>

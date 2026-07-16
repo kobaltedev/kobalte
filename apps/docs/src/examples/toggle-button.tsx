@@ -11,9 +11,9 @@ export function BasicExample() {
 			{(state) => (
 				<Show
 					when={state.pressed()}
-					fallback={<VolumeOnIcon class="h-6 w-6" />}
+					fallback={<VolumeOnIcon style={{ width: "24px", height: "24px" }} />}
 				>
-					<VolumeOffIcon class="h-6 w-6" />
+					<VolumeOffIcon style={{ width: "24px", height: "24px" }} />
 				</Show>
 			)}
 		</ToggleButton>
@@ -30,9 +30,9 @@ export function DefaultPressedExample() {
 			{(state) => (
 				<Show
 					when={state.pressed()}
-					fallback={<VolumeOnIcon class="h-6 w-6" />}
+					fallback={<VolumeOnIcon style={{ width: "24px", height: "24px" }} />}
 				>
-					<VolumeOffIcon class="h-6 w-6" />
+					<VolumeOffIcon style={{ width: "24px", height: "24px" }} />
 				</Show>
 			)}
 		</ToggleButton>
@@ -53,13 +53,17 @@ export function ControlledExample() {
 				{(state) => (
 					<Show
 						when={state.pressed()}
-						fallback={<VolumeOnIcon class="h-6 w-6" />}
+						fallback={
+							<VolumeOnIcon style={{ width: "24px", height: "24px" }} />
+						}
 					>
-						<VolumeOffIcon class="h-6 w-6" />
+						<VolumeOffIcon style={{ width: "24px", height: "24px" }} />
 					</Show>
 				)}
 			</ToggleButton>
-			<p class="not-prose text-sm mt-2">
+			<p
+				style={{ "font-size": "14px", "margin-top": "8px", "margin-bottom": 0 }}
+			>
 				The microphone is {pressed() ? "muted" : "active"}.
 			</p>
 		</>
