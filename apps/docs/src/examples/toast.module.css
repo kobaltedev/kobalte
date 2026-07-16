@@ -135,24 +135,24 @@
 	}
 }
 
-[data-kb-theme="dark"] .toast {
+[data-theme*="dark"] .toast {
 	border: 1px solid hsl(240 5% 26%);
 	background-color: hsl(240 4% 16%);
 	box-shadow: none;
 }
 
-[data-kb-theme="dark"] .toast__close-button {
+[data-theme*="dark"] .toast__close-button {
 	color: hsl(0 100% 100% / 0.8);
 }
 
-[data-kb-theme="dark"] .toast__title {
+[data-theme*="dark"] .toast__title {
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .toast__description {
+[data-theme*="dark"] .toast__description {
 	color: hsl(0 100% 100% / 0.7);
 }
 
-[data-kb-theme="dark"] .toast__progress-track {
+[data-theme*="dark"] .toast__progress-track {
 	background-color: hsl(240 5% 26%);
 }

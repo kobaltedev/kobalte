@@ -84,11 +84,11 @@
 	}
 }
 
-[data-kb-theme="dark"] .accordion {
+[data-theme*="dark"] .accordion {
 	border-color: hsl(240 5% 65%);
 	color: hsl(0 0% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .accordion__item-trigger {
+[data-theme*="dark"] .accordion__item-trigger {
 	border-bottom-color: hsl(240 5% 65%);
 }

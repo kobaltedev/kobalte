@@ -99,37 +99,37 @@
 	}
 }
 
-[data-kb-theme="dark"] .popover__trigger {
+[data-theme*="dark"] .popover__trigger {
 	background-color: hsl(201 96% 32%);
 	color: hsla(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .popover__trigger:hover {
+[data-theme*="dark"] .popover__trigger:hover {
 	background-color: hsl(200 98% 39%);
 }
 
-[data-kb-theme="dark"] .popover__trigger:active {
+[data-theme*="dark"] .popover__trigger:active {
 	background-color: hsl(199 89% 48%);
 }
 
-[data-kb-theme="dark"] .popover__anchor {
+[data-theme*="dark"] .popover__anchor {
 	background-color: hsl(240 4% 16%);
 }
 
-[data-kb-theme="dark"] .popover__content {
+[data-theme*="dark"] .popover__content {
 	border: 1px solid hsl(240 5% 26%);
 	background-color: hsl(240 4% 16%);
 	box-shadow: none;
 }
 
-[data-kb-theme="dark"] .popover__close-button {
+[data-theme*="dark"] .popover__close-button {
 	color: hsl(0 100% 100% / 0.8);
 }
 
-[data-kb-theme="dark"] .popover__title {
+[data-theme*="dark"] .popover__title {
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .popover__description {
+[data-theme*="dark"] .popover__description {
 	color: hsl(0 100% 100% / 0.7);
 }
