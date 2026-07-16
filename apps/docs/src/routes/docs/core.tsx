@@ -206,6 +206,11 @@ const CORE_NAV_SECTIONS: NavSection[] = [
 				href: "/docs/core/components/tabs",
 			},
 			{
+				title: "Tags Input",
+				href: "/docs/core/components/tags-input",
+				status: "new",
+			},
+			{
 				title: "Text Field",
 				href: "/docs/core/components/text-field",
 			},
