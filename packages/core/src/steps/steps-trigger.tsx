@@ -1,8 +1,8 @@
-import { composeEventHandlers, type Orientation } from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
-import * as Button from "../button";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { Tabs, type TabsTriggerRenderProps } from "../tabs";
 import { useStepsContext } from "./steps-context";
 import { useStepsItemContext } from "./steps-item-context";
 
@@ -15,7 +15,7 @@ export interface StepsTriggerCommonProps<T extends HTMLElement = HTMLElement> {
 
 export interface StepsTriggerRenderProps
 	extends StepsTriggerCommonProps,
-		Button.ButtonRootRenderProps {
+		TabsTriggerRenderProps {
 	"data-orientation": Orientation;
 	"data-state": "open" | "closed";
 	"data-complete": "" | undefined;
@@ -30,7 +30,11 @@ export type StepsTriggerProps<
 > = StepsTriggerOptions & Partial<StepsTriggerCommonProps<ElementOf<T>>>;
 
 /**
- * A button that navigates directly to the step it belongs to.
+ * A button that navigates directly to the step it belongs to. Wraps
+ * `Tabs.Trigger` internally — its click and Enter/Space activation already
+ * perform "select this key", which flows into `Steps.Root`'s controlled
+ * `Tabs` `onChange`, which runs it through `changeStep`'s `linear` validation
+ * before the current step value is ever allowed to update.
  */
 export function StepsTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, StepsTriggerProps<T>>,
@@ -38,7 +42,7 @@ export function StepsTrigger<T extends ValidComponent = "button">(
 	const context = useStepsContext();
 	const itemContext = useStepsItemContext();
 
-	const others = omit(props as StepsTriggerProps, "id", "onClick");
+	const others = omit(props as StepsTriggerProps, "id");
 
 	const state = () => context.getItemState(itemContext.index());
 	const isCurrent = () => state() === "current";
@@ -47,16 +51,12 @@ export function StepsTrigger<T extends ValidComponent = "button">(
 		(props as StepsTriggerProps).id ??
 		context.generateId(`trigger-${itemContext.index()}`);
 
-	const handleClick = () => {
-		context.changeStep(itemContext.index());
-	};
-
 	return (
-		<Button.Root<
-			Component<Omit<StepsTriggerRenderProps, keyof Button.ButtonRootRenderProps>>
+		<Tabs.Trigger<
+			Component<Omit<StepsTriggerRenderProps, keyof TabsTriggerRenderProps>>
 		>
+			value={String(itemContext.index())}
 			id={id()}
-			onClick={composeEventHandlers([props.onClick, handleClick])}
 			data-orientation={context.orientation()}
 			data-state={isCurrent() ? "open" : "closed"}
 			data-complete={state() === "complete" ? "" : undefined}

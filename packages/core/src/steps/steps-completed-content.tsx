@@ -22,7 +22,9 @@ export interface StepsCompletedContentCommonProps<
 }
 
 export interface StepsCompletedContentRenderProps
-	extends StepsCompletedContentCommonProps {}
+	extends StepsCompletedContentCommonProps {
+	role: "status";
+}
 
 export type StepsCompletedContentProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -31,7 +33,10 @@ export type StepsCompletedContentProps<
 
 /**
  * The content shown once every step has been completed
- * (`context.value() >= context.count()`).
+ * (`context.value() >= context.count()`). Announced to assistive technology
+ * automatically via `role="status"` (a polite live region) — completing a
+ * wizard is a positive, non-urgent update, not an error/warning, so `status`
+ * is the correct role here rather than the more disruptive `alert`.
  */
 export function StepsCompletedContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, StepsCompletedContentProps<T>>,
@@ -49,6 +54,7 @@ export function StepsCompletedContent<T extends ValidComponent = "div">(
 		>
 			<Polymorphic<StepsCompletedContentRenderProps>
 				as="div"
+				role="status"
 				ref={
 					(props as StepsCompletedContentProps).ref as (
 						el: HTMLElement,

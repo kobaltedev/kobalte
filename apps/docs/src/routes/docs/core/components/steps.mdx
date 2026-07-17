@@ -1,4 +1,4 @@
-import { Preview, TabsSnippets } from "../../../../components";
+import { Kbd, Preview, TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	ControlledExample,
@@ -36,13 +36,14 @@ import { Steps } from "@kobalte/core";
 ## Features
 
 - A fixed number of steps (`count`), navigated by index.
-- Click a step's trigger to jump directly to it, or use `NextTrigger`/`PrevTrigger`.
-- Optional `linear` mode: forward navigation is blocked unless the current step is valid (`isStepValid`).
+- Click a step's trigger to jump directly to it, use `NextTrigger`/`PrevTrigger`, or navigate between triggers with the arrow keys (<Kbd>Home</Kbd>/<Kbd>End</Kbd> too) — <Kbd>Enter</Kbd>/<Kbd>Space</Kbd> commits the navigation.
+- Optional `linear` mode: forward navigation is blocked unless the current step is valid (`isStepValid`) — this applies uniformly whether navigation comes from a click or the keyboard.
 - Steps can be marked `isStepSkippable`, bypassing them during next/prev navigation.
-- A dedicated completed state (`CompletedContent`) once every step is done.
+- A dedicated completed state (`CompletedContent`) once every step is done, announced to assistive technology via `role="status"`.
 - A `Progress` part (and a `--percent` CSS variable on the root) for visualizing completion.
 - Can be controlled or uncontrolled.
 - Horizontal or vertical orientation.
+- Built on top of `Tabs` internally, so triggers get `role="tab"`/`aria-selected` and proper roving-tabindex keyboard navigation for free, in addition to Steps-specific `aria-current="step"` and `aria-controls`/`aria-labelledby` linking each trigger to its content.
 
 ## Anatomy
 
@@ -61,7 +62,7 @@ The steps component consists of:
 - **Steps.NextTrigger**: A button that advances to the next step.
 
 ```tsx
-<Steps>
+<Steps count={3}>
 	<Steps.List>
 		{/* one Steps.Item per step */}
 		<Steps.Item index={0}>
@@ -330,6 +331,16 @@ Provide `isStepSkippable` to bypass certain steps when navigating with `Steps.Ne
 | :--- | :--- |
 | `data-orientation` | Reflects the `orientation` prop. |
 
+### Steps.List
+
+Wraps the step items. Internally wraps `Tabs.List`, which is what gives roving-tabindex arrow-key (and <Kbd>Home</Kbd>/<Kbd>End</Kbd>) navigation between triggers, along with `role="tablist"` and `aria-orientation`.
+
+No props beyond the common polymorphic/HTML ones.
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-orientation` | Reflects the `orientation` prop. |
+
 ### Steps.Item
 
 | Prop  | Description                                                             |
@@ -340,9 +351,41 @@ Provide `isStepSkippable` to bypass certain steps when navigating with `Steps.Ne
 | :--- | :--- |
 | `data-complete` / `data-current` / `data-incomplete` | Reflects the step's status relative to the current step. |
 
-`Steps.Trigger`, `Steps.Indicator`, and `Steps.Separator` read this status from context — `Steps.Separator` should be rendered as a child of `Steps.Item`, alongside `Steps.Trigger`. `Steps.Separator` is purely decorative and is hidden from assistive technology (`aria-hidden="true"`), matching `Breadcrumbs.Separator`.
+`Steps.Trigger`, `Steps.Indicator`, and `Steps.Separator` read this status from context — `Steps.Separator` should be rendered as a child of `Steps.Item`, alongside `Steps.Trigger`.
+
+### Steps.Trigger
+
+A button that navigates directly to the step it belongs to. Wraps `Tabs.Trigger` internally, so clicking it (or pressing <Kbd>Enter</Kbd>/<Kbd>Space</Kbd> while it's focused) selects it — this is routed through `linear`/`isStepValid` validation before the current step is allowed to change. It also inherits `Tabs.Trigger`'s own `role="tab"`, `aria-selected`, `data-selected`, and `data-highlighted`.
+
+No props beyond the common polymorphic/HTML ones.
 
 `Steps.Trigger` and `Steps.Content` for the same `index` are automatically cross-referenced for assistive technology: `Steps.Trigger` gets `aria-controls` pointing at its `Steps.Content`'s `id`, and `Steps.Content` gets `aria-labelledby` pointing back at the trigger — an `id` is generated for both if you don't provide one yourself. `Steps.Trigger` also sets `aria-current="step"` while it's the current step.
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-orientation` | Reflects the `orientation` prop. |
+| `data-state` | `"open"` while it's the current step, `"closed"` otherwise. |
+| `data-complete` / `data-current` / `data-incomplete` | Reflects the step's status relative to the current step. |
+
+### Steps.Indicator
+
+A visual marker for a step's status (e.g. its number or a checkmark), typically rendered inside `Steps.Trigger`. Renders whatever children you provide — style it using the data attributes below.
+
+No props beyond the common polymorphic/HTML ones.
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-complete` / `data-current` / `data-incomplete` | Reflects the step's status relative to the current step. |
+
+### Steps.Separator
+
+A purely decorative divider between two steps, rendered as a child of `Steps.Item`, reflecting the status of the step it follows. Hidden from assistive technology (`aria-hidden="true"`), matching `Breadcrumbs.Separator`. Typically hidden visually after the last item via a `:last-child` CSS rule.
+
+No props beyond the common polymorphic/HTML ones.
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-complete` / `data-current` / `data-incomplete` | Reflects the step's status relative to the current step. |
 
 ### Steps.Content / Steps.CompletedContent
 
@@ -350,6 +393,32 @@ Provide `isStepSkippable` to bypass certain steps when navigating with `Steps.Ne
 | :----------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
 | index        | `number` <br/> (`Steps.Content` only) The index of the step this content belongs to. **Required.**                                       |
 | `forceMount` | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-current` | (`Steps.Content` only) Present while its associated step is the current one. |
+
+`Steps.CompletedContent` renders with `role="status"` (a polite live region) — completing a wizard is a positive, non-urgent update rather than an error, so `status` is used instead of the more disruptive `alert`.
+
+### Steps.NextTrigger / Steps.PrevTrigger
+
+Buttons that advance to the next step or return to the previous one. `Steps.NextTrigger` is subject to `linear`/`isStepValid`/`isStepSkippable`. Both wrap `Button.Root`; `onClick` is composed with the built-in navigation handler rather than replaced by it.
+
+No props beyond the common polymorphic/HTML ones (plus `onClick`).
+
+`Steps.NextTrigger` is `disabled` when `hasNextStep` is `false`; `Steps.PrevTrigger` is `disabled` when `hasPrevStep` is `false`.
+
+### Steps.Progress
+
+A progress bar reflecting how many steps have been completed. Renders as the fill itself (sized via a `width` style based on `percent`) — wrap it in your own track element.
+
+No props beyond the common polymorphic/HTML ones.
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-complete` | Present once every step has been completed. |
+
+`Steps.Progress` renders with `role="progressbar"`, `aria-valuenow` (the current step index), `aria-valuemin={0}`, and `aria-valuemax` (the step count).
 
 ### useStepsContext
 
@@ -363,7 +432,11 @@ Returns the `StepsContextValue` object. Must be called inside a `Steps`. Used to
 | hasNextStep     | `Accessor<boolean>`                          | Whether there is a step after the current one.                   |
 | hasPrevStep     | `Accessor<boolean>`                          | Whether there is a step before the current one.                  |
 | isCompleted     | `Accessor<boolean>`                          | Whether every step has been completed.                            |
+| isStepValid     | `(index: number) => boolean`                 | Returns whether the step at `index` is valid.                     |
+| isStepSkippable | `(index: number) => boolean`                 | Returns whether the step at `index` should be skipped over by next/prev navigation. |
 | getItemState    | `(index: number) => "complete" \| "current" \| "incomplete"` | Returns the current status of the step at `index`. |
+| canChangeStep   | `(index: number) => boolean`                 | Returns whether navigating directly to `index` is currently allowed. |
+| changeStep      | `(index: number) => void`                    | Navigates to `index` if `canChangeStep(index)`, otherwise fires `onStepInvalid`. |
 | setStep         | `(index: number) => void`                    | Directly sets the current step, clamped to `[0, count]`. Not subject to `linear` validation. |
 | goToNextStep    | `() => void`                                 | Advances to the next (non-skipped) step, subject to `linear` validation. |
 | goToPrevStep    | `() => void`                                 | Returns to the previous (non-skipped) step.                       |
@@ -384,3 +457,21 @@ Returns the `StepsContextValue` object. Must be called inside a `Steps`. Used to
 | `Steps.Progress`         | `div`                    |
 | `Steps.PrevTrigger`      | `button`                 |
 | `Steps.NextTrigger`      | `button`                 |
+
+## Accessibility
+
+### Keyboard Interactions
+
+`Steps.Trigger` always uses manual activation: the arrow keys (and <Kbd>Home</Kbd>/<Kbd>End</Kbd>) only move roving focus between triggers, they never change the current step on their own — appropriate for a step wizard, where focusing the next trigger to "just look" at it shouldn't silently advance the stepper. <Kbd>Enter</Kbd>/<Kbd>Space</Kbd> commits the navigation, subject to `linear`/`isStepValid` validation.
+
+| Key                   | Description                                                                                                                   |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
+| <Kbd>Tab</Kbd>        | Moves focus to the first (or last active) trigger. Once focused, arrow keys navigate the remaining triggers.                  |
+| <Kbd>ArrowDown</Kbd>  | Moves focus to the next trigger in vertical orientation.                                                                       |
+| <Kbd>ArrowRight</Kbd> | Moves focus to the next trigger in horizontal orientation.                                                                     |
+| <Kbd>ArrowUp</Kbd>    | Moves focus to the previous trigger in vertical orientation.                                                                   |
+| <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous trigger in horizontal orientation.                                                                 |
+| <Kbd>Home</Kbd>       | Moves focus to the first trigger.                                                                                              |
+| <Kbd>End</Kbd>        | Moves focus to the last trigger.                                                                                               |
+| <Kbd>Enter</Kbd>      | Navigates to the focused trigger's step, subject to `linear`/`isStepValid` validation.                                         |
+| <Kbd>Space</Kbd>      | Navigates to the focused trigger's step, subject to `linear`/`isStepValid` validation.                                         |

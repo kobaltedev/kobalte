@@ -3,17 +3,13 @@ import {
 	clamp,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
-import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+import { type Component, createUniqueId, omit } from "solid-js";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
+import { Tabs, type TabsRootRenderProps } from "../tabs";
 import {
 	type StepState,
 	StepsContext,
@@ -92,8 +88,6 @@ export type StepsRootProps<
 export function StepsRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, StepsRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
-
 	const defaultId = `steps-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
@@ -277,13 +271,43 @@ export function StepsRoot<T extends ValidComponent = "div">(
 		generateId: createGenerateId(() => access(mergedProps.id)!),
 	};
 
+	// Composes on top of `Tabs` (per maintainer guidance on kobaltedev/kobalte#523)
+	// rather than re-implementing keyboard navigation and ARIA plumbing:
+	// `Tabs.List`/`Tabs.Trigger` give roving-tabindex arrow-key navigation
+	// between steps, `role="tablist"`/`"tab"`, and proper Enter/Space
+	// activation for free. `value`/`onChange` are always fully controlled
+	// from here (stringified), so `linear`/`isStepValid`/`isStepSkippable` —
+	// concepts Tabs has no notion of — still gate every navigation
+	// attempt (click, Enter/Space, or a future controlled `value` change)
+	// through `changeStep` before this component's own step value ever
+	// updates. `activationMode="manual"` is deliberate: arrow keys only move
+	// roving focus between triggers, they don't themselves commit
+	// navigation — appropriate for a step wizard, where "just looking" at
+	// the next trigger shouldn't silently change the current step.
+	//
+	// `Steps.Content`/`Steps.CompletedContent` deliberately do NOT delegate
+	// to `Tabs.Content` — it uses the same `createPresence`-based mount
+	// pattern that caused a real flicker bug here (see steps-content.tsx).
 	return (
 		<StepsContext value={context}>
-			<Polymorphic<StepsRootRenderProps>
-				as="div"
-				ref={mergeRefs((el) => (ref = el as HTMLElement), mergedProps.ref)}
-				id={access(mergedProps.id)!}
-				data-orientation={context.orientation()}
+			<Tabs<Component<Omit<StepsRootRenderProps, keyof TabsRootRenderProps>>>
+				ref={
+					mergedProps.ref as HTMLElement | ((el: HTMLElement) => void)
+				}
+				id={access(mergedProps.id)}
+				// Tabs has no notion of Steps' "completed" state (`value ===
+				// count`, one past the last real trigger) — if fed a value
+				// with no matching registered `Tabs.Trigger`, Tabs' own
+				// self-correction effect force-resets selection to the first
+				// tab, silently un-completing the stepper. Clamp to the last
+				// real trigger's key instead; `getItemState`/`isCompleted`
+				// still read the true, uncapped `value()`, so completion
+				// itself is unaffected — this only keeps Tabs' internal
+				// bookkeeping pointed at a key that actually exists.
+				value={String(Math.min(value() ?? 0, count() - 1))}
+				onChange={(key) => changeStep(Number(key))}
+				orientation={mergedProps.orientation}
+				activationMode="manual"
 				style={resolvedStyle()}
 				{...others}
 			/>

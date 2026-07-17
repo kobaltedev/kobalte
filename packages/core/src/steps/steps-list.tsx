@@ -1,11 +1,8 @@
 import type { Orientation } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
-import { useStepsContext } from "./steps-context";
+import { type Component } from "solid-js";
+import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { Tabs, type TabsListRenderProps } from "../tabs";
 
 export interface StepsListOptions {}
 
@@ -20,17 +17,15 @@ export type StepsListProps<
 > = StepsListOptions & Partial<StepsListCommonProps<ElementOf<T>>>;
 
 /**
- * Contains the steps' items.
+ * Contains the steps' items. Wraps `Tabs.List` internally — this is what
+ * gives roving-tabindex arrow-key navigation (and Home/End) between step
+ * triggers, `role="tablist"`, and `aria-orientation` for free.
  */
 export function StepsList<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, StepsListProps<T>>,
 ) {
-	const context = useStepsContext();
-
 	return (
-		<Polymorphic<StepsListRenderProps>
-			as="div"
-			data-orientation={context.orientation()}
+		<Tabs.List<Component<Omit<StepsListRenderProps, keyof TabsListRenderProps>>>
 			{...(props as StepsListProps)}
 		/>
 	);
