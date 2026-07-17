@@ -6,11 +6,11 @@ import type {
 	MenuTriggerCommonProps,
 	MenuTriggerOptions,
 	MenuTriggerRenderProps,
-} from "../menu";
-import { useOptionalMenuContext } from "../menu/menu-context";
-import { MenubarTrigger } from "../menubar/menubar-trigger";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useNavigationMenuContext } from "./navigation-menu-context";
+} from "../menu/index.ts";
+import { useOptionalMenuContext } from "../menu/menu-context.tsx";
+import { MenubarTrigger } from "../menubar/menubar-trigger.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useNavigationMenuContext } from "./navigation-menu-context.tsx";
 
 export interface NavigationMenuTriggerOptions extends MenuTriggerOptions {}
 

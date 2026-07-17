@@ -40,11 +40,11 @@
 	"source": "src/index.ts",
 	"files": ["dist", "src"],
 	"scripts": {
-		"build": "tsup",
-		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+		"build": "tsdown",
+		"clean": "rm -rf node_modules && rm -rf dist"
 	},
 	"devDependencies": {
-		"tailwindcss": "^4.3.1"
+		"tailwindcss": "catalog:"
 	},
 	"peerDependencies": {
 		"tailwindcss": ">=3"

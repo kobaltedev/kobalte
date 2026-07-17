@@ -26,9 +26,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
-import { useToastRegionContext } from "./toast-region-context";
+import { useToastRegionContext } from "./toast-region-context.tsx";
 
 export interface ToastListOptions {}
 

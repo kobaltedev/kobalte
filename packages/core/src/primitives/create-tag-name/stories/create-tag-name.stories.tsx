@@ -1,5 +1,5 @@
 import preview from "../../../../../../.storybook/preview.js";
-import { createTagName } from "../index";
+import { createTagName } from "../index.ts";
 
 const meta = preview.meta({
 	title: "Primitives/createTagName",

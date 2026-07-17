@@ -17,8 +17,8 @@ import {
 	type Setter,
 	untrack,
 } from "solid-js";
-import { createControllableSignal } from "../primitives";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { createControllableSignal } from "../primitives/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	ResizableContext,
 	ResizableInternalContext,
@@ -26,7 +26,7 @@ import {
 	type ResizableInternalContextValue,
 	type ResizableSize,
 	type ResizeStrategy,
-} from "./resizable-context";
+} from "./resizable-context.tsx";
 import {
 	deltaResize,
 	fixToPrecision,
@@ -35,7 +35,7 @@ import {
 	splitPanels,
 	type ResizablePanelData,
 	type ResizablePanelInstance,
-} from "./resizable-lib";
+} from "./resizable-lib.ts";
 
 export interface ResizableRootOptions {
 	/**

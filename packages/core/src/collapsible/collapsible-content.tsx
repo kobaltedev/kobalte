@@ -15,11 +15,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type CollapsibleDataSet,
 	useCollapsibleContext,
-} from "./collapsible-context";
+} from "./collapsible-context.tsx";
 
 export interface CollapsibleContentOptions {}
 

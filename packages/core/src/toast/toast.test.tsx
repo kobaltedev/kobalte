@@ -1,10 +1,10 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
 import { vi } from "vitest";
-import { I18nProvider } from "../i18n";
+import { I18nProvider } from "../i18n/index.tsx";
 import * as Toast from ".";
-import { toaster } from "./toaster";
-import type { ShowToastOptions } from "./types";
+import { toaster } from "./toaster.ts";
+import type { ShowToastOptions } from "./types.ts";
 
 describe("Toast", () => {
 	installPointerEvent();

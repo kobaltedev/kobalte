@@ -1,8 +1,8 @@
 import type { ValidComponent } from "@solidjs/web";
 import type { Component } from "solid-js";
 
-import { FormControlLabel } from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { FormControlLabel } from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 export interface TimeFieldLabelOptions {}
 

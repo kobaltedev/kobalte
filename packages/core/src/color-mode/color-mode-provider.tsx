@@ -8,21 +8,21 @@
 
 import { createEffect, createSignal, onCleanup } from "solid-js";
 
-import { ColorModeContext } from "./color-mode-context";
-import { localStorageManager } from "./storage-manager";
+import { ColorModeContext } from "./color-mode-context.tsx";
+import { localStorageManager } from "./storage-manager.ts";
 import type {
 	ColorMode,
 	ColorModeContextType,
 	ColorModeProviderProps,
 	ConfigColorMode,
-} from "./types";
+} from "./types.ts";
 import {
 	addColorModeListener,
 	FALLBACK_COLOR_MODE_VALUE,
 	getInitialColorMode,
 	getSystemColorMode,
 	setColorModeDataset,
-} from "./utils";
+} from "./utils.ts";
 
 /**
  * Provides context for the color mode based on config in `theme`

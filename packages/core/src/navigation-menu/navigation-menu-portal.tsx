@@ -1,6 +1,6 @@
 import { Show } from "solid-js";
-import { MenuPortal, type MenuPortalProps, useMenuContext } from "../menu";
-import { useNavigationMenuContext } from "./navigation-menu-context";
+import { MenuPortal, type MenuPortalProps, useMenuContext } from "../menu/index.ts";
+import { useNavigationMenuContext } from "./navigation-menu-context.tsx";
 
 export interface NavigationMenuPortalProps extends MenuPortalProps {}
 

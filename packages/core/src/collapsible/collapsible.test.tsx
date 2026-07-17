@@ -8,7 +8,7 @@
 
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
-import type { ComponentProps } from "solid-js";
+import type { ComponentProps } from "@solidjs/web";
 import { vi } from "vitest";
 
 import * as Collapsible from ".";

@@ -16,8 +16,8 @@ import {
 	omit,
 	Show,
 } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useResizableInternalContext } from "./resizable-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useResizableInternalContext } from "./resizable-context.tsx";
 import {
 	fixToPrecision,
 	registerHandle,
@@ -28,7 +28,7 @@ import {
 	type HandleCallbacks,
 	type HoverState,
 	type ResizableHandleInstance,
-} from "./resizable-lib";
+} from "./resizable-lib.ts";
 
 export interface ResizableHandleOptions {
 	/**

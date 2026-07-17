@@ -9,7 +9,7 @@ import {
 	Root,
 	Title,
 	Trigger,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/AlertDialog",
