@@ -27,17 +27,17 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	OTPFieldContext,
 	type OTPFieldContextValue,
-} from "./otp-field-context";
+} from "./otp-field-context.tsx";
 
 export interface OTPFieldRootOptions {
 	/** The maximum number of characters in the OTP field. */

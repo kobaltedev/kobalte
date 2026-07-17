@@ -14,15 +14,15 @@
 
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, omit } from "solid-js";
+import { createMemo, createSignal, omit, untrack } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createTagName } from "../primitives";
-import { isButton } from "./is-button";
+} from "../polymorphic/index.tsx";
+import { createTagName } from "../primitives/index.ts";
+import { isButton } from "./is-button.ts";
 
 export interface ButtonRootOptions {}
 
@@ -83,10 +83,12 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 		return tagName() === "a" && ref()?.getAttribute("href") != null;
 	});
 
+	const refCallback = mergeRefs(setRef, untrack(() => mergedProps.ref));
+
 	return (
 		<Polymorphic<ButtonRootRenderProps>
 			as="button"
-			ref={mergeRefs(setRef, mergedProps.ref)}
+			ref={refCallback}
 			type={isNativeButton() || isNativeInput() ? mergedProps.type : undefined}
 			role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
 			tabindex={

@@ -20,18 +20,18 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
-import { useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	ColorWheelContext,
 	type ColorWheelContextValue,
-} from "./color-wheel-context";
-import { createColorWheelState } from "./create-color-wheel-state";
+} from "./color-wheel-context.tsx";
+import { createColorWheelState } from "./create-color-wheel-state.ts";
 
 export interface ColorWheelRootOptions {
 	/** The localized strings of the component. */

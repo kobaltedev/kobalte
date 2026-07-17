@@ -14,15 +14,15 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	BREADCRUMBS_INTL_TRANSLATIONS,
 	type BreadcrumbsIntlTranslations,
-} from "./breadcrumbs.intl";
+} from "./breadcrumbs.intl.ts";
 import {
 	BreadcrumbsContext,
 	type BreadcrumbsContextValue,
-} from "./breadcrumbs-context";
+} from "./breadcrumbs-context.tsx";
 
 export interface BreadcrumbsRootOptions {
 	/**

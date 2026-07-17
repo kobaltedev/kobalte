@@ -5,7 +5,7 @@ import {
 	Item as AccordionItem,
 	Root as AccordionRoot,
 	Trigger as AccordionTrigger,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Accordion",

@@ -10,7 +10,7 @@ import {
 	Thumb,
 	Track,
 	ValueLabel,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Slider",
@@ -89,13 +89,12 @@ export const RangeSlider = meta.story({
 		<Root
 			defaultValue={[20, 80]}
 			minStepsBetweenThumbs={5}
+			getValueLabel={({ values }) => `$${values[0]} – $${values[1]}`}
 			class="flex flex-col gap-2 w-64 font-sans"
 		>
 			<div class="flex justify-between text-sm text-slate-600">
 				<Label>Price range</Label>
-				<ValueLabel
-					getValueLabel={({ values }) => `$${values[0]} – $${values[1]}`}
-				/>
+				<ValueLabel />
 			</div>
 			<Track class={trackClass}>
 				<Fill class={fillClass} />

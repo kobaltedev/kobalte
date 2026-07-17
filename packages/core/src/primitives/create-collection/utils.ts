@@ -1,6 +1,6 @@
 import { isNumber, isString } from "@kobalte/utils";
 
-import type { CollectionNode } from "./types";
+import type { CollectionNode } from "./types.ts";
 
 interface BuildNodesParams {
 	dataSource: any[];

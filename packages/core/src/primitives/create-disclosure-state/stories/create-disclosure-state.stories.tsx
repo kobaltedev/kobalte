@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../../.storybook/preview.js";
-import { createDisclosureState } from "../index";
+import { createDisclosureState } from "../index.ts";
 
 const meta = preview.meta({
 	title: "Primitives/createDisclosureState",

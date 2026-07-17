@@ -10,9 +10,9 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createEffect, omit } from "solid-js";
-import * as Collapsible from "../collapsible";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useAccordionItemContext } from "./accordion-item-context";
+import * as Collapsible from "../collapsible/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useAccordionItemContext } from "./accordion-item-context.tsx";
 
 export interface AccordionContentOptions {}
 

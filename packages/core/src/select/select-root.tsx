@@ -1,13 +1,13 @@
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createMemo, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 import {
 	SelectBase,
 	type SelectBaseCommonProps,
 	type SelectBaseOptions,
 	type SelectBaseRenderProps,
-} from "./select-base";
+} from "./select-base.tsx";
 
 export interface SelectSingleSelectionOptions<T> {
 	/** The controlled value of the select. */

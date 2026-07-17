@@ -9,13 +9,13 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { createSignal, createUniqueId, omit, type ParentProps } from "solid-js";
 
-import { useLocale } from "../i18n";
-import { MenuRoot, type MenuRootOptions } from "../menu";
-import { createDisclosureState } from "../primitives";
+import { useLocale } from "../i18n/index.tsx";
+import { MenuRoot, type MenuRootOptions } from "../menu/index.ts";
+import { createDisclosureState } from "../primitives/index.ts";
 import {
 	ContextMenuContext,
 	type ContextMenuContextValue,
-} from "./context-menu-context";
+} from "./context-menu-context.tsx";
 
 export interface ContextMenuRootOptions
 	extends Omit<MenuRootOptions, "open" | "defaultOpen" | "getAnchorRect"> {}

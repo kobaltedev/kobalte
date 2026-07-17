@@ -4,7 +4,7 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
 export interface ListboxSectionOptions {}
 

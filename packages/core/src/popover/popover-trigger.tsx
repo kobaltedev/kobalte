@@ -10,9 +10,9 @@ import { callHandler, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
 
-import * as Button from "../button";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type PopoverDataSet, usePopoverContext } from "./popover-context";
+import * as Button from "../button/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { type PopoverDataSet, usePopoverContext } from "./popover-context.tsx";
 
 export interface PopoverTriggerOptions {}
 

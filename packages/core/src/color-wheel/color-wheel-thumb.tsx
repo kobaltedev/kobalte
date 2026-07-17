@@ -6,13 +6,13 @@ import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useColorWheelContext } from "./color-wheel-context";
+} from "../polymorphic/index.tsx";
+import { useColorWheelContext } from "./color-wheel-context.tsx";
 
 export interface ColorWheelThumbOptions {}
 

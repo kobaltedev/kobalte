@@ -2,9 +2,9 @@ import { getWeeksInMonth } from "@internationalized/date";
 import type { ValidComponent } from "@solidjs/web";
 import { type Accessor, createMemo, For, type Element, omit } from "solid-js";
 
-import { Polymorphic, type PolymorphicProps } from "../polymorphic";
-import { useCalendarContext } from "./calendar-context";
-import { useCalendarGridContext } from "./calendar-grid-context";
+import { Polymorphic, type PolymorphicProps } from "../polymorphic/index.tsx";
+import { useCalendarContext } from "./calendar-context.tsx";
+import { useCalendarGridContext } from "./calendar-grid-context.tsx";
 
 export interface CalendarGridBodyOptions {
 	/**

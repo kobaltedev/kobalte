@@ -17,18 +17,18 @@ import {
 	omit,
 	untrack,
 } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useResizableInternalContext } from "./resizable-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useResizableInternalContext } from "./resizable-context.tsx";
 import {
 	ResizablePanelContext,
 	type ResizablePanelContextValue,
-} from "./resizable-panel-context";
+} from "./resizable-panel-context.tsx";
 import {
 	resolveSize,
 	type ResizablePanelInstance,
 	type ResizableSize,
 	type ResizeStrategy,
-} from "./resizable-lib";
+} from "./resizable-lib.ts";
 
 export interface ResizablePanelOptions {
 	/**

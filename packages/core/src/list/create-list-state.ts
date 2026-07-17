@@ -14,13 +14,13 @@ import {
 	type CollectionBase,
 	type CollectionNode,
 	createCollection,
-} from "../primitives";
+} from "../primitives/index.ts";
 import {
 	type CreateMultipleSelectionStateProps,
 	createMultipleSelectionState,
 	SelectionManager,
-} from "../selection";
-import { ListCollection } from "./list-collection";
+} from "../selection/index.ts";
+import { ListCollection } from "./list-collection.ts";
 
 export interface CreateListStateProps
 	extends CollectionBase,
