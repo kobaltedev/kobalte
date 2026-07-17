@@ -3,9 +3,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useFileFieldItemContext } from "./file-field-item-context";
-import { FileFieldItemPreview } from "./file-field-item-preview";
+} from "../polymorphic/index.tsx";
+import { useFileFieldItemContext } from "./file-field-item-context.tsx";
+import { FileFieldItemPreview } from "./file-field-item-preview.tsx";
 
 export interface FileFieldItemPreviewImageOptions {}
 

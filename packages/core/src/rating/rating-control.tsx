@@ -1,13 +1,13 @@
 import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
-import { useFormControlContext } from "../form-control";
+import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useRatingContext } from "./rating-context";
+} from "../polymorphic/index.tsx";
+import { useRatingContext } from "./rating-context.tsx";
 
 export interface RatingControlOptions {}
 

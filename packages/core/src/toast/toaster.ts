@@ -1,11 +1,11 @@
 import { isFunction } from "@kobalte/utils";
 
-import { toastStore } from "./toast-store";
+import { toastStore } from "./toast-store.ts";
 import type {
 	ShowToastOptions,
 	ToastComponent,
 	ToastPromiseComponent,
-} from "./types";
+} from "./types.ts";
 
 let toastsCounter = 0;
 

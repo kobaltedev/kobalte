@@ -1,5 +1,5 @@
 import preview from "../../../../../.storybook/preview.js";
-import { Fill, Label, Root, Track, ValueLabel } from "../index";
+import { Fill, Label, Root, Track, ValueLabel } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Meter",

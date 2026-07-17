@@ -1,3 +1,3 @@
-export * from "./create-collection";
-export * from "./get-item-count";
-export * from "./types";
+export * from "./create-collection.ts";
+export * from "./get-item-count.ts";
+export * from "./types.ts";

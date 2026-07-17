@@ -15,17 +15,17 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createEffect, createSignal, omit, onCleanup } from "solid-js";
-import { useFormControlContext } from "../form-control";
+import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useRadioGroupContext } from "./radio-group-context";
+} from "../polymorphic/index.tsx";
+import { useRadioGroupContext } from "./radio-group-context.tsx";
 import {
 	type RadioGroupItemDataSet,
 	useRadioGroupItemContext,
-} from "./radio-group-item-context";
+} from "./radio-group-item-context.tsx";
 
 export interface RadioGroupItemInputOptions {}
 

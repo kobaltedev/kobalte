@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Content, Root, Trigger } from "../index";
+import { Content, Root, Trigger } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Collapsible",

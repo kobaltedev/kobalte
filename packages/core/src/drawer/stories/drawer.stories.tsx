@@ -18,7 +18,7 @@ import {
 	Title,
 	Trigger,
 	useContext,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Drawer",

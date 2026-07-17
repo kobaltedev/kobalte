@@ -8,13 +8,13 @@ import {
 	createUniqueId,
 	omit,
 } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createControllableSignal } from "../primitives";
-import * as TextField from "../text-field";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
+import * as TextField from "../text-field/index.tsx";
 import {
 	ColorFieldContext,
 	type ColorFieldContextValue,
-} from "./color-field-context";
+} from "./color-field-context.tsx";
 
 export interface ColorFieldRootOptions extends TextField.TextFieldRootOptions {}
 

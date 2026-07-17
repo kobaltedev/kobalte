@@ -12,10 +12,10 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
-import { useImageContext } from "./image-context";
-import type { ImageLoadingStatus } from "./types";
+import { useImageContext } from "./image-context.tsx";
+import type { ImageLoadingStatus } from "./types.ts";
 
 export interface ImageImgOptions {}
 

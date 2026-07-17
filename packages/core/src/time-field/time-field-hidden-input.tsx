@@ -1,7 +1,7 @@
 import { visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps } from "@solidjs/web";
-import { useFormControlContext } from "../form-control";
-import { useTimeFieldContext } from "./time-field-context";
+import { useFormControlContext } from "../form-control/index.ts";
+import { useTimeFieldContext } from "./time-field-context.tsx";
 
 export interface TimeFieldHiddenInputProps extends ComponentProps<"input"> {}
 

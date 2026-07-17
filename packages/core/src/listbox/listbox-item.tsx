@@ -29,19 +29,19 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type CollectionNode,
 	createRegisterId,
 	getItemCount,
-} from "../primitives";
-import { createSelectableItem } from "../selection";
-import { useListboxContext } from "./listbox-context";
+} from "../primitives/index.ts";
+import { createSelectableItem } from "../selection/index.ts";
+import { useListboxContext } from "./listbox-context.tsx";
 import {
 	ListboxItemContext,
 	type ListboxItemContextValue,
 	type ListboxItemDataSet,
-} from "./listbox-item-context";
+} from "./listbox-item-context.tsx";
 
 export interface ListboxItemOptions {
 	/** The collection node to render. */
