@@ -8,14 +8,14 @@
 
 import { mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, omit, untrack } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createTagName } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createTagName } from "../primitives/index.ts";
 
 export interface LinkRootOptions {
 	/** Whether the link is disabled. */
@@ -52,10 +52,12 @@ export function LinkRoot<T extends ValidComponent = "a">(
 
 	const tagName = createTagName(ref, () => "a");
 
+	const refCallback = mergeRefs(setRef, untrack(() => (props as LinkRootProps).ref));
+
 	return (
 		<Polymorphic<LinkRootRenderProps>
 			as="a"
-			ref={mergeRefs(setRef, (props as LinkRootProps).ref)}
+			ref={refCallback}
 			role={tagName() !== "a" || props.disabled ? "link" : undefined}
 			tabindex={tagName() !== "a" && !props.disabled ? 0 : undefined}
 			href={!props.disabled ? props.href : undefined}

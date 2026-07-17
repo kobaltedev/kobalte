@@ -4,7 +4,7 @@ import {
 	type SeparatorRootOptions,
 	type SeparatorRootProps,
 	type SeparatorRootRenderProps,
-} from "./separator-root";
+} from "./separator-root.tsx";
 
 export type {
 	SeparatorRootCommonProps,

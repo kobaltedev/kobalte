@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Ellipsis, Item, Items, Next, Previous, Root } from "../index";
+import { Ellipsis, Item, Items, Next, Previous, Root } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Pagination",

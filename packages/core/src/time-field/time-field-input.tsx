@@ -2,15 +2,15 @@ import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Accessor, createEffect, For, omit } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { useLocale } from "../i18n";
+import { useFormControlContext } from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useTimeFieldContext } from "./time-field-context";
-import type { SegmentType } from "./types";
+} from "../polymorphic/index.tsx";
+import { useTimeFieldContext } from "./time-field-context.tsx";
+import type { SegmentType } from "./types.ts";
 
 export interface TimeFieldInputOptions {
 	children?: (segment: Accessor<SegmentType>) => JSX.Element;

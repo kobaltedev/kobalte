@@ -5,9 +5,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useFileFieldContext } from "./file-field-context";
-import { isDragEventWithFiles } from "./util";
+} from "../polymorphic/index.tsx";
+import { useFileFieldContext } from "./file-field-context.tsx";
+import { isDragEventWithFiles } from "./util.ts";
 
 export interface FileFieldDropzoneOptions {}
 

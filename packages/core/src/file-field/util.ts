@@ -1,4 +1,4 @@
-import type { Accept, FileError, FileRejection } from "./types";
+import type { Accept, FileError, FileRejection } from "./types.ts";
 
 const isFileAccepted = (file: File | null, accept: string | undefined) => {
 	if (file && accept) {
@@ -30,7 +30,6 @@ const isValidFileSize = (
 	minSize: number,
 	maxSize: number,
 ): [boolean, FileError | null] => {
-	console.log({ fileSize: file.size, minSize, maxSize });
 	if (file.size) {
 		if (minSize && maxSize) {
 			if (file.size > maxSize) {

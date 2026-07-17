@@ -12,7 +12,7 @@ import {
 	type Setter,
 	useContext,
 } from "solid-js";
-import type { DrawerSide, DrawerSize } from "./drawer-lib";
+import type { DrawerSide, DrawerSize } from "./drawer-lib.ts";
 
 export type { DrawerSide, DrawerSize };
 

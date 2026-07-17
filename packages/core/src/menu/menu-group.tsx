@@ -14,13 +14,13 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createRegisterId } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createRegisterId } from "../primitives/index.ts";
 import {
 	MenuGroupContext,
 	type MenuGroupContextValue,
-} from "./menu-group-context";
-import { useMenuRootContext } from "./menu-root-context";
+} from "./menu-group-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuGroupOptions {}
 

@@ -1,7 +1,7 @@
-import { Portal } from "@solidjs/web";
-import { type ComponentProps, Show } from "solid-js";
+import { type ComponentProps, Portal } from "@solidjs/web";
+import { Show } from "solid-js";
 
-import { useDialogContext } from "./dialog-context";
+import { useDialogContext } from "./dialog-context.tsx";
 
 export interface DialogPortalProps extends ComponentProps<typeof Portal> {}
 

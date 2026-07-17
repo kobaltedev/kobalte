@@ -1,11 +1,11 @@
 import type { ValidComponent } from "@solidjs/web";
 import type { Component } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	NumberFieldVaryTrigger,
 	type NumberFieldVaryTriggerCommonProps,
 	type NumberFieldVaryTriggerRenderProps,
-} from "./number-field-vary-trigger";
+} from "./number-field-vary-trigger.tsx";
 
 export interface NumberFieldDecrementTriggerOptions {}
 

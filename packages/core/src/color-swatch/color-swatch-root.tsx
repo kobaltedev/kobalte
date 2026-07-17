@@ -10,11 +10,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	COLOR_SWATCH_INTL_TRANSLATIONS,
 	type ColorSwatchIntlTranslations,
-} from "./color-swatch.intl";
+} from "./color-swatch.intl.ts";
 
 export interface ColorSwatchRootOptions {
 	/** The color value to display in the swatch. */

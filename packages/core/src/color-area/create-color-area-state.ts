@@ -6,7 +6,7 @@ import {
 	parseColor,
 } from "@solid-primitives/utils/colors";
 import { type Accessor, createMemo, createSignal } from "solid-js";
-import { createControllableSignal } from "../primitives";
+import { createControllableSignal } from "../primitives/index.ts";
 
 export interface ColorAreaState {
 	readonly value: Accessor<Color>;

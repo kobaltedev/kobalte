@@ -9,8 +9,8 @@
 import { clamp, mergeDefaultProps, snapValueToStep } from "@kobalte/utils";
 import { type Accessor, createMemo, createSignal } from "solid-js";
 
-import { createControllableArraySignal } from "../primitives";
-import { getNextSortedValues, hasMinStepsBetweenValues } from "./utils";
+import { createControllableArraySignal } from "../primitives/index.ts";
+import { getNextSortedValues, hasMinStepsBetweenValues } from "./utils.ts";
 
 export interface SliderState {
 	readonly values: Accessor<number[]>;

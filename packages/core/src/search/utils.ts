@@ -4,7 +4,7 @@
 export const DebouncerTimeout = () => {
 	let _debounceMillisecond = 0;
 	let lastCallbackTime = 0;
-	let timeout: NodeJS.Timeout;
+	let timeout: ReturnType<typeof setTimeout>;
 
 	return {
 		debounce: (callback: () => void) => {

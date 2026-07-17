@@ -9,7 +9,7 @@
 import { getDocument } from "@kobalte/utils";
 import { type Accessor, createEffect } from "solid-js";
 
-import type { DomCollectionItem } from "./types";
+import type { DomCollectionItem } from "./types.ts";
 
 function isElementPreceding(a: Element, b: Element) {
 	return Boolean(

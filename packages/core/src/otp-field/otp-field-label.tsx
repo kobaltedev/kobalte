@@ -5,8 +5,8 @@ import {
 	type FormControlLabelOptions,
 	type FormControlLabelProps,
 	type FormControlLabelRenderProps,
-} from "../form-control";
-import type { PolymorphicProps } from "../polymorphic";
+} from "../form-control/index.ts";
+import type { PolymorphicProps } from "../polymorphic/index.tsx";
 
 export type {
 	FormControlLabelCommonProps as OTPFieldLabelCommonProps,

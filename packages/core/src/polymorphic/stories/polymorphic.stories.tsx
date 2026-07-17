@@ -1,7 +1,7 @@
 import { createSignal, type ValidComponent } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Button } from "../../button/index";
-import { Polymorphic, type PolymorphicProps } from "../polymorphic";
+import { Button } from "../../button/index.tsx";
+import { Polymorphic, type PolymorphicProps } from "../polymorphic.tsx";
 
 const meta = preview.meta({
 	title: "Primitives/Polymorphic",

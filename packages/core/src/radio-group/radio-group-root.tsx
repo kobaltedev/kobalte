@@ -22,17 +22,17 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	RadioGroupContext,
 	type RadioGroupContextValue,
-} from "./radio-group-context";
+} from "./radio-group-context.tsx";
 
 export interface RadioGroupRootOptions {
 	/** The controlled value of the radio button to check. */

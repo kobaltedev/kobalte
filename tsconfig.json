@@ -18,6 +18,8 @@
 		"jsx": "preserve",
 		"jsxImportSource": "@solidjs/web",
 		"moduleResolution": "Bundler",
+		"allowImportingTsExtensions": true,
+		"noEmit": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,

@@ -12,7 +12,7 @@ import type {
 	ResizablePanelInstance,
 	ResizableSize,
 	ResizeStrategy,
-} from "./resizable-lib";
+} from "./resizable-lib.ts";
 
 export type { ResizableSize, ResizeStrategy };
 

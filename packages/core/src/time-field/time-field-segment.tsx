@@ -28,12 +28,12 @@ import {
 	Show,
 } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { createFilter, useLocale } from "../i18n";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import * as SpinButton from "../spin-button";
-import { useTimeFieldContext } from "./time-field-context";
-import type { SegmentType, Time } from "./types";
+import { useFormControlContext } from "../form-control/index.ts";
+import { createFilter, useLocale } from "../i18n/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import * as SpinButton from "../spin-button/index.tsx";
+import { useTimeFieldContext } from "./time-field-context.tsx";
+import type { SegmentType, Time } from "./types.ts";
 
 const PAGE_STEP = {
 	hour: 2,
