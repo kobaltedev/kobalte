@@ -34,8 +34,6 @@
 		"dev": "vite dev"
 	},
 	"dependencies": {
-		"@docsearch/css": "3.5.2",
-		"@docsearch/js": "3.5.2",
 		"@kobalte/core": "workspace:*",
 		"@kobalte/solidbase": "0.6.10",
 		"@solidjs/meta": "0.29.4",

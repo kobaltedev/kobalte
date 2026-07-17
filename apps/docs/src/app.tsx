@@ -1,8 +1,3 @@
-// @refresh reload
-import "@docsearch/css";
-import "./docsearch.css";
-
-import { Title } from "@solidjs/meta";
 import { Router } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
