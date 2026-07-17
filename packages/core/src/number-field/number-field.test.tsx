@@ -1,7 +1,7 @@
 import { fireEvent, render } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
 import { expect, vi } from "vitest";
-import { I18nProvider } from "../i18n";
+import { I18nProvider } from "../i18n/index.tsx";
 import * as NumberField from ".";
 
 describe("NumberField", () => {

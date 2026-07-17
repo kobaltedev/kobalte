@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Root } from "../index";
+import { Root } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Primitives/SpinButton",

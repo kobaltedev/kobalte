@@ -35,16 +35,16 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createRegisterId } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createRegisterId } from "../primitives/index.ts";
 import {
 	TOAST_INTL_TRANSLATIONS,
 	type ToastIntlTranslations,
-} from "./toast.intl";
-import { ToastContext, type ToastContextValue } from "./toast-context";
-import { useToastRegionContext } from "./toast-region-context";
-import { toastStore } from "./toast-store";
-import type { ToastSwipeDirection } from "./types";
+} from "./toast.intl.ts";
+import { ToastContext, type ToastContextValue } from "./toast-context.tsx";
+import { useToastRegionContext } from "./toast-region-context.tsx";
+import { toastStore } from "./toast-store.ts";
+import type { ToastSwipeDirection } from "./types.ts";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
 const TOAST_SWIPE_MOVE_EVENT = "toast.swipeMove";

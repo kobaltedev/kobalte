@@ -33,23 +33,22 @@
 			"import": {
 				"types": "./dist/index.d.ts",
 				"default": "./dist/index.js"
-			},
-			"require": "./dist/index.cjs"
+			}
 		}
 	},
-	"main": "./dist/index.cjs",
+	"main": "./dist/index.js",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"source": "src/index.ts",
 	"files": ["dist", "src"],
 	"scripts": {
-		"build": "tsup",
-		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+		"build": "tsdown",
+		"clean": "rm -rf node_modules && rm -rf dist",
 		"typecheck": "tsc --noEmit"
 	},
 	"peerDependencies": {
-		"@solidjs/testing-library": ">=0.8.6",
-		"solid-js": "^2.0.0-beta.14",
-		"vitest": "^2.1.9"
+		"@solidjs/testing-library": "catalog:",
+		"solid-js": "catalog:",
+		"vitest": "catalog:"
 	}
 }

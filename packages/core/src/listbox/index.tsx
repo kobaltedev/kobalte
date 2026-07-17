@@ -4,42 +4,42 @@ import {
 	type ListboxItemOptions,
 	type ListboxItemProps,
 	type ListboxItemRenderProps,
-} from "./listbox-item";
+} from "./listbox-item.tsx";
 import {
 	ListboxItemDescription as ItemDescription,
 	type ListboxItemDescriptionCommonProps,
 	type ListboxItemDescriptionOptions,
 	type ListboxItemDescriptionProps,
 	type ListboxItemDescriptionRenderProps,
-} from "./listbox-item-description";
+} from "./listbox-item-description.tsx";
 import {
 	ListboxItemIndicator as ItemIndicator,
 	type ListboxItemIndicatorCommonProps,
 	type ListboxItemIndicatorOptions,
 	type ListboxItemIndicatorProps,
 	type ListboxItemIndicatorRenderProps,
-} from "./listbox-item-indicator";
+} from "./listbox-item-indicator.tsx";
 import {
 	ListboxItemLabel as ItemLabel,
 	type ListboxItemLabelCommonProps,
 	type ListboxItemLabelOptions,
 	type ListboxItemLabelProps,
 	type ListboxItemLabelRenderProps,
-} from "./listbox-item-label";
+} from "./listbox-item-label.tsx";
 import {
 	type ListboxRootCommonProps,
 	type ListboxRootOptions,
 	type ListboxRootProps,
 	type ListboxRootRenderProps,
 	ListboxRoot as Root,
-} from "./listbox-root";
+} from "./listbox-root.tsx";
 import {
 	type ListboxSectionCommonProps,
 	type ListboxSectionOptions,
 	type ListboxSectionProps,
 	type ListboxSectionRenderProps,
 	ListboxSection as Section,
-} from "./listbox-section";
+} from "./listbox-section.tsx";
 
 export type {
 	ListboxItemCommonProps,
@@ -81,4 +81,4 @@ export const Listbox = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type ListboxContextValue, useListboxContext } from "./listbox-context";
+export { type ListboxContextValue, useListboxContext } from "./listbox-context.tsx";

@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Arrow, Content, Portal, Root, Trigger } from "../index";
+import { Arrow, Content, Portal, Root, Trigger } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Tooltip",

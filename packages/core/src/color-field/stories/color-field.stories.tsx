@@ -1,7 +1,7 @@
 import { isValidColor } from "@solid-primitives/utils/colors";
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Description, ErrorMessage, Input, Label, Root } from "../index";
+import { Description, ErrorMessage, Input, Label, Root } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/ColorField",

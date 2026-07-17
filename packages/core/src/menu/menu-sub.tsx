@@ -1,7 +1,7 @@
 import type { ParentProps } from "solid-js";
 
-import { useLocale } from "../i18n";
-import { Menu, type MenuOptions } from "./menu";
+import { useLocale } from "../i18n/index.tsx";
+import { Menu, type MenuOptions } from "./menu.tsx";
 
 export interface MenuSubOptions
 	extends Omit<MenuOptions, "placement" | "flip" | "sameWidth"> {}

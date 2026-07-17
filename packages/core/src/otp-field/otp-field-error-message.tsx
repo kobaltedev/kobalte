@@ -5,8 +5,8 @@ import {
 	type FormControlErrorMessageOptions,
 	type FormControlErrorMessageProps,
 	type FormControlErrorMessageRenderProps,
-} from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+} from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 export type {
 	FormControlErrorMessageCommonProps as OTPFieldErrorMessageCommonProps,

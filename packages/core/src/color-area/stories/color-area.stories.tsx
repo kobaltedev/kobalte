@@ -11,7 +11,7 @@ import {
 	Label,
 	Root,
 	Thumb,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/ColorArea",

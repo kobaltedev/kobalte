@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Item, Root } from "../index";
+import { Item, Root } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/ToggleGroup",

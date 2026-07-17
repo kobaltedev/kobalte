@@ -19,9 +19,9 @@ import {
 import {
 	DomCollectionContext,
 	type DomCollectionContextValue,
-} from "./dom-collection-context";
-import type { DomCollectionItem } from "./types";
-import { createSortBasedOnDOMPosition, findDOMIndex } from "./utils";
+} from "./dom-collection-context.ts";
+import type { DomCollectionItem } from "./types.ts";
+import { createSortBasedOnDOMPosition, findDOMIndex } from "./utils.ts";
 
 export interface CreateDomCollectionProps<
 	T extends DomCollectionItem = DomCollectionItem,

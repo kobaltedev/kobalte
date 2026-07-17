@@ -7,7 +7,7 @@ import {
 	Label,
 	Root,
 	TextArea,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/TextField",

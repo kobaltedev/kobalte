@@ -1,6 +1,7 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { cleanup, fireEvent, render, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
+import { flush } from "solid-js";
 import { vi } from "vitest";
 import * as ToggleGroup from ".";
 
@@ -323,6 +324,7 @@ describe("ToggleGroup", () => {
 			));
 
 			await user.tab();
+			flush();
 
 			const toggleGroup = getByRole("group");
 			const toggles = within(toggleGroup).getAllByTestId("item");
@@ -348,6 +350,7 @@ describe("ToggleGroup", () => {
 			));
 
 			await user.tab();
+			flush();
 
 			const button = getByTestId("focus-btn");
 
@@ -375,6 +378,7 @@ describe("ToggleGroup", () => {
 			));
 
 			await user.tab();
+			flush();
 
 			const toggleGroup = getByRole("group");
 			const toggles = within(toggleGroup).getAllByTestId("item");

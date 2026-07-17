@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Content, Indicator, List, Root, Trigger } from "../index";
+import { Content, Indicator, List, Root, Trigger } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Tabs",

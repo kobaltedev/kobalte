@@ -6,14 +6,14 @@
  */
 
 import { createSignal } from "solid-js";
-import preview from "../../../../../.storybook/preview";
+import preview from "../../../../../.storybook/preview.ts";
 import {
 	Handle,
 	Panel,
 	Root,
 	useContext,
 	usePanelContext,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Resizable",

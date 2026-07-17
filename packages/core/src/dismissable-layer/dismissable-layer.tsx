@@ -32,13 +32,13 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	DismissableLayerContext,
 	type DismissableLayerContextValue,
 	useOptionalDismissableLayerContext,
-} from "./dismissable-layer-context";
-import { layerStack } from "./layer-stack";
+} from "./dismissable-layer-context.tsx";
+import { layerStack } from "./layer-stack.tsx";
 
 export interface DismissableLayerOptions {
 	/**

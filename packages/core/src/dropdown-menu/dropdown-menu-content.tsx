@@ -7,10 +7,10 @@ import {
 	type MenuContentCommonProps,
 	type MenuContentOptions,
 	type MenuContentRenderProps,
-} from "../menu";
-import { useMenuContext } from "../menu/menu-context";
-import { useMenuRootContext } from "../menu/menu-root-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+} from "../menu/index.ts";
+import { useMenuContext } from "../menu/menu-context.tsx";
+import { useMenuRootContext } from "../menu/menu-root-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 export interface DropdownMenuContentOptions extends MenuContentOptions {}
 

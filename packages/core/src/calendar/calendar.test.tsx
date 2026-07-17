@@ -5,7 +5,7 @@
 
 import { CalendarDate, GregorianCalendar } from "@internationalized/date";
 import { fireEvent, render } from "@solidjs/testing-library";
-import type { ComponentProps } from "solid-js";
+import type { ComponentProps } from "@solidjs/web";
 import { createSignal, flush, Show } from "solid-js";
 import { vi } from "vitest";
 
@@ -25,7 +25,7 @@ function CalendarExample(props: Partial<ComponentProps<typeof Calendar.Root>>) {
 			createCalendar={createGregorianCalendar}
 			selectionMode="single"
 			defaultFocusedValue={JAN_2024}
-			{...props}
+			{...(props as any)}
 		>
 			<Calendar.Header>
 				<Calendar.PrevTrigger data-testid="prev">‹</Calendar.PrevTrigger>

@@ -2,14 +2,14 @@ import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createEffect, createSignal, omit } from "solid-js";
 
-import { useMenubarContext } from "../menubar/menubar-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { useMenubarContext } from "../menubar/menubar-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import type {
 	PopperArrowCommonProps,
 	PopperArrowOptions,
 	PopperArrowRenderProps,
-} from "../popper";
-import { PopperArrow } from "../popper/popper-arrow";
+} from "../popper/index.tsx";
+import { PopperArrow } from "../popper/popper-arrow.tsx";
 
 export interface NavigationMenuArrowOptions extends PopperArrowOptions {}
 

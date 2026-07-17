@@ -14,13 +14,13 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useCalendarContext } from "./calendar-context";
+} from "../polymorphic/index.tsx";
+import { useCalendarContext } from "./calendar-context.tsx";
 import {
 	CalendarGridBodyCellContext,
 	type CalendarGridBodyCellContextValue,
-} from "./calendar-grid-body-cell-context";
-import type { DateValue } from "./types";
+} from "./calendar-grid-body-cell-context.tsx";
+import type { DateValue } from "./types.ts";
 
 export interface CalendarGridBodyCellOptions {
 	/** The date that this cell represents. */
