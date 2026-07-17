@@ -88,6 +88,13 @@ export default defineConfig({
 						"./src/routes/docs/changelog",
 					),
 				},
+				search: {
+					docsearch: {
+						appId: "8550U3NJ6N",
+						indexName: "Kobalte Docs",
+						apiKey: "c36d7de88f1413b5dbe7b36b42f9c734",
+					},
+				},
 			},
 		}),
 		solidStart(solidBase.startConfig()),

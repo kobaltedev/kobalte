@@ -37,7 +37,7 @@
 		"@docsearch/css": "3.5.2",
 		"@docsearch/js": "3.5.2",
 		"@kobalte/core": "workspace:*",
-		"@kobalte/solidbase": "0.6.9-next.1",
+		"@kobalte/solidbase": "0.6.10",
 		"@solidjs/meta": "0.29.4",
 		"@solidjs/router": "0.16.2",
 		"@solidjs/start": "2.0.0-beta.0",

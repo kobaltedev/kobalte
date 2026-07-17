@@ -117,8 +117,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/core
       '@kobalte/solidbase':
-        specifier: 0.6.9-next.1
-        version: 0.6.9-next.1(@solidjs/start@2.0.0-beta.0(@testing-library/jest-dom@6.9.1)(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.14)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))
+        specifier: 0.6.10
+        version: 0.6.10(@solidjs/start@2.0.0-beta.0(@testing-library/jest-dom@6.9.1)(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.14)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))
       '@solidjs/meta':
         specifier: 0.29.4
         version: 0.29.4(solid-js@1.9.14)
@@ -1213,6 +1213,9 @@ packages:
   '@docsearch/js@3.5.2':
     resolution: {integrity: sha512-p1YFTCDflk8ieHgFJYfmyHBki1D61+U9idwrLh+GQQMrBSP3DLGKpy0XUJtPjAOPltcVbqsTjiPFfH7JImjUNg==}
 
+  '@docsearch/js@4.6.3':
+    resolution: {integrity: sha512-qUIX2b4Apew3tv4F0qhmgShsl/Lfw4m6mqv/5/5dWNxwTcDdLMp2s3YwZ+NMGh3IKCg0pBaXm7Q5VdyU5Rj+cQ==}
+
   '@docsearch/react@3.5.2':
     resolution: {integrity: sha512-9Ahcrs5z2jq/DcAvYtvlqEBHImbm4YJI8M9y0x6Tqg598P40HTEkX7hsMcIuThI+hTFxRGZ9hll0Wygm2yEjng==}
     peerDependencies:
@@ -1778,8 +1781,8 @@ packages:
     peerDependencies:
       solid-js: '>=1.9.14'
 
-  '@kobalte/solidbase@0.6.9-next.1':
-    resolution: {integrity: sha512-xz2mmlHNSXTSIgLe0DSOhJPOz/qBkCxt0L5CfXNx38ex+lZnzev1dU7gxxB/ceX/7e6DOyCpyI6q6x3YBcSZuw==}
+  '@kobalte/solidbase@0.6.10':
+    resolution: {integrity: sha512-pu26EwzfNbk/SHYIweNk06tyFxYbX29k3KSx/ei+KdZJYu1zUUKBAJ9EEaHgz9wEYfzlCVjvTV0ttm/6oQkgWA==}
     engines: {node: '>=22'}
     peerDependencies:
       '@solidjs/start': ^2.0.0
@@ -7883,6 +7886,8 @@ snapshots:
       - react-dom
       - search-insights
 
+  '@docsearch/js@4.6.3': {}
+
   '@docsearch/react@3.5.2(@algolia/client-search@4.23.3)(search-insights@2.14.0)':
     dependencies:
       '@algolia/autocomplete-core': 1.9.3(@algolia/client-search@4.23.3)(algoliasearch@4.23.3)(search-insights@2.14.0)
@@ -8257,11 +8262,12 @@ snapshots:
       solid-presence: 0.1.8(solid-js@1.9.14)
       solid-prevent-scroll: 0.1.7(solid-js@1.9.14)
 
-  '@kobalte/solidbase@0.6.9-next.1(@solidjs/start@2.0.0-beta.0(@testing-library/jest-dom@6.9.1)(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.14)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))':
+  '@kobalte/solidbase@0.6.10(@solidjs/start@2.0.0-beta.0(@testing-library/jest-dom@6.9.1)(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.14)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))':
     dependencies:
       '@alloc/quick-lru': 5.2.0
       '@bprogress/core': 1.3.4
       '@docsearch/css': 3.9.0
+      '@docsearch/js': 4.6.3
       '@expressive-code/core': 0.41.7
       '@expressive-code/plugin-collapsible-sections': 0.41.7
       '@expressive-code/plugin-frames': 0.41.7
