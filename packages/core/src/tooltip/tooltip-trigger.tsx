@@ -27,8 +27,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useTooltipContext } from "./tooltip-context";
+} from "../polymorphic/index.tsx";
+import { useTooltipContext } from "./tooltip-context.tsx";
 
 export interface TooltipTriggerOptions {}
 

@@ -20,15 +20,15 @@ import {
 	type DialogContentCommonProps,
 	type DialogContentOptions,
 	type DialogContentRenderProps,
-} from "../dialog/dialog-content";
-import { useDialogContext } from "../dialog/dialog-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useDrawerInternalContext } from "./drawer-context";
+} from "../dialog/dialog-content.tsx";
+import { useDialogContext } from "../dialog/dialog-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useDrawerInternalContext } from "./drawer-context.tsx";
 import {
 	type DrawerSide,
 	findClosestSnapPoint,
 	locationIsDraggable,
-} from "./drawer-lib";
+} from "./drawer-lib.ts";
 
 export interface DrawerContentOptions extends DialogContentOptions {}
 

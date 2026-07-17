@@ -6,8 +6,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { usePopperContext } from "./popper-context";
+} from "../polymorphic/index.tsx";
+import { usePopperContext } from "./popper-context.tsx";
 
 export interface PopperPositionerOptions {}
 

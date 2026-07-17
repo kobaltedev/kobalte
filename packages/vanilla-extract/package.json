@@ -39,14 +39,14 @@
 	"source": "src/index.ts",
 	"files": ["dist", "src"],
 	"scripts": {
-		"build": "tsup",
-		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+		"build": "tsdown",
+		"clean": "rm -rf node_modules && rm -rf dist"
 	},
 	"devDependencies": {
-		"@vanilla-extract/css": "1.13.0"
+		"@vanilla-extract/css": "catalog:"
 	},
 	"peerDependencies": {
-		"@vanilla-extract/css": "^1.13.0"
+		"@vanilla-extract/css": "catalog:"
 	},
 	"publishConfig": {
 		"access": "public"

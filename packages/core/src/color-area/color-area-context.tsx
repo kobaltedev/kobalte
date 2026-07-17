@@ -1,7 +1,7 @@
 import type { Color } from "@solid-primitives/utils/colors";
 import { type Accessor, createContext, useContext } from "solid-js";
-import type { ColorAreaIntlTranslations } from "./color-area.intl";
-import type { ColorAreaState } from "./create-color-area-state";
+import type { ColorAreaIntlTranslations } from "./color-area.intl.ts";
+import type { ColorAreaState } from "./create-color-area-state.ts";
 
 export interface ColorAreaContextValue {
 	state: ColorAreaState;

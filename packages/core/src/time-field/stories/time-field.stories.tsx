@@ -8,8 +8,8 @@ import {
 	Label,
 	Root,
 	Segment,
-} from "../index";
-import type { Time } from "../types";
+} from "../index.tsx";
+import type { Time } from "../types.ts";
 
 const meta = preview.meta({
 	title: "Components/TimeField",

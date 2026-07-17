@@ -8,14 +8,14 @@
 
 import type { Accessor } from "solid-js";
 
-import type { Collection, CollectionNode } from "../primitives";
+import type { Collection, CollectionNode } from "../primitives/index.ts";
 import {
 	type MultipleSelectionManager,
 	type MultipleSelectionState,
 	Selection,
 	type SelectionBehavior,
 	type SelectionMode,
-} from "./types";
+} from "./types.ts";
 
 /**
  * An interface for reading and updating multiple selection state.

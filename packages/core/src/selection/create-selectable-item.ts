@@ -14,8 +14,8 @@ import {
 import type { JSX } from "@solidjs/web";
 import { type Accessor, createEffect, createMemo } from "solid-js";
 
-import type { MultipleSelectionManager } from "./types";
-import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
+import type { MultipleSelectionManager } from "./types.ts";
+import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils.ts";
 
 export interface CreateSelectableItemProps {
 	/** An interface for reading and updating multiple selection state. */

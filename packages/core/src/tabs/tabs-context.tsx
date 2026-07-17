@@ -6,8 +6,8 @@ import {
 	useContext,
 } from "solid-js";
 
-import type { SingleSelectListState } from "../list";
-import type { TabsActivationMode } from "./types";
+import type { SingleSelectListState } from "../list/index.ts";
+import type { TabsActivationMode } from "./types.ts";
 
 export interface TabsContextValue {
 	isDisabled: Accessor<boolean>;

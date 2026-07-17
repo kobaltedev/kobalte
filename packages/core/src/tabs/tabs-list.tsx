@@ -14,15 +14,15 @@ import {
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createEffect, omit } from "solid-js";
 
-import { useLocale } from "../i18n";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createSelectableCollection } from "../selection";
-import { useTabsContext } from "./tabs-context";
-import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate";
+} from "../polymorphic/index.tsx";
+import { createSelectableCollection } from "../selection/index.ts";
+import { useTabsContext } from "./tabs-context.tsx";
+import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate.ts";
 
 export interface TabsListOptions {}
 

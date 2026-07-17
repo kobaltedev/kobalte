@@ -40,25 +40,25 @@ import {
 	omit,
 } from "solid-js";
 
-import { getReadingDirection, useLocale } from "../i18n";
-import { announce } from "../live-announcer";
+import { getReadingDirection, useLocale } from "../i18n/index.tsx";
+import { announce } from "../live-announcer/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import { createInteractOutside } from "@solid-primitives/interaction";
-import { createControllableSignal } from "../primitives";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	CALENDAR_INTL_MESSAGES,
 	type CalendarIntlTranslations,
-} from "./calendar.intl";
+} from "./calendar.intl.ts";
 import {
 	CalendarContext,
 	type CalendarContextValue,
 	type CalendarDataSet,
-} from "./calendar-context";
-import type { CalendarSelectionMode, DateAlignment, DateValue } from "./types";
+} from "./calendar-context.tsx";
+import type { CalendarSelectionMode, DateAlignment, DateValue } from "./types.ts";
 import {
 	alignCenter,
 	alignDate,
@@ -86,7 +86,7 @@ import {
 	isDateInvalid,
 	makeCalendarDateRange,
 	sortDates,
-} from "./utils";
+} from "./utils.ts";
 
 export interface CalendarSingleSelectionOptions {
 	/** The selection mode of the calendar. */
@@ -317,23 +317,29 @@ export function CalendarRoot<T extends ValidComponent = "div">(
 	});
 
 	const min = createMemo(() => {
+		const minValue = (merged.minValue ?? undefined) as DateValue | undefined;
 		const startRange = availableRange()?.start;
 
-		if (merged.selectionMode === "range" && merged.minValue && startRange) {
-			return maxDate(merged.minValue, startRange);
+		let result = minValue;
+
+		if (merged.selectionMode === "range" && minValue && startRange) {
+			result = maxDate(minValue, startRange) as DateValue;
 		}
 
-		return merged.minValue;
+		return result as DateValue | undefined;
 	});
 
 	const max = createMemo(() => {
+		const maxValue = (merged.maxValue ?? undefined) as DateValue | undefined;
 		const endRange = availableRange()?.end;
 
-		if (merged.selectionMode === "range" && merged.maxValue && endRange) {
-			return minDate(merged.maxValue, endRange);
+		let result = maxValue;
+
+		if (merged.selectionMode === "range" && maxValue && endRange) {
+			result = minDate(maxValue, endRange) as DateValue;
 		}
 
-		return merged.maxValue;
+		return result as DateValue | undefined;
 	});
 
 	const calendarDateValue = createMemo(() => {

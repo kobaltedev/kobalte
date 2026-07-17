@@ -4,10 +4,10 @@ import { type Component, createEffect, omit } from "solid-js";
 import type {
 	ListboxRootCommonProps,
 	ListboxRootRenderProps,
-} from "../listbox";
-import * as Listbox from "../listbox";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useSelectContext } from "./select-context";
+} from "../listbox/index.tsx";
+import * as Listbox from "../listbox/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useSelectContext } from "./select-context.tsx";
 
 export interface SelectListboxOptions<Option, OptGroup = never>
 	extends Pick<
