@@ -56,7 +56,7 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 			.join(", ");
 	};
 
-	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
+	const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
 		callHandler(e, local.onChange);

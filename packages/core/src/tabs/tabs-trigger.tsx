@@ -128,7 +128,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 		() => ref,
 	);
 
-	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (e) => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// Force focusing the trigger on click on safari.
 		if (isWebKit()) {
 			focusWithoutScrolling(e.currentTarget);

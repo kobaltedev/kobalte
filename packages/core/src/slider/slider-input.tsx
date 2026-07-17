@@ -49,10 +49,10 @@ export function SliderInput(props: SliderInputProps) {
 
 	const [valueText, setValueText] = createSignal("");
 
-	const onChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
+	const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (
 		e,
 	) => {
-		callHandler(e, local.onChange);
+		callHandler(e, local.onChange as JSX.EventHandlerUnion<HTMLInputElement, Event>);
 
 		const target = e.target as HTMLInputElement;
 

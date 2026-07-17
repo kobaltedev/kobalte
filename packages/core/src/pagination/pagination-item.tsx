@@ -46,7 +46,7 @@ export function PaginationItem<T extends ValidComponent = "button">(
 		return context.page() === local.page;
 	};
 
-	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = () => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = () => {
 		context.setPage(local.page);
 	};
 
