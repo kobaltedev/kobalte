@@ -123,16 +123,12 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 		setIsInternalChangeEvent(false);
 	};
 
-	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (
-		e,
-	) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 		context.setIsFocused(true);
 	};
 
-	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (
-		e,
-	) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 		context.setIsFocused(false);
 	};

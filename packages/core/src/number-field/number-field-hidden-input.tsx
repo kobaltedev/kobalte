@@ -1,9 +1,9 @@
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
 import { type ComponentProps, batch, splitProps } from "solid-js";
 
+import type { JSX } from "solid-js";
 import { useFormControlContext } from "../form-control";
 import { useNumberFieldContext } from "./number-field-context";
-import { JSX } from "solid-js";
 
 export interface NumberFieldHiddenInputProps extends ComponentProps<"input"> {}
 
@@ -27,7 +27,10 @@ export function NumberFieldHiddenInput(props: NumberFieldHiddenInputProps) {
 				disabled={formControlContext.isDisabled()}
 				readOnly={formControlContext.isReadOnly()}
 				onChange={(e) => {
-					callHandler(e, local.onChange as JSX.EventHandlerUnion<HTMLInputElement, Event>);
+					callHandler(
+						e,
+						local.onChange as JSX.EventHandlerUnion<HTMLInputElement, Event>,
+					);
 					// enable form autofill
 					batch(() => {
 						context.setValue((e.target as HTMLInputElement).value);
