@@ -2,12 +2,12 @@ import { OverrideComponentProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createMemo, omit } from "solid-js";
 
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	ComboboxBase,
 	type ComboboxBaseOptions,
 	type ComboboxBaseRenderProps,
-} from "./combobox-base";
+} from "./combobox-base.tsx";
 
 export interface ComboboxSingleSelectionOptions<T> {
 	/** The controlled value of the combobox. */

@@ -8,7 +8,7 @@
 
 import { createContext, createMemo, useContext } from "solid-js";
 
-import type { ColorModeContextType } from "./types";
+import type { ColorModeContextType } from "./types.ts";
 
 export const ColorModeContext = createContext<ColorModeContextType>();
 

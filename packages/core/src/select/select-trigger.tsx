@@ -11,15 +11,15 @@ import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, createEffect, omit } from "solid-js";
 
-import * as Button from "../button";
+import * as Button from "../button/index.tsx";
 import {
 	createFormControlField,
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createTypeSelect } from "../selection";
-import { type SelectDataSet, useSelectContext } from "./select-context";
+} from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createTypeSelect } from "../selection/index.ts";
+import { type SelectDataSet, useSelectContext } from "./select-context.tsx";
 
 export interface SelectTriggerOptions {}
 

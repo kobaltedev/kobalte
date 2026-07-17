@@ -29,14 +29,14 @@ import {
 	Root,
 	Title,
 	Trigger,
-} from "../dialog";
+} from "../dialog/index.tsx";
 import {
 	type AlertDialogContentCommonProps,
 	type AlertDialogContentOptions,
 	type AlertDialogContentProps,
 	type AlertDialogContentRenderProps,
 	AlertDialogContent as Content,
-} from "./alert-dialog-content";
+} from "./alert-dialog-content.tsx";
 
 export type {
 	AlertDialogCloseButtonCommonProps,

@@ -1,7 +1,7 @@
 import { createRoot } from "solid-js";
 import { vi } from "vitest";
 
-import { createToggleState } from "./create-toggle-state";
+import { createToggleState } from "./create-toggle-state.ts";
 
 describe("createToggleState", () => {
 	it("can be default selected (uncontrolled)", () => {

@@ -11,10 +11,10 @@ import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createEffect, createMemo, omit } from "solid-js";
 
-import * as Button from "../button";
-import { type ElementOf, type PolymorphicProps } from "../polymorphic";
-import { useCalendarContext } from "./calendar-context";
-import { isPreviousVisibleRangeInvalid } from "./utils";
+import * as Button from "../button/index.tsx";
+import { type ElementOf, type PolymorphicProps } from "../polymorphic/index.tsx";
+import { useCalendarContext } from "./calendar-context.tsx";
+import { isPreviousVisibleRangeInvalid } from "./utils.ts";
 
 export interface CalendarPrevTriggerOptions extends Button.ButtonRootOptions {}
 

@@ -3,8 +3,8 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type MeterDataSet, useMeterContext } from "./meter-context";
+} from "../polymorphic/index.tsx";
+import { type MeterDataSet, useMeterContext } from "./meter-context.tsx";
 
 export interface MeterTrackOptions {}
 

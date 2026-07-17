@@ -1,5 +1,5 @@
 import { type Accessor, createContext, useContext } from "solid-js";
-import type { FormControlDataSet } from "../form-control";
+import type { FormControlDataSet } from "../form-control/index.ts";
 
 export interface RatingItemDataSet extends FormControlDataSet {
 	"data-checked": string | undefined;

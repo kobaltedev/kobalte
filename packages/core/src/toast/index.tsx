@@ -4,57 +4,57 @@ import {
 	type ToastCloseButtonOptions,
 	type ToastCloseButtonProps,
 	type ToastCloseButtonRenderProps,
-} from "./toast-close-button";
+} from "./toast-close-button.tsx";
 import {
 	ToastDescription as Description,
 	type ToastDescriptionCommonProps,
 	type ToastDescriptionOptions,
 	type ToastDescriptionProps,
 	type ToastDescriptionRenderProps,
-} from "./toast-description";
+} from "./toast-description.tsx";
 import {
 	ToastList as List,
 	type ToastListCommonProps,
 	type ToastListOptions,
 	type ToastListProps,
 	type ToastListRenderProps,
-} from "./toast-list";
+} from "./toast-list.tsx";
 import {
 	ToastProgressFill as ProgressFill,
 	type ToastProgressFillCommonProps,
 	type ToastProgressFillOptions,
 	type ToastProgressFillProps,
 	type ToastProgressFillRenderProps,
-} from "./toast-progress-fill";
+} from "./toast-progress-fill.tsx";
 import {
 	ToastProgressTrack as ProgressTrack,
 	type ToastProgressTrackCommonProps,
 	type ToastProgressTrackOptions,
 	type ToastProgressTrackProps,
 	type ToastProgressTrackRenderProps,
-} from "./toast-progress-track";
+} from "./toast-progress-track.tsx";
 import {
 	ToastRegion as Region,
 	type ToastRegionCommonProps,
 	type ToastRegionOptions,
 	type ToastRegionProps,
 	type ToastRegionRenderProps,
-} from "./toast-region";
+} from "./toast-region.tsx";
 import {
 	ToastRoot as Root,
 	type ToastRootCommonProps,
 	type ToastRootOptions,
 	type ToastRootProps,
 	type ToastRootRenderProps,
-} from "./toast-root";
+} from "./toast-root.tsx";
 import {
 	ToastTitle as Title,
 	type ToastTitleCommonProps,
 	type ToastTitleOptions,
 	type ToastTitleProps,
 	type ToastTitleRenderProps,
-} from "./toast-title";
-import { toaster } from "./toaster";
+} from "./toast-title.tsx";
+import { toaster } from "./toaster.ts";
 import type {
 	ToastComponent,
 	ToastComponentProps,
@@ -62,7 +62,7 @@ import type {
 	ToastPromiseComponentProps,
 	ToastPromiseState,
 	ToastSwipeDirection,
-} from "./types";
+} from "./types.ts";
 
 export type {
 	ToastCloseButtonCommonProps,
@@ -131,4 +131,4 @@ export const Toast = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type ToastContextValue, useToastContext } from "./toast-context";
+export { type ToastContextValue, useToastContext } from "./toast-context.tsx";

@@ -16,7 +16,7 @@ import {
 	Root,
 	Section,
 	Trigger,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Combobox",
@@ -368,7 +368,7 @@ export const MultiSelect = meta.story({
 
 		return (
 			<div class="flex flex-col gap-3 font-sans">
-				<Root
+				<Root<string>
 					class={wrapClass}
 					options={fruits}
 					multiple

@@ -1,5 +1,5 @@
 import preview from "../../../../../.storybook/preview.js";
-import { Link, Root, Separator } from "../index";
+import { Link, Root, Separator } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Breadcrumbs",

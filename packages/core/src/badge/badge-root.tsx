@@ -8,7 +8,7 @@
 
 import type { ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
-import { Polymorphic, type PolymorphicProps } from "../polymorphic";
+import { Polymorphic, type PolymorphicProps } from "../polymorphic/index.tsx";
 
 export interface BadgeRootOptions {
 	/**

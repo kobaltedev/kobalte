@@ -4,14 +4,14 @@ import {
 	ComboboxBase,
 	type ComboboxBaseOptions,
 	type ComboboxBaseRenderProps as SearchBaseRenderProps,
-} from "../combobox/combobox-base";
+} from "../combobox/combobox-base.tsx";
 import type {
 	ComboboxMultipleSelectionOptions as SearchMultipleSelectionOptions,
 	ComboboxSingleSelectionOptions as SearchSingleSelectionOptions,
-} from "../combobox/combobox-root";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { SearchContext, type SearchContextValue } from "./search-context";
-import { DebouncerTimeout } from "./utils";
+} from "../combobox/combobox-root.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { SearchContext, type SearchContextValue } from "./search-context.tsx";
+import { DebouncerTimeout } from "./utils.ts";
 
 export type { SearchMultipleSelectionOptions, SearchSingleSelectionOptions };
 
@@ -67,7 +67,7 @@ export function SearchRoot<
 
 	const [isLoadingSuggestions, setIsLoadingSuggestions] = createSignal(false);
 	const [suggestionTimeout, setSuggestionTimeout] =
-		createSignal<NodeJS.Timeout>();
+		createSignal<ReturnType<typeof setTimeout>>();
 
 	const inputChangeDebouncer = DebouncerTimeout();
 	createEffect(

@@ -14,9 +14,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useCalendarContext } from "./calendar-context";
-import { getVisibleRangeDescription } from "./utils";
+} from "../polymorphic/index.tsx";
+import { useCalendarContext } from "./calendar-context.tsx";
+import { getVisibleRangeDescription } from "./utils.ts";
 
 export interface CalendarHeadingOptions {}
 

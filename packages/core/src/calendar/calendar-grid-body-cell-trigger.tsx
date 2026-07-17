@@ -16,20 +16,20 @@ import {
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createEffect, createMemo, omit } from "solid-js";
 
-import { createDateFormatter } from "../i18n";
+import { createDateFormatter } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useCalendarContext } from "./calendar-context";
-import { useCalendarGriBodyCellContext } from "./calendar-grid-body-cell-context";
-import { useCalendarGridContext } from "./calendar-grid-context";
+} from "../polymorphic/index.tsx";
+import { useCalendarContext } from "./calendar-context.tsx";
+import { useCalendarGriBodyCellContext } from "./calendar-grid-body-cell-context.tsx";
+import { useCalendarGridContext } from "./calendar-grid-context.tsx";
 import {
 	asRangeValue,
 	getEraFormat,
 	getSelectedDateDescription,
-} from "./utils";
+} from "./utils.ts";
 
 export interface CalendarGridBodyCellTriggerOptions {
 	/** Whether the cell trigger is disabled. */

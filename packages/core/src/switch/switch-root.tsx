@@ -31,18 +31,18 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createToggleState } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createToggleState } from "../primitives/index.ts";
 import {
 	SwitchContext,
 	type SwitchContextValue,
 	type SwitchDataSet,
-} from "./switch-context";
+} from "./switch-context.tsx";
 
 interface SwitchRootState {
 	/** Whether the switch is checked or not. */

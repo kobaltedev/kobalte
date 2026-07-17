@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Separator } from "../../separator";
+import { Separator } from "../../separator/index.tsx";
 import {
 	MenuCheckboxItem as CheckboxItem,
 	MenuContent as Content,
@@ -18,7 +18,7 @@ import {
 	MenuSubContent as SubContent,
 	MenuSubTrigger as SubTrigger,
 	MenuTrigger as Trigger,
-} from "../index";
+} from "../index.ts";
 
 const meta = preview.meta({
 	title: "Primitives/Menu",

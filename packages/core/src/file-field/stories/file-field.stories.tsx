@@ -15,7 +15,7 @@ import {
 	Label,
 	Root,
 	Trigger,
-} from "../index";
+} from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/FileField",

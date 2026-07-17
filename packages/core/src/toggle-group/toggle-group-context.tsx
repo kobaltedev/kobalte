@@ -1,6 +1,6 @@
 import type { Orientation } from "@kobalte/utils";
 import { type Accessor, createContext, useContext } from "solid-js";
-import type { ListState } from "../list";
+import type { ListState } from "../list/index.ts";
 
 export interface ToggleGroupContextValue {
 	isMultiple: Accessor<boolean>;

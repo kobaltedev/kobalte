@@ -1,4 +1,4 @@
-import type { Direction } from "../i18n";
+import type { Direction } from "../i18n/index.tsx";
 
 export type BasePlacement = "top" | "bottom" | "left" | "right";
 
