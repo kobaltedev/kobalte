@@ -11,5 +11,9 @@ export default defineConfig({
 	},
 	resolve: {
 		conditions: ["development", "browser"],
+		dedupe: ["solid-js"],
+	},
+	ssr: {
+		noExternal: true,
 	},
 });
