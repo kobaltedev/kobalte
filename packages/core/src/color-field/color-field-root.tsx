@@ -76,9 +76,7 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
-		e,
-	) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		if (!value()!.length) {
 			setPrevValue("");
 			return;

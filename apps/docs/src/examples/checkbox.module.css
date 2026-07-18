@@ -47,25 +47,25 @@
 	user-select: none;
 }
 
-[data-kb-theme="dark"] .checkbox__control {
+[data-theme*="dark"] .checkbox__control {
 	border-color: hsl(240 5% 34%);
 	background-color: hsl(240 5% 26%);
 }
 
-[data-kb-theme="dark"] .checkbox__control[data-checked] {
+[data-theme*="dark"] .checkbox__control[data-checked] {
 	border-color: hsl(200 98% 39%);
 	background-color: hsl(200 98% 39%);
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .checkbox__control[data-invalid] {
+[data-theme*="dark"] .checkbox__control[data-invalid] {
 	border-color: hsl(0 72% 51%);
 }
 
-[data-kb-theme="dark"] .checkbox__label {
+[data-theme*="dark"] .checkbox__label {
 	color: hsl(240 5% 84%);
 }
 
-[data-kb-theme="dark"] .checkbox__description {
+[data-theme*="dark"] .checkbox__description {
 	color: hsl(240 5% 65%);
 }

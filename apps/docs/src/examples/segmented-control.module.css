@@ -16,7 +16,7 @@
 	--indicator-focus-shadow-color: hsl(200 98% 39%);
 }
 
-[data-kb-theme="dark"] .segmented-control {
+[data-theme*="dark"] .segmented-control {
 	--border-color: hsl(240 6% 26%);
 	--border-active-color: hsl(240 6% 41%);
 	--label-color: hsl(240 5% 84%);

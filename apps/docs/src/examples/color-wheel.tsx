@@ -1,7 +1,8 @@
-import { ColorWheel } from "@kobalte/core/color-wheel";
 import { parseColor } from "@kobalte/core/colors";
 import { createSignal } from "solid-js";
 import style from "./color-wheel.module.css";
+
+import { ColorWheel } from "@kobalte/core/color-wheel";
 
 export function BasicExample() {
 	return (
@@ -62,7 +63,13 @@ export function ControlledValueExample() {
 					</ColorWheel.Thumb>
 				</ColorWheel.Track>
 			</ColorWheel>
-			<p class="not-prose text-sm mt-4">
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
 				Current color value: {value().toString("hsl")}
 			</p>
 		</>
@@ -109,7 +116,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<ColorWheel class={style.ColorWheelRoot} name="hue">
 				<ColorWheel.Label class={style.ColorWheelLabel}>Label</ColorWheel.Label>
@@ -119,7 +131,7 @@ export function HTMLFormExample() {
 					</ColorWheel.Thumb>
 				</ColorWheel.Track>
 			</ColorWheel>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>

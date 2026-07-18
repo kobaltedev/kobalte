@@ -1,6 +1,6 @@
-import { Alert } from "@kobalte/core/alert";
-
 import style from "./alert.module.css";
+
+import { Alert } from "@kobalte/core/alert";
 
 export function BasicExample() {
 	return (

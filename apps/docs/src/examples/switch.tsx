@@ -1,7 +1,8 @@
-import { Switch } from "@kobalte/core/switch";
 import { createSignal } from "solid-js";
 
 import style from "./switch.module.css";
+
+import { Switch } from "@kobalte/core/switch";
 
 export function BasicExample() {
 	return (
@@ -39,7 +40,9 @@ export function ControlledExample() {
 					<Switch.Thumb class={style.switch__thumb} />
 				</Switch.Control>
 			</Switch>
-			<p class="not-prose text-sm mt-2">
+			<p
+				style={{ "font-size": "14px", "margin-top": "8px", "margin-bottom": 0 }}
+			>
 				Airplane mode is {checked() ? "active" : "inactive"}.
 			</p>
 		</>
@@ -49,7 +52,14 @@ export function ControlledExample() {
 export function DescriptionExample() {
 	return (
 		<Switch class={style.switch}>
-			<div class="flex flex-col items-start  mr-2">
+			<div
+				style={{
+					display: "flex",
+					"flex-direction": "column",
+					"align-items": "flex-start",
+					"margin-right": "8px",
+				}}
+			>
 				<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
 				<Switch.Description class={style.switch__description}>
 					Disable all network connections.
@@ -73,7 +83,14 @@ export function ErrorMessageExample() {
 			onChange={setChecked}
 			validationState={!checked() ? "invalid" : "valid"}
 		>
-			<div class="flex flex-col items-start mr-2">
+			<div
+				style={{
+					display: "flex",
+					"flex-direction": "column",
+					"align-items": "flex-start",
+					"margin-right": "8px",
+				}}
+			>
 				<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
 				<Switch.ErrorMessage class={style["switch__error-message"]}>
 					You must enable airplane mode.
@@ -103,7 +120,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<Switch class={style.switch} name="airplane-mode" value="on">
 				<Switch.Label class={style.switch__label}>Airplane mode</Switch.Label>
@@ -112,7 +134,7 @@ export function HTMLFormExample() {
 					<Switch.Thumb class={style.switch__thumb} />
 				</Switch.Control>
 			</Switch>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>

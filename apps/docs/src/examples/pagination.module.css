@@ -66,27 +66,27 @@
 	color: white;
 }
 
-[data-kb-theme="dark"] .pagination__item {
+[data-theme*="dark"] .pagination__item {
 	background-color: hsl(240 4% 16%);
 	border: 1px solid hsl(240 5% 34%);
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .pagination__ellipsis {
+[data-theme*="dark"] .pagination__ellipsis {
 	background-color: hsl(240 4% 16%);
 	border: 1px solid hsl(240 5% 34%);
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .pagination__item[aria-current="page"] {
+[data-theme*="dark"] .pagination__item[aria-current="page"] {
 	background-color: hsl(201 96% 32%);
 	color: hsla(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .pagination__item:hover {
+[data-theme*="dark"] .pagination__item:hover {
 	border-color: hsl(240 4% 46%);
 }
 
-[data-kb-theme="dark"] .pagination__item:active {
+[data-theme*="dark"] .pagination__item:active {
 	background-color: hsl(199 89% 48%);
 }

@@ -45,8 +45,8 @@ export interface CheckboxInputCommonProps<
 	ref: T | ((el: T) => void);
 	style: JSX.CSSProperties | string;
 	onChange: JSX.EventHandlerUnion<T, InputEvent>;
-	onFocus: JSX.FocusEventHandlerUnion<T, FocusEvent>;
-	onBlur: JSX.FocusEventHandlerUnion<T, FocusEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
@@ -123,16 +123,12 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 		setIsInternalChangeEvent(false);
 	};
 
-	const onFocus: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
-		e,
-	) => {
+	const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onFocus);
 		context.setIsFocused(true);
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
-		e,
-	) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
 		callHandler(e, local.onBlur);
 		context.setIsFocused(false);
 	};

@@ -15,9 +15,10 @@
 		"forceConsistentCasingInFileNames": true,
 		"noFallthroughCasesInSwitch": false,
 		"isolatedModules": true,
+		"ignoreDeprecations": "6.0",
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
-		"moduleResolution": "Node",
+		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"strict": true,
@@ -26,7 +27,6 @@
 			"solid-js",
 			"vite/client",
 			"node",
-			"@testing-library/jest-dom",
 			"vitest/globals"
 		]
 	},

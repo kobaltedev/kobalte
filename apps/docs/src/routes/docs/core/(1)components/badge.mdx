@@ -1,0 +1,73 @@
+---
+title: Badge
+badges:
+  - icon: npm
+    label: "Since v0.13.8"
+  - label: "@kobalte/core/badge"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/badge"
+---
+
+import { BasicExample } from "../../../../examples/badge";
+
+# {frontmatter.title}
+
+A `Badge` component is used to display small pieces of information or status indicators.
+
+## Import
+
+```ts
+import { Badge } from "@kobalte/core/badge";
+// or
+import { Root } from "@kobalte/core/badge";
+```
+
+## Features
+
+- Auto-populated ARIA labeling via the textValue prop for enhanced accessibility.
+- Built-in ARIA support with role="status" to communicate dynamic updates.
+
+## Anatomy
+
+The badge consists of:
+
+- **Badge:** The root container for the badge that supports accessibility and content customization.
+
+```tsx
+<Badge />
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/badge.tsx#L3-L11"
+
+```
+
+```css title="style.css" tab file="../../../../examples/badge.module.css"
+
+```
+
+:::
+
+## API Reference
+
+### Badge
+
+`Badge` is equivalent to the `Root` import from `@kobalte/core/badge`.
+
+| Prop      | Description                                                                               |
+| :-------- | :---------------------------------------------------------------------------------------- |
+| textValue | `string \| undefined` <br/> Accessible text description of the badge if child is not text |
+
+## Rendered elements
+
+| Component | Default rendered element |
+| :-------- | :----------------------- |
+| `Badge`   | `span`                   |

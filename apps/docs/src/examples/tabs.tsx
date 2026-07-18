@@ -1,7 +1,8 @@
-import { Tabs } from "@kobalte/core/tabs";
 import { For, createSignal } from "solid-js";
 
 import style from "./tabs.module.css";
+
+import { Tabs } from "@kobalte/core/tabs";
 
 export function BasicExample() {
 	return (
@@ -114,7 +115,11 @@ export function ControlledExample() {
 					Contact details
 				</Tabs.Content>
 			</Tabs>
-			<p class="not-prose text-sm mt-2">Selected tab: {selectedTab()}</p>
+			<p
+				style={{ "font-size": "14px", "margin-top": "8px", "margin-bottom": 0 }}
+			>
+				Selected tab: {selectedTab()}
+			</p>
 		</>
 	);
 }
@@ -139,7 +144,15 @@ export function FocusableContentExample() {
 			</Tabs.List>
 			<Tabs.Content class={style.tabs__content} value="profile">
 				<input
-					class="border border-zinc-300 text-zinc-900 w-40 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-2 dark:border-zinc-600 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					style={{
+						border: "1px solid hsl(240 6% 90%)",
+						color: "hsl(240 4% 16%)",
+						"font-size": "14px",
+						"border-radius": "6px",
+						padding: "8px 12px",
+						width: "100%",
+						"box-sizing": "border-box",
+					}}
 					placeholder="Change password"
 				/>
 			</Tabs.Content>
@@ -182,17 +195,44 @@ export function DynamicContentExample() {
 
 	return (
 		<>
-			<div class="flex items-center space-x-2 mb-2">
+			<div
+				style={{
+					display: "flex",
+					"align-items": "center",
+					gap: "8px",
+					"margin-bottom": "8px",
+				}}
+			>
 				<button
 					type="button"
-					class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30"
+					style={{
+						appearance: "none",
+						outline: "none",
+						height: "40px",
+						padding: "0 16px",
+						"border-radius": "6px",
+						color: "white",
+						"background-color": "hsl(200 98% 39%)",
+						border: "none",
+						cursor: "pointer",
+					}}
 					onClick={addTab}
 				>
 					Add tab
 				</button>
 				<button
 					type="button"
-					class="appearance-none outline-none h-10 px-4 rounded-md text-white bg-blue-600 dark:text-white/90 disabled:opacity-40 focus:ring focus:ring-blue-200 dark:focus:ring-blue-500/30"
+					style={{
+						appearance: "none",
+						outline: "none",
+						height: "40px",
+						padding: "0 16px",
+						"border-radius": "6px",
+						color: "white",
+						"background-color": "hsl(200 98% 39%)",
+						border: "none",
+						cursor: "pointer",
+					}}
 					onClick={removeTab}
 				>
 					Remove tab

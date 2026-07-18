@@ -1,4 +1,3 @@
-import { DropdownMenu } from "@kobalte/core/dropdown-menu";
 import { createSignal } from "solid-js";
 
 import {
@@ -8,6 +7,8 @@ import {
 	DotFilledIcon,
 } from "../components";
 import style from "./dropdown-menu.module.css";
+
+import { DropdownMenu } from "@kobalte/core/dropdown-menu";
 
 export function BasicExample() {
 	const [showGitLog, setShowGitLog] = createSignal(true);

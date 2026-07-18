@@ -1,0 +1,24 @@
+footer:has(.footer) {
+	position: relative;
+}
+
+.footer.footer {
+	position: absolute;
+	top: 100%;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 100%;
+
+	> a {
+		color: color-mix(in hsl, var(--sb-text-color) 72.5%, transparent);
+		box-shadow: color-mix(in hsl, var(--sb-text-color) 25%, transparent) 0 -2px 0 0 inset;
+		text-decoration: none;
+		line-height: 1;
+
+		&:hover,
+		&:focus {
+			box-shadow: color-mix(in hsl, var(--sb-text-color) 25%, transparent) 0 -6px 0 0 inset;
+		}
+	}
+}

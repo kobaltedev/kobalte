@@ -1,7 +1,7 @@
-import { Breadcrumbs } from "@kobalte/core/breadcrumbs";
-
 import { ChevronRightIcon } from "../components";
 import style from "./breadcrumbs.module.css";
+
+import { Breadcrumbs } from "@kobalte/core/breadcrumbs";
 
 export function BasicExample() {
 	return (

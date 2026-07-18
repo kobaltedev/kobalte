@@ -1,6 +1,7 @@
 import { Show, createSignal } from "solid-js";
-import { TimeField } from "../../../../packages/core/src/time-field";
 import style from "./time-field.module.css";
+
+import { TimeField } from "@kobalte/core/time-field";
 
 export function BasicExample() {
 	return (
@@ -57,7 +58,13 @@ export function ControlledValueExample() {
 					)}
 				</TimeField.Input>
 			</TimeField>
-			<p class="not-prose text-sm mt-4">
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
 				Selected time:{" "}
 				<Show when={value()} fallback={"--"}>
 					{JSON.stringify(value())}
@@ -197,7 +204,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<TimeField class={style["time-field"]} name="time">
 				<TimeField.Input class={style["time-field__field"]}>
@@ -210,7 +222,7 @@ export function HTMLFormExample() {
 				</TimeField.Input>
 				<TimeField.HiddenInput />
 			</TimeField>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>

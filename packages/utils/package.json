@@ -61,7 +61,7 @@
 		"@solid-primitives/utils": "^6.2.1"
 	},
 	"peerDependencies": {
-		"solid-js": "^1.8.8"
+		"solid-js": "^1.9.8"
 	},
 	"publishConfig": {
 		"access": "public"

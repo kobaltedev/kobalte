@@ -1,8 +1,9 @@
-import { Accordion } from "@kobalte/core/accordion";
 import { createSignal } from "solid-js";
 
 import { ChevronDownIcon } from "../components";
 import style from "./accordion.module.css";
+
+import { Accordion } from "@kobalte/core/accordion";
 
 export function BasicExample() {
 	return (
@@ -182,7 +183,9 @@ export function ControlledExample() {
 					</Accordion.Content>
 				</Accordion.Item>
 			</Accordion>
-			<p class="not-prose text-sm mt-2">
+			<p
+				style={{ "font-size": "14px", "margin-top": "8px", "margin-bottom": 0 }}
+			>
 				Expanded item: {expandedItem().join(",")}
 			</p>
 		</>

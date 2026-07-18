@@ -86,15 +86,18 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		props as TimeFieldSegmentProps,
 	);
 
-	const [local, others] = splitProps(mergedProps as TimeFieldSegmentProps, [
-		"ref",
-		"segment",
-		"onKeyDown",
-		"onBeforeInput",
-		"onInput",
-		"onFocus",
-		"children",
-	]);
+	const [local, others] = splitProps(
+		mergedProps as TimeFieldSegmentProps & { id: string },
+		[
+			"ref",
+			"segment",
+			"onKeyDown",
+			"onBeforeInput",
+			"onInput",
+			"onFocus",
+			"children",
+		],
+	);
 
 	const { locale } = useLocale();
 

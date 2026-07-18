@@ -1,0 +1,84 @@
+---
+title: Separator
+badges:
+  - icon: npm
+    label: "Since v0.1.0"
+  - label: "@kobalte/core/separator"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/separator"
+  - icon: aria
+    label: "Separator"
+    url: "https://w3c.github.io/aria/#separator"
+---
+
+import { BasicExample } from "../../../../examples/separator";
+
+# {frontmatter.title}
+
+Visually or semantically separates content.
+
+## Import
+
+```ts
+import { Separator } from "@kobalte/core/separator";
+// or
+import { Root } from "@kobalte/core/separator";
+// or (deprecated)
+import { Separator } from "@kobalte/core";
+```
+
+## Features
+
+- Native HTML `<hr>` element support.
+- Custom element type support via the [WAI ARIA Separator](https://w3c.github.io/aria/#separator) role.
+- Support for horizontal and vertical orientation.
+
+## Anatomy
+
+The separator consists of:
+
+- **Separator:** The root container for a separator.
+
+```tsx
+<Separator />
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/separator.tsx#L3-L13"
+
+```
+
+```css title="style.css" tab file="../../../../examples/separator.module.css"
+
+```
+
+:::
+
+## API Reference
+
+### Separator
+
+`Separator` is equivalent to the `Root` import from `@kobalte/core/separator` (and deprecated `Separator.Root`).
+
+| Prop        | Description                                                          |
+| :---------- | :------------------------------------------------------------------- |
+| orientation | `'horizontal' \| 'vertical'` <br/> The orientation of the separator. |
+
+| Data attribute                | Description                                            |
+| :---------------------------- | :----------------------------------------------------- |
+| data-orientation='horizontal' | Present when the separator has horizontal orientation. |
+| data-orientation='vertical'   | Present when the separator has vertical orientation.   |
+
+## Rendered elements
+
+| Component   | Default rendered element |
+| :---------- | :----------------------- |
+| `Separator` | `hr`                     |

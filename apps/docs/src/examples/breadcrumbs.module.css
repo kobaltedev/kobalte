@@ -31,14 +31,14 @@
 	color: hsl(240 5% 65%);
 }
 
-[data-kb-theme="dark"] .breadcrumbs__link {
+[data-theme*="dark"] .breadcrumbs__link {
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .breadcrumbs__link[data-disabled] {
+[data-theme*="dark"] .breadcrumbs__link[data-disabled] {
 	color: hsl(240 4% 46%);
 }
 
-[data-kb-theme="dark"] .breadcrumbs__link:hover {
+[data-theme*="dark"] .breadcrumbs__link:hover {
 	color: hsl(201 96% 32%);
 }

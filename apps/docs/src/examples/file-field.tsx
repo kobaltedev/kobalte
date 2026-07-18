@@ -1,6 +1,6 @@
-import { FileField } from "@kobalte/core/file-field";
-
 import style from "./file-field.module.css";
+
+import { FileField } from "@kobalte/core/file-field";
 
 export function BasicExample() {
 	return (
