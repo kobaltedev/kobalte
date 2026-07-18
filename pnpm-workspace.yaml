@@ -2,6 +2,7 @@ packages:
   - apps/*
   - packages/*
 overrides:
+  "@internationalized/date": "3.4.0"
   "@solidjs/testing-library": "1.0.0-beta.2"
   "@solid-primitives/a11y": "next"
   "@solid-primitives/controlled-signal": "1.0.0-next.1"

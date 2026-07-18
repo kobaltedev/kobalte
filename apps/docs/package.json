@@ -39,10 +39,11 @@
 		"@solidjs/meta": "0.29.4",
 		"@solidjs/router": "0.16.2",
 		"@solidjs/start": "2.0.0-beta.0",
+		"@solidjs/web": "2.0.0-beta.15",
 		"@tanstack/solid-virtual": "3.0.0-beta.6",
 		"minisearch": "7.1.0",
 		"nitro": "3.0.260610-beta",
-		"solid-js": "1.9.8",
+		"solid-js": "2.0.0-beta.15",
 		"vite": "8.1.3"
 	},
 	"devDependencies": {
