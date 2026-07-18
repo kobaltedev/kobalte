@@ -16,7 +16,7 @@ Polymorphism is useful when you want to:
 
 Use `as` with a native element or a custom Solid component.
 
-```tsx {8, 13}
+```tsx {9, 14}
 import { Tabs } from "@kobalte/core/tabs";
 import { MyCustomButton } from "./components";
 
@@ -50,12 +50,12 @@ When using an `as` callback:
 
 - Always spread the provided props
 - Custom props are forwarded **unchanged**
-- Kobalte options are _not_ passed
+- Kobalte options are **not** passed
 - Event handlers must be defined on the **parent**
 
 Violating these rules can break behavior or accessibility.
 
-```tsx {17}
+```tsx {12}
 import { Tabs } from "@kobalte/core/tabs";
 import { MyCustomButton } from "./components";
 
@@ -86,7 +86,7 @@ In this example:
 
 You can use `PolymorphicCallbackProps` to get exact typing for callback props:
 
-```tsx {6-9}
+```tsx {7-11}
 import { Tabs, TabsTriggerOptions, TabsTriggerRenderProps } from "@kobalte/core/tabs";
 import { PolymorphicCallbackProps } from "@kobalte/core/polymorphic";
 
