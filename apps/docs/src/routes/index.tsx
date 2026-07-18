@@ -8,6 +8,10 @@ export const route = {
 	},
 };
 
+export function GET() {
+	throw redirect(target);
+}
+
 export default function () {
 	return <Navigate href={target} />;
 }
