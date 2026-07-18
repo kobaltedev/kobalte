@@ -45,7 +45,7 @@ export function ColorFieldInput<T extends ValidComponent = "input">(
 			autocomplete="off"
 			autocorrect="off"
 			spellcheck="false"
-			onBlur={composeEventHandlers([props.onBlur, context.onBlur])}
+			onBlur={composeEventHandlers([props.onBlur, context.onBlur] as any)}
 			{...others}
 		/>
 	);
