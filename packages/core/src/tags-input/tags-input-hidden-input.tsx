@@ -1,6 +1,6 @@
 import type { ComponentProps } from "@solidjs/web";
-import { For } from "solid-js";
 import { useFormControlContext } from "../form-control";
+import { HiddenValueInputsBase } from "./hidden-value-inputs-base";
 import { useTagsInputContext } from "./tags-input-context";
 
 export type TagsInputHiddenInputProps = ComponentProps<"input">;
@@ -14,16 +14,11 @@ export function TagsInputHiddenInput(props: TagsInputHiddenInputProps) {
 	const context = useTagsInputContext();
 
 	return (
-		<For each={context.value()}>
-			{(tag) => (
-				<input
-					type="hidden"
-					name={formControlContext.name()}
-					value={tag}
-					disabled={formControlContext.isDisabled()}
-					{...props}
-				/>
-			)}
-		</For>
+		<HiddenValueInputsBase
+			getValues={context.value}
+			getName={formControlContext.name}
+			getDisabled={formControlContext.isDisabled}
+			{...props}
+		/>
 	);
 }

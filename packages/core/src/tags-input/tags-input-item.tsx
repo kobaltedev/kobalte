@@ -7,9 +7,7 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { createSelectableItem } from "../selection";
+import { createRovingCollectionItem } from "../primitives/create-roving-collection";
 import { useTagsInputContext } from "./tags-input-context";
 import { TagsInputItemContext } from "./tags-input-item-context";
 
@@ -75,28 +73,20 @@ export function TagsInputItem<T extends ValidComponent = "div">(
 
 	const isDisabled = () => formControlContext.isDisabled() ?? false;
 
-	createDomCollectionItem<CollectionItemWithRef>({
-		getItem: () => ({
-			ref: () => ref,
-			type: "item",
-			key: String(mergedProps.index),
-			textValue: mergedProps.value,
-			disabled: isDisabled(),
-		}),
-	});
+	const key = () => String(mergedProps.index);
 
-	const selectableItem = createSelectableItem(
+	const selectableItem = createRovingCollectionItem(
 		{
-			key: () => String(mergedProps.index),
-			selectionManager: () => context.listState().selectionManager(),
+			listState: context.listState,
+			key,
+			textValue: () => mergedProps.value,
 			disabled: isDisabled,
 		},
 		() => ref,
 	);
 
 	const isHighlighted = () =>
-		context.listState().selectionManager().focusedKey() ===
-		String(mergedProps.index);
+		context.listState().selectionManager().focusedKey() === key();
 
 	const startEditing = () => {
 		if (

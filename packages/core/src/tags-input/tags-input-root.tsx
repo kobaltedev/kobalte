@@ -14,17 +14,13 @@ import {
 	FormControlContext,
 	type FormControlDataSet,
 } from "../form-control";
-import { createListState } from "../list";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
-import {
-	type CollectionItemWithRef,
-	createControllableSignal,
-} from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
+import { createControllableSignal } from "../primitives";
+import { createRovingCollection } from "../primitives/create-roving-collection";
 import { TagsInputContext, type TagsInputContextValue } from "./tags-input-context";
 
 export interface TagsInputValidateDetails {
@@ -327,18 +323,8 @@ export function TagsInputRoot<T extends ValidComponent = "div">(
 		setEditingIndexRaw(undefined);
 	};
 
-	const [items, setItems] = createSignal<CollectionItemWithRef[]>([]);
-
-	const { DomCollectionProvider } = createDomCollection({
-		items,
-		onItemsChange: setItems,
-	});
-
-	const listState = createListState({
-		dataSource: items,
-		selectionMode: () => "none",
-		disallowEmptySelection: () => false,
-	});
+	const { DomCollectionProvider, listState, focusItemAt: focusRovingKey } =
+		createRovingCollection();
 
 	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
 
@@ -347,9 +333,7 @@ export function TagsInputRoot<T extends ValidComponent = "div">(
 	};
 
 	const focusItemAt = (index: number) => {
-		const manager = listState.selectionManager();
-		manager.setFocused(true);
-		manager.setFocusedKey(String(index));
+		focusRovingKey(String(index));
 	};
 
 	createFormResetListener(
@@ -373,7 +357,7 @@ export function TagsInputRoot<T extends ValidComponent = "div">(
 		blurBehavior: () => mergedProps.blurBehavior,
 		isFocused,
 		setIsFocused,
-		listState: () => listState,
+		listState,
 		generateId: createGenerateId(() => access(mergedProps.id)!),
 		addTagValue,
 		removeTagAt,

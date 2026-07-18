@@ -11,6 +11,11 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic";
+import { createRovingCollection } from "../primitives/create-roving-collection";
+import {
+	ComboboxControlContext,
+	type ComboboxControlContextValue,
+} from "./combobox-control-context";
 import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
 
 export interface ComboboxControlState<Option> {
@@ -66,6 +71,17 @@ export function ComboboxControl<Option, T extends ValidComponent = "div">(
 
 	const selectionManager = () => context.listState().selectionManager();
 
+	const {
+		DomCollectionProvider,
+		listState: rovingListState,
+		focusItemAt,
+	} = createRovingCollection();
+
+	const controlContext: ComboboxControlContextValue = {
+		rovingListState,
+		focusItemAt,
+	};
+
 	return (
 		<Polymorphic<ComboboxControlRenderProps>
 			as="div"
@@ -77,15 +93,19 @@ export function ComboboxControl<Option, T extends ValidComponent = "div">(
 			{...formControlContext.dataset()}
 			{...others}
 		>
-			<ComboboxControlChild
-				state={{
-					selectedOptions: () => context.selectedOptions(),
-					remove: (option) => context.removeOptionFromSelection(option),
-					clear: () => selectionManager().clearSelection(),
-				}}
-			>
-				{props.children}
-			</ComboboxControlChild>
+			<ComboboxControlContext value={controlContext}>
+				<DomCollectionProvider>
+					<ComboboxControlChild
+						state={{
+							selectedOptions: () => context.selectedOptions(),
+							remove: (option) => context.removeOptionFromSelection(option),
+							clear: () => selectionManager().clearSelection(),
+						}}
+					>
+						{props.children}
+					</ComboboxControlChild>
+				</DomCollectionProvider>
+			</ComboboxControlContext>
 		</Polymorphic>
 	);
 }
