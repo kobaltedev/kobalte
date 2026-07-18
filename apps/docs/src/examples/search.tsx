@@ -549,7 +549,7 @@ const queryEmojiData = (query: string, numSuggestions = 20) => {
 		.slice(0, numSuggestions) as never as EmojiDatum[];
 };
 
-import { Search } from "../../../../packages/core/src/search";
+import { Search } from "@kobalte/core/search";
 
 export function BasicExample() {
 	const [options, setOptions] = createSignal<EmojiDatum[]>([]);

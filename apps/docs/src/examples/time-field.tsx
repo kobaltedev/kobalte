@@ -1,7 +1,7 @@
 import { Show, createSignal } from "solid-js";
 import style from "./time-field.module.css";
 
-import { TimeField } from "../../../../packages/core/src/time-field";
+import { TimeField } from "@kobalte/core/time-field";
 
 export function BasicExample() {
 	return (
