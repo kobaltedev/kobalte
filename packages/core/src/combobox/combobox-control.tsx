@@ -71,6 +71,9 @@ export function ComboboxControl<Option, T extends ValidComponent = "div">(
 
 	const selectionManager = () => context.listState().selectionManager();
 
+	// Backs the optional `Combobox.ControlItem` chips (roving focus between
+	// selected options). Unused, and effectively free, when the consumer
+	// renders `selectedOptions()` some other way instead.
 	const {
 		DomCollectionProvider,
 		listState: rovingListState,

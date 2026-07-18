@@ -40,6 +40,8 @@ import { Combobox } from "@kobalte/core";
 - Supports items, and groups of items.
 - Supports custom placeholder.
 - Can be controlled or uncontrolled.
+- Optional keyboard-navigable, removable chips for multi-selection via `Combobox.ControlItem` (arrow keys to move focus between selected options, Backspace/Delete to remove).
+- Optional array-style form submission for multi-selection via `Combobox.HiddenInputs` (one hidden `<input>` per selected value), as an alternative to the native `<select multiple>` rendered by `Combobox.HiddenSelect`.
 
 ## Anatomy
 
@@ -563,6 +565,8 @@ function ErrorMessageExample() {
 
 The combobox `name` prop, paired with the `Combobox.HiddenSelect` component, can be used for integration with HTML forms.
 
+For `multiple` comboboxes, `Combobox.HiddenInputs` can be used instead of `Combobox.HiddenSelect` — it renders one `<input type="hidden">` per selected value (read with `formData.getAll(name)`) rather than a native `<select multiple>`.
+
 <Preview>
 	<HTMLFormExample />
 </Preview>
@@ -853,6 +857,32 @@ function MultipleSelectionExample() {
 }
 ```
 
+#### Keyboard-navigable chips
+
+Rendering selected options with `Combobox.ControlItem` instead of a plain element turns them into a roving-tabindex chip list: <Kbd>ArrowLeft</Kbd>/<Kbd>ArrowRight</Kbd> move focus between chips (and back to `Combobox.Input` at either end), and <Kbd>Backspace</Kbd>/<Kbd>Delete</Kbd> remove the focused chip and move focus to a neighbor. This is opt-in — the plain `state.selectedOptions()` + `state.remove(option)` pattern above still works without it.
+
+`Combobox.ControlItem` requires `option`, `index`, and `textValue` props, and **must** be rendered with `<For each={state.selectedOptions()} keyed={false}>`, not the default keyed `<For>` — keeping the same chip DOM node across removals (rather than remounting it) is what lets roving focus land on the correct neighbor.
+
+```tsx {5,8-9}
+import { Combobox } from "@kobalte/core/combobox";
+import { For } from "solid-js";
+
+<Combobox.Control<string> aria-label="Fruits">
+	{state => (
+		<For each={state.selectedOptions()} keyed={false}>
+			{(getOption, index) => (
+				<Combobox.ControlItem option={getOption()} index={index} textValue={getOption()}>
+					{getOption()}
+					<button onClick={() => state.remove(getOption())}>
+						<CrossIcon />
+					</button>
+				</Combobox.ControlItem>
+			)}
+		</For>
+	)}
+</Combobox.Control>
+```
+
 ### Origin-aware animations
 
 We expose a CSS custom property `--kb-combobox-content-transform-origin` which can be used to animate the content from its computed origin.
@@ -972,6 +1002,25 @@ We expose a CSS custom property `--kb-combobox-content-transform-origin` which c
 | remove          | `(option: T) => void` <br/> A function to remove an option from the selection. |
 | clear           | `() => void` <br/> A function to clear the selection.                          |
 
+### Combobox.ControlItem
+
+Opt-in, only used for `multiple` selection to turn selected options into a roving-tabindex, keyboard-navigable chip list inside `Combobox.Control`. See [Keyboard-navigable chips](#keyboard-navigable-chips).
+
+| Prop      | Description                                                                     |
+| :-------- | :------------------------------------------------------------------------------- |
+| option    | `T` <br/> The selected option this chip represents. **Required.**               |
+| index     | `number` <br/> The index of this chip within the list of selected options. **Required.** |
+| textValue | `string` <br/> A string value for the chip, used for features like typeahead. **Required.** |
+
+| Data attribute     | Description                                    |
+| :----------------- | :---------------------------------------------- |
+| `data-highlighted` | Present when the chip has roving keyboard focus. |
+| `data-disabled`    | Present when the combobox is disabled.          |
+
+### Combobox.HiddenInputs
+
+Opt-in alternative to `Combobox.HiddenSelect` for `multiple` selection: renders one native `<input type="hidden">` per selected value instead of a native `<select multiple>`, so the value can be read with `formData.getAll(name)`.
+
 ### Combobox.Trigger
 
 `Combobox.Trigger` consists of [Button](/docs/core/components/button).
@@ -1044,6 +1093,8 @@ We expose a CSS custom property `--kb-combobox-content-transform-origin` which c
 | `Combobox.Description`     | `div`                    |
 | `Combobox.ErrorMessage`    | `div`                    |
 | `Combobox.Control`         | `div`                    |
+| `Combobox.ControlItem`     | `div`                    |
+| `Combobox.HiddenInputs`    | `input`                  |
 | `Combobox.Input`           | `input`                  |
 | `Combobox.Trigger`         | `button`                 |
 | `Combobox.Icon`            | `span`                   |
