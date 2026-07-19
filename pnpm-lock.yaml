@@ -111,8 +111,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/core
       '@kobalte/solidbase':
-        specifier: 0.6.10
-        version: 0.6.10(@solidjs/start@2.0.0-beta.0(@testing-library/jest-dom@6.9.1)(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.14)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))
+        specifier: 0.6.11
+        version: 0.6.11(@solidjs/start@2.0.0-beta.0(@testing-library/jest-dom@6.9.1)(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.14)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))
       '@solidjs/meta':
         specifier: 0.29.4
         version: 0.29.4(solid-js@1.9.14)
@@ -1687,8 +1687,8 @@ packages:
     peerDependencies:
       solid-js: '>=1.9.14'
 
-  '@kobalte/solidbase@0.6.10':
-    resolution: {integrity: sha512-pu26EwzfNbk/SHYIweNk06tyFxYbX29k3KSx/ei+KdZJYu1zUUKBAJ9EEaHgz9wEYfzlCVjvTV0ttm/6oQkgWA==}
+  '@kobalte/solidbase@0.6.11':
+    resolution: {integrity: sha512-OVj1Y3fX1Kz32kS6jdMXV9W8Lxr6dh/WgI0bFbtXTsp9QHIk4C0SZO+Our8vXKtm0Lnte9i3IFzxpt410QxosQ==}
     engines: {node: '>=22'}
     peerDependencies:
       '@solidjs/start': ^2.0.0
@@ -7537,7 +7537,7 @@ snapshots:
       '@types/node': 20.5.1
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@5.9.3)
-      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.9.3))(typescript@5.9.3)
+      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@20.5.4)(typescript@6.0.3))(typescript@5.9.3)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -8031,7 +8031,7 @@ snapshots:
       solid-presence: 0.1.8(solid-js@1.9.14)
       solid-prevent-scroll: 0.1.7(solid-js@1.9.14)
 
-  '@kobalte/solidbase@0.6.10(@solidjs/start@2.0.0-beta.0(@testing-library/jest-dom@6.9.1)(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.14)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))':
+  '@kobalte/solidbase@0.6.11(@solidjs/start@2.0.0-beta.0(@testing-library/jest-dom@6.9.1)(crossws@0.4.7(srvx@0.11.18))(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0)))(solid-js@1.9.14)(vite@8.1.3(@types/node@20.5.4)(esbuild@0.27.7)(jiti@2.7.0)(terser@5.31.0)(yaml@2.9.0))':
     dependencies:
       '@alloc/quick-lru': 5.2.0
       '@bprogress/core': 1.3.4
@@ -9299,7 +9299,7 @@ snapshots:
     dependencies:
       browserslist: 4.28.4
 
-  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.9.3))(typescript@5.9.3):
+  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@20.5.4)(typescript@6.0.3))(typescript@5.9.3):
     dependencies:
       '@types/node': 20.5.1
       cosmiconfig: 8.3.6(typescript@5.9.3)

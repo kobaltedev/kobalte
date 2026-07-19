@@ -6,7 +6,7 @@ allowBuilds:
   "@parcel/watcher": false
   esbuild: false
 minimumReleaseAgeExclude:
-  - "@kobalte/solidbase@0.6.4 || 0.6.7 || 0.6.8 || 0.6.9-next.0 || 0.6.9-next.1 || 0.6.9 || 0.6.10"
+  - "@kobalte/solidbase@0.6.4 || 0.6.7 || 0.6.8 || 0.6.9-next.0 || 0.6.9-next.1 || 0.6.9 || 0.6.10 || 0.6.11"
   - "@solidjs/router@0.16.2"
   - "@solidjs/start@2.0.0-beta.0"
 overrides:

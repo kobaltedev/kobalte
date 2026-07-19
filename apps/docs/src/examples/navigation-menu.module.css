@@ -6,6 +6,7 @@
 	background-color: white;
 	width: max-content;
 	border-radius: 6px;
+	list-style: none;
 }
 
 .navigation-menu__root[data-orientation="vertical"] {
@@ -178,6 +179,7 @@
 	animation-timing-function: ease;
 	animation-fill-mode: forwards;
 	pointer-events: none;
+	list-style: none;
 }
 
 .navigation-menu__content[data-expanded] {

@@ -1,4 +1,5 @@
 .pagination__root > ul {
+	list-style: none;
 	display: inline-flex;
 	align-items: center;
 	justify-content: space-between;
