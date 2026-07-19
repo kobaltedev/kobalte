@@ -1,8 +1,9 @@
-import { ToggleButton } from "@kobalte/core/toggle-button";
 import { createSignal, Show } from "solid-js";
 
 import { VolumeOffIcon, VolumeOnIcon } from "../components";
 import style from "./toggle-button.module.css";
+
+import { ToggleButton } from "@kobalte/core/toggle-button";
 
 export function BasicExample() {
 	return (

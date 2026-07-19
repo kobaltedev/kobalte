@@ -14,12 +14,6 @@ catalog:
   tsdown: 0.22.7
   unplugin-solid: 1.0.0
   vitest: 2.1.9
-  # Styling stack shared across root, docs, and @kobalte/tailwindcss
-  tailwindcss: ^4.3.1
-  "@tailwindcss/postcss": ^4.3.1
-  postcss: 8.4.28
-  "@vanilla-extract/css": ^1.13.0
-  "@internationalized/date": ^3.4.0
   # solid-primitives — versions mirrored in the overrides block below
   "@solid-primitives/a11y": next
   "@solid-primitives/controlled-signal": 1.0.0-next.1
@@ -40,7 +34,6 @@ catalog:
   "@solid-primitives/upload": next
   "@solid-primitives/utils": next
 overrides:
-  "@internationalized/date": "3.4.0"
   # unplugin-solid@1.0.0's own babel-preset-solid dependency (^1.9.9) predates
   # Solid 2.0's rename of the `use:` directive runtime helper (`use` ->
   # `ref`/`applyRef`), which crashes at runtime against @solidjs/web@2.x.
