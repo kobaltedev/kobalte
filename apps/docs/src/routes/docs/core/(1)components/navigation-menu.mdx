@@ -149,7 +149,7 @@ Since the viewport content has a position of `absolute` to allow animating, Koba
 The height and width will be copied from the active `NavigationMenu.Content`, which can either be set using CSS or automatically calculated based on it's content.
 Combined with a transition CSS rule the size can be animated.
 
-```css {2-3}
+```css {3-4}
 /* style.css */
 .navigation-menu__viewport {
 	width: var(--kb-navigation-menu-viewport-width);
@@ -188,7 +188,7 @@ To make one of the navigation menu triggers a link instead of opening a menu, om
 
 We expose a CSS custom property `--kb-menu-content-transform-origin` which can be used to animate the viewport from its computed origin.
 
-```css {2}
+```css {3}
 /* style.css */
 .navigation-menu__viewport {
 	transform-origin: var(--kb-menu-content-transform-origin);

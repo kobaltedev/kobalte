@@ -9,11 +9,13 @@ import { defineConfig } from "vite";
 import { version as KBVersion } from "../../packages/core/package.json";
 
 const theme = defineTheme({
-	componentsPath: import.meta.resolve("./src/solidbase-theme"),
+	componentsPath: await import.meta.resolve("./src/solidbase-theme"),
 	extends: defaultTheme,
 });
 
 const solidBase = createSolidBase(theme);
+
+const collator = new Intl.Collator(undefined, { numeric: true });
 
 export default defineConfig({
 	resolve: {
@@ -84,9 +86,19 @@ export default defineConfig({
 							},
 						},
 					),
-					"/docs/changelog": createDefaultThemeFilesystemSidebar(
-						"./src/routes/docs/changelog",
-					),
+					"/docs/changelog": [
+						{
+							title: "Changelog",
+							items: createDefaultThemeFilesystemSidebar(
+								"./src/routes/docs/changelog",
+								{
+									sort: (a, b) => {
+										return collator.compare(b.filePath, a.filePath);
+									},
+								},
+							),
+						},
+					],
 				},
 				search: {
 					docsearch: {
