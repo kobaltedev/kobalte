@@ -42,10 +42,7 @@ export const Default = meta.story({
 		>
 			<Label class={style.label}>Pick a color</Label>
 			<Background class={style.background}>
-				<Thumb
-					class={style.thumb}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumb}>
 					<HiddenInputX />
 					<HiddenInputY />
 				</Thumb>
@@ -64,10 +61,7 @@ function ControlledDemo() {
 			<Root class={style.root} value={color()} onChange={setColor}>
 				<Label class={style.label}>Controlled</Label>
 				<Background class={style.background}>
-					<Thumb
-						class={style.thumb}
-						style={{ background: "var(--kb-color-current)" }}
-					>
+					<Thumb class={style.thumb}>
 						<HiddenInputX />
 						<HiddenInputY />
 					</Thumb>
@@ -92,10 +86,7 @@ export const DefaultValue = meta.story({
 		<Root class={style.root} defaultValue={parseColor("hsl(270, 80%, 60%)")}>
 			<Label class={style.label}>Purple tones</Label>
 			<Background class={style.background}>
-				<Thumb
-					class={style.thumb}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumb}>
 					<HiddenInputX />
 					<HiddenInputY />
 				</Thumb>
@@ -115,10 +106,7 @@ export const Disabled = meta.story({
 		>
 			<Label class={style.labelDisabled}>Locked color</Label>
 			<Background class={style.backgroundDisabled}>
-				<Thumb
-					class={style.thumbDisabled}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumbDisabled}>
 					<HiddenInputX />
 					<HiddenInputY />
 				</Thumb>
@@ -140,10 +128,7 @@ export const RGBSpace = meta.story({
 		>
 			<Label class={style.label}>Red / Green</Label>
 			<Background class={style.background}>
-				<Thumb
-					class={style.thumb}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumb}>
 					<HiddenInputX />
 					<HiddenInputY />
 				</Thumb>
@@ -163,10 +148,7 @@ export const WithValidation = meta.story({
 		>
 			<Label class={style.label}>Pick a cool color</Label>
 			<Background class={style.background}>
-				<Thumb
-					class={style.thumbInvalid}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumbInvalid}>
 					<HiddenInputX />
 					<HiddenInputY />
 				</Thumb>

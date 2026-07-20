@@ -88,7 +88,7 @@ export const DiskUsage = meta.story({
 					style={{ "background-color": meterColor(args.used / 100) }}
 				/>
 				<div
-					class={style["meter__cursor-pointer"] - container}
+					class={style["meter__cursor-pointer-container"]}
 					style={{ left: `${args.used}%` }}
 				>
 					<div class={style["meter__cursor-pointer"]} />

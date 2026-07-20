@@ -102,7 +102,7 @@ export const SingleFile = meta.story({
 			accept=".pdf,.doc,.docx"
 		>
 			<Label class={style.fileFieldLabel}>Resume</Label>
-			<Dropzone class={style.fileFieldDropzone} style={{ padding: "1.5rem" }}>
+			<Dropzone class={style.fileFieldDropzone}>
 				<span>Drop PDF here or click to browse</span>
 			</Dropzone>
 			<HiddenInput />

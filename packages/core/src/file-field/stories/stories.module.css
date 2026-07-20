@@ -56,7 +56,7 @@
 	border-radius: 8px;
 	border: 2px dashed hsl(214 20% 80%);
 	background-color: hsl(210 40% 98%);
-	padding: 32px;
+	padding: 1.5rem;
 	font-size: 14px;
 	color: hsl(215 16% 67%);
 	cursor: pointer;

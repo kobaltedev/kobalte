@@ -43,10 +43,7 @@ export const Default = meta.story({
 			>
 				<Label class={style.label}>Hue</Label>
 				<Track class={style.track}>
-					<Thumb
-						class={style.thumb}
-						style={{ background: "var(--kb-color-current)" }}
-					>
+					<Thumb class={style.thumb}>
 						<Input />
 					</Thumb>
 				</Track>
@@ -70,10 +67,7 @@ function ControlledDemo() {
 				onChange={setColor}
 			>
 				<Track class={style.track}>
-					<Thumb
-						class={style.thumb}
-						style={{ background: "var(--kb-color-current)" }}
-					>
+					<Thumb class={style.thumb}>
 						<Input />
 					</Thumb>
 				</Track>
@@ -104,10 +98,7 @@ export const ThinTrack = meta.story({
 			defaultValue={parseColor("hsl(300, 100%, 50%)")}
 		>
 			<Track class={style.track}>
-				<Thumb
-					class={style.thumb}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumb}>
 					<Input />
 				</Thumb>
 			</Track>
@@ -125,10 +116,7 @@ export const ThickTrack = meta.story({
 			defaultValue={parseColor("hsl(30, 100%, 50%)")}
 		>
 			<Track class={style.track}>
-				<Thumb
-					class={style.thumb}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumb}>
 					<Input />
 				</Thumb>
 			</Track>
@@ -147,10 +135,7 @@ export const Disabled = meta.story({
 			disabled
 		>
 			<Track class={style.trackDisabled}>
-				<Thumb
-					class={style.thumbDisabled}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumbDisabled}>
 					<Input />
 				</Thumb>
 			</Track>
@@ -171,10 +156,7 @@ export const WithValidation = meta.story({
 			>
 				<Label class={style.label}>Color hue</Label>
 				<Track class={style.trackWithMargin}>
-					<Thumb
-						class={style.thumbInvalid}
-						style={{ background: "var(--kb-color-current)" }}
-					>
+					<Thumb class={style.thumbInvalid}>
 						<Input />
 					</Thumb>
 				</Track>

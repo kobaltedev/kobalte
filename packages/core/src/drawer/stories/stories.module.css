@@ -348,3 +348,14 @@
 	outline: none;
 	box-shadow: 0 0 0 2px hsl(217 91% 60%);
 }
+
+/* ─── Drag handle ──────────────────────────────────────────────────────────── */
+
+.drawer__drag-handle {
+	width: 48px;
+	height: 4px;
+	background: #cbd5e1;
+	border-radius: 9999px;
+	margin: 0 auto 16px;
+	cursor: grab;
+}

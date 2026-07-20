@@ -67,10 +67,7 @@ export const Default = meta.story({
 					class={style.track}
 					style={{ "--kb-color-current": "transparent" }}
 				>
-					<Thumb
-						class={style.thumb}
-						style={{ background: "var(--kb-color-current)" }}
-					>
+					<Thumb class={style.thumb}>
 						<Input />
 					</Thumb>
 				</Track>
@@ -93,10 +90,7 @@ export const Hue = meta.story({
 				<ValueLabel class={style.valueLabel} />
 			</div>
 			<Track class={style.track}>
-				<Thumb
-					class={style.thumb}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumb}>
 					<Input />
 				</Thumb>
 			</Track>
@@ -117,18 +111,9 @@ export const Alpha = meta.story({
 				<Label class={style.label}>Opacity</Label>
 				<ValueLabel class={style.valueLabel} />
 			</div>
-			<div
-				class={style.alphaCheckerboard}
-				style={{
-					background:
-						"repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 0 0 / 10px 10px",
-				}}
-			>
+			<div class={style.alphaCheckerboard}>
 				<Track class={style.track}>
-					<Thumb
-						class={style.thumb}
-						style={{ background: "var(--kb-color-current)" }}
-					>
+					<Thumb class={style.thumb}>
 						<Input />
 					</Thumb>
 				</Track>
@@ -155,10 +140,7 @@ function ControlledDemo() {
 					<ValueLabel class={style.valueLabel} />
 				</div>
 				<Track class={style.track}>
-					<Thumb
-						class={style.thumb}
-						style={{ background: "var(--kb-color-current)" }}
-					>
+					<Thumb class={style.thumb}>
 						<Input />
 					</Thumb>
 				</Track>
@@ -191,10 +173,7 @@ export const Vertical = meta.story({
 		>
 			<Label class={style.label}>Hue</Label>
 			<Track class={style.verticalTrack}>
-				<Thumb
-					class={style.thumb}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumb}>
 					<Input />
 				</Thumb>
 			</Track>
@@ -218,10 +197,7 @@ export const Disabled = meta.story({
 				<ValueLabel class={style.valueLabelDisabled} />
 			</div>
 			<Track class={style.trackDisabled}>
-				<Thumb
-					class={style.thumbDisabled}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumbDisabled}>
 					<Input />
 				</Thumb>
 			</Track>
@@ -244,10 +220,7 @@ export const WithValidation = meta.story({
 				<ValueLabel class={style.valueLabel} />
 			</div>
 			<Track class={style.track}>
-				<Thumb
-					class={style.thumbInvalid}
-					style={{ background: "var(--kb-color-current)" }}
-				>
+				<Thumb class={style.thumbInvalid}>
 					<Input />
 				</Thumb>
 			</Track>

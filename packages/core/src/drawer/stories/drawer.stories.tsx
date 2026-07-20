@@ -109,18 +109,7 @@ function sideContentStyle(
 }
 
 // Visual drag handle shown in bottom/top drawers
-const DragHandle = () => (
-	<div
-		style={{
-			width: "48px",
-			height: "4px",
-			background: "#cbd5e1",
-			"border-radius": "9999px",
-			margin: "0 auto 16px",
-			cursor: "grab",
-		}}
-	/>
-);
+const DragHandle = () => <div class={style["drawer__drag-handle"]} />;
 
 // ─── Stories ──────────────────────────────────────────────────────────────────
 

@@ -176,10 +176,7 @@ export const WithProgress = meta.story({
 									✕
 								</CloseButton>
 								<ProgressTrack class={style.toastProgressTrack}>
-									<ProgressFill
-										class={style.toastProgressFill}
-										style={{ width: "var(--kb-toast-progress-fill-width)" }}
-									/>
+									<ProgressFill class={style.toastProgressFill} />
 								</ProgressTrack>
 							</Root>
 						))

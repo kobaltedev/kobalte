@@ -28,6 +28,7 @@
 		0 2px 4px -2px rgb(0 0 0 / 0.1);
 	cursor: grab;
 	outline: none;
+	background: var(--kb-color-current);
 }
 
 .thumb:focus-visible {
@@ -103,6 +104,7 @@
 		0 2px 4px -2px rgb(0 0 0 / 0.1);
 	cursor: not-allowed;
 	outline: none;
+	background: var(--kb-color-current);
 }
 
 .validationWrapper {
@@ -124,6 +126,7 @@
 		0 2px 4px -2px rgb(0 0 0 / 0.1);
 	cursor: grab;
 	outline: none;
+	background: var(--kb-color-current);
 }
 
 .trackWithMargin {

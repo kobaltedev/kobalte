@@ -198,6 +198,7 @@
 
 .toast__progress-fill {
 	height: 100%;
+	width: var(--kb-toast-progress-fill-width);
 	border-radius: 2px;
 	background-color: hsl(217 91% 60%);
 	transition: width;
