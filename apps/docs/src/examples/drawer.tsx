@@ -80,6 +80,7 @@ export function ControlledExample() {
 						</Drawer.Description>
 						<div class={style.controlled__actions}>
 							<button
+								type="button"
 								class={style.drawer__action}
 								onClick={() => setOpen(false)}
 							>
@@ -89,7 +90,11 @@ export function ControlledExample() {
 					</Drawer.Content>
 				</Drawer.Portal>
 			</Drawer>
-			<button class={style.drawer__trigger} onClick={() => setOpen((o) => !o)}>
+			<button
+				type="button"
+				class={style.drawer__trigger}
+				onClick={() => setOpen((o) => !o)}
+			>
 				{open() ? "Force close" : "Force open"}
 			</button>
 		</div>

@@ -53,7 +53,10 @@ export const Default = meta.story({
 					</Description>
 					<div class="flex justify-end gap-2">
 						<CloseButton class={cancelBtnClass}>Dismiss</CloseButton>
-						<button class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+						<button
+							type="button"
+							class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+						>
 							Stay signed in
 						</button>
 					</div>
@@ -83,7 +86,10 @@ export const Destructive = meta.story({
 					</Description>
 					<div class="flex justify-end gap-2">
 						<CloseButton class={cancelBtnClass}>Cancel</CloseButton>
-						<button class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-red-600 text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2">
+						<button
+							type="button"
+							class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-red-600 text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+						>
 							Delete account
 						</button>
 					</div>
@@ -112,6 +118,7 @@ function ControlledDemo() {
 							</Description>
 							<div class="flex justify-end">
 								<button
+									type="button"
 									class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
 									onClick={() => setOpen(false)}
 								>
@@ -121,7 +128,11 @@ function ControlledDemo() {
 						</Content>
 					</Portal>
 				</Root>
-				<button class={triggerClass} onClick={() => setOpen((o) => !o)}>
+				<button
+					type="button"
+					class={triggerClass}
+					onClick={() => setOpen((o) => !o)}
+				>
 					{open() ? "Force close" : "Force open"}
 				</button>
 			</div>

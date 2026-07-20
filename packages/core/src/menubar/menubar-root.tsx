@@ -145,7 +145,9 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		registerMenu: (value, refs) => {
 			setMenuRefs((prev) => {
 				const map = new Map<string, Array<HTMLElement>>();
-				prev.forEach((value, key) => map.set(key, value));
+				for (const [key, val] of prev) {
+					map.set(key, val);
+				}
 				map.set(value, refs);
 				return map;
 			});
@@ -154,7 +156,9 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			setMenuRefs((prev) => {
 				prev.delete(value);
 				const map = new Map<string, Array<HTMLElement>>();
-				prev.forEach((value, key) => map.set(key, value));
+				for (const [key, val] of prev) {
+					map.set(key, val);
+				}
 				return map;
 			});
 		},

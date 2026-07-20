@@ -67,6 +67,7 @@ export const Default = meta.story({
 	name: "Default",
 	render: () => (
 		<div class="flex flex-col gap-2 font-sans">
+			{/* biome-ignore lint/a11y/noLabelWithoutControl: Visual label for ARIA spinbutton widget */}
 			<label class="text-sm font-medium text-slate-700" id="counter-label">
 				Counter (0–10)
 			</label>
@@ -118,6 +119,7 @@ export const CustomWidget = meta.story({
 	name: "Custom Widget",
 	render: () => (
 		<div class="flex flex-col gap-2 font-sans">
+			{/* biome-ignore lint/a11y/noLabelWithoutControl: Visual label for ARIA spinbutton widget */}
 			<label class="text-sm font-medium text-slate-700">Rating</label>
 			<RatingWidget />
 			<p class="text-xs text-slate-500">
@@ -137,6 +139,7 @@ function ValidatedCounter() {
 
 	return (
 		<div class="flex flex-col gap-1.5 font-sans">
+			{/* biome-ignore lint/a11y/noLabelWithoutControl: Visual label for ARIA spinbutton widget */}
 			<label class="text-sm font-medium text-slate-700">Quantity (min 1)</label>
 			<Root
 				class="inline-flex w-36 items-center gap-2 rounded-md border border-slate-200 bg-white px-3 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 data-[invalid]:border-red-400"

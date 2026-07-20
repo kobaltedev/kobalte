@@ -81,7 +81,6 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 			aria-invalid={
 				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() ? "true" : undefined}
 			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
 			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onChange={onChange}

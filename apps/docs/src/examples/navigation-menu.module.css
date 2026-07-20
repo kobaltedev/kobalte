@@ -117,16 +117,6 @@
 	outline: 2px solid #0284c790;
 }
 
-.navigation-menu__item-callout .navigation-menu__item-label {
-	margin-top: 16px;
-	font-size: 1.25rem;
-	color: white;
-}
-
-.navigation-menu__item-callout .navigation-menu__item-description {
-	color: white;
-}
-
 .navigation-menu__item-label {
 	font-size: 1rem;
 	margin-bottom: 8px;
@@ -140,6 +130,16 @@
 	opacity: 0.8;
 	color: #18181b;
 	line-height: 1.4;
+}
+
+.navigation-menu__item-callout .navigation-menu__item-label {
+	margin-top: 16px;
+	font-size: 1.25rem;
+	color: white;
+}
+
+.navigation-menu__item-callout .navigation-menu__item-description {
+	color: white;
 }
 
 .navigation-menu__item-callout > img {

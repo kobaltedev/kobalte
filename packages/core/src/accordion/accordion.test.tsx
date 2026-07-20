@@ -275,7 +275,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 
 	describe("collapsible", () => {
 		it("should toggle the same accordion item when clicking its trigger if collapsible", async () => {
-			const { getAllByRole, getByText, queryByText } = render(() => (
+			const { getAllByRole, getByText } = render(() => (
 				<AccordionTest collapsible defaultValue={["one"]} />
 			));
 
@@ -295,7 +295,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		});
 
 		it("should allows users to open and close accordion item with enter / space key when collapsible", async () => {
-			const { getAllByRole, getByText, queryByText } = render(() => (
+			const { getAllByRole, getByText } = render(() => (
 				<AccordionTest collapsible defaultValue={["one"]} />
 			));
 
@@ -349,7 +349,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		});
 
 		it("should toggle the same accordion item when clicking its trigger if multiple", async () => {
-			const { getAllByRole, getByText, queryByText } = render(() => (
+			const { getAllByRole, getByText } = render(() => (
 				<AccordionTest multiple defaultValue={["one"]} />
 			));
 
@@ -369,7 +369,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		});
 
 		it("should allows users to open and close accordion item with enter / space key when multiple", async () => {
-			const { getAllByRole, getByText, queryByText } = render(() => (
+			const { getAllByRole, getByText } = render(() => (
 				<AccordionTest multiple defaultValue={["one"]} />
 			));
 

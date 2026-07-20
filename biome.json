@@ -34,7 +34,8 @@
 			"suspicious": {
 				"noEmptyInterface": "off",
 				"noExplicitAny": "off",
-				"noAssignInExpressions": "off"
+				"noAssignInExpressions": "off",
+				"noDocumentCookie": "off"
 			},
 			"style": {
 				"noNonNullAssertion": "off"
@@ -43,5 +44,17 @@
 				"noBannedTypes": "off"
 			}
 		}
-	}
+	},
+	"overrides": [
+		{
+			"includes": ["**/*.stories.tsx"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"useValidAnchor": "off"
+					}
+				}
+			}
+		}
+	]
 }

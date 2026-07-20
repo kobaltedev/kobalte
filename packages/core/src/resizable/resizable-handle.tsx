@@ -314,6 +314,7 @@ export function ResizableHandle<T extends ValidComponent = "button">(
 	};
 
 	return (
+		// biome-ignore lint/a11y/useSemanticElements: Resizable separator
 		<button
 			ref={mergeRefs(setRef, p.ref as any)}
 			type="button"
@@ -347,6 +348,7 @@ export function ResizableHandle<T extends ValidComponent = "button">(
 			{...others}
 		>
 			<Show when={startIntersection()}>
+				{/* biome-ignore lint/a11y/noStaticElementInteractions: Draggable */}
 				<div
 					data-kb-resizable-handle-start-intersection
 					onMouseEnter={() => setHovered("startIntersection")}
@@ -374,6 +376,7 @@ export function ResizableHandle<T extends ValidComponent = "button">(
 			</Show>
 			{p.children}
 			<Show when={endIntersection()}>
+				{/* biome-ignore lint/a11y/noStaticElementInteractions: Draggable */}
 				<div
 					data-kb-resizable-handle-end-intersection
 					onMouseEnter={() => setHovered("endIntersection")}

@@ -451,6 +451,7 @@ function ControlledDemo() {
 
 			<div class="flex items-center gap-2">
 				<button
+					type="button"
 					class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
 					onClick={() => setValue(null)}
 				>

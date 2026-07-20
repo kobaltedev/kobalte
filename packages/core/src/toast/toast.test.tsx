@@ -527,7 +527,7 @@ describe("Toast", () => {
 
 			let closeId: number;
 
-			const { getAllByRole, getByTestId } = render(() => (
+			const { getByTestId } = render(() => (
 				<>
 					<button
 						type="button"

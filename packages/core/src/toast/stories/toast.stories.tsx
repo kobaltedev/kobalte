@@ -61,6 +61,7 @@ export const Default = meta.story({
 					<List />
 				</Region>
 				<button
+					type="button"
 					class={buttonClass}
 					onClick={() =>
 						toaster.show((props) => (
@@ -123,6 +124,7 @@ export const Variants = meta.story({
 				<div class="flex gap-2 flex-wrap">
 					{variants.map((v) => (
 						<button
+							type="button"
 							class={buttonClass}
 							onClick={() =>
 								toaster.show((props) => (
@@ -167,6 +169,7 @@ export const WithProgress = meta.story({
 					<List />
 				</Region>
 				<button
+					type="button"
 					class={buttonClass}
 					onClick={() =>
 						toaster.show((props) => (
@@ -204,6 +207,7 @@ export const Persistent = meta.story({
 				<List />
 			</Region>
 			<button
+				type="button"
 				class={buttonClass}
 				onClick={() =>
 					toaster.show((props) => (
@@ -246,6 +250,7 @@ export const PromiseBased = meta.story({
 						Simulate failure
 					</label>
 					<button
+						type="button"
 						class={buttonClass}
 						onClick={() => {
 							const p = new Promise<string>((resolve, reject) =>
@@ -293,6 +298,7 @@ export const Stacking = meta.story({
 					<List />
 				</Region>
 				<button
+					type="button"
 					class={buttonClass}
 					onClick={() => {
 						count++;

@@ -244,7 +244,11 @@ function ControlledDemo() {
 						</Content>
 					</Portal>
 				</Root>
-				<button class={triggerClass} onClick={() => setOpen((o) => !o)}>
+				<button
+					type="button"
+					class={triggerClass}
+					onClick={() => setOpen((o) => !o)}
+				>
 					{open() ? "Force close" : "Force open"}
 				</button>
 			</div>

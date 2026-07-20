@@ -69,6 +69,7 @@ export const Warning = meta.story({
 });
 
 /** A destructive-state alert indicating an error or failure. */
+// biome-ignore lint/suspicious/noShadowRestrictedNames: Storybook story named "Error" for the error variant
 export const Error = meta.story({
 	name: "Error",
 	render: () => (

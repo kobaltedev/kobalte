@@ -26,13 +26,13 @@ export const Default = meta.story({
 		return (
 			<div class="flex flex-col gap-3">
 				<div class="flex gap-2">
-					<button class={btnClass} onClick={state.toggle}>
+					<button type="button" class={btnClass} onClick={state.toggle}>
 						Toggle
 					</button>
-					<button class={btnClass} onClick={state.open}>
+					<button type="button" class={btnClass} onClick={state.open}>
 						Open
 					</button>
-					<button class={btnClass} onClick={state.close}>
+					<button type="button" class={btnClass} onClick={state.close}>
 						Close
 					</button>
 				</div>
@@ -54,7 +54,7 @@ export const DefaultOpen = meta.story({
 		const state = createDisclosureState({ defaultOpen: true });
 		return (
 			<div class="flex flex-col gap-3">
-				<button class={btnClass} onClick={state.toggle}>
+				<button type="button" class={btnClass} onClick={state.toggle}>
 					Toggle
 				</button>
 				<p class="text-xs text-slate-500 font-sans">
@@ -78,13 +78,13 @@ export const Controlled = meta.story({
 		return (
 			<div class="flex flex-col gap-3">
 				<div class="flex gap-2">
-					<button class={btnClass} onClick={state.toggle}>
+					<button type="button" class={btnClass} onClick={state.toggle}>
 						Toggle (internal)
 					</button>
-					<button class={btnClass} onClick={() => setOpen(true)}>
+					<button type="button" class={btnClass} onClick={() => setOpen(true)}>
 						Force open (external)
 					</button>
-					<button class={btnClass} onClick={() => setOpen(false)}>
+					<button type="button" class={btnClass} onClick={() => setOpen(false)}>
 						Force close (external)
 					</button>
 				</div>
@@ -114,6 +114,7 @@ export const Multiple = meta.story({
 				{sections.map(({ label, state }) => (
 					<div class="rounded-md border border-slate-200 overflow-hidden">
 						<button
+							type="button"
 							class="w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50"
 							onClick={state.toggle}
 						>

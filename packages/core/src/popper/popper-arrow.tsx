@@ -111,7 +111,6 @@ export function PopperArrow<T extends ValidComponent = "div">(
 			)}
 			{...others}
 		>
-			{/* biome-ignore lint/a11y/noSvgWithoutTitle: aria hidden */}
 			<svg
 				display="block"
 				viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}

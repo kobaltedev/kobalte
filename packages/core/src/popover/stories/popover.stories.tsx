@@ -141,7 +141,11 @@ function ControlledDemo() {
 						</Content>
 					</Portal>
 				</Root>
-				<button class={triggerClass} onClick={() => setOpen((o) => !o)}>
+				<button
+					type="button"
+					class={triggerClass}
+					onClick={() => setOpen((o) => !o)}
+				>
 					{open() ? "Force close" : "Force open"}
 				</button>
 			</div>
@@ -190,7 +194,10 @@ export const WithForm = meta.story({
 							placeholder="A short bio..."
 							class="rounded-md border border-slate-200 px-2.5 py-1.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
 						/>
-						<button class="mt-1 rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+						<button
+							type="button"
+							class="mt-1 rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+						>
 							Save
 						</button>
 					</div>

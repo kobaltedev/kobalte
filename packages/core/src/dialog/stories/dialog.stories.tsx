@@ -56,7 +56,9 @@ export const Default = meta.story({
 					</Description>
 					<div class="flex justify-end gap-2">
 						<CloseButton class={cancelBtnClass}>Cancel</CloseButton>
-						<button class={actionBtnClass}>Confirm</button>
+						<button type="button" class={actionBtnClass}>
+							Confirm
+						</button>
 					</div>
 				</Content>
 			</Portal>
@@ -108,14 +110,22 @@ function ControlledDemo() {
 								Open state is managed by an external signal.
 							</Description>
 							<div class="flex justify-end">
-								<button class={actionBtnClass} onClick={() => setOpen(false)}>
+								<button
+									type="button"
+									class={actionBtnClass}
+									onClick={() => setOpen(false)}
+								>
 									Done
 								</button>
 							</div>
 						</Content>
 					</Portal>
 				</Root>
-				<button class={triggerClass} onClick={() => setOpen((o) => !o)}>
+				<button
+					type="button"
+					class={triggerClass}
+					onClick={() => setOpen((o) => !o)}
+				>
 					{open() ? "Force close" : "Force open"}
 				</button>
 			</div>
@@ -173,8 +183,12 @@ export const WithForm = meta.story({
 							/>
 						</div>
 						<div class="flex justify-end gap-2 mt-1">
-							<button class={cancelBtnClass}>Cancel</button>
-							<button class={actionBtnClass}>Save changes</button>
+							<button type="button" class={cancelBtnClass}>
+								Cancel
+							</button>
+							<button type="button" class={actionBtnClass}>
+								Save changes
+							</button>
 						</div>
 					</div>
 				</Content>
@@ -205,8 +219,13 @@ export const Destructive = meta.story({
 						will be permanently deleted.
 					</Description>
 					<div class="flex justify-end gap-2">
-						<button class={cancelBtnClass}>Cancel</button>
-						<button class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-red-600 text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2">
+						<button type="button" class={cancelBtnClass}>
+							Cancel
+						</button>
+						<button
+							type="button"
+							class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-red-600 text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
+						>
 							Delete account
 						</button>
 					</div>
