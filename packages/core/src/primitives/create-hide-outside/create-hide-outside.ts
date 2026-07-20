@@ -50,6 +50,32 @@ interface ObserverWrapper {
 const refCountMap = new WeakMap<Element, number>();
 const observerStack: Array<ObserverWrapper> = [];
 
+const supportsInert =
+	typeof HTMLElement !== "undefined" && "inert" in HTMLElement.prototype;
+
+// Whether a node is currently hidden from screen readers.
+function getHidden(element: Element) {
+	return supportsInert && element instanceof HTMLElement
+		? element.inert
+		: element.getAttribute("aria-hidden") === "true";
+}
+
+// Hides/shows a node from screen readers. Prefers the `inert` attribute over
+// `aria-hidden` when supported: unlike `aria-hidden`, `inert` also removes the
+// subtree from the focus order, so the browser does not block it (and log
+// "Blocked aria-hidden on an element because its descendant retained focus")
+// during the tick between an overlay opening and focus moving into it. Mirrors
+// @react-aria/overlays' ariaHideOutside, which this file is based on.
+function setHidden(element: Element, hidden: boolean) {
+	if (supportsInert && element instanceof HTMLElement) {
+		element.inert = hidden;
+	} else if (hidden) {
+		element.setAttribute("aria-hidden", "true");
+	} else {
+		element.removeAttribute("aria-hidden");
+	}
+}
+
 /**
  * Hides all elements in the DOM outside the given targets from screen readers using aria-hidden,
  * and returns a function to revert these changes. In addition, changes to the DOM are watched
@@ -116,14 +142,14 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
 	const hide = (node: Element) => {
 		const refCount = refCountMap.get(node) ?? 0;
 
-		// If already aria-hidden, and the ref count is zero, then this element
+		// If already hidden, and the ref count is zero, then this element
 		// was already hidden and there's nothing for us to do.
-		if (node.getAttribute("aria-hidden") === "true" && refCount === 0) {
+		if (getHidden(node) && refCount === 0) {
 			return;
 		}
 
 		if (refCount === 0) {
-			node.setAttribute("aria-hidden", "true");
+			setHidden(node, true);
 		}
 
 		hiddenNodes.add(node);
@@ -197,7 +223,7 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
 			}
 
 			if (count === 1) {
-				node.removeAttribute("aria-hidden");
+				setHidden(node, false);
 				refCountMap.delete(node);
 			} else {
 				refCountMap.set(node, count - 1);
