@@ -123,7 +123,16 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
 		}
 
 		if (refCount === 0) {
-			node.setAttribute("aria-hidden", "true");
+			// Defer applying aria-hidden to the next frame. When an overlay opens,
+			// focus moves into it a tick later (deferred autofocus); applying
+			// aria-hidden synchronously puts it on an ancestor of the still-focused
+			// trigger for that tick, which the browser blocks (Chromium logs
+			// "Blocked aria-hidden on an element because its descendant retained
+			// focus"). Deferring lets focus settle inside the overlay first.
+			// Steady-state hiding is unchanged. See createHideOutside notes.
+			setTimeout(() =>
+				requestAnimationFrame(() => node.setAttribute("aria-hidden", "true")),
+			);
 		}
 
 		hiddenNodes.add(node);
@@ -197,7 +206,10 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
 			}
 
 			if (count === 1) {
-				node.removeAttribute("aria-hidden");
+				// Deferred to match hide() above.
+				setTimeout(() =>
+					requestAnimationFrame(() => node.removeAttribute("aria-hidden")),
+				);
 				refCountMap.delete(node);
 			} else {
 				refCountMap.set(node, count - 1);

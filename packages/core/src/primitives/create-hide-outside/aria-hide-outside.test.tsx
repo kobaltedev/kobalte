@@ -11,8 +11,15 @@ import { createSignal, onMount } from "solid-js";
 
 import { ariaHideOutside } from "./create-hide-outside";
 
+// aria-hidden is applied/removed on the next frame (see create-hide-outside).
+// Flush that boundary before asserting the attribute.
+const flush = () =>
+	new Promise<void>((resolve) =>
+		setTimeout(() => requestAnimationFrame(() => resolve())),
+	);
+
 describe("ariaHideOutside", () => {
-	it("should hide everything except the provided element [button]", () => {
+	it("should hide everything except the provided element [button]", async () => {
 		const { getByRole, getAllByRole } = render(() => (
 			<>
 				<input type="checkbox" />
@@ -25,6 +32,7 @@ describe("ariaHideOutside", () => {
 		const button = getByRole("button");
 
 		const revert = ariaHideOutside([button]);
+		await flush();
 
 		expect(checkboxes[0]).toHaveAttribute("aria-hidden", "true");
 		expect(checkboxes[1]).toHaveAttribute("aria-hidden", "true");
@@ -34,6 +42,7 @@ describe("ariaHideOutside", () => {
 		expect(() => getByRole("button")).not.toThrow();
 
 		revert();
+		await flush();
 
 		expect(checkboxes[0]).not.toHaveAttribute("aria-hidden");
 		expect(checkboxes[1]).not.toHaveAttribute("aria-hidden");
@@ -43,7 +52,7 @@ describe("ariaHideOutside", () => {
 		expect(() => getByRole("button")).not.toThrow();
 	});
 
-	it("should hide everything except multiple elements", () => {
+	it("should hide everything except multiple elements", async () => {
 		const { getByRole, getAllByRole, queryByRole, queryAllByRole } = render(
 			() => (
 				<>
@@ -58,6 +67,7 @@ describe("ariaHideOutside", () => {
 		const button = getByRole("button");
 
 		const revert = ariaHideOutside(checkboxes);
+		await flush();
 
 		expect(checkboxes[0]).not.toHaveAttribute("aria-hidden", "true");
 		expect(checkboxes[1]).not.toHaveAttribute("aria-hidden", "true");
@@ -67,6 +77,7 @@ describe("ariaHideOutside", () => {
 		expect(queryByRole("button")).toBeNull();
 
 		revert();
+		await flush();
 
 		expect(checkboxes[0]).not.toHaveAttribute("aria-hidden");
 		expect(checkboxes[1]).not.toHaveAttribute("aria-hidden");
@@ -76,7 +87,7 @@ describe("ariaHideOutside", () => {
 		expect(() => getByRole("button")).not.toThrow();
 	});
 
-	it("should not traverse into an already hidden container", () => {
+	it("should not traverse into an already hidden container", async () => {
 		const { getByRole, getAllByRole } = render(() => (
 			<>
 				<div>
@@ -91,6 +102,7 @@ describe("ariaHideOutside", () => {
 		const button = getByRole("button");
 
 		const revert = ariaHideOutside([button]);
+		await flush();
 
 		expect(checkboxes[0].parentElement).toHaveAttribute("aria-hidden", "true");
 		expect(checkboxes[1]).toHaveAttribute("aria-hidden", "true");
@@ -100,6 +112,7 @@ describe("ariaHideOutside", () => {
 		expect(() => getByRole("button")).not.toThrow();
 
 		revert();
+		await flush();
 
 		expect(checkboxes[0].parentElement).not.toHaveAttribute("aria-hidden");
 		expect(checkboxes[1]).not.toHaveAttribute("aria-hidden");
@@ -109,7 +122,7 @@ describe("ariaHideOutside", () => {
 		expect(() => getByRole("button")).not.toThrow();
 	});
 
-	it("should not overwrite an existing aria-hidden prop", () => {
+	it("should not overwrite an existing aria-hidden prop", async () => {
 		const { getByRole, getAllByRole } = render(() => (
 			<>
 				{/* biome-ignore lint/a11y/noAriaHiddenOnFocusable: test */}
@@ -123,6 +136,7 @@ describe("ariaHideOutside", () => {
 		const button = getByRole("button");
 
 		const revert = ariaHideOutside([button]);
+		await flush();
 
 		expect(checkboxes).toHaveLength(1);
 		expect(checkboxes[0]).toHaveAttribute("aria-hidden", "true");
@@ -132,6 +146,7 @@ describe("ariaHideOutside", () => {
 		expect(() => getByRole("button")).not.toThrow();
 
 		revert();
+		await flush();
 
 		checkboxes = getAllByRole("checkbox");
 		expect(checkboxes).toHaveLength(1);
@@ -188,13 +203,13 @@ describe("ariaHideOutside", () => {
 		fireEvent.click(toggle);
 		await Promise.resolve();
 
-		// MutationObserver is async
+		// MutationObserver is async, hiding is deferred a frame
 		await waitFor(() => expect(() => getAllByRole("checkbox")).toThrow());
 		expect(() => getAllByRole("button")).not.toThrow();
 
 		// revert the 'ariaHideOutside'
 		fireEvent.click(revert);
-		await Promise.resolve();
+		await flush();
 
 		expect(getAllByRole("checkbox")).toHaveLength(2);
 	});
@@ -221,6 +236,7 @@ describe("ariaHideOutside", () => {
 		expect(() => getAllByRole("checkbox")).toThrow();
 
 		const revert = ariaHideOutside([button]);
+		await flush();
 
 		expect(test).toHaveAttribute("aria-hidden");
 
@@ -228,7 +244,7 @@ describe("ariaHideOutside", () => {
 		fireEvent.click(button);
 		await Promise.resolve();
 
-		// MutationObserver is async
+		// MutationObserver is async, hiding is deferred a frame
 		await waitFor(() => expect(() => getAllByRole("checkbox")).toThrow());
 		expect(() => getByRole("button")).not.toThrow();
 
@@ -238,6 +254,7 @@ describe("ariaHideOutside", () => {
 		expect(checkboxes[1]).toHaveAttribute("aria-hidden", "true");
 
 		revert();
+		await flush();
 
 		expect(getAllByRole("checkbox")).toHaveLength(2);
 	});
@@ -271,6 +288,7 @@ describe("ariaHideOutside", () => {
 		const button = getByRole("button");
 		const test = getByTestId("test");
 		const revert = ariaHideOutside([test]);
+		await flush();
 
 		expect(() => getAllByRole("checkbox")).toThrow();
 		expect(queryByRole("radio")).toBeNull();
@@ -289,6 +307,7 @@ describe("ariaHideOutside", () => {
 		expect(() => getByTestId("test")).not.toThrow();
 
 		revert();
+		await flush();
 
 		expect(() => getAllByRole("checkbox")).not.toThrow();
 		expect(() => getByRole("radio")).not.toThrow();
@@ -296,7 +315,7 @@ describe("ariaHideOutside", () => {
 		expect(() => getByTestId("test")).not.toThrow();
 	});
 
-	it("work when called multiple times", () => {
+	it("work when called multiple times", async () => {
 		const { getByRole, getAllByRole, getByTestId } = render(() => (
 			<>
 				<input type="checkbox" />
@@ -311,31 +330,35 @@ describe("ariaHideOutside", () => {
 		const button = getByRole("button");
 
 		const revert1 = ariaHideOutside([button, ...radios]);
+		await flush();
 
 		expect(() => getAllByRole("checkbox")).toThrow();
 		expect(() => getAllByRole("radio")).not.toThrow();
 		expect(() => getByRole("button")).not.toThrow();
 
 		const revert2 = ariaHideOutside([button]);
+		await flush();
 
 		expect(() => getAllByRole("checkbox")).toThrow();
 		expect(() => getAllByRole("radio")).toThrow();
 		expect(() => getByRole("button")).not.toThrow();
 
 		revert2();
+		await flush();
 
 		expect(() => getAllByRole("checkbox")).toThrow();
 		expect(() => getAllByRole("radio")).not.toThrow();
 		expect(() => getByRole("button")).not.toThrow();
 
 		revert1();
+		await flush();
 
 		expect(() => getAllByRole("checkbox")).not.toThrow();
 		expect(() => getAllByRole("radio")).not.toThrow();
 		expect(() => getByRole("button")).not.toThrow();
 	});
 
-	it("work when called multiple times and restored out of order", () => {
+	it("work when called multiple times and restored out of order", async () => {
 		const { getByRole, getAllByRole } = render(() => (
 			<>
 				<input type="checkbox" />
@@ -350,31 +373,35 @@ describe("ariaHideOutside", () => {
 		const button = getByRole("button");
 
 		const revert1 = ariaHideOutside([button, ...radios]);
+		await flush();
 
 		expect(() => getAllByRole("checkbox")).toThrow();
 		expect(() => getAllByRole("radio")).not.toThrow();
 		expect(() => getByRole("button")).not.toThrow();
 
 		const revert2 = ariaHideOutside([button]);
+		await flush();
 
 		expect(() => getAllByRole("checkbox")).toThrow();
 		expect(() => getAllByRole("radio")).toThrow();
 		expect(() => getByRole("button")).not.toThrow();
 
 		revert1();
+		await flush();
 
 		expect(() => getAllByRole("checkbox")).toThrow();
 		expect(() => getAllByRole("radio")).toThrow();
 		expect(() => getByRole("button")).not.toThrow();
 
 		revert2();
+		await flush();
 
 		expect(() => getAllByRole("checkbox")).not.toThrow();
 		expect(() => getAllByRole("radio")).not.toThrow();
 		expect(() => getByRole("button")).not.toThrow();
 	});
 
-	it("should hide everything except the provided element [row]", () => {
+	it("should hide everything except the provided element [row]", async () => {
 		const { getAllByRole } = render(() => (
 			<div role="grid">
 				<div role="row">
@@ -390,6 +417,7 @@ describe("ariaHideOutside", () => {
 		const rows = getAllByRole("row");
 
 		const revert = ariaHideOutside([rows[1]]);
+		await flush();
 
 		// Applies aria-hidden to the row and cell despite recursive nature of aria-hidden
 		// for https://bugs.webkit.org/show_bug.cgi?id=222623
@@ -399,6 +427,7 @@ describe("ariaHideOutside", () => {
 		expect(cells[1]).not.toHaveAttribute("aria-hidden", "true");
 
 		revert();
+		await flush();
 
 		expect(rows[0]).not.toHaveAttribute("aria-hidden", "true");
 		expect(cells[0]).not.toHaveAttribute("aria-hidden", "true");
