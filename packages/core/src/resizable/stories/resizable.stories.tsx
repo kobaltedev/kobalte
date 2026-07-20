@@ -7,13 +7,7 @@
 
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.ts";
-import {
-	Handle,
-	Panel,
-	Root,
-	useContext,
-	usePanelContext,
-} from "../index.tsx";
+import { Handle, Panel, Root, useContext, usePanelContext } from "../index.tsx";
 
 const meta = preview.meta({
 	title: "Components/Resizable",
@@ -21,7 +15,6 @@ const meta = preview.meta({
 });
 
 export default meta;
-
 
 const panelStyle: Record<string, string> = {
 	display: "flex",
@@ -63,22 +56,17 @@ const containerStyle: Record<string, string> = {
 	"font-family": "sans-serif",
 };
 
-
 /** Two panels side by side. Drag the handle or use arrow keys to resize. */
 export const Horizontal = meta.story({
 	name: "Horizontal",
 	render: () => (
 		<Root style={containerStyle} orientation="horizontal">
 			<Panel style={panelStyle}>Left</Panel>
-			<Handle
-				style={handleHStyle}
-				aria-label="Resize panels"
-			/>
+			<Handle style={handleHStyle} aria-label="Resize panels" />
 			<Panel style={panelStyle}>Right</Panel>
 		</Root>
 	),
 });
-
 
 /** Two panels stacked. Drag the handle or use arrow keys to resize. */
 export const Vertical = meta.story({
@@ -86,15 +74,11 @@ export const Vertical = meta.story({
 	render: () => (
 		<Root style={containerStyle} orientation="vertical">
 			<Panel style={panelStyle}>Top</Panel>
-			<Handle
-				style={handleVStyle}
-				aria-label="Resize panels"
-			/>
+			<Handle style={handleVStyle} aria-label="Resize panels" />
 			<Panel style={panelStyle}>Bottom</Panel>
 		</Root>
 	),
 });
-
 
 /** Three panels with independent handles. Drag either handle to redistribute. */
 export const ThreePanels = meta.story({
@@ -109,7 +93,6 @@ export const ThreePanels = meta.story({
 		</Root>
 	),
 });
-
 
 /**
  * Nested resizables — a horizontal split where the right panel contains
@@ -135,7 +118,6 @@ export const Nested = meta.story({
 	),
 });
 
-
 /**
  * The left panel is collapsible. Drag it fully to the left to collapse, or
  * press Enter on the handle to toggle collapse/expand.
@@ -152,7 +134,12 @@ export const Collapsible = meta.story({
 				style={panelStyle}
 			>
 				{(panel) => (
-					<span style={{ "font-size": "12px", color: panel.collapsed ? "#94a3b8" : "#334155" }}>
+					<span
+						style={{
+							"font-size": "12px",
+							color: panel.collapsed ? "#94a3b8" : "#334155",
+						}}
+					>
 						{panel.collapsed ? "—" : "Sidebar"}
 					</span>
 				)}
@@ -162,7 +149,6 @@ export const Collapsible = meta.story({
 		</Root>
 	),
 });
-
 
 /**
  * Left panel is constrained to 20–50% of the available space;
@@ -181,7 +167,6 @@ export const MinMax = meta.story({
 	),
 });
 
-
 /**
  * Sizes can be expressed as pixel strings. The left panel starts at 200px
  * and has a 120px minimum.
@@ -199,7 +184,6 @@ export const PixelSizes = meta.story({
 	),
 });
 
-
 /**
  * Sizes are stored in an external signal. The buttons set sizes directly;
  * the handles still work as normal.
@@ -208,16 +192,27 @@ function ControlledDemo() {
 	const [sizes, setSizes] = createSignal([0.5, 0.5]);
 
 	return (
-		<div style={{ display: "flex", "flex-direction": "column", gap: "12px", "font-family": "sans-serif" }}>
+		<div
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				gap: "12px",
+				"font-family": "sans-serif",
+			}}
+		>
 			<Root
 				style={containerStyle}
 				orientation="horizontal"
 				sizes={sizes()}
 				onSizesChange={setSizes}
 			>
-				<Panel style={panelStyle}>Left ({(sizes()[0]! * 100).toFixed(0)}%)</Panel>
+				<Panel style={panelStyle}>
+					Left ({(sizes()[0]! * 100).toFixed(0)}%)
+				</Panel>
 				<Handle style={handleHStyle} aria-label="Resize panels" />
-				<Panel style={panelStyle}>Right ({(sizes()[1]! * 100).toFixed(0)}%)</Panel>
+				<Panel style={panelStyle}>
+					Right ({(sizes()[1]! * 100).toFixed(0)}%)
+				</Panel>
 			</Root>
 			<div style={{ display: "flex", gap: "8px" }}>
 				{[
@@ -242,7 +237,11 @@ function ControlledDemo() {
 				))}
 			</div>
 			<p style={{ "font-size": "12px", color: "#94a3b8", margin: 0 }}>
-				sizes: [{sizes().map((s) => s.toFixed(2)).join(", ")}]
+				sizes: [
+				{sizes()
+					.map((s) => s.toFixed(2))
+					.join(", ")}
+				]
 			</p>
 		</div>
 	);
@@ -253,13 +252,23 @@ export const Controlled = meta.story({
 	render: () => <ControlledDemo />,
 });
 
-
 function ProgrammaticContextDemo() {
 	const ctx = useContext();
 	return (
 		<div style={{ display: "flex", "flex-direction": "column", gap: "12px" }}>
-			<div style={{ "font-size": "12px", color: "#64748b", "font-family": "sans-serif" }}>
-				sizes: [{ctx.sizes().map((s) => s.toFixed(2)).join(", ")}]
+			<div
+				style={{
+					"font-size": "12px",
+					color: "#64748b",
+					"font-family": "sans-serif",
+				}}
+			>
+				sizes: [
+				{ctx
+					.sizes()
+					.map((s) => s.toFixed(2))
+					.join(", ")}
+				]
 			</div>
 			<div style={{ display: "flex", gap: "8px" }}>
 				{[
@@ -295,19 +304,32 @@ function ProgrammaticContextDemo() {
 export const ProgrammaticContext = meta.story({
 	name: "Programmatic (Context)",
 	render: () => (
-		<Root style={{ width: "600px", "font-family": "sans-serif" }} orientation="horizontal">
+		<Root
+			style={{ width: "600px", "font-family": "sans-serif" }}
+			orientation="horizontal"
+		>
 			<Panel
 				collapsible
 				collapsedSize={0}
 				collapseThreshold={0.05}
 				minSize={0.15}
-				style={{ ...containerStyle, width: "auto", "flex-basis": undefined, "border-radius": 0 }}
+				style={{
+					...containerStyle,
+					width: "auto",
+					"flex-basis": undefined,
+					"border-radius": 0,
+				}}
 			>
 				Sidebar
 			</Panel>
 			<Handle style={handleHStyle} aria-label="Resize" />
 			<Panel
-				style={{ ...containerStyle, width: "auto", "flex-basis": undefined, "border-radius": 0 }}
+				style={{
+					...containerStyle,
+					width: "auto",
+					"flex-basis": undefined,
+					"border-radius": 0,
+				}}
 			>
 				<div style={{ padding: "16px" }}>
 					<ProgrammaticContextDemo />
@@ -317,11 +339,17 @@ export const ProgrammaticContext = meta.story({
 	),
 });
 
-
 function PanelInfo() {
 	const ctx = usePanelContext();
 	return (
-		<div style={{ padding: "12px", "font-size": "12px", "font-family": "monospace", color: "#475569" }}>
+		<div
+			style={{
+				padding: "12px",
+				"font-size": "12px",
+				"font-family": "monospace",
+				color: "#475569",
+			}}
+		>
 			<div>size: {ctx.size().toFixed(3)}</div>
 			<div>collapsed: {String(ctx.collapsed())}</div>
 			<div>collapsible: {String(ctx.collapsible())}</div>
@@ -336,7 +364,13 @@ export const PanelContextStory = meta.story({
 	name: "Panel Context",
 	render: () => (
 		<Root style={containerStyle} orientation="horizontal">
-			<Panel collapsible collapsedSize={0} collapseThreshold={0.1} minSize={0.15} style={panelStyle}>
+			<Panel
+				collapsible
+				collapsedSize={0}
+				collapseThreshold={0.1}
+				minSize={0.15}
+				style={panelStyle}
+			>
 				<PanelInfo />
 			</Panel>
 			<Handle style={handleHStyle} aria-label="Resize" />
@@ -346,7 +380,6 @@ export const PanelContextStory = meta.story({
 		</Root>
 	),
 });
-
 
 /**
  * Tab to the handle and use:
@@ -358,8 +391,16 @@ export const KeyboardOnly = meta.story({
 	name: "Keyboard Navigation",
 	render: () => (
 		<div style={{ display: "flex", "flex-direction": "column", gap: "8px" }}>
-			<p style={{ margin: 0, "font-size": "12px", color: "#64748b", "font-family": "sans-serif" }}>
-				Tab to the handle, then use arrow keys to resize. Shift+Arrow jumps to the edge. Enter toggles collapse.
+			<p
+				style={{
+					margin: 0,
+					"font-size": "12px",
+					color: "#64748b",
+					"font-family": "sans-serif",
+				}}
+			>
+				Tab to the handle, then use arrow keys to resize. Shift+Arrow jumps to
+				the edge. Enter toggles collapse.
 			</p>
 			<Root style={containerStyle} orientation="horizontal">
 				<Panel

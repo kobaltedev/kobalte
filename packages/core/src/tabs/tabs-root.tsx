@@ -17,8 +17,8 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import type { CollectionItemWithRef } from "../primitives/index.ts";
 import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
 import { TabsContext, type TabsContextValue } from "./tabs-context.tsx";
 import type { TabsActivationMode } from "./types.ts";
 
@@ -45,7 +45,7 @@ export interface TabsRootOptions {
 	disabled?: boolean;
 }
 
-export interface TabsRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface TabsRootCommonProps<_T extends HTMLElement = HTMLElement> {
 	id?: string;
 }
 

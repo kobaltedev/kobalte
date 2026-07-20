@@ -11,7 +11,10 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context.tsx";
+import {
+	type CheckboxDataSet,
+	useCheckboxContext,
+} from "./checkbox-context.tsx";
 
 export interface CheckboxIndicatorOptions {
 	/**
@@ -48,7 +51,7 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
-	const [ref, setRef] = createSignal<HTMLElement>();
+	const [_ref, setRef] = createSignal<HTMLElement>();
 
 	const mergedProps = mergeDefaultProps(
 		{

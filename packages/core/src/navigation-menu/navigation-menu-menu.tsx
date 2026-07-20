@@ -1,6 +1,9 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import { createEffect, createSignal, createUniqueId, omit } from "solid-js";
-import type { MenubarMenuOptions, MenubarMenuProps } from "../menubar/index.tsx";
+import type {
+	MenubarMenuOptions,
+	MenubarMenuProps,
+} from "../menubar/index.tsx";
 import { useMenubarContext } from "../menubar/menubar-context.tsx";
 import { MenubarMenu } from "../menubar/menubar-menu.tsx";
 import { useNavigationMenuContext } from "./navigation-menu-context.tsx";

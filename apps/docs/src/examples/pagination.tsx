@@ -1,7 +1,6 @@
+import { Pagination } from "@kobalte/core/pagination";
 import { createSignal } from "solid-js";
 import style from "./pagination.module.css";
-
-import { Pagination } from "@kobalte/core/pagination";
 
 export function BasicExample() {
 	return (

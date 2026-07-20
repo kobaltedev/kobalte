@@ -40,7 +40,7 @@ export interface ColorChannelFieldRootOptions
 }
 
 export interface ColorChannelFieldRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

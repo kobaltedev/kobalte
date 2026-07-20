@@ -229,7 +229,7 @@ export class SelectionManager implements MultipleSelectionManager {
 			return key;
 		}
 
-		if (!item || item.type !== "item") {
+		if (item?.type !== "item") {
 			return null;
 		}
 

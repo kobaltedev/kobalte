@@ -11,7 +11,7 @@ import { useSearchContext } from "./search-context.tsx";
 export interface SearchIndicatorOptions {}
 
 export interface SearchIndicatorCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	children: JSX.Element;
 	loadingComponent?: JSX.Element;

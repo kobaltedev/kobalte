@@ -1,4 +1,3 @@
-import { createSignal, For, Show } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
 	Description,
@@ -54,7 +53,7 @@ export const WithDropzone = meta.story({
 			</Dropzone>
 			<HiddenInput />
 			<ItemList class="flex flex-col gap-2">
-				{(file) => (
+				{(_file) => (
 					<Item class="flex items-center justify-between gap-2 rounded-md border border-slate-200 px-3 py-2">
 						<div class="flex flex-col min-w-0">
 							<ItemName class="text-sm text-slate-800 truncate" />
@@ -88,7 +87,7 @@ export const ImagePreview = meta.story({
 			</Dropzone>
 			<HiddenInput />
 			<ItemList class="grid grid-cols-3 gap-2">
-				{(file) => (
+				{(_file) => (
 					<Item class="relative rounded-md overflow-hidden border border-slate-200 aspect-square group">
 						<ItemPreview type="image/*" class="h-full w-full">
 							<ItemPreviewImage class="h-full w-full object-cover" />
@@ -117,7 +116,7 @@ export const SingleFile = meta.story({
 			</Dropzone>
 			<HiddenInput />
 			<ItemList class="flex flex-col gap-1">
-				{(file) => (
+				{(_file) => (
 					<Item class="flex items-center justify-between rounded-md border border-slate-200 px-3 py-2">
 						<ItemName class="text-sm text-slate-800 truncate" />
 						<ItemDeleteTrigger class="text-slate-400 hover:text-red-500 transition-colors text-lg leading-none ml-2 flex-shrink-0">

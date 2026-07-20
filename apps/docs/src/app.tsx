@@ -1,10 +1,9 @@
+import { Toast } from "@kobalte/core/toast";
+import { SolidBaseRoot } from "@kobalte/solidbase/client";
 import { Router } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
 import { Portal } from "solid-js/web";
-
-import { Toast } from "@kobalte/core/toast";
-import { SolidBaseRoot } from "@kobalte/solidbase/client";
 import toastStyles from "./examples/toast.module.css";
 
 export default function App() {

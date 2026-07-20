@@ -14,7 +14,7 @@ import { useColorWheelContext } from "./color-wheel-context.tsx";
 export interface ColorWheelValueLabelOptions {}
 
 export interface ColorWheelValueLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface ColorWheelValueLabelRenderProps

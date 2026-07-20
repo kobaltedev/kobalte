@@ -9,7 +9,7 @@ import { useFileFieldItemContext } from "./file-field-item-context.tsx";
 export interface FileFieldItemNameOptions {}
 
 export interface FileFieldItemNameCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	children: JSX.Element;
 }

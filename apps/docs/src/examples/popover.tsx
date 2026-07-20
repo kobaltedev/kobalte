@@ -1,9 +1,7 @@
+import { Popover } from "@kobalte/core/popover";
 import { createSignal } from "solid-js";
-
 import { CrossIcon } from "../components";
 import style from "./popover.module.css";
-
-import { Popover } from "@kobalte/core/popover";
 
 export function BasicExample() {
 	return (

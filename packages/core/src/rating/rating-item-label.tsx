@@ -15,7 +15,7 @@ import {
 export interface RatingItemLabelOptions {}
 
 export interface RatingItemLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 	style: JSX.CSSProperties | string;

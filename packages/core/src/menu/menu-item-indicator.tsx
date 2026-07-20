@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { omit, Show } from "solid-js";
 
@@ -7,7 +7,10 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import { type MenuItemDataSet, useMenuItemContext } from "./menu-item.context.tsx";
+import {
+	type MenuItemDataSet,
+	useMenuItemContext,
+} from "./menu-item.context.tsx";
 
 export interface MenuItemIndicatorOptions {
 	/**
@@ -18,7 +21,7 @@ export interface MenuItemIndicatorOptions {
 }
 
 export interface MenuItemIndicatorCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

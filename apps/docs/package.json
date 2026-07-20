@@ -34,7 +34,6 @@
 		"dev": "vite dev"
 	},
 	"dependencies": {
-		"@internationalized/date": "catalog:",
 		"@kobalte/core": "workspace:*",
 		"@kobalte/solidbase": "0.6.11",
 		"@solidjs/meta": "0.29.4",

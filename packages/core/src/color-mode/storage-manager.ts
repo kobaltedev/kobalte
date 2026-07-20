@@ -39,7 +39,7 @@ export function createLocalStorageManager(
 		set: (value) => {
 			try {
 				localStorage.setItem(key, value);
-			} catch (e) {
+			} catch (_e) {
 				// noop
 			}
 		},

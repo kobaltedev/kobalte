@@ -249,7 +249,7 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 	readOnly?: boolean;
 }
 
-export interface ComboboxBaseCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ComboboxBaseCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

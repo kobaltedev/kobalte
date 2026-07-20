@@ -213,4 +213,7 @@ export const Select = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type SelectContextValue, useSelectContext } from "./select-context.tsx";
+export {
+	type SelectContextValue,
+	useSelectContext,
+} from "./select-context.tsx";

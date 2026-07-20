@@ -21,7 +21,7 @@ export interface ListboxItemIndicatorOptions {
 }
 
 export interface ListboxItemIndicatorCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

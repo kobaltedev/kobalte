@@ -1,8 +1,6 @@
-import { Index, createSignal } from "solid-js";
-
-import style from "./rating.module.css";
-
 import { Rating } from "@kobalte/core/rating";
+import { createSignal, Index } from "solid-js";
+import style from "./rating.module.css";
 
 export function BasicExample() {
 	return (

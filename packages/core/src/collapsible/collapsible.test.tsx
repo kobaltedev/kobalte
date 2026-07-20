@@ -63,7 +63,7 @@ describe("Collapsible", () => {
 		));
 
 		const trigger = getByText(TRIGGER_TEXT);
-		const content = getByText(CONTENT_TEXT);
+		const _content = getByText(CONTENT_TEXT);
 
 		fireEvent.click(trigger);
 		await Promise.resolve();

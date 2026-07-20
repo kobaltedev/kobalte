@@ -10,7 +10,7 @@ import { type MeterDataSet, useMeterContext } from "./meter-context.tsx";
 
 export interface MeterFillOptions {}
 
-export interface MeterFillCommonProps<T extends HTMLElement = HTMLElement> {
+export interface MeterFillCommonProps<_T extends HTMLElement = HTMLElement> {
 	style?: JSX.CSSProperties | string;
 }
 

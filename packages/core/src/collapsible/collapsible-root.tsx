@@ -21,7 +21,10 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import { createDisclosureState, createRegisterId } from "../primitives/index.ts";
+import {
+	createDisclosureState,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	CollapsibleContext,
 	type CollapsibleContextValue,
@@ -52,7 +55,7 @@ export interface CollapsibleRootOptions {
 }
 
 export interface CollapsibleRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

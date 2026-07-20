@@ -41,10 +41,8 @@ import {
 	CheckboxLabel as Label,
 } from "./checkbox-label.tsx";
 import {
-	type CheckboxRootCommonProps,
 	type CheckboxRootOptions,
 	type CheckboxRootProps,
-	type CheckboxRootRenderProps,
 	CheckboxRoot as Root,
 } from "./checkbox-root.tsx";
 

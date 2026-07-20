@@ -1,4 +1,3 @@
-import { OverrideComponentProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createMemo, omit } from "solid-js";
 
@@ -52,7 +51,9 @@ export type ComboboxRootOptions<Option, OptGroup = never> = (
 		"value" | "defaultValue" | "onChange" | "selectionMode"
 	>;
 
-export interface ComboboxRootCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface ComboboxRootCommonProps<
+	_T extends HTMLElement = HTMLElement,
+> {}
 
 export interface ComboboxRootRenderProps
 	extends ComboboxRootCommonProps,

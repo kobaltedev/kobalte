@@ -1,8 +1,7 @@
+import { ColorArea } from "@kobalte/core/color-area";
 import { parseColor } from "@kobalte/core/colors";
 import { createSignal } from "solid-js";
 import style from "./color-area.module.css";
-
-import { ColorArea } from "@kobalte/core/color-area";
 
 export function BasicExample() {
 	return (
@@ -67,7 +66,7 @@ export function ControlledValueExample() {
 
 export function XAndYChannelExample() {
 	const [value, setValue] = createSignal(parseColor("rgb(100, 149, 237)"));
-	const [rChannel, gChannel, bChannel] = value().getColorChannels();
+	const [_rChannel, gChannel, bChannel] = value().getColorChannels();
 	return (
 		<ColorArea
 			class={style.ColorAreaRoot}

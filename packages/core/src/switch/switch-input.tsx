@@ -11,11 +11,10 @@ import {
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
 import {
 	createFormControlField,

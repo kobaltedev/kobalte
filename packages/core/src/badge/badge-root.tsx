@@ -26,7 +26,7 @@ export interface BadgeRootRenderProps extends BadgeRootCommonProps {
 }
 
 export type BadgeRootProps<
-	T extends ValidComponent | HTMLElement = HTMLElement,
+	_T extends ValidComponent | HTMLElement = HTMLElement,
 > = BadgeRootOptions & Partial<BadgeRootCommonProps>;
 
 export function BadgeRoot<T extends ValidComponent = "span">(

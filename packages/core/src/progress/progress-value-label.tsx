@@ -8,12 +8,15 @@ import {
 	type MeterValueLabelRenderProps,
 } from "../meter/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
-import { type ProgressDataSet, useProgressContext } from "./progress-context.tsx";
+import {
+	type ProgressDataSet,
+	useProgressContext,
+} from "./progress-context.tsx";
 
 export interface ProgressValueLabelOptions extends MeterValueLabelOptions {}
 
 export interface ProgressValueLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > extends MeterValueLabelCommonProps {}
 
 export interface ProgressValueLabelRenderProps

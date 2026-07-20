@@ -17,7 +17,10 @@ import {
 	untrack,
 } from "solid-js";
 import { DialogRoot, type DialogRootOptions } from "../dialog/dialog-root.tsx";
-import { createControllableSignal, createDisclosureState } from "../primitives/index.ts";
+import {
+	createControllableSignal,
+	createDisclosureState,
+} from "../primitives/index.ts";
 import {
 	DrawerContext,
 	type DrawerContextValue,

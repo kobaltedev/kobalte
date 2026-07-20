@@ -17,7 +17,10 @@ import {
 	type ParentProps,
 } from "solid-js";
 import { Popper, type PopperRootOptions } from "../popper/index.tsx";
-import { createDisclosureState, createRegisterId } from "../primitives/index.ts";
+import {
+	createDisclosureState,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	POPOVER_INTL_TRANSLATIONS,
 	type PopoverIntlTranslations,

@@ -433,7 +433,7 @@ describe("Toast", () => {
 		vi.advanceTimersByTime(timeout);
 		try {
 			await Promise.reject();
-		} catch (e) {
+		} catch (_e) {
 			// noop
 		}
 

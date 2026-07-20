@@ -60,7 +60,7 @@ export interface MeterRootOptions {
 	getValueLabel?: (params: GetValueLabelParams) => string;
 }
 
-export interface MeterRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface MeterRootCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 	role: string;
 	"aria-valuenow": number | undefined;

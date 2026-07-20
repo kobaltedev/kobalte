@@ -21,7 +21,9 @@ import { useTabsContext } from "./tabs-context.tsx";
 
 export interface TabsIndicatorOptions {}
 
-export interface TabsIndicatorCommonProps<T extends HTMLElement = HTMLElement> {
+export interface TabsIndicatorCommonProps<
+	_T extends HTMLElement = HTMLElement,
+> {
 	style?: JSX.CSSProperties | string;
 }
 

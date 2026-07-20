@@ -36,7 +36,7 @@ export interface BreadcrumbsRootOptions {
 }
 
 export interface BreadcrumbsRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface BreadcrumbsRootRenderProps extends BreadcrumbsRootCommonProps {

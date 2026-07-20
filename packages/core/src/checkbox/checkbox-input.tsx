@@ -19,7 +19,6 @@ import { createEffect, createSignal, omit } from "solid-js";
 
 import {
 	createFormControlField,
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
 	useFormControlContext,
 } from "../form-control/index.ts";
@@ -28,7 +27,10 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context.tsx";
+import {
+	type CheckboxDataSet,
+	useCheckboxContext,
+} from "./checkbox-context.tsx";
 
 export interface CheckboxInputOptions {}
 

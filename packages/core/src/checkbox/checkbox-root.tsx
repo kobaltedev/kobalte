@@ -13,7 +13,6 @@ import {
 	isFunction,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -28,7 +27,6 @@ import {
 } from "solid-js";
 import {
 	createFormControl,
-	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
 } from "../form-control/index.ts";

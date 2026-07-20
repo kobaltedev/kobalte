@@ -9,7 +9,7 @@ import {
 export interface ListboxSectionOptions {}
 
 export interface ListboxSectionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface ListboxSectionRenderProps extends ListboxSectionCommonProps {

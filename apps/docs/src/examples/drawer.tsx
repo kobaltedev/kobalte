@@ -1,6 +1,5 @@
-import { createSignal } from "solid-js";
-
 import { Drawer } from "@kobalte/core/drawer";
+import { createSignal } from "solid-js";
 import { CrossIcon } from "../components";
 import style from "./drawer.module.css";
 
@@ -90,10 +89,7 @@ export function ControlledExample() {
 					</Drawer.Content>
 				</Drawer.Portal>
 			</Drawer>
-			<button
-				class={style.drawer__trigger}
-				onClick={() => setOpen((o) => !o)}
-			>
+			<button class={style.drawer__trigger} onClick={() => setOpen((o) => !o)}>
 				{open() ? "Force close" : "Force open"}
 			</button>
 		</div>

@@ -213,4 +213,7 @@ export const Search = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type SearchContextValue, useSearchContext } from "./search-context.tsx";
+export {
+	type SearchContextValue,
+	useSearchContext,
+} from "./search-context.tsx";

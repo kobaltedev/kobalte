@@ -35,7 +35,10 @@ import {
 } from "solid-js";
 import { Popper, type PopperRootOptions } from "../popper/index.tsx";
 import type { Placement } from "../popper/utils.ts";
-import { createDisclosureState, createRegisterId } from "../primitives/index.ts";
+import {
+	createDisclosureState,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	TooltipContext,
 	type TooltipContextValue,

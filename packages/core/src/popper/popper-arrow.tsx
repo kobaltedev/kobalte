@@ -79,7 +79,9 @@ export function PopperArrow<T extends ValidComponent = "div">(
 		contentStyle()?.getPropertyValue(`border-${dir()}-width`) || "0px";
 	const strokeWidth = () => {
 		return (
-			Number.parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / mergedProps.size!)
+			Number.parseInt(borderWidth(), 10) *
+			2 *
+			(DEFAULT_SIZE / mergedProps.size!)
 		);
 	};
 	const rotate = () => {

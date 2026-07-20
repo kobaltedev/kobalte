@@ -1,7 +1,6 @@
+import { Slider } from "@kobalte/core/slider";
 import { createSignal } from "solid-js";
 import style from "./slider.module.css";
-
-import { Slider } from "@kobalte/core/slider";
 
 export function BasicExample() {
 	return (

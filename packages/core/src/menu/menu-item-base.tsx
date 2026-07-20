@@ -28,8 +28,11 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import { type CollectionItemWithRef, createRegisterId } from "../primitives/index.ts";
 import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import {
+	type CollectionItemWithRef,
+	createRegisterId,
+} from "../primitives/index.ts";
 import { createSelectableItem } from "../selection/index.ts";
 import { useMenuContext } from "./menu-context.tsx";
 import {

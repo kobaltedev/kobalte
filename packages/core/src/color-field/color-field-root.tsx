@@ -19,7 +19,7 @@ import {
 export interface ColorFieldRootOptions extends TextField.TextFieldRootOptions {}
 
 export interface ColorFieldRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
@@ -70,7 +70,7 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (_e) => {
 		if (!value()!.length) {
 			setPrevValue("");
 			return;

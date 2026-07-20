@@ -15,7 +15,7 @@ import {
 export interface RadioGroupItemDescriptionOptions {}
 
 export interface RadioGroupItemDescriptionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

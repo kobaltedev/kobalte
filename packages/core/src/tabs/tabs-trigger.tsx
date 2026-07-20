@@ -22,8 +22,8 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import type { CollectionItemWithRef } from "../primitives/index.ts";
 import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
 import { createSelectableItem } from "../selection/index.ts";
 import { useTabsContext } from "./tabs-context.tsx";
 

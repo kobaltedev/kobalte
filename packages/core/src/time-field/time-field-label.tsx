@@ -7,7 +7,7 @@ import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 export interface TimeFieldLabelOptions {}
 
 export interface TimeFieldLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface TimeFieldLabelRenderProps extends TimeFieldLabelCommonProps {}

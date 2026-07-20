@@ -1,6 +1,5 @@
-import style from "./link.module.css";
-
 import { Link } from "@kobalte/core/link";
+import style from "./link.module.css";
 
 export function BasicExample() {
 	return (

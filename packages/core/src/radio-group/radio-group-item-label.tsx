@@ -15,7 +15,7 @@ import {
 export interface RadioGroupItemLabelOptions {}
 
 export interface RadioGroupItemLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

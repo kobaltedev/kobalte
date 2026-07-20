@@ -45,7 +45,7 @@
 }
 
 .time-field__segment:focus {
-	color: #fff !important;
+	color: #fff;
 	background: hsl(200 98% 39%);
 	outline: none;
 	border-radius: 4px;

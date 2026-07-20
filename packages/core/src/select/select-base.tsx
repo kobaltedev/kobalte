@@ -12,7 +12,6 @@ import {
 	focusWithoutScrolling,
 	isFunction,
 	mergeDefaultProps,
-	OverrideComponentProps,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -203,7 +202,7 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 	readOnly?: boolean;
 }
 
-export interface SelectBaseCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SelectBaseCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

@@ -1,7 +1,6 @@
+import { Toast, toaster } from "@kobalte/core/toast";
 import { CrossIcon } from "../components";
 import style from "./toast.module.css";
-
-import { Toast, toaster } from "@kobalte/core/toast";
 
 export function BasicExample() {
 	let id: number;
@@ -65,10 +64,10 @@ export function BasicExample() {
 }
 
 export function MultipleRegionsExample() {
-	let id: number;
+	let _id: number;
 
 	const showToast = (region?: string) => {
-		id = toaster.show(
+		_id = toaster.show(
 			(props) => (
 				<Toast toastId={props.toastId} class={style.toast}>
 					<div class={style.toast__content}>

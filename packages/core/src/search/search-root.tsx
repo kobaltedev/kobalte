@@ -31,7 +31,7 @@ export type SearchRootOptions<Option, OptGroup = never> = (
 		"value" | "defaultValue" | "onChange" | "selectionMode"
 	>;
 
-export interface SearchRootCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface SearchRootCommonProps<_T extends HTMLElement = HTMLElement> {}
 
 export interface SearchRootRenderProps
 	extends SearchRootCommonProps,

@@ -1,8 +1,6 @@
-import { createSignal } from "solid-js";
-
-import style from "./tooltip.module.css";
-
 import { Tooltip } from "@kobalte/core/tooltip";
+import { createSignal } from "solid-js";
+import style from "./tooltip.module.css";
 
 export function BasicExample() {
 	return (

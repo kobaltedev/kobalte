@@ -1,9 +1,7 @@
+import { NumberField } from "@kobalte/core/number-field";
 import { createSignal } from "solid-js";
-
 import { ArrowIcon } from "../components";
 import style from "./number-field.module.css";
-
-import { NumberField } from "@kobalte/core/number-field";
 
 export function BasicExample() {
 	return (

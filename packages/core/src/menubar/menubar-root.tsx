@@ -12,7 +12,6 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 	type Orientation,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { interactOutside } from "@solid-primitives/interaction";
 import { isServer, type ValidComponent } from "@solidjs/web";
@@ -110,7 +109,10 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		},
 	);
 
-	const [lastValue, setLastValue] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [lastValue, setLastValue] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const [menuRefs, setMenuRefs] = createSignal<Map<string, Array<HTMLElement>>>(
 		new Map<string, Array<HTMLElement>>(),

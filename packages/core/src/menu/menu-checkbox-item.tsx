@@ -1,4 +1,4 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";

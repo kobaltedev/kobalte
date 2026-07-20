@@ -97,7 +97,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 		menubarContext.closeMenu();
 	};
 
-	const onEscapeKeyDown = (e: KeyboardEvent) => {
+	const onEscapeKeyDown = (_e: KeyboardEvent) => {
 		close();
 	};
 

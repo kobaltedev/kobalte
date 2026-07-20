@@ -7,15 +7,7 @@
 		".": "./src/index.ts"
 	},
 	"publish": {
-		"include": [
-			"README.md",
-			"src/**/*.ts",
-			"package.json"
-		],
-		"exclude": [
-			"dist",
-			"node_modules",
-			"tsconfig.json"
-		]
+		"include": ["README.md", "src/**/*.ts", "package.json"],
+		"exclude": ["dist", "node_modules", "tsconfig.json"]
 	}
 }

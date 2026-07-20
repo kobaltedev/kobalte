@@ -1,7 +1,6 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
-	Arrow,
 	CheckboxItem,
 	Content,
 	Group,
@@ -207,20 +206,20 @@ export const WithDescriptions = meta.story({
 			<Trigger class={triggerClass}>Actions ▾</Trigger>
 			<Portal>
 				<Content class={contentClass}>
-					<Item class={itemClass + " flex-col items-start"}>
+					<Item class={`${itemClass} flex-col items-start`}>
 						<ItemLabel class="font-medium">Publish</ItemLabel>
 						<ItemDescription class="text-xs text-slate-400">
 							Deploy to production
 						</ItemDescription>
 					</Item>
-					<Item class={itemClass + " flex-col items-start"}>
+					<Item class={`${itemClass} flex-col items-start`}>
 						<ItemLabel class="font-medium">Preview</ItemLabel>
 						<ItemDescription class="text-xs text-slate-400">
 							Build a preview deployment
 						</ItemDescription>
 					</Item>
 					<Separator class={separatorClass} />
-					<Item class={itemClass + " text-red-600 hover:bg-red-50"}>
+					<Item class={`${itemClass} text-red-600 hover:bg-red-50`}>
 						<ItemLabel>Delete project</ItemLabel>
 					</Item>
 				</Content>

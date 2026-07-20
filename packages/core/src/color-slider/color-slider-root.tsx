@@ -78,7 +78,7 @@ export interface ColorSliderRootOptions {
 }
 
 export interface ColorSliderRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

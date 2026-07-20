@@ -20,7 +20,7 @@ import { useMenuGroupContext } from "./menu-group-context.tsx";
 export interface MenuGroupLabelOptions {}
 
 export interface MenuGroupLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

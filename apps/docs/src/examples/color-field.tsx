@@ -1,8 +1,6 @@
-import { createSignal } from "solid-js";
-
-import style from "./color-field.module.css";
-
 import { ColorField } from "@kobalte/core/color-field";
+import { createSignal } from "solid-js";
+import style from "./color-field.module.css";
 
 export function BasicExample() {
 	return (

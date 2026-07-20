@@ -1,4 +1,4 @@
-import { focusWithoutScrolling, OverrideComponentProps } from "@kobalte/utils";
+import { focusWithoutScrolling } from "@kobalte/utils";
 import type { InteractOutsideEvent } from "@solid-primitives/interaction";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";

@@ -11,7 +11,10 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context.tsx";
+import {
+	type CheckboxDataSet,
+	useCheckboxContext,
+} from "./checkbox-context.tsx";
 
 export interface CheckboxControlOptions {}
 

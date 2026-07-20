@@ -7,7 +7,10 @@ import {
 	type FormControlErrorMessageRenderProps,
 } from "../form-control/index.ts";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
-import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context.tsx";
+import {
+	type CheckboxDataSet,
+	useCheckboxContext,
+} from "./checkbox-context.tsx";
 
 export interface CheckboxErrorMessageOptions
 	extends FormControlErrorMessageProps {}

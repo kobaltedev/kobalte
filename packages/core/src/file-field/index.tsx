@@ -10,10 +10,7 @@ import {
 	type FormControlErrorMessageProps as FileFieldErrorMessageProps,
 	type FormControlErrorMessageRenderProps as FileFieldErrorMessageRenderProps,
 } from "../form-control/index.ts";
-import {
-	FileFieldContext as Context,
-	type FileFieldContextValue,
-} from "./file-field-context.tsx";
+import { FileFieldContext as Context } from "./file-field-context.tsx";
 import {
 	FileFieldDropzone as Dropzone,
 	type FileFieldDropzoneCommonProps,

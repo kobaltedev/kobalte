@@ -15,7 +15,7 @@ export interface FileFieldItemSizeOptions {
 }
 
 export interface FileFieldItemSizeCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface FileFieldItemSizeRenderProps

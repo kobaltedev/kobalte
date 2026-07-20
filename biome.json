@@ -4,16 +4,16 @@
 		"includes": [
 			"**",
 			"!tsconfig.json",
-			"!**/*/netlify/**/*",
+			"!**/netlify",
 			"!**/package.json",
-			"!.claude"
+			"!.claude",
+			"!**/public"
 		]
 	},
 	"css": {
 		"parser": {
 			"cssModules": false,
-			"allowWrongLineComments": false,
-			"tailwindDirectives": true
+			"allowWrongLineComments": false
 		}
 	},
 	"vcs": {
@@ -28,7 +28,8 @@
 			"a11y": {
 				"noAutofocus": "off",
 				"noNoninteractiveTabindex": "off",
-				"noNoninteractiveElementToInteractiveRole": "off"
+				"noNoninteractiveElementToInteractiveRole": "off",
+				"noSvgWithoutTitle": "off"
 			},
 			"suspicious": {
 				"noEmptyInterface": "off",

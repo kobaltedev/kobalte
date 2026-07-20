@@ -12,7 +12,10 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const check = process.argv.includes("--check");
-const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const rootDir = path.resolve(
+	path.dirname(fileURLToPath(import.meta.url)),
+	"..",
+);
 const packagesDir = path.join(rootDir, "packages");
 
 const JSR_PACKAGES = ["core", "utils", "tailwindcss", "vanilla-extract"];

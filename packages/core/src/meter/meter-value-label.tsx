@@ -10,7 +10,7 @@ import { type MeterDataSet, useMeterContext } from "./meter-context.tsx";
 export interface MeterValueLabelOptions {}
 
 export interface MeterValueLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface MeterValueLabelRenderProps

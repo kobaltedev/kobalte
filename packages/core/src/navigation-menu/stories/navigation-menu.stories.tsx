@@ -478,7 +478,7 @@ export const Vertical = meta.story({
 			orientation="vertical"
 		>
 			<Menu>
-				<Trigger class={triggerClass + " justify-between"}>Analytics ▸</Trigger>
+				<Trigger class={`${triggerClass} justify-between`}>Analytics ▸</Trigger>
 				<Portal>
 					<Content class="w-48 rounded-lg border border-slate-200 bg-white p-3 shadow-lg outline-none">
 						<ul class="flex flex-col gap-1">
@@ -503,7 +503,7 @@ export const Vertical = meta.story({
 			</Menu>
 
 			<Menu>
-				<Trigger class={triggerClass + " justify-between"}>Settings ▸</Trigger>
+				<Trigger class={`${triggerClass} justify-between`}>Settings ▸</Trigger>
 				<Portal>
 					<Content class="w-48 rounded-lg border border-slate-200 bg-white p-3 shadow-lg outline-none">
 						<ul class="flex flex-col gap-1">

@@ -10,7 +10,7 @@ import { FileFieldItemPreview } from "./file-field-item-preview.tsx";
 export interface FileFieldItemPreviewImageOptions {}
 
 export interface FileFieldItemPreviewImageCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface FileFieldItemPreviewImageRenderProps

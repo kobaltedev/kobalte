@@ -11,7 +11,7 @@ import { type MenuDataSet, useMenuContext } from "./menu-context.tsx";
 
 export interface MenuIconOptions {}
 
-export interface MenuIconCommonProps<T extends HTMLElement = HTMLElement> {
+export interface MenuIconCommonProps<_T extends HTMLElement = HTMLElement> {
 	children: Element;
 }
 

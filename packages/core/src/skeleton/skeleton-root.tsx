@@ -35,7 +35,7 @@ export interface SkeletonRootOptions {
 	animate?: boolean;
 }
 
-export interface SkeletonRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SkeletonRootCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 	style: JSX.CSSProperties | string;
 }

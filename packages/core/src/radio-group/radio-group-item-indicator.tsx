@@ -54,7 +54,7 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "ref", "forceMount");
 
-	const [ref, setRef] = createSignal<HTMLElement>();
+	const [_ref, setRef] = createSignal<HTMLElement>();
 
 	const { isMounted: present } = createPresence(
 		() => mergedProps.forceMount || context.isSelected() || undefined,

@@ -66,7 +66,9 @@ export interface FileFieldRootOptions {
 	readOnly?: boolean;
 }
 
-export interface FileFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface FileFieldRootCommonProps<
+	_T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 

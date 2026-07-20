@@ -1,6 +1,5 @@
-import style from "./separator.module.css";
-
 import { Separator } from "@kobalte/core/separator";
+import style from "./separator.module.css";
 
 export function BasicExample() {
 	return (

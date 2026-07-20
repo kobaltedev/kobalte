@@ -1,8 +1,4 @@
-import {
-	isFunction,
-	mergeDefaultProps,
-	OverrideComponentProps,
-} from "@kobalte/utils";
+import { isFunction, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Accessor, children, createEffect, omit, Show } from "solid-js";
 
@@ -39,7 +35,7 @@ export interface SelectValueOptions<Option> {
 	children?: JSX.Element | ((state: SelectValueState<Option>) => JSX.Element);
 }
 
-export interface SelectValueCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SelectValueCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

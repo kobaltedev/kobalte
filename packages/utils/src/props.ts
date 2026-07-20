@@ -1,4 +1,4 @@
-import { type ComponentProps, type ValidComponent } from "@solidjs/web";
+import type { ComponentProps, ValidComponent } from "@solidjs/web";
 import { merge } from "solid-js";
 
 /**

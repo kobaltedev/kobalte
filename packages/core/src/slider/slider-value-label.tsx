@@ -10,7 +10,7 @@ import { type SliderDataSet, useSliderContext } from "./slider-context.tsx";
 export interface SliderValueLabelOptions {}
 
 export interface SliderValueLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface SliderValueLabelRenderProps

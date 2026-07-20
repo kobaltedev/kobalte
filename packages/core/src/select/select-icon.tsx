@@ -10,7 +10,7 @@ import { type SelectDataSet, useSelectContext } from "./select-context.tsx";
 
 export interface SelectIconOptions {}
 
-export interface SelectIconCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SelectIconCommonProps<_T extends HTMLElement = HTMLElement> {
 	children: JSX.Element;
 }
 

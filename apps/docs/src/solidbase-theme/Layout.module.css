@@ -12,13 +12,15 @@ footer:has(.footer) {
 
 	> a {
 		color: color-mix(in hsl, var(--sb-text-color) 72.5%, transparent);
-		box-shadow: color-mix(in hsl, var(--sb-text-color) 25%, transparent) 0 -2px 0 0 inset;
+		box-shadow: color-mix(in hsl, var(--sb-text-color) 25%, transparent) 0 -2px
+			0 0 inset;
 		text-decoration: none;
 		line-height: 1;
 
 		&:hover,
 		&:focus {
-			box-shadow: color-mix(in hsl, var(--sb-text-color) 25%, transparent) 0 -6px 0 0 inset;
+			box-shadow: color-mix(in hsl, var(--sb-text-color) 25%, transparent) 0
+				-6px 0 0 inset;
 		}
 	}
 }

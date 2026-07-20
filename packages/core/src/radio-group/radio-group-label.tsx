@@ -7,7 +7,7 @@ import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 export interface RadioGroupLabelOptions {}
 
 export interface RadioGroupLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface RadioGroupLabelRenderProps

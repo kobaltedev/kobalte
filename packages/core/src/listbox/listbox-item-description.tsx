@@ -23,7 +23,7 @@ import {
 export interface ListboxItemDescriptionOptions {}
 
 export interface ListboxItemDescriptionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

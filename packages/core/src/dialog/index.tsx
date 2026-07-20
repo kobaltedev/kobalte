@@ -104,4 +104,7 @@ export const Dialog = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type DialogContextValue, useDialogContext } from "./dialog-context.tsx";
+export {
+	type DialogContextValue,
+	useDialogContext,
+} from "./dialog-context.tsx";

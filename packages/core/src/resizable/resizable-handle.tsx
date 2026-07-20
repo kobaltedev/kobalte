@@ -9,25 +9,19 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	createMemo,
-	createSignal,
-	omit,
-	Show,
-} from "solid-js";
+import { createEffect, createMemo, createSignal, omit, Show } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import { useResizableInternalContext } from "./resizable-context.tsx";
 import {
+	type DragTarget,
 	fixToPrecision,
+	type HandleCallbacks,
+	type HoverState,
+	type ResizableHandleInstance,
 	registerHandle,
 	resolveSize,
 	splitPanels,
 	unregisterHandle,
-	type DragTarget,
-	type HandleCallbacks,
-	type HoverState,
-	type ResizableHandleInstance,
 } from "./resizable-lib.ts";
 
 export interface ResizableHandleOptions {
@@ -54,7 +48,9 @@ export interface ResizableHandleOptions {
 	onHandleDragEnd?: (event: PointerEvent | TouchEvent | MouseEvent) => void;
 }
 
-export interface ResizableHandleCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ResizableHandleCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	ref: T | ((el: T) => void);
 	style: JSX.CSSProperties | string;
 	disabled: boolean | undefined;
@@ -174,10 +170,7 @@ export function ResizableHandle<T extends ValidComponent = "button">(
 			),
 		);
 		const ariaValueNow = fixToPrecision(
-			precedingPanels.reduce(
-				(acc, panel) => acc + panel.size(),
-				0,
-			),
+			precedingPanels.reduce((acc, panel) => acc + panel.size(), 0),
 		);
 
 		return { ariaControls, ariaValueMax, ariaValueMin, ariaValueNow };
@@ -248,28 +241,35 @@ export function ResizableHandle<T extends ValidComponent = "button">(
 		},
 	);
 
-	const onMouseEnter: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (e) => {
+	const onMouseEnter: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (
+		e,
+	) => {
 		callHandler(e, p.onMouseEnter as any);
 		if (p.disabled === true) return;
 		setHovered("handle");
 	};
 
-	const onMouseLeave: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (e) => {
+	const onMouseLeave: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = (
+		e,
+	) => {
 		callHandler(e, p.onMouseLeave as any);
 		setHovered(null);
 	};
 
-	const onKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = (e) => {
+	const onKeyDown: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = (
+		e,
+	) => {
 		callHandler(e, p.onKeyDown as any);
 		if (dragging()) return;
 		const el = ref();
 		if (!el) return;
-		const useAltKey =
-			p.altKey === "only" || (p.altKey !== false && e.altKey);
+		const useAltKey = p.altKey === "only" || (p.altKey !== false && e.altKey);
 		context.onKeyDown(el, e, useAltKey);
 	};
 
-	const onKeyUp: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = (e) => {
+	const onKeyUp: JSX.EventHandlerUnion<HTMLButtonElement, KeyboardEvent> = (
+		e,
+	) => {
 		callHandler(e, p.onKeyUp as any);
 		if (e.key !== "Tab") return;
 		setFocused(true);
@@ -289,7 +289,10 @@ export function ResizableHandle<T extends ValidComponent = "button">(
 		setActive(false);
 	};
 
-	const onPointerDown: JSX.EventHandlerUnion<HTMLButtonElement, PointerEvent> = (e) => {
+	const onPointerDown: JSX.EventHandlerUnion<
+		HTMLButtonElement,
+		PointerEvent
+	> = (e) => {
 		callHandler(e, p.onPointerDown as any);
 		if (callHandler(e, p.onHandleDragStart as any)) return;
 
@@ -297,10 +300,14 @@ export function ResizableHandle<T extends ValidComponent = "button">(
 		targetElement.setPointerCapture(e.pointerId);
 
 		let target: DragTarget = "handle";
-		if (targetElement.hasAttribute("data-kb-resizable-handle-start-intersection")) {
+		if (
+			targetElement.hasAttribute("data-kb-resizable-handle-start-intersection")
+		) {
 			target = "startIntersection";
 		}
-		if (targetElement.hasAttribute("data-kb-resizable-handle-end-intersection")) {
+		if (
+			targetElement.hasAttribute("data-kb-resizable-handle-end-intersection")
+		) {
 			target = "endIntersection";
 		}
 		globalHandleCallbacks?.onDragStart(e, target);

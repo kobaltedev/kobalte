@@ -26,7 +26,10 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import { createControllableSignal, createRegisterId } from "../primitives/index.ts";
+import {
+	createControllableSignal,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	TIME_FIELD_INTL_MESSAGES,
 	type TimeFieldIntlTranslations,
@@ -203,7 +206,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	>({
 		value: () => mergedProps.value,
 		defaultValue: () => mergedProps.defaultValue,
-		// @ts-ignore
+		// @ts-expect-error
 		onChange: (value) => mergedProps.onChange?.(value!),
 	});
 
@@ -233,12 +236,15 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 		const minTime = Number.parseInt(
 			`${(mergedProps.min?.hour ?? "00").toString().padStart(2, "0")}${(mergedProps.min?.minute ?? "00").toString().padStart(2, "0")}${(mergedProps.min?.second ?? "00").toString().padStart(2, "0")}`,
+			10,
 		);
 		const maxTime = Number.parseInt(
 			`${(mergedProps.max?.hour ?? "23").toString().padStart(2, "0")}${(mergedProps.max?.minute ?? "59").toString().padStart(2, "0")}${(mergedProps.max?.second ?? "59").toString().padStart(2, "0")}`,
+			10,
 		);
 		const val = Number.parseInt(
 			`${(value()?.hour ?? "00").toString().padStart(2, "0")}${(value()?.minute ?? "00").toString().padStart(2, "0")}${(value()?.second ?? "00").toString().padStart(2, "0")}`,
+			10,
 		);
 
 		if (val > maxTime || val < minTime) return "invalid";
