@@ -8,6 +8,7 @@ import {
 	Root,
 	TextArea,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/TextField",
@@ -16,20 +17,13 @@ const meta = preview.meta({
 
 export default meta;
 
-const rootClass = "flex flex-col gap-1.5 w-72 font-sans";
-const labelClass = "text-sm font-medium text-slate-700";
-const inputClass =
-	"rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 read-only:bg-slate-50 data-[invalid]:border-red-500 data-[invalid]:ring-red-500 w-full";
-const descriptionClass = "text-xs text-slate-500";
-const errorClass = "text-xs text-red-600";
-
 /** Basic text input with a label. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={rootClass}>
-			<Label class={labelClass}>Favorite fruit</Label>
-			<Input class={inputClass} placeholder="e.g. Apple" />
+		<Root class={style.root}>
+			<Label class={style.label}>Favorite fruit</Label>
+			<Input class={style.input} placeholder="e.g. Apple" />
 		</Root>
 	),
 });
@@ -38,9 +32,9 @@ export const Default = meta.story({
 export const DefaultValue = meta.story({
 	name: "Default Value",
 	render: () => (
-		<Root class={rootClass} defaultValue="Apple">
-			<Label class={labelClass}>Favorite fruit</Label>
-			<Input class={inputClass} />
+		<Root class={style.root} defaultValue="Apple">
+			<Label class={style.label}>Favorite fruit</Label>
+			<Input class={style.input} />
 		</Root>
 	),
 });
@@ -49,10 +43,10 @@ export const DefaultValue = meta.story({
 export const WithDescription = meta.story({
 	name: "With Description",
 	render: () => (
-		<Root class={rootClass}>
-			<Label class={labelClass}>Favorite fruit</Label>
-			<Input class={inputClass} placeholder="e.g. Apple" />
-			<Description class={descriptionClass}>
+		<Root class={style.root}>
+			<Label class={style.label}>Favorite fruit</Label>
+			<Input class={style.input} placeholder="e.g. Apple" />
+			<Description class={style.description}>
 				Choose the fruit you like the most.
 			</Description>
 		</Root>
@@ -66,14 +60,14 @@ export const WithError = meta.story({
 		const [value, setValue] = createSignal("Orange");
 		return (
 			<Root
-				class={rootClass}
+				class={style.root}
 				value={value()}
 				onChange={setValue}
 				validationState={value() !== "Apple" ? "invalid" : "valid"}
 			>
-				<Label class={labelClass}>Favorite fruit</Label>
-				<Input class={inputClass} />
-				<ErrorMessage class={errorClass}>Hmm, I prefer apples.</ErrorMessage>
+				<Label class={style.label}>Favorite fruit</Label>
+				<Input class={style.input} />
+				<ErrorMessage class={style.error}>Hmm, I prefer apples.</ErrorMessage>
 			</Root>
 		);
 	},
@@ -83,10 +77,10 @@ export const WithError = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root class={rootClass} disabled defaultValue="Mango">
-			<Label class={labelClass}>Favorite fruit</Label>
-			<Input class={inputClass} />
-			<Description class={descriptionClass}>
+		<Root class={style.root} disabled defaultValue="Mango">
+			<Label class={style.label}>Favorite fruit</Label>
+			<Input class={style.input} />
+			<Description class={style.description}>
 				You cannot change this.
 			</Description>
 		</Root>
@@ -97,9 +91,9 @@ export const Disabled = meta.story({
 export const ReadOnly = meta.story({
 	name: "Read Only",
 	render: () => (
-		<Root class={rootClass} readOnly defaultValue="Pineapple">
-			<Label class={labelClass}>Favorite fruit</Label>
-			<Input class={inputClass} />
+		<Root class={style.root} readOnly defaultValue="Pineapple">
+			<Label class={style.label}>Favorite fruit</Label>
+			<Input class={style.input} />
 		</Root>
 	),
 });
@@ -108,12 +102,9 @@ export const ReadOnly = meta.story({
 export const WithTextArea = meta.story({
 	name: "TextArea",
 	render: () => (
-		<Root class={rootClass}>
-			<Label class={labelClass}>Message</Label>
-			<TextArea
-				class={`${inputClass} min-h-24 resize-y`}
-				placeholder="Type your message…"
-			/>
+		<Root class={style.root}>
+			<Label class={style.label}>Message</Label>
+			<TextArea class={style.textarea} placeholder="Type your message…" />
 		</Root>
 	),
 });
@@ -122,14 +113,14 @@ export const WithTextArea = meta.story({
 export const AutoResizeTextArea = meta.story({
 	name: "TextArea Auto Resize",
 	render: () => (
-		<Root class={rootClass}>
-			<Label class={labelClass}>Message</Label>
+		<Root class={style.root}>
+			<Label class={style.label}>Message</Label>
 			<TextArea
 				autoResize
-				class={`${inputClass} resize-none`}
+				class={style.textareaNoResize}
 				placeholder="This textarea grows as you type…"
 			/>
-			<Description class={descriptionClass}>
+			<Description class={style.description}>
 				The textarea expands with the content.
 			</Description>
 		</Root>
@@ -151,14 +142,12 @@ export const Controlled = meta.story({
 		},
 	},
 	render: (args) => (
-		<Root class={rootClass} value={args.value ?? ""}>
-			<Label class={labelClass}>Favorite fruit</Label>
-			<Input class={inputClass} />
+		<Root class={style.root} value={args.value ?? ""}>
+			<Label class={style.label}>Favorite fruit</Label>
+			<Input class={style.input} />
 		</Root>
 	),
 });
-
-const formRootClass = "flex flex-col gap-1.5 w-full font-sans";
 
 /** Full form with label, description, error message, and all variants. */
 export const FullForm = meta.story({
@@ -171,36 +160,30 @@ export const FullForm = meta.story({
 			!email() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email());
 
 		return (
-			<form
-				class="flex flex-col gap-4 w-72 font-sans"
-				onSubmit={(e) => e.preventDefault()}
-			>
-				<Root class={formRootClass} value={name()} onChange={setName} required>
-					<Label class={labelClass}>Full name</Label>
-					<Input class={inputClass} placeholder="Jane Doe" />
-					<Description class={descriptionClass}>
+			<form class={style.form} onSubmit={(e) => e.preventDefault()}>
+				<Root class={style.formRoot} value={name()} onChange={setName} required>
+					<Label class={style.label}>Full name</Label>
+					<Input class={style.input} placeholder="Jane Doe" />
+					<Description class={style.description}>
 						As it appears on your ID.
 					</Description>
 				</Root>
 
 				<Root
-					class={formRootClass}
+					class={style.formRoot}
 					value={email()}
 					onChange={setEmail}
 					validationState={emailValid() ? "valid" : "invalid"}
 					required
 				>
-					<Label class={labelClass}>Email address</Label>
-					<Input class={inputClass} placeholder="jane@example.com" />
-					<ErrorMessage class={errorClass}>
+					<Label class={style.label}>Email address</Label>
+					<Input class={style.input} placeholder="jane@example.com" />
+					<ErrorMessage class={style.error}>
 						Please enter a valid email address.
 					</ErrorMessage>
 				</Root>
 
-				<button
-					type="submit"
-					class="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
-				>
+				<button type="submit" class={style.submitButton}>
 					Submit
 				</button>
 			</form>

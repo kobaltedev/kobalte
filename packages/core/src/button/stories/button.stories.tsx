@@ -1,6 +1,7 @@
 import { createSignal, type ValidComponent } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import { Button } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Button",
@@ -10,25 +11,10 @@ const meta = preview.meta({
 export default meta;
 
 function buttonClass(variant = "primary", size = "md") {
-	const variants: Record<string, string> = {
-		primary:
-			"bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700",
-		secondary: "bg-white text-slate-900 border-slate-200 hover:bg-slate-50",
-		ghost:
-			"bg-transparent text-slate-700 border-transparent hover:bg-slate-100",
-		destructive:
-			"bg-red-600 text-white border-red-600 hover:bg-red-700 hover:border-red-700",
-	};
-	const sizes: Record<string, string> = {
-		sm: "h-8 px-3 text-xs gap-1.5",
-		md: "h-9 px-4 text-sm gap-2",
-		lg: "h-11 px-6 text-base gap-2.5",
-	};
 	return [
-		"inline-flex items-center justify-center font-medium font-sans rounded-md border transition-colors",
-		"disabled:opacity-50 disabled:cursor-not-allowed data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed",
-		variants[variant] ?? variants.primary,
-		sizes[size] ?? sizes.md,
+		style.button__base,
+		style[`button__${variant}`] ?? style.button__primary,
+		style[`button__${size}`] ?? style.button__md,
 	].join(" ");
 }
 
@@ -86,7 +72,7 @@ export const Variants = meta.story({
 		size: { control: "select", options: ["sm", "md", "lg"] },
 	},
 	render: (args) => (
-		<div class="flex flex-wrap items-center gap-3 font-sans">
+		<div class={style.button__row}>
 			{(["primary", "secondary", "ghost", "destructive"] as const).map((v) => (
 				<Button class={buttonClass(v, args.size)}>
 					{v[0].toUpperCase() + v.slice(1)}
@@ -100,7 +86,7 @@ export const Variants = meta.story({
 export const Sizes = meta.story({
 	name: "Sizes",
 	render: () => (
-		<div class="flex flex-wrap items-center gap-3 font-sans">
+		<div class={style.button__row}>
 			<Button class={buttonClass("primary", "sm")}>Small</Button>
 			<Button class={buttonClass("primary", "md")}>Medium</Button>
 			<Button class={buttonClass("primary", "lg")}>Large</Button>
@@ -117,14 +103,14 @@ export const Sizes = meta.story({
 export const DisabledState = meta.story({
 	name: "Disabled State",
 	render: () => (
-		<div class="flex flex-col gap-5 font-sans text-sm">
-			<div class="flex flex-wrap items-center gap-3">
+		<div class={style.button__col}>
+			<div class={style.button__sub - row}>
 				<Button class={buttonClass()}>Enabled</Button>
 				<Button disabled class={buttonClass()}>
 					Disabled
 				</Button>
 			</div>
-			<div class="flex flex-wrap items-center gap-3">
+			<div class={style.button__sub - row}>
 				<Button as="div" class={buttonClass("secondary")}>
 					Enabled (div)
 				</Button>
@@ -132,10 +118,10 @@ export const DisabledState = meta.story({
 					Disabled (div)
 				</Button>
 			</div>
-			<p class="text-xs text-slate-500 m-0">
-				Top row: <code class="font-mono">&lt;button disabled&gt;</code>. Bottom
-				row:{" "}
-				<code class="font-mono">
+			<p class={style.button__description}>
+				Top row: <code class={style.button__code}>&lt;button disabled&gt;</code>
+				. Bottom row:{" "}
+				<code class={style.button__code}>
 					&lt;div aria-disabled="true" data-disabled=""&gt;
 				</code>
 				.
@@ -160,7 +146,7 @@ export const AsLink = meta.story({
 			href={args.as === "a" ? "https://kobalte.dev" : undefined}
 			target={args.as === "a" ? "_blank" : undefined}
 			rel={args.as === "a" ? "noopener noreferrer" : undefined}
-			class={[buttonClass("secondary"), "no-underline"].join(" ")}
+			class={`${buttonClass("secondary")} ${style.button__no - underline}`}
 		>
 			Kobalte docs
 			<svg
@@ -187,7 +173,7 @@ export const AsLink = meta.story({
 export const WithIcon = meta.story({
 	name: "With Icon",
 	render: () => (
-		<div class="flex flex-wrap items-center gap-3 font-sans">
+		<div class={style.button__row}>
 			<Button class={buttonClass()}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -278,7 +264,7 @@ export const ClickCounter = meta.story({
 	render: (args) => {
 		const [count, setCount] = createSignal(0);
 		return (
-			<div class="flex flex-col items-center gap-4 font-sans">
+			<div class={style.button__center - col}>
 				<Button
 					as={args.as as unknown as ValidComponent}
 					class={buttonClass()}
@@ -286,9 +272,9 @@ export const ClickCounter = meta.story({
 				>
 					Clicked {count()} {count() === 1 ? "time" : "times"}
 				</Button>
-				<p class="text-xs text-slate-500 m-0">
+				<p class={style.button__description}>
 					Rendered as{" "}
-					<code class="font-mono text-blue-700">&lt;{args.as}&gt;</code>
+					<code class={style.button__code - blue}>&lt;{args.as}&gt;</code>
 				</p>
 			</div>
 		);

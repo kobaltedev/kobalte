@@ -12,6 +12,7 @@ import {
 	Track,
 	ValueLabel,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/ColorWheel",
@@ -28,36 +29,28 @@ const meta = preview.meta({
 
 export default meta;
 
-const thumbClass =
-	"w-5 h-5 rounded-full border-2 border-white shadow-md cursor-grab " +
-	"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white " +
-	"forced-colors:forced-color-adjust-none";
-const labelClass = "text-sm font-medium text-slate-700";
-const errorClass = "text-xs text-red-600";
-const descClass = "text-xs text-slate-500";
-
 /** Standard color wheel with controls. */
 export const Default = meta.story({
 	name: "Default",
 	args: { thickness: 28, disabled: false },
 	render: (args) => (
-		<div class="flex flex-col items-center gap-3 font-sans">
+		<div class={style.wrapper}>
 			<Root
-				class="relative inline-block"
+				class={style.root}
 				thickness={args.thickness as number}
 				defaultValue={parseColor("hsl(200, 100%, 50%)")}
 				disabled={args.disabled as boolean}
 			>
-				<Label class={labelClass}>Hue</Label>
-				<Track class="block w-48 h-48">
+				<Label class={style.label}>Hue</Label>
+				<Track class={style.track}>
 					<Thumb
-						class={thumbClass}
+						class={style.thumb}
 						style={{ background: "var(--kb-color-current)" }}
 					>
 						<Input />
 					</Thumb>
 				</Track>
-				<ValueLabel class="text-sm text-slate-500 mt-1 text-center" />
+				<ValueLabel class={style.valueLabel} />
 			</Root>
 		</div>
 	),
@@ -69,16 +62,16 @@ function ControlledDemo() {
 		parseColor("hsl(120, 80%, 50%)"),
 	);
 	return (
-		<div class="flex flex-col items-center gap-4 font-sans">
+		<div class={style.controlledWrapper}>
 			<Root
-				class="relative inline-block"
+				class={style.root}
 				thickness={28}
 				value={color()}
 				onChange={setColor}
 			>
-				<Track class="block w-48 h-48">
+				<Track class={style.track}>
 					<Thumb
-						class={thumbClass}
+						class={style.thumb}
 						style={{ background: "var(--kb-color-current)" }}
 					>
 						<Input />
@@ -86,10 +79,10 @@ function ControlledDemo() {
 				</Track>
 			</Root>
 			<div
-				class="h-8 w-48 rounded-md border border-slate-200"
+				class={style.previewBox}
 				style={{ "background-color": color().toString("css") }}
 			/>
-			<p class="text-xs text-slate-500">
+			<p class={style.text}>
 				Hue: <strong>{Math.round(color().getChannelValue("hue"))}°</strong>
 			</p>
 		</div>
@@ -106,13 +99,13 @@ export const ThinTrack = meta.story({
 	name: "Thin Track",
 	render: () => (
 		<Root
-			class="relative inline-block font-sans"
+			class={style.rootSans}
 			thickness={16}
 			defaultValue={parseColor("hsl(300, 100%, 50%)")}
 		>
-			<Track class="block w-48 h-48">
+			<Track class={style.track}>
 				<Thumb
-					class={thumbClass}
+					class={style.thumb}
 					style={{ background: "var(--kb-color-current)" }}
 				>
 					<Input />
@@ -127,13 +120,13 @@ export const ThickTrack = meta.story({
 	name: "Thick Track",
 	render: () => (
 		<Root
-			class="relative inline-block font-sans"
+			class={style.rootSans}
 			thickness={50}
 			defaultValue={parseColor("hsl(30, 100%, 50%)")}
 		>
-			<Track class="block w-48 h-48">
+			<Track class={style.track}>
 				<Thumb
-					class={thumbClass}
+					class={style.thumb}
 					style={{ background: "var(--kb-color-current)" }}
 				>
 					<Input />
@@ -148,14 +141,14 @@ export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
 		<Root
-			class="relative inline-block font-sans"
+			class={style.rootSans}
 			thickness={28}
 			defaultValue={parseColor("hsl(60, 100%, 50%)")}
 			disabled
 		>
-			<Track class="block w-48 h-48 opacity-50 cursor-not-allowed">
+			<Track class={style.trackDisabled}>
 				<Thumb
-					class={`${thumbClass} cursor-not-allowed`}
+					class={style.thumbDisabled}
 					style={{ background: "var(--kb-color-current)" }}
 				>
 					<Input />
@@ -169,26 +162,26 @@ export const Disabled = meta.story({
 export const WithValidation = meta.story({
 	name: "With Validation",
 	render: () => (
-		<div class="flex flex-col items-center gap-2 font-sans">
+		<div class={style.validationWrapper}>
 			<Root
-				class="relative inline-block"
+				class={style.root}
 				thickness={28}
 				defaultValue={parseColor("hsl(45, 100%, 50%)")}
 				validationState="invalid"
 			>
-				<Label class={labelClass}>Color hue</Label>
-				<Track class="block w-48 h-48 mt-1">
+				<Label class={style.label}>Color hue</Label>
+				<Track class={style.trackWithMargin}>
 					<Thumb
-						class={`${thumbClass} border-red-400`}
+						class={style.thumbInvalid}
 						style={{ background: "var(--kb-color-current)" }}
 					>
 						<Input />
 					</Thumb>
 				</Track>
-				<Description class={descClass}>
+				<Description class={style.description}>
 					Select a cool hue (180–270°).
 				</Description>
-				<ErrorMessage class={errorClass}>
+				<ErrorMessage class={style.error}>
 					Please select a blue or purple hue.
 				</ErrorMessage>
 			</Root>

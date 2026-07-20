@@ -12,6 +12,7 @@ import {
 	Root,
 	Thumb,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/ColorArea",
@@ -28,30 +29,21 @@ const meta = preview.meta({
 
 export default meta;
 
-const rootClass = "relative inline-flex flex-col gap-2 font-sans select-none";
-const backgroundClass =
-	"relative w-48 h-48 rounded-md cursor-crosshair touch-none forced-colors:forced-color-adjust-none";
-const thumbClass =
-	"w-5 h-5 rounded-full border-2 border-white shadow-md cursor-grab focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white forced-colors:forced-color-adjust-none";
-const labelClass = "text-sm font-medium text-slate-700";
-const errorClass = "text-xs text-red-600";
-const descClass = "text-xs text-slate-500";
-
 /** HSL color area with saturation/lightness axes. */
 export const Default = meta.story({
 	name: "Default",
 	args: { disabled: false, readOnly: false },
 	render: (args) => (
 		<Root
-			class={rootClass}
+			class={style.root}
 			defaultValue={parseColor("hsl(200, 70%, 50%)")}
 			disabled={args.disabled as boolean}
 			readOnly={args.readOnly as boolean}
 		>
-			<Label class={labelClass}>Pick a color</Label>
-			<Background class={backgroundClass}>
+			<Label class={style.label}>Pick a color</Label>
+			<Background class={style.background}>
 				<Thumb
-					class={thumbClass}
+					class={style.thumb}
 					style={{ background: "var(--kb-color-current)" }}
 				>
 					<HiddenInputX />
@@ -68,12 +60,12 @@ function ControlledDemo() {
 		parseColor("hsl(120, 60%, 50%)"),
 	);
 	return (
-		<div class="flex flex-col gap-4 font-sans">
-			<Root class={rootClass} value={color()} onChange={setColor}>
-				<Label class={labelClass}>Controlled</Label>
-				<Background class={backgroundClass}>
+		<div class={style.controlledWrapper}>
+			<Root class={style.root} value={color()} onChange={setColor}>
+				<Label class={style.label}>Controlled</Label>
+				<Background class={style.background}>
 					<Thumb
-						class={thumbClass}
+						class={style.thumb}
 						style={{ background: "var(--kb-color-current)" }}
 					>
 						<HiddenInputX />
@@ -81,7 +73,7 @@ function ControlledDemo() {
 					</Thumb>
 				</Background>
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style.text}>
 				Current: <strong>{color().toString("hex")}</strong>
 			</p>
 		</div>
@@ -97,11 +89,11 @@ export const Controlled = meta.story({
 export const DefaultValue = meta.story({
 	name: "Default Value",
 	render: () => (
-		<Root class={rootClass} defaultValue={parseColor("hsl(270, 80%, 60%)")}>
-			<Label class={labelClass}>Purple tones</Label>
-			<Background class={backgroundClass}>
+		<Root class={style.root} defaultValue={parseColor("hsl(270, 80%, 60%)")}>
+			<Label class={style.label}>Purple tones</Label>
+			<Background class={style.background}>
 				<Thumb
-					class={thumbClass}
+					class={style.thumb}
 					style={{ background: "var(--kb-color-current)" }}
 				>
 					<HiddenInputX />
@@ -117,14 +109,14 @@ export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
 		<Root
-			class={rootClass}
+			class={style.root}
 			defaultValue={parseColor("hsl(0, 60%, 50%)")}
 			disabled
 		>
-			<Label class={`${labelClass} text-slate-400`}>Locked color</Label>
-			<Background class={`${backgroundClass} opacity-50 cursor-not-allowed`}>
+			<Label class={style.labelDisabled}>Locked color</Label>
+			<Background class={style.backgroundDisabled}>
 				<Thumb
-					class={`${thumbClass} border-slate-400 cursor-not-allowed`}
+					class={style.thumbDisabled}
 					style={{ background: "var(--kb-color-current)" }}
 				>
 					<HiddenInputX />
@@ -140,16 +132,16 @@ export const RGBSpace = meta.story({
 	name: "RGB Space",
 	render: () => (
 		<Root
-			class={rootClass}
+			class={style.root}
 			colorSpace="rgb"
 			xChannel="red"
 			yChannel="green"
 			defaultValue={parseColor("rgb(200, 150, 100)")}
 		>
-			<Label class={labelClass}>Red / Green</Label>
-			<Background class={backgroundClass}>
+			<Label class={style.label}>Red / Green</Label>
+			<Background class={style.background}>
 				<Thumb
-					class={thumbClass}
+					class={style.thumb}
 					style={{ background: "var(--kb-color-current)" }}
 				>
 					<HiddenInputX />
@@ -165,24 +157,24 @@ export const WithValidation = meta.story({
 	name: "With Validation",
 	render: () => (
 		<Root
-			class={rootClass}
+			class={style.root}
 			defaultValue={parseColor("hsl(30, 50%, 50%)")}
 			validationState="invalid"
 		>
-			<Label class={labelClass}>Pick a cool color</Label>
-			<Background class={backgroundClass}>
+			<Label class={style.label}>Pick a cool color</Label>
+			<Background class={style.background}>
 				<Thumb
-					class={`${thumbClass} border-red-500`}
+					class={style.thumbInvalid}
 					style={{ background: "var(--kb-color-current)" }}
 				>
 					<HiddenInputX />
 					<HiddenInputY />
 				</Thumb>
 			</Background>
-			<Description class={descClass}>
+			<Description class={style.description}>
 				Select a hue between 180–260°.
 			</Description>
-			<ErrorMessage class={errorClass}>
+			<ErrorMessage class={style.error}>
 				Please select a blue or purple hue.
 			</ErrorMessage>
 		</Root>

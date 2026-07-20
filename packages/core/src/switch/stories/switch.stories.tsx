@@ -9,6 +9,7 @@ import {
 	Root,
 	Thumb,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Switch",
@@ -17,32 +18,16 @@ const meta = preview.meta({
 
 export default meta;
 
-const rootClass = "flex items-center gap-3 font-sans";
-
-const labelClass =
-	"text-sm font-medium text-slate-700 select-none cursor-pointer";
-
-const controlClass =
-	"relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent bg-slate-200 transition-colors duration-200 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 data-[checked]:bg-blue-500 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[readonly]:cursor-not-allowed";
-
-const thumbClass =
-	"pointer-events-none inline-block h-4 w-4 translate-x-1 transform rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 data-[checked]:translate-x-6";
-
-const descriptionClass = "text-xs text-slate-500 mt-0.5";
-const errorClass = "text-xs text-red-600 mt-0.5";
-
-const wrapClass = "flex flex-col gap-0.5 font-sans";
-
 /** A minimal switch with a label. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={rootClass}>
-			<Control class={controlClass}>
-				<Thumb class={thumbClass} />
+		<Root class={style.root}>
+			<Control class={style.control}>
+				<Thumb class={style.thumb} />
 				<Input />
 			</Control>
-			<Label class={labelClass}>Airplane mode</Label>
+			<Label class={style.label}>Airplane mode</Label>
 		</Root>
 	),
 });
@@ -51,12 +36,12 @@ export const Default = meta.story({
 export const DefaultChecked = meta.story({
 	name: "Default Checked",
 	render: () => (
-		<Root class={rootClass} defaultChecked>
-			<Control class={controlClass}>
-				<Thumb class={thumbClass} />
+		<Root class={style.root} defaultChecked>
+			<Control class={style.control}>
+				<Thumb class={style.thumb} />
 				<Input />
 			</Control>
-			<Label class={labelClass}>Notifications</Label>
+			<Label class={style.label}>Notifications</Label>
 		</Root>
 	),
 });
@@ -65,15 +50,15 @@ export const DefaultChecked = meta.story({
 export const WithDescription = meta.story({
 	name: "With Description",
 	render: () => (
-		<div class={`${wrapClass}`}>
-			<Root class={rootClass}>
-				<Control class={controlClass}>
-					<Thumb class={thumbClass} />
+		<div class={style.wrap}>
+			<Root class={style.root}>
+				<Control class={style.control}>
+					<Thumb class={style.thumb} />
 					<Input />
 				</Control>
-				<div class="flex flex-col">
-					<Label class={labelClass}>Marketing emails</Label>
-					<Description class={descriptionClass}>
+				<div class={style.textColumn}>
+					<Label class={style.label}>Marketing emails</Label>
+					<Description class={style.description}>
 						Receive emails about new products and features.
 					</Description>
 				</div>
@@ -86,22 +71,22 @@ export const WithDescription = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<div class="flex flex-col gap-3">
-			<Root class={rootClass} disabled>
-				<Control class={controlClass}>
-					<Thumb class={thumbClass} />
+		<div class={style.column}>
+			<Root class={style.root} disabled>
+				<Control class={style.control}>
+					<Thumb class={style.thumb} />
 					<Input />
 				</Control>
-				<Label class={`${labelClass} opacity-50 cursor-not-allowed`}>
+				<Label class={`${style.label} ${style.labelDisabled}`}>
 					Disabled (off)
 				</Label>
 			</Root>
-			<Root class={rootClass} disabled defaultChecked>
-				<Control class={controlClass}>
-					<Thumb class={thumbClass} />
+			<Root class={style.root} disabled defaultChecked>
+				<Control class={style.control}>
+					<Thumb class={style.thumb} />
 					<Input />
 				</Control>
-				<Label class={`${labelClass} opacity-50 cursor-not-allowed`}>
+				<Label class={`${style.label} ${style.labelDisabled}`}>
 					Disabled (on)
 				</Label>
 			</Root>
@@ -113,12 +98,12 @@ export const Disabled = meta.story({
 export const ReadOnly = meta.story({
 	name: "Read Only",
 	render: () => (
-		<Root class={rootClass} defaultChecked readOnly>
-			<Control class={controlClass}>
-				<Thumb class={thumbClass} />
+		<Root class={style.root} defaultChecked readOnly>
+			<Control class={style.control}>
+				<Thumb class={style.thumb} />
 				<Input />
 			</Control>
-			<Label class={`${labelClass} cursor-not-allowed`}>
+			<Label class={`${style.label} ${style.labelReadOnly}`}>
 				Dark mode (read only)
 			</Label>
 		</Root>
@@ -128,20 +113,20 @@ export const ReadOnly = meta.story({
 function ControlledDemo() {
 	const [checked, setChecked] = createSignal(false);
 	return (
-		<div class="flex flex-col gap-3 font-sans">
-			<Root class={rootClass} checked={checked()} onChange={setChecked}>
-				<Control class={controlClass}>
-					<Thumb class={thumbClass} />
+		<div class={`${style.controlledWrapper} ${style.root}`}>
+			<Root class={style.root} checked={checked()} onChange={setChecked}>
+				<Control class={style.control}>
+					<Thumb class={style.thumb} />
 					<Input />
 				</Control>
-				<Label class={labelClass}>Dark mode</Label>
+				<Label class={style.label}>Dark mode</Label>
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style.stateText}>
 				State: <strong>{checked() ? "on" : "off"}</strong>
 			</p>
 			<button
 				type="button"
-				class="self-start rounded px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 transition-colors"
+				class={style.resetButton}
 				onClick={() => setChecked(false)}
 			>
 				Reset
@@ -161,27 +146,25 @@ function ValidationDemo() {
 	const isInvalid = () => !checked();
 	return (
 		<Root
-			class={`${wrapClass}`}
+			class={style.wrap}
 			checked={checked()}
 			onChange={setChecked}
 			validationState={isInvalid() ? "invalid" : "valid"}
 			required
 		>
-			<div class={rootClass}>
-				<Control
-					class={`${controlClass} data-[invalid]:ring-2 data-[invalid]:ring-red-500 data-[invalid]:ring-offset-2`}
-				>
-					<Thumb class={thumbClass} />
+			<div class={style.root}>
+				<Control class={`${style.control} ${style.controlInvalid}`}>
+					<Thumb class={style.thumb} />
 					<Input />
 				</Control>
-				<div class="flex flex-col">
-					<Label class={labelClass}>Accept terms and conditions</Label>
-					<Description class={descriptionClass}>
+				<div class={style.textColumn}>
+					<Label class={style.label}>Accept terms and conditions</Label>
+					<Description class={style.description}>
 						You must accept to continue.
 					</Description>
 				</div>
 			</div>
-			<ErrorMessage class={errorClass}>
+			<ErrorMessage class={style.error}>
 				You must accept the terms and conditions.
 			</ErrorMessage>
 		</Root>
@@ -196,14 +179,14 @@ export const WithValidation = meta.story({
 
 function RenderPropDemo() {
 	return (
-		<Root class={rootClass}>
+		<Root class={style.root}>
 			{(state) => (
 				<>
-					<Control class={controlClass}>
-						<Thumb class={thumbClass} />
+					<Control class={style.control}>
+						<Thumb class={style.thumb} />
 						<Input />
 					</Control>
-					<Label class={labelClass}>
+					<Label class={style.label}>
 						{state.checked() ? "Enabled" : "Disabled"}
 					</Label>
 				</>
@@ -222,10 +205,8 @@ export const RenderProp = meta.story({
 export const SwitchGroup = meta.story({
 	name: "Switch Group",
 	render: () => (
-		<div class="flex flex-col gap-3 font-sans w-72">
-			<p class="text-sm font-semibold text-slate-800">
-				Notification preferences
-			</p>
+		<div class={`${style.column} ${style.groupParent}`}>
+			<p class={style.groupTitle}>Notification preferences</p>
 			{(
 				[
 					{
@@ -239,14 +220,14 @@ export const SwitchGroup = meta.story({
 					{ label: "Reminders", description: "Daily digest of activity." },
 				] as const
 			).map((item) => (
-				<Root class={rootClass} defaultChecked={item.label !== "Reminders"}>
-					<Control class={controlClass}>
-						<Thumb class={thumbClass} />
+				<Root class={style.root} defaultChecked={item.label !== "Reminders"}>
+					<Control class={style.control}>
+						<Thumb class={style.thumb} />
 						<Input />
 					</Control>
-					<div class="flex flex-col">
-						<Label class={labelClass}>{item.label}</Label>
-						<Description class={descriptionClass}>
+					<div class={style.textColumn}>
+						<Label class={style.label}>{item.label}</Label>
+						<Description class={style.description}>
 							{item.description}
 						</Description>
 					</div>

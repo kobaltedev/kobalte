@@ -10,6 +10,7 @@ import {
 	Trigger,
 	Viewport,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/NavigationMenu",
@@ -28,67 +29,48 @@ const meta = preview.meta({
 
 export default meta;
 
-const rootClass =
-	"relative flex items-center gap-0.5 rounded-lg bg-white border border-slate-200 px-2 py-1.5 shadow-sm font-sans text-sm";
-
-const triggerClass =
-	"flex items-center gap-1 rounded px-3 py-1.5 text-slate-700 font-medium hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 data-[expanded]:bg-slate-100";
-
-const contentClass =
-	"w-[480px] rounded-lg border border-slate-200 bg-white p-4 shadow-lg outline-none";
-
-const viewportClass =
-	"relative overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg";
-
-const linkClass =
-	"flex flex-col gap-0.5 rounded-md p-3 hover:bg-slate-50 transition-colors cursor-pointer";
-
-const itemTitleClass = "text-sm font-medium text-slate-800";
-const itemDescClass = "text-xs text-slate-500 leading-relaxed";
-
-/** Standard navigation with hover-open menus and a shared viewport. */
 export const Default = meta.story({
 	name: "Default",
 	args: { delayDuration: 200, skipDelayDuration: 300 },
 	render: (args) => (
 		<Root
-			class={rootClass}
+			class={style.navigationMenuRoot}
 			delayDuration={args.delayDuration as number}
 			skipDelayDuration={args.skipDelayDuration as number}
 		>
 			<Menu>
-				<Trigger class={triggerClass}>Products ▾</Trigger>
+				<Trigger class={style.navigationMenuTrigger}>Products ▾</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<ul class="grid grid-cols-2 gap-2">
+					<Content class={style.navigationMenuContent}>
+						<ul class={style.navigationMenuGrid2}>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Analytics</span>
-									<span class={itemDescClass}>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Analytics</span>
+									<span class={style.navigationMenuItemDesc}>
 										Understand your data with rich dashboards.
 									</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Monitoring</span>
-									<span class={itemDescClass}>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Monitoring</span>
+									<span class={style.navigationMenuItemDesc}>
 										Keep tabs on your service health.
 									</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Alerts</span>
-									<span class={itemDescClass}>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Alerts</span>
+									<span class={style.navigationMenuItemDesc}>
 										Get notified before things go wrong.
 									</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Logs</span>
-									<span class={itemDescClass}>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Logs</span>
+									<span class={style.navigationMenuItemDesc}>
 										Search and filter all log events.
 									</span>
 								</a>
@@ -99,30 +81,34 @@ export const Default = meta.story({
 			</Menu>
 
 			<Menu>
-				<Trigger class={triggerClass}>Docs ▾</Trigger>
+				<Trigger class={style.navigationMenuTrigger}>Docs ▾</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<ul class="flex flex-col gap-1">
+					<Content class={style.navigationMenuContent}>
+						<ul class={style.navigationMenuList}>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Getting started</span>
-									<span class={itemDescClass}>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>
+										Getting started
+									</span>
+									<span class={style.navigationMenuItemDesc}>
 										Quick-start guide for new users.
 									</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>API reference</span>
-									<span class={itemDescClass}>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>
+										API reference
+									</span>
+									<span class={style.navigationMenuItemDesc}>
 										Detailed endpoint documentation.
 									</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Examples</span>
-									<span class={itemDescClass}>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Examples</span>
+									<span class={style.navigationMenuItemDesc}>
 										Real-world integration patterns.
 									</span>
 								</a>
@@ -133,219 +119,66 @@ export const Default = meta.story({
 			</Menu>
 
 			<li>
-				<a
-					href="#"
-					class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block"
-				>
+				<a href="#" class={style.navigationMenuNavLink}>
 					Pricing
 				</a>
 			</li>
 			<li>
-				<a
-					href="#"
-					class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block"
-				>
+				<a href="#" class={style.navigationMenuNavLink}>
 					Blog
 				</a>
 			</li>
 
-			<Viewport class={viewportClass} />
+			<Viewport class={style.navigationMenuViewport} />
 		</Root>
 	),
 });
 
-const animationCSS = `
-  .nm-viewport {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: var(--kb-navigation-menu-viewport-width);
-    height: var(--kb-navigation-menu-viewport-height);
-    overflow-x: clip;
-    overflow-y: visible;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    background: white;
-    box-shadow: 0 8px 32px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.06);
-    z-index: 50;
-    opacity: 0;
-    pointer-events: none;
-    transform-origin: var(--kb-menu-content-transform-origin);
-    transition: width 300ms ease, height 300ms ease;
-    animation: nm-vp-hide 200ms ease forwards;
-  }
-  .nm-viewport[data-expanded] {
-    opacity: 1;
-    pointer-events: auto;
-    animation: nm-vp-show 220ms ease forwards;
-  }
-  .nm-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    outline: none;
-    pointer-events: none;
-    animation-duration: 260ms;
-    animation-timing-function: ease;
-    animation-fill-mode: forwards;
-  }
-  .nm-content[data-expanded] { pointer-events: auto; }
-  .nm-content[data-motion="from-start"] { animation-name: nm-from-left; }
-  .nm-content[data-motion="from-end"]   { animation-name: nm-from-right; }
-  .nm-content[data-motion="to-start"]   { animation-name: nm-to-left; }
-  .nm-content[data-motion="to-end"]     { animation-name: nm-to-right; }
-  @keyframes nm-vp-show {
-    from { opacity: 0; transform: rotateX(-12deg) scale(0.96) translateY(-4px); }
-    to   { opacity: 1; transform: rotateX(0deg)   scale(1)    translateY(0px); }
-  }
-  @keyframes nm-vp-hide {
-    from { opacity: 1; transform: rotateX(0deg)   scale(1)    translateY(0px); }
-    to   { opacity: 0; transform: rotateX(-8deg)  scale(0.97) translateY(-2px); }
-  }
-  @keyframes nm-from-right {
-    from { opacity: 0; transform: translateX(60px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes nm-from-left {
-    from { opacity: 0; transform: translateX(-60px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes nm-to-right {
-    from { opacity: 1; transform: translateX(0); }
-    to   { opacity: 0; transform: translateX(60px); }
-  }
-  @keyframes nm-to-left {
-    from { opacity: 1; transform: translateX(0); }
-    to   { opacity: 0; transform: translateX(-60px); }
-  }
-`;
-
-/** Viewport fade + 3D-scale open/close, directional slides between panels, smooth width resize. */
 export const Animated = meta.story({
 	name: "Animated",
 	render: () => (
-		<>
-			<style>{animationCSS}</style>
-			<Root class={rootClass}>
-				<Menu>
-					<Trigger class={triggerClass}>Platform ▾</Trigger>
-					<Portal>
-						<Content class="nm-content w-[480px] p-5">
-							<ul class="grid grid-cols-2 gap-2">
-								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Analytics</span>
-										<span class={itemDescClass}>
-											Rich dashboards and real-time insights.
-										</span>
-									</a>
-								</li>
-								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Infrastructure</span>
-										<span class={itemDescClass}>
-											Scale your cloud resources.
-										</span>
-									</a>
-								</li>
-								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Security</span>
-										<span class={itemDescClass}>
-											Protect your users and data.
-										</span>
-									</a>
-								</li>
-								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Integrations</span>
-										<span class={itemDescClass}>
-											Connect with 200+ services.
-										</span>
-									</a>
-								</li>
-							</ul>
-						</Content>
-					</Portal>
-				</Menu>
-
-				<Menu>
-					<Trigger class={triggerClass}>Resources ▾</Trigger>
-					<Portal>
-						<Content class="nm-content w-[340px] p-5">
-							<ul class="flex flex-col gap-1">
-								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Documentation</span>
-										<span class={itemDescClass}>Guides and API reference.</span>
-									</a>
-								</li>
-								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Blog</span>
-										<span class={itemDescClass}>
-											News and engineering deep-dives.
-										</span>
-									</a>
-								</li>
-								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Community</span>
-										<span class={itemDescClass}>
-											Forum, Discord, and GitHub.
-										</span>
-									</a>
-								</li>
-							</ul>
-						</Content>
-					</Portal>
-				</Menu>
-
-				<li>
-					<a
-						href="#"
-						class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block"
-					>
-						Pricing
-					</a>
-				</li>
-
-				<Viewport class="nm-viewport">
-					<Arrow class="fill-white stroke-slate-200" />
-				</Viewport>
-			</Root>
-		</>
-	),
-});
-
-/** Navigation with an arrow indicator pointing to the active trigger. */
-export const WithArrow = meta.story({
-	name: "With Arrow",
-	render: () => (
-		<Root class={rootClass}>
+		<Root class={style.navigationMenuRoot}>
 			<Menu>
-				<Trigger class={triggerClass}>Features ▾</Trigger>
+				<Trigger class={style.navigationMenuTrigger}>Platform ▾</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<ul class="grid grid-cols-2 gap-2">
+					<Content
+						class={`${style.navigationMenuNmContent} ${style.navigationMenuContentP5}`}
+					>
+						<ul class={style.navigationMenuGrid2}>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Deployment</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Analytics</span>
+									<span class={style.navigationMenuItemDesc}>
+										Rich dashboards and real-time insights.
+									</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>CI/CD</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>
+										Infrastructure
+									</span>
+									<span class={style.navigationMenuItemDesc}>
+										Scale your cloud resources.
+									</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Scaling</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Security</span>
+									<span class={style.navigationMenuItemDesc}>
+										Protect your users and data.
+									</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Security</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>
+										Integrations
+									</span>
+									<span class={style.navigationMenuItemDesc}>
+										Connect with 200+ services.
+									</span>
 								</a>
 							</li>
 						</ul>
@@ -354,23 +187,36 @@ export const WithArrow = meta.story({
 			</Menu>
 
 			<Menu>
-				<Trigger class={triggerClass}>Company ▾</Trigger>
+				<Trigger class={style.navigationMenuTrigger}>Resources ▾</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<ul class="flex flex-col gap-1">
+					<Content
+						class={`${style.navigationMenuNmContent} ${style.navigationMenuContentW340} ${style.navigationMenuContentP5}`}
+					>
+						<ul class={style.navigationMenuList}>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>About</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>
+										Documentation
+									</span>
+									<span class={style.navigationMenuItemDesc}>
+										Guides and API reference.
+									</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Team</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Blog</span>
+									<span class={style.navigationMenuItemDesc}>
+										News and engineering deep-dives.
+									</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Careers</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Community</span>
+									<span class={style.navigationMenuItemDesc}>
+										Forum, Discord, and GitHub.
+									</span>
 								</a>
 							</li>
 						</ul>
@@ -379,41 +225,115 @@ export const WithArrow = meta.story({
 			</Menu>
 
 			<li>
-				<a
-					href="#"
-					class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block"
-				>
-					Contact
+				<a href="#" class={style.navigationMenuNavLink}>
+					Pricing
 				</a>
 			</li>
 
-			<Viewport class={viewportClass}>
-				<Arrow class="fill-white stroke-slate-200" />
+			<Viewport class={style.navigationMenuNmViewport}>
+				<Arrow class={style.navigationMenuArrow} />
 			</Viewport>
 		</Root>
 	),
 });
 
-/** Controlled open value — the active item is driven externally. */
+export const WithArrow = meta.story({
+	name: "With Arrow",
+	render: () => (
+		<Root class={style.navigationMenuRoot}>
+			<Menu>
+				<Trigger class={style.navigationMenuTrigger}>Features ▾</Trigger>
+				<Portal>
+					<Content class={style.navigationMenuContent}>
+						<ul class={style.navigationMenuGrid2}>
+							<li>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Deployment</span>
+								</a>
+							</li>
+							<li>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>CI/CD</span>
+								</a>
+							</li>
+							<li>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Scaling</span>
+								</a>
+							</li>
+							<li>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Security</span>
+								</a>
+							</li>
+						</ul>
+					</Content>
+				</Portal>
+			</Menu>
+
+			<Menu>
+				<Trigger class={style.navigationMenuTrigger}>Company ▾</Trigger>
+				<Portal>
+					<Content class={style.navigationMenuContent}>
+						<ul class={style.navigationMenuList}>
+							<li>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>About</span>
+								</a>
+							</li>
+							<li>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Team</span>
+								</a>
+							</li>
+							<li>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Careers</span>
+								</a>
+							</li>
+						</ul>
+					</Content>
+				</Portal>
+			</Menu>
+
+			<li>
+				<a href="#" class={style.navigationMenuNavLink}>
+					Contact
+				</a>
+			</li>
+
+			<Viewport class={style.navigationMenuViewport}>
+				<Arrow class={style.navigationMenuArrow} />
+			</Viewport>
+		</Root>
+	),
+});
+
 function ControlledDemo() {
 	const [value, setValue] = createSignal<string | null>(null);
 
 	return (
-		<div class="flex flex-col gap-3 font-sans">
-			<Root class={rootClass} value={value()} onValueChange={setValue}>
+		<div class={style.navigationMenuWrapper}>
+			<Root
+				class={style.navigationMenuRoot}
+				value={value()}
+				onValueChange={setValue}
+			>
 				<Menu>
-					<Trigger class={triggerClass}>Solutions ▾</Trigger>
+					<Trigger class={style.navigationMenuTrigger}>Solutions ▾</Trigger>
 					<Portal>
-						<Content class={contentClass}>
-							<ul class="flex flex-col gap-1">
+						<Content class={style.navigationMenuContent}>
+							<ul class={style.navigationMenuList}>
 								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Enterprise</span>
+									<a class={style.navigationMenuLink} href="#">
+										<span class={style.navigationMenuItemTitle}>
+											Enterprise
+										</span>
 									</a>
 								</li>
 								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Startups</span>
+									<a class={style.navigationMenuLink} href="#">
+										<span class={style.navigationMenuItemTitle}>Startups</span>
 									</a>
 								</li>
 							</ul>
@@ -422,23 +342,23 @@ function ControlledDemo() {
 				</Menu>
 
 				<Menu>
-					<Trigger class={triggerClass}>Resources ▾</Trigger>
+					<Trigger class={style.navigationMenuTrigger}>Resources ▾</Trigger>
 					<Portal>
-						<Content class={contentClass}>
-							<ul class="flex flex-col gap-1">
+						<Content class={style.navigationMenuContent}>
+							<ul class={style.navigationMenuList}>
 								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Blog</span>
+									<a class={style.navigationMenuLink} href="#">
+										<span class={style.navigationMenuItemTitle}>Blog</span>
 									</a>
 								</li>
 								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Videos</span>
+									<a class={style.navigationMenuLink} href="#">
+										<span class={style.navigationMenuItemTitle}>Videos</span>
 									</a>
 								</li>
 								<li>
-									<a class={linkClass} href="#">
-										<span class={itemTitleClass}>Community</span>
+									<a class={style.navigationMenuLink} href="#">
+										<span class={style.navigationMenuItemTitle}>Community</span>
 									</a>
 								</li>
 							</ul>
@@ -446,18 +366,18 @@ function ControlledDemo() {
 					</Portal>
 				</Menu>
 
-				<Viewport class={viewportClass} />
+				<Viewport class={style.navigationMenuViewport} />
 			</Root>
 
-			<div class="flex items-center gap-2">
+			<div class={style.navigationMenuControlRow}>
 				<button
 					type="button"
-					class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+					class={style.navigationMenuCloseButton}
 					onClick={() => setValue(null)}
 				>
 					Close all
 				</button>
-				<span class="text-xs text-slate-500">
+				<span class={style.navigationMenuStateText}>
 					Active: <strong>{value() ?? "none"}</strong>
 				</span>
 			</div>
@@ -470,32 +390,37 @@ export const Controlled = meta.story({
 	render: () => <ControlledDemo />,
 });
 
-/** Vertical layout — menus open to the right instead of below. */
 export const Vertical = meta.story({
 	name: "Vertical",
 	render: () => (
 		<Root
-			class="relative flex flex-col gap-0.5 rounded-lg bg-white border border-slate-200 px-1.5 py-2 shadow-sm font-sans text-sm w-40"
+			class={`${style.navigationMenuRoot} ${style.navigationMenuRootVertical}`}
 			orientation="vertical"
 		>
 			<Menu>
-				<Trigger class={`${triggerClass} justify-between`}>Analytics ▸</Trigger>
+				<Trigger
+					class={`${style.navigationMenuTrigger} ${style.navigationMenuTriggerJustify}`}
+				>
+					Analytics ▸
+				</Trigger>
 				<Portal>
-					<Content class="w-48 rounded-lg border border-slate-200 bg-white p-3 shadow-lg outline-none">
-						<ul class="flex flex-col gap-1">
+					<Content
+						class={`${style.navigationMenuContent} ${style.navigationMenuContentW48} ${style.navigationMenuContentP3}`}
+					>
+						<ul class={style.navigationMenuList}>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Dashboard</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Dashboard</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Reports</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Reports</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Exports</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Exports</span>
 								</a>
 							</li>
 						</ul>
@@ -504,23 +429,29 @@ export const Vertical = meta.story({
 			</Menu>
 
 			<Menu>
-				<Trigger class={`${triggerClass} justify-between`}>Settings ▸</Trigger>
+				<Trigger
+					class={`${style.navigationMenuTrigger} ${style.navigationMenuTriggerJustify}`}
+				>
+					Settings ▸
+				</Trigger>
 				<Portal>
-					<Content class="w-48 rounded-lg border border-slate-200 bg-white p-3 shadow-lg outline-none">
-						<ul class="flex flex-col gap-1">
+					<Content
+						class={`${style.navigationMenuContent} ${style.navigationMenuContentW48} ${style.navigationMenuContentP3}`}
+					>
+						<ul class={style.navigationMenuList}>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Account</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Account</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Billing</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Billing</span>
 								</a>
 							</li>
 							<li>
-								<a class={linkClass} href="#">
-									<span class={itemTitleClass}>Security</span>
+								<a class={style.navigationMenuLink} href="#">
+									<span class={style.navigationMenuItemTitle}>Security</span>
 								</a>
 							</li>
 						</ul>
@@ -528,18 +459,15 @@ export const Vertical = meta.story({
 				</Portal>
 			</Menu>
 
-			<Separator class="my-1 h-px bg-slate-200" />
+			<Separator class={style.navigationMenuSeparator} />
 
 			<li>
-				<a
-					href="#"
-					class="rounded px-3 py-1.5 text-slate-700 hover:bg-slate-100 font-medium block"
-				>
+				<a href="#" class={style.navigationMenuNavLink}>
 					Help
 				</a>
 			</li>
 
-			<Viewport class={viewportClass} />
+			<Viewport class={style.navigationMenuViewport} />
 		</Root>
 	),
 });

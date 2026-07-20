@@ -18,6 +18,7 @@ import {
 	SubTrigger,
 	Trigger,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/ContextMenu",
@@ -26,42 +27,24 @@ const meta = preview.meta({
 
 export default meta;
 
-const contentClass =
-	"min-w-[180px] rounded-md border border-slate-200 bg-white py-1 shadow-md outline-none z-50 font-sans text-sm";
-
-const itemClass =
-	"relative flex cursor-default select-none items-center rounded px-3 py-1.5 text-slate-700 outline-none hover:bg-slate-100 hover:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50";
-
-const labelClass =
-	"px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400";
-
-const separatorClass = "my-1 h-px bg-slate-200";
-
-const checkboxItemClass =
-	"relative flex cursor-default select-none items-center pl-8 pr-3 py-1.5 text-slate-700 outline-none hover:bg-slate-100";
-
-const itemIndicatorClass =
-	"absolute left-2 flex h-4 w-4 items-center justify-center";
-
-const triggerAreaClass =
-	"flex h-32 w-64 select-none items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 text-sm text-slate-400 font-sans";
-
 /** Right-click the shaded area to open the context menu. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
 		<Root>
-			<Trigger class={triggerAreaClass}>Right-click me</Trigger>
+			<Trigger class={style["context-menu__trigger-area"]}>
+				Right-click me
+			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<Item class={itemClass}>Back</Item>
-					<Item class={itemClass}>Forward</Item>
-					<Item class={itemClass}>Reload</Item>
-					<Separator class={separatorClass} />
-					<Item class={itemClass}>Save as…</Item>
-					<Item class={itemClass}>Print…</Item>
-					<Separator class={separatorClass} />
-					<Item class={itemClass} disabled>
+				<Content class={style["context-menu__content"]}>
+					<Item class={style["context-menu__item"]}>Back</Item>
+					<Item class={style["context-menu__item"]}>Forward</Item>
+					<Item class={style["context-menu__item"]}>Reload</Item>
+					<Separator class={style["context-menu__separator"]} />
+					<Item class={style["context-menu__item"]}>Save as…</Item>
+					<Item class={style["context-menu__item"]}>Print…</Item>
+					<Separator class={style["context-menu__separator"]} />
+					<Item class={style["context-menu__item"]} disabled>
 						View source (disabled)
 					</Item>
 				</Content>
@@ -75,21 +58,25 @@ export const WithGroups = meta.story({
 	name: "With Groups",
 	render: () => (
 		<Root>
-			<Trigger class={triggerAreaClass}>Right-click me</Trigger>
+			<Trigger class={style["context-menu__trigger-area"]}>
+				Right-click me
+			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
+				<Content class={style["context-menu__content"]}>
 					<Group>
-						<GroupLabel class={labelClass}>Text</GroupLabel>
-						<Item class={itemClass}>Bold</Item>
-						<Item class={itemClass}>Italic</Item>
-						<Item class={itemClass}>Underline</Item>
+						<GroupLabel class={style["context-menu__label"]}>Text</GroupLabel>
+						<Item class={style["context-menu__item"]}>Bold</Item>
+						<Item class={style["context-menu__item"]}>Italic</Item>
+						<Item class={style["context-menu__item"]}>Underline</Item>
 					</Group>
-					<Separator class={separatorClass} />
+					<Separator class={style["context-menu__separator"]} />
 					<Group>
-						<GroupLabel class={labelClass}>Paragraph</GroupLabel>
-						<Item class={itemClass}>Align left</Item>
-						<Item class={itemClass}>Center</Item>
-						<Item class={itemClass}>Align right</Item>
+						<GroupLabel class={style["context-menu__label"]}>
+							Paragraph
+						</GroupLabel>
+						<Item class={style["context-menu__item"]}>Align left</Item>
+						<Item class={style["context-menu__item"]}>Center</Item>
+						<Item class={style["context-menu__item"]}>Align right</Item>
 					</Group>
 				</Content>
 			</Portal>
@@ -105,32 +92,40 @@ function CheckboxDemo() {
 
 	return (
 		<Root>
-			<Trigger class={triggerAreaClass}>Right-click me</Trigger>
+			<Trigger class={style["context-menu__trigger-area"]}>
+				Right-click me
+			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<GroupLabel class={labelClass}>View</GroupLabel>
+				<Content class={style["context-menu__content"]}>
+					<GroupLabel class={style["context-menu__label"]}>View</GroupLabel>
 					<CheckboxItem
-						class={checkboxItemClass}
+						class={style["context-menu__checkbox-item"]}
 						checked={rulers()}
 						onChange={setRulers}
 					>
-						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
+						<ItemIndicator class={style["context-menu__item-indicator"]}>
+							✓
+						</ItemIndicator>
 						<ItemLabel>Rulers</ItemLabel>
 					</CheckboxItem>
 					<CheckboxItem
-						class={checkboxItemClass}
+						class={style["context-menu__checkbox-item"]}
 						checked={grid()}
 						onChange={setGrid}
 					>
-						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
+						<ItemIndicator class={style["context-menu__item-indicator"]}>
+							✓
+						</ItemIndicator>
 						<ItemLabel>Grid</ItemLabel>
 					</CheckboxItem>
 					<CheckboxItem
-						class={checkboxItemClass}
+						class={style["context-menu__checkbox-item"]}
 						checked={snap()}
 						onChange={setSnap}
 					>
-						<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
+						<ItemIndicator class={style["context-menu__item-indicator"]}>
+							✓
+						</ItemIndicator>
 						<ItemLabel>Snap to grid</ItemLabel>
 					</CheckboxItem>
 				</Content>
@@ -150,14 +145,18 @@ function RadioDemo() {
 
 	return (
 		<Root>
-			<Trigger class={triggerAreaClass}>Right-click me</Trigger>
+			<Trigger class={style["context-menu__trigger-area"]}>
+				Right-click me
+			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
+				<Content class={style["context-menu__content"]}>
 					<RadioGroup value={zoom()} onChange={setZoom}>
-						<GroupLabel class={labelClass}>Zoom</GroupLabel>
+						<GroupLabel class={style["context-menu__label"]}>Zoom</GroupLabel>
 						{["50%", "75%", "100%", "125%", "150%"].map((z) => (
-							<RadioItem class={checkboxItemClass} value={z}>
-								<ItemIndicator class={itemIndicatorClass}>●</ItemIndicator>
+							<RadioItem class={style["context-menu__checkbox-item"]} value={z}>
+								<ItemIndicator class={style["context-menu__item-indicator"]}>
+									●
+								</ItemIndicator>
 								<ItemLabel>{z}</ItemLabel>
 							</RadioItem>
 						))}
@@ -178,20 +177,22 @@ export const WithSubMenu = meta.story({
 	name: "With Sub-menu",
 	render: () => (
 		<Root>
-			<Trigger class={triggerAreaClass}>Right-click me</Trigger>
+			<Trigger class={style["context-menu__trigger-area"]}>
+				Right-click me
+			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<Item class={itemClass}>Cut</Item>
-					<Item class={itemClass}>Copy</Item>
-					<Item class={itemClass}>Paste</Item>
-					<Separator class={separatorClass} />
+				<Content class={style["context-menu__content"]}>
+					<Item class={style["context-menu__item"]}>Cut</Item>
+					<Item class={style["context-menu__item"]}>Copy</Item>
+					<Item class={style["context-menu__item"]}>Paste</Item>
+					<Separator class={style["context-menu__separator"]} />
 					<Sub>
-						<SubTrigger class={itemClass}>Share ▸</SubTrigger>
+						<SubTrigger class={style["context-menu__item"]}>Share ▸</SubTrigger>
 						<Portal>
-							<SubContent class={contentClass}>
-								<Item class={itemClass}>Email link</Item>
-								<Item class={itemClass}>Copy link</Item>
-								<Item class={itemClass}>Twitter</Item>
+							<SubContent class={style["context-menu__content"]}>
+								<Item class={style["context-menu__item"]}>Email link</Item>
+								<Item class={style["context-menu__item"]}>Copy link</Item>
+								<Item class={style["context-menu__item"]}>Twitter</Item>
 							</SubContent>
 						</Portal>
 					</Sub>
@@ -206,17 +207,19 @@ function ControlledDemo() {
 	const [open, setOpen] = createSignal(false);
 
 	return (
-		<div class="flex flex-col gap-3 font-sans">
+		<div class={style["context-menu__wrapper"]}>
 			<Root onOpenChange={setOpen}>
-				<Trigger class={triggerAreaClass}>Right-click me</Trigger>
+				<Trigger class={style["context-menu__trigger-area"]}>
+					Right-click me
+				</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<Item class={itemClass}>Action A</Item>
-						<Item class={itemClass}>Action B</Item>
+					<Content class={style["context-menu__content"]}>
+						<Item class={style["context-menu__item"]}>Action A</Item>
+						<Item class={style["context-menu__item"]}>Action B</Item>
 					</Content>
 				</Portal>
 			</Root>
-			<span class="text-xs text-slate-500">
+			<span class={style["context-menu__state"]}>
 				Menu state: <strong>{open() ? "open" : "closed"}</strong>
 			</span>
 		</div>

@@ -1,5 +1,6 @@
 import preview from "../../../../../.storybook/preview.js";
 import { Root } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Separator",
@@ -12,9 +13,9 @@ export default meta;
 export const Horizontal = meta.story({
 	name: "Horizontal",
 	render: () => (
-		<div class="flex flex-col gap-3 font-sans text-sm text-slate-700 w-64">
+		<div class={style.separator__col}>
 			<p>Above the line</p>
-			<Root class="border-t border-slate-200" />
+			<Root class={style.separator__horizontal} />
 			<p>Below the line</p>
 		</div>
 	),
@@ -24,11 +25,11 @@ export const Horizontal = meta.story({
 export const Vertical = meta.story({
 	name: "Vertical",
 	render: () => (
-		<div class="flex items-center gap-3 font-sans text-sm text-slate-700">
+		<div class={style.separator__row}>
 			<span>Home</span>
-			<Root orientation="vertical" class="h-4 border-l border-slate-300" />
+			<Root orientation="vertical" class={style.separator__vertical} />
 			<span>About</span>
-			<Root orientation="vertical" class="h-4 border-l border-slate-300" />
+			<Root orientation="vertical" class={style.separator__vertical} />
 			<span>Contact</span>
 		</div>
 	),
@@ -38,9 +39,9 @@ export const Vertical = meta.story({
 export const AsDiv = meta.story({
 	name: "As Div",
 	render: () => (
-		<div class="flex flex-col gap-3 font-sans text-sm text-slate-700 w-64">
+		<div class={style.separator__col}>
 			<p>Section A</p>
-			<Root as="div" class="h-px bg-slate-200" />
+			<Root as="div" class={style.separator__as - div} />
 			<p>Section B</p>
 		</div>
 	),

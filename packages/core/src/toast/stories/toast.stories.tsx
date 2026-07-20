@@ -12,6 +12,7 @@ import {
 	type ToastSwipeDirection,
 	toaster,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Toast",
@@ -31,20 +32,6 @@ const meta = preview.meta({
 
 export default meta;
 
-const regionClass =
-	"fixed top-0 right-0 z-50 flex flex-col gap-2 p-4 max-h-screen w-[360px] pointer-events-none";
-
-const toastClass =
-	"relative flex flex-col gap-1 rounded-lg border border-slate-200 bg-white p-4 shadow-lg pointer-events-auto font-sans";
-
-const titleClass = "text-sm font-semibold text-slate-900";
-const descClass = "text-xs text-slate-500";
-const closeClass =
-	"absolute top-2 right-2 inline-flex h-5 w-5 items-center justify-center rounded text-slate-400 hover:bg-slate-100 hover:text-slate-700 text-xs";
-const buttonClass =
-	"inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2";
-
-/** Simple toast with title and description. Duration and swipe direction are controllable. */
 export const Default = meta.story({
 	name: "Default",
 	args: { duration: 5000, swipeDirection: "right" as ToastSwipeDirection },
@@ -52,9 +39,9 @@ export const Default = meta.story({
 		const duration = args.duration as number;
 		const swipeDirection = args.swipeDirection as ToastSwipeDirection;
 		return (
-			<div class="font-sans">
+			<div class={style.toastWrapper}>
 				<Region
-					class={regionClass}
+					class={style.toastRegion}
 					duration={duration}
 					swipeDirection={swipeDirection}
 				>
@@ -62,15 +49,15 @@ export const Default = meta.story({
 				</Region>
 				<button
 					type="button"
-					class={buttonClass}
+					class={style.toastButton}
 					onClick={() =>
 						toaster.show((props) => (
-							<Root toastId={props.toastId} class={toastClass}>
-								<Title class={titleClass}>Notification</Title>
-								<Description class={descClass}>
+							<Root toastId={props.toastId} class={style.toastRoot}>
+								<Title class={style.toastTitle}>Notification</Title>
+								<Description class={style.toastDescription}>
 									Your changes have been saved.
 								</Description>
-								<CloseButton class={closeClass} aria-label="Dismiss">
+								<CloseButton class={style.toastClose} aria-label="Dismiss">
 									✕
 								</CloseButton>
 							</Root>
@@ -84,64 +71,72 @@ export const Default = meta.story({
 	},
 });
 
-/** Different semantic variants — success, error, warning, info. */
 export const Variants = meta.story({
 	name: "Variants",
 	render: () => {
-		type Variant = { label: string; icon: string; color: string; bg: string };
+		type Variant = {
+			label: string;
+			icon: string;
+			colorClass: string;
+			bgClass: string;
+		};
 		const variants: Variant[] = [
 			{
 				label: "Success",
 				icon: "✓",
-				color: "text-green-600",
-				bg: "bg-green-50 border-green-200",
+				colorClass: style.toastVariantTitleSuccess,
+				bgClass: style.toastVariantSuccess,
 			},
 			{
 				label: "Error",
 				icon: "✗",
-				color: "text-red-600",
-				bg: "bg-red-50 border-red-200",
+				colorClass: style.toastVariantTitleError,
+				bgClass: style.toastVariantError,
 			},
 			{
 				label: "Warning",
 				icon: "⚠",
-				color: "text-amber-600",
-				bg: "bg-amber-50 border-amber-200",
+				colorClass: style.toastVariantTitleWarning,
+				bgClass: style.toastVariantWarning,
 			},
 			{
 				label: "Info",
 				icon: "ℹ",
-				color: "text-blue-600",
-				bg: "bg-blue-50 border-blue-200",
+				colorClass: style.toastVariantTitleInfo,
+				bgClass: style.toastVariantInfo,
 			},
 		];
 
 		return (
-			<div class="font-sans flex flex-col gap-2">
-				<Region class={regionClass}>
+			<div class={`${style.toastWrapper} ${style.toastWrapperGap}`}>
+				<Region class={style.toastRegion}>
 					<List />
 				</Region>
-				<div class="flex gap-2 flex-wrap">
+				<div class={`${style.toastWrapper} ${style.toastWrapperFlex}`}>
 					{variants.map((v) => (
 						<button
 							type="button"
-							class={buttonClass}
+							class={style.toastButton}
 							onClick={() =>
 								toaster.show((props) => (
 									<Root
 										toastId={props.toastId}
-										class={`relative flex items-start gap-3 rounded-lg border p-4 shadow-lg pointer-events-auto font-sans ${v.bg}`}
+										class={`${style.toastVariant} ${v.bgClass}`}
 									>
-										<span class={`text-lg font-bold ${v.color}`}>{v.icon}</span>
-										<div class="flex flex-col gap-0.5 min-w-0">
-											<Title class={`text-sm font-semibold ${v.color}`}>
+										<span class={`${style.toastVariantIcon} ${v.colorClass}`}>
+											{v.icon}
+										</span>
+										<div class={style.toastVariantContent}>
+											<Title
+												class={`${style.toastVariantTitle} ${v.colorClass}`}
+											>
 												{v.label}
 											</Title>
-											<Description class="text-xs text-slate-600">
+											<Description class={style.toastVariantDesc}>
 												This is a {v.label.toLowerCase()} message.
 											</Description>
 										</div>
-										<CloseButton class={closeClass} aria-label="Dismiss">
+										<CloseButton class={style.toastClose} aria-label="Dismiss">
 											✕
 										</CloseButton>
 									</Root>
@@ -157,33 +152,32 @@ export const Variants = meta.story({
 	},
 });
 
-/** Toast with a visual progress bar that depletes over the duration. */
 export const WithProgress = meta.story({
 	name: "With Progress",
 	args: { duration: 5000 },
 	render: (args) => {
 		const duration = args.duration as number;
 		return (
-			<div class="font-sans">
-				<Region class={regionClass} duration={duration}>
+			<div class={style.toastWrapper}>
+				<Region class={style.toastRegion} duration={duration}>
 					<List />
 				</Region>
 				<button
 					type="button"
-					class={buttonClass}
+					class={style.toastButton}
 					onClick={() =>
 						toaster.show((props) => (
-							<Root toastId={props.toastId} class={toastClass}>
-								<Title class={titleClass}>Uploading…</Title>
-								<Description class={descClass}>
+							<Root toastId={props.toastId} class={style.toastRoot}>
+								<Title class={style.toastTitle}>Uploading…</Title>
+								<Description class={style.toastDescription}>
 									Your file is being uploaded.
 								</Description>
-								<CloseButton class={closeClass} aria-label="Dismiss">
+								<CloseButton class={style.toastClose} aria-label="Dismiss">
 									✕
 								</CloseButton>
-								<ProgressTrack class="mt-2 h-1 w-full rounded-full bg-slate-100 overflow-hidden">
+								<ProgressTrack class={style.toastProgressTrack}>
 									<ProgressFill
-										class="h-full rounded-full bg-blue-500 transition-[width]"
+										class={style.toastProgressFill}
 										style={{ width: "var(--kb-toast-progress-fill-width)" }}
 									/>
 								</ProgressTrack>
@@ -198,25 +192,24 @@ export const WithProgress = meta.story({
 	},
 });
 
-/** Persistent toast that only closes via the close button — no auto-dismiss. */
 export const Persistent = meta.story({
 	name: "Persistent",
 	render: () => (
-		<div class="font-sans">
-			<Region class={regionClass}>
+		<div class={style.toastWrapper}>
+			<Region class={style.toastRegion}>
 				<List />
 			</Region>
 			<button
 				type="button"
-				class={buttonClass}
+				class={style.toastButton}
 				onClick={() =>
 					toaster.show((props) => (
-						<Root toastId={props.toastId} class={toastClass} persistent>
-							<Title class={titleClass}>Action required</Title>
-							<Description class={descClass}>
+						<Root toastId={props.toastId} class={style.toastRoot} persistent>
+							<Title class={style.toastTitle}>Action required</Title>
+							<Description class={style.toastDescription}>
 								This toast will not auto-dismiss. Close it manually.
 							</Description>
-							<CloseButton class={closeClass} aria-label="Dismiss">
+							<CloseButton class={style.toastClose} aria-label="Dismiss">
 								✕
 							</CloseButton>
 						</Root>
@@ -229,19 +222,18 @@ export const Persistent = meta.story({
 	),
 });
 
-/** Promise-based toast: pending → fulfilled → rejected states. */
 export const PromiseBased = meta.story({
 	name: "Promise-based",
 	render: () => {
 		const [shouldFail, setShouldFail] = createSignal(false);
 
 		return (
-			<div class="flex flex-col gap-3 font-sans">
-				<Region class={regionClass}>
+			<div class={`${style.toastWrapper} ${style.toastWrapperGap}`}>
+				<Region class={style.toastRegion}>
 					<List />
 				</Region>
-				<div class="flex items-center gap-3">
-					<label class="flex items-center gap-1.5 text-sm text-slate-600">
+				<div class={`${style.toastWrapper} ${style.toastWrapperCenter}`}>
+					<label class={`${style.toastWrapper} ${style.toastWrapperCenter}`}>
 						<input
 							type="checkbox"
 							checked={shouldFail()}
@@ -251,7 +243,7 @@ export const PromiseBased = meta.story({
 					</label>
 					<button
 						type="button"
-						class={buttonClass}
+						class={style.toastButton}
 						onClick={() => {
 							const p = new Promise<string>((resolve, reject) =>
 								setTimeout(
@@ -263,15 +255,15 @@ export const PromiseBased = meta.story({
 								),
 							);
 							toaster.promise(p, (props) => (
-								<Root toastId={props.toastId} class={toastClass}>
-									<Title class={titleClass}>
+								<Root toastId={props.toastId} class={style.toastRoot}>
+									<Title class={style.toastTitle}>
 										{props.state === "pending"
 											? "Uploading…"
 											: props.state === "fulfilled"
 												? `Done — ${props.data as string}`
 												: `Error — ${(props.error as Error)?.message}`}
 									</Title>
-									<CloseButton class={closeClass} aria-label="Dismiss">
+									<CloseButton class={style.toastClose} aria-label="Dismiss">
 										✕
 									</CloseButton>
 								</Root>
@@ -286,30 +278,29 @@ export const PromiseBased = meta.story({
 	},
 });
 
-/** Multiple toasts stacking — limit controls max visible at once. */
 export const Stacking = meta.story({
 	name: "Stacking",
 	render: () => {
 		const limit = 3;
 		let count = 0;
 		return (
-			<div class="font-sans">
-				<Region class={regionClass} limit={limit}>
+			<div class={style.toastWrapper}>
+				<Region class={style.toastRegion} limit={limit}>
 					<List />
 				</Region>
 				<button
 					type="button"
-					class={buttonClass}
+					class={style.toastButton}
 					onClick={() => {
 						count++;
 						const n = count;
 						toaster.show((props) => (
-							<Root toastId={props.toastId} class={toastClass}>
-								<Title class={titleClass}>Toast #{n}</Title>
-								<Description class={descClass}>
+							<Root toastId={props.toastId} class={style.toastRoot}>
+								<Title class={style.toastTitle}>Toast #{n}</Title>
+								<Description class={style.toastDescription}>
 									Visible up to {limit} at a time.
 								</Description>
-								<CloseButton class={closeClass} aria-label="Dismiss">
+								<CloseButton class={style.toastClose} aria-label="Dismiss">
 									✕
 								</CloseButton>
 							</Root>

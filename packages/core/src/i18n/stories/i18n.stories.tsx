@@ -14,6 +14,7 @@ import {
 	I18nProvider,
 	useLocale,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Primitives/I18n",
@@ -21,17 +22,6 @@ const meta = preview.meta({
 });
 
 export default meta;
-
-// ---------------------------------------------------------------------------
-// Shared styles
-// ---------------------------------------------------------------------------
-
-const panel =
-	"font-sans text-sm rounded-lg border border-slate-200 overflow-hidden";
-const row =
-	"flex items-center gap-3 px-4 py-2.5 border-b border-slate-100 last:border-0";
-const label = "text-slate-500 w-36 shrink-0";
-const value = "font-mono text-slate-800";
 
 // ---------------------------------------------------------------------------
 // Story: Locale Switcher
@@ -49,14 +39,14 @@ const LOCALES = [
 function LocaleDisplay() {
 	const { locale, direction } = useLocale();
 	return (
-		<div class={panel}>
-			<div class={row}>
-				<span class={label}>Locale</span>
-				<span class={value}>{locale()}</span>
+		<div class={style.panel}>
+			<div class={style.row}>
+				<span class={style.label}>Locale</span>
+				<span class={style.value}>{locale()}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Direction</span>
-				<span class={value}>{direction()}</span>
+			<div class={style.row}>
+				<span class={style.label}>Direction</span>
+				<span class={style.value}>{direction()}</span>
 			</div>
 		</div>
 	);
@@ -106,22 +96,22 @@ function NumberFormatterDisplay() {
 	const amount = 12345.67;
 
 	return (
-		<div class={panel}>
-			<div class={row}>
-				<span class={label}>Locale</span>
-				<span class={value}>{locale()}</span>
+		<div class={style.panel}>
+			<div class={style.row}>
+				<span class={style.label}>Locale</span>
+				<span class={style.value}>{locale()}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Currency</span>
-				<span class={value}>{currency().format(amount)}</span>
+			<div class={style.row}>
+				<span class={style.label}>Currency</span>
+				<span class={style.value}>{currency().format(amount)}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Percent</span>
-				<span class={value}>{percent().format(0.4267)}</span>
+			<div class={style.row}>
+				<span class={style.label}>Percent</span>
+				<span class={style.value}>{percent().format(0.4267)}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Compact</span>
-				<span class={value}>{compact().format(1_234_567)}</span>
+			<div class={style.row}>
+				<span class={style.label}>Compact</span>
+				<span class={style.value}>{compact().format(1_234_567)}</span>
 			</div>
 		</div>
 	);
@@ -168,22 +158,22 @@ function DateFormatterDisplay() {
 	const now = new Date(2025, 5, 23);
 
 	return (
-		<div class={panel}>
-			<div class={row}>
-				<span class={label}>Locale</span>
-				<span class={value}>{locale()}</span>
+		<div class={style.panel}>
+			<div class={style.row}>
+				<span class={style.label}>Locale</span>
+				<span class={style.value}>{locale()}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Short date</span>
-				<span class={value}>{shortDate().format(now)}</span>
+			<div class={style.row}>
+				<span class={style.label}>Short date</span>
+				<span class={style.value}>{shortDate().format(now)}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Full + time</span>
-				<span class={value}>{longDate().format(now)}</span>
+			<div class={style.row}>
+				<span class={style.label}>Full + time</span>
+				<span class={style.value}>{longDate().format(now)}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Long month</span>
-				<span class={value}>{relative().format(now)}</span>
+			<div class={style.row}>
+				<span class={style.label}>Long month</span>
+				<span class={style.value}>{relative().format(now)}</span>
 			</div>
 		</div>
 	);
@@ -255,21 +245,17 @@ function FilterDisplay(props: {
 	});
 
 	return (
-		<div class="flex flex-col gap-3 font-sans">
+		<div class={style.filterWrapper}>
 			<input
-				class="border border-slate-200 rounded px-3 py-1.5 text-sm w-48 focus:outline-none focus:ring-2 focus:ring-blue-500"
+				class={style.filterInput}
 				placeholder="Type to filter…"
 				value={query()}
 				onInput={(e) => setQuery(e.currentTarget.value)}
 			/>
-			<div class="text-xs text-slate-500">{results().length} matches</div>
-			<div class="flex flex-wrap gap-1.5">
+			<div class={style.filterCount}>{results().length} matches</div>
+			<div class={style.filterTags}>
 				<For each={results()}>
-					{(fruit) => (
-						<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-xs">
-							{fruit}
-						</span>
-					)}
+					{(fruit) => <span class={style.filterTag}>{fruit}</span>}
 				</For>
 			</div>
 		</div>
@@ -329,18 +315,22 @@ function CollatorDisplay(props: { words: string[] }) {
 	);
 
 	return (
-		<div class={panel}>
-			<div class={row}>
-				<span class={label}>Locale</span>
-				<span class={value}>{locale()}</span>
+		<div class={style.panel}>
+			<div class={style.row}>
+				<span class={style.label}>Locale</span>
+				<span class={style.value}>{locale()}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Original</span>
-				<span class={`${value} truncate`}>{props.words.join(", ")}</span>
+			<div class={style.row}>
+				<span class={style.label}>Original</span>
+				<span class={`${style.value} ${style.valueTruncate}`}>
+					{props.words.join(", ")}
+				</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Sorted</span>
-				<span class={`${value} truncate`}>{sorted().join(", ")}</span>
+			<div class={style.row}>
+				<span class={style.label}>Sorted</span>
+				<span class={`${style.value} ${style.valueTruncate}`}>
+					{sorted().join(", ")}
+				</span>
 			</div>
 		</div>
 	);
@@ -428,26 +418,26 @@ function TranslatorDisplay(props: {
 	const nav = scopedTranslator(t, "nav");
 
 	return (
-		<div class={panel}>
-			<div class={row}>
-				<span class={label}>Greeting</span>
-				<span class={value}>{t("greeting", { name: props.name })}</span>
+		<div class={style.panel}>
+			<div class={style.row}>
+				<span class={style.label}>Greeting</span>
+				<span class={style.value}>{t("greeting", { name: props.name })}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Farewell</span>
-				<span class={value}>{t("farewell", props.name)}</span>
+			<div class={style.row}>
+				<span class={style.label}>Farewell</span>
+				<span class={style.value}>{t("farewell", props.name)}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>Items</span>
-				<span class={value}>{t("items", props.count)}</span>
+			<div class={style.row}>
+				<span class={style.label}>Items</span>
+				<span class={style.value}>{t("items", props.count)}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>nav.home</span>
-				<span class={value}>{nav("home")}</span>
+			<div class={style.row}>
+				<span class={style.label}>nav.home</span>
+				<span class={style.value}>{nav("home")}</span>
 			</div>
-			<div class={row}>
-				<span class={label}>nav.about</span>
-				<span class={value}>{nav("about")}</span>
+			<div class={style.row}>
+				<span class={style.label}>nav.about</span>
+				<span class={style.value}>{nav("about")}</span>
 			</div>
 		</div>
 	);

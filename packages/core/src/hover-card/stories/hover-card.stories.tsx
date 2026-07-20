@@ -1,5 +1,6 @@
 import preview from "../../../../../.storybook/preview.js";
 import { Arrow, Content, Portal, Root, Trigger } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/HoverCard",
@@ -8,32 +9,24 @@ const meta = preview.meta({
 
 export default meta;
 
-const contentClass =
-	"z-50 w-64 rounded-lg border border-slate-200 bg-white p-4 shadow-md font-sans";
-
-const triggerClass =
-	"text-sm font-medium text-blue-600 underline underline-offset-2 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded";
-
 /** Opens when the cursor enters the link and closes after it leaves. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
 		<Root>
-			<Trigger class={triggerClass} href="#">
+			<Trigger class={style.hovercard__trigger} href="#">
 				Hover over me
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<div class="flex items-center gap-3 mb-2">
-						<div class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-semibold text-sm">
-							JD
-						</div>
+				<Content class={style.hovercard__content}>
+					<div class={style.hovercard__profile}>
+						<div class={style.hovercard__avatar}>JD</div>
 						<div>
-							<p class="text-sm font-semibold text-slate-900">Jane Doe</p>
-							<p class="text-xs text-slate-500">@janedoe</p>
+							<p class={style.hovercard__name}>Jane Doe</p>
+							<p class={style.hovercard__handle}>@janedoe</p>
 						</div>
 					</div>
-					<p class="text-xs text-slate-600">
+					<p class={style.hovercard__bio}>
 						Product designer &amp; open-source contributor. Building accessible
 						UI.
 					</p>
@@ -48,13 +41,13 @@ export const WithArrow = meta.story({
 	name: "With Arrow",
 	render: () => (
 		<Root>
-			<Trigger class={triggerClass} href="#">
+			<Trigger class={style.hovercard__trigger} href="#">
 				With arrow
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<Arrow class="fill-white [filter:drop-shadow(0_1px_0_rgb(226_232_240))]" />
-					<p class="text-sm text-slate-700">
+				<Content class={style.hovercard__content}>
+					<Arrow class={style.hovercard__arrow} />
+					<p class={style.hovercard__text}>
 						The arrow connects the card visually to its trigger.
 					</p>
 				</Content>
@@ -68,13 +61,13 @@ export const PlacementBottom = meta.story({
 	name: "Placement Bottom",
 	render: () => (
 		<Root placement="bottom">
-			<Trigger class={triggerClass} href="#">
+			<Trigger class={style.hovercard__trigger} href="#">
 				Open below
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<Arrow class="fill-white [filter:drop-shadow(0_-1px_0_rgb(226_232_240))]" />
-					<p class="text-sm text-slate-700">
+				<Content class={style.hovercard__content}>
+					<Arrow class={style["hovercard__arrow--bottom"]} />
+					<p class={style.hovercard__text}>
 						This hover card appears below the trigger.
 					</p>
 				</Content>
@@ -88,12 +81,12 @@ export const FastDelays = meta.story({
 	name: "Fast Delays",
 	render: () => (
 		<Root openDelay={200} closeDelay={100}>
-			<Trigger class={triggerClass} href="#">
+			<Trigger class={style.hovercard__trigger} href="#">
 				Fast hover card
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<p class="text-sm text-slate-700">
+				<Content class={style.hovercard__content}>
+					<p class={style.hovercard__text}>
 						Opens in 200 ms, closes in 100 ms.
 					</p>
 				</Content>
@@ -107,12 +100,12 @@ export const NoSafeArea = meta.story({
 	name: "No Safe Area",
 	render: () => (
 		<Root ignoreSafeArea>
-			<Trigger class={triggerClass} href="#">
+			<Trigger class={style.hovercard__trigger} href="#">
 				No safe area
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<p class="text-sm text-slate-700">
+				<Content class={style.hovercard__content}>
+					<p class={style.hovercard__text}>
 						No safe zone between trigger and card — closes as soon as the cursor
 						leaves the trigger.
 					</p>
@@ -127,33 +120,30 @@ export const RichContent = meta.story({
 	name: "Rich Content",
 	render: () => (
 		<Root>
-			<Trigger class={triggerClass} href="#">
+			<Trigger class={style.hovercard__trigger} href="#">
 				@solidjs
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<div class="flex items-start justify-between mb-3">
-						<div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-lg">
-							S
-						</div>
-						<a
-							href="#"
-							class="text-xs font-medium text-blue-600 hover:underline focus-visible:outline-none"
-						>
+				<Content class={style.hovercard__content}>
+					<div class={style["hovercard__rich-header"]}>
+						<div class={style["hovercard__rich-avatar"]}>S</div>
+						<a href="#" class={style["hovercard__follow-link"]}>
 							Follow
 						</a>
 					</div>
-					<p class="text-sm font-semibold text-slate-900">SolidJS</p>
-					<p class="text-xs text-slate-500 mb-3">@solidjs</p>
-					<p class="text-xs text-slate-600 mb-3">
+					<p class={style["hovercard__rich-title"]}>SolidJS</p>
+					<p class={style["hovercard__rich-handle"]}>@solidjs</p>
+					<p class={style["hovercard__rich-bio"]}>
 						Simple and performant reactivity for building user interfaces.
 					</p>
-					<div class="flex gap-4 text-xs text-slate-500">
+					<div class={style.hovercard__stats}>
 						<span>
-							<strong class="text-slate-900">1.2k</strong> Following
+							<strong class={style["hovercard__stat-value"]}>1.2k</strong>{" "}
+							Following
 						</span>
 						<span>
-							<strong class="text-slate-900">42k</strong> Followers
+							<strong class={style["hovercard__stat-value"]}>42k</strong>{" "}
+							Followers
 						</span>
 					</div>
 				</Content>
