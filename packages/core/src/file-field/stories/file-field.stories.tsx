@@ -75,9 +75,7 @@ export const ImagePreview = meta.story({
 				</span>
 			</Dropzone>
 			<HiddenInput />
-			<ItemList
-				class={`${style.fileFieldItemList} ${style.fileFieldItemListGrid}`}
-			>
+			<ItemList class={[style.fileFieldItemList, style.fileFieldItemListGrid]}>
 				{(_file) => (
 					<Item class={style.fileFieldItemImage}>
 						<ItemPreview type="image/*" class={style.fileFieldItemPreview}>
@@ -100,7 +98,7 @@ export const SingleFile = meta.story({
 	name: "Single File",
 	render: () => (
 		<Root
-			class={`${style.fileFieldRoot} ${style.fileFieldRootW72}`}
+			class={[style.fileFieldRoot, style.fileFieldRootW72]}
 			accept=".pdf,.doc,.docx"
 		>
 			<Label class={style.fileFieldLabel}>Resume</Label>
@@ -108,9 +106,7 @@ export const SingleFile = meta.story({
 				<span>Drop PDF here or click to browse</span>
 			</Dropzone>
 			<HiddenInput />
-			<ItemList
-				class={`${style.fileFieldItemList} ${style.fileFieldItemListGapSm}`}
-			>
+			<ItemList class={[style.fileFieldItemList, style.fileFieldItemListGapSm]}>
 				{(_file) => (
 					<Item class={style.fileFieldItem}>
 						<ItemName class={style.fileFieldItemName} />
@@ -127,8 +123,8 @@ export const SingleFile = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root class={`${style.fileFieldRoot} ${style.fileFieldRootW72}`} disabled>
-			<Label class={`${style.fileFieldLabel} ${style.fileFieldLabelDisabled}`}>
+		<Root class={[style.fileFieldRoot, style.fileFieldRootW72]} disabled>
+			<Label class={[style.fileFieldLabel, style.fileFieldLabelDisabled]}>
 				Attachment (disabled)
 			</Label>
 			<Trigger class={style.fileFieldTrigger}>Choose file</Trigger>
@@ -141,7 +137,7 @@ export const Invalid = meta.story({
 	name: "Invalid",
 	render: () => (
 		<Root
-			class={`${style.fileFieldRoot} ${style.fileFieldRootW72}`}
+			class={[style.fileFieldRoot, style.fileFieldRootW72]}
 			validationState="invalid"
 			required
 		>

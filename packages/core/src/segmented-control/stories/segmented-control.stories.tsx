@@ -75,19 +75,25 @@ export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
 		<Root
-			class={`${style.segmentedControlRoot} ${style.segmentedControlRootDisabled}`}
+			class={[style.segmentedControlRoot, style.segmentedControlRootDisabled]}
 			defaultValue="month"
 			disabled
 		>
 			<Indicator class={style.segmentedControlIndicator} />
 			{(["Day", "Month", "Year"] as const).map((label) => (
 				<Item
-					class={`${style.segmentedControlItem} ${style.segmentedControlItemPointerNone}`}
+					class={[
+						style.segmentedControlItem,
+						style.segmentedControlItemPointerNone,
+					]}
 					value={label.toLowerCase()}
 				>
 					<ItemInput />
 					<ItemControl
-						class={`${style.segmentedControlItemControl} ${style.segmentedControlItemControlNoCursor}`}
+						class={[
+							style.segmentedControlItemControl,
+							style.segmentedControlItemControlNoCursor,
+						]}
 					/>
 					<ItemLabel class={style.segmentedControlItemLabel}>{label}</ItemLabel>
 				</Item>
@@ -142,13 +148,16 @@ export const ManySegments = meta.story({
 			<Indicator class={style.segmentedControlIndicator} />
 			{(["1D", "1W", "1M", "3M", "6M", "1Y", "ALL"] as const).map((label) => (
 				<Item
-					class={`${style.segmentedControlItem} ${style.segmentedControlItemPx3}`}
+					class={[style.segmentedControlItem, style.segmentedControlItemPx3]}
 					value={label.toLowerCase()}
 				>
 					<ItemInput />
 					<ItemControl class={style.segmentedControlItemControl} />
 					<ItemLabel
-						class={`${style.segmentedControlItemLabel} ${style.segmentedControlItemLabelMono}`}
+						class={[
+							style.segmentedControlItemLabel,
+							style.segmentedControlItemLabelMono,
+						]}
 					>
 						{label}
 					</ItemLabel>

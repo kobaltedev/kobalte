@@ -38,15 +38,13 @@ export const Playground = meta.story({
 			indeterminate={args.indeterminate}
 			class={style.progress__root}
 		>
-			<div class={style.progress__label - row}>
+			<div class={style["progress__label-row"]}>
 				<Label>{args.label}</Label>
 				{!args.indeterminate && <ValueLabel />}
 			</div>
-			<Track
-				class={`${style.progress__track} ${style.progress__track - relative}`}
-			>
+			<Track class={[style.progress__track, style["progress__track-relative"]]}>
 				{args.indeterminate ? (
-					<Fill class={style.progress__fill - animated} />
+					<Fill class={style["progress__fill-animated"]} />
 				) : (
 					<Fill class={style.progress__fill} />
 				)}
@@ -61,7 +59,7 @@ function ControlledDemo() {
 	return (
 		<div class={style.progress__root}>
 			<Root value={value()} class="flex flex-col gap-1.5">
-				<div class={style.progress__label - row}>
+				<div class={style["progress__label-row"]}>
 					<Label>Upload</Label>
 					<ValueLabel />
 				</div>
@@ -72,21 +70,21 @@ function ControlledDemo() {
 			<div class={style.progress__controls}>
 				<button
 					type="button"
-					class={style.progress__control - btn}
+					class={style["progress__control-btn"]}
 					onClick={() => setValue((v) => Math.max(0, v - 10))}
 				>
 					−10%
 				</button>
 				<button
 					type="button"
-					class={style.progress__control - btn}
+					class={style["progress__control-btn"]}
 					onClick={() => setValue((v) => Math.min(100, v + 10))}
 				>
 					+10%
 				</button>
 				<button
 					type="button"
-					class={style.progress__control - btn}
+					class={style["progress__control-btn"]}
 					onClick={() => setValue(0)}
 				>
 					Reset
@@ -119,7 +117,7 @@ export const CustomLabel = meta.story({
 			getValueLabel={({ value, max }) => `Step ${value} of ${max}`}
 			class={style.progress__root}
 		>
-			<div class={style.progress__label - row}>
+			<div class={style["progress__label-row"]}>
 				<Label>Setup</Label>
 				<ValueLabel />
 			</div>

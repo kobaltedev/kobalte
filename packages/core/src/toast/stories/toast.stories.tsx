@@ -108,11 +108,11 @@ export const Variants = meta.story({
 		];
 
 		return (
-			<div class={`${style.toastWrapper} ${style.toastWrapperGap}`}>
+			<div class={[style.toastWrapper, style.toastWrapperGap]}>
 				<Region class={style.toastRegion}>
 					<List />
 				</Region>
-				<div class={`${style.toastWrapper} ${style.toastWrapperFlex}`}>
+				<div class={[style.toastWrapper, style.toastWrapperFlex]}>
 					{variants.map((v) => (
 						<button
 							type="button"
@@ -228,12 +228,12 @@ export const PromiseBased = meta.story({
 		const [shouldFail, setShouldFail] = createSignal(false);
 
 		return (
-			<div class={`${style.toastWrapper} ${style.toastWrapperGap}`}>
+			<div class={[style.toastWrapper, style.toastWrapperGap]}>
 				<Region class={style.toastRegion}>
 					<List />
 				</Region>
-				<div class={`${style.toastWrapper} ${style.toastWrapperCenter}`}>
-					<label class={`${style.toastWrapper} ${style.toastWrapperCenter}`}>
+				<div class={[style.toastWrapper, style.toastWrapperCenter]}>
+					<label class={[style.toastWrapper, style.toastWrapperCenter]}>
 						<input
 							type="checkbox"
 							checked={shouldFail()}

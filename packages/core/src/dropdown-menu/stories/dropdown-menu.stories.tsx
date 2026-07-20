@@ -207,7 +207,10 @@ export const WithDescriptions = meta.story({
 			<Portal>
 				<Content class={style["dropdown-menu__content"]}>
 					<Item
-						class={`${style["dropdown-menu__item"]} ${style["dropdown-menu__item--flex-col"]}`}
+						class={[
+							style["dropdown-menu__item"],
+							style["dropdown-menu__item--flex-col"],
+						]}
 					>
 						<ItemLabel class={style["dropdown-menu__item-label"]}>
 							Publish
@@ -217,7 +220,10 @@ export const WithDescriptions = meta.story({
 						</ItemDescription>
 					</Item>
 					<Item
-						class={`${style["dropdown-menu__item"]} ${style["dropdown-menu__item--flex-col"]}`}
+						class={[
+							style["dropdown-menu__item"],
+							style["dropdown-menu__item--flex-col"],
+						]}
 					>
 						<ItemLabel class={style["dropdown-menu__item-label"]}>
 							Preview
@@ -228,7 +234,10 @@ export const WithDescriptions = meta.story({
 					</Item>
 					<Separator class={style["dropdown-menu__separator"]} />
 					<Item
-						class={`${style["dropdown-menu__item"]} ${style["dropdown-menu__item--destructive"]}`}
+						class={[
+							style["dropdown-menu__item"],
+							style["dropdown-menu__item--destructive"],
+						]}
 					>
 						<ItemLabel>Delete project</ItemLabel>
 					</Item>

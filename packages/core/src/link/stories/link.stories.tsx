@@ -50,7 +50,7 @@ export const AsButton = meta.story({
 	render: () => (
 		<Root
 			as="button"
-			class={`${style.link__base} ${style.link__as - button}`}
+			class={[style.link__base, style["link__as-button"]]}
 			onClick={() => alert("navigate!")}
 		>
 			Navigate (button)

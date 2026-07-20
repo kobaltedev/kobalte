@@ -52,11 +52,11 @@ export const Default = meta.story({
 		>
 			<Label class={style.label}>{String(args.channel)}</Label>
 			<div class={style.inputWrap}>
-				<DecrementTrigger class={`${style.btn} ${style.btnFirst}`}>
+				<DecrementTrigger class={[style.btn, style.btnFirst]}>
 					−
 				</DecrementTrigger>
 				<Input class={style.input} />
-				<IncrementTrigger class={`${style.btn} ${style.btnLast}`}>
+				<IncrementTrigger class={[style.btn, style.btnLast]}>
 					+
 				</IncrementTrigger>
 			</div>
@@ -79,11 +79,11 @@ function ControlledDemo() {
 			>
 				<Label class={style.label}>Hue</Label>
 				<div class={style.inputWrap}>
-					<DecrementTrigger class={`${style.btn} ${style.btnFirst}`}>
+					<DecrementTrigger class={[style.btn, style.btnFirst]}>
 						−
 					</DecrementTrigger>
 					<Input class={style.input} />
-					<IncrementTrigger class={`${style.btn} ${style.btnLast}`}>
+					<IncrementTrigger class={[style.btn, style.btnLast]}>
 						+
 					</IncrementTrigger>
 				</div>
@@ -119,11 +119,11 @@ function HSLEditorDemo() {
 						{ch.charAt(0).toUpperCase() + ch.slice(1)}
 					</Label>
 					<div class={style.inputWrap}>
-						<DecrementTrigger class={`${style.btn} ${style.btnFirst}`}>
+						<DecrementTrigger class={[style.btn, style.btnFirst]}>
 							−
 						</DecrementTrigger>
 						<Input class={style.input} />
-						<IncrementTrigger class={`${style.btn} ${style.btnLast}`}>
+						<IncrementTrigger class={[style.btn, style.btnLast]}>
 							+
 						</IncrementTrigger>
 					</div>
@@ -154,11 +154,11 @@ export const Disabled = meta.story({
 		>
 			<Label class={style.labelDisabled}>Saturation</Label>
 			<div class={style.inputWrap}>
-				<DecrementTrigger class={`${style.btn} ${style.btnFirst}`}>
+				<DecrementTrigger class={[style.btn, style.btnFirst]}>
 					−
 				</DecrementTrigger>
 				<Input class={style.input} />
-				<IncrementTrigger class={`${style.btn} ${style.btnLast}`}>
+				<IncrementTrigger class={[style.btn, style.btnLast]}>
 					+
 				</IncrementTrigger>
 			</div>
@@ -177,11 +177,11 @@ export const Alpha = meta.story({
 		>
 			<Label class={style.label}>Opacity</Label>
 			<div class={style.inputWrap}>
-				<DecrementTrigger class={`${style.btn} ${style.btnFirst}`}>
+				<DecrementTrigger class={[style.btn, style.btnFirst]}>
 					−
 				</DecrementTrigger>
 				<Input class={style.input} />
-				<IncrementTrigger class={`${style.btn} ${style.btnLast}`}>
+				<IncrementTrigger class={[style.btn, style.btnLast]}>
 					+
 				</IncrementTrigger>
 			</div>
@@ -204,11 +204,11 @@ export const Invalid = meta.story({
 		>
 			<Label class={style.label}>Lightness</Label>
 			<div class={style.inputWrap}>
-				<DecrementTrigger class={`${style.btn} ${style.btnFirst}`}>
+				<DecrementTrigger class={[style.btn, style.btnFirst]}>
 					−
 				</DecrementTrigger>
 				<Input class={style.input} />
-				<IncrementTrigger class={`${style.btn} ${style.btnLast}`}>
+				<IncrementTrigger class={[style.btn, style.btnLast]}>
 					+
 				</IncrementTrigger>
 			</div>

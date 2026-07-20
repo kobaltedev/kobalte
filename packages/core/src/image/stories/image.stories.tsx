@@ -36,7 +36,7 @@ export const Fallback_ = meta.story({
 				alt="User avatar"
 			/>
 			<Fallback
-				class={`${style.image__fallback} ${style.image__fallback - indigo}`}
+				class={[style.image__fallback, style["image__fallback-indigo"]]}
 			>
 				JD
 			</Fallback>
@@ -54,9 +54,7 @@ export const FallbackDelay = meta.story({
 				src="https://broken-image-url.example/avatar.jpg"
 				alt="User avatar"
 			/>
-			<Fallback
-				class={`${style.image__fallback} ${style.image__fallback - amber}`}
-			>
+			<Fallback class={[style.image__fallback, style["image__fallback-amber"]]}>
 				DL
 			</Fallback>
 		</Root>
@@ -76,10 +74,10 @@ export const AvatarGroup = meta.story({
 		return (
 			<div class={style.image__group}>
 				{users.map((u) => (
-					<Root class={`${style.image__root} ${style.image__ring}`}>
+					<Root class={[style.image__root, style.image__ring]}>
 						<Img class={style.image__img} src={u.src} alt={u.initials} />
 						<Fallback
-							class={`${style.image__fallback} ${style.image__fallback - sm}`}
+							class={[style.image__fallback, style["image__fallback-sm"]]}
 						>
 							{u.initials}
 						</Fallback>
@@ -103,7 +101,7 @@ function StatusDemo() {
 				/>
 				<Fallback class={style.image__fallback}>US</Fallback>
 			</Root>
-			<p class={style.image__status - text}>
+			<p class={style["image__status-text"]}>
 				Status: <strong>{status()}</strong>
 			</p>
 		</div>

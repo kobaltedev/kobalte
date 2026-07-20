@@ -188,22 +188,20 @@ export const WithDescriptions = meta.story({
 			<Trigger class={style.menu__trigger}>Actions ▾</Trigger>
 			<Portal>
 				<Content class={style.menu__content}>
-					<Item class={`${style.menu__item} ${style["menu__item--flex-col"]}`}>
+					<Item class={[style.menu__item, style["menu__item--flex-col"]]}>
 						<ItemLabel class={style["menu__item-label"]}>Publish</ItemLabel>
 						<ItemDescription class={style["menu__item-description"]}>
 							Deploy to production
 						</ItemDescription>
 					</Item>
-					<Item class={`${style.menu__item} ${style["menu__item--flex-col"]}`}>
+					<Item class={[style.menu__item, style["menu__item--flex-col"]]}>
 						<ItemLabel class={style["menu__item-label"]}>Preview</ItemLabel>
 						<ItemDescription class={style["menu__item-description"]}>
 							Build a preview deployment
 						</ItemDescription>
 					</Item>
 					<Separator class={style.menu__separator} />
-					<Item
-						class={`${style.menu__item} ${style["menu__item--destructive"]}`}
-					>
+					<Item class={[style.menu__item, style["menu__item--destructive"]]}>
 						Delete project
 					</Item>
 				</Content>

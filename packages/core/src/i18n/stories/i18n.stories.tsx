@@ -322,13 +322,13 @@ function CollatorDisplay(props: { words: string[] }) {
 			</div>
 			<div class={style.row}>
 				<span class={style.label}>Original</span>
-				<span class={`${style.value} ${style.valueTruncate}`}>
+				<span class={[style.value, style.valueTruncate]}>
 					{props.words.join(", ")}
 				</span>
 			</div>
 			<div class={style.row}>
 				<span class={style.label}>Sorted</span>
-				<span class={`${style.value} ${style.valueTruncate}`}>
+				<span class={[style.value, style.valueTruncate]}>
 					{sorted().join(", ")}
 				</span>
 			</div>

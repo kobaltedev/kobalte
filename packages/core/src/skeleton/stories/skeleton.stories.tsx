@@ -40,7 +40,7 @@ export const NotVisible = meta.story({
 	name: "Not Visible",
 	render: () => (
 		<Root class={baseClass} height={24} visible={false}>
-			<p class={style.skeleton__content - text}>Content loaded!</p>
+			<p class={style["skeleton__content-text"]}>Content loaded!</p>
 		</Root>
 	),
 });
@@ -49,7 +49,7 @@ export const NotVisible = meta.story({
 export const NotAnimated = meta.story({
 	name: "Not Animated",
 	render: () => (
-		<Root class={style.skeleton__not - animated} height={16} animate={false} />
+		<Root class={style["skeleton__not-animated"]} height={16} animate={false} />
 	),
 });
 
@@ -59,7 +59,7 @@ export const CardLoading = meta.story({
 	render: () => (
 		<div class={style.skeleton__card}>
 			<Root class={baseClass} height={48} circle />
-			<div class={style.skeleton__card - lines}>
+			<div class={style["skeleton__card-lines"]}>
 				<Root class={baseClass} height={14} />
 				<Root class={baseClass} height={10} width={120} />
 			</div>
@@ -73,9 +73,9 @@ export const ListLoading = meta.story({
 	render: () => (
 		<div class={style.skeleton__list}>
 			{([1, 2, 3] as const).map(() => (
-				<div class={style.skeleton__list - row}>
+				<div class={style["skeleton__list-row"]}>
 					<Root class={baseClass} height={36} circle />
-					<div class={style.skeleton__list - lines}>
+					<div class={style["skeleton__list-lines"]}>
 						<Root class={baseClass} height={12} />
 						<Root class={baseClass} height={10} width={180} />
 						<Root class={baseClass} height={10} width={100} />

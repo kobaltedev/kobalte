@@ -78,7 +78,7 @@ export const RangeSlider = meta.story({
 			defaultValue={[20, 80]}
 			minStepsBetweenThumbs={5}
 			getValueLabel={({ values }) => `$${values[0]} – $${values[1]}`}
-			class={`${style.sliderColumn} ${style.root}`}
+			class={[style.sliderColumn, style.root]}
 		>
 			<div class={style.labelRow}>
 				<Label>Price range</Label>
@@ -104,7 +104,7 @@ export const StepSize = meta.story({
 		<Root
 			defaultValue={[50]}
 			step={10}
-			class={`${style.sliderColumn} ${style.root}`}
+			class={[style.sliderColumn, style.root]}
 		>
 			<div class={style.labelRow}>
 				<Label>Opacity</Label>
@@ -124,11 +124,7 @@ export const StepSize = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root
-			defaultValue={[60]}
-			disabled
-			class={`${style.sliderColumn} ${style.root}`}
-		>
+		<Root defaultValue={[60]} disabled class={[style.sliderColumn, style.root]}>
 			<div class={style.labelRow}>
 				<Label>Locked</Label>
 				<ValueLabel />
@@ -171,7 +167,7 @@ export const WithValidation = meta.story({
 		<Root
 			defaultValue={[15]}
 			validationState="invalid"
-			class={`${style.sliderColumn} ${style.root}`}
+			class={[style.sliderColumn, style.root]}
 		>
 			<div class={style.labelRow}>
 				<Label>Threshold</Label>
@@ -179,7 +175,7 @@ export const WithValidation = meta.story({
 			</div>
 			<Track class={style.track}>
 				<Fill class={style.fillInvalid} />
-				<Thumb class={`${style.thumbInvalid}`}>
+				<Thumb class={style.thumbInvalid}>
 					<Input />
 				</Thumb>
 			</Track>

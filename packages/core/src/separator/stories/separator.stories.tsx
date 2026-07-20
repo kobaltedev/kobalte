@@ -41,7 +41,7 @@ export const AsDiv = meta.story({
 	render: () => (
 		<div class={style.separator__col}>
 			<p>Section A</p>
-			<Root as="div" class={style.separator__as - div} />
+			<Root as="div" class={style["separator__as-div"]} />
 			<p>Section B</p>
 		</div>
 	),

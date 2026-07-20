@@ -235,21 +235,21 @@ export const ForceMount = meta.story({
 				<Indicator class={style.tabs__indicator} />
 			</List>
 			<Content
-				class={`${style.tabs__content} ${style["tabs__content--hidden"]}`}
+				class={[style.tabs__content, style["tabs__content--hidden"]]}
 				value="account"
 				forceMount
 			>
 				Always in the DOM — useful for CSS-only transitions.
 			</Content>
 			<Content
-				class={`${style.tabs__content} ${style["tabs__content--hidden"]}`}
+				class={[style.tabs__content, style["tabs__content--hidden"]]}
 				value="password"
 				forceMount
 			>
 				Change your password and security settings.
 			</Content>
 			<Content
-				class={`${style.tabs__content} ${style["tabs__content--hidden"]}`}
+				class={[style.tabs__content, style["tabs__content--hidden"]]}
 				value="settings"
 				forceMount
 			>

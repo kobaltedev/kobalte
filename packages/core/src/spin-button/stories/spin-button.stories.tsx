@@ -131,7 +131,7 @@ function ValidatedCounter() {
 			{/* biome-ignore lint/a11y/noLabelWithoutControl: Visual label for ARIA spinbutton widget */}
 			<label class={style.spinButtonLabel}>Quantity (min 1)</label>
 			<Root
-				class={`${style.spinButtonRoot} ${style.spinButtonRootW36}`}
+				class={[style.spinButtonRoot, style.spinButtonRootW36]}
 				value={count()}
 				textValue={String(count())}
 				minValue={0}

@@ -57,7 +57,7 @@ export const Placements = meta.story({
 			{(["top", "bottom", "left", "right"] as const).map((placement) => (
 				<Root placement={placement} openDelay={0}>
 					<Trigger
-						class={`${style.tooltip__trigger} ${style["tooltip__trigger--small"]}`}
+						class={[style.tooltip__trigger, style["tooltip__trigger--small"]]}
 					>
 						{placement}
 					</Trigger>
@@ -97,7 +97,7 @@ export const Disabled = meta.story({
 		<div class={style.tooltip__wrapper}>
 			<Root disabled>
 				<Trigger
-					class={`${style.tooltip__trigger} ${style["tooltip__trigger--disabled"]}`}
+					class={[style.tooltip__trigger, style["tooltip__trigger--disabled"]]}
 				>
 					Disabled trigger
 				</Trigger>

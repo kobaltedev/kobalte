@@ -49,9 +49,10 @@ interface CardProps {
 function Card(props: CardProps) {
 	return (
 		<div
-			class={`${style.card} ${
-				props.variant === "primary" ? style.cardPrimary : style.cardSecondary
-			}`}
+			class={[
+				style.card,
+				props.variant === "primary" ? style.cardPrimary : style.cardSecondary,
+			]}
 			{...props}
 		/>
 	);
@@ -116,9 +117,10 @@ export const ReactiveClass = meta.story({
 			<div class={style.stack}>
 				<Polymorphic
 					as="button"
-					class={`${style.toggle} ${
-						active() ? style.toggleActive : style.toggleInactive
-					}`}
+					class={[
+						style.toggle,
+						active() ? style.toggleActive : style.toggleInactive,
+					]}
 					onClick={() => setActive((v) => !v)}
 				>
 					Toggle active — {active() ? "on" : "off"}
@@ -173,9 +175,10 @@ export const DynamicAs = meta.story({
 						<button
 							type="button"
 							onClick={() => setTag(t)}
-							class={`${style.tagButton} ${
-								tag() === t ? style.tagButtonActive : style.tagButtonInactive
-							}`}
+							class={[
+								style.tagButton,
+								tag() === t ? style.tagButtonActive : style.tagButtonInactive,
+							]}
 						>
 							{t}
 						</button>
@@ -234,9 +237,10 @@ export const TypedPolymorphic = meta.story({
 			);
 		}
 
-		const intentClass = `${style.block} ${
-			args.intent === "action" ? style.blockAction : style.blockDefault
-		}`;
+		const intentClass = [
+			style.block,
+			args.intent === "action" ? style.blockAction : style.blockDefault,
+		];
 
 		return (
 			<div class={style.stackWrap}>

@@ -467,7 +467,7 @@ function ValidationDemo() {
 			)}
 		>
 			<Label class={style.label}>Favorite fruit</Label>
-			<Trigger class={`${style.trigger} ${style.triggerInvalid}`}>
+			<Trigger class={[style.trigger, style.triggerInvalid]}>
 				<Value<string>>{(state) => state.selectedOption()}</Value>
 				<Icon class={style.icon}>
 					<ChevronIcon />

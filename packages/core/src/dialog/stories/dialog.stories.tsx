@@ -33,7 +33,10 @@ export const Default = meta.story({
 					</CloseButton>
 					<Title class={style.dialog__title}>Dialog title</Title>
 					<Description
-						class={`${style.dialog__description} ${style["dialog__description--mb"]}`}
+						class={[
+							style.dialog__description,
+							style["dialog__description--mb"],
+						]}
 					>
 						This is the dialog description providing additional context for the
 						user.
@@ -89,7 +92,10 @@ function ControlledDemo() {
 							</CloseButton>
 							<Title class={style.dialog__title}>Controlled</Title>
 							<Description
-								class={`${style.dialog__description} ${style["dialog__description--mb"]}`}
+								class={[
+									style.dialog__description,
+									style["dialog__description--mb"],
+								]}
 							>
 								Open state is managed by an external signal.
 							</Description>
@@ -133,15 +139,16 @@ export const WithForm = meta.story({
 			<Trigger class={style.dialog__trigger}>Edit profile</Trigger>
 			<Portal>
 				<Overlay class={style.dialog__overlay} />
-				<Content
-					class={`${style.dialog__content} ${style["dialog__content--sm"]}`}
-				>
+				<Content class={[style.dialog__content, style["dialog__content--sm"]]}>
 					<CloseButton class={style.dialog__close} aria-label="Close">
 						✕
 					</CloseButton>
 					<Title class={style.dialog__title}>Edit profile</Title>
 					<Description
-						class={`${style.dialog__description} ${style["dialog__description--mb"]}`}
+						class={[
+							style.dialog__description,
+							style["dialog__description--mb"],
+						]}
 					>
 						Update your display name and bio.
 					</Description>
@@ -199,7 +206,10 @@ export const Destructive = meta.story({
 					</CloseButton>
 					<Title class={style.dialog__title}>Delete account</Title>
 					<Description
-						class={`${style.dialog__description} ${style["dialog__description--mb"]}`}
+						class={[
+							style.dialog__description,
+							style["dialog__description--mb"],
+						]}
 					>
 						This action cannot be undone. Your account and all associated data
 						will be permanently deleted.

@@ -31,10 +31,10 @@ export const Playground = meta.story({
 			class={style.meter__root}
 			getValueLabel={({ value }) => `${value} / 100`}
 		>
-			<div class={style.meter__label - row}>
+			<div class={style["meter__label-row"]}>
 				<Label class={style.meter__label}>Resource usage</Label>
 				<ValueLabel
-					class={style.meter__value - label}
+					class={style["meter__value-label"]}
 					style={{ color: meterColor(args.value / 100) }}
 				/>
 			</div>
@@ -43,13 +43,13 @@ export const Playground = meta.story({
 					class={style.meter__fill}
 					style={{ "background-color": meterColor(args.value / 100) }}
 				/>
-				<div class={style.meter__tick - container}>
+				<div class={style["meter__tick-container"]}>
 					{([25, 50, 75] as const).map((tick) => (
 						<div class={style.meter__tick} style={{ left: `${tick}%` }} />
 					))}
 				</div>
 			</Track>
-			<div class={style.meter__scale - labels}>
+			<div class={style["meter__scale-labels"]}>
 				<span>0</span>
 				<span>25</span>
 				<span>50</span>
@@ -78,20 +78,20 @@ export const DiskUsage = meta.story({
 			getValueLabel={({ value, max }) => `${value} GB / ${max} GB`}
 			class={style.meter__root}
 		>
-			<div class={style.meter__label - row}>
+			<div class={style["meter__label-row"]}>
 				<Label class={style.meter__label}>Disk</Label>
-				<ValueLabel class={style.meter__value - label} />
+				<ValueLabel class={style["meter__value-label"]} />
 			</div>
-			<Track class={style.meter__track - sm}>
+			<Track class={style["meter__track-sm"]}>
 				<Fill
 					class={style.meter__fill}
 					style={{ "background-color": meterColor(args.used / 100) }}
 				/>
 				<div
-					class={style.meter__cursor - pointer - container}
+					class={style["meter__cursor-pointer"] - container}
 					style={{ left: `${args.used}%` }}
 				>
-					<div class={style.meter__cursor - pointer} />
+					<div class={style["meter__cursor-pointer"]} />
 				</div>
 			</Track>
 			<p class={style.meter__description}>
@@ -116,7 +116,7 @@ export const SystemResources = meta.story({
 			{ label: "Network", value: 38 },
 		];
 		return (
-			<div class={style.meter__system - panel}>
+			<div class={style["meter__system-panel"]}>
 				{resources.map((r) => {
 					const pct = r.value / 100;
 					const color = meterColor(pct);
@@ -124,17 +124,17 @@ export const SystemResources = meta.story({
 						<Root
 							value={r.value}
 							getValueLabel={({ value }) => `${value}%`}
-							class={style.meter__system - row}
+							class={style["meter__system-row"]}
 						>
-							<Label class={style.meter__system - label}>{r.label}</Label>
-							<Track class={style.meter__system - track}>
+							<Label class={style["meter__system-label"]}>{r.label}</Label>
+							<Track class={style["meter__system-track"]}>
 								<Fill
 									class={style.meter__fill}
 									style={{ "background-color": color }}
 								/>
 							</Track>
 							<ValueLabel
-								class={style.meter__system - value}
+								class={style["meter__system-value"]}
 								style={{ color }}
 							/>
 						</Root>

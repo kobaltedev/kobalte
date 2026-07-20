@@ -77,18 +77,14 @@ export const Disabled = meta.story({
 					<Thumb class={style.thumb} />
 					<Input />
 				</Control>
-				<Label class={`${style.label} ${style.labelDisabled}`}>
-					Disabled (off)
-				</Label>
+				<Label class={[style.label, style.labelDisabled]}>Disabled (off)</Label>
 			</Root>
 			<Root class={style.root} disabled defaultChecked>
 				<Control class={style.control}>
 					<Thumb class={style.thumb} />
 					<Input />
 				</Control>
-				<Label class={`${style.label} ${style.labelDisabled}`}>
-					Disabled (on)
-				</Label>
+				<Label class={[style.label, style.labelDisabled]}>Disabled (on)</Label>
 			</Root>
 		</div>
 	),
@@ -103,7 +99,7 @@ export const ReadOnly = meta.story({
 				<Thumb class={style.thumb} />
 				<Input />
 			</Control>
-			<Label class={`${style.label} ${style.labelReadOnly}`}>
+			<Label class={[style.label, style.labelReadOnly]}>
 				Dark mode (read only)
 			</Label>
 		</Root>
@@ -113,7 +109,7 @@ export const ReadOnly = meta.story({
 function ControlledDemo() {
 	const [checked, setChecked] = createSignal(false);
 	return (
-		<div class={`${style.controlledWrapper} ${style.root}`}>
+		<div class={[style.controlledWrapper, style.root]}>
 			<Root class={style.root} checked={checked()} onChange={setChecked}>
 				<Control class={style.control}>
 					<Thumb class={style.thumb} />
@@ -153,7 +149,7 @@ function ValidationDemo() {
 			required
 		>
 			<div class={style.root}>
-				<Control class={`${style.control} ${style.controlInvalid}`}>
+				<Control class={[style.control, style.controlInvalid]}>
 					<Thumb class={style.thumb} />
 					<Input />
 				</Control>
@@ -205,7 +201,7 @@ export const RenderProp = meta.story({
 export const SwitchGroup = meta.story({
 	name: "Switch Group",
 	render: () => (
-		<div class={`${style.column} ${style.groupParent}`}>
+		<div class={[style.column, style.groupParent]}>
 			<p class={style.groupTitle}>Notification preferences</p>
 			{(
 				[

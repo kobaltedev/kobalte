@@ -153,7 +153,7 @@ export const WithForm = meta.story({
 			<Trigger class={style.popover__trigger}>Edit profile</Trigger>
 			<Portal>
 				<Content
-					class={`${style.popover__content} ${style["popover__content--wide"]}`}
+					class={[style.popover__content, style["popover__content--wide"]]}
 				>
 					<CloseButton class={style.popover__close} aria-label="Close">
 						✕

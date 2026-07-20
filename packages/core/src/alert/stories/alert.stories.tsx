@@ -13,7 +13,7 @@ export default meta;
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={`${style.alert__base} ${style.alert__info}`}>
+		<Root class={[style.alert__base, style.alert__info]}>
 			Your session was saved successfully.
 		</Root>
 	),
@@ -23,10 +23,10 @@ export const Default = meta.story({
 export const WithTitle = meta.story({
 	name: "With Title",
 	render: () => (
-		<Root class={`${style.alert__base} ${style.alert__info}`}>
-			<div class={style.alert__text - group}>
+		<Root class={[style.alert__base, style.alert__info]}>
+			<div class={style["alert__text-group"]}>
 				<p class={style.alert__title}>Update available</p>
-				<p class={`${style.alert__body} ${style.alert__body - info}`}>
+				<p class={[style.alert__body, style["alert__body-info"]]}>
 					A new version is ready. Refresh to apply changes.
 				</p>
 			</div>
@@ -38,16 +38,16 @@ export const WithTitle = meta.story({
 export const Success = meta.story({
 	name: "Success",
 	render: () => (
-		<Root class={`${style.alert__base} ${style.alert__success}`}>
+		<Root class={[style.alert__base, style.alert__success]}>
 			<span
-				class={`${style.alert__icon} ${style.alert__icon - success}`}
+				class={[style.alert__icon, style["alert__icon-success"]]}
 				aria-hidden="true"
 			>
 				✓
 			</span>
-			<div class={style.alert__text - group}>
+			<div class={style["alert__text-group"]}>
 				<p class={style.alert__title}>Payment confirmed</p>
-				<p class={`${style.alert__body} ${style.alert__body - success}`}>
+				<p class={[style.alert__body, style["alert__body-success"]]}>
 					Your order has been placed.
 				</p>
 			</div>
@@ -59,16 +59,16 @@ export const Success = meta.story({
 export const Warning = meta.story({
 	name: "Warning",
 	render: () => (
-		<Root class={`${style.alert__base} ${style.alert__warning}`}>
+		<Root class={[style.alert__base, style.alert__warning]}>
 			<span
-				class={`${style.alert__icon} ${style.alert__icon - warning}`}
+				class={[style.alert__icon, style["alert__icon-warning"]]}
 				aria-hidden="true"
 			>
 				⚠
 			</span>
-			<div class={style.alert__text - group}>
+			<div class={style["alert__text-group"]}>
 				<p class={style.alert__title}>Storage nearly full</p>
-				<p class={`${style.alert__body} ${style.alert__body - warning}`}>
+				<p class={[style.alert__body, style["alert__body-warning"]]}>
 					You have used 90% of your quota.
 				</p>
 			</div>
@@ -81,16 +81,16 @@ export const Warning = meta.story({
 export const Error = meta.story({
 	name: "Error",
 	render: () => (
-		<Root class={`${style.alert__base} ${style.alert__error}`}>
+		<Root class={[style.alert__base, style.alert__error]}>
 			<span
-				class={`${style.alert__icon} ${style.alert__icon - error}`}
+				class={[style.alert__icon, style["alert__icon-error"]]}
 				aria-hidden="true"
 			>
 				✕
 			</span>
-			<div class={style.alert__text - group}>
+			<div class={style["alert__text-group"]}>
 				<p class={style.alert__title}>Upload failed</p>
-				<p class={`${style.alert__body} ${style.alert__body - error}`}>
+				<p class={[style.alert__body, style["alert__body-error"]]}>
 					The file could not be processed. Please try again.
 				</p>
 			</div>
@@ -131,16 +131,16 @@ export const AllVariants = meta.story({
 					},
 				] as const
 			).map((v) => (
-				<Root class={`${style.alert__base} ${style[`alert__${v.variant}`]}`}>
+				<Root class={[style.alert__base, style[`alert__${v.variant}`]]}>
 					<span
-						class={`${style.alert__icon} ${style[`alert__icon-${v.variant}`]}`}
+						class={[style.alert__icon, style[`alert__icon-${v.variant}`]]}
 						aria-hidden="true"
 					>
 						{v.icon}
 					</span>
-					<div class={style.alert__text - group}>
+					<div class={style["alert__text-group"]}>
 						<p class={style.alert__title}>{v.title}</p>
-						<p class={`${style.alert__body} ${style.alert__body - muted}`}>
+						<p class={[style.alert__body, style["alert__body-muted"]]}>
 							{v.body}
 						</p>
 					</div>

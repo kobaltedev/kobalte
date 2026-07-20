@@ -26,7 +26,7 @@ function OtpSlot(props: { index: number }) {
 		context.isInserting() && context.activeSlots()[0] === props.index;
 
 	return (
-		<div class={`${style.slot} ${isActive() ? style.slotActive : ""}`}>
+		<div class={[style.slot, isActive() && style.slotActive]}>
 			{char()}
 			{showCaret() && (
 				<div class={style.caret}>
@@ -83,7 +83,7 @@ function AnimatedOtpSlot(props: { index: number }) {
 		context.isInserting() && context.activeSlots()[0] === props.index;
 
 	return (
-		<div class={`${style.slot} ${isActive() ? style.slotActive : ""}`}>
+		<div class={[style.slot, isActive() && style.slotActive]}>
 			{showCaret() ? (
 				<div class={style.caret}>
 					<div class={style.caretLine} />

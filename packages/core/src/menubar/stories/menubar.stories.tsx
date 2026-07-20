@@ -232,7 +232,7 @@ export const WithDescriptions = meta.story({
 				<Portal>
 					<Content class={style.menubar__content}>
 						<Item
-							class={`${style.menubar__item} ${style["menubar__item--flex-col"]}`}
+							class={[style.menubar__item, style["menubar__item--flex-col"]]}
 						>
 							<ItemLabel class={style.menubar__itemLabel}>Publish</ItemLabel>
 							<ItemDescription class={style.menubar__itemDescription}>
@@ -240,7 +240,7 @@ export const WithDescriptions = meta.story({
 							</ItemDescription>
 						</Item>
 						<Item
-							class={`${style.menubar__item} ${style["menubar__item--flex-col"]}`}
+							class={[style.menubar__item, style["menubar__item--flex-col"]]}
 						>
 							<ItemLabel class={style.menubar__itemLabel}>Preview</ItemLabel>
 							<ItemDescription class={style.menubar__itemDescription}>
@@ -249,7 +249,7 @@ export const WithDescriptions = meta.story({
 						</Item>
 						<Separator class={style.menubar__separator} />
 						<Item
-							class={`${style.menubar__item} ${style["menubar__item--destructive"]}`}
+							class={[style.menubar__item, style["menubar__item--destructive"]]}
 						>
 							<ItemLabel>Delete project</ItemLabel>
 						</Item>

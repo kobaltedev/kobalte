@@ -142,7 +142,10 @@ export const Animated = meta.story({
 				<Trigger class={style.navigationMenuTrigger}>Platform ▾</Trigger>
 				<Portal>
 					<Content
-						class={`${style.navigationMenuNmContent} ${style.navigationMenuContentP5}`}
+						class={[
+							style.navigationMenuNmContent,
+							style.navigationMenuContentP5,
+						]}
 					>
 						<ul class={style.navigationMenuGrid2}>
 							<li>
@@ -190,7 +193,11 @@ export const Animated = meta.story({
 				<Trigger class={style.navigationMenuTrigger}>Resources ▾</Trigger>
 				<Portal>
 					<Content
-						class={`${style.navigationMenuNmContent} ${style.navigationMenuContentW340} ${style.navigationMenuContentP5}`}
+						class={[
+							style.navigationMenuNmContent,
+							style.navigationMenuContentW340,
+							style.navigationMenuContentP5,
+						]}
 					>
 						<ul class={style.navigationMenuList}>
 							<li>
@@ -394,18 +401,25 @@ export const Vertical = meta.story({
 	name: "Vertical",
 	render: () => (
 		<Root
-			class={`${style.navigationMenuRoot} ${style.navigationMenuRootVertical}`}
+			class={[style.navigationMenuRoot, style.navigationMenuRootVertical]}
 			orientation="vertical"
 		>
 			<Menu>
 				<Trigger
-					class={`${style.navigationMenuTrigger} ${style.navigationMenuTriggerJustify}`}
+					class={[
+						style.navigationMenuTrigger,
+						style.navigationMenuTriggerJustify,
+					]}
 				>
 					Analytics ▸
 				</Trigger>
 				<Portal>
 					<Content
-						class={`${style.navigationMenuContent} ${style.navigationMenuContentW48} ${style.navigationMenuContentP3}`}
+						class={[
+							style.navigationMenuContent,
+							style.navigationMenuContentW48,
+							style.navigationMenuContentP3,
+						]}
 					>
 						<ul class={style.navigationMenuList}>
 							<li>
@@ -430,13 +444,20 @@ export const Vertical = meta.story({
 
 			<Menu>
 				<Trigger
-					class={`${style.navigationMenuTrigger} ${style.navigationMenuTriggerJustify}`}
+					class={[
+						style.navigationMenuTrigger,
+						style.navigationMenuTriggerJustify,
+					]}
 				>
 					Settings ▸
 				</Trigger>
 				<Portal>
 					<Content
-						class={`${style.navigationMenuContent} ${style.navigationMenuContentW48} ${style.navigationMenuContentP3}`}
+						class={[
+							style.navigationMenuContent,
+							style.navigationMenuContentW48,
+							style.navigationMenuContentP3,
+						]}
 					>
 						<ul class={style.navigationMenuList}>
 							<li>

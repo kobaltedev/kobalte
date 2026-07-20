@@ -33,7 +33,10 @@ export const Default = meta.story({
 					</CloseButton>
 					<Title class={style["alert-dialog__title"]}>Session timeout</Title>
 					<Description
-						class={`${style["alert-dialog__description"]} ${style["alert-dialog__description--mb"]}`}
+						class={[
+							style["alert-dialog__description"],
+							style["alert-dialog__description--mb"],
+						]}
 					>
 						Your session is about to expire. You will be logged out in 2
 						minutes.
@@ -65,7 +68,10 @@ export const Destructive = meta.story({
 				<Content class={style["alert-dialog__content"]}>
 					<Title class={style["alert-dialog__title"]}>Delete account</Title>
 					<Description
-						class={`${style["alert-dialog__description"]} ${style["alert-dialog__description--mb"]}`}
+						class={[
+							style["alert-dialog__description"],
+							style["alert-dialog__description--mb"],
+						]}
 					>
 						This action cannot be undone. Your account and all associated data
 						will be permanently deleted.
@@ -104,7 +110,10 @@ function ControlledDemo() {
 								Controlled alert
 							</Title>
 							<Description
-								class={`${style["alert-dialog__description"]} ${style["alert-dialog__description--mb"]}`}
+								class={[
+									style["alert-dialog__description"],
+									style["alert-dialog__description--mb"],
+								]}
 							>
 								Open state is managed externally.
 							</Description>

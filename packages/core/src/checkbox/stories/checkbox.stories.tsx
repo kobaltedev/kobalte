@@ -149,7 +149,7 @@ export const Disabled = meta.story({
 					</Indicator>
 					<Input />
 				</Control>
-				<Label class={`${style.label} ${style.labelDisabled}`}>
+				<Label class={[style.label, style.labelDisabled]}>
 					Disabled (unchecked)
 				</Label>
 			</Root>
@@ -160,7 +160,7 @@ export const Disabled = meta.story({
 					</Indicator>
 					<Input />
 				</Control>
-				<Label class={`${style.label} ${style.labelDisabled}`}>
+				<Label class={[style.label, style.labelDisabled]}>
 					Disabled (checked)
 				</Label>
 			</Root>
@@ -179,7 +179,7 @@ export const ReadOnly = meta.story({
 				</Indicator>
 				<Input />
 			</Control>
-			<Label class={`${style.label} ${style.labelReadOnly}`}>
+			<Label class={[style.label, style.labelReadOnly]}>
 				Agreed to terms (read only)
 			</Label>
 		</Root>
@@ -189,7 +189,7 @@ export const ReadOnly = meta.story({
 function ControlledDemo() {
 	const [checked, setChecked] = createSignal(false);
 	return (
-		<div class={`${style.column} ${style.selectParent}`}>
+		<div class={[style.column, style.selectParent]}>
 			<Root class={style.root} checked={checked()} onChange={setChecked}>
 				<Control class={style.control}>
 					<Indicator>
@@ -223,14 +223,14 @@ function ValidationDemo() {
 	const [checked, setChecked] = createSignal(false);
 	return (
 		<Root
-			class={`${style.columnGap05} ${style.selectParent}`}
+			class={[style.columnGap05, style.selectParent]}
 			checked={checked()}
 			onChange={setChecked}
 			validationState={checked() ? "valid" : "invalid"}
 			required
 		>
 			<div class={style.root}>
-				<Control class={`${style.control} ${style.controlInvalid}`}>
+				<Control class={[style.control, style.controlInvalid]}>
 					<Indicator>
 						<CheckIcon />
 					</Indicator>
@@ -308,7 +308,7 @@ function SelectAllDemo() {
 	};
 
 	return (
-		<div class={`${style.selectParent} ${style.selectChildren}`}>
+		<div class={[style.selectParent, style.selectChildren]}>
 			<Root
 				class={style.root}
 				checked={allChecked()}
@@ -319,9 +319,7 @@ function SelectAllDemo() {
 					<Indicator>{someChecked() ? <DashIcon /> : <CheckIcon />}</Indicator>
 					<Input />
 				</Control>
-				<Label class={`${style.label} ${style.fontSemibold}`}>
-					Notifications
-				</Label>
+				<Label class={[style.label, style.fontSemibold]}>Notifications</Label>
 			</Root>
 			<div class={style.selectChildren}>
 				{items.map((item) => (

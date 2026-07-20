@@ -132,7 +132,7 @@ export const WithDescription = meta.story({
 			<Description class={style.rating__description}>
 				1 = poor · 5 = excellent
 			</Description>
-			<ErrorMessage class={style.rating__error - message}>
+			<ErrorMessage class={style["rating__error-message"]}>
 				A rating is required.
 			</ErrorMessage>
 			<HiddenInput />
@@ -171,7 +171,7 @@ export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
 		<Root class={style.rating__root} defaultValue={3} disabled>
-			<Label class={style.rating__label - disabled}>Rating (disabled)</Label>
+			<Label class={style["rating__label-disabled"]}>Rating (disabled)</Label>
 			<Control class={style.rating__control}>
 				{FIVE_STARS.map(() => (
 					<Item class={style.rating__item}>
@@ -195,9 +195,7 @@ export const ReadOnly = meta.story({
 			<Label class={style.rating__label}>Average rating</Label>
 			<Control class={style.rating__control}>
 				{FIVE_STARS.map(() => (
-					<Item
-						class={`${style.rating__item} ${style.rating__item - readonly}`}
-					>
+					<Item class={[style.rating__item, style["rating__item-readonly"]]}>
 						<ItemLabel />
 						<ItemControl>
 							{(state) => <Star highlighted={state.highlighted()} />}
@@ -228,14 +226,14 @@ function ControlledDemo() {
 				</Control>
 				<HiddenInput />
 			</Root>
-			<p class={style.rating__status - text}>
+			<p class={style["rating__status-text"]}>
 				{value() > 0
 					? `${value()} star${value() !== 1 ? "s" : ""} — ${labels[value()]}`
 					: "No rating selected"}
 			</p>
 			<button
 				type="button"
-				class={style.rating__clear - btn}
+				class={style["rating__clear-btn"]}
 				onClick={() => setValue(0)}
 			>
 				Clear

@@ -126,7 +126,7 @@ export const Disabled = meta.story({
 						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel class={`${style.label} ${style.labelDisabled}`}>
+					<ItemLabel class={[style.label, style.labelDisabled]}>
 						{plan}
 					</ItemLabel>
 				</Item>
@@ -153,9 +153,7 @@ export const DisabledItem = meta.story({
 						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel
-						class={`${style.label}${disabled ? ` ${style.labelDisabled}` : ""}`}
-					>
+					<ItemLabel class={[style.label, disabled && style.labelDisabled]}>
 						{value}
 					</ItemLabel>
 				</Item>
@@ -176,7 +174,7 @@ export const ReadOnly = meta.story({
 						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel class={`${style.label} ${style.labelReadOnly}`}>
+					<ItemLabel class={[style.label, style.labelReadOnly]}>
 						{plan}
 					</ItemLabel>
 				</Item>
@@ -188,7 +186,7 @@ export const ReadOnly = meta.story({
 function ControlledDemo() {
 	const [value, setValue] = createSignal("Pro");
 	return (
-		<div class={`${style.group} ${style.stateText}`}>
+		<div class={[style.group, style.stateText]}>
 			<Root class={style.group} value={value()} onChange={setValue}>
 				<Label class={style.groupLabel}>Plan</Label>
 				{(["Starter", "Pro", "Enterprise"] as const).map((plan) => (
@@ -226,7 +224,7 @@ function ValidationDemo() {
 	const isInvalid = () => value() === "";
 	return (
 		<Root
-			class={`${style.group} ${style.controlInvalid}`}
+			class={[style.group, style.controlInvalid]}
 			value={value()}
 			onChange={setValue}
 			validationState={isInvalid() ? "invalid" : "valid"}
@@ -241,7 +239,7 @@ function ValidationDemo() {
 				] as const
 			).map(({ value, label }) => (
 				<Item class={style.item} value={value}>
-					<ItemControl class={`${style.control} ${style.controlInvalid}`}>
+					<ItemControl class={[style.control, style.controlInvalid]}>
 						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>

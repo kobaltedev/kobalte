@@ -104,13 +104,13 @@ export const DisabledState = meta.story({
 	name: "Disabled State",
 	render: () => (
 		<div class={style.button__col}>
-			<div class={style.button__sub - row}>
+			<div class={style["button__sub-row"]}>
 				<Button class={buttonClass()}>Enabled</Button>
 				<Button disabled class={buttonClass()}>
 					Disabled
 				</Button>
 			</div>
-			<div class={style.button__sub - row}>
+			<div class={style["button__sub-row"]}>
 				<Button as="div" class={buttonClass("secondary")}>
 					Enabled (div)
 				</Button>
@@ -146,7 +146,7 @@ export const AsLink = meta.story({
 			href={args.as === "a" ? "https://kobalte.dev" : undefined}
 			target={args.as === "a" ? "_blank" : undefined}
 			rel={args.as === "a" ? "noopener noreferrer" : undefined}
-			class={`${buttonClass("secondary")} ${style.button__no - underline}`}
+			class={`${buttonClass("secondary")} ${style["button__no-underline"]}`}
 		>
 			Kobalte docs
 			<svg
@@ -264,7 +264,7 @@ export const ClickCounter = meta.story({
 	render: (args) => {
 		const [count, setCount] = createSignal(0);
 		return (
-			<div class={style.button__center - col}>
+			<div class={style["button__center-col"]}>
 				<Button
 					as={args.as as unknown as ValidComponent}
 					class={buttonClass()}
@@ -274,7 +274,7 @@ export const ClickCounter = meta.story({
 				</Button>
 				<p class={style.button__description}>
 					Rendered as{" "}
-					<code class={style.button__code - blue}>&lt;{args.as}&gt;</code>
+					<code class={style["button__code-blue"]}>&lt;{args.as}&gt;</code>
 				</p>
 			</div>
 		);
