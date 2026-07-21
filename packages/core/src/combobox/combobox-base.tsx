@@ -63,10 +63,6 @@ import {
 	type ComboboxIntlTranslations,
 } from "./combobox.intl.ts";
 import {
-	COMBOBOX_INTL_TRANSLATIONS,
-	type ComboboxIntlTranslations,
-} from "./combobox.intl";
-import {
 	ComboboxContext,
 	type ComboboxContextValue,
 	type ComboboxDataSet,

@@ -12,7 +12,6 @@ import {
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
