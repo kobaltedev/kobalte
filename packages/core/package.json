@@ -62,6 +62,7 @@
 	},
 	"dependencies": {
 		"@floating-ui/dom": "^1.5.1",
+		"@internationalized/date": "^3.4.0",
 		"@internationalized/number": "^3.2.1",
 		"@kobalte/utils": "workspace:*",
 		"@solid-primitives/a11y": "catalog:",

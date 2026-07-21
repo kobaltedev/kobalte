@@ -3,6 +3,7 @@ import {
 	focusWithoutScrolling,
 	mergeDefaultProps,
 	mergeRefs,
+	OverrideComponentProps,
 } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {

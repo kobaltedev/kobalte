@@ -11,6 +11,7 @@ import {
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
+	OverrideComponentProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";

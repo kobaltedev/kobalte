@@ -8,6 +8,7 @@
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, within } from "@solidjs/testing-library";
+import { createSignal, Show } from "solid-js";
 import { vi } from "vitest";
 import * as Combobox from ".";
 

@@ -26,6 +26,10 @@ import {
 	type PopoverIntlTranslations,
 } from "./popover.intl.ts";
 import {
+	POPOVER_INTL_TRANSLATIONS,
+	type PopoverIntlTranslations,
+} from "./popover.intl";
+import {
 	PopoverContext,
 	type PopoverContextValue,
 	type PopoverDataSet,
