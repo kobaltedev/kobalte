@@ -1,10 +1,3 @@
-/*
- * Resizable stories for Kobalte.
- *
- * Resize algorithms adapted from corvu/resizable (MIT) by Jasmin Noetzli:
- * https://github.com/corvudev/corvu/tree/main/packages/resizable
- */
-
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.ts";
 import { Handle, Panel, Root, useContext, usePanelContext } from "../index.tsx";
