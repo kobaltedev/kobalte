@@ -72,13 +72,9 @@ for (const target of targets) {
 
 			const hit = resolveSpecifier(file, spec);
 			if (!hit) {
-<<<<<<< HEAD
-				problems.push(`${path.relative(rootDir, file)}:${i + 1}: cannot resolve "${spec}"`);
-=======
 				problems.push(
-					`${path.relative(rootDir, file)}:${i + 1}: cannot resolve "${spec}"`,
+					`$path.relative(rootDir, file):$i + 1: cannot resolve "${spec}"`,
 				);
->>>>>>> solid2
 				continue;
 			}
 
@@ -87,14 +83,10 @@ for (const target of targets) {
 				? `${spec.replace(/\/$/, "")}/index${ext}`
 				: `${spec}${ext}`;
 
-<<<<<<< HEAD
-			lines[i] = line.replace(SPECIFIER_RE, (_m, pre, _s, post) => `${pre}${newSpec}${post}`);
-=======
 			lines[i] = line.replace(
 				SPECIFIER_RE,
 				(_m, pre, _s, post) => `${pre}${newSpec}${post}`,
 			);
->>>>>>> solid2
 			fileChanged = true;
 			specifiersChanged++;
 		}
@@ -106,15 +98,11 @@ for (const target of targets) {
 	}
 }
 
-<<<<<<< HEAD
-console.log(`Rewrote ${specifiersChanged} specifiers across ${filesChanged} files.`);
-=======
 console.log(
 	`Rewrote ${specifiersChanged} specifiers across ${filesChanged} files.`,
 );
->>>>>>> solid2
 if (problems.length > 0) {
-	console.error(`\n${problems.length} unresolved specifier(s):`);
+	console.error(`\n$problems.lengthunresolved specifier(s):`);
 	for (const p of problems) console.error(`  ${p}`);
 	process.exit(1);
 }

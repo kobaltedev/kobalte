@@ -118,11 +118,7 @@ export const Slider = Object.assign(Root, {
 /**
  * API will most probably change
  */
-<<<<<<< HEAD
-export { type SliderContextValue, useSliderContext } from "./slider-context.tsx";
-=======
 export {
 	type SliderContextValue,
 	useSliderContext,
 } from "./slider-context.tsx";
->>>>>>> solid2
