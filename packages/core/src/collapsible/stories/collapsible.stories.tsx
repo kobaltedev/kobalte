@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Content, Root, Trigger } from "../index";
+import { Content, Root, Trigger } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Collapsible",
@@ -22,34 +23,24 @@ function Chevron() {
 			stroke-linecap="round"
 			stroke-linejoin="round"
 			aria-hidden="true"
-			class="shrink-0 transition-transform duration-200 data-[expanded]:rotate-180"
+			class={style.collapsible__chevron}
 		>
 			<path d="M6 9l6 6 6-6" />
 		</svg>
 	);
 }
 
-const rootClass =
-	"w-80 rounded-lg border border-slate-200 overflow-hidden font-sans";
-
-const triggerClass =
-	"flex w-full items-center justify-between bg-white px-4 py-3.5 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition-colors data-[expanded]:text-blue-600 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 cursor-pointer";
-
-const contentClass = "overflow-hidden bg-slate-50";
-
-const contentTextClass = "px-4 py-3 text-sm text-slate-600 leading-relaxed m-0";
-
 /** Basic expand/collapse panel. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={rootClass}>
-			<Trigger class={triggerClass}>
+		<Root class={style.collapsible__root}>
+			<Trigger class={style.collapsible__trigger}>
 				<span>What is Kobalte?</span>
 				<Chevron />
 			</Trigger>
-			<Content class={contentClass}>
-				<p class={contentTextClass}>
+			<Content class={style.collapsible__content}>
+				<p class={style.collapsible__contentText}>
 					Kobalte is a UI toolkit for building accessible web apps and design
 					systems with SolidJS. It provides a set of low-level UI components and
 					primitives which can be the foundation for your design system
@@ -64,13 +55,13 @@ export const Default = meta.story({
 export const DefaultOpen = meta.story({
 	name: "Default Open",
 	render: () => (
-		<Root defaultOpen class={rootClass}>
-			<Trigger class={triggerClass}>
+		<Root defaultOpen class={style.collapsible__root}>
+			<Trigger class={style.collapsible__trigger}>
 				<span>Open by default</span>
 				<Chevron />
 			</Trigger>
-			<Content class={contentClass}>
-				<p class={contentTextClass}>
+			<Content class={style.collapsible__content}>
+				<p class={style.collapsible__contentText}>
 					This panel was open on mount via the <code>defaultOpen</code> prop. It
 					is still uncontrolled — clicking the trigger toggles it normally.
 				</p>
@@ -83,13 +74,13 @@ export const DefaultOpen = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root disabled class={rootClass}>
-			<Trigger class={triggerClass}>
+		<Root disabled class={style.collapsible__root}>
+			<Trigger class={style.collapsible__trigger}>
 				<span>Cannot be toggled</span>
 				<Chevron />
 			</Trigger>
-			<Content class={contentClass}>
-				<p class={contentTextClass}>
+			<Content class={style.collapsible__content}>
+				<p class={style.collapsible__contentText}>
 					This content is not reachable when disabled.
 				</p>
 			</Content>
@@ -105,14 +96,14 @@ export const Disabled = meta.story({
 export const Animated = meta.story({
 	name: "Animated",
 	render: () => (
-		<Root class={rootClass} forceMount>
-			<Trigger class={triggerClass}>
+		<Root class={style.collapsible__root} forceMount>
+			<Trigger class={style.collapsible__trigger}>
 				<span>Animated collapsible</span>
 				<Chevron />
 			</Trigger>
-			<Content class="grid transition-[grid-template-rows] duration-300 ease-out data-[expanded]:grid-rows-[1fr] data-[closed]:grid-rows-[0fr] bg-slate-50">
-				<div class="overflow-hidden">
-					<p class={contentTextClass}>
+			<Content class={style["collapsible__content--animated"]}>
+				<div class={style.collapsible__animatedInner}>
+					<p class={style.collapsible__contentText}>
 						This content animates open and closed using a CSS{" "}
 						<code>grid-template-rows</code> transition. The{" "}
 						<code>--kb-collapsible-content-height</code> CSS variable is also
@@ -127,14 +118,18 @@ export const Animated = meta.story({
 function ControlledDemo() {
 	const [open, setOpen] = createSignal(false);
 	return (
-		<div class="flex flex-col gap-3 items-start font-sans">
-			<Root open={open()} onOpenChange={setOpen} class={rootClass}>
-				<Trigger class={triggerClass}>
+		<div class={style.collapsible__demo}>
+			<Root
+				open={open()}
+				onOpenChange={setOpen}
+				class={style.collapsible__root}
+			>
+				<Trigger class={style.collapsible__trigger}>
 					<span>Controlled panel</span>
 					<Chevron />
 				</Trigger>
-				<Content class={contentClass}>
-					<p class={contentTextClass}>
+				<Content class={style.collapsible__content}>
+					<p class={style.collapsible__contentText}>
 						State is controlled externally. The button below also toggles it.
 					</p>
 				</Content>
@@ -142,7 +137,7 @@ function ControlledDemo() {
 			<button
 				type="button"
 				onClick={() => setOpen((v) => !v)}
-				class="rounded px-3 py-1.5 text-xs font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+				class={style.collapsible__button}
 			>
 				{open() ? "Close" : "Open"} from outside
 			</button>

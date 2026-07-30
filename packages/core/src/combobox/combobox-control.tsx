@@ -1,17 +1,20 @@
-import { isFunction, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { isFunction, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Accessor, children, omit } from "solid-js";
 
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
+} from "../polymorphic/index.tsx";
+import {
+	type ComboboxDataSet,
+	useComboboxContext,
+} from "./combobox-context.tsx";
 
 export interface ComboboxControlState<Option> {
 	/** The selected options. */

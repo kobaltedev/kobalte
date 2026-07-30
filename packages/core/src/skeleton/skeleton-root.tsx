@@ -13,7 +13,7 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
 export interface SkeletonRootOptions {
 	/** Whether the skeleton is visible. Sets data attribute. */
@@ -35,7 +35,7 @@ export interface SkeletonRootOptions {
 	animate?: boolean;
 }
 
-export interface SkeletonRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SkeletonRootCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 	style: JSX.CSSProperties | string;
 }

@@ -30,17 +30,11 @@
 	"sideEffects": false,
 	"type": "module",
 	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"solid": "./dist/index.jsx",
-			"default": "./dist/index.js"
-		},
 		"./*": {
 			"types": "./dist/*/index.d.ts",
 			"solid": "./dist/*/index.jsx",
 			"default": "./dist/*/index.js"
-		},
-		"./src/*": "./src/*"
+		}
 	},
 	"main": "dist/index.js",
 	"module": "dist/index.js",
@@ -53,19 +47,16 @@
 			]
 		}
 	},
-	"source": "src/index.tsx",
 	"files": [
 		"dist",
-		"src",
 		"NOTICE.txt"
 	],
 	"scripts": {
-		"build": "pnpm build:cp && pnpm build:tsup",
+		"build": "pnpm build:cp && pnpm build:tsdown",
 		"build:cp": "cp ../../NOTICE.txt .",
-		"build:tsup": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsup",
-		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
+		"build:tsdown": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsdown",
+		"clean": "rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
 		"dev": "vite serve dev --host",
-		"test-old": "jest --passWithNoTests",
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit"
 	},
@@ -73,29 +64,30 @@
 		"@floating-ui/dom": "^1.5.1",
 		"@internationalized/date": "^3.4.0",
 		"@internationalized/number": "^3.2.1",
-		"@kobalte/utils": "^0.9.2",
-		"@solid-primitives/a11y": "next",
-		"@solid-primitives/controlled-signal": "1.0.0-next.1",
-		"@solid-primitives/i18n": "next",
-		"@solid-primitives/focus": "next",
-		"@solid-primitives/form": "next",
-		"@solid-primitives/interaction": "next",
-		"@solid-primitives/keyboard": "next",
-		"@solid-primitives/props": "next",
-		"@solid-primitives/resize-observer": "next",
-		"@solid-primitives/presence": "next",
-		"@solid-primitives/scroll": "next",
-		"@solid-primitives/upload": "next",
-		"@solid-primitives/utils": "next"
+		"@kobalte/utils": "workspace:*",
+		"@solid-primitives/a11y": "catalog:",
+		"@solid-primitives/controlled-signal": "catalog:",
+		"@solid-primitives/i18n": "catalog:",
+		"@solid-primitives/focus": "catalog:",
+		"@solid-primitives/form": "catalog:",
+		"@solid-primitives/interaction": "catalog:",
+		"@solid-primitives/keyboard": "catalog:",
+		"@solid-primitives/props": "catalog:",
+		"@solid-primitives/resize-observer": "catalog:",
+		"@solid-primitives/presence": "catalog:",
+		"@solid-primitives/scroll": "catalog:",
+		"@solid-primitives/upload": "catalog:",
+		"@solid-primitives/utils": "catalog:"
 	},
 	"devDependencies": {
 		"@kobalte/tests": "workspace:*",
-		"esbuild-plugin-solid": "^0.5.0",
-		"tsup": "8.5.1"
+		"tsdown": "catalog:",
+		"typescript": "catalog:",
+		"unplugin-solid": "catalog:"
 	},
 	"peerDependencies": {
-		"@solidjs/web": "^2.0.0-beta.14",
-		"solid-js": "^2.0.0-beta.14"
+		"@solidjs/web": "catalog:",
+		"solid-js": "catalog:"
 	},
 	"publishConfig": {
 		"access": "public"

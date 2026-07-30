@@ -28,10 +28,10 @@ export {
 	template,
 	translator,
 } from "@solid-primitives/i18n";
-export * from "./create-collator";
-export * from "./create-date-formatter";
-export * from "./create-default-locale";
-export * from "./create-filter";
-export * from "./create-number-formatter";
-export * from "./i18n-provider";
-export * from "./utils";
+export * from "./create-collator.ts";
+export * from "./create-date-formatter.ts";
+export * from "./create-default-locale.ts";
+export * from "./create-filter.ts";
+export * from "./create-number-formatter.ts";
+export * from "./i18n-provider.tsx";
+export * from "./utils.ts";

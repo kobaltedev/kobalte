@@ -1,0 +1,361 @@
+/* ─── Trigger ─────────────────────────────────────────────────────────────── */
+
+.drawer__trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 500;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: hsl(0 0% 100%);
+	color: hsl(215 25% 27%);
+	transition:
+		background-color 150ms,
+		color 150ms;
+	cursor: pointer;
+}
+
+.drawer__trigger:hover {
+	background-color: hsl(210 40% 98%);
+}
+
+.drawer__trigger:focus-visible {
+	outline: none;
+	box-shadow:
+		0 0 0 2px hsl(0 0% 100%),
+		0 0 0 4px hsl(217 91% 60%);
+}
+
+/* ─── Close button ────────────────────────────────────────────────────────── */
+
+.drawer__close {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	display: inline-flex;
+	height: 28px;
+	width: 28px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	background: none;
+	border: none;
+	color: hsl(215 16% 47%);
+	cursor: pointer;
+}
+
+.drawer__close:hover {
+	background-color: hsl(210 40% 96%);
+	color: hsl(215 25% 27%);
+}
+
+.drawer__close:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+/* ─── Action button ───────────────────────────────────────────────────────── */
+
+.drawer__action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 500;
+	background-color: hsl(222 47% 11%);
+	color: hsl(0 0% 100%);
+	border: none;
+	cursor: pointer;
+	transition: background-color 150ms;
+}
+
+.drawer__action:hover {
+	background-color: hsl(215 25% 27%);
+}
+
+.drawer__action:focus-visible {
+	outline: none;
+	box-shadow:
+		0 0 0 2px hsl(0 0% 100%),
+		0 0 0 4px hsl(217 91% 60%);
+}
+
+/* ─── Cancel button ───────────────────────────────────────────────────────── */
+
+.drawer__cancel {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 500;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: hsl(0 0% 100%);
+	color: hsl(215 25% 27%);
+	cursor: pointer;
+}
+
+.drawer__cancel:hover {
+	background-color: hsl(210 40% 98%);
+}
+
+.drawer__cancel:focus-visible {
+	outline: none;
+	box-shadow:
+		0 0 0 2px hsl(0 0% 100%),
+		0 0 0 4px hsl(217 91% 60%);
+}
+
+/* ─── Title ───────────────────────────────────────────────────────────────── */
+
+.drawer__title {
+	font-size: 16px;
+	font-weight: 600;
+	color: hsl(222 47% 11%);
+	margin-bottom: 4px;
+}
+
+.drawer__title--gap {
+	font-size: 16px;
+	font-weight: 600;
+	color: hsl(222 47% 11%);
+	margin-bottom: 8px;
+}
+
+/* ─── Description ─────────────────────────────────────────────────────────── */
+
+.drawer__description {
+	font-size: 14px;
+	line-height: 20px;
+	color: hsl(215 19% 35%);
+	margin-bottom: 16px;
+}
+
+.drawer__description--flush {
+	font-size: 14px;
+	line-height: 20px;
+	color: hsl(215 19% 35%);
+}
+
+/* ─── Layout: stacks ──────────────────────────────────────────────────────── */
+
+.drawer__stack {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.drawer__stack--spaced {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.drawer__stack--nav {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-top: 8px;
+}
+
+.drawer__stack--form {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.drawer__stack--form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+/* ─── Layout: rows ────────────────────────────────────────────────────────── */
+
+.drawer__row {
+	display: flex;
+	gap: 8px;
+}
+
+.drawer__row--center {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+/* ─── Layout: footers ─────────────────────────────────────────────────────── */
+
+.drawer__footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 24px;
+}
+
+.drawer__footer--compact {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 8px;
+}
+
+.drawer__footer--right {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 16px;
+}
+
+/* ─── Text ────────────────────────────────────────────────────────────────── */
+
+.drawer__text {
+	font-size: 14px;
+	line-height: 20px;
+	color: hsl(215 25% 27%);
+}
+
+.drawer__text--secondary {
+	font-size: 14px;
+	line-height: 20px;
+	color: hsl(215 20% 29%);
+}
+
+.drawer__meta {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(215 19% 35%);
+}
+
+/* ─── Nav items ───────────────────────────────────────────────────────────── */
+
+.drawer__nav-item {
+	border-radius: 6px;
+	padding: 8px 12px;
+	font-size: 14px;
+	line-height: 20px;
+	color: hsl(215 25% 27%);
+	text-align: left;
+	width: 100%;
+	background: none;
+	border: none;
+	cursor: pointer;
+	transition: background-color 150ms;
+}
+
+.drawer__nav-item:hover {
+	background-color: hsl(210 40% 96%);
+}
+
+/* ─── Search input ────────────────────────────────────────────────────────── */
+
+.drawer__search-input {
+	flex: 1;
+	border-radius: 6px;
+	border: 1px solid hsl(214 32% 91%);
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 20px;
+}
+
+.drawer__search-input:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+/* ─── Info panel (SnapPointInfo) ──────────────────────────────────────────── */
+
+.drawer__info-panel {
+	border-radius: 8px;
+	background-color: hsl(210 40% 98%);
+	border: 1px solid hsl(214 32% 91%);
+	padding: 12px;
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(215 20% 29%);
+	font-family:
+		ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Courier New",
+		monospace;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	column-gap: 16px;
+	row-gap: 4px;
+}
+
+.drawer__info-label {
+	color: hsl(215 16% 47%);
+}
+
+/* ─── Scrollable list ─────────────────────────────────────────────────────── */
+
+.drawer__scroll-list {
+	margin-top: 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	overflow-y: auto;
+}
+
+.drawer__list-item {
+	height: 40px;
+	border-radius: 8px;
+	background-color: hsl(210 40% 96%);
+	display: flex;
+	align-items: center;
+	padding: 0 12px;
+	font-size: 14px;
+	line-height: 20px;
+	color: hsl(215 19% 35%);
+}
+
+/* ─── Form elements ───────────────────────────────────────────────────────── */
+
+.drawer__form-label {
+	font-size: 12px;
+	font-weight: 500;
+	color: hsl(215 20% 29%);
+}
+
+.drawer__form-input {
+	border-radius: 6px;
+	border: 1px solid hsl(214 32% 91%);
+	padding: 6px 10px;
+	font-size: 14px;
+	line-height: 20px;
+}
+
+.drawer__form-input:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+.drawer__form-textarea {
+	border-radius: 6px;
+	border: 1px solid hsl(214 32% 91%);
+	padding: 6px 10px;
+	font-size: 14px;
+	line-height: 20px;
+	resize: none;
+}
+
+.drawer__form-textarea:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+/* ─── Drag handle ──────────────────────────────────────────────────────────── */
+
+.drawer__drag-handle {
+	width: 48px;
+	height: 4px;
+	background: #cbd5e1;
+	border-radius: 9999px;
+	margin: 0 auto 16px;
+	cursor: grab;
+}

@@ -163,43 +163,43 @@
 
 /* ─── Dark mode ───────────────────────────────────────────────────────────── */
 
-[data-kb-theme="dark"] .drawer__trigger {
+[data-theme*="dark"] .drawer__trigger {
 	background-color: hsl(201 96% 32%);
 	color: hsla(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .drawer__trigger:hover {
+[data-theme*="dark"] .drawer__trigger:hover {
 	background-color: hsl(200 98% 39%);
 }
 
-[data-kb-theme="dark"] .drawer__trigger:active {
+[data-theme*="dark"] .drawer__trigger:active {
 	background-color: hsl(199 89% 48%);
 }
 
-[data-kb-theme="dark"] .drawer__content,
-[data-kb-theme="dark"] .drawer__content_right {
+[data-theme*="dark"] .drawer__content,
+[data-theme*="dark"] .drawer__content_right {
 	background-color: hsl(240 4% 16%);
 	border-color: hsl(240 5% 26%);
 	box-shadow: none;
 }
 
-[data-kb-theme="dark"] .drawer__handle {
+[data-theme*="dark"] .drawer__handle {
 	background-color: hsl(240 5% 34%);
 }
 
-[data-kb-theme="dark"] .drawer__close-button {
+[data-theme*="dark"] .drawer__close-button {
 	color: hsl(0 100% 100% / 0.8);
 }
 
-[data-kb-theme="dark"] .drawer__title {
+[data-theme*="dark"] .drawer__title {
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .drawer__description {
+[data-theme*="dark"] .drawer__description {
 	color: hsl(0 100% 100% / 0.7);
 }
 
-[data-kb-theme="dark"] .drawer__action {
+[data-theme*="dark"] .drawer__action {
 	background-color: hsl(240 5% 84%);
 	color: hsl(240 6% 10%);
 }

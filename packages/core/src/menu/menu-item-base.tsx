@@ -27,17 +27,20 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type CollectionItemWithRef, createRegisterId } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { createSelectableItem } from "../selection";
-import { useMenuContext } from "./menu-context";
+} from "../polymorphic/index.tsx";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import {
+	type CollectionItemWithRef,
+	createRegisterId,
+} from "../primitives/index.ts";
+import { createSelectableItem } from "../selection/index.ts";
+import { useMenuContext } from "./menu-context.tsx";
 import {
 	MenuItemContext,
 	type MenuItemContextValue,
 	type MenuItemDataSet,
-} from "./menu-item.context";
-import { useMenuRootContext } from "./menu-root-context";
+} from "./menu-item.context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuItemBaseOptions {
 	/**

@@ -1,6 +1,5 @@
-import { Index, createSignal } from "solid-js";
-import { Rating } from "../../../../packages/core/src/rating";
-
+import { Rating } from "@kobalte/core/rating";
+import { createSignal, Index } from "solid-js";
 import style from "./rating.module.css";
 
 export function BasicExample() {
@@ -58,7 +57,15 @@ export function ControlledExample() {
 					</Index>
 				</Rating.Control>
 			</Rating>
-			<p class="not-prose text-sm mt-4">Your rating is: {value()}/5</p>
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
+				Your rating is: {value()}/5
+			</p>
 		</>
 	);
 }
@@ -148,7 +155,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<Rating class={style.rating} name="rate">
 				<Rating.Control class={style.rating__control}>
@@ -164,7 +176,7 @@ export function HTMLFormExample() {
 				</Rating.Control>
 				<Rating.HiddenInput />
 			</Rating>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>

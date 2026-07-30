@@ -23,16 +23,16 @@ import {
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
 import { createEffect, createUniqueId, omit, onCleanup } from "solid-js";
 
-import { type Direction, useLocale } from "../i18n";
+import { type Direction, useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createSelectableItem } from "../selection";
-import { type MenuDataSet, useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
-import { getPointerGraceArea, type Side } from "./utils";
+} from "../polymorphic/index.tsx";
+import { createSelectableItem } from "../selection/index.ts";
+import { type MenuDataSet, useMenuContext } from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
+import { getPointerGraceArea, type Side } from "./utils.ts";
 
 export interface MenuSubTriggerOptions {
 	/**

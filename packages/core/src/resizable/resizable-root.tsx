@@ -17,25 +17,24 @@ import {
 	type Setter,
 	untrack,
 } from "solid-js";
-import { createControllableSignal } from "../primitives";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	ResizableContext,
-	ResizableInternalContext,
 	type ResizableContextValue,
+	ResizableInternalContext,
 	type ResizableInternalContextValue,
 	type ResizableSize,
 	type ResizeStrategy,
-} from "./resizable-context";
+} from "./resizable-context.tsx";
 import {
 	deltaResize,
-	fixToPrecision,
+	type ResizablePanelData,
+	type ResizablePanelInstance,
 	resizePanel,
 	resolveSize,
 	splitPanels,
-	type ResizablePanelData,
-	type ResizablePanelInstance,
-} from "./resizable-lib";
+} from "./resizable-lib.ts";
 
 export interface ResizableRootOptions {
 	/**
@@ -90,7 +89,11 @@ export interface ResizableRootChildrenProps {
 	/** Whether the global cursor style is managed during resize. */
 	handleCursorStyle: boolean;
 	/** Resize panel at `panelIndex` to the given size. */
-	resize: (panelIndex: number, size: ResizableSize, strategy?: ResizeStrategy) => void;
+	resize: (
+		panelIndex: number,
+		size: ResizableSize,
+		strategy?: ResizeStrategy,
+	) => void;
 	/** Collapse panel at `panelIndex` to its `collapsedSize`. */
 	collapse: (panelIndex: number, strategy?: ResizeStrategy) => void;
 	/** Expand panel at `panelIndex` from its collapsed state. */
@@ -184,10 +187,14 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 	// Keep liveSizes in sync when sizes are driven from outside (controlled mode).
 	createEffect(
 		() => sizes(),
-		(newSizes) => { liveSizes = [...newSizes]; },
+		(newSizes) => {
+			liveSizes = [...newSizes];
+		},
 	);
 
-	const registerPanel = (panelData: ResizablePanelData): ResizablePanelInstance => {
+	const registerPanel = (
+		panelData: ResizablePanelData,
+	): ResizablePanelInstance => {
 		// Use livePanels (not panels()) — panels() is stale when multiple
 		// panels register in the same flush cycle.
 		const panelIndex = livePanels.filter(
@@ -241,7 +248,9 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 
 		createEffect(
 			() => panelSizeMemo(),
-			(size) => { panelData.onResize?.(size); },
+			(size) => {
+				panelData.onResize?.(size);
+			},
 		);
 
 		const panel: ResizablePanelInstance = {
@@ -251,8 +260,7 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 				resize(sizesToIds.indexOf(panelData.id), size, strategy),
 			collapse: (strategy) =>
 				collapse(sizesToIds.indexOf(panelData.id), strategy),
-			expand: (strategy) =>
-				expand(sizesToIds.indexOf(panelData.id), strategy),
+			expand: (strategy) => expand(sizesToIds.indexOf(panelData.id), strategy),
 		};
 
 		livePanels = [...livePanels, panel].sort((a, b) =>
@@ -408,9 +416,9 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 				focusedElement: handle,
 			});
 			let collapsiblePanel = precedingPanels[precedingPanels.length - 1];
-			if (!collapsiblePanel || !collapsiblePanel.data.collapsible) {
+			if (!collapsiblePanel?.data.collapsible) {
 				collapsiblePanel = followingPanels[0];
-				if (!collapsiblePanel || !collapsiblePanel.data.collapsible) return;
+				if (!collapsiblePanel?.data.collapsible) return;
 			}
 			const size = collapsiblePanel.size();
 			const collapsedSize = resolveSize(
@@ -501,7 +509,9 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 		registerPanel,
 		unregisterPanel,
 		onDrag,
-		onDragEnd: () => { initialSizes = null; },
+		onDragEnd: () => {
+			initialSizes = null;
+		},
 		onKeyDown,
 	};
 
@@ -513,7 +523,8 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 					style={combineStyle(
 						{
 							display: "flex",
-							"flex-direction": p.orientation === "horizontal" ? "row" : "column",
+							"flex-direction":
+								p.orientation === "horizontal" ? "row" : "column",
 							overflow: "hidden",
 						},
 						p.style,
@@ -523,9 +534,9 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 					{...others}
 				>
 					{typeof p.children === "function"
-						? (p.children as (props: ResizableRootChildrenProps) => JSX.Element)(
-								childrenProps,
-							)
+						? (
+								p.children as (props: ResizableRootChildrenProps) => JSX.Element
+							)(childrenProps)
 						: p.children}
 				</div>
 			</ResizableInternalContext>

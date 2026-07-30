@@ -1,0 +1,57 @@
+name: Publish JSR
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Run the real JSR publish after the dry run passes
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish JSR workspace
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Sync deno.jsonc versions and exports from package.json
+        run: pnpm jsr:sync
+
+      - name: Build libraries
+        run: pnpm build:libs
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+
+      - name: Publish dry run
+        run: deno publish --dry-run --allow-slow-types
+
+      - name: Publish to JSR
+        if: ${{ inputs.publish == 'true' }}
+        run: deno publish --allow-slow-types

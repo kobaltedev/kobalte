@@ -5,13 +5,13 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useSearchContext } from "./search-context";
+} from "../polymorphic/index.tsx";
+import { useSearchContext } from "./search-context.tsx";
 
 export interface SearchIndicatorOptions {}
 
 export interface SearchIndicatorCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	children: JSX.Element;
 	loadingComponent?: JSX.Element;

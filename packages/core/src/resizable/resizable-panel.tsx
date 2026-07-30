@@ -17,18 +17,18 @@ import {
 	omit,
 	untrack,
 } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useResizableInternalContext } from "./resizable-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useResizableInternalContext } from "./resizable-context.tsx";
 import {
-	ResizablePanelContext,
-	type ResizablePanelContextValue,
-} from "./resizable-panel-context";
-import {
-	resolveSize,
 	type ResizablePanelInstance,
 	type ResizableSize,
 	type ResizeStrategy,
-} from "./resizable-lib";
+	resolveSize,
+} from "./resizable-lib.ts";
+import {
+	ResizablePanelContext,
+	type ResizablePanelContextValue,
+} from "./resizable-panel-context.tsx";
 
 export interface ResizablePanelOptions {
 	/**
@@ -73,7 +73,9 @@ export interface ResizablePanelOptions {
 	panelId?: string;
 }
 
-export interface ResizablePanelCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ResizablePanelCommonProps<
+	T extends HTMLElement = HTMLElement,
+> {
 	ref: T | ((el: T) => void);
 	style: JSX.CSSProperties | string;
 	children: JSX.Element | ((props: ResizablePanelChildrenProps) => JSX.Element);
@@ -170,11 +172,12 @@ export function ResizablePanel<T extends ValidComponent = "div">(
 
 	const [ref, setRef] = createSignal<HTMLElement | null>(null);
 	const context = useResizableInternalContext();
-	const [panelInstance, setPanelInstance] = createSignal<ResizablePanelInstance | null>(null);
+	const [panelInstance, setPanelInstance] =
+		createSignal<ResizablePanelInstance | null>(null);
 
 	createEffect(
 		() => ref(),
-		(el): (() => void) | void => {
+		(el): (() => void) | undefined => {
 			if (!el) return;
 			const instance = untrack(() =>
 				context.registerPanel({
@@ -210,8 +213,7 @@ export function ResizablePanel<T extends ValidComponent = "div">(
 		if (!p.collapsible) return false;
 
 		const isCollapsed = instance
-			? instance.size() ===
-				resolveSize(p.collapsedSize, context.rootSize())
+			? instance.size() === resolveSize(p.collapsedSize, context.rootSize())
 			: false;
 
 		if (instance && prev !== isCollapsed) {
@@ -225,7 +227,9 @@ export function ResizablePanel<T extends ValidComponent = "div">(
 	const resize = (size: ResizableSize, strategy?: ResizeStrategy) => {
 		const instance = panelInstance();
 		if (!instance) {
-			console.warn("[kobalte]: Cannot resize a Resizable.Panel before it is mounted.");
+			console.warn(
+				"[kobalte]: Cannot resize a Resizable.Panel before it is mounted.",
+			);
 			return;
 		}
 		instance.resize(size, strategy ?? "both");
@@ -234,7 +238,9 @@ export function ResizablePanel<T extends ValidComponent = "div">(
 	const collapse = (strategy?: ResizeStrategy) => {
 		const instance = panelInstance();
 		if (!instance) {
-			console.warn("[kobalte]: Cannot collapse a Resizable.Panel before it is mounted.");
+			console.warn(
+				"[kobalte]: Cannot collapse a Resizable.Panel before it is mounted.",
+			);
 			return;
 		}
 		instance.collapse(strategy ?? "both");
@@ -243,24 +249,42 @@ export function ResizablePanel<T extends ValidComponent = "div">(
 	const expand = (strategy?: ResizeStrategy) => {
 		const instance = panelInstance();
 		if (!instance) {
-			console.warn("[kobalte]: Cannot expand a Resizable.Panel before it is mounted.");
+			console.warn(
+				"[kobalte]: Cannot expand a Resizable.Panel before it is mounted.",
+			);
 			return;
 		}
 		instance.expand(strategy ?? "both");
 	};
 
 	const childrenProps: ResizablePanelChildrenProps = {
-		get size() { return panelSize(); },
-		get minSize() { return p.minSize; },
-		get maxSize() { return p.maxSize; },
-		get collapsible() { return p.collapsible; },
-		get collapsedSize() { return p.collapsedSize; },
-		get collapseThreshold() { return p.collapseThreshold; },
-		get collapsed() { return collapsed(); },
+		get size() {
+			return panelSize();
+		},
+		get minSize() {
+			return p.minSize;
+		},
+		get maxSize() {
+			return p.maxSize;
+		},
+		get collapsible() {
+			return p.collapsible;
+		},
+		get collapsedSize() {
+			return p.collapsedSize;
+		},
+		get collapseThreshold() {
+			return p.collapseThreshold;
+		},
+		get collapsed() {
+			return collapsed();
+		},
 		resize,
 		collapse,
 		expand,
-		get panelId() { return p.panelId; },
+		get panelId() {
+			return p.panelId;
+		},
 	};
 
 	const ctxValue: ResizablePanelContextValue = {
@@ -282,16 +306,13 @@ export function ResizablePanel<T extends ValidComponent = "div">(
 			<div
 				ref={mergeRefs(setRef, p.ref as any)}
 				id={p.panelId}
-				style={combineStyle(
-					p.style,
-					{
-						// flex-basis must come after user style — combineStyle gives
-						// the last argument priority, and flex-basis drives layout.
-						"flex-basis": `${panelSize() * 100}%`,
-						"flex-shrink": 0,
-						overflow: "hidden",
-					},
-				)}
+				style={combineStyle(p.style, {
+					// flex-basis must come after user style — combineStyle gives
+					// the last argument priority, and flex-basis drives layout.
+					"flex-basis": `${panelSize() * 100}%`,
+					"flex-shrink": 0,
+					overflow: "hidden",
+				})}
 				data-collapsed={collapsed() ? "" : undefined}
 				data-expanded={p.collapsible && !collapsed() ? "" : undefined}
 				data-orientation={context.orientation()}

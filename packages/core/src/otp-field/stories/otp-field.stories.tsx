@@ -7,7 +7,8 @@ import {
 	Label,
 	Root,
 	useOTPFieldContext,
-} from "../index";
+} from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/OTPField",
@@ -16,7 +17,6 @@ const meta = preview.meta({
 
 export default meta;
 
-// Slot component that renders a single character cell with active/caret state.
 function OtpSlot(props: { index: number }) {
 	const context = useOTPFieldContext();
 
@@ -26,18 +26,11 @@ function OtpSlot(props: { index: number }) {
 		context.isInserting() && context.activeSlots()[0] === props.index;
 
 	return (
-		<div
-			class={[
-				"relative flex h-12 w-10 items-center justify-center rounded-md border text-sm font-medium transition-all",
-				isActive()
-					? "border-blue-500 ring-2 ring-blue-500/30"
-					: "border-slate-300",
-			].join(" ")}
-		>
+		<div class={[style.slot, isActive() && style.slotActive]}>
 			{char()}
 			{showCaret() && (
-				<div class="pointer-events-none absolute inset-0 flex items-center justify-center">
-					<div class="h-5 w-px bg-slate-900" />
+				<div class={style.caret}>
+					<div class={style.caretLine} />
 				</div>
 			)}
 		</div>
@@ -52,7 +45,7 @@ function makeSlots(n: number) {
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root maxLength={6} class="flex gap-2 font-sans">
+		<Root maxLength={6} class={style.root}>
 			<Input />
 			<For each={makeSlots(6)}>{(i) => <OtpSlot index={i} />}</For>
 		</Root>
@@ -65,25 +58,23 @@ export const Controlled = meta.story({
 	render: () => {
 		const [value, setValue] = createSignal("");
 		return (
-			<div class="flex flex-col gap-4 font-sans">
+			<div class={style.controlledWrapper}>
 				<Root
 					maxLength={6}
 					value={value()}
 					onChange={setValue}
 					onComplete={(v) => console.log("Complete:", v)}
-					class="flex gap-2"
+					class={style.root}
 				>
 					<Input />
 					<For each={makeSlots(6)}>{(i) => <OtpSlot index={i} />}</For>
 				</Root>
-				<p class="text-sm text-slate-600">Value: {value()}</p>
+				<p class={style.stateText}>Value: {value()}</p>
 			</div>
 		);
 	},
 });
 
-// Exclusive caret-or-char: the char <span> mounts fresh on each keystroke,
-// triggering the CSS pop-in animation without any JS.
 function AnimatedOtpSlot(props: { index: number }) {
 	const context = useOTPFieldContext();
 	const char = () => context.value()[props.index];
@@ -92,20 +83,13 @@ function AnimatedOtpSlot(props: { index: number }) {
 		context.isInserting() && context.activeSlots()[0] === props.index;
 
 	return (
-		<div
-			class={[
-				"relative flex h-12 w-10 items-center justify-center rounded-md border text-sm font-medium transition-all",
-				isActive()
-					? "border-blue-500 ring-2 ring-blue-500/30"
-					: "border-slate-300",
-			].join(" ")}
-		>
+		<div class={[style.slot, isActive() && style.slotActive]}>
 			{showCaret() ? (
-				<div class="pointer-events-none absolute inset-0 flex items-center justify-center">
-					<div class="h-5 w-px bg-slate-900" />
+				<div class={style.caret}>
+					<div class={style.caretLine} />
 				</div>
 			) : (
-				<span class="otp-pop-in">{char()}</span>
+				<span class={style.charPopIn}>{char()}</span>
 			)}
 		</div>
 	);
@@ -116,17 +100,7 @@ export const Animated = meta.story({
 	name: "Animated",
 	render: () => (
 		<>
-			<style>{`
-				@keyframes otp-slip-in {
-					from { transform: translateY(8px); opacity: 0; }
-					to { transform: translateY(0); opacity: 1; }
-				}
-				.otp-pop-in {
-					display: inline-block;
-					animation: otp-slip-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-				}
-			`}</style>
-			<Root maxLength={6} class="flex gap-2 font-sans">
+			<Root maxLength={6} class={style.root}>
 				<Input />
 				<For each={makeSlots(6)}>{(i) => <AnimatedOtpSlot index={i} />}</For>
 			</Root>
@@ -142,55 +116,46 @@ export const FormControls = meta.story({
 		const isInvalid = () => value().length > 0 && value().length < 6;
 
 		return (
-			<div class="flex flex-col gap-10 font-sans">
-				{/* Validation */}
-				<div class="flex flex-col gap-1.5">
+			<div class={style.formControls}>
+				<div class={style.formSection}>
 					<Root
 						maxLength={6}
 						value={value()}
 						onChange={setValue}
 						validationState={isInvalid() ? "invalid" : "valid"}
 					>
-						<Label class="text-sm font-medium text-slate-700">
-							Verification code
-						</Label>
-						<div class="mt-1 flex gap-2">
+						<Label class={style.label}>Verification code</Label>
+						<div class={style.slotRow}>
 							<Input />
 							<For each={makeSlots(6)}>{(i) => <OtpSlot index={i} />}</For>
 						</div>
-						<Description class="mt-1 text-xs text-slate-500">
+						<Description class={style.description}>
 							Enter the 6-digit code sent to your device.
 						</Description>
-						<ErrorMessage class="mt-1 text-xs text-red-600">
+						<ErrorMessage class={style.error}>
 							Please enter all 6 digits.
 						</ErrorMessage>
 					</Root>
 				</div>
 
-				{/* Disabled */}
-				<div class="flex flex-col gap-1.5">
+				<div class={style.formSection}>
 					<Root maxLength={6} defaultValue="123" disabled>
-						<Label class="text-sm font-medium text-slate-400">
-							Disabled field
-						</Label>
-						<div class="mt-1 flex gap-2 opacity-50">
+						<Label class={style.labelDisabled}>Disabled field</Label>
+						<div class={style.slotRowDisabled}>
 							<Input />
 							<For each={makeSlots(6)}>{(i) => <OtpSlot index={i} />}</For>
 						</div>
 					</Root>
 				</div>
 
-				{/* Read-only */}
-				<div class="flex flex-col gap-1.5">
+				<div class={style.formSection}>
 					<Root maxLength={6} defaultValue="456789" readOnly>
-						<Label class="text-sm font-medium text-slate-700">
-							Read-only field
-						</Label>
-						<div class="mt-1 flex gap-2">
+						<Label class={style.label}>Read-only field</Label>
+						<div class={style.slotRow}>
 							<Input />
 							<For each={makeSlots(6)}>{(i) => <OtpSlot index={i} />}</For>
 						</div>
-						<Description class="mt-1 text-xs text-slate-500">
+						<Description class={style.description}>
 							This value cannot be edited.
 						</Description>
 					</Root>
@@ -204,7 +169,7 @@ export const FormControls = meta.story({
 export const AlphaPattern = meta.story({
 	name: "Alpha Pattern",
 	render: () => (
-		<Root maxLength={4} class="flex gap-2 font-sans">
+		<Root maxLength={4} class={style.root}>
 			<Input pattern="^[a-zA-Z]*$" />
 			<For each={makeSlots(4)}>{(i) => <OtpSlot index={i} />}</For>
 		</Root>

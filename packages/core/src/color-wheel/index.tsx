@@ -14,40 +14,40 @@ import {
 	FormControlDescription as Description,
 	FormControlErrorMessage as ErrorMessage,
 	FormControlLabel as Label,
-} from "../form-control";
+} from "../form-control/index.ts";
 
 import {
 	type ColorWheelInputProps,
 	ColorWheelInput as Input,
-} from "./color-wheel-input";
+} from "./color-wheel-input.tsx";
 import {
 	type ColorWheelRootCommonProps,
 	type ColorWheelRootOptions,
 	type ColorWheelRootProps,
 	type ColorWheelRootRenderProps,
 	ColorWheelRoot as Root,
-} from "./color-wheel-root";
+} from "./color-wheel-root.tsx";
 import {
 	type ColorWheelThumbCommonProps,
 	type ColorWheelThumbOptions,
 	type ColorWheelThumbProps,
 	type ColorWheelThumbRenderProps,
 	ColorWheelThumb as Thumb,
-} from "./color-wheel-thumb";
+} from "./color-wheel-thumb.tsx";
 import {
 	type ColorWheelTrackCommonProps,
 	type ColorWheelTrackOptions,
 	type ColorWheelTrackProps,
 	type ColorWheelTrackRenderProps,
 	ColorWheelTrack as Track,
-} from "./color-wheel-track";
+} from "./color-wheel-track.tsx";
 import {
 	type ColorWheelValueLabelCommonProps,
 	type ColorWheelValueLabelOptions,
 	type ColorWheelValueLabelProps,
 	type ColorWheelValueLabelRenderProps,
 	ColorWheelValueLabel as ValueLabel,
-} from "./color-wheel-value-label";
+} from "./color-wheel-value-label.tsx";
 
 export type {
 	ColorWheelDescriptionCommonProps,
@@ -107,4 +107,4 @@ export const ColorWheel = Object.assign(Root, {
 export {
 	type ColorWheelContextValue,
 	useColorWheelContext,
-} from "./color-wheel-context";
+} from "./color-wheel-context.tsx";

@@ -1,16 +1,16 @@
-import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
+import { mergeRefs } from "@kobalte/utils";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	MenuContentBase,
 	type MenuContentBaseCommonProps,
 	type MenuContentBaseOptions,
 	type MenuContentBaseRenderProps,
-} from "./menu-content-base";
-import { useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
+} from "./menu-content-base.tsx";
+import { useMenuContext } from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuContentOptions extends MenuContentBaseOptions {}
 

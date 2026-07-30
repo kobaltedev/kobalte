@@ -1,0 +1,47 @@
+.link__base {
+	font-family: sans-serif;
+	font-size: 0.875rem;
+	color: hsl(213 94% 46%);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	border-radius: 2px;
+}
+
+.link__base:hover {
+	color: hsl(213 94% 36%);
+}
+
+.link__base:focus-visible {
+	outline: none;
+	box-shadow:
+		0 0 0 2px white,
+		0 0 0 4px hsl(213 94% 56%);
+}
+
+.link__disabled {
+	font-family: sans-serif;
+	font-size: 0.875rem;
+	color: hsl(220 9% 77%);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	cursor: not-allowed;
+}
+
+.link__disabled[data-disabled] {
+	pointer-events: none;
+}
+
+.link__as-button {
+	background: transparent;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+.link__prose {
+	font-family: sans-serif;
+	font-size: 0.875rem;
+	color: hsl(215 25% 27%);
+	max-width: 20rem;
+	line-height: 1.625;
+}

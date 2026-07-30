@@ -1,0 +1,144 @@
+---
+title: Color Swatch
+badges:
+  - icon: npm
+    label: "Since v0.13.9"
+  - label: "@kobalte/core/color-swatch"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/color-swatch"
+---
+
+import {
+	BasicExample,
+	ValueExample,
+	CustomColorNameExample,
+} from "../../../../examples/color-swatch";
+
+# {frontmatter.title}
+
+Displays a preview of a selected color.
+
+## Import
+
+```ts
+import { ColorSwatch } from "@kobalte/core/color-swatch";
+// or
+import { Root } from "@kobalte/core/color-swatch";
+```
+
+## Features
+
+- Localized color descriptions for screen reader users.
+
+## Anatomy
+
+The color swatch consists of:
+
+- **ColorSwatch:** The root container for the color swatch.
+
+```tsx
+<ColorSwatch />
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/color-swatch.tsx#L4-L13"
+
+```
+
+```css title="style.css" tab file="../../../../examples/color-swatch.module.css"
+
+```
+
+:::
+
+## Usage
+
+ColorSwatch accepts a value via the `value` prop. The value should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string.
+
+### Value
+
+:::preview
+
+<ValueExample />
+
+---
+
+```tsx title="index.tsx" tab
+import { ColorSwatch } from "@kobalte/core/color-swatch";
+import { parseColor } from "@kobalte/core/colors";
+import "./style.css";
+
+function App() {
+	return <ColorSwatch class="ColorSwatchRoot" value={parseColor("#7f0000")} />;
+}
+```
+
+```css title="style.css" tab
+.ColorSwatchRoot {
+	height: 56px;
+	width: 56px;
+	border-radius: 6px;
+}
+```
+
+:::
+
+### Custom Color Name
+
+:::preview
+
+<CustomColorNameExample />
+
+---
+
+```tsx title="index.tsx" tab
+import { ColorSwatch } from "@kobalte/core/color-swatch";
+import { parseColor } from "@kobalte/core/colors";
+import "./style.css";
+
+function App() {
+	return (
+		<ColorSwatch
+			class="ColorSwatchRoot"
+			value={parseColor("hsl(200, 98%, 39%)")}
+			colorName="Kobalte blue"
+		/>
+	);
+}
+```
+
+```css title="style.css" tab
+.ColorSwatchRoot {
+	height: 56px;
+	width: 56px;
+	border-radius: 6px;
+}
+```
+
+:::
+
+## API Reference
+
+### ColorSwatch
+
+`ColorSwatch` is equivalent to the `Root` import from `@kobalte/core/color-swatch`.
+
+| Prop         | Description                                                                                                                                                                                                     |
+| :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value        | `Color` <br/> The color value to display in the swatch.                                                                                                                                                         |
+| colorName    | `string` <br/> A localized accessible name for the color. By default, a description is generated from the color value, but this can be overridden if you have a more specific color name (e.g. Pantone colors). |
+| translations | `ColorSwatchIntlTranslations` <br/> Localization strings.                                                                                                                                                       |
+
+## Rendered elements
+
+| Component     | Default rendered element |
+| :------------ | :----------------------- |
+| `ColorSwatch` | `div`                    |

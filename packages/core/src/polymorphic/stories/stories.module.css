@@ -1,0 +1,257 @@
+/* ─── Element (Polymorphic base) ──────────────────────────────────────────── */
+
+.poly__element {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 16px;
+	border-radius: 6px;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 500;
+	font-family: sans-serif;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: hsl(210 40% 98%);
+	color: hsl(222 47% 11%);
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/* ─── Code badge (blue) ───────────────────────────────────────────────────── */
+
+.poly__code-badge {
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 12px;
+	line-height: 16px;
+	font-family:
+		ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Courier New",
+		monospace;
+	background-color: hsl(214 95% 93%);
+	color: hsl(224 76% 39%);
+}
+
+/* ─── Code badge (slate) ──────────────────────────────────────────────────── */
+
+.poly__code-badge--slate {
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 12px;
+	line-height: 16px;
+	font-family:
+		ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Courier New",
+		monospace;
+	background-color: hsl(210 40% 96%);
+	color: hsl(215 20% 29%);
+}
+
+/* ─── Code output ─────────────────────────────────────────────────────────── */
+
+.poly__code-output {
+	font-size: 12px;
+	font-family:
+		ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Courier New",
+		monospace;
+	color: hsl(224 76% 48%);
+	background-color: hsl(214 95% 93%);
+	padding: 4px 8px;
+	border-radius: 4px;
+}
+
+/* ─── Code tag (inline) ───────────────────────────────────────────────────── */
+
+.poly__code-tag {
+	font-family:
+		ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Courier New",
+		monospace;
+	color: hsl(224 76% 48%);
+}
+
+/* ─── Card ────────────────────────────────────────────────────────────────── */
+
+.poly__card {
+	border-radius: 8px;
+	padding: 12px 20px;
+	font-size: 14px;
+	font-family: sans-serif;
+	font-weight: 500;
+}
+
+.poly__card--primary {
+	background-color: hsl(217 91% 60%);
+	color: hsl(0 0% 100%);
+}
+
+.poly__card--secondary {
+	background-color: hsl(210 40% 96%);
+	color: hsl(222 47% 11%);
+}
+
+/* ─── Stacks ──────────────────────────────────────────────────────────────── */
+
+.poly__stack {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	font-family: sans-serif;
+}
+
+.poly__stack--wide {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	font-family: sans-serif;
+}
+
+.poly__stack--wrap {
+	display: flex;
+	gap: 12px;
+	font-family: sans-serif;
+	flex-wrap: wrap;
+}
+
+/* ─── Tag row ─────────────────────────────────────────────────────────────── */
+
+.poly__tag-row {
+	display: flex;
+	gap: 8px;
+}
+
+/* ─── Tag buttons (DynamicAs) ─────────────────────────────────────────────── */
+
+.poly__tag-button {
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 12px;
+	font-weight: 500;
+	background: none;
+	cursor: pointer;
+	transition:
+		color 150ms,
+		background-color 150ms,
+		border-color 150ms;
+}
+
+.poly__tag-button--active {
+	background-color: hsl(217 91% 60%);
+	color: hsl(0 0% 100%);
+	border: 1px solid hsl(217 91% 60%);
+}
+
+.poly__tag-button--inactive {
+	background-color: hsl(0 0% 100%);
+	color: hsl(215 25% 27%);
+	border: 1px solid hsl(214 32% 91%);
+}
+
+.poly__tag-button--inactive:hover {
+	border-color: hsl(213 94% 78%);
+}
+
+/* ─── Toggle (ReactiveClass) ──────────────────────────────────────────────── */
+
+.poly__toggle {
+	display: inline-flex;
+	align-items: center;
+	padding: 8px 16px;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	transition:
+		color 150ms,
+		background-color 150ms,
+		border-color 150ms;
+	cursor: pointer;
+}
+
+.poly__toggle--active {
+	background-color: hsl(217 91% 60%);
+	color: hsl(0 0% 100%);
+	border: 1px solid hsl(217 91% 60%);
+}
+
+.poly__toggle--inactive {
+	background-color: hsl(210 40% 98%);
+	color: hsl(222 47% 11%);
+	border: 1px solid hsl(214 32% 91%);
+}
+
+/* ─── Block (TypedPolymorphic) ────────────────────────────────────────────── */
+
+.poly__block {
+	display: inline-flex;
+	align-items: center;
+	padding: 8px 16px;
+	border-radius: 6px;
+	font-size: 14px;
+	font-family: sans-serif;
+	font-weight: 500;
+	transition:
+		color 150ms,
+		background-color 150ms,
+		border-color 150ms;
+}
+
+.poly__block--action {
+	background-color: hsl(217 91% 60%);
+	color: hsl(0 0% 100%);
+	border: 1px solid hsl(217 91% 60%);
+}
+
+.poly__block--default {
+	background-color: hsl(210 40% 96%);
+	color: hsl(222 47% 11%);
+	border: 1px solid hsl(214 32% 91%);
+}
+
+/* ─── Button (Kobalte Button) ─────────────────────────────────────────────── */
+
+.poly__button {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 16px;
+	border-radius: 6px;
+	font-size: 14px;
+	line-height: 20px;
+	font-weight: 500;
+	font-family: sans-serif;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: hsl(0 0% 100%);
+	color: hsl(222 47% 11%);
+	text-decoration: none;
+}
+
+/* ─── Toggle button (MissingAsProp) ───────────────────────────────────────── */
+
+.poly__toggle-button {
+	display: inline-flex;
+	align-items: center;
+	padding: 8px 16px;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: hsl(210 40% 98%);
+	color: hsl(222 47% 11%);
+	cursor: pointer;
+	width: fit-content;
+}
+
+/* ─── Hint text ───────────────────────────────────────────────────────────── */
+
+.poly__hint {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(215 19% 35%);
+	margin: 0;
+}
+
+/* ─── Error text ──────────────────────────────────────────────────────────── */
+
+.poly__error {
+	font-size: 14px;
+	color: hsl(0 84% 60%);
+	margin: 0;
+	margin-top: 4px;
+}

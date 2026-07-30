@@ -11,18 +11,18 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createUniqueId, omit } from "solid-js";
 
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	MenuGroup,
 	type MenuGroupCommonProps,
 	type MenuGroupRenderProps,
-} from "./menu-group";
+} from "./menu-group.tsx";
 import {
 	MenuRadioGroupContext,
 	type MenuRadioGroupContextValue,
-} from "./menu-radio-group-context";
-import { useMenuRootContext } from "./menu-root-context";
+} from "./menu-radio-group-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuRadioGroupOptions<TValue = string> {
 	/** The controlled value of the item radio to check. */

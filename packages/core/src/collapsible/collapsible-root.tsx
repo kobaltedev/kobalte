@@ -20,13 +20,16 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createDisclosureState, createRegisterId } from "../primitives";
+} from "../polymorphic/index.tsx";
+import {
+	createDisclosureState,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	CollapsibleContext,
 	type CollapsibleContextValue,
 	type CollapsibleDataSet,
-} from "./collapsible-context";
+} from "./collapsible-context.tsx";
 
 export interface CollapsibleRootOptions {
 	/** The controlled open state of the collapsible. */
@@ -52,7 +55,7 @@ export interface CollapsibleRootOptions {
 }
 
 export interface CollapsibleRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

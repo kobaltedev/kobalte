@@ -10,14 +10,14 @@ import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
 import { omit, onCleanup } from "solid-js";
-import { type MenuDataSet, useMenuContext } from "../menu/menu-context";
-import { useMenuRootContext } from "../menu/menu-root-context";
+import { type MenuDataSet, useMenuContext } from "../menu/menu-context.tsx";
+import { useMenuRootContext } from "../menu/menu-root-context.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useContextMenuContext } from "./context-menu-context";
+} from "../polymorphic/index.tsx";
+import { useContextMenuContext } from "./context-menu-context.tsx";
 
 export interface ContextMenuTriggerOptions {
 	/** Whether the context menu trigger is disabled. */

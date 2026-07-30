@@ -8,14 +8,14 @@
 
 import type { Accessor } from "solid-js";
 
-import type { Collection, CollectionNode } from "../primitives";
+import type { Collection, CollectionNode } from "../primitives/index.ts";
 import {
 	type MultipleSelectionManager,
 	type MultipleSelectionState,
 	Selection,
 	type SelectionBehavior,
 	type SelectionMode,
-} from "./types";
+} from "./types.ts";
 
 /**
  * An interface for reading and updating multiple selection state.
@@ -229,7 +229,7 @@ export class SelectionManager implements MultipleSelectionManager {
 			return key;
 		}
 
-		if (!item || item.type !== "item") {
+		if (item?.type !== "item") {
 			return null;
 		}
 
@@ -423,7 +423,6 @@ export class SelectionManager implements MultipleSelectionManager {
 					}
 				}
 
-				// biome-ignore lint/style/noParameterAssign: used in loop
 				key = this.collection().getKeyAfter(key);
 			}
 		};

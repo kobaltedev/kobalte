@@ -12,7 +12,7 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/dismissable/src/dismissable-layer.ts
  */
 
-import { contains, getDocument, mergeRefs } from "@kobalte/utils";
+import { contains, mergeRefs } from "@kobalte/utils";
 import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
@@ -28,17 +28,13 @@ import {
 	omit,
 	onSettled,
 } from "solid-js";
-import {
-	type ElementOf,
-	Polymorphic,
-	type PolymorphicProps,
-} from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	DismissableLayerContext,
 	type DismissableLayerContextValue,
 	useOptionalDismissableLayerContext,
-} from "./dismissable-layer-context";
-import { layerStack } from "./layer-stack";
+} from "./dismissable-layer-context.tsx";
+import { layerStack } from "./layer-stack.tsx";
 
 export interface DismissableLayerOptions {
 	/**

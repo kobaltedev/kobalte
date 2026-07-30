@@ -9,8 +9,8 @@
 import { access } from "@kobalte/utils";
 import { type Accessor, createMemo } from "solid-js";
 
-import type { Collection, CollectionBase, CollectionNode } from "./types";
-import { buildNodes } from "./utils";
+import type { Collection, CollectionBase, CollectionNode } from "./types.ts";
+import { buildNodes } from "./utils.ts";
 
 type CollectionFactory<C extends Collection<CollectionNode>> = (
 	node: Iterable<CollectionNode>,

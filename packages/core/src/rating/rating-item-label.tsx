@@ -6,16 +6,16 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type RatingItemDataSet,
 	useRatingItemContext,
-} from "./rating-item-context";
+} from "./rating-item-context.tsx";
 
 export interface RatingItemLabelOptions {}
 
 export interface RatingItemLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 	style: JSX.CSSProperties | string;

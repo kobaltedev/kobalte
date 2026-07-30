@@ -25,15 +25,15 @@ import {
 	onCleanup,
 	type ParentProps,
 } from "solid-js";
-import { Popper, type PopperRootOptions } from "../popper";
-import type { Placement } from "../popper/utils";
-import { createDisclosureState } from "../primitives";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
+import type { Placement } from "../popper/utils.ts";
+import { createDisclosureState } from "../primitives/index.ts";
 import {
 	HoverCardContext,
 	type HoverCardContextValue,
 	type HoverCardDataSet,
-} from "./hover-card-context";
-import { getHoverCardSafeArea } from "./utils";
+} from "./hover-card-context.tsx";
+import { getHoverCardSafeArea } from "./utils.ts";
 
 export interface HoverCardRootOptions
 	extends Omit<

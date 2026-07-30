@@ -12,21 +12,14 @@ export {
 	type ResizableSize,
 	type ResizeStrategy,
 	useResizableContext as useContext,
-} from "./resizable-context";
-
-export {
-	type ResizablePanelContextValue,
-	useResizablePanelContext as usePanelContext,
-} from "./resizable-panel-context";
-
+} from "./resizable-context.tsx";
 export {
 	ResizableHandle as Handle,
 	type ResizableHandleCommonProps as HandleCommonProps,
 	type ResizableHandleOptions as HandleOptions,
 	type ResizableHandleProps as HandleProps,
 	type ResizableHandleRenderProps as HandleRenderProps,
-} from "./resizable-handle";
-
+} from "./resizable-handle.tsx";
 export {
 	ResizablePanel as Panel,
 	type ResizablePanelChildrenProps as PanelChildrenProps,
@@ -34,7 +27,11 @@ export {
 	type ResizablePanelOptions as PanelOptions,
 	type ResizablePanelProps as PanelProps,
 	type ResizablePanelRenderProps as PanelRenderProps,
-} from "./resizable-panel";
+} from "./resizable-panel.tsx";
+export {
+	type ResizablePanelContextValue,
+	useResizablePanelContext as usePanelContext,
+} from "./resizable-panel-context.tsx";
 
 export {
 	ResizableRoot as Root,
@@ -43,15 +40,13 @@ export {
 	type ResizableRootOptions as RootOptions,
 	type ResizableRootProps as RootProps,
 	type ResizableRootRenderProps as RootRenderProps,
-} from "./resizable-root";
+} from "./resizable-root.tsx";
 
-import { ResizableHandle as Handle } from "./resizable-handle";
-import { ResizablePanel as Panel } from "./resizable-panel";
-import {
-	ResizableRoot as Root,
-} from "./resizable-root";
-import { useResizableContext as useContext } from "./resizable-context";
-import { useResizablePanelContext as usePanelContext } from "./resizable-panel-context";
+import { useResizableContext as useContext } from "./resizable-context.tsx";
+import { ResizableHandle as Handle } from "./resizable-handle.tsx";
+import { ResizablePanel as Panel } from "./resizable-panel.tsx";
+import { useResizablePanelContext as usePanelContext } from "./resizable-panel-context.tsx";
+import { ResizableRoot as Root } from "./resizable-root.tsx";
 
 export const Resizable = Object.assign(Root, {
 	Handle,

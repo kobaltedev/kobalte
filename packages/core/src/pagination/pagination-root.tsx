@@ -1,23 +1,17 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Accessor,
-	type Component,
-	createUniqueId,
-	omit,
-	type Setter,
-} from "solid-js";
+import { type Component, createUniqueId, omit, type Setter } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	PaginationContext,
 	type PaginationContextValue,
-} from "./pagination-context";
+} from "./pagination-context.tsx";
 
 export interface PaginationRootOptions {
 	/** The controlled page number of the pagination. (1-indexed) */
@@ -61,7 +55,7 @@ export interface PaginationRootOptions {
 }
 
 export interface PaginationRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 	children: JSX.Element;

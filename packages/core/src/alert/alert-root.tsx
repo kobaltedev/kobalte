@@ -4,11 +4,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
 export interface AlertRootOptions {}
 
-export interface AlertRootCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface AlertRootCommonProps<_T extends HTMLElement = HTMLElement> {}
 
 export interface AlertRootRenderProps extends AlertRootCommonProps {
 	role: "alert";

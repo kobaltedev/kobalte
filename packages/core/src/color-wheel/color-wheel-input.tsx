@@ -10,8 +10,8 @@ import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
-} from "../form-control";
-import { useColorWheelContext } from "./color-wheel-context";
+} from "../form-control/index.ts";
+import { useColorWheelContext } from "./color-wheel-context.tsx";
 
 export interface ColorWheelInputProps extends ComponentProps<"input"> {
 	style?: JSX.CSSProperties | string;
@@ -81,7 +81,6 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 			aria-invalid={
 				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() ? "true" : undefined}
 			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
 			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onChange={onChange}

@@ -5,14 +5,14 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useToastContext } from "./toast-context";
-import { useToastRegionContext } from "./toast-region-context";
+} from "../polymorphic/index.tsx";
+import { useToastContext } from "./toast-context.tsx";
+import { useToastRegionContext } from "./toast-region-context.tsx";
 
 export interface ToastProgressFillOptions {}
 
 export interface ToastProgressFillCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	style?: JSX.CSSProperties | string;
 }
@@ -47,17 +47,14 @@ export function ToastProgressFill<T extends ValidComponent = "div">(
 
 			const intervalId = setInterval(() => {
 				const elapsedTime =
-					new Date().getTime() -
-					context.closeTimerStartTime() +
-					totalElapsedTime;
+					Date.now() - context.closeTimerStartTime() + totalElapsedTime;
 
 				const life = Math.trunc(100 - (elapsedTime / context.duration()) * 100);
 				setLifeTime(life < 0 ? 0 : life);
 			});
 
 			return () => {
-				totalElapsedTime +=
-					new Date().getTime() - context.closeTimerStartTime();
+				totalElapsedTime += Date.now() - context.closeTimerStartTime();
 				clearInterval(intervalId);
 			};
 		},

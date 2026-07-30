@@ -24,29 +24,29 @@ import {
 	type ParentProps,
 	Show,
 } from "solid-js";
-import { createListState } from "../list";
-import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
-import { Popper, type PopperRootOptions } from "../popper";
-import type { Placement } from "../popper/utils";
+import { createListState } from "../list/index.ts";
+import { useOptionalMenubarContext } from "../menubar/menubar-context.tsx";
+import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context.tsx";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
+import type { Placement } from "../popper/utils.ts";
+import {
+	createDomCollection,
+	useOptionalDomCollectionContext,
+} from "../primitives/create-dom-collection/index.ts";
 import {
 	type CollectionItemWithRef,
 	createDisclosureState,
 	createRegisterId,
-} from "../primitives";
-import {
-	createDomCollection,
-	useOptionalDomCollectionContext,
-} from "../primitives/create-dom-collection";
-import type { FocusStrategy } from "../selection";
+} from "../primitives/index.ts";
+import type { FocusStrategy } from "../selection/index.ts";
 import {
 	MenuContext,
 	type MenuContextValue,
 	type MenuDataSet,
 	useOptionalMenuContext,
-} from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
-import { type GraceIntent, isPointerInGraceArea, type Side } from "./utils";
+} from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
+import { type GraceIntent, isPointerInGraceArea, type Side } from "./utils.ts";
 
 export interface MenuOptions
 	extends Omit<

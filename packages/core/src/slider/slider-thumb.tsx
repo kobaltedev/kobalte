@@ -31,15 +31,15 @@ import {
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { type SliderDataSet, useSliderContext } from "./slider-context";
+} from "../polymorphic/index.tsx";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import { type SliderDataSet, useSliderContext } from "./slider-context.tsx";
 
 export interface SliderThumbOptions {}
 

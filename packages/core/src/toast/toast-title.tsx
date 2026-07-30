@@ -6,12 +6,12 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useToastContext } from "./toast-context";
+} from "../polymorphic/index.tsx";
+import { useToastContext } from "./toast-context.tsx";
 
 export interface ToastTitleOptions {}
 
-export interface ToastTitleCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ToastTitleCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

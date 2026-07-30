@@ -11,8 +11,8 @@ import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
-} from "../form-control";
-import { useColorAreaContext } from "./color-area-context";
+} from "../form-control/index.ts";
+import { useColorAreaContext } from "./color-area-context.tsx";
 
 export interface ColorAreaHiddenInputBaseProps extends ComponentProps<"input"> {
 	style?: JSX.CSSProperties | string;
@@ -109,7 +109,6 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 			max={isVertical() ? context.state.yMaxValue() : context.state.xMaxValue()}
 			step={isVertical() ? context.state.yStep() : context.state.xStep()}
 			value={isVertical() ? context.state.yValue() : context.state.xValue()}
-			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
 			style={combineStyle({ ...visuallyHiddenStyles }, mergedProps.style)}
@@ -122,7 +121,6 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 			aria-invalid={
 				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() ? "true" : undefined}
 			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
 			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			data-orientation={mergedProps.orientation}

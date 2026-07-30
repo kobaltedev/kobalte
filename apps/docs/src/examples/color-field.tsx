@@ -1,6 +1,5 @@
 import { ColorField } from "@kobalte/core/color-field";
 import { createSignal } from "solid-js";
-
 import style from "./color-field.module.css";
 
 export function BasicExample() {
@@ -40,7 +39,15 @@ export function ControlledExample() {
 				</ColorField.Label>
 				<ColorField.Input class={style["color-field__input"]} />
 			</ColorField>
-			<p class="not-prose text-sm mt-4">Your favorite color is: {value()}</p>
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
+				Your favorite color is: {value()}
+			</p>
 		</>
 	);
 }
@@ -96,7 +103,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<ColorField class={style["color-field"]} name="favorite-color">
 				<ColorField.Label class={style["color-field__label"]}>
@@ -104,7 +116,7 @@ export function HTMLFormExample() {
 				</ColorField.Label>
 				<ColorField.Input class={style["color-field__input"]} />
 			</ColorField>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>

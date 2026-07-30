@@ -4,58 +4,58 @@ import {
 	type PopperArrowOptions as PopoverArrowOptions,
 	type PopperArrowProps as PopoverArrowProps,
 	type PopperArrowRenderProps as PopoverArrowRenderProps,
-} from "../popper";
+} from "../popper/index.tsx";
 import {
 	PopoverAnchor as Anchor,
 	type PopoverAnchorCommonProps,
 	type PopoverAnchorOptions,
 	type PopoverAnchorProps,
 	type PopoverAnchorRenderProps,
-} from "./popover-anchor";
+} from "./popover-anchor.tsx";
 import {
 	PopoverCloseButton as CloseButton,
 	type PopoverCloseButtonCommonProps,
 	type PopoverCloseButtonOptions,
 	type PopoverCloseButtonProps,
 	type PopoverCloseButtonRenderProps,
-} from "./popover-close-button";
+} from "./popover-close-button.tsx";
 import {
 	PopoverContent as Content,
 	type PopoverContentCommonProps,
 	type PopoverContentOptions,
 	type PopoverContentProps,
 	type PopoverContentRenderProps,
-} from "./popover-content";
+} from "./popover-content.tsx";
 import {
 	PopoverDescription as Description,
 	type PopoverDescriptionCommonProps,
 	type PopoverDescriptionOptions,
 	type PopoverDescriptionProps,
 	type PopoverDescriptionRenderProps,
-} from "./popover-description";
+} from "./popover-description.tsx";
 import {
 	type PopoverPortalProps,
 	PopoverPortal as Portal,
-} from "./popover-portal";
+} from "./popover-portal.tsx";
 import {
 	type PopoverRootOptions,
 	type PopoverRootProps,
 	PopoverRoot as Root,
-} from "./popover-root";
+} from "./popover-root.tsx";
 import {
 	type PopoverTitleCommonProps,
 	type PopoverTitleOptions,
 	type PopoverTitleProps,
 	type PopoverTitleRenderProps,
 	PopoverTitle as Title,
-} from "./popover-title";
+} from "./popover-title.tsx";
 import {
 	type PopoverTriggerCommonProps,
 	type PopoverTriggerOptions,
 	type PopoverTriggerProps,
 	type PopoverTriggerRenderProps,
 	PopoverTrigger as Trigger,
-} from "./popover-trigger";
+} from "./popover-trigger.tsx";
 
 export type {
 	PopoverAnchorCommonProps,
@@ -117,4 +117,7 @@ export const Popover = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type PopoverContextValue, usePopoverContext } from "./popover-context";
+export {
+	type PopoverContextValue,
+	usePopoverContext,
+} from "./popover-context.tsx";

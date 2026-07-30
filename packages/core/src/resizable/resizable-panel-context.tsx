@@ -7,7 +7,7 @@
  */
 
 import { type Accessor, createContext, useContext } from "solid-js";
-import type { ResizableSize, ResizeStrategy } from "./resizable-lib";
+import type { ResizableSize, ResizeStrategy } from "./resizable-lib.ts";
 
 export interface ResizablePanelContextValue {
 	/** Current size of the panel as a fraction (0–1). */
@@ -34,7 +34,8 @@ export interface ResizablePanelContextValue {
 	panelId: Accessor<string>;
 }
 
-export const ResizablePanelContext = createContext<ResizablePanelContextValue>();
+export const ResizablePanelContext =
+	createContext<ResizablePanelContextValue>();
 
 /** Returns the nearest `<Resizable.Panel>` context. Throws if called outside one. */
 export function useResizablePanelContext(): ResizablePanelContextValue {

@@ -11,24 +11,23 @@ import {
 	callHandler,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
+import type { JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type SwitchDataSet, useSwitchContext } from "./switch-context";
+} from "../polymorphic/index.tsx";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context.tsx";
 
 export interface SwitchInputOptions {}
 

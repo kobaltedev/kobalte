@@ -6,11 +6,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "./form-control-context";
+} from "./form-control-context.tsx";
 
 export interface FormControlErrorMessageOptions {
 	/**
@@ -21,7 +21,7 @@ export interface FormControlErrorMessageOptions {
 }
 
 export interface FormControlErrorMessageCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

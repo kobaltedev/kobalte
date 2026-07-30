@@ -9,7 +9,8 @@ import {
 	Root,
 	Title,
 	Trigger,
-} from "../index";
+} from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/AlertDialog",
@@ -18,42 +19,33 @@ const meta = preview.meta({
 
 export default meta;
 
-const triggerClass =
-	"inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2";
-
-const overlayClass = "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm";
-
-const contentClass =
-	"fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 rounded-lg border border-slate-200 bg-white p-6 shadow-xl outline-none font-sans";
-
-const closeClass =
-	"absolute top-3 right-3 inline-flex h-7 w-7 items-center justify-center rounded text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500";
-
-const cancelBtnClass =
-	"inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2";
-
 /** Interrupts the user with an important message requiring acknowledgement. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
 		<Root>
-			<Trigger class={triggerClass}>Open alert</Trigger>
+			<Trigger class={style["alert-dialog__trigger"]}>Open alert</Trigger>
 			<Portal>
-				<Overlay class={overlayClass} />
-				<Content class={contentClass}>
-					<CloseButton class={closeClass} aria-label="Close">
+				<Overlay class={style["alert-dialog__overlay"]} />
+				<Content class={style["alert-dialog__content"]}>
+					<CloseButton class={style["alert-dialog__close"]} aria-label="Close">
 						✕
 					</CloseButton>
-					<Title class="mb-1 text-base font-semibold text-slate-900">
-						Session timeout
-					</Title>
-					<Description class="text-sm text-slate-500 mb-4">
+					<Title class={style["alert-dialog__title"]}>Session timeout</Title>
+					<Description
+						class={[
+							style["alert-dialog__description"],
+							style["alert-dialog__description--mb"],
+						]}
+					>
 						Your session is about to expire. You will be logged out in 2
 						minutes.
 					</Description>
-					<div class="flex justify-end gap-2">
-						<CloseButton class={cancelBtnClass}>Dismiss</CloseButton>
-						<button class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
+					<div class={style["alert-dialog__footer"]}>
+						<CloseButton class={style["alert-dialog__cancel-btn"]}>
+							Dismiss
+						</CloseButton>
+						<button type="button" class={style["alert-dialog__action-btn"]}>
 							Stay signed in
 						</button>
 					</div>
@@ -68,22 +60,30 @@ export const Destructive = meta.story({
 	name: "Destructive",
 	render: () => (
 		<Root>
-			<Trigger class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2">
+			<Trigger class={style["alert-dialog__destructive-trigger"]}>
 				Delete account
 			</Trigger>
 			<Portal>
-				<Overlay class={overlayClass} />
-				<Content class={contentClass}>
-					<Title class="mb-1 text-base font-semibold text-slate-900">
-						Delete account
-					</Title>
-					<Description class="text-sm text-slate-500 mb-4">
+				<Overlay class={style["alert-dialog__overlay"]} />
+				<Content class={style["alert-dialog__content"]}>
+					<Title class={style["alert-dialog__title"]}>Delete account</Title>
+					<Description
+						class={[
+							style["alert-dialog__description"],
+							style["alert-dialog__description--mb"],
+						]}
+					>
 						This action cannot be undone. Your account and all associated data
 						will be permanently deleted.
 					</Description>
-					<div class="flex justify-end gap-2">
-						<CloseButton class={cancelBtnClass}>Cancel</CloseButton>
-						<button class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-red-600 text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2">
+					<div class={style["alert-dialog__footer"]}>
+						<CloseButton class={style["alert-dialog__cancel-btn"]}>
+							Cancel
+						</CloseButton>
+						<button
+							type="button"
+							class={style["alert-dialog__destructive-action"]}
+						>
 							Delete account
 						</button>
 					</div>
@@ -97,22 +97,30 @@ export const Destructive = meta.story({
 function ControlledDemo() {
 	const [open, setOpen] = createSignal(false);
 	return (
-		<div class="flex flex-col gap-3 font-sans">
-			<div class="flex items-center gap-2">
+		<div class={style["alert-dialog__wrapper"]}>
+			<div class={style["alert-dialog__row"]}>
 				<Root open={open()} onOpenChange={setOpen}>
-					<Trigger class={triggerClass}>Controlled alert</Trigger>
+					<Trigger class={style["alert-dialog__trigger"]}>
+						Controlled alert
+					</Trigger>
 					<Portal>
-						<Overlay class={overlayClass} />
-						<Content class={contentClass}>
-							<Title class="mb-1 text-base font-semibold text-slate-900">
+						<Overlay class={style["alert-dialog__overlay"]} />
+						<Content class={style["alert-dialog__content"]}>
+							<Title class={style["alert-dialog__title"]}>
 								Controlled alert
 							</Title>
-							<Description class="text-sm text-slate-500 mb-4">
+							<Description
+								class={[
+									style["alert-dialog__description"],
+									style["alert-dialog__description--mb"],
+								]}
+							>
 								Open state is managed externally.
 							</Description>
-							<div class="flex justify-end">
+							<div class={style["alert-dialog__footer"]}>
 								<button
-									class="inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+									type="button"
+									class={style["alert-dialog__action-btn"]}
 									onClick={() => setOpen(false)}
 								>
 									Acknowledge
@@ -121,11 +129,15 @@ function ControlledDemo() {
 						</Content>
 					</Portal>
 				</Root>
-				<button class={triggerClass} onClick={() => setOpen((o) => !o)}>
+				<button
+					type="button"
+					class={style["alert-dialog__trigger"]}
+					onClick={() => setOpen((o) => !o)}
+				>
 					{open() ? "Force close" : "Force open"}
 				</button>
 			</div>
-			<p class="text-xs text-slate-500">
+			<p class={style["alert-dialog__state"]}>
 				State: <strong>{open() ? "open" : "closed"}</strong>
 			</p>
 		</div>

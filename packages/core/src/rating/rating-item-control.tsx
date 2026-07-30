@@ -1,4 +1,4 @@
-import { callHandler, isFunction, mergeDefaultProps } from "@kobalte/utils";
+import { isFunction, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { children, omit } from "solid-js";
 
@@ -6,11 +6,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type RatingItemState,
 	useRatingItemContext,
-} from "./rating-item-context";
+} from "./rating-item-context.tsx";
 
 export interface RatingItemControlOptions {
 	/**
@@ -21,7 +21,7 @@ export interface RatingItemControlOptions {
 }
 
 export interface RatingItemControlCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

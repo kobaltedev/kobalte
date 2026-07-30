@@ -31,7 +31,7 @@
 	font-weight: 500;
 }
 
-[data-kb-theme="dark"] .image__fallback {
+[data-theme*="dark"] .image__fallback {
 	background-color: hsl(202 80% 24%);
 	color: hsl(198 93% 60%);
 }

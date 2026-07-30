@@ -47,22 +47,26 @@
 		"src"
 	],
 	"scripts": {
-		"build": "tsup",
-		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+		"build": "tsdown",
+		"clean": "rm -rf node_modules && rm -rf dist",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@solid-primitives/event-listener": "next",
-		"@solid-primitives/keyed": "next",
-		"@solid-primitives/map": "next",
-		"@solid-primitives/media": "next",
-		"@solid-primitives/props": "next",
-		"@solid-primitives/refs": "next",
-		"@solid-primitives/utils": "next"
+		"@solid-primitives/event-listener": "catalog:",
+		"@solid-primitives/keyed": "catalog:",
+		"@solid-primitives/map": "catalog:",
+		"@solid-primitives/media": "catalog:",
+		"@solid-primitives/props": "catalog:",
+		"@solid-primitives/refs": "catalog:",
+		"@solid-primitives/utils": "catalog:"
 	},
 	"peerDependencies": {
-		"@solidjs/web": "^2.0.0-beta.14",
-		"solid-js": "^2.0.0-beta.14"
+		"@solidjs/web": "catalog:",
+		"solid-js": "catalog:"
+	},
+	"devDependencies": {
+		"@solidjs/web": "catalog:",
+		"solid-js": "catalog:"
 	},
 	"publishConfig": {
 		"access": "public"

@@ -14,28 +14,28 @@ import {
 	type FormControlLabelOptions as TextFieldLabelOptions,
 	type FormControlLabelProps as TextFieldLabelProps,
 	type FormControlLabelRenderProps as TextFieldLabelRenderProps,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	TextFieldInput as Input,
 	type TextFieldInputCommonProps,
 	type TextFieldInputOptions,
 	type TextFieldInputProps,
 	type TextFieldInputRenderProps,
-} from "./text-field-input";
+} from "./text-field-input.tsx";
 import {
 	TextFieldRoot as Root,
 	type TextFieldRootCommonProps,
 	type TextFieldRootOptions,
 	type TextFieldRootProps,
 	type TextFieldRootRenderProps,
-} from "./text-field-root";
+} from "./text-field-root.tsx";
 import {
 	TextFieldTextArea as TextArea,
 	type TextFieldTextAreaCommonProps,
 	type TextFieldTextAreaOptions,
 	type TextFieldTextAreaProps,
 	type TextFieldTextAreaRenderProps,
-} from "./text-field-text-area";
+} from "./text-field-text-area.tsx";
 
 export type {
 	TextFieldDescriptionCommonProps,
@@ -79,4 +79,4 @@ export const TextField = Object.assign(Root, {
 export {
 	type TextFieldContextValue,
 	useTextFieldContext,
-} from "./text-field-context";
+} from "./text-field-context.tsx";

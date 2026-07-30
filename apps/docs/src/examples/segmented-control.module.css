@@ -1,11 +1,11 @@
-[data-kb-theme] .segmented-control {
+.segmented-control {
 	--font-size-md: 0.875rem;
 	--font-size-sm: 0.75rem;
 	--border-width: 1px;
 	--border-radius: 0.5rem;
 }
 
-[data-kb-theme="light"] .segmented-control {
+.segmented-control {
 	--border-color: hsl(240 6% 90%);
 	--border-active-color: hsl(240 6% 75%);
 	--label-color: hsl(240 6% 10%);
@@ -16,7 +16,7 @@
 	--indicator-focus-shadow-color: hsl(200 98% 39%);
 }
 
-[data-kb-theme="dark"] .segmented-control {
+[data-theme*="dark"] .segmented-control {
 	--border-color: hsl(240 6% 26%);
 	--border-active-color: hsl(240 6% 41%);
 	--label-color: hsl(240 5% 84%);

@@ -16,17 +16,17 @@ import {
 	onSettled,
 	Show,
 } from "solid-js";
-import { useFormControlContext } from "../form-control";
+import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useOTPFieldContext } from "./otp-field-context";
+} from "../polymorphic/index.tsx";
+import { useOTPFieldContext } from "./otp-field-context.tsx";
 import {
 	createOTPFieldStyleElement,
 	DEFAULT_NOSCRIPT_CSS_FALLBACK,
-} from "./otp-field-style";
+} from "./otp-field-style.ts";
 
 export interface OTPFieldInputOptions {
 	/**

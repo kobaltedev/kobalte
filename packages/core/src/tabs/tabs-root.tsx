@@ -11,16 +11,16 @@ import { mergeDefaultProps, type Orientation } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { createEffect, createSignal, createUniqueId, omit } from "solid-js";
 
-import { createSingleSelectListState } from "../list";
+import { createSingleSelectListState } from "../list/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
-import { TabsContext, type TabsContextValue } from "./tabs-context";
-import type { TabsActivationMode } from "./types";
+} from "../polymorphic/index.tsx";
+import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import { TabsContext, type TabsContextValue } from "./tabs-context.tsx";
+import type { TabsActivationMode } from "./types.ts";
 
 export interface TabsRootOptions {
 	/** The controlled value of the tab to activate. */
@@ -45,7 +45,7 @@ export interface TabsRootOptions {
 	disabled?: boolean;
 }
 
-export interface TabsRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface TabsRootCommonProps<_T extends HTMLElement = HTMLElement> {
 	id?: string;
 }
 

@@ -35,16 +35,16 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createRegisterId } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createRegisterId } from "../primitives/index.ts";
 import {
 	TOAST_INTL_TRANSLATIONS,
 	type ToastIntlTranslations,
-} from "./toast.intl";
-import { ToastContext, type ToastContextValue } from "./toast-context";
-import { useToastRegionContext } from "./toast-region-context";
-import { toastStore } from "./toast-store";
-import type { ToastSwipeDirection } from "./types";
+} from "./toast.intl.ts";
+import { ToastContext, type ToastContextValue } from "./toast-context.tsx";
+import { useToastRegionContext } from "./toast-region-context.tsx";
+import { toastStore } from "./toast-store.ts";
+import type { ToastSwipeDirection } from "./types.ts";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
 const TOAST_SWIPE_MOVE_EVENT = "toast.swipeMove";
@@ -174,7 +174,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		{ ownedWrite: true },
 	);
 	const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
-	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+	const [_ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
 		ownedWrite: true,
 	});
 
@@ -211,7 +211,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 		window.clearTimeout(closeTimerId);
 
-		closeTimerStartTime = new Date().getTime();
+		closeTimerStartTime = Date.now();
 		closeTimerId = window.setTimeout(close, duration);
 	};
 
@@ -222,7 +222,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	};
 
 	const pauseTimer = () => {
-		const elapsedTime = new Date().getTime() - closeTimerStartTime;
+		const elapsedTime = Date.now() - closeTimerStartTime;
 		closeTimerRemainingTime = closeTimerRemainingTime - elapsedTime;
 
 		window.clearTimeout(closeTimerId);

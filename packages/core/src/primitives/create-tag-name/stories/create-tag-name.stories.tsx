@@ -1,5 +1,5 @@
 import preview from "../../../../../../.storybook/preview.js";
-import { createTagName } from "../index";
+import { createTagName } from "../index.ts";
 
 const meta = preview.meta({
 	title: "Primitives/createTagName",
@@ -52,6 +52,7 @@ export const WithFallback = meta.story({
 		return (
 			<div class="flex flex-col gap-2 font-sans">
 				<button
+					type="button"
 					ref={ref}
 					class="rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
 				>
@@ -92,7 +93,11 @@ export const FallbackVsResolved = meta.story({
 					<span class={badgeClass}>{fallbackOnly() ?? "—"}</span>
 				</div>
 				<div class="rounded-md border border-slate-200 bg-white px-4 py-3 flex items-center justify-between">
-					<button ref={ref} class="text-slate-700 bg-transparent outline-none">
+					<button
+						type="button"
+						ref={ref}
+						class="text-slate-700 bg-transparent outline-none"
+					>
 						Button ref (fallback = "span")
 					</button>
 					<span class={badgeClass}>{resolved() ?? "—"}</span>
@@ -126,6 +131,7 @@ export const Multiple = meta.story({
 				</div>
 				<div class="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2">
 					<button
+						type="button"
 						ref={btnRef}
 						class="text-slate-700 outline-none bg-transparent"
 					>

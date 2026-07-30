@@ -65,8 +65,8 @@
 	}
 }
 
-[data-kb-theme="dark"] .collapsible__trigger,
-[data-kb-theme="dark"] .collapsible__content {
+[data-theme*="dark"] .collapsible__trigger,
+[data-theme*="dark"] .collapsible__content {
 	border-color: hsl(240 5% 65%);
 	color: hsl(0 0% 100% / 0.9);
 }

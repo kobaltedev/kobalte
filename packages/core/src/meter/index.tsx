@@ -4,35 +4,35 @@ import {
 	type MeterFillOptions,
 	type MeterFillProps,
 	type MeterFillRenderProps,
-} from "./meter-fill";
+} from "./meter-fill.tsx";
 import {
 	MeterLabel as Label,
 	type MeterLabelCommonProps,
 	type MeterLabelOptions,
 	type MeterLabelProps,
 	type MeterLabelRenderProps,
-} from "./meter-label";
+} from "./meter-label.tsx";
 import {
 	type MeterRootCommonProps,
 	type MeterRootOptions,
 	type MeterRootProps,
 	type MeterRootRenderProps,
 	MeterRoot as Root,
-} from "./meter-root";
+} from "./meter-root.tsx";
 import {
 	type MeterTrackCommonProps,
 	type MeterTrackOptions,
 	type MeterTrackProps,
 	type MeterTrackRenderProps,
 	MeterTrack as Track,
-} from "./meter-track";
+} from "./meter-track.tsx";
 import {
 	type MeterValueLabelCommonProps,
 	type MeterValueLabelOptions,
 	type MeterValueLabelProps,
 	type MeterValueLabelRenderProps,
 	MeterValueLabel as ValueLabel,
-} from "./meter-value-label";
+} from "./meter-value-label.tsx";
 
 export type {
 	MeterFillCommonProps,
@@ -68,4 +68,4 @@ export const Meter = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type MeterContextValue, useMeterContext } from "./meter-context";
+export { type MeterContextValue, useMeterContext } from "./meter-context.tsx";

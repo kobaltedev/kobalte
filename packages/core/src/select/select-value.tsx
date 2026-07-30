@@ -1,21 +1,17 @@
-import {
-	isFunction,
-	mergeDefaultProps,
-	OverrideComponentProps,
-} from "@kobalte/utils";
+import { isFunction, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Accessor, children, createEffect, omit, Show } from "solid-js";
 
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useSelectContext } from "./select-context";
+} from "../polymorphic/index.tsx";
+import { useSelectContext } from "./select-context.tsx";
 
 export interface SelectValueState<Option> {
 	/** The first (or only, in case of single select) selected option. */
@@ -39,7 +35,7 @@ export interface SelectValueOptions<Option> {
 	children?: JSX.Element | ((state: SelectValueState<Option>) => JSX.Element);
 }
 
-export interface SelectValueCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SelectValueCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

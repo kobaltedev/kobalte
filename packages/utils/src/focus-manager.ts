@@ -8,12 +8,12 @@
 
 import type { Accessor } from "solid-js";
 
-import { focusWithoutScrolling } from "./focus-without-scrolling";
+import { focusWithoutScrolling } from "./focus-without-scrolling.ts";
 import {
 	FOCUSABLE_ELEMENT_SELECTOR,
 	isElementVisible,
 	TABBABLE_ELEMENT_SELECTOR,
-} from "./tabbable";
+} from "./tabbable.ts";
 
 export interface FocusManager {
 	/** Moves focus to the next focusable or tabbable element in the focus scope. */
@@ -175,13 +175,13 @@ function focusElement(element: HTMLElement | null, scroll = false) {
 	if (element != null && !scroll) {
 		try {
 			focusWithoutScrolling(element);
-		} catch (err) {
+		} catch (_err) {
 			// ignore
 		}
 	} else if (element != null) {
 		try {
 			element.focus();
-		} catch (err) {
+		} catch (_err) {
 			// ignore
 		}
 	}

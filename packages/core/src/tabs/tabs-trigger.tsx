@@ -21,11 +21,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { createSelectableItem } from "../selection";
-import { useTabsContext } from "./tabs-context";
+} from "../polymorphic/index.tsx";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import { createSelectableItem } from "../selection/index.ts";
+import { useTabsContext } from "./tabs-context.tsx";
 
 export interface TabsTriggerOptions {
 	/** The unique key that associates the tab with a tab panel. */

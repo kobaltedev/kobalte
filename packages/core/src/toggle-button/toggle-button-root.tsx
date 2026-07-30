@@ -12,17 +12,13 @@
  * https://github.com/adobe/react-spectrum/blob/a13802d8be6f83af1450e56f7a88527b10d9cadf/packages/@react-aria/button/src/useToggleButton.ts
  */
 
-import {
-	callHandler,
-	isFunction,
-	OverrideComponentProps,
-} from "@kobalte/utils";
+import { callHandler, isFunction } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Accessor, type Component, children, omit } from "solid-js";
 
-import * as Button from "../button";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createToggleState } from "../primitives";
+import * as Button from "../button/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createToggleState } from "../primitives/index.ts";
 
 export interface ToggleButtonRootState {
 	/** Whether the toggle button is on (pressed) or off (not pressed). */

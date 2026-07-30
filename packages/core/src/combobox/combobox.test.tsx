@@ -8,7 +8,6 @@
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, within } from "@solidjs/testing-library";
-import { createSignal, Show } from "solid-js";
 import { vi } from "vitest";
 import * as Combobox from ".";
 
@@ -2400,7 +2399,7 @@ describe.skip("Combobox", () => {
 		});
 
 		it("supports controlled selection", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2656,7 +2655,7 @@ describe.skip("Combobox", () => {
 		});
 
 		it("does not deselect when pressing an already selected item when 'disallowEmptySelection' is true", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2949,7 +2948,7 @@ describe.skip("Combobox", () => {
 		it("supports multiple value (controlled)", async () => {
 			const value = [DATA_SOURCE[0], DATA_SOURCE[1]];
 
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root<DataSourceItem>
 					multiple
 					options={DATA_SOURCE}
@@ -3179,11 +3178,11 @@ describe.skip("Combobox", () => {
 
 			expect(options.length).toBe(4);
 
-			options.forEach(
-				(option, index) =>
-					index > 0 &&
-					expect(option).toHaveTextContent(dataSource[index - 1].label),
-			);
+			options.forEach((option, index) => {
+				if (index > 0) {
+					expect(option).toHaveTextContent(dataSource[index - 1].label);
+				}
+			});
 
 			fireEvent.change(hiddenSelectBase, { target: { value: "FR" } });
 			await Promise.resolve();
