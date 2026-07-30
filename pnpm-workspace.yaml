@@ -60,6 +60,7 @@ overrides:
   "@solid-primitives/trigger": "next"
   "@solid-primitives/upload": "next"
   "@solid-primitives/utils": "next"
+  "@storybook/builder-vite": "10.5.0"
 allowBuilds:
   "@biomejs/biome": false
   "@parcel/watcher": false
