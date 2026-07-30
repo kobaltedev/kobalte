@@ -1,4 +1,4 @@
-import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps } from "@solidjs/web";
 import { omit } from "solid-js";
 

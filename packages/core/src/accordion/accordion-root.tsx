@@ -21,8 +21,8 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import type { CollectionItemWithRef } from "../primitives/index.ts";
 import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
 import {
 	AccordionContext,
 	type AccordionContextValue,

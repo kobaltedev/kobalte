@@ -11,7 +11,6 @@ import {
 	contains,
 	focusWithoutScrolling,
 	type Orientation,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import type { FocusOutsideEvent } from "@solid-primitives/interaction";
 import type { JSX, ValidComponent } from "@solidjs/web";

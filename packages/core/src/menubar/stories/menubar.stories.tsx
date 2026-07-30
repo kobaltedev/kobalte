@@ -20,6 +20,7 @@ import {
 	SubTrigger,
 	Trigger,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Menubar",
@@ -28,71 +29,48 @@ const meta = preview.meta({
 
 export default meta;
 
-const rootClass =
-	"flex items-center gap-0.5 rounded-md border border-slate-200 bg-white px-1 py-1 shadow-sm font-sans";
-
-const triggerClass =
-	"rounded px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 data-[expanded]:bg-slate-100 data-[expanded]:text-slate-900";
-
-const contentClass =
-	"min-w-[180px] rounded-md border border-slate-200 bg-white py-1 shadow-md outline-none z-50 text-sm";
-
-const itemClass =
-	"relative flex cursor-default select-none items-center rounded px-3 py-1.5 text-slate-700 outline-none hover:bg-slate-100 hover:text-slate-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50";
-
-const checkboxItemClass =
-	"relative flex cursor-default select-none items-center pl-8 pr-3 py-1.5 text-slate-700 outline-none hover:bg-slate-100 data-[disabled]:opacity-50";
-
-const itemIndicatorClass =
-	"absolute left-2 flex h-4 w-4 items-center justify-center";
-
-const labelClass =
-	"px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400";
-
-const separatorClass = "my-1 h-px bg-slate-200";
-
 /** Desktop-style menubar with File, Edit, and View menus. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={rootClass}>
+		<Root class={style.menubar__root}>
 			<Menu>
-				<Trigger class={triggerClass}>File</Trigger>
+				<Trigger class={style.menubar__trigger}>File</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<Item class={itemClass}>New file</Item>
-						<Item class={itemClass}>Open…</Item>
-						<Item class={itemClass}>Save</Item>
-						<Separator class={separatorClass} />
-						<Item class={itemClass} disabled>
+					<Content class={style.menubar__content}>
+						<Item class={style.menubar__item}>New file</Item>
+						<Item class={style.menubar__item}>Open…</Item>
+						<Item class={style.menubar__item}>Save</Item>
+						<Separator class={style.menubar__separator} />
+						<Item class={style.menubar__item} disabled>
 							Export (disabled)
 						</Item>
-						<Separator class={separatorClass} />
-						<Item class={itemClass}>Exit</Item>
+						<Separator class={style.menubar__separator} />
+						<Item class={style.menubar__item}>Exit</Item>
 					</Content>
 				</Portal>
 			</Menu>
 			<Menu>
-				<Trigger class={triggerClass}>Edit</Trigger>
+				<Trigger class={style.menubar__trigger}>Edit</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<Item class={itemClass}>Undo</Item>
-						<Item class={itemClass}>Redo</Item>
-						<Separator class={separatorClass} />
-						<Item class={itemClass}>Cut</Item>
-						<Item class={itemClass}>Copy</Item>
-						<Item class={itemClass}>Paste</Item>
+					<Content class={style.menubar__content}>
+						<Item class={style.menubar__item}>Undo</Item>
+						<Item class={style.menubar__item}>Redo</Item>
+						<Separator class={style.menubar__separator} />
+						<Item class={style.menubar__item}>Cut</Item>
+						<Item class={style.menubar__item}>Copy</Item>
+						<Item class={style.menubar__item}>Paste</Item>
 					</Content>
 				</Portal>
 			</Menu>
 			<Menu>
-				<Trigger class={triggerClass}>View</Trigger>
+				<Trigger class={style.menubar__trigger}>View</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<Item class={itemClass}>Zoom in</Item>
-						<Item class={itemClass}>Zoom out</Item>
-						<Separator class={separatorClass} />
-						<Item class={itemClass}>Full screen</Item>
+					<Content class={style.menubar__content}>
+						<Item class={style.menubar__item}>Zoom in</Item>
+						<Item class={style.menubar__item}>Zoom out</Item>
+						<Separator class={style.menubar__separator} />
+						<Item class={style.menubar__item}>Full screen</Item>
 					</Content>
 				</Portal>
 			</Menu>
@@ -104,22 +82,22 @@ export const Default = meta.story({
 export const WithGroups = meta.story({
 	name: "With Groups",
 	render: () => (
-		<Root class={rootClass}>
+		<Root class={style.menubar__root}>
 			<Menu>
-				<Trigger class={triggerClass}>Edit</Trigger>
+				<Trigger class={style.menubar__trigger}>Edit</Trigger>
 				<Portal>
-					<Content class={contentClass}>
+					<Content class={style.menubar__content}>
 						<Group>
-							<GroupLabel class={labelClass}>Clipboard</GroupLabel>
-							<Item class={itemClass}>Cut</Item>
-							<Item class={itemClass}>Copy</Item>
-							<Item class={itemClass}>Paste</Item>
+							<GroupLabel class={style.menubar__label}>Clipboard</GroupLabel>
+							<Item class={style.menubar__item}>Cut</Item>
+							<Item class={style.menubar__item}>Copy</Item>
+							<Item class={style.menubar__item}>Paste</Item>
 						</Group>
-						<Separator class={separatorClass} />
+						<Separator class={style.menubar__separator} />
 						<Group>
-							<GroupLabel class={labelClass}>History</GroupLabel>
-							<Item class={itemClass}>Undo</Item>
-							<Item class={itemClass}>Redo</Item>
+							<GroupLabel class={style.menubar__label}>History</GroupLabel>
+							<Item class={style.menubar__item}>Undo</Item>
+							<Item class={style.menubar__item}>Redo</Item>
 						</Group>
 					</Content>
 				</Portal>
@@ -135,33 +113,39 @@ function CheckboxDemo() {
 	const [lineNum, setLineNum] = createSignal(true);
 
 	return (
-		<Root class={rootClass}>
+		<Root class={style.menubar__root}>
 			<Menu>
-				<Trigger class={triggerClass}>View</Trigger>
+				<Trigger class={style.menubar__trigger}>View</Trigger>
 				<Portal>
-					<Content class={contentClass}>
+					<Content class={style.menubar__content}>
 						<CheckboxItem
-							class={checkboxItemClass}
+							class={style.menubar__checkboxItem}
 							checked={spell()}
 							onChange={setSpell}
 						>
-							<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
+							<ItemIndicator class={style.menubar__itemIndicator}>
+								✓
+							</ItemIndicator>
 							<ItemLabel>Spell check</ItemLabel>
 						</CheckboxItem>
 						<CheckboxItem
-							class={checkboxItemClass}
+							class={style.menubar__checkboxItem}
 							checked={wrap()}
 							onChange={setWrap}
 						>
-							<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
+							<ItemIndicator class={style.menubar__itemIndicator}>
+								✓
+							</ItemIndicator>
 							<ItemLabel>Word wrap</ItemLabel>
 						</CheckboxItem>
 						<CheckboxItem
-							class={checkboxItemClass}
+							class={style.menubar__checkboxItem}
 							checked={lineNum()}
 							onChange={setLineNum}
 						>
-							<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
+							<ItemIndicator class={style.menubar__itemIndicator}>
+								✓
+							</ItemIndicator>
 							<ItemLabel>Line numbers</ItemLabel>
 						</CheckboxItem>
 					</Content>
@@ -181,17 +165,19 @@ function RadioDemo() {
 	const [theme, setTheme] = createSignal("system");
 
 	return (
-		<Root class={rootClass}>
+		<Root class={style.menubar__root}>
 			<Menu>
-				<Trigger class={triggerClass}>Appearance</Trigger>
+				<Trigger class={style.menubar__trigger}>Appearance</Trigger>
 				<Portal>
-					<Content class={contentClass}>
+					<Content class={style.menubar__content}>
 						<RadioGroup value={theme()} onChange={setTheme}>
-							<GroupLabel class={labelClass}>Theme</GroupLabel>
+							<GroupLabel class={style.menubar__label}>Theme</GroupLabel>
 							{["light", "dark", "system"].map((t) => (
-								<RadioItem class={checkboxItemClass} value={t}>
-									<ItemIndicator class={itemIndicatorClass}>●</ItemIndicator>
-									<ItemLabel class="capitalize">{t}</ItemLabel>
+								<RadioItem class={style.menubar__checkboxItem} value={t}>
+									<ItemIndicator class={style.menubar__itemIndicator}>
+										●
+									</ItemIndicator>
+									<ItemLabel class={style.menubar__capitalize}>{t}</ItemLabel>
 								</RadioItem>
 							))}
 						</RadioGroup>
@@ -211,24 +197,24 @@ export const RadioItems = meta.story({
 export const WithSubMenu = meta.story({
 	name: "With Sub-menu",
 	render: () => (
-		<Root class={rootClass}>
+		<Root class={style.menubar__root}>
 			<Menu>
-				<Trigger class={triggerClass}>File</Trigger>
+				<Trigger class={style.menubar__trigger}>File</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<Item class={itemClass}>New file</Item>
+					<Content class={style.menubar__content}>
+						<Item class={style.menubar__item}>New file</Item>
 						<Sub>
-							<SubTrigger class={itemClass}>Open recent ▸</SubTrigger>
+							<SubTrigger class={style.menubar__item}>Open recent ▸</SubTrigger>
 							<Portal>
-								<SubContent class={contentClass}>
-									<Item class={itemClass}>project.tsx</Item>
-									<Item class={itemClass}>index.html</Item>
-									<Item class={itemClass}>styles.css</Item>
+								<SubContent class={style.menubar__content}>
+									<Item class={style.menubar__item}>project.tsx</Item>
+									<Item class={style.menubar__item}>index.html</Item>
+									<Item class={style.menubar__item}>styles.css</Item>
 								</SubContent>
 							</Portal>
 						</Sub>
-						<Separator class={separatorClass} />
-						<Item class={itemClass}>Exit</Item>
+						<Separator class={style.menubar__separator} />
+						<Item class={style.menubar__item}>Exit</Item>
 					</Content>
 				</Portal>
 			</Menu>
@@ -240,25 +226,31 @@ export const WithSubMenu = meta.story({
 export const WithDescriptions = meta.story({
 	name: "With Descriptions",
 	render: () => (
-		<Root class={rootClass}>
+		<Root class={style.menubar__root}>
 			<Menu>
-				<Trigger class={triggerClass}>Deploy</Trigger>
+				<Trigger class={style.menubar__trigger}>Deploy</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<Item class={`${itemClass} flex-col items-start`}>
-							<ItemLabel class="font-medium">Publish</ItemLabel>
-							<ItemDescription class="text-xs text-slate-400">
+					<Content class={style.menubar__content}>
+						<Item
+							class={[style.menubar__item, style["menubar__item--flex-col"]]}
+						>
+							<ItemLabel class={style.menubar__itemLabel}>Publish</ItemLabel>
+							<ItemDescription class={style.menubar__itemDescription}>
 								Deploy to production
 							</ItemDescription>
 						</Item>
-						<Item class={`${itemClass} flex-col items-start`}>
-							<ItemLabel class="font-medium">Preview</ItemLabel>
-							<ItemDescription class="text-xs text-slate-400">
+						<Item
+							class={[style.menubar__item, style["menubar__item--flex-col"]]}
+						>
+							<ItemLabel class={style.menubar__itemLabel}>Preview</ItemLabel>
+							<ItemDescription class={style.menubar__itemDescription}>
 								Build a preview deployment
 							</ItemDescription>
 						</Item>
-						<Separator class={separatorClass} />
-						<Item class={`${itemClass} text-red-600 hover:bg-red-50`}>
+						<Separator class={style.menubar__separator} />
+						<Item
+							class={[style.menubar__item, style["menubar__item--destructive"]]}
+						>
 							<ItemLabel>Delete project</ItemLabel>
 						</Item>
 					</Content>
@@ -277,63 +269,69 @@ export const FullExample = meta.story({
 		const [theme, setTheme] = createSignal("system");
 
 		return (
-			<Root class={rootClass}>
+			<Root class={style.menubar__root}>
 				<Menu>
-					<Trigger class={triggerClass}>File</Trigger>
+					<Trigger class={style.menubar__trigger}>File</Trigger>
 					<Portal>
-						<Content class={contentClass}>
-							<Item class={itemClass}>New file</Item>
-							<Item class={itemClass}>Open…</Item>
-							<Item class={itemClass}>Save</Item>
-							<Item class={itemClass}>Save as…</Item>
-							<Separator class={separatorClass} />
-							<Item class={itemClass}>Close tab</Item>
+						<Content class={style.menubar__content}>
+							<Item class={style.menubar__item}>New file</Item>
+							<Item class={style.menubar__item}>Open…</Item>
+							<Item class={style.menubar__item}>Save</Item>
+							<Item class={style.menubar__item}>Save as…</Item>
+							<Separator class={style.menubar__separator} />
+							<Item class={style.menubar__item}>Close tab</Item>
 						</Content>
 					</Portal>
 				</Menu>
 				<Menu>
-					<Trigger class={triggerClass}>Edit</Trigger>
+					<Trigger class={style.menubar__trigger}>Edit</Trigger>
 					<Portal>
-						<Content class={contentClass}>
-							<Item class={itemClass}>Undo</Item>
-							<Item class={itemClass}>Redo</Item>
-							<Separator class={separatorClass} />
+						<Content class={style.menubar__content}>
+							<Item class={style.menubar__item}>Undo</Item>
+							<Item class={style.menubar__item}>Redo</Item>
+							<Separator class={style.menubar__separator} />
 							<Group>
-								<GroupLabel class={labelClass}>Clipboard</GroupLabel>
-								<Item class={itemClass}>Cut</Item>
-								<Item class={itemClass}>Copy</Item>
-								<Item class={itemClass}>Paste</Item>
+								<GroupLabel class={style.menubar__label}>Clipboard</GroupLabel>
+								<Item class={style.menubar__item}>Cut</Item>
+								<Item class={style.menubar__item}>Copy</Item>
+								<Item class={style.menubar__item}>Paste</Item>
 							</Group>
 						</Content>
 					</Portal>
 				</Menu>
 				<Menu>
-					<Trigger class={triggerClass}>View</Trigger>
+					<Trigger class={style.menubar__trigger}>View</Trigger>
 					<Portal>
-						<Content class={contentClass}>
+						<Content class={style.menubar__content}>
 							<CheckboxItem
-								class={checkboxItemClass}
+								class={style.menubar__checkboxItem}
 								checked={spell()}
 								onChange={setSpell}
 							>
-								<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
+								<ItemIndicator class={style.menubar__itemIndicator}>
+									✓
+								</ItemIndicator>
 								<ItemLabel>Spell check</ItemLabel>
 							</CheckboxItem>
 							<CheckboxItem
-								class={checkboxItemClass}
+								class={style.menubar__checkboxItem}
 								checked={wrap()}
 								onChange={setWrap}
 							>
-								<ItemIndicator class={itemIndicatorClass}>✓</ItemIndicator>
+								<ItemIndicator class={style.menubar__itemIndicator}>
+									✓
+								</ItemIndicator>
 								<ItemLabel>Word wrap</ItemLabel>
 							</CheckboxItem>
-							<Separator class={separatorClass} />
+							<Separator class={style.menubar__separator} />
 							<RadioGroup value={theme()} onChange={setTheme}>
-								<GroupLabel class={labelClass}>Theme</GroupLabel>
+								<GroupLabel class={style.menubar__label}>Theme</GroupLabel>
 								{["light", "dark", "system"].map((t) => (
-									<RadioItem class={checkboxItemClass} value={t}>
-										<ItemIndicator class={itemIndicatorClass}>●</ItemIndicator>
-										<ItemLabel class="capitalize">{t}</ItemLabel>
+									<RadioItem class={style.menubar__checkboxItem} value={t}>
+										<ItemIndicator class={style.menubar__itemIndicator}>
+											●
+										</ItemIndicator>
+										<ItemLabel class={style.menubar__capitalize}>{t}</ItemLabel>
 									</RadioItem>
 								))}
 							</RadioGroup>
@@ -341,13 +339,13 @@ export const FullExample = meta.story({
 					</Portal>
 				</Menu>
 				<Menu>
-					<Trigger class={triggerClass}>Help</Trigger>
+					<Trigger class={style.menubar__trigger}>Help</Trigger>
 					<Portal>
-						<Content class={contentClass}>
-							<Item class={itemClass}>Documentation</Item>
-							<Item class={itemClass}>Keyboard shortcuts</Item>
-							<Separator class={separatorClass} />
-							<Item class={itemClass}>About</Item>
+						<Content class={style.menubar__content}>
+							<Item class={style.menubar__item}>Documentation</Item>
+							<Item class={style.menubar__item}>Keyboard shortcuts</Item>
+							<Separator class={style.menubar__separator} />
+							<Item class={style.menubar__item}>About</Item>
 						</Content>
 					</Portal>
 				</Menu>

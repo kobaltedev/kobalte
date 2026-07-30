@@ -1,8 +1,4 @@
-import {
-	focusWithoutScrolling,
-	mergeRefs,
-	OverrideComponentProps,
-} from "@kobalte/utils";
+import { focusWithoutScrolling, mergeRefs } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -82,7 +78,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 		"onFocusOutside",
 	);
 
-	const onEscapeKeyDown = (e: KeyboardEvent) => {
+	const onEscapeKeyDown = (_e: KeyboardEvent) => {
 		// `createSelectableList` prevent escape key down,
 		// which prevent our `onDismiss` in `DismissableLayer` to run,
 		// so we force "close on escape" here.

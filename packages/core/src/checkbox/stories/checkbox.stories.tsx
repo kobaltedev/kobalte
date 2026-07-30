@@ -9,6 +9,7 @@ import {
 	Label,
 	Root,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Checkbox",
@@ -16,17 +17,6 @@ const meta = preview.meta({
 });
 
 export default meta;
-
-const rootClass = "flex items-center gap-3 font-sans";
-
-const controlClass =
-	"relative flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded border-2 border-slate-300 bg-white transition-colors duration-150 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 data-[checked]:border-blue-500 data-[checked]:bg-blue-500 data-[indeterminate]:border-blue-500 data-[indeterminate]:bg-blue-500 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50";
-
-const labelClass =
-	"text-sm font-medium text-slate-700 select-none cursor-pointer";
-
-const descriptionClass = "text-xs text-slate-500 mt-0.5";
-const errorClass = "text-xs text-red-600 mt-0.5";
 
 function CheckIcon() {
 	return (
@@ -41,7 +31,7 @@ function CheckIcon() {
 			stroke-linecap="round"
 			stroke-linejoin="round"
 			aria-hidden="true"
-			class="text-white"
+			class={style.icon}
 		>
 			<polyline points="20 6 9 17 4 12" />
 		</svg>
@@ -60,7 +50,7 @@ function DashIcon() {
 			stroke-width="3"
 			stroke-linecap="round"
 			aria-hidden="true"
-			class="text-white"
+			class={style.icon}
 		>
 			<line x1="5" y1="12" x2="19" y2="12" />
 		</svg>
@@ -71,14 +61,14 @@ function DashIcon() {
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={rootClass}>
-			<Control class={controlClass}>
+		<Root class={style.root}>
+			<Control class={style.control}>
 				<Indicator>
 					<CheckIcon />
 				</Indicator>
 				<Input />
 			</Control>
-			<Label class={labelClass}>Accept terms</Label>
+			<Label class={style.label}>Accept terms</Label>
 		</Root>
 	),
 });
@@ -87,14 +77,14 @@ export const Default = meta.story({
 export const DefaultChecked = meta.story({
 	name: "Default Checked",
 	render: () => (
-		<Root class={rootClass} defaultChecked>
-			<Control class={controlClass}>
+		<Root class={style.root} defaultChecked>
+			<Control class={style.control}>
 				<Indicator>
 					<CheckIcon />
 				</Indicator>
 				<Input />
 			</Control>
-			<Label class={labelClass}>Receive newsletter</Label>
+			<Label class={style.label}>Receive newsletter</Label>
 		</Root>
 	),
 });
@@ -103,24 +93,24 @@ export const DefaultChecked = meta.story({
 export const Indeterminate = meta.story({
 	name: "Indeterminate",
 	render: () => (
-		<div class="flex flex-col gap-3">
-			<Root class={rootClass} indeterminate>
-				<Control class={controlClass}>
+		<div class={style.column}>
+			<Root class={style.root} indeterminate>
+				<Control class={style.control}>
 					<Indicator>
 						<DashIcon />
 					</Indicator>
 					<Input />
 				</Control>
-				<Label class={labelClass}>Select all (partial)</Label>
+				<Label class={style.label}>Select all (partial)</Label>
 			</Root>
-			<Root class={rootClass} indeterminate defaultChecked>
-				<Control class={controlClass}>
+			<Root class={style.root} indeterminate defaultChecked>
+				<Control class={style.control}>
 					<Indicator>
 						<DashIcon />
 					</Indicator>
 					<Input />
 				</Control>
-				<Label class={labelClass}>Select all (partial + checked)</Label>
+				<Label class={style.label}>Select all (partial + checked)</Label>
 			</Root>
 		</div>
 	),
@@ -130,16 +120,16 @@ export const Indeterminate = meta.story({
 export const WithDescription = meta.story({
 	name: "With Description",
 	render: () => (
-		<Root class={rootClass}>
-			<Control class={controlClass}>
+		<Root class={style.root}>
+			<Control class={style.control}>
 				<Indicator>
 					<CheckIcon />
 				</Indicator>
 				<Input />
 			</Control>
-			<div class="flex flex-col">
-				<Label class={labelClass}>Marketing emails</Label>
-				<Description class={descriptionClass}>
+			<div class={style.textColumn}>
+				<Label class={style.label}>Marketing emails</Label>
+				<Description class={style.description}>
 					Receive emails about new products and features.
 				</Description>
 			</div>
@@ -151,26 +141,26 @@ export const WithDescription = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<div class="flex flex-col gap-3">
-			<Root class={rootClass} disabled>
-				<Control class={controlClass}>
+		<div class={style.column}>
+			<Root class={style.root} disabled>
+				<Control class={style.control}>
 					<Indicator>
 						<CheckIcon />
 					</Indicator>
 					<Input />
 				</Control>
-				<Label class={`${labelClass} opacity-50 cursor-not-allowed`}>
+				<Label class={[style.label, style.labelDisabled]}>
 					Disabled (unchecked)
 				</Label>
 			</Root>
-			<Root class={rootClass} disabled defaultChecked>
-				<Control class={controlClass}>
+			<Root class={style.root} disabled defaultChecked>
+				<Control class={style.control}>
 					<Indicator>
 						<CheckIcon />
 					</Indicator>
 					<Input />
 				</Control>
-				<Label class={`${labelClass} opacity-50 cursor-not-allowed`}>
+				<Label class={[style.label, style.labelDisabled]}>
 					Disabled (checked)
 				</Label>
 			</Root>
@@ -182,14 +172,14 @@ export const Disabled = meta.story({
 export const ReadOnly = meta.story({
 	name: "Read Only",
 	render: () => (
-		<Root class={rootClass} defaultChecked readOnly>
-			<Control class={controlClass}>
+		<Root class={style.root} defaultChecked readOnly>
+			<Control class={style.control}>
 				<Indicator>
 					<CheckIcon />
 				</Indicator>
 				<Input />
 			</Control>
-			<Label class={`${labelClass} cursor-not-allowed`}>
+			<Label class={[style.label, style.labelReadOnly]}>
 				Agreed to terms (read only)
 			</Label>
 		</Root>
@@ -199,22 +189,22 @@ export const ReadOnly = meta.story({
 function ControlledDemo() {
 	const [checked, setChecked] = createSignal(false);
 	return (
-		<div class="flex flex-col gap-3 font-sans">
-			<Root class={rootClass} checked={checked()} onChange={setChecked}>
-				<Control class={controlClass}>
+		<div class={[style.column, style.selectParent]}>
+			<Root class={style.root} checked={checked()} onChange={setChecked}>
+				<Control class={style.control}>
 					<Indicator>
 						<CheckIcon />
 					</Indicator>
 					<Input />
 				</Control>
-				<Label class={labelClass}>Remember me</Label>
+				<Label class={style.label}>Remember me</Label>
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style.stateText}>
 				State: <strong>{checked() ? "checked" : "unchecked"}</strong>
 			</p>
 			<button
 				type="button"
-				class="self-start rounded px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 transition-colors"
+				class={style.resetButton}
 				onClick={() => setChecked(false)}
 			>
 				Reset
@@ -233,29 +223,27 @@ function ValidationDemo() {
 	const [checked, setChecked] = createSignal(false);
 	return (
 		<Root
-			class="flex flex-col gap-0.5 font-sans"
+			class={[style.columnGap05, style.selectParent]}
 			checked={checked()}
 			onChange={setChecked}
 			validationState={checked() ? "valid" : "invalid"}
 			required
 		>
-			<div class={rootClass}>
-				<Control
-					class={`${controlClass} data-[invalid]:border-red-500 data-[invalid]:ring-red-500`}
-				>
+			<div class={style.root}>
+				<Control class={[style.control, style.controlInvalid]}>
 					<Indicator>
 						<CheckIcon />
 					</Indicator>
 					<Input />
 				</Control>
-				<div class="flex flex-col">
-					<Label class={labelClass}>Accept terms and conditions</Label>
-					<Description class={descriptionClass}>
+				<div class={style.textColumn}>
+					<Label class={style.label}>Accept terms and conditions</Label>
+					<Description class={style.description}>
 						You must accept to continue.
 					</Description>
 				</div>
 			</div>
-			<ErrorMessage class={errorClass}>
+			<ErrorMessage class={style.error}>
 				You must accept the terms and conditions.
 			</ErrorMessage>
 		</Root>
@@ -270,16 +258,16 @@ export const WithValidation = meta.story({
 
 function RenderPropDemo() {
 	return (
-		<Root class={rootClass}>
+		<Root class={style.root}>
 			{(state) => (
 				<>
-					<Control class={controlClass}>
+					<Control class={style.control}>
 						<Indicator>
 							{state.indeterminate() ? <DashIcon /> : <CheckIcon />}
 						</Indicator>
 						<Input />
 					</Control>
-					<Label class={labelClass}>
+					<Label class={style.label}>
 						{state.checked()
 							? "Checked"
 							: state.indeterminate()
@@ -320,33 +308,33 @@ function SelectAllDemo() {
 	};
 
 	return (
-		<div class="flex flex-col gap-3 font-sans w-64">
+		<div class={[style.selectParent, style.selectChildren]}>
 			<Root
-				class={rootClass}
+				class={style.root}
 				checked={allChecked()}
 				indeterminate={someChecked()}
 				onChange={toggleAll}
 			>
-				<Control class={controlClass}>
+				<Control class={style.control}>
 					<Indicator>{someChecked() ? <DashIcon /> : <CheckIcon />}</Indicator>
 					<Input />
 				</Control>
-				<Label class={`${labelClass} font-semibold`}>Notifications</Label>
+				<Label class={[style.label, style.fontSemibold]}>Notifications</Label>
 			</Root>
-			<div class="ml-8 flex flex-col gap-2 border-l border-slate-200 pl-4">
+			<div class={style.selectChildren}>
 				{items.map((item) => (
 					<Root
-						class={rootClass}
+						class={style.root}
 						checked={checked().has(item)}
 						onChange={() => toggle(item)}
 					>
-						<Control class={controlClass}>
+						<Control class={style.control}>
 							<Indicator>
 								<CheckIcon />
 							</Indicator>
 							<Input />
 						</Control>
-						<Label class={labelClass}>{item}</Label>
+						<Label class={style.label}>{item}</Label>
 					</Root>
 				))}
 			</div>

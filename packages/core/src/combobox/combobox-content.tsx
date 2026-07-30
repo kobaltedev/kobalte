@@ -18,7 +18,10 @@ import {
 } from "../dismissable-layer/index.ts";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import { Popper } from "../popper/index.tsx";
-import { type ComboboxDataSet, useComboboxContext } from "./combobox-context.tsx";
+import {
+	type ComboboxDataSet,
+	useComboboxContext,
+} from "./combobox-context.tsx";
 
 export interface ComboboxContentOptions {
 	/**

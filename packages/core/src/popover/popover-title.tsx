@@ -11,7 +11,7 @@ import { type PopoverDataSet, usePopoverContext } from "./popover-context.tsx";
 
 export interface PopoverTitleOptions {}
 
-export interface PopoverTitleCommonProps<T extends HTMLElement = HTMLElement> {
+export interface PopoverTitleCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

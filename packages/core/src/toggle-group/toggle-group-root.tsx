@@ -51,7 +51,7 @@ export type ToggleGroupRootOptions = (
 	>;
 
 export interface ToggleGroupRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface ToggleGroupRootRenderProps

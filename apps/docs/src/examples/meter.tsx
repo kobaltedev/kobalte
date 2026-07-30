@@ -1,5 +1,4 @@
 import { Meter } from "@kobalte/core/meter";
-
 import style from "./meter.module.css";
 
 export function BasicExample() {

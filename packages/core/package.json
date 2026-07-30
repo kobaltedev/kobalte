@@ -30,17 +30,11 @@
 	"sideEffects": false,
 	"type": "module",
 	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"solid": "./dist/index.jsx",
-			"default": "./dist/index.js"
-		},
 		"./*": {
 			"types": "./dist/*/index.d.ts",
 			"solid": "./dist/*/index.jsx",
 			"default": "./dist/*/index.js"
-		},
-		"./src/*": "./src/*"
+		}
 	},
 	"main": "dist/index.js",
 	"module": "dist/index.js",
@@ -53,10 +47,8 @@
 			]
 		}
 	},
-	"source": "src/index.tsx",
 	"files": [
 		"dist",
-		"src",
 		"NOTICE.txt"
 	],
 	"scripts": {
@@ -65,7 +57,6 @@
 		"build:tsdown": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsdown",
 		"clean": "rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
 		"dev": "vite serve dev --host",
-		"test-old": "jest --passWithNoTests",
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit"
 	},

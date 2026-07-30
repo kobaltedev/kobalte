@@ -1,4 +1,4 @@
-import { type UserConfig, defineConfig } from "tsdown";
+import { defineConfig, type UserConfig } from "tsdown";
 import solid from "unplugin-solid/rolldown";
 
 /**
@@ -23,7 +23,9 @@ function generateConfig(jsx: boolean): UserConfig {
 			options.chunkFileNames = "[name]/[hash].js";
 			return options;
 		},
-		plugins: jsx ? [] : [solid({ solid: { generate: "dom", moduleName: "@solidjs/web" } })],
+		plugins: jsx
+			? []
+			: [solid({ solid: { generate: "dom", moduleName: "@solidjs/web" } })],
 	};
 }
 

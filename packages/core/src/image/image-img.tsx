@@ -19,7 +19,7 @@ import type { ImageLoadingStatus } from "./types.ts";
 
 export interface ImageImgOptions {}
 
-export interface ImageImgCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ImageImgCommonProps<_T extends HTMLElement = HTMLElement> {
 	src?: string;
 }
 

@@ -1,7 +1,10 @@
 import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { createSignal, createUniqueId, type ParentProps } from "solid-js";
-import { createDisclosureState, createRegisterId } from "../primitives/index.ts";
+import {
+	createDisclosureState,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	DIALOG_INTL_TRANSLATIONS,
 	type DialogIntlTranslations,

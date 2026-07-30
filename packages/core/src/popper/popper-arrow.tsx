@@ -79,7 +79,9 @@ export function PopperArrow<T extends ValidComponent = "div">(
 		contentStyle()?.getPropertyValue(`border-${dir()}-width`) || "0px";
 	const strokeWidth = () => {
 		return (
-			Number.parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / mergedProps.size!)
+			Number.parseInt(borderWidth(), 10) *
+			2 *
+			(DEFAULT_SIZE / mergedProps.size!)
 		);
 	};
 	const rotate = () => {
@@ -109,7 +111,6 @@ export function PopperArrow<T extends ValidComponent = "div">(
 			)}
 			{...others}
 		>
-			{/* biome-ignore lint/a11y/noSvgWithoutTitle: aria hidden */}
 			<svg
 				display="block"
 				viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}

@@ -14,9 +14,12 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import type { CollectionItemWithRef } from "../primitives/index.ts";
 import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
-import { createSelectableCollection, type SelectionMode } from "../selection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import {
+	createSelectableCollection,
+	type SelectionMode,
+} from "../selection/index.ts";
 import { TabsKeyboardDelegate } from "../tabs/tabs-keyboard-delegate.ts";
 import {
 	ToggleGroupContext,

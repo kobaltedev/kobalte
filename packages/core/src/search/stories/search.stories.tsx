@@ -13,6 +13,7 @@ import {
 	Portal,
 	Root,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Search",
@@ -21,22 +22,10 @@ const meta = preview.meta({
 
 export default meta;
 
-const wrapClass = "flex flex-col gap-1.5 font-sans w-72";
-const labelClass = "text-sm font-medium text-slate-700";
-const controlClass = "relative flex items-center";
-const inputClass =
-	"w-full rounded-md border border-slate-300 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 data-[invalid]:border-red-400";
-const contentClass =
-	"z-50 min-w-[var(--kb-popper-anchor-width)] rounded-md border border-slate-200 bg-white shadow-md focus:outline-none";
-const listboxClass = "max-h-60 overflow-y-auto p-1";
-const itemClass =
-	"flex items-center rounded-sm px-3 py-2 text-sm text-slate-900 cursor-default select-none outline-none data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-900 data-[disabled]:opacity-50";
-const noResultClass = "px-3 py-4 text-center text-sm text-slate-400";
-
 function SearchIcon() {
 	return (
 		<svg
-			class="h-4 w-4 text-slate-400"
+			class={style.icon}
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"
 			fill="none"
@@ -55,7 +44,7 @@ function SearchIcon() {
 function SpinnerIcon() {
 	return (
 		<svg
-			class="h-4 w-4 text-blue-500 animate-spin"
+			class={style.spinnerIcon}
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"
 			fill="none"
@@ -103,29 +92,26 @@ function BasicSearch() {
 
 	return (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={options()}
 			onInputChange={onInputChange}
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
+				<Item item={props.item} class={style.item}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Fruit</Label>
-			<Control class={controlClass}>
-				<Indicator
-					class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5"
-					loadingComponent={<SpinnerIcon />}
-				>
+			<Label class={style.label}>Fruit</Label>
+			<Control class={style.control}>
+				<Indicator class={style.indicator} loadingComponent={<SpinnerIcon />}>
 					<SearchIcon />
 				</Indicator>
-				<Input class={inputClass} placeholder="Search fruits…" />
+				<Input class={style.input} placeholder="Search fruits…" />
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
-					<NoResult class={noResultClass}>No results found.</NoResult>
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
+					<NoResult class={style.noResult}>No results found.</NoResult>
 				</Content>
 			</Portal>
 		</Root>
@@ -152,30 +138,27 @@ function DebouncedSearch() {
 
 	return (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={options()}
 			onInputChange={onInputChange}
 			debounceOptionsMillisecond={300}
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
+				<Item item={props.item} class={style.item}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Fruit (debounced 300 ms)</Label>
-			<Control class={controlClass}>
-				<Indicator
-					class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5"
-					loadingComponent={<SpinnerIcon />}
-				>
+			<Label class={style.label}>Fruit (debounced 300 ms)</Label>
+			<Control class={style.control}>
+				<Indicator class={style.indicator} loadingComponent={<SpinnerIcon />}>
 					<SearchIcon />
 				</Indicator>
-				<Input class={inputClass} placeholder="Search fruits…" />
+				<Input class={style.input} placeholder="Search fruits…" />
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
-					<NoResult class={noResultClass}>No results found.</NoResult>
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
+					<NoResult class={style.noResult}>No results found.</NoResult>
 				</Content>
 			</Portal>
 		</Root>
@@ -201,39 +184,39 @@ function ControlledSearch() {
 	};
 
 	return (
-		<div class="flex flex-col gap-3 font-sans">
+		<div class={style.controlledWrapper}>
 			<Root
-				class={wrapClass}
+				class={style.wrap}
 				options={options()}
 				value={value()}
 				onChange={setValue}
 				onInputChange={onInputChange}
 				itemComponent={(props) => (
-					<Item item={props.item} class={itemClass}>
+					<Item item={props.item} class={style.item}>
 						<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 					</Item>
 				)}
 			>
-				<Label class={labelClass}>Fruit</Label>
-				<Control class={controlClass}>
-					<Indicator class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
+				<Label class={style.label}>Fruit</Label>
+				<Control class={style.control}>
+					<Indicator class={style.indicator}>
 						<SearchIcon />
 					</Indicator>
-					<Input class={inputClass} placeholder="Search fruits…" />
+					<Input class={style.input} placeholder="Search fruits…" />
 				</Control>
 				<Portal>
-					<Content class={contentClass}>
-						<Listbox class={listboxClass} />
-						<NoResult class={noResultClass}>No results found.</NoResult>
+					<Content class={style.content}>
+						<Listbox class={style.listbox} />
+						<NoResult class={style.noResult}>No results found.</NoResult>
 					</Content>
 				</Portal>
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style.stateText}>
 				Selected: <strong>{value() ?? "none"}</strong>
 			</p>
 			<button
 				type="button"
-				class="self-start rounded px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 transition-colors"
+				class={style.resetButton}
 				onClick={() => setValue(null)}
 			>
 				Clear
@@ -273,33 +256,33 @@ function ObjectSearch() {
 
 	return (
 		<Root<Person>
-			class={wrapClass}
+			class={style.wrap}
 			options={options()}
 			optionValue="id"
 			optionTextValue="name"
 			onInputChange={onInputChange}
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
-					<div class="flex flex-col">
+				<Item item={props.item} class={style.item}>
+					<div class={style.itemTextColumn}>
 						<ItemLabel>{(props.item.rawValue as Person).name}</ItemLabel>
-						<span class="text-xs text-slate-400">
+						<span class={style.itemSubtext}>
 							{(props.item.rawValue as Person).role}
 						</span>
 					</div>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Assignee</Label>
-			<Control class={controlClass}>
+			<Label class={style.label}>Assignee</Label>
+			<Control class={style.control}>
 				<Indicator>
 					<SearchIcon />
 				</Indicator>
-				<Input class={inputClass} placeholder="Search people…" />
+				<Input class={style.input} placeholder="Search people…" />
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
-					<NoResult class={noResultClass}>Nobody found.</NoResult>
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
+					<NoResult class={style.noResult}>Nobody found.</NoResult>
 				</Content>
 			</Portal>
 		</Root>

@@ -22,7 +22,10 @@ import {
 	type SliderFillProps,
 	type SliderFillRenderProps,
 } from "./slider-fill.tsx";
-import { SliderInput as Input, type SliderInputProps } from "./slider-input.tsx";
+import {
+	SliderInput as Input,
+	type SliderInputProps,
+} from "./slider-input.tsx";
 import {
 	SliderRoot as Root,
 	type GetValueLabelParams as SliderGetValueLabelParams,
@@ -115,4 +118,11 @@ export const Slider = Object.assign(Root, {
 /**
  * API will most probably change
  */
+<<<<<<< HEAD
 export { type SliderContextValue, useSliderContext } from "./slider-context.tsx";
+=======
+export {
+	type SliderContextValue,
+	useSliderContext,
+} from "./slider-context.tsx";
+>>>>>>> solid2

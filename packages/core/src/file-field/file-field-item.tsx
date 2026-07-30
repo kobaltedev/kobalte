@@ -1,4 +1,4 @@
-import type { JSX, ValidComponent } from "@solidjs/web";
+import type { ValidComponent } from "@solidjs/web";
 
 import {
 	type ElementOf,
@@ -9,7 +9,7 @@ import {
 export interface FileFieldItemOptions {}
 
 export interface FileFieldItemCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface FileFieldItemRenderProps extends FileFieldItemCommonProps {}

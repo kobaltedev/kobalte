@@ -8,8 +8,8 @@ import {
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, createUniqueId, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
-import type { CollectionItemWithRef } from "../primitives/index.ts";
 import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
 import { createSelectableItem } from "../selection/index.ts";
 import * as ToggleButton from "../toggle-button/index.tsx";
 import { useToggleGroupContext } from "./toggle-group-context.tsx";

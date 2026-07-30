@@ -4,7 +4,7 @@ import { usePaginationContext } from "./pagination-context.tsx";
 
 export interface PaginationItemsProps {}
 
-export function PaginationItems(props: PaginationItemsProps) {
+export function PaginationItems(_props: PaginationItemsProps) {
 	const context = usePaginationContext();
 
 	const items = createMemo(() => {
@@ -76,47 +76,43 @@ export function PaginationItems(props: PaginationItemsProps) {
 	});
 
 	return (
-		<>
-			<Show
-				when={items().renderItemsDirectly}
-				fallback={
-					<>
-						<Show when={items().showFirst}>{context.renderItem(1)}</Show>
+		<Show
+			when={items().renderItemsDirectly}
+			fallback={
+				<>
+					<Show when={items().showFirst}>{context.renderItem(1)}</Show>
 
-						<Show when={items().showFirstEllipsis}>
-							{context.renderEllipsis()}
-						</Show>
+					<Show when={items().showFirstEllipsis}>
+						{context.renderEllipsis()}
+					</Show>
 
-						<For
-							each={[...Array(items().previousSiblingCount).keys()].reverse()}
-						>
-							{(offset) => (
-								<>{context.renderItem(context.page() - (offset + 1))}</>
-							)}
-						</For>
+					<For each={[...Array(items().previousSiblingCount).keys()].reverse()}>
+						{(offset) => (
+							<>{context.renderItem(context.page() - (offset + 1))}</>
+						)}
+					</For>
 
-						{context.renderItem(context.page())}
+					{context.renderItem(context.page())}
 
-						<For each={[...Array(items().nextSiblingCount).keys()]}>
-							{(offset) => (
-								<>{context.renderItem(context.page() + (offset + 1))}</>
-							)}
-						</For>
+					<For each={[...Array(items().nextSiblingCount).keys()]}>
+						{(offset) => (
+							<>{context.renderItem(context.page() + (offset + 1))}</>
+						)}
+					</For>
 
-						<Show when={items().showLastEllipsis}>
-							{context.renderEllipsis()}
-						</Show>
+					<Show when={items().showLastEllipsis}>
+						{context.renderEllipsis()}
+					</Show>
 
-						<Show when={items().showLast}>
-							{context.renderItem(context.count())}
-						</Show>
-					</>
-				}
-			>
-				<For each={[...Array(context.count()).keys()]}>
-					{(page) => <>{context.renderItem(page + 1)}</>}
-				</For>
-			</Show>
-		</>
+					<Show when={items().showLast}>
+						{context.renderItem(context.count())}
+					</Show>
+				</>
+			}
+		>
+			<For each={[...Array(context.count()).keys()]}>
+				{(page) => <>{context.renderItem(page + 1)}</>}
+			</For>
+		</Show>
 	);
 }

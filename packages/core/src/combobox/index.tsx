@@ -87,7 +87,10 @@ import {
 	type ComboboxHiddenSelectProps,
 	ComboboxHiddenSelect as HiddenSelect,
 } from "./combobox-hidden-select.tsx";
-import { type ComboboxIconProps, ComboboxIcon as Icon } from "./combobox-icon.tsx";
+import {
+	type ComboboxIconProps,
+	ComboboxIcon as Icon,
+} from "./combobox-icon.tsx";
 import {
 	type ComboboxMultipleSelectionOptions,
 	type ComboboxRootCommonProps,

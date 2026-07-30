@@ -18,7 +18,6 @@ import { omit } from "solid-js";
 
 import {
 	createFormControlField,
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
 	useFormControlContext,
 } from "../form-control/index.ts";

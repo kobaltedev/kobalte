@@ -1,5 +1,6 @@
 import preview from "../../../../../.storybook/preview.js";
 import { Root } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Skeleton",
@@ -8,7 +9,7 @@ const meta = preview.meta({
 
 export default meta;
 
-const baseClass = "bg-slate-200 animate-pulse rounded";
+const baseClass = `${style.skeleton__base} ${style.skeleton__animated}`;
 
 /** A full-width bar — the most common loading placeholder. */
 export const Default = meta.story({
@@ -39,7 +40,7 @@ export const NotVisible = meta.story({
 	name: "Not Visible",
 	render: () => (
 		<Root class={baseClass} height={24} visible={false}>
-			<p class="text-sm font-sans text-slate-700 px-2">Content loaded!</p>
+			<p class={style["skeleton__content-text"]}>Content loaded!</p>
 		</Root>
 	),
 });
@@ -48,7 +49,7 @@ export const NotVisible = meta.story({
 export const NotAnimated = meta.story({
 	name: "Not Animated",
 	render: () => (
-		<Root class="bg-slate-200 rounded" height={16} animate={false} />
+		<Root class={style["skeleton__not-animated"]} height={16} animate={false} />
 	),
 });
 
@@ -56,9 +57,9 @@ export const NotAnimated = meta.story({
 export const CardLoading = meta.story({
 	name: "Card Loading",
 	render: () => (
-		<div class="flex gap-3 w-72 p-4 rounded-xl border border-slate-100 shadow-sm font-sans">
+		<div class={style.skeleton__card}>
 			<Root class={baseClass} height={48} circle />
-			<div class="flex flex-col gap-2 flex-1 justify-center">
+			<div class={style["skeleton__card-lines"]}>
 				<Root class={baseClass} height={14} />
 				<Root class={baseClass} height={10} width={120} />
 			</div>
@@ -70,11 +71,11 @@ export const CardLoading = meta.story({
 export const ListLoading = meta.story({
 	name: "List Loading",
 	render: () => (
-		<div class="flex flex-col gap-4 w-72 font-sans">
+		<div class={style.skeleton__list}>
 			{([1, 2, 3] as const).map(() => (
-				<div class="flex gap-3 items-start">
+				<div class={style["skeleton__list-row"]}>
 					<Root class={baseClass} height={36} circle />
-					<div class="flex flex-col gap-2 flex-1">
+					<div class={style["skeleton__list-lines"]}>
 						<Root class={baseClass} height={12} />
 						<Root class={baseClass} height={10} width={180} />
 						<Root class={baseClass} height={10} width={100} />

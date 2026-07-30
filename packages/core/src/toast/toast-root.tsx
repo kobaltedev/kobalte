@@ -174,7 +174,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		{ ownedWrite: true },
 	);
 	const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
-	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+	const [_ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
 		ownedWrite: true,
 	});
 
@@ -211,7 +211,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 		window.clearTimeout(closeTimerId);
 
-		closeTimerStartTime = new Date().getTime();
+		closeTimerStartTime = Date.now();
 		closeTimerId = window.setTimeout(close, duration);
 	};
 
@@ -222,7 +222,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	};
 
 	const pauseTimer = () => {
-		const elapsedTime = new Date().getTime() - closeTimerStartTime;
+		const elapsedTime = Date.now() - closeTimerStartTime;
 		closeTimerRemainingTime = closeTimerRemainingTime - elapsedTime;
 
 		window.clearTimeout(closeTimerId);

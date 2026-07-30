@@ -11,7 +11,7 @@ import { useDialogContext } from "./dialog-context.tsx";
 
 export interface DialogTitleOptions {}
 
-export interface DialogTitleCommonProps<T extends HTMLElement = HTMLElement> {
+export interface DialogTitleCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

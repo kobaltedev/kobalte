@@ -102,7 +102,7 @@ describe.skip("Select", () => {
 		];
 
 		it("supports string based option mapping for object options with string keys", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root<any, any>
 					options={CUSTOM_DATA_SOURCE_WITH_STRING_KEY}
 					optionValue="id"
@@ -202,7 +202,7 @@ describe.skip("Select", () => {
 		});
 
 		it("supports function based option mapping for object options with string keys", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root<any, any>
 					options={CUSTOM_DATA_SOURCE_WITH_STRING_KEY}
 					optionValue={(option) => option.id}
@@ -313,7 +313,7 @@ describe.skip("Select", () => {
 		];
 
 		it("supports string based option mapping for object options with number keys", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root<any, any>
 					options={CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY}
 					optionValue="id"
@@ -413,7 +413,7 @@ describe.skip("Select", () => {
 		});
 
 		it("supports function based option mapping for object options with number keys", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root<any, any>
 					options={CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY}
 					optionValue={(option) => option.id}
@@ -513,7 +513,7 @@ describe.skip("Select", () => {
 		});
 
 		it("supports string options without mapping", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={["One", "Two", "Three"]}
 					placeholder="Placeholder"
@@ -602,7 +602,7 @@ describe.skip("Select", () => {
 		});
 
 		it("supports function based option mapping for string options", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={["One", "Two", "Three"]}
 					optionValue={(option) => option}
@@ -694,7 +694,7 @@ describe.skip("Select", () => {
 		});
 
 		it("supports number options without mapping", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={[1, 2, 3]}
 					placeholder="Placeholder"
@@ -783,7 +783,7 @@ describe.skip("Select", () => {
 		});
 
 		it("supports function based option mapping for number options", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={[1, 2, 3]}
 					optionValue={(option) => option}
@@ -1332,7 +1332,7 @@ describe.skip("Select", () => {
 		it("supports controlled open state", () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2102,7 +2102,7 @@ describe.skip("Select", () => {
 
 	describe("selection", () => {
 		it("can select items on press", async () => {
-			const { getByRole, getAllByRole, getByText } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2188,7 +2188,7 @@ describe.skip("Select", () => {
 		});
 
 		it("can select items with the Space key", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2267,7 +2267,7 @@ describe.skip("Select", () => {
 		});
 
 		it("can select items with the Enter key", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2339,7 +2339,7 @@ describe.skip("Select", () => {
 		});
 
 		it("focuses items on hover", async () => {
-			const { getByRole, getAllByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2546,7 +2546,7 @@ describe.skip("Select", () => {
 		});
 
 		it("supports controlled selection", async () => {
-			const { getByRole, getAllByText } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -3860,11 +3860,11 @@ describe.skip("Select", () => {
 
 			expect(options.length).toBe(4);
 
-			options.forEach(
-				(option, index) =>
-					index > 0 &&
-					expect(option).toHaveTextContent(dataSource[index - 1].label),
-			);
+			options.forEach((option, index) => {
+				if (index > 0) {
+					expect(option).toHaveTextContent(dataSource[index - 1].label);
+				}
+			});
 
 			fireEvent.change(hiddenSelectBase, { target: { value: "FR" } });
 			await Promise.resolve();

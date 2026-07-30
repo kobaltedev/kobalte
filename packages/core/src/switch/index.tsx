@@ -92,4 +92,7 @@ export const Switch = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type SwitchContextValue, useSwitchContext } from "./switch-context.tsx";
+export {
+	type SwitchContextValue,
+	useSwitchContext,
+} from "./switch-context.tsx";

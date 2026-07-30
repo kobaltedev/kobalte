@@ -9,14 +9,20 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const rootDir = path.resolve(
+	path.dirname(fileURLToPath(import.meta.url)),
+	"..",
+);
 const targets = process.argv.slice(2);
 if (targets.length === 0) {
-	console.error("Usage: node scripts/add-relative-import-extensions.mjs <dir> [<dir> ...]");
+	console.error(
+		"Usage: node scripts/add-relative-import-extensions.mjs <dir> [<dir> ...]",
+	);
 	process.exit(1);
 }
 
-const SPECIFIER_RE = /((?:^|\bfrom\s+|^import\s+|^export\s+\*\s+(?:as\s+\w+\s+)?from\s+)["'])(\.\.?\/[^"']+)(["'])/;
+const SPECIFIER_RE =
+	/((?:^|\bfrom\s+|^import\s+|^export\s+\*\s+(?:as\s+\w+\s+)?from\s+)["'])(\.\.?\/[^"']+)(["'])/;
 const KNOWN_EXT_RE = /\.(ts|tsx|js|jsx|mjs|cjs|json|css)$/;
 
 let filesChanged = 0;
@@ -44,7 +50,7 @@ function resolveSpecifier(fromFile, spec) {
 		{ file: path.join(base, "index.tsx"), isDirectoryIndex: true },
 		{ file: path.join(base, "index.ts"), isDirectoryIndex: true },
 	];
-	return candidates.find(c => fs.existsSync(c.file)) ?? null;
+	return candidates.find((c) => fs.existsSync(c.file)) ?? null;
 }
 
 for (const target of targets) {
@@ -66,7 +72,13 @@ for (const target of targets) {
 
 			const hit = resolveSpecifier(file, spec);
 			if (!hit) {
+<<<<<<< HEAD
 				problems.push(`${path.relative(rootDir, file)}:${i + 1}: cannot resolve "${spec}"`);
+=======
+				problems.push(
+					`${path.relative(rootDir, file)}:${i + 1}: cannot resolve "${spec}"`,
+				);
+>>>>>>> solid2
 				continue;
 			}
 
@@ -75,7 +87,14 @@ for (const target of targets) {
 				? `${spec.replace(/\/$/, "")}/index${ext}`
 				: `${spec}${ext}`;
 
+<<<<<<< HEAD
 			lines[i] = line.replace(SPECIFIER_RE, (_m, pre, _s, post) => `${pre}${newSpec}${post}`);
+=======
+			lines[i] = line.replace(
+				SPECIFIER_RE,
+				(_m, pre, _s, post) => `${pre}${newSpec}${post}`,
+			);
+>>>>>>> solid2
 			fileChanged = true;
 			specifiersChanged++;
 		}
@@ -87,7 +106,13 @@ for (const target of targets) {
 	}
 }
 
+<<<<<<< HEAD
 console.log(`Rewrote ${specifiersChanged} specifiers across ${filesChanged} files.`);
+=======
+console.log(
+	`Rewrote ${specifiersChanged} specifiers across ${filesChanged} files.`,
+);
+>>>>>>> solid2
 if (problems.length > 0) {
 	console.error(`\n${problems.length} unresolved specifier(s):`);
 	for (const p of problems) console.error(`  ${p}`);

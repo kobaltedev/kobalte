@@ -37,8 +37,8 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import type { CollectionItemWithRef } from "../primitives/index.ts";
 import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
 import { type SliderDataSet, useSliderContext } from "./slider-context.tsx";
 
 export interface SliderThumbOptions {}

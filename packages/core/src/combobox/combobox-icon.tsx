@@ -6,11 +6,14 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import { type ComboboxDataSet, useComboboxContext } from "./combobox-context.tsx";
+import {
+	type ComboboxDataSet,
+	useComboboxContext,
+} from "./combobox-context.tsx";
 
 export interface ComboboxIconOptions {}
 
-export interface ComboboxIconCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ComboboxIconCommonProps<_T extends HTMLElement = HTMLElement> {
 	children: JSX.Element;
 }
 

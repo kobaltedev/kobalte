@@ -9,7 +9,7 @@ import {
 export interface PaginationEllipsisOptions {}
 
 export interface PaginationEllipsisCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface PaginationEllipsisRenderProps

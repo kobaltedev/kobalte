@@ -81,4 +81,7 @@ export const Listbox = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type ListboxContextValue, useListboxContext } from "./listbox-context.tsx";
+export {
+	type ListboxContextValue,
+	useListboxContext,
+} from "./listbox-context.tsx";

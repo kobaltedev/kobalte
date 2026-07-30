@@ -21,7 +21,7 @@ export interface FormControlErrorMessageOptions {
 }
 
 export interface FormControlErrorMessageCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

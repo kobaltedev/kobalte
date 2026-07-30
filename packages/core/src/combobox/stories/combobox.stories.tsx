@@ -17,6 +17,7 @@ import {
 	Section,
 	Trigger,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Combobox",
@@ -25,34 +26,10 @@ const meta = preview.meta({
 
 export default meta;
 
-// ─── shared styles ───────────────────────────────────────────────────────────
-
-const wrapClass = "flex flex-col gap-1.5 font-sans w-72";
-const labelClass = "text-sm font-medium text-slate-700";
-const descriptionClass = "text-xs text-slate-500";
-const errorClass = "text-xs text-red-600";
-// Control is the bordered container; Input is borderless inside it
-const controlClass =
-	"flex items-center rounded-md border border-slate-300 bg-white focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-1 data-[invalid]:border-red-400";
-const inputClass =
-	"flex-1 py-2 pl-3 pr-1 text-sm bg-transparent text-slate-900 placeholder:text-slate-400 focus:outline-none min-w-0";
-const triggerClass =
-	"flex items-center pr-2 pl-1 text-slate-400 hover:text-slate-700 focus:outline-none shrink-0";
-const contentClass =
-	"z-50 min-w-[var(--kb-popper-anchor-width)] rounded-md border border-slate-200 bg-white shadow-md focus:outline-none";
-const listboxClass = "max-h-60 overflow-y-auto p-1";
-const itemClass =
-	"flex items-center rounded-sm px-3 py-2 text-sm text-slate-900 cursor-default select-none outline-none data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-900 data-[disabled]:opacity-50";
-const itemIndicatorClass = "mr-2 flex items-center";
-const itemWithIndicatorClass =
-	"flex items-center rounded-sm px-3 py-2 text-sm text-slate-900 cursor-default select-none outline-none data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-900 data-[disabled]:opacity-50";
-const sectionClass =
-	"px-3 pt-3 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-wider";
-
 function ChevronDown() {
 	return (
 		<svg
-			class="h-4 w-4"
+			class={style.chevronIcon}
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"
 			fill="none"
@@ -70,7 +47,7 @@ function ChevronDown() {
 function CheckIcon() {
 	return (
 		<svg
-			class="h-4 w-4 text-blue-600"
+			class={style.checkIcon}
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"
 			fill="none"
@@ -84,8 +61,6 @@ function CheckIcon() {
 		</svg>
 	);
 }
-
-// ─── data ────────────────────────────────────────────────────────────────────
 
 const fruits = [
 	"Apple",
@@ -127,34 +102,32 @@ const foodGroups: FoodGroup[] = [
 	{ label: "Grains", options: ["Oats", "Quinoa", "Rice", "Wheat"] },
 ];
 
-// ─── stories ─────────────────────────────────────────────────────────────────
-
 /** Built-in `defaultFilter="contains"` — no `onInputChange` needed. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
+				<Item item={props.item} class={style.item}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Fruit</Label>
-			<Control class={controlClass}>
-				<Input class={inputClass} />
-				<Trigger class={triggerClass}>
+			<Label class={style.label}>Fruit</Label>
+			<Control class={style.control}>
+				<Input class={style.input} />
+				<Trigger class={style.trigger}>
 					<Icon>
 						<ChevronDown />
 					</Icon>
 				</Trigger>
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -166,28 +139,28 @@ export const DefaultValue = meta.story({
 	name: "Default Value",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			defaultValue="Mango"
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
+				<Item item={props.item} class={style.item}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Fruit</Label>
-			<Control class={controlClass}>
-				<Input class={inputClass} />
-				<Trigger class={triggerClass}>
+			<Label class={style.label}>Fruit</Label>
+			<Control class={style.control}>
+				<Input class={style.input} />
+				<Trigger class={style.trigger}>
 					<Icon>
 						<ChevronDown />
 					</Icon>
 				</Trigger>
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -201,40 +174,40 @@ export const Controlled = meta.story({
 		const [value, setValue] = createSignal<string | null>(null);
 
 		return (
-			<div class="flex flex-col gap-3 font-sans">
+			<div class={style.controlledWrapper}>
 				<Root
-					class={wrapClass}
+					class={style.wrap}
 					options={fruits}
 					value={value()}
 					onChange={setValue}
 					placeholder="Select a fruit…"
 					itemComponent={(props) => (
-						<Item item={props.item} class={itemClass}>
+						<Item item={props.item} class={style.item}>
 							<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 						</Item>
 					)}
 				>
-					<Label class={labelClass}>Fruit</Label>
-					<Control class={controlClass}>
-						<Input class={inputClass} />
-						<Trigger class={triggerClass}>
+					<Label class={style.label}>Fruit</Label>
+					<Control class={style.control}>
+						<Input class={style.input} />
+						<Trigger class={style.trigger}>
 							<Icon>
 								<ChevronDown />
 							</Icon>
 						</Trigger>
 					</Control>
 					<Portal>
-						<Content class={contentClass}>
-							<Listbox class={listboxClass} />
+						<Content class={style.content}>
+							<Listbox class={style.listbox} />
 						</Content>
 					</Portal>
 				</Root>
-				<p class="text-xs text-slate-500">
+				<p class={style.stateText}>
 					Selected: <strong>{value() ?? "none"}</strong>
 				</p>
 				<button
 					type="button"
-					class="self-start rounded px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 transition-colors"
+					class={style.resetButton}
 					onClick={() => setValue(null)}
 				>
 					Clear
@@ -249,7 +222,7 @@ export const ObjectOptions = meta.story({
 	name: "Object Options",
 	render: () => (
 		<Root<Person>
-			class={wrapClass}
+			class={style.wrap}
 			options={people}
 			optionValue="id"
 			optionTextValue="name"
@@ -257,28 +230,28 @@ export const ObjectOptions = meta.story({
 			optionDisabled="disabled"
 			placeholder="Select a person…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
-					<div class="flex flex-col">
+				<Item item={props.item} class={style.item}>
+					<div class={style.itemTextColumn}>
 						<ItemLabel>{(props.item.rawValue as Person).name}</ItemLabel>
-						<span class="text-xs text-slate-400">
+						<span class={style.itemSubtext}>
 							{(props.item.rawValue as Person).role}
 						</span>
 					</div>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Assignee</Label>
-			<Control class={controlClass}>
-				<Input class={inputClass} />
-				<Trigger class={triggerClass}>
+			<Label class={style.label}>Assignee</Label>
+			<Control class={style.control}>
+				<Input class={style.input} />
+				<Trigger class={style.trigger}>
 					<Icon>
 						<ChevronDown />
 					</Icon>
 				</Trigger>
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -290,30 +263,30 @@ export const WithItemIndicator = meta.story({
 	name: "With Item Indicator",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemWithIndicatorClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={props.item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Fruit</Label>
-			<Control class={controlClass}>
-				<Input class={inputClass} />
-				<Trigger class={triggerClass}>
+			<Label class={style.label}>Fruit</Label>
+			<Control class={style.control}>
+				<Input class={style.input} />
+				<Trigger class={style.trigger}>
 					<Icon>
 						<ChevronDown />
 					</Icon>
 				</Trigger>
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -325,35 +298,35 @@ export const WithSections = meta.story({
 	name: "With Sections",
 	render: () => (
 		<Root<string, FoodGroup>
-			class={wrapClass}
+			class={style.wrap}
 			options={foodGroups}
 			optionGroupChildren="options"
 			placeholder="Select a food…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
+				<Item item={props.item} class={style.item}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 			sectionComponent={(props) => (
 				<Section>
-					<span class={sectionClass}>
+					<span class={style.sectionLabel}>
 						{(props.section.rawValue as FoodGroup).label}
 					</span>
 				</Section>
 			)}
 		>
-			<Label class={labelClass}>Food</Label>
-			<Control class={controlClass}>
-				<Input class={inputClass} />
-				<Trigger class={triggerClass}>
+			<Label class={style.label}>Food</Label>
+			<Control class={style.control}>
+				<Input class={style.input} />
+				<Trigger class={style.trigger}>
 					<Icon>
 						<ChevronDown />
 					</Icon>
 				</Trigger>
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -367,52 +340,52 @@ export const MultiSelect = meta.story({
 		const [values, setValues] = createSignal<string[]>([]);
 
 		return (
-			<div class="flex flex-col gap-3 font-sans">
+			<div class={style.multipleWrapper}>
 				<Root<string>
-					class={wrapClass}
+					class={style.wrap}
 					options={fruits}
 					multiple
 					value={values()}
 					onChange={setValues}
 					placeholder="Select fruits…"
 					itemComponent={(props) => (
-						<Item item={props.item} class={itemWithIndicatorClass}>
-							<ItemIndicator class={itemIndicatorClass}>
+						<Item item={props.item} class={style.item}>
+							<ItemIndicator class={style.itemIndicator}>
 								<CheckIcon />
 							</ItemIndicator>
 							<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 						</Item>
 					)}
 				>
-					<Label class={labelClass}>Fruits</Label>
-					<Control class={controlClass}>
-						<Input class={inputClass} placeholder="Select fruits…" />
-						<Trigger class={triggerClass}>
+					<Label class={style.label}>Fruits</Label>
+					<Control class={style.control}>
+						<Input class={style.input} placeholder="Select fruits…" />
+						<Trigger class={style.trigger}>
 							<Icon>
 								<ChevronDown />
 							</Icon>
 						</Trigger>
 					</Control>
 					<Portal>
-						<Content class={contentClass}>
-							<Listbox class={listboxClass} />
+						<Content class={style.content}>
+							<Listbox class={style.listbox} />
 						</Content>
 					</Portal>
 				</Root>
-				<div class="flex flex-wrap gap-1.5">
+				<div class={style.multipleTags}>
 					<For each={values()}>
 						{(v) => (
-							<span class="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+							<span class={style.tag}>
 								{v}
 								<button
 									type="button"
-									class="ml-0.5 text-blue-500 hover:text-blue-700 focus:outline-none"
+									class={style.tagRemove}
 									onClick={() =>
 										setValues((prev) => prev.filter((x) => x !== v))
 									}
 									aria-label={`Remove ${v}`}
 								>
-									×
+									x
 								</button>
 							</span>
 						)}
@@ -428,29 +401,29 @@ export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			disabled
 			defaultValue="Mango"
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
+				<Item item={props.item} class={style.item}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Fruit</Label>
-			<Control class={controlClass}>
-				<Input class={inputClass} />
-				<Trigger class={triggerClass}>
+			<Label class={style.label}>Fruit</Label>
+			<Control class={style.control}>
+				<Input class={style.input} />
+				<Trigger class={style.trigger}>
 					<Icon>
 						<ChevronDown />
 					</Icon>
 				</Trigger>
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -462,29 +435,29 @@ export const ReadOnly = meta.story({
 	name: "Read Only",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			readOnly
 			defaultValue="Mango"
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
+				<Item item={props.item} class={style.item}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Fruit</Label>
-			<Control class={controlClass}>
-				<Input class={inputClass} />
-				<Trigger class={triggerClass}>
+			<Label class={style.label}>Fruit</Label>
+			<Control class={style.control}>
+				<Input class={style.input} />
+				<Trigger class={style.trigger}>
 					<Icon>
 						<ChevronDown />
 					</Icon>
 				</Trigger>
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -499,31 +472,31 @@ export const Invalid = meta.story({
 
 		return (
 			<Root
-				class={wrapClass}
+				class={style.wrap}
 				options={fruits}
 				value={value()}
 				onChange={setValue}
 				validationState={value() == null ? "invalid" : "valid"}
 				placeholder="Select a fruit…"
 				itemComponent={(props) => (
-					<Item item={props.item} class={itemClass}>
+					<Item item={props.item} class={style.item}>
 						<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 					</Item>
 				)}
 			>
-				<Label class={labelClass}>Fruit</Label>
-				<Control class={controlClass}>
-					<Input class={inputClass} />
-					<Trigger class={triggerClass}>
+				<Label class={style.label}>Fruit</Label>
+				<Control class={style.control}>
+					<Input class={style.input} />
+					<Trigger class={style.trigger}>
 						<Icon>
 							<ChevronDown />
 						</Icon>
 					</Trigger>
 				</Control>
-				<ErrorMessage class={errorClass}>Please select a fruit.</ErrorMessage>
+				<ErrorMessage class={style.error}>Please select a fruit.</ErrorMessage>
 				<Portal>
-					<Content class={contentClass}>
-						<Listbox class={listboxClass} />
+					<Content class={style.content}>
+						<Listbox class={style.listbox} />
 					</Content>
 				</Portal>
 			</Root>
@@ -536,30 +509,30 @@ export const WithDescription = meta.story({
 	name: "With Description",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
+				<Item item={props.item} class={style.item}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Fruit</Label>
-			<Control class={controlClass}>
-				<Input class={inputClass} />
-				<Trigger class={triggerClass}>
+			<Label class={style.label}>Fruit</Label>
+			<Control class={style.control}>
+				<Input class={style.input} />
+				<Trigger class={style.trigger}>
 					<Icon>
 						<ChevronDown />
 					</Icon>
 				</Trigger>
 			</Control>
-			<Description class={descriptionClass}>
+			<Description class={style.description}>
 				Type to filter the list of available fruits.
 			</Description>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -571,28 +544,28 @@ export const TriggerOnFocus = meta.story({
 	name: "Trigger on Focus",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			triggerMode="focus"
 			placeholder="Select a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
+				<Item item={props.item} class={style.item}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Fruit (opens on focus)</Label>
-			<Control class={controlClass}>
-				<Input class={inputClass} />
-				<Trigger class={triggerClass}>
+			<Label class={style.label}>Fruit (opens on focus)</Label>
+			<Control class={style.control}>
+				<Input class={style.input} />
+				<Trigger class={style.trigger}>
 					<Icon>
 						<ChevronDown />
 					</Icon>
 				</Trigger>
 			</Control>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>

@@ -13,7 +13,10 @@ import {
 	useContext,
 } from "solid-js";
 
-import { createDefaultLocale, getDefaultLocale } from "./create-default-locale.ts";
+import {
+	createDefaultLocale,
+	getDefaultLocale,
+} from "./create-default-locale.ts";
 import { type Direction, getReadingDirection } from "./utils.ts";
 
 interface I18nProviderProps {

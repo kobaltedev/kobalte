@@ -1,7 +1,7 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, omit } from "solid-js";
+import { createSignal, omit } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,

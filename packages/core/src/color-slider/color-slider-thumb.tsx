@@ -8,7 +8,7 @@ import { useColorSliderContext } from "./color-slider-context.tsx";
 export interface ColorSliderThumbOptions extends Slider.SliderThumbOptions {}
 
 export interface ColorSliderThumbCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	style?: JSX.CSSProperties | string;
 }

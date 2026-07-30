@@ -30,7 +30,7 @@ export function PaginationPrevious<T extends ValidComponent = "button">(
 
 	const others = omit(props as PaginationPreviousProps, "onClick");
 
-	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = () => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = () => {
 		context.setPage(context.page() - 1);
 	};
 

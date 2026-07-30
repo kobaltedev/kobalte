@@ -6,7 +6,7 @@ import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 export interface RatingLabelOptions {}
 
-export interface RatingLabelCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface RatingLabelCommonProps<_T extends HTMLElement = HTMLElement> {}
 
 export interface RatingLabelRenderProps extends RatingLabelCommonProps {}
 

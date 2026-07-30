@@ -1,12 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Accessor,
-	type Component,
-	createUniqueId,
-	omit,
-	type Setter,
-} from "solid-js";
+import { type Component, createUniqueId, omit, type Setter } from "solid-js";
 
 import {
 	type ElementOf,
@@ -61,7 +55,7 @@ export interface PaginationRootOptions {
 }
 
 export interface PaginationRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 	children: JSX.Element;

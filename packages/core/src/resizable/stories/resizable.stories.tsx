@@ -1,19 +1,7 @@
-/*
- * Resizable stories for Kobalte.
- *
- * Resize algorithms adapted from corvu/resizable (MIT) by Jasmin Noetzli:
- * https://github.com/corvudev/corvu/tree/main/packages/resizable
- */
-
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.ts";
-import {
-	Handle,
-	Panel,
-	Root,
-	useContext,
-	usePanelContext,
-} from "../index.tsx";
+import { Handle, Panel, Root, useContext, usePanelContext } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Resizable",
@@ -22,94 +10,43 @@ const meta = preview.meta({
 
 export default meta;
 
-
-const panelStyle: Record<string, string> = {
-	display: "flex",
-	"align-items": "center",
-	"justify-content": "center",
-	"font-family": "sans-serif",
-	"font-size": "13px",
-	color: "#64748b",
-	background: "#f8fafc",
-	"border-radius": "6px",
-	border: "1px solid #e2e8f0",
-};
-
-const handleHStyle: Record<string, string> = {
-	width: "5px",
-	background: "#e2e8f0",
-	cursor: "col-resize",
-	"border-radius": "3px",
-	transition: "background 150ms",
-	"flex-shrink": "0",
-};
-
-const handleVStyle: Record<string, string> = {
-	height: "5px",
-	background: "#e2e8f0",
-	cursor: "row-resize",
-	"border-radius": "3px",
-	transition: "background 150ms",
-	"flex-shrink": "0",
-};
-
-const containerStyle: Record<string, string> = {
-	width: "600px",
-	height: "300px",
-	"border-radius": "8px",
-	overflow: "hidden",
-	border: "1px solid #e2e8f0",
-	"box-shadow": "0 1px 3px rgba(0,0,0,0.06)",
-	"font-family": "sans-serif",
-};
-
-
 /** Two panels side by side. Drag the handle or use arrow keys to resize. */
 export const Horizontal = meta.story({
 	name: "Horizontal",
 	render: () => (
-		<Root style={containerStyle} orientation="horizontal">
-			<Panel style={panelStyle}>Left</Panel>
-			<Handle
-				style={handleHStyle}
-				aria-label="Resize panels"
-			/>
-			<Panel style={panelStyle}>Right</Panel>
+		<Root class={style.container} orientation="horizontal">
+			<Panel class={style.panel}>Left</Panel>
+			<Handle class={style.handleH} aria-label="Resize panels" />
+			<Panel class={style.panel}>Right</Panel>
 		</Root>
 	),
 });
-
 
 /** Two panels stacked. Drag the handle or use arrow keys to resize. */
 export const Vertical = meta.story({
 	name: "Vertical",
 	render: () => (
-		<Root style={containerStyle} orientation="vertical">
-			<Panel style={panelStyle}>Top</Panel>
-			<Handle
-				style={handleVStyle}
-				aria-label="Resize panels"
-			/>
-			<Panel style={panelStyle}>Bottom</Panel>
+		<Root class={style.container} orientation="vertical">
+			<Panel class={style.panel}>Top</Panel>
+			<Handle class={style.handleV} aria-label="Resize panels" />
+			<Panel class={style.panel}>Bottom</Panel>
 		</Root>
 	),
 });
-
 
 /** Three panels with independent handles. Drag either handle to redistribute. */
 export const ThreePanels = meta.story({
 	name: "Three Panels",
 	render: () => (
-		<Root style={containerStyle} orientation="horizontal">
-			<Panel style={{ ...panelStyle, background: "#eff6ff" }}>Left</Panel>
-			<Handle style={handleHStyle} aria-label="Resize left-center" />
-			<Panel style={panelStyle}>Center</Panel>
-			<Handle style={handleHStyle} aria-label="Resize center-right" />
-			<Panel style={{ ...panelStyle, background: "#f0fdf4" }}>Right</Panel>
+		<Root class={style.container} orientation="horizontal">
+			<Panel class={style.panelLeft}>Left</Panel>
+			<Handle class={style.handleH} aria-label="Resize left-center" />
+			<Panel class={style.panel}>Center</Panel>
+			<Handle class={style.handleH} aria-label="Resize center-right" />
+			<Panel class={style.panelRight}>Right</Panel>
 		</Root>
 	),
 });
-
 
 /**
  * Nested resizables — a horizontal split where the right panel contains
@@ -118,23 +55,19 @@ export const ThreePanels = meta.story({
 export const Nested = meta.story({
 	name: "Nested",
 	render: () => (
-		<Root style={containerStyle} orientation="horizontal">
-			<Panel style={panelStyle}>Left</Panel>
-			<Handle style={handleHStyle} aria-label="Resize left-right" />
-			<Panel style={{ padding: 0, overflow: "hidden" }}>
-				<Root
-					style={{ width: "100%", height: "100%", "border-radius": 0 }}
-					orientation="vertical"
-				>
-					<Panel style={panelStyle}>Top-right</Panel>
-					<Handle style={handleVStyle} aria-label="Resize top-bottom" />
-					<Panel style={panelStyle}>Bottom-right</Panel>
+		<Root class={style.container} orientation="horizontal">
+			<Panel class={style.panel}>Left</Panel>
+			<Handle class={style.handleH} aria-label="Resize left-right" />
+			<Panel class={[style.panel, style.nestedPanel]}>
+				<Root class={style.nestedRoot} orientation="vertical">
+					<Panel class={style.panel}>Top-right</Panel>
+					<Handle class={style.handleV} aria-label="Resize top-bottom" />
+					<Panel class={style.panel}>Bottom-right</Panel>
 				</Root>
 			</Panel>
 		</Root>
 	),
 });
-
 
 /**
  * The left panel is collapsible. Drag it fully to the left to collapse, or
@@ -143,26 +76,30 @@ export const Nested = meta.story({
 export const Collapsible = meta.story({
 	name: "Collapsible",
 	render: () => (
-		<Root style={containerStyle} orientation="horizontal">
+		<Root class={style.container} orientation="horizontal">
 			<Panel
 				collapsible
 				collapsedSize={0}
 				collapseThreshold={0.1}
 				minSize={0.15}
-				style={panelStyle}
+				class={style.panel}
 			>
 				{(panel) => (
-					<span style={{ "font-size": "12px", color: panel.collapsed ? "#94a3b8" : "#334155" }}>
+					<span
+						style={{
+							"font-size": "12px",
+							color: panel.collapsed ? "#94a3b8" : "#334155",
+						}}
+					>
 						{panel.collapsed ? "—" : "Sidebar"}
 					</span>
 				)}
 			</Panel>
-			<Handle style={handleHStyle} aria-label="Resize sidebar" />
-			<Panel style={panelStyle}>Content</Panel>
+			<Handle class={style.handleH} aria-label="Resize sidebar" />
+			<Panel class={style.panel}>Content</Panel>
 		</Root>
 	),
 });
-
 
 /**
  * Left panel is constrained to 20–50% of the available space;
@@ -171,16 +108,15 @@ export const Collapsible = meta.story({
 export const MinMax = meta.story({
 	name: "Min / Max Sizes",
 	render: () => (
-		<Root style={containerStyle} orientation="horizontal">
-			<Panel minSize={0.2} maxSize={0.5} style={panelStyle}>
+		<Root class={style.container} orientation="horizontal">
+			<Panel minSize={0.2} maxSize={0.5} class={style.panel}>
 				{() => "20% – 50%"}
 			</Panel>
-			<Handle style={handleHStyle} aria-label="Resize panels" />
-			<Panel style={panelStyle}>Flexible</Panel>
+			<Handle class={style.handleH} aria-label="Resize panels" />
+			<Panel class={style.panel}>Flexible</Panel>
 		</Root>
 	),
 });
-
 
 /**
  * Sizes can be expressed as pixel strings. The left panel starts at 200px
@@ -189,16 +125,15 @@ export const MinMax = meta.story({
 export const PixelSizes = meta.story({
 	name: "Pixel Sizes",
 	render: () => (
-		<Root style={containerStyle} orientation="horizontal">
-			<Panel initialSize="200px" minSize="120px" style={panelStyle}>
+		<Root class={style.container} orientation="horizontal">
+			<Panel initialSize="200px" minSize="120px" class={style.panel}>
 				200px start
 			</Panel>
-			<Handle style={handleHStyle} aria-label="Resize panels" />
-			<Panel style={panelStyle}>Flexible</Panel>
+			<Handle class={style.handleH} aria-label="Resize panels" />
+			<Panel class={style.panel}>Flexible</Panel>
 		</Root>
 	),
 });
-
 
 /**
  * Sizes are stored in an external signal. The buttons set sizes directly;
@@ -208,18 +143,22 @@ function ControlledDemo() {
 	const [sizes, setSizes] = createSignal([0.5, 0.5]);
 
 	return (
-		<div style={{ display: "flex", "flex-direction": "column", gap: "12px", "font-family": "sans-serif" }}>
+		<div class={style.demoColumn}>
 			<Root
-				style={containerStyle}
+				class={style.container}
 				orientation="horizontal"
 				sizes={sizes()}
 				onSizesChange={setSizes}
 			>
-				<Panel style={panelStyle}>Left ({(sizes()[0]! * 100).toFixed(0)}%)</Panel>
-				<Handle style={handleHStyle} aria-label="Resize panels" />
-				<Panel style={panelStyle}>Right ({(sizes()[1]! * 100).toFixed(0)}%)</Panel>
+				<Panel class={style.panel}>
+					Left ({(sizes()[0]! * 100).toFixed(0)}%)
+				</Panel>
+				<Handle class={style.handleH} aria-label="Resize panels" />
+				<Panel class={style.panel}>
+					Right ({(sizes()[1]! * 100).toFixed(0)}%)
+				</Panel>
 			</Root>
-			<div style={{ display: "flex", gap: "8px" }}>
+			<div class={style.buttonRow}>
 				{[
 					["Equal", [0.5, 0.5]],
 					["30 / 70", [0.3, 0.7]],
@@ -228,21 +167,18 @@ function ControlledDemo() {
 					<button
 						type="button"
 						onClick={() => setSizes(value as number[])}
-						style={{
-							padding: "4px 12px",
-							"font-size": "12px",
-							"border-radius": "6px",
-							border: "1px solid #e2e8f0",
-							background: "#fff",
-							cursor: "pointer",
-						}}
+						class={style.smallButton}
 					>
 						{label as string}
 					</button>
 				))}
 			</div>
-			<p style={{ "font-size": "12px", color: "#94a3b8", margin: 0 }}>
-				sizes: [{sizes().map((s) => s.toFixed(2)).join(", ")}]
+			<p class={style.sizesLabel}>
+				sizes: [
+				{sizes()
+					.map((s) => s.toFixed(2))
+					.join(", ")}
+				]
 			</p>
 		</div>
 	);
@@ -253,15 +189,19 @@ export const Controlled = meta.story({
 	render: () => <ControlledDemo />,
 });
 
-
 function ProgrammaticContextDemo() {
 	const ctx = useContext();
 	return (
-		<div style={{ display: "flex", "flex-direction": "column", gap: "12px" }}>
-			<div style={{ "font-size": "12px", color: "#64748b", "font-family": "sans-serif" }}>
-				sizes: [{ctx.sizes().map((s) => s.toFixed(2)).join(", ")}]
+		<div class={style.ctxColumn}>
+			<div class={style.ctxLabel}>
+				sizes: [
+				{ctx
+					.sizes()
+					.map((s) => s.toFixed(2))
+					.join(", ")}
+				]
 			</div>
-			<div style={{ display: "flex", gap: "8px" }}>
+			<div class={style.buttonRow}>
 				{[
 					["Collapse left", () => ctx.collapse(0)],
 					["Expand left", () => ctx.expand(0)],
@@ -270,15 +210,7 @@ function ProgrammaticContextDemo() {
 					<button
 						type="button"
 						onClick={action as () => void}
-						style={{
-							padding: "4px 12px",
-							"font-size": "12px",
-							"border-radius": "6px",
-							border: "1px solid #e2e8f0",
-							background: "#fff",
-							cursor: "pointer",
-							"font-family": "sans-serif",
-						}}
+						class={[style.smallButton, style.ctxButton]}
 					>
 						{label as string}
 					</button>
@@ -295,21 +227,19 @@ function ProgrammaticContextDemo() {
 export const ProgrammaticContext = meta.story({
 	name: "Programmatic (Context)",
 	render: () => (
-		<Root style={{ width: "600px", "font-family": "sans-serif" }} orientation="horizontal">
+		<Root class={style.wideRoot} orientation="horizontal">
 			<Panel
 				collapsible
 				collapsedSize={0}
 				collapseThreshold={0.05}
 				minSize={0.15}
-				style={{ ...containerStyle, width: "auto", "flex-basis": undefined, "border-radius": 0 }}
+				class={style.sidebarPanel}
 			>
 				Sidebar
 			</Panel>
-			<Handle style={handleHStyle} aria-label="Resize" />
-			<Panel
-				style={{ ...containerStyle, width: "auto", "flex-basis": undefined, "border-radius": 0 }}
-			>
-				<div style={{ padding: "16px" }}>
+			<Handle class={style.handleH} aria-label="Resize" />
+			<Panel class={style.contentPanel}>
+				<div class={style.panelContainerInner}>
 					<ProgrammaticContextDemo />
 				</div>
 			</Panel>
@@ -317,11 +247,10 @@ export const ProgrammaticContext = meta.story({
 	),
 });
 
-
 function PanelInfo() {
 	const ctx = usePanelContext();
 	return (
-		<div style={{ padding: "12px", "font-size": "12px", "font-family": "monospace", color: "#475569" }}>
+		<div class={style.panelInfo}>
 			<div>size: {ctx.size().toFixed(3)}</div>
 			<div>collapsed: {String(ctx.collapsed())}</div>
 			<div>collapsible: {String(ctx.collapsible())}</div>
@@ -335,18 +264,23 @@ function PanelInfo() {
 export const PanelContextStory = meta.story({
 	name: "Panel Context",
 	render: () => (
-		<Root style={containerStyle} orientation="horizontal">
-			<Panel collapsible collapsedSize={0} collapseThreshold={0.1} minSize={0.15} style={panelStyle}>
+		<Root class={style.container} orientation="horizontal">
+			<Panel
+				collapsible
+				collapsedSize={0}
+				collapseThreshold={0.1}
+				minSize={0.15}
+				class={style.panel}
+			>
 				<PanelInfo />
 			</Panel>
-			<Handle style={handleHStyle} aria-label="Resize" />
-			<Panel style={panelStyle}>
+			<Handle class={style.handleH} aria-label="Resize" />
+			<Panel class={style.panel}>
 				<PanelInfo />
 			</Panel>
 		</Root>
 	),
 });
-
 
 /**
  * Tab to the handle and use:
@@ -357,29 +291,23 @@ export const PanelContextStory = meta.story({
 export const KeyboardOnly = meta.story({
 	name: "Keyboard Navigation",
 	render: () => (
-		<div style={{ display: "flex", "flex-direction": "column", gap: "8px" }}>
-			<p style={{ margin: 0, "font-size": "12px", color: "#64748b", "font-family": "sans-serif" }}>
-				Tab to the handle, then use arrow keys to resize. Shift+Arrow jumps to the edge. Enter toggles collapse.
+		<div class={style.kbdColumn}>
+			<p class={style.kbdLabel}>
+				Tab to the handle, then use arrow keys to resize. Shift+Arrow jumps to
+				the edge. Enter toggles collapse.
 			</p>
-			<Root style={containerStyle} orientation="horizontal">
+			<Root class={style.container} orientation="horizontal">
 				<Panel
 					collapsible
 					collapsedSize={0}
 					collapseThreshold={0.1}
 					minSize={0.2}
-					style={panelStyle}
+					class={style.panel}
 				>
 					Collapsible
 				</Panel>
-				<Handle
-					style={{
-						...handleHStyle,
-						outline: "none",
-						"box-shadow": "none",
-					}}
-					aria-label="Resize panels"
-				/>
-				<Panel style={panelStyle}>Main</Panel>
+				<Handle class={style.handleHNoFocus} aria-label="Resize panels" />
+				<Panel class={style.panel}>Main</Panel>
 			</Root>
 		</div>
 	),

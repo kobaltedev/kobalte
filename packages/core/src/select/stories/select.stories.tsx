@@ -17,6 +17,7 @@ import {
 	Trigger,
 	Value,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Select",
@@ -24,33 +25,6 @@ const meta = preview.meta({
 });
 
 export default meta;
-
-const wrapClass = "flex flex-col gap-1.5 font-sans w-64";
-
-const labelClass = "text-sm font-medium text-slate-700";
-
-const triggerClass =
-	"inline-flex w-full items-center justify-between gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 data-[expanded]:border-blue-500 data-[expanded]:ring-2 data-[expanded]:ring-blue-500 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50";
-
-const iconClass =
-	"text-slate-400 transition-transform duration-200 data-[expanded]:rotate-180";
-
-const contentClass =
-	"z-50 min-w-[var(--kb-popper-anchor-width)] rounded-md border border-slate-200 bg-white shadow-md focus:outline-none";
-
-const listboxClass = "max-h-60 overflow-y-auto p-1 focus:outline-none";
-
-const itemClass =
-	"relative flex items-center gap-2 rounded-sm px-8 py-2 text-sm text-slate-900 cursor-default select-none outline-none data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50";
-
-const itemIndicatorClass =
-	"absolute left-2 flex h-4 w-4 items-center justify-center";
-
-const sectionLabelClass =
-	"px-2 py-1.5 text-xs font-semibold text-slate-500 uppercase tracking-wide";
-
-const descriptionClass = "text-xs text-slate-500";
-const errorClass = "text-xs text-red-600";
 
 function CheckIcon() {
 	return (
@@ -84,7 +58,7 @@ function ChevronIcon() {
 			stroke-linecap="round"
 			stroke-linejoin="round"
 			aria-hidden="true"
-			class="shrink-0"
+			class={style.chevronIcon}
 		>
 			<path d="M6 9l6 6 6-6" />
 		</svg>
@@ -107,27 +81,27 @@ export const Default = meta.story({
 	name: "Default",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			placeholder="Pick a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={props.item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Trigger class={triggerClass}>
+			<Trigger class={style.trigger}>
 				<Value<string>>{(state) => state.selectedOption()}</Value>
-				<Icon class={iconClass}>
+				<Icon class={style.icon}>
 					<ChevronIcon />
 				</Icon>
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -139,28 +113,28 @@ export const DefaultValue = meta.story({
 	name: "Default Value",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			defaultValue="Cherry"
 			placeholder="Pick a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={props.item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Trigger class={triggerClass}>
+			<Trigger class={style.trigger}>
 				<Value<string>>{(state) => state.selectedOption()}</Value>
-				<Icon class={iconClass}>
+				<Icon class={style.icon}>
 					<ChevronIcon />
 				</Icon>
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -172,31 +146,31 @@ export const WithLabel = meta.story({
 	name: "With Label",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			placeholder="Pick a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={props.item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Favorite fruit</Label>
-			<Trigger class={triggerClass}>
+			<Label class={style.label}>Favorite fruit</Label>
+			<Trigger class={style.trigger}>
 				<Value<string>>{(state) => state.selectedOption()}</Value>
-				<Icon class={iconClass}>
+				<Icon class={style.icon}>
 					<ChevronIcon />
 				</Icon>
 			</Trigger>
-			<Description class={descriptionClass}>
+			<Description class={style.description}>
 				We'll use this to personalize your experience.
 			</Description>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -208,27 +182,27 @@ export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			disabled
 			defaultValue="Mango"
 			placeholder="Pick a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
+				<Item item={props.item} class={style.item}>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Favorite fruit</Label>
-			<Trigger class={triggerClass}>
+			<Label class={style.label}>Favorite fruit</Label>
+			<Trigger class={style.trigger}>
 				<Value<string>>{(state) => state.selectedOption()}</Value>
-				<Icon class={iconClass}>
+				<Icon class={style.icon}>
 					<ChevronIcon />
 				</Icon>
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -238,41 +212,41 @@ export const Disabled = meta.story({
 function ControlledDemo() {
 	const [value, setValue] = createSignal<string | null>(null);
 	return (
-		<div class="flex flex-col gap-3 font-sans">
+		<div class={style.controlledWrapper}>
 			<Root
-				class={wrapClass}
+				class={style.wrap}
 				options={fruits}
 				value={value()}
 				onChange={setValue}
 				placeholder="Pick a fruit…"
 				itemComponent={(props) => (
-					<Item item={props.item} class={itemClass}>
-						<ItemIndicator class={itemIndicatorClass}>
+					<Item item={props.item} class={style.item}>
+						<ItemIndicator class={style.itemIndicator}>
 							<CheckIcon />
 						</ItemIndicator>
 						<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 					</Item>
 				)}
 			>
-				<Label class={labelClass}>Favorite fruit</Label>
-				<Trigger class={triggerClass}>
+				<Label class={style.label}>Favorite fruit</Label>
+				<Trigger class={style.trigger}>
 					<Value<string>>{(state) => state.selectedOption()}</Value>
-					<Icon class={iconClass}>
+					<Icon class={style.icon}>
 						<ChevronIcon />
 					</Icon>
 				</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<Listbox class={listboxClass} />
+					<Content class={style.content}>
+						<Listbox class={style.listbox} />
 					</Content>
 				</Portal>
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style.stateText}>
 				Selected: <strong>{value() ?? "none"}</strong>
 			</p>
 			<button
 				type="button"
-				class="self-start rounded px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 transition-colors"
+				class={style.resetButton}
 				onClick={() => setValue(null)}
 			>
 				Clear
@@ -301,30 +275,30 @@ export const ObjectOptions = meta.story({
 	name: "Object Options",
 	render: () => (
 		<Root<Person>
-			class={wrapClass}
+			class={style.wrap}
 			options={people}
 			optionValue="id"
 			optionTextValue="name"
 			placeholder="Select a person…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={props.item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{(props.item.rawValue as Person).name}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Assign to</Label>
-			<Trigger class={triggerClass}>
+			<Label class={style.label}>Assign to</Label>
+			<Trigger class={style.trigger}>
 				<Value<Person>>{(state) => state.selectedOption().name}</Value>
-				<Icon class={iconClass}>
+				<Icon class={style.icon}>
 					<ChevronIcon />
 				</Icon>
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -336,35 +310,35 @@ export const ItemWithDescription = meta.story({
 	name: "Item With Description",
 	render: () => (
 		<Root<Person>
-			class={wrapClass}
+			class={style.wrap}
 			options={people}
 			optionValue="id"
 			optionTextValue="name"
 			placeholder="Select a person…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={props.item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
-					<div class="flex flex-col">
+					<div class={style.itemTextColumn}>
 						<ItemLabel>{(props.item.rawValue as Person).name}</ItemLabel>
-						<ItemDescription class="text-xs text-slate-500">
+						<ItemDescription class={style.itemSubtext}>
 							{(props.item.rawValue as Person).role}
 						</ItemDescription>
 					</div>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Assign to</Label>
-			<Trigger class={triggerClass}>
+			<Label class={style.label}>Assign to</Label>
+			<Trigger class={style.trigger}>
 				<Value<Person>>{(state) => state.selectedOption().name}</Value>
-				<Icon class={iconClass}>
+				<Icon class={style.icon}>
 					<ChevronIcon />
 				</Icon>
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -384,36 +358,36 @@ export const WithGroups = meta.story({
 	name: "With Groups",
 	render: () => (
 		<Root<string, FruitGroup>
-			class={wrapClass}
+			class={style.wrap}
 			options={fruitGroups}
 			optionGroupChildren="fruits"
 			placeholder="Pick a fruit…"
 			sectionComponent={(props) => (
 				<Section>
-					<span class={sectionLabelClass}>
+					<span class={style.sectionLabel}>
 						{(props.section.rawValue as FruitGroup).label}
 					</span>
 				</Section>
 			)}
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={props.item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Favorite fruit</Label>
-			<Trigger class={triggerClass}>
+			<Label class={style.label}>Favorite fruit</Label>
+			<Trigger class={style.trigger}>
 				<Value<string>>{(state) => state.selectedOption()}</Value>
-				<Icon class={iconClass}>
+				<Icon class={style.icon}>
 					<ChevronIcon />
 				</Icon>
 			</Trigger>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>
@@ -423,25 +397,25 @@ export const WithGroups = meta.story({
 function MultipleDemo() {
 	const [values, setValues] = createSignal<string[]>([]);
 	return (
-		<div class="flex flex-col gap-3 font-sans">
+		<div class={style.multipleWrapper}>
 			<Root<string>
-				class={wrapClass}
+				class={style.wrap}
 				options={fruits}
 				multiple
 				value={values()}
 				onChange={setValues}
 				placeholder="Pick fruits…"
 				itemComponent={(props) => (
-					<Item item={props.item} class={itemClass}>
-						<ItemIndicator class={itemIndicatorClass}>
+					<Item item={props.item} class={style.item}>
+						<ItemIndicator class={style.itemIndicator}>
 							<CheckIcon />
 						</ItemIndicator>
 						<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 					</Item>
 				)}
 			>
-				<Label class={labelClass}>Favorite fruits</Label>
-				<Trigger class={triggerClass}>
+				<Label class={style.label}>Favorite fruits</Label>
+				<Trigger class={style.trigger}>
 					<Value<string>>
 						{(state) =>
 							state.selectedOptions().length > 0
@@ -449,17 +423,17 @@ function MultipleDemo() {
 								: null
 						}
 					</Value>
-					<Icon class={iconClass}>
+					<Icon class={style.icon}>
 						<ChevronIcon />
 					</Icon>
 				</Trigger>
 				<Portal>
-					<Content class={contentClass}>
-						<Listbox class={listboxClass} />
+					<Content class={style.content}>
+						<Listbox class={style.listbox} />
 					</Content>
 				</Portal>
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style.stateText}>
 				Selected: <strong>{values().join(", ") || "none"}</strong>
 			</p>
 		</div>
@@ -477,37 +451,35 @@ function ValidationDemo() {
 	const isInvalid = () => value() !== null && value() !== "Apple";
 	return (
 		<Root
-			class={wrapClass}
+			class={style.wrap}
 			options={fruits}
 			value={value()}
 			onChange={setValue}
 			validationState={isInvalid() ? "invalid" : "valid"}
 			placeholder="Pick a fruit…"
 			itemComponent={(props) => (
-				<Item item={props.item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={props.item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{props.item.rawValue as string}</ItemLabel>
 				</Item>
 			)}
 		>
-			<Label class={labelClass}>Favorite fruit</Label>
-			<Trigger
-				class={`${triggerClass} data-[invalid]:border-red-500 data-[invalid]:ring-red-500`}
-			>
+			<Label class={style.label}>Favorite fruit</Label>
+			<Trigger class={[style.trigger, style.triggerInvalid]}>
 				<Value<string>>{(state) => state.selectedOption()}</Value>
-				<Icon class={iconClass}>
+				<Icon class={style.icon}>
 					<ChevronIcon />
 				</Icon>
 			</Trigger>
-			<Description class={descriptionClass}>
+			<Description class={style.description}>
 				The only correct answer is Apple.
 			</Description>
-			<ErrorMessage class={errorClass}>Please select Apple.</ErrorMessage>
+			<ErrorMessage class={style.error}>Please select Apple.</ErrorMessage>
 			<Portal>
-				<Content class={contentClass}>
-					<Listbox class={listboxClass} />
+				<Content class={style.content}>
+					<Listbox class={style.listbox} />
 				</Content>
 			</Portal>
 		</Root>

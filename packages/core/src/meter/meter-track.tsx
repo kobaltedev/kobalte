@@ -8,7 +8,7 @@ import { type MeterDataSet, useMeterContext } from "./meter-context.tsx";
 
 export interface MeterTrackOptions {}
 
-export interface MeterTrackCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface MeterTrackCommonProps<_T extends HTMLElement = HTMLElement> {}
 
 export interface MeterTrackRenderProps
 	extends MeterTrackCommonProps,

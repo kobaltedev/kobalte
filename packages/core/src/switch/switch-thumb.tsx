@@ -14,7 +14,7 @@ import { type SwitchDataSet, useSwitchContext } from "./switch-context.tsx";
 
 export interface SwitchThumbOptions {}
 
-export interface SwitchThumbCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SwitchThumbCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

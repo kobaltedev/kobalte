@@ -11,7 +11,7 @@ export interface ColorFieldInputOptions
 export interface ColorFieldInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
 > {
-	onBlur: JSX.FocusEventHandlerUnion<T, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface ColorFieldInputRenderProps
@@ -45,7 +45,7 @@ export function ColorFieldInput<T extends ValidComponent = "input">(
 			autocomplete="off"
 			autocorrect="off"
 			spellcheck="false"
-			onBlur={composeEventHandlers([props.onBlur, context.onBlur])}
+			onBlur={composeEventHandlers([props.onBlur, context.onBlur] as any)}
 			{...others}
 		/>
 	);

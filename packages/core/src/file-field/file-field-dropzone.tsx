@@ -84,13 +84,13 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 				e.dataTransfer.dropEffect = "copy";
 			}
 		} catch {}
-		const isFilesEvent = isDragEventWithFiles(e);
+		const _isFilesEvent = isDragEventWithFiles(e);
 		if ((e.dataTransfer?.items ?? []).length > 0) {
 			setIsDragging(true);
 		}
 	};
 
-	const onDragLeave: JSX.EventHandlerUnion<HTMLElement, DragEvent> = (e) => {
+	const onDragLeave: JSX.EventHandlerUnion<HTMLElement, DragEvent> = (_e) => {
 		if (!context.allowDragAndDrop || context.disabled()) {
 			return;
 		}

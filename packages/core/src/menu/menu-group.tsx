@@ -24,7 +24,7 @@ import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuGroupOptions {}
 
-export interface MenuGroupCommonProps<T extends HTMLElement = HTMLElement> {
+export interface MenuGroupCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

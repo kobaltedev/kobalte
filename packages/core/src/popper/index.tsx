@@ -5,7 +5,10 @@ import {
 	type PopperArrowProps,
 	type PopperArrowRenderProps,
 } from "./popper-arrow.tsx";
-import { PopperContext as Context, usePopperContext } from "./popper-context.tsx";
+import {
+	PopperContext as Context,
+	usePopperContext,
+} from "./popper-context.tsx";
 import {
 	type PopperPositionerCommonProps,
 	type PopperPositionerOptions,
@@ -43,4 +46,7 @@ export const Popper = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type PopperContextValue, usePopperContext } from "./popper-context.tsx";
+export {
+	type PopperContextValue,
+	usePopperContext,
+} from "./popper-context.tsx";

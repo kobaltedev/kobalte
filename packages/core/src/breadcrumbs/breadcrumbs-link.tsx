@@ -18,7 +18,7 @@ export interface BreadcrumbsLinkOptions {
 }
 
 export interface BreadcrumbsLinkCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	/** Whether the breadcrumb link is disabled. */
 	disabled: boolean;

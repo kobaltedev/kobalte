@@ -1,5 +1,3 @@
-import { OverrideComponentProps } from "@kobalte/utils";
-
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type ElementOf,
@@ -11,7 +9,7 @@ import { useBreadcrumbsContext } from "./breadcrumbs-context.tsx";
 export interface BreadcrumbsSeparatorOptions {}
 
 export interface BreadcrumbsSeparatorCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface BreadcrumbsSeparatorRenderProps

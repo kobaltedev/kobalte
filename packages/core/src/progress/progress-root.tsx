@@ -38,7 +38,7 @@ export interface ProgressRootOptions
 	indeterminate?: boolean;
 }
 
-export interface ProgressRootCommonProps<T extends HTMLElement = HTMLElement>
+export interface ProgressRootCommonProps<_T extends HTMLElement = HTMLElement>
 	extends MeterRootCommonProps {}
 
 export interface ProgressRootRenderProps

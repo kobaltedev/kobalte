@@ -33,7 +33,7 @@ export interface ColorSwatchRootOptions {
 }
 
 export interface ColorSwatchRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 	style?: JSX.CSSProperties | string;

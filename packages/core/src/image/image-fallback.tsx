@@ -19,7 +19,7 @@ import { useImageContext } from "./image-context.tsx";
 export interface ImageFallbackOptions {}
 
 export interface ImageFallbackCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface ImageFallbackRenderProps extends ImageFallbackCommonProps {}

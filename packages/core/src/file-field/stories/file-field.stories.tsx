@@ -1,4 +1,3 @@
-import { createSignal, For, Show } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
 	Description,
@@ -16,6 +15,7 @@ import {
 	Root,
 	Trigger,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/FileField",
@@ -24,43 +24,35 @@ const meta = preview.meta({
 
 export default meta;
 
-const triggerClass =
-	"inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2";
-
-const dropzoneClass =
-	"flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-8 text-sm text-slate-500 cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors data-[dragging]:border-blue-500 data-[dragging]:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500";
-
-/** Basic file picker with a trigger button. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class="flex flex-col gap-2 font-sans w-80">
-			<Label class="text-sm font-medium text-slate-700">Attachment</Label>
-			<Trigger class={triggerClass}>Choose file</Trigger>
+		<Root class={style.fileFieldRoot}>
+			<Label class={style.fileFieldLabel}>Attachment</Label>
+			<Trigger class={style.fileFieldTrigger}>Choose file</Trigger>
 			<HiddenInput />
 		</Root>
 	),
 });
 
-/** Drag-and-drop dropzone with a file list. */
 export const WithDropzone = meta.story({
 	name: "With Dropzone",
 	render: () => (
-		<Root class="flex flex-col gap-3 font-sans w-80" multiple maxFiles={5}>
-			<Label class="text-sm font-medium text-slate-700">Upload files</Label>
-			<Dropzone class={dropzoneClass}>
-				<span class="text-2xl">📁</span>
+		<Root class={style.fileFieldRoot} multiple maxFiles={5}>
+			<Label class={style.fileFieldLabel}>Upload files</Label>
+			<Dropzone class={style.fileFieldDropzone}>
+				<span class={style.fileFieldDropzoneIcon}>📁</span>
 				<span>Drag files here or click to browse</span>
 			</Dropzone>
 			<HiddenInput />
-			<ItemList class="flex flex-col gap-2">
-				{(file) => (
-					<Item class="flex items-center justify-between gap-2 rounded-md border border-slate-200 px-3 py-2">
-						<div class="flex flex-col min-w-0">
-							<ItemName class="text-sm text-slate-800 truncate" />
-							<ItemSize class="text-xs text-slate-400" />
+			<ItemList class={style.fileFieldItemList}>
+				{(_file) => (
+					<Item class={style.fileFieldItem}>
+						<div class={style.fileFieldItemContent}>
+							<ItemName class={style.fileFieldItemName} />
+							<ItemSize class={style.fileFieldItemSize} />
 						</div>
-						<ItemDeleteTrigger class="flex-shrink-0 text-slate-400 hover:text-red-500 transition-colors text-lg leading-none">
+						<ItemDeleteTrigger class={style.fileFieldItemDelete}>
 							×
 						</ItemDeleteTrigger>
 					</Item>
@@ -70,32 +62,28 @@ export const WithDropzone = meta.story({
 	),
 });
 
-/** Image preview with thumbnail — only images are shown in the preview. */
 export const ImagePreview = meta.story({
 	name: "Image Preview",
 	render: () => (
-		<Root
-			class="flex flex-col gap-3 font-sans w-80"
-			multiple
-			accept="image/*"
-			maxFiles={6}
-		>
-			<Label class="text-sm font-medium text-slate-700">Photos</Label>
-			<Dropzone class={dropzoneClass}>
-				<span class="text-2xl">🖼️</span>
+		<Root class={style.fileFieldRoot} multiple accept="image/*" maxFiles={6}>
+			<Label class={style.fileFieldLabel}>Photos</Label>
+			<Dropzone class={style.fileFieldDropzone}>
+				<span class={style.fileFieldDropzoneIcon}>🖼️</span>
 				<span>Drop images here or click to browse</span>
-				<span class="text-xs text-slate-400">Accepts image files only</span>
+				<span class={style.fileFieldDropzoneHint}>
+					Accepts image files only
+				</span>
 			</Dropzone>
 			<HiddenInput />
-			<ItemList class="grid grid-cols-3 gap-2">
-				{(file) => (
-					<Item class="relative rounded-md overflow-hidden border border-slate-200 aspect-square group">
-						<ItemPreview type="image/*" class="h-full w-full">
-							<ItemPreviewImage class="h-full w-full object-cover" />
+			<ItemList class={[style.fileFieldItemList, style.fileFieldItemListGrid]}>
+				{(_file) => (
+					<Item class={style.fileFieldItemImage}>
+						<ItemPreview type="image/*" class={style.fileFieldItemPreview}>
+							<ItemPreviewImage class={style.fileFieldItemPreviewImage} />
 						</ItemPreview>
-						<div class="absolute inset-x-0 bottom-0 bg-black/50 px-1.5 py-1 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
-							<ItemName class="text-xs text-white truncate" />
-							<ItemDeleteTrigger class="text-white/80 hover:text-white text-sm leading-none flex-shrink-0">
+						<div class={style.fileFieldItemImageOverlay}>
+							<ItemName class={style.fileFieldItemImageName} />
+							<ItemDeleteTrigger class={style.fileFieldItemImageDelete}>
 								×
 							</ItemDeleteTrigger>
 						</div>
@@ -106,21 +94,23 @@ export const ImagePreview = meta.story({
 	),
 });
 
-/** Single-file mode — replaces the previous selection. */
 export const SingleFile = meta.story({
 	name: "Single File",
 	render: () => (
-		<Root class="flex flex-col gap-2 font-sans w-72" accept=".pdf,.doc,.docx">
-			<Label class="text-sm font-medium text-slate-700">Resume</Label>
-			<Dropzone class={dropzoneClass} style={{ padding: "1.5rem" }}>
+		<Root
+			class={[style.fileFieldRoot, style.fileFieldRootW72]}
+			accept=".pdf,.doc,.docx"
+		>
+			<Label class={style.fileFieldLabel}>Resume</Label>
+			<Dropzone class={style.fileFieldDropzone}>
 				<span>Drop PDF here or click to browse</span>
 			</Dropzone>
 			<HiddenInput />
-			<ItemList class="flex flex-col gap-1">
-				{(file) => (
-					<Item class="flex items-center justify-between rounded-md border border-slate-200 px-3 py-2">
-						<ItemName class="text-sm text-slate-800 truncate" />
-						<ItemDeleteTrigger class="text-slate-400 hover:text-red-500 transition-colors text-lg leading-none ml-2 flex-shrink-0">
+			<ItemList class={[style.fileFieldItemList, style.fileFieldItemListGapSm]}>
+				{(_file) => (
+					<Item class={style.fileFieldItem}>
+						<ItemName class={style.fileFieldItemName} />
+						<ItemDeleteTrigger class={style.fileFieldItemDelete}>
 							×
 						</ItemDeleteTrigger>
 					</Item>
@@ -130,35 +120,33 @@ export const SingleFile = meta.story({
 	),
 });
 
-/** `disabled` prevents all interaction. */
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root class="flex flex-col gap-2 font-sans w-72" disabled>
-			<Label class="text-sm font-medium text-slate-400">
+		<Root class={[style.fileFieldRoot, style.fileFieldRootW72]} disabled>
+			<Label class={[style.fileFieldLabel, style.fileFieldLabelDisabled]}>
 				Attachment (disabled)
 			</Label>
-			<Trigger class={triggerClass}>Choose file</Trigger>
+			<Trigger class={style.fileFieldTrigger}>Choose file</Trigger>
 			<HiddenInput />
 		</Root>
 	),
 });
 
-/** `validationState="invalid"` surfaces an error message. */
 export const Invalid = meta.story({
 	name: "Invalid",
 	render: () => (
 		<Root
-			class="flex flex-col gap-2 font-sans w-72"
+			class={[style.fileFieldRoot, style.fileFieldRootW72]}
 			validationState="invalid"
 			required
 		>
-			<Label class="text-sm font-medium text-slate-700">Contract</Label>
-			<Trigger class={triggerClass}>Choose file</Trigger>
-			<Description class="text-xs text-slate-500">
+			<Label class={style.fileFieldLabel}>Contract</Label>
+			<Trigger class={style.fileFieldTrigger}>Choose file</Trigger>
+			<Description class={style.fileFieldDescription}>
 				PDF or Word document required.
 			</Description>
-			<ErrorMessage class="text-xs text-red-600">
+			<ErrorMessage class={style.fileFieldError}>
 				A file is required.
 			</ErrorMessage>
 			<HiddenInput />

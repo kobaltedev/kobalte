@@ -14,7 +14,7 @@ export interface FileFieldItemListOptions {
 }
 
 export interface FileFieldItemListCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface FileFieldItemListRenderProps

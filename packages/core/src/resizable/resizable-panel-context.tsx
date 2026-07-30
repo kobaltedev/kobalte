@@ -34,7 +34,8 @@ export interface ResizablePanelContextValue {
 	panelId: Accessor<string>;
 }
 
-export const ResizablePanelContext = createContext<ResizablePanelContextValue>();
+export const ResizablePanelContext =
+	createContext<ResizablePanelContextValue>();
 
 /** Returns the nearest `<Resizable.Panel>` context. Throws if called outside one. */
 export function useResizablePanelContext(): ResizablePanelContextValue {

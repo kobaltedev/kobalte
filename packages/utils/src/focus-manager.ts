@@ -175,13 +175,13 @@ function focusElement(element: HTMLElement | null, scroll = false) {
 	if (element != null && !scroll) {
 		try {
 			focusWithoutScrolling(element);
-		} catch (err) {
+		} catch (_err) {
 			// ignore
 		}
 	} else if (element != null) {
 		try {
 			element.focus();
-		} catch (err) {
+		} catch (_err) {
 			// ignore
 		}
 	}

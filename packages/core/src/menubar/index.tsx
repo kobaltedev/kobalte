@@ -226,4 +226,7 @@ export const Menubar = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type MenubarContextValue, useMenubarContext } from "./menubar-context.tsx";
+export {
+	type MenubarContextValue,
+	useMenubarContext,
+} from "./menubar-context.tsx";

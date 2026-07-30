@@ -10,7 +10,7 @@ import { type SliderDataSet, useSliderContext } from "./slider-context.tsx";
 
 export interface SliderFillOptions {}
 
-export interface SliderFillCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SliderFillCommonProps<_T extends HTMLElement = HTMLElement> {
 	style?: JSX.CSSProperties | string;
 }
 

@@ -13,7 +13,6 @@ import {
 	isFunction,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";

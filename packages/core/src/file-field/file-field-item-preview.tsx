@@ -1,4 +1,4 @@
-import type { JSX, ValidComponent } from "@solidjs/web";
+import type { ValidComponent } from "@solidjs/web";
 import { omit, Show } from "solid-js";
 import {
 	type ElementOf,
@@ -12,7 +12,7 @@ export interface FileFieldItemPreviewOptions {
 }
 
 export interface FileFieldItemPreviewCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface FileFieldItemPreviewRenderProps

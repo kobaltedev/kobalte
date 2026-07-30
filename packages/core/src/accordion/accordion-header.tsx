@@ -1,4 +1,3 @@
-import { OverrideComponentProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 
 import {
@@ -14,7 +13,7 @@ import {
 export interface AccordionHeaderOptions {}
 
 export interface AccordionHeaderCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface AccordionHeaderRenderProps

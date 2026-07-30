@@ -6,7 +6,7 @@ import {
 	type FormControlDescriptionOptions,
 	type FormControlDescriptionRenderProps,
 } from "../form-control/index.ts";
-import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import type { PolymorphicProps } from "../polymorphic/index.tsx";
 import { type SwitchDataSet, useSwitchContext } from "./switch-context.tsx";
 
 export interface SwitchDescriptionOptions
@@ -21,7 +21,7 @@ export interface SwitchDescriptionRenderProps
 		SwitchDataSet {}
 
 export type SwitchDescriptionProps<
-	T extends ValidComponent | HTMLElement = HTMLElement,
+	_T extends ValidComponent | HTMLElement = HTMLElement,
 > = SwitchDescriptionOptions & Partial<SwitchDescriptionCommonProps>;
 
 /**

@@ -19,11 +19,11 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
+import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
 import {
 	type CollectionItemWithRef,
 	createControllableSignal,
 } from "../primitives/index.ts";
-import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
 import { RatingContext, type RatingContextValue } from "./rating-context.tsx";
 
 export interface RatingRootOptions {

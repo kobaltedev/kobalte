@@ -7,11 +7,14 @@ import {
 	type MeterTrackRenderProps,
 } from "../meter/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
-import { type ProgressDataSet, useProgressContext } from "./progress-context.tsx";
+import {
+	type ProgressDataSet,
+	useProgressContext,
+} from "./progress-context.tsx";
 
 export interface ProgressTrackOptions extends MeterTrackOptions {}
 
-export interface ProgressTrackCommonProps<T extends HTMLElement = HTMLElement>
+export interface ProgressTrackCommonProps<_T extends HTMLElement = HTMLElement>
 	extends MeterTrackCommonProps {}
 
 export interface ProgressTrackRenderProps

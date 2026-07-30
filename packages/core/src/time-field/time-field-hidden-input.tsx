@@ -32,9 +32,11 @@ const parseTime = (value: string) => {
 	const [hours, minutes, seconds] = time.split(":");
 
 	const parsedHours =
-		period === "PM" ? Number.parseInt(hours) + 12 : Number.parseInt(hours);
-	const parsedMinutes = Number.parseInt(minutes);
-	const parsedSeconds = Number.parseInt(seconds);
+		period === "PM"
+			? Number.parseInt(hours, 10) + 12
+			: Number.parseInt(hours, 10);
+	const parsedMinutes = Number.parseInt(minutes, 10);
+	const parsedSeconds = Number.parseInt(seconds, 10);
 
 	return {
 		hour: Number.isNaN(parsedHours) ? undefined : parsedHours,

@@ -9,7 +9,7 @@ import {
 export interface ToastProgressTrackOptions {}
 
 export interface ToastProgressTrackCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface ToastProgressTrackRenderProps

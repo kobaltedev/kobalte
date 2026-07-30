@@ -59,4 +59,7 @@ export const Tooltip = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type TooltipContextValue, useTooltipContext } from "./tooltip-context.tsx";
+export {
+	type TooltipContextValue,
+	useTooltipContext,
+} from "./tooltip-context.tsx";

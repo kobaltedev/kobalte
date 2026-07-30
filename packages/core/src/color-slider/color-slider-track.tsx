@@ -10,7 +10,7 @@ import { useColorSliderContext } from "./color-slider-context.tsx";
 export interface ColorSliderTrackOptions extends Slider.SliderTrackOptions {}
 
 export interface ColorSliderTrackCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	style?: JSX.CSSProperties | string;
 }

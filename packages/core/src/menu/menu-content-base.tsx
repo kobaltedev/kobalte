@@ -29,7 +29,6 @@ import {
 	createUniqueId,
 	omit,
 	onCleanup,
-	onSettled,
 	Show,
 } from "solid-js";
 import {

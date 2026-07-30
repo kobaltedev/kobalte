@@ -30,14 +30,14 @@ import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-
 import { Popper, type PopperRootOptions } from "../popper/index.tsx";
 import type { Placement } from "../popper/utils.ts";
 import {
+	createDomCollection,
+	useOptionalDomCollectionContext,
+} from "../primitives/create-dom-collection/index.ts";
+import {
 	type CollectionItemWithRef,
 	createDisclosureState,
 	createRegisterId,
 } from "../primitives/index.ts";
-import {
-	createDomCollection,
-	useOptionalDomCollectionContext,
-} from "../primitives/create-dom-collection/index.ts";
 import type { FocusStrategy } from "../selection/index.ts";
 import {
 	MenuContext,

@@ -102,12 +102,14 @@ export const Controlled = meta.story({
 				/>
 				<div class="flex gap-2">
 					<button
+						type="button"
 						class="rounded px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200"
 						onClick={() => setSelected(true)}
 					>
 						Select
 					</button>
 					<button
+						type="button"
 						class="rounded px-2 py-1 text-xs bg-slate-100 hover:bg-slate-200"
 						onClick={() => setSelected(false)}
 					>

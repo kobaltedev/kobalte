@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import { Fallback, Img, Root } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Image",
@@ -13,15 +14,13 @@ export default meta;
 export const Loaded = meta.story({
 	name: "Loaded",
 	render: () => (
-		<Root class="inline-flex h-12 w-12 rounded-full overflow-hidden font-sans">
+		<Root class={style.image__root}>
 			<Img
-				class="h-full w-full object-cover"
+				class={style.image__img}
 				src="https://i.pravatar.cc/48?img=3"
 				alt="User avatar"
 			/>
-			<Fallback class="flex h-full w-full items-center justify-center bg-slate-200 text-slate-600 text-sm font-medium">
-				AB
-			</Fallback>
+			<Fallback class={style.image__fallback}>AB</Fallback>
 		</Root>
 	),
 });
@@ -30,13 +29,15 @@ export const Loaded = meta.story({
 export const Fallback_ = meta.story({
 	name: "Fallback",
 	render: () => (
-		<Root class="inline-flex h-12 w-12 rounded-full overflow-hidden font-sans">
+		<Root class={style.image__root}>
 			<Img
-				class="h-full w-full object-cover"
+				class={style.image__img}
 				src="https://broken-image-url.example/avatar.jpg"
 				alt="User avatar"
 			/>
-			<Fallback class="flex h-full w-full items-center justify-center bg-indigo-100 text-indigo-700 text-sm font-medium">
+			<Fallback
+				class={[style.image__fallback, style["image__fallback-indigo"]]}
+			>
 				JD
 			</Fallback>
 		</Root>
@@ -47,16 +48,13 @@ export const Fallback_ = meta.story({
 export const FallbackDelay = meta.story({
 	name: "Fallback Delay",
 	render: () => (
-		<Root
-			class="inline-flex h-12 w-12 rounded-full overflow-hidden font-sans"
-			fallbackDelay={1500}
-		>
+		<Root class={style.image__root} fallbackDelay={1500}>
 			<Img
-				class="h-full w-full object-cover"
+				class={style.image__img}
 				src="https://broken-image-url.example/avatar.jpg"
 				alt="User avatar"
 			/>
-			<Fallback class="flex h-full w-full items-center justify-center bg-amber-100 text-amber-700 text-sm font-medium">
+			<Fallback class={[style.image__fallback, style["image__fallback-amber"]]}>
 				DL
 			</Fallback>
 		</Root>
@@ -74,15 +72,13 @@ export const AvatarGroup = meta.story({
 			{ src: "https://broken.example/img3.jpg", initials: "DD" },
 		];
 		return (
-			<div class="flex -space-x-2 font-sans">
+			<div class={style.image__group}>
 				{users.map((u) => (
-					<Root class="inline-flex h-10 w-10 rounded-full overflow-hidden ring-2 ring-white">
-						<Img
-							class="h-full w-full object-cover"
-							src={u.src}
-							alt={u.initials}
-						/>
-						<Fallback class="flex h-full w-full items-center justify-center bg-slate-300 text-slate-700 text-xs font-semibold">
+					<Root class={[style.image__root, style.image__ring]}>
+						<Img class={style.image__img} src={u.src} alt={u.initials} />
+						<Fallback
+							class={[style.image__fallback, style["image__fallback-sm"]]}
+						>
 							{u.initials}
 						</Fallback>
 					</Root>
@@ -96,21 +92,16 @@ export const AvatarGroup = meta.story({
 function StatusDemo() {
 	const [status, setStatus] = createSignal("idle");
 	return (
-		<div class="flex flex-col gap-3 font-sans">
-			<Root
-				class="inline-flex h-12 w-12 rounded-full overflow-hidden"
-				onLoadingStatusChange={setStatus}
-			>
+		<div class={style.image__col}>
+			<Root class={style.image__root} onLoadingStatusChange={setStatus}>
 				<Img
-					class="h-full w-full object-cover"
+					class={style.image__img}
 					src="https://i.pravatar.cc/48?img=8"
 					alt="User"
 				/>
-				<Fallback class="flex h-full w-full items-center justify-center bg-slate-200 text-slate-600 text-sm font-medium">
-					US
-				</Fallback>
+				<Fallback class={style.image__fallback}>US</Fallback>
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style["image__status-text"]}>
 				Status: <strong>{status()}</strong>
 			</p>
 		</div>

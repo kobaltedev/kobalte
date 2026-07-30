@@ -7,7 +7,10 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createEffect, createMemo, omit } from "solid-js";
-import { createFormControlField, useFormControlContext } from "../form-control/index.ts";
+import {
+	createFormControlField,
+	useFormControlContext,
+} from "../form-control/index.ts";
 import { announce, clearAnnouncer } from "../live-announcer/index.ts";
 import {
 	type ElementOf,
@@ -150,7 +153,6 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 		}
 
 		switch (e.key) {
-			// biome-ignore lint/suspicious/noFallthroughSwitchClause: PageUp falls through to ArrowUp
 			case "PageUp":
 				e.preventDefault();
 				context.varyValue(context.largeStep());
@@ -160,7 +162,6 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 				e.preventDefault();
 				context.varyValue(context.step());
 				break;
-			// biome-ignore lint/suspicious/noFallthroughSwitchClause: PageDown falls through to ArrowDown
 			case "PageDown":
 				e.preventDefault();
 				context.varyValue(-context.largeStep());

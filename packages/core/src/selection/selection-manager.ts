@@ -229,7 +229,7 @@ export class SelectionManager implements MultipleSelectionManager {
 			return key;
 		}
 
-		if (!item || item.type !== "item") {
+		if (item?.type !== "item") {
 			return null;
 		}
 
@@ -423,7 +423,6 @@ export class SelectionManager implements MultipleSelectionManager {
 					}
 				}
 
-				// biome-ignore lint/style/noParameterAssign: used in loop
 				key = this.collection().getKeyAfter(key);
 			}
 		};

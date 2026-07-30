@@ -1,0 +1,332 @@
+---
+title: Color Channel Field
+badges:
+  - icon: npm
+    label: "Since v0.13.9"
+  - label: "@kobalte/core/color-channel-field"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/color-channel-field"
+  - icon: aria
+    label: "Spinbutton"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/spinbutton/"
+---
+
+import {
+	BasicExample,
+	DefaultValueExample,
+	ControlledExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	HTMLFormExample,
+	TriggersExample,
+} from "../../../../examples/color-channel-field";
+
+# {frontmatter.title}
+
+A number input that allow users to edit individual color channel value.
+
+## Import
+
+```ts
+import { ColorChannelField } from "@kobalte/core/color-channel-field";
+// or
+import { Root, Label, ... } from "@kobalte/core/color-channel-field";
+```
+
+## Features
+
+- Follows the [WAI ARIA Spinbutton](https://www.w3.org/WAI/ARIA/apg/patterns/spinbutton/) design pattern.
+- Built with a native `<input>` element.
+- Visual and ARIA labeling support.
+- Required and invalid states exposed to assistive technology via ARIA.
+- Support for description and error message help text linked to the input via ARIA.
+- Syncs with form reset events.
+- Can be controlled or uncontrolled.
+- Supports increment and decrement buttons.
+- Format and localize input number and raw input.
+- Supports mouse wheel event and all keyboard events.
+
+## Anatomy
+
+The color channel field consists of:
+
+- **ColorChannelField**: The root container for the color channel field.
+- **ColorChannelField.Label**: The label that gives the user information on the color channel field.
+- **ColorChannelField.Input**: The native HTML input of the color channel field, used for display number.
+- **ColorChannelField.HiddenInput**: The native HTML input of the color channel field, used for raw number form submission.
+- **ColorChannelField.IncrementTrigger**: The increment button of the color channel field.
+- **ColorChannelField.DecrementTrigger**: The decrement button of the color channel field.
+- **ColorChannelField.Description**: The description that gives the user more information on the color channel field.
+- **ColorChannelField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on a color channel field.
+
+```tsx
+<ColorChannelField>
+	<ColorChannelField.Label />
+	<ColorChannelField.Input />
+	<ColorChannelField.HiddenInput />
+	<ColorChannelField.IncrementTrigger />
+	<ColorChannelField.DecrementTrigger />
+	<ColorChannelField.Description />
+	<ColorChannelField.ErrorMessage />
+</ColorChannelField>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/color-channel-field.tsx#L6-L31"
+
+```
+
+```css title="style.css" tab file="../../../../examples/color-channel-field.module.css"
+
+```
+
+:::
+
+## Usage
+
+The value provided to `defaultValue` or `value` should be `Color` object. You can obtain a Color object by using the `parseColor` function to parse a color from a string. The `channel` prop must also be provided to specify which color channel the field manipulates.
+This must be one of the channels included in the color value, for example, for RGB colors, the "red", "green", and "blue" channels are available.
+
+### Default value
+
+:::preview
+
+<DefaultValueExample />
+
+---
+
+```tsx {1}
+<ColorChannelField defaultValue={parseColor("hsl(200, 98%, 39%)")} channel="saturation">
+	<ColorChannelField.Label>Saturation</ColorChannelField.Label>
+	<div>
+		<ColorChannelField.Input />
+		<ColorChannelField.IncrementTrigger />
+		<ColorChannelField.DecrementTrigger />
+	</div>
+</ColorChannelField>
+```
+
+:::
+
+### Controlled value
+
+:::preview
+
+<ControlledExample />
+
+---
+
+```tsx {4,9-10}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal(parseColor("hsl(200, 98%, 39%)"));
+
+	return (
+		<>
+			<ColorChannelField value={value()} onChange={setValue}>
+				<ColorChannelField.Label>Lightness</ColorChannelField.Label>
+				<div>
+					<ColorChannelField.Input />
+					<ColorChannelField.IncrementTrigger />
+					<ColorChannelField.DecrementTrigger />
+				</div>
+			</ColorChannelField>
+			<p>Lightness: {value().getChannelValue("lightness")}%</p>
+		</>
+	);
+}
+```
+
+:::
+
+### Description
+
+The `ColorChannelField.Description` component can be used to associate additional help text with a color channel field.
+
+:::preview
+
+<DescriptionExample />
+
+---
+
+```tsx {8}
+<ColorChannelField defaultValue={parseColor("hsl(0, 98%, 39%)")} channel="hue">
+	<ColorChannelField.Label>Hue</ColorChannelField.Label>
+	<div>
+		<ColorChannelField.Input />
+		<ColorChannelField.IncrementTrigger />
+		<ColorChannelField.DecrementTrigger />
+	</div>
+	<ColorChannelField.Description>Enter your favorite hue.</ColorChannelField.Description>
+</ColorChannelField>
+```
+
+:::
+
+### Error message
+
+The `ColorChannelField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the field as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+:::preview
+
+<ErrorMessageExample />
+
+---
+
+```tsx {11,19}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [value, setValue] = createSignal(parseColor("hsl(200, 30%, 39%)"));
+
+	return (
+		<ColorChannelField
+			value={value()}
+			channel="saturation"
+			onChange={setValue}
+			validationState={value().getChannelValue("saturation") !== 40 ? "invalid" : "valid"}
+		>
+			<ColorChannelField.Label>Saturation</ColorChannelField.Label>
+			<div>
+				<ColorChannelField.Input />
+				<ColorChannelField.IncrementTrigger />
+				<ColorChannelField.DecrementTrigger />
+			</div>
+			<ColorChannelField.ErrorMessage>Hmm, I prefer 40% saturation.</ColorChannelField.ErrorMessage>
+		</ColorChannelField>
+	);
+}
+```
+
+:::
+
+### HTML forms
+
+The color channel field `name` prop along with `<ColorChannelField.HiddenInput/>` can be used for integration with HTML forms. Only the raw value is passed to the form.
+
+If the formatted value is wanted (unrecommended) set the `name` attribute on `<ColorChannelField.Input/>`.
+
+:::preview
+
+<HTMLFormExample />
+
+---
+
+```tsx {8,10}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<ColorChannelField name="hue" defaultValue={parseColor("hsl(10, 98%, 39%)")} channel="hue">
+				<ColorChannelField.Label>Hue</ColorChannelField.Label>
+				<ColorChannelField.HiddenInput />
+				<div>
+					<ColorChannelField.Input />
+					<ColorChannelField.IncrementTrigger />
+					<ColorChannelField.DecrementTrigger />
+				</div>
+			</ColorChannelField>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+:::
+
+### Triggers
+
+The color channel field supports optional increment/decrement triggers that are easily customizable.
+
+:::preview
+
+<TriggersExample />
+
+---
+
+```tsx {4,6}
+<ColorChannelField defaultValue={parseColor("hsb(10, 98%, 50%)")} channel="brightness">
+	<ColorChannelField.Label>Brightness</ColorChannelField.Label>
+	<div>
+		<ColorChannelField.DecrementTrigger class="custom-trigger">
+			-
+		</ColorChannelField.DecrementTrigger>
+		<ColorChannelField.Input />
+		<ColorChannelField.IncrementTrigger class="custom-trigger">
+			+
+		</ColorChannelField.IncrementTrigger>
+	</div>
+</ColorChannelField>
+```
+
+:::
+
+## API Reference
+
+### ColorChannelField
+
+`ColorChannelField` is equivalent to the `Root` import from `@kobalte/core/color-channel-field`.
+
+| Prop            | Description                                                                                                                                                                                               |
+| :-------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `Color` <br/> The controlled value of the field.                                                                                                                                                          |
+| defaultValue    | `Color` <br/> The default value when initially rendered. Useful when you do not need to control the value.                                                                                                |
+| colorSpace      | `ColorSpace` <br/> The color space that the field operates in. The `channel` must be in this color space.                                                                                                 |
+| onChange        | `(value: Color) => void` <br/> Event handler called when the value of the field changes.                                                                                                                  |
+| minValue        | `number` <br/> The smallest value allowed in the number field.                                                                                                                                            |
+| maxValue        | `number` <br/> The largest value allowed in the number field.                                                                                                                                             |
+| step            | `number` <br/> Increment/Decrement step when using the triggers or the arrows on keyboard in the field.                                                                                                   |
+| largeStep       | `number` <br/> Increment/Decrement step when using the Page UP/Down keys in the field, defaults `10 * step`.                                                                                              |
+| changeOnWheel   | `boolean` <br/> Whether to increment/decrement on wheel scroll inside the field.                                                                                                                          |
+| format          | `boolean` <br/> Whether to format the input value.                                                                                                                                                        |
+| name            | `string` <br/> The name of the ColorChannelField.HiddenInput of the field, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname). |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the field should display its "valid" or "invalid" visual styling.                                                                                                    |
+| required        | `boolean` <br/> Whether the user must fill the field before the owning form can be submitted.                                                                                                             |
+| disabled        | `boolean` <br/> Whether the field is disabled.                                                                                                                                                            |
+| readOnly        | `boolean` <br/> Whether the field items can be selected but not changed by the user.                                                                                                                      |
+
+| Data attribute | Description                                                                        |
+| :------------- | :--------------------------------------------------------------------------------- |
+| data-valid     | Present when the field is valid according to the validation rules.                 |
+| data-invalid   | Present when the field is invalid according to the validation rules.               |
+| data-required  | Present when the user must fill the field before the owning form can be submitted. |
+| data-disabled  | Present when the field is disabled.                                                |
+| data-readonly  | Present when the field is read only.                                               |
+
+`ColorChannelField.Label`, `ColorChannelField.Input`, `ColorChannelField.HiddenInput`, `ColorChannelField.Description` and `ColorChannelField.ErrorMessage` share the same data-attributes.
+
+### ColorChannelField.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                            | Default rendered element |
+| :----------------------------------- | :----------------------- |
+| `ColorChannelField`                  | `div`                    |
+| `ColorChannelField.Label`            | `label`                  |
+| `ColorChannelField.Input`            | `input`                  |
+| `ColorChannelField.HiddenInput`      | `input`                  |
+| `ColorChannelField.IncrementTrigger` | `button`                 |
+| `ColorChannelField.DecrementTrigger` | `button`                 |
+| `ColorChannelField.Description`      | `div`                    |
+| `ColorChannelField.ErrorMessage`     | `div`                    |

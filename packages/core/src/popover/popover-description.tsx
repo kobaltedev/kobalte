@@ -12,7 +12,7 @@ import { type PopoverDataSet, usePopoverContext } from "./popover-context.tsx";
 export interface PopoverDescriptionOptions {}
 
 export interface PopoverDescriptionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

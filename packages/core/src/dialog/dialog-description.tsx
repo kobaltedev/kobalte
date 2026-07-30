@@ -12,7 +12,7 @@ import { useDialogContext } from "./dialog-context.tsx";
 export interface DialogDescriptionOptions {}
 
 export interface DialogDescriptionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

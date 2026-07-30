@@ -12,11 +12,7 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import {
-	createGenerateId,
-	mergeDefaultProps,
-	OverrideComponentProps,
-} from "@kobalte/utils";
+import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createMemo, createSignal, createUniqueId, omit } from "solid-js";
@@ -90,7 +86,7 @@ export interface ToastRegionOptions {
 	regionId?: string;
 }
 
-export interface ToastRegionCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ToastRegionCommonProps<_T extends HTMLElement = HTMLElement> {
 	style?: JSX.CSSProperties | string;
 	id: string;
 }

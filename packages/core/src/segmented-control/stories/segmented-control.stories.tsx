@@ -9,6 +9,7 @@ import {
 	Label,
 	Root,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/SegmentedControl",
@@ -17,64 +18,52 @@ const meta = preview.meta({
 
 export default meta;
 
-const rootClass =
-	"relative inline-flex items-center rounded-lg bg-slate-100 p-1 font-sans";
-
-const itemClass =
-	"relative z-10 flex cursor-pointer items-center rounded-md px-4 py-1.5 text-sm font-medium transition-colors duration-150 select-none data-[checked]:text-slate-900 text-slate-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-1";
-
-const indicatorClass =
-	"absolute inset-0 rounded-md bg-white shadow-sm transition-all duration-200";
-
-/** Three equally-spaced segments with a sliding indicator. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={rootClass} defaultValue="month">
-			<Indicator class={indicatorClass} />
+		<Root class={style.segmentedControlRoot} defaultValue="month">
+			<Indicator class={style.segmentedControlIndicator} />
 			{(["Day", "Month", "Year"] as const).map((label) => (
-				<Item class={itemClass} value={label.toLowerCase()}>
+				<Item class={style.segmentedControlItem} value={label.toLowerCase()}>
 					<ItemInput />
-					<ItemControl class="absolute inset-0 cursor-pointer" />
-					<ItemLabel class="pointer-events-none">{label}</ItemLabel>
+					<ItemControl class={style.segmentedControlItemControl} />
+					<ItemLabel class={style.segmentedControlItemLabel}>{label}</ItemLabel>
 				</Item>
 			))}
 		</Root>
 	),
 });
 
-/** `defaultValue` pre-selects a segment on mount. */
 export const DefaultValue = meta.story({
 	name: "Default Value",
 	render: () => (
-		<Root class={rootClass} defaultValue="year">
-			<Indicator class={indicatorClass} />
+		<Root class={style.segmentedControlRoot} defaultValue="year">
+			<Indicator class={style.segmentedControlIndicator} />
 			{(["Day", "Month", "Year"] as const).map((label) => (
-				<Item class={itemClass} value={label.toLowerCase()}>
+				<Item class={style.segmentedControlItem} value={label.toLowerCase()}>
 					<ItemInput />
-					<ItemControl class="absolute inset-0 cursor-pointer" />
-					<ItemLabel class="pointer-events-none">{label}</ItemLabel>
+					<ItemControl class={style.segmentedControlItemControl} />
+					<ItemLabel class={style.segmentedControlItemLabel}>{label}</ItemLabel>
 				</Item>
 			))}
 		</Root>
 	),
 });
 
-/** A label associates the group with a visible heading. */
 export const WithLabel = meta.story({
 	name: "With Label",
 	render: () => (
-		<div class="flex flex-col gap-2 font-sans">
-			<Root class={rootClass} defaultValue="grid">
-				<Label class="text-sm font-medium text-slate-700 mb-1 block">
-					View
-				</Label>
-				<Indicator class={indicatorClass} />
+		<div class={style.segmentedControlWrapper}>
+			<Root class={style.segmentedControlRoot} defaultValue="grid">
+				<Label class={style.segmentedControlLabel}>View</Label>
+				<Indicator class={style.segmentedControlIndicator} />
 				{(["List", "Grid", "Kanban"] as const).map((label) => (
-					<Item class={itemClass} value={label.toLowerCase()}>
+					<Item class={style.segmentedControlItem} value={label.toLowerCase()}>
 						<ItemInput />
-						<ItemControl class="absolute inset-0 cursor-pointer" />
-						<ItemLabel class="pointer-events-none">{label}</ItemLabel>
+						<ItemControl class={style.segmentedControlItemControl} />
+						<ItemLabel class={style.segmentedControlItemLabel}>
+							{label}
+						</ItemLabel>
 					</Item>
 				))}
 			</Root>
@@ -82,24 +71,31 @@ export const WithLabel = meta.story({
 	),
 });
 
-/** `disabled` on the root prevents all interaction. */
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
 		<Root
-			class={`${rootClass} opacity-50 cursor-not-allowed`}
+			class={[style.segmentedControlRoot, style.segmentedControlRootDisabled]}
 			defaultValue="month"
 			disabled
 		>
-			<Indicator class={indicatorClass} />
+			<Indicator class={style.segmentedControlIndicator} />
 			{(["Day", "Month", "Year"] as const).map((label) => (
 				<Item
-					class={`${itemClass} pointer-events-none`}
+					class={[
+						style.segmentedControlItem,
+						style.segmentedControlItemPointerNone,
+					]}
 					value={label.toLowerCase()}
 				>
 					<ItemInput />
-					<ItemControl class="absolute inset-0" />
-					<ItemLabel class="pointer-events-none">{label}</ItemLabel>
+					<ItemControl
+						class={[
+							style.segmentedControlItemControl,
+							style.segmentedControlItemControlNoCursor,
+						]}
+					/>
+					<ItemLabel class={style.segmentedControlItemLabel}>{label}</ItemLabel>
 				</Item>
 			))}
 		</Root>
@@ -109,23 +105,29 @@ export const Disabled = meta.story({
 function ControlledDemo() {
 	const [value, setValue] = createSignal("month");
 	return (
-		<div class="flex flex-col gap-3 font-sans">
-			<Root class={rootClass} value={value()} onChange={setValue}>
-				<Indicator class={indicatorClass} />
+		<div class={style.segmentedControlWrapper}>
+			<Root
+				class={style.segmentedControlRoot}
+				value={value()}
+				onChange={setValue}
+			>
+				<Indicator class={style.segmentedControlIndicator} />
 				{(["Day", "Month", "Year"] as const).map((label) => (
-					<Item class={itemClass} value={label.toLowerCase()}>
+					<Item class={style.segmentedControlItem} value={label.toLowerCase()}>
 						<ItemInput />
-						<ItemControl class="absolute inset-0 cursor-pointer" />
-						<ItemLabel class="pointer-events-none">{label}</ItemLabel>
+						<ItemControl class={style.segmentedControlItemControl} />
+						<ItemLabel class={style.segmentedControlItemLabel}>
+							{label}
+						</ItemLabel>
 					</Item>
 				))}
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style.segmentedControlValueText}>
 				Selected: <strong>{value()}</strong>
 			</p>
 			<button
 				type="button"
-				class="self-start rounded px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 transition-colors"
+				class={style.segmentedControlResetButton}
 				onClick={() => setValue("month")}
 			>
 				Reset to Month
@@ -134,23 +136,29 @@ function ControlledDemo() {
 	);
 }
 
-/** `value` + `onChange` give full external control over the active segment. */
 export const Controlled = meta.story({
 	name: "Controlled",
 	render: () => <ControlledDemo />,
 });
 
-/** More segments with icon-like text — indicator still slides correctly. */
 export const ManySegments = meta.story({
 	name: "Many Segments",
 	render: () => (
-		<Root class={rootClass} defaultValue="1w">
-			<Indicator class={indicatorClass} />
+		<Root class={style.segmentedControlRoot} defaultValue="1w">
+			<Indicator class={style.segmentedControlIndicator} />
 			{(["1D", "1W", "1M", "3M", "6M", "1Y", "ALL"] as const).map((label) => (
-				<Item class={`${itemClass} px-3`} value={label.toLowerCase()}>
+				<Item
+					class={[style.segmentedControlItem, style.segmentedControlItemPx3]}
+					value={label.toLowerCase()}
+				>
 					<ItemInput />
-					<ItemControl class="absolute inset-0 cursor-pointer" />
-					<ItemLabel class="pointer-events-none font-mono text-xs">
+					<ItemControl class={style.segmentedControlItemControl} />
+					<ItemLabel
+						class={[
+							style.segmentedControlItemLabel,
+							style.segmentedControlItemLabelMono,
+						]}
+					>
 						{label}
 					</ItemLabel>
 				</Item>

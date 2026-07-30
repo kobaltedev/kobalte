@@ -12,6 +12,7 @@ import {
 	Label,
 	Root,
 } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/RadioGroup",
@@ -20,36 +21,19 @@ const meta = preview.meta({
 
 export default meta;
 
-const groupClass = "flex flex-col gap-3 font-sans";
-
-const itemClass = "flex items-center gap-3";
-
-const controlClass =
-	"relative flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-full border-2 border-slate-300 bg-white transition-colors duration-150 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 data-[checked]:border-blue-500 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50";
-
-const indicatorClass = "h-2.5 w-2.5 rounded-full bg-blue-500";
-
-const labelClass =
-	"text-sm font-medium text-slate-700 select-none cursor-pointer";
-
-const groupLabelClass = "text-sm font-semibold text-slate-800 mb-1";
-
-const descriptionClass = "text-xs text-slate-500 mt-0.5";
-const errorClass = "text-xs text-red-600 mt-0.5";
-
 /** A basic radio group with three options. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={groupClass}>
-			<Label class={groupLabelClass}>Plan</Label>
+		<Root class={style.group}>
+			<Label class={style.groupLabel}>Plan</Label>
 			{(["Starter", "Pro", "Enterprise"] as const).map((plan) => (
-				<Item class={itemClass} value={plan}>
-					<ItemControl class={controlClass}>
-						<ItemIndicator class={indicatorClass} />
+				<Item class={style.item} value={plan}>
+					<ItemControl class={style.control}>
+						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel class={labelClass}>{plan}</ItemLabel>
+					<ItemLabel class={style.label}>{plan}</ItemLabel>
 				</Item>
 			))}
 		</Root>
@@ -60,15 +44,15 @@ export const Default = meta.story({
 export const DefaultValue = meta.story({
 	name: "Default Value",
 	render: () => (
-		<Root class={groupClass} defaultValue="Pro">
-			<Label class={groupLabelClass}>Plan</Label>
+		<Root class={style.group} defaultValue="Pro">
+			<Label class={style.groupLabel}>Plan</Label>
 			{(["Starter", "Pro", "Enterprise"] as const).map((plan) => (
-				<Item class={itemClass} value={plan}>
-					<ItemControl class={controlClass}>
-						<ItemIndicator class={indicatorClass} />
+				<Item class={style.item} value={plan}>
+					<ItemControl class={style.control}>
+						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel class={labelClass}>{plan}</ItemLabel>
+					<ItemLabel class={style.label}>{plan}</ItemLabel>
 				</Item>
 			))}
 		</Root>
@@ -79,8 +63,8 @@ export const DefaultValue = meta.story({
 export const WithDescriptions = meta.story({
 	name: "With Descriptions",
 	render: () => (
-		<Root class={groupClass}>
-			<Label class={groupLabelClass}>Notification frequency</Label>
+		<Root class={style.group}>
+			<Label class={style.groupLabel}>Notification frequency</Label>
 			{(
 				[
 					{ value: "realtime", label: "Real-time", desc: "As events happen." },
@@ -96,14 +80,14 @@ export const WithDescriptions = meta.story({
 					},
 				] as const
 			).map(({ value, label, desc }) => (
-				<Item class={itemClass} value={value}>
-					<ItemControl class={controlClass}>
-						<ItemIndicator class={indicatorClass} />
+				<Item class={style.item} value={value}>
+					<ItemControl class={style.control}>
+						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<div class="flex flex-col">
-						<ItemLabel class={labelClass}>{label}</ItemLabel>
-						<ItemDescription class={descriptionClass}>{desc}</ItemDescription>
+					<div class={style.textColumn}>
+						<ItemLabel class={style.label}>{label}</ItemLabel>
+						<ItemDescription class={style.description}>{desc}</ItemDescription>
 					</div>
 				</Item>
 			))}
@@ -115,15 +99,15 @@ export const WithDescriptions = meta.story({
 export const Horizontal = meta.story({
 	name: "Horizontal",
 	render: () => (
-		<Root class="flex flex-row gap-6 font-sans" orientation="horizontal">
-			<Label class={groupLabelClass}>Size</Label>
+		<Root class={style.groupHorizontal} orientation="horizontal">
+			<Label class={style.groupLabel}>Size</Label>
 			{(["S", "M", "L", "XL"] as const).map((size) => (
-				<Item class={itemClass} value={size}>
-					<ItemControl class={controlClass}>
-						<ItemIndicator class={indicatorClass} />
+				<Item class={style.item} value={size}>
+					<ItemControl class={style.control}>
+						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel class={labelClass}>{size}</ItemLabel>
+					<ItemLabel class={style.label}>{size}</ItemLabel>
 				</Item>
 			))}
 		</Root>
@@ -134,15 +118,15 @@ export const Horizontal = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root class={groupClass} defaultValue="Pro" disabled>
-			<Label class={groupLabelClass}>Plan</Label>
+		<Root class={style.group} defaultValue="Pro" disabled>
+			<Label class={style.groupLabel}>Plan</Label>
 			{(["Starter", "Pro", "Enterprise"] as const).map((plan) => (
-				<Item class={itemClass} value={plan}>
-					<ItemControl class={controlClass}>
-						<ItemIndicator class={indicatorClass} />
+				<Item class={style.item} value={plan}>
+					<ItemControl class={style.control}>
+						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel class={`${labelClass} opacity-50 cursor-not-allowed`}>
+					<ItemLabel class={[style.label, style.labelDisabled]}>
 						{plan}
 					</ItemLabel>
 				</Item>
@@ -155,8 +139,8 @@ export const Disabled = meta.story({
 export const DisabledItem = meta.story({
 	name: "Disabled Item",
 	render: () => (
-		<Root class={groupClass} defaultValue="Starter">
-			<Label class={groupLabelClass}>Plan</Label>
+		<Root class={style.group} defaultValue="Starter">
+			<Label class={style.groupLabel}>Plan</Label>
 			{(
 				[
 					{ value: "Starter", disabled: false },
@@ -164,14 +148,12 @@ export const DisabledItem = meta.story({
 					{ value: "Enterprise", disabled: true },
 				] as const
 			).map(({ value, disabled }) => (
-				<Item class={itemClass} value={value} disabled={disabled}>
-					<ItemControl class={controlClass}>
-						<ItemIndicator class={indicatorClass} />
+				<Item class={style.item} value={value} disabled={disabled}>
+					<ItemControl class={style.control}>
+						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel
-						class={`${labelClass}${disabled ? " opacity-50 cursor-not-allowed" : ""}`}
-					>
+					<ItemLabel class={[style.label, disabled && style.labelDisabled]}>
 						{value}
 					</ItemLabel>
 				</Item>
@@ -184,15 +166,15 @@ export const DisabledItem = meta.story({
 export const ReadOnly = meta.story({
 	name: "Read Only",
 	render: () => (
-		<Root class={groupClass} defaultValue="Pro" readOnly>
-			<Label class={groupLabelClass}>Current plan (read only)</Label>
+		<Root class={style.group} defaultValue="Pro" readOnly>
+			<Label class={style.groupLabel}>Current plan (read only)</Label>
 			{(["Starter", "Pro", "Enterprise"] as const).map((plan) => (
-				<Item class={itemClass} value={plan}>
-					<ItemControl class={controlClass}>
-						<ItemIndicator class={indicatorClass} />
+				<Item class={style.item} value={plan}>
+					<ItemControl class={style.control}>
+						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel class={`${labelClass} cursor-not-allowed`}>
+					<ItemLabel class={[style.label, style.labelReadOnly]}>
 						{plan}
 					</ItemLabel>
 				</Item>
@@ -204,25 +186,25 @@ export const ReadOnly = meta.story({
 function ControlledDemo() {
 	const [value, setValue] = createSignal("Pro");
 	return (
-		<div class="flex flex-col gap-4 font-sans">
-			<Root class={groupClass} value={value()} onChange={setValue}>
-				<Label class={groupLabelClass}>Plan</Label>
+		<div class={[style.group, style.stateText]}>
+			<Root class={style.group} value={value()} onChange={setValue}>
+				<Label class={style.groupLabel}>Plan</Label>
 				{(["Starter", "Pro", "Enterprise"] as const).map((plan) => (
-					<Item class={itemClass} value={plan}>
-						<ItemControl class={controlClass}>
-							<ItemIndicator class={indicatorClass} />
+					<Item class={style.item} value={plan}>
+						<ItemControl class={style.control}>
+							<ItemIndicator class={style.indicator} />
 							<ItemInput />
 						</ItemControl>
-						<ItemLabel class={labelClass}>{plan}</ItemLabel>
+						<ItemLabel class={style.label}>{plan}</ItemLabel>
 					</Item>
 				))}
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style.stateText}>
 				Selected: <strong>{value()}</strong>
 			</p>
 			<button
 				type="button"
-				class="self-start rounded px-3 py-1.5 text-xs font-medium bg-slate-100 hover:bg-slate-200 transition-colors"
+				class={style.resetButton}
 				onClick={() => setValue("Starter")}
 			>
 				Reset to Starter
@@ -242,13 +224,13 @@ function ValidationDemo() {
 	const isInvalid = () => value() === "";
 	return (
 		<Root
-			class={`${groupClass} gap-0.5`}
+			class={[style.group, style.controlInvalid]}
 			value={value()}
 			onChange={setValue}
 			validationState={isInvalid() ? "invalid" : "valid"}
 			required
 		>
-			<Label class={groupLabelClass}>Preferred contact method</Label>
+			<Label class={style.groupLabel}>Preferred contact method</Label>
 			{(
 				[
 					{ value: "email", label: "Email" },
@@ -256,20 +238,18 @@ function ValidationDemo() {
 					{ value: "sms", label: "SMS" },
 				] as const
 			).map(({ value, label }) => (
-				<Item class={itemClass} value={value}>
-					<ItemControl
-						class={`${controlClass} data-[invalid]:border-red-400 data-[invalid]:ring-red-500`}
-					>
-						<ItemIndicator class={indicatorClass} />
+				<Item class={style.item} value={value}>
+					<ItemControl class={[style.control, style.controlInvalid]}>
+						<ItemIndicator class={style.indicator} />
 						<ItemInput />
 					</ItemControl>
-					<ItemLabel class={labelClass}>{label}</ItemLabel>
+					<ItemLabel class={style.label}>{label}</ItemLabel>
 				</Item>
 			))}
-			<Description class={descriptionClass}>
+			<Description class={style.description}>
 				Choose how you'd like to be reached.
 			</Description>
-			<ErrorMessage class={errorClass}>
+			<ErrorMessage class={style.error}>
 				Please select a contact method.
 			</ErrorMessage>
 		</Root>

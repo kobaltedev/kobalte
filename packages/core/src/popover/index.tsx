@@ -117,4 +117,7 @@ export const Popover = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type PopoverContextValue, usePopoverContext } from "./popover-context.tsx";
+export {
+	type PopoverContextValue,
+	usePopoverContext,
+} from "./popover-context.tsx";

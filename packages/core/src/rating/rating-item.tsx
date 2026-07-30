@@ -21,8 +21,11 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
-import { type CollectionItemWithRef, createRegisterId } from "../primitives/index.ts";
 import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import {
+	type CollectionItemWithRef,
+	createRegisterId,
+} from "../primitives/index.ts";
 import { useRatingContext } from "./rating-context.tsx";
 import {
 	RatingItemContext,

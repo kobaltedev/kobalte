@@ -11,7 +11,7 @@ import { type MeterDataSet, useMeterContext } from "./meter-context.tsx";
 
 export interface MeterLabelOptions {}
 
-export interface MeterLabelCommonProps<T extends HTMLElement = HTMLElement> {
+export interface MeterLabelCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

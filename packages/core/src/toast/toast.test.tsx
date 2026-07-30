@@ -433,7 +433,7 @@ describe("Toast", () => {
 		vi.advanceTimersByTime(timeout);
 		try {
 			await Promise.reject();
-		} catch (e) {
+		} catch (_e) {
 			// noop
 		}
 
@@ -527,7 +527,7 @@ describe("Toast", () => {
 
 			let closeId: number;
 
-			const { getAllByRole, getByTestId } = render(() => (
+			const { getByTestId } = render(() => (
 				<>
 					<button
 						type="button"

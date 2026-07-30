@@ -1,5 +1,5 @@
 import type { JSX } from "@solidjs/web";
-import { type Accessor, createContext, Setter, useContext } from "solid-js";
+import { type Accessor, createContext, useContext } from "solid-js";
 import type { SpinButtonIntlTranslations } from "../spin-button/spin-button.intl.ts";
 
 export interface NumberFieldContextValue {

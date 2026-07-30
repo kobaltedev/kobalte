@@ -12,7 +12,7 @@ import { useToastContext } from "./toast-context.tsx";
 export interface ToastDescriptionOptions {}
 
 export interface ToastDescriptionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

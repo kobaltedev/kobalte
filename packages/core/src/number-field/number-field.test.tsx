@@ -592,7 +592,7 @@ describe("NumberField", () => {
 	it("raw value on change", async () => {
 		const spy = vi.fn();
 
-		const { getByRole, getByTestId } = render(() => (
+		const { getByRole } = render(() => (
 			<NumberField.Root defaultValue={1000} onRawValueChange={spy}>
 				<NumberField.Input />
 			</NumberField.Root>
