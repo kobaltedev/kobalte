@@ -1,6 +1,6 @@
 import { type Accessor, createContext, useContext } from "solid-js";
 
-import type { ImageLoadingStatus } from "./types";
+import type { ImageLoadingStatus } from "./types.ts";
 
 export interface ImageContextValue {
 	fallbackDelay: Accessor<number | undefined>;

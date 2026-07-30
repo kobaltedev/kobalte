@@ -1,15 +1,15 @@
-import { mergeDefaultProps, OverrideComponentProps } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
-import { createToggleState } from "../primitives";
+import { createToggleState } from "../primitives/index.ts";
 import {
 	MenuItemBase,
 	type MenuItemBaseCommonProps,
 	type MenuItemBaseOptions,
 	type MenuItemBaseRenderProps,
-} from "./menu-item-base";
+} from "./menu-item-base.tsx";
 
 export interface MenuCheckboxItemOptions
 	extends Omit<MenuItemBaseOptions, "checked"> {

@@ -1,11 +1,11 @@
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createMemo, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	ToggleGroupBase,
 	type ToggleGroupBaseOptions,
 	type ToggleGroupBaseRenderProps,
-} from "./toggle-group-base";
+} from "./toggle-group-base.tsx";
 
 export interface ToggleGroupSingleOptions {
 	/** The controlled value of the toggle group. */
@@ -51,7 +51,7 @@ export type ToggleGroupRootOptions = (
 	>;
 
 export interface ToggleGroupRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface ToggleGroupRootRenderProps

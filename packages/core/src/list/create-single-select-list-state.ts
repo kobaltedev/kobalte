@@ -13,13 +13,13 @@ import {
 	type CollectionBase,
 	type CollectionNode,
 	createControllableSignal,
-} from "../primitives";
-import type { SingleSelection } from "../selection";
+} from "../primitives/index.ts";
+import type { SingleSelection } from "../selection/index.ts";
 import {
 	type CreateListStateProps,
 	createListState,
 	type ListState,
-} from "./create-list-state";
+} from "./create-list-state.ts";
 
 export interface CreateSingleSelectListStateProps
 	extends CollectionBase,
@@ -65,7 +65,10 @@ export function createSingleSelectListState(
 		allowDuplicateSelectionEvents: true,
 		selectedKeys,
 		onSelectionChange: (keys: Set<string>) => {
-			const key = (keys as Set<string>).values().next().value as string;
+			const key = (keys as Set<string>).values().next().value;
+			if (key === undefined) {
+				return;
+			}
 
 			// Always fire onSelectionChange, even if the key is the same
 			// as the current key (createControllableSignal does not).

@@ -1,14 +1,14 @@
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, createMemo, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import * as Slider from "../slider";
-import { useColorSliderContext } from "./color-slider-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import * as Slider from "../slider/index.tsx";
+import { useColorSliderContext } from "./color-slider-context.tsx";
 
 export interface ColorSliderThumbOptions extends Slider.SliderThumbOptions {}
 
 export interface ColorSliderThumbCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	style?: JSX.CSSProperties | string;
 }

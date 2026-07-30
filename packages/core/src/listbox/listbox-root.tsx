@@ -12,7 +12,6 @@ import {
 	createGenerateId,
 	mergeDefaultProps,
 	mergeRefs,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -27,20 +26,27 @@ import {
 	Switch,
 } from "solid-js";
 
-import { createListState, createSelectableList, type ListState } from "../list";
+import {
+	createListState,
+	createSelectableList,
+	type ListState,
+} from "../list/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { Collection, CollectionNode } from "../primitives";
+} from "../polymorphic/index.tsx";
+import type { Collection, CollectionNode } from "../primitives/index.ts";
 import type {
 	FocusStrategy,
 	KeyboardDelegate,
 	SelectionBehavior,
 	SelectionMode,
-} from "../selection";
-import { ListboxContext, type ListboxContextValue } from "./listbox-context";
+} from "../selection/index.ts";
+import {
+	ListboxContext,
+	type ListboxContextValue,
+} from "./listbox-context.tsx";
 
 export interface ListboxRootOptions<Option, OptGroup = never> {
 	/** The controlled value of the listbox. */

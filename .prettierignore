@@ -3,5 +3,8 @@
 *.jsx
 *.tsx
 *.json
+*.jsonc
 *.cjs
+*.mjs
+*.css
 pnpm-lock.yaml

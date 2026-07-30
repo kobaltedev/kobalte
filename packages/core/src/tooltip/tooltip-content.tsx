@@ -14,10 +14,10 @@ import { type Component, createEffect, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
-import { type TooltipDataSet, useTooltipContext } from "./tooltip-context";
+} from "../dismissable-layer/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
+import { type TooltipDataSet, useTooltipContext } from "./tooltip-context.tsx";
 
 export interface TooltipContentOptions {
 	/**

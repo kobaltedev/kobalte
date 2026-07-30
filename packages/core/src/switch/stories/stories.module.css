@@ -1,0 +1,147 @@
+.root {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.control {
+	position: relative;
+	display: inline-flex;
+	height: 24px;
+	width: 44px;
+	flex-shrink: 0;
+	cursor: pointer;
+	align-items: center;
+	border-radius: 9999px;
+	border: 2px solid transparent;
+	background-color: hsl(220 14% 96%);
+	transition: background-color 200ms;
+	outline: none;
+}
+
+.control:focus-within {
+	outline: none;
+	box-shadow:
+		0 0 0 2px hsl(210 40% 96.1%),
+		0 0 0 4px hsl(213 94% 68%);
+}
+
+.control[data-checked] {
+	background-color: hsl(217 91% 60%);
+}
+
+.control[data-disabled] {
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
+.control[data-readonly] {
+	cursor: not-allowed;
+}
+
+.thumb {
+	pointer-events: none;
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+	transform: translateX(4px);
+	border-radius: 9999px;
+	background-color: hsl(0 0% 100%);
+	box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	transition: transform 200ms;
+}
+
+.thumb[data-checked] {
+	transform: translateX(24px);
+}
+
+.label {
+	font-size: 14px;
+	font-weight: 500;
+	color: hsl(224 71% 45%);
+	user-select: none;
+	cursor: pointer;
+}
+
+.description {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(224 71% 45%);
+}
+
+.error {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(0 84% 60%);
+}
+
+.wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.labelDisabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.labelReadOnly {
+	cursor: not-allowed;
+}
+
+.controlInvalid {
+	box-shadow:
+		0 0 0 2px hsl(0 84% 60%),
+		0 0 0 4px hsl(210 40% 96.1%);
+}
+
+.textColumn {
+	display: flex;
+	flex-direction: column;
+}
+
+.stateText {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(224 71% 45%);
+}
+
+.resetButton {
+	align-self: flex-start;
+	border-radius: 6px;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: 500;
+	background-color: hsl(210 40% 96.1%);
+	color: hsl(224 71% 45%);
+	cursor: pointer;
+	transition: background-color 150ms;
+}
+
+.resetButton:hover {
+	background-color: hsl(210 40% 92%);
+}
+
+.groupParent {
+	font-family: ui-sans-serif, system-ui, sans-serif;
+	width: 288px;
+}
+
+.groupTitle {
+	font-size: 14px;
+	font-weight: 600;
+	color: hsl(224 71% 45%);
+}

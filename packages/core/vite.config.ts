@@ -30,5 +30,9 @@ export default defineConfig({
 			"@kobalte/utils": path.resolve(__dirname, "../utils/src/index.ts"),
 		},
 		conditions: ["development", "browser"],
+		dedupe: ["solid-js"],
+	},
+	ssr: {
+		noExternal: true,
 	},
 });

@@ -6,12 +6,12 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useDialogContext } from "./dialog-context";
+} from "../polymorphic/index.tsx";
+import { useDialogContext } from "./dialog-context.tsx";
 
 export interface DialogTitleOptions {}
 
-export interface DialogTitleCommonProps<T extends HTMLElement = HTMLElement> {
+export interface DialogTitleCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 

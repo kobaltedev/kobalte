@@ -169,45 +169,45 @@
 	}
 }
 
-[data-kb-theme="dark"] .combobox__control {
+[data-theme*="dark"] .combobox__control {
 	background-color: hsl(240 4% 16%);
 	border: 1px solid hsl(240 5% 34%);
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .combobox__control:hover {
+[data-theme*="dark"] .combobox__control:hover {
 	border-color: hsl(240 4% 46%);
 }
 
-[data-kb-theme="dark"] .combobox__control[data-invalid] {
+[data-theme*="dark"] .combobox__control[data-invalid] {
 	border-color: hsl(0 72% 51%);
 	color: hsl(0 72% 51%);
 }
 
-[data-kb-theme="dark"] .combobox__input::placeholder {
+[data-theme*="dark"] .combobox__input::placeholder {
 	color: hsl(0 100% 100% / 0.5);
 }
 
-[data-kb-theme="dark"] .combobox__trigger {
+[data-theme*="dark"] .combobox__trigger {
 	background: hsl(240 5% 26%);
 	border-left: 1px solid hsl(240 5% 34%);
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .combobox__content {
+[data-theme*="dark"] .combobox__content {
 	border: 1px solid hsl(240 5% 26%);
 	background-color: hsl(240 4% 16%);
 	box-shadow: none;
 }
 
-[data-kb-theme="dark"] .combobox__section {
+[data-theme*="dark"] .combobox__section {
 	color: hsl(0 100% 100% / 0.7);
 }
 
-[data-kb-theme="dark"] .combobox__item {
+[data-theme*="dark"] .combobox__item {
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .combobox__description {
+[data-theme*="dark"] .combobox__description {
 	color: hsl(0 100% 100% / 0.7);
 }

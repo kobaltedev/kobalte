@@ -1,7 +1,7 @@
 import { visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps } from "@solidjs/web";
-import { useFormControlContext } from "../form-control";
-import { useTimeFieldContext } from "./time-field-context";
+import { useFormControlContext } from "../form-control/index.ts";
+import { useTimeFieldContext } from "./time-field-context.tsx";
 
 export interface TimeFieldHiddenInputProps extends ComponentProps<"input"> {}
 
@@ -32,9 +32,11 @@ const parseTime = (value: string) => {
 	const [hours, minutes, seconds] = time.split(":");
 
 	const parsedHours =
-		period === "PM" ? Number.parseInt(hours) + 12 : Number.parseInt(hours);
-	const parsedMinutes = Number.parseInt(minutes);
-	const parsedSeconds = Number.parseInt(seconds);
+		period === "PM"
+			? Number.parseInt(hours, 10) + 12
+			: Number.parseInt(hours, 10);
+	const parsedMinutes = Number.parseInt(minutes, 10);
+	const parsedSeconds = Number.parseInt(seconds, 10);
 
 	return {
 		hour: Number.isNaN(parsedHours) ? undefined : parsedHours,

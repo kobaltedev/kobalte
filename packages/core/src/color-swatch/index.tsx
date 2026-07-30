@@ -4,7 +4,7 @@ import {
 	type ColorSwatchRootProps,
 	type ColorSwatchRootRenderProps,
 	ColorSwatchRoot as Root,
-} from "./color-swatch-root";
+} from "./color-swatch-root.tsx";
 
 export type {
 	ColorSwatchRootCommonProps,

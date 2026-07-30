@@ -1,0 +1,153 @@
+---
+title: Breadcrumbs
+badges:
+  - icon: npm
+    label: "Since v0.5.0"
+  - label: "@kobalte/core/breadcrumbs"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/breadcrumbs"
+  - icon: aria
+    label: "Breadcrumb"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/"
+---
+
+import { BasicExample, CustomSeparatorExample } from "../../../../examples/breadcrumbs";
+
+# {frontmatter.title}
+
+Show hierarchy and navigational context for a user’s location within an application.
+
+## Import
+
+```ts
+import { Breadcrumbs } from "@kobalte/core/breadcrumbs";
+// or
+import { Root, Link, ... } from "@kobalte/core/breadcrumbs";
+// or (deprecated)
+import { Breadcrumbs } from "@kobalte/core";
+```
+
+## Features
+
+- Support for navigation links via `<a>` elements or custom element types via ARIA.
+- Localized ARIA labeling support for landmark navigation region.
+- Support for disabled breadcrumb links.
+
+## Anatomy
+
+The breadcrumbs consist of:
+
+- **Breadcrumbs:** The root container for a breadcrumbs.
+- **Breadcrumbs.Link:** The breadcrumb link.
+- **Breadcrumbs.Separator:** The visual separator between each breadcrumb items. It will not be visible by screen readers.
+- **ol:** The native HTML `<ol>` element used to contain breadcrumb items.
+- **li:** The native HTML `<li>` element used to contain breadcrumb link and separator.
+
+```tsx
+<Breadcrumbs>
+	<ol>
+		<li>
+			<Breadcrumbs.Link />
+			<Breadcrumbs.Separator />
+		</li>
+	</ol>
+</Breadcrumbs>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/breadcrumbs.tsx#L4-L30"
+
+```
+
+```css title="style.css" tab file="../../../../examples/breadcrumbs.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Custom separator
+
+Use the `separator` prop to provide a default content for all `Breadcrumbs.Separator`. You can pass it a `string` or a SolidJS component.
+
+:::preview
+
+<CustomSeparatorExample />
+
+---
+
+```tsx {1,5}
+import { ChevronRightIcon } from "some-icon-library";
+
+function App() {
+	return (
+		<Breadcrumbs separator={<ChevronRightIcon />}>
+			<ol class="breadcrumbs__list">
+				<li class="breadcrumbs__item">
+					<Breadcrumbs.Link href="/" class="breadcrumbs__link">
+						Home
+					</Breadcrumbs.Link>
+					<Breadcrumbs.Separator class="breadcrumbs__separator" />
+				</li>
+				<li class="breadcrumbs__item">
+					<Breadcrumbs.Link href="/components" class="breadcrumbs__link">
+						Components
+					</Breadcrumbs.Link>
+					<Breadcrumbs.Separator class="breadcrumbs__separator" />
+				</li>
+				<li class="breadcrumbs__item">
+					<Breadcrumbs.Link current class="breadcrumbs__link">
+						Breadcrumbs
+					</Breadcrumbs.Link>
+				</li>
+			</ol>
+		</Breadcrumbs>
+	);
+}
+```
+
+:::
+:::tip
+You can also override each `Breadcrumbs.Separator` content by providing your own `children`.
+:::
+
+## API Reference
+
+### Breadcrumbs
+
+`Breadcrumbs` is equivalent to the `Root` import from `@kobalte/core/breadcrumbs` (and deprecated `Breadcrumbs.Root`).
+
+| Prop         | Description                                                                                                                                                    |
+| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| separator    | `string \| JSX.Element` <br/> The visual separator between each breadcrumb item. It will be used as the default children of `Breadcrumbs.Separator`.           |
+| translations | [`BreadcrumbsIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/breadcrumbs/breadcrumbs.intl.ts) <br/> Localization strings. |
+
+### Breadcrumbs.Link
+
+`Breadcrumbs.Link` consists of [Link](/docs/core/components/link).
+
+| Prop     | Description                                                              |
+| :------- | :----------------------------------------------------------------------- |
+| current  | `boolean` <br/> Whether the breadcrumb link represents the current page. |
+| disabled | `boolean` <br/> Whether the breadcrumb link is disabled.                 |
+
+| Data attribute | Description                                                   |
+| :------------- | :------------------------------------------------------------ |
+| data-current   | Present when the breadcrumb link represents the current page. |
+
+## Rendered elements
+
+| Component               | Default rendered element |
+| :---------------------- | :----------------------- |
+| `Breadcrumbs`           | `nav`                    |
+| `Breadcrumbs.Link`      | `a`                      |
+| `Breadcrumbs.Separator` | `span`                   |

@@ -51,7 +51,13 @@ export function ControlledValueExample() {
 					</ColorArea.Thumb>
 				</ColorArea.Background>
 			</ColorArea>
-			<p class="not-prose text-sm mt-4">
+			<p
+				style={{
+					"font-size": "14px",
+					"margin-top": "16px",
+					"margin-bottom": 0,
+				}}
+			>
 				Current color value: {value().toString("hsl")}
 			</p>
 		</>
@@ -60,7 +66,7 @@ export function ControlledValueExample() {
 
 export function XAndYChannelExample() {
 	const [value, setValue] = createSignal(parseColor("rgb(100, 149, 237)"));
-	const [rChannel, gChannel, bChannel] = value().getColorChannels();
+	const [_rChannel, gChannel, bChannel] = value().getColorChannels();
 	return (
 		<ColorArea
 			class={style.ColorAreaRoot}
@@ -96,7 +102,12 @@ export function HTMLFormExample() {
 		<form
 			ref={formRef}
 			onSubmit={onSubmit}
-			class="flex flex-col items-center space-y-6"
+			style={{
+				display: "flex",
+				"flex-direction": "column",
+				"align-items": "center",
+				gap: "24px",
+			}}
 		>
 			<ColorArea
 				class={style.ColorAreaRoot}
@@ -112,7 +123,7 @@ export function HTMLFormExample() {
 					</ColorArea.Thumb>
 				</ColorArea.Background>
 			</ColorArea>
-			<div class="flex space-x-2">
+			<div style={{ display: "flex", gap: "8px" }}>
 				<button type="reset" class="kb-button">
 					Reset
 				</button>

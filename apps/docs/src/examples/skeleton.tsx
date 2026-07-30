@@ -2,7 +2,6 @@ import { Image } from "@kobalte/core/image";
 import { Skeleton } from "@kobalte/core/skeleton";
 import { ToggleButton } from "@kobalte/core/toggle-button";
 import { createSignal } from "solid-js";
-
 import style from "./skeleton.module.css";
 
 export function BasicExample() {
@@ -23,7 +22,7 @@ export function MultipleSkeletonsExample() {
 				<Skeleton class={style.skeleton} height={50} circle>
 					<Image class={style["multiple-avatar"]}>
 						<Image.Img
-							class="image__img"
+							class={style.image__img}
 							src="https://pbs.twimg.com/profile_images/1509139491671445507/pzWYjlYN_400x400.jpg"
 							alt="Nicole Steeves"
 						/>

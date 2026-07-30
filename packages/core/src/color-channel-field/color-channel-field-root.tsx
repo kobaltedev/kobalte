@@ -7,9 +7,9 @@ import {
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createMemo, createUniqueId, omit } from "solid-js";
-import * as NumberField from "../number-field";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+import * as NumberField from "../number-field/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 
 export interface ColorChannelFieldRootOptions
 	extends Omit<
@@ -40,7 +40,7 @@ export interface ColorChannelFieldRootOptions
 }
 
 export interface ColorChannelFieldRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

@@ -6,11 +6,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type RadioGroupItemDataSet,
 	useRadioGroupItemContext,
-} from "./radio-group-item-context";
+} from "./radio-group-item-context.tsx";
 
 export interface RadioGroupItemIndicatorOptions {
 	/**
@@ -54,7 +54,7 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "ref", "forceMount");
 
-	const [ref, setRef] = createSignal<HTMLElement>();
+	const [_ref, setRef] = createSignal<HTMLElement>();
 
 	const { isMounted: present } = createPresence(
 		() => mergedProps.forceMount || context.isSelected() || undefined,

@@ -1,0 +1,142 @@
+.dropdown-menu__trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	font-weight: 500;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: white;
+	color: hsl(215 25% 27%);
+}
+
+.dropdown-menu__trigger:hover {
+	background-color: hsl(210 40% 96%);
+}
+
+.dropdown-menu__trigger:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+	outline-offset: 2px;
+}
+
+.dropdown-menu__content {
+	min-width: 180px;
+	border-radius: 6px;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: white;
+	padding: 4px 0;
+	box-shadow:
+		0 4px 6px -1px rgb(0 0 0 / 0.1),
+		0 2px 4px -2px rgb(0 0 0 / 0.1);
+	outline: none;
+	z-index: 50;
+	font-size: 14px;
+}
+
+.dropdown-menu__item {
+	position: relative;
+	display: flex;
+	cursor: default;
+	user-select: none;
+	align-items: center;
+	border-radius: 4px;
+	padding: 6px 12px;
+	color: hsl(215 25% 27%);
+	outline: none;
+}
+
+.dropdown-menu__item:hover {
+	background-color: hsl(210 40% 96%);
+	color: hsl(222 47% 11%);
+}
+
+.dropdown-menu__item[data-disabled] {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.dropdown-menu__item--flex-col {
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.dropdown-menu__item--destructive {
+	color: hsl(0 72% 51%);
+}
+
+.dropdown-menu__item--destructive:hover {
+	background-color: hsl(0 86% 97%);
+}
+
+.dropdown-menu__label {
+	padding: 4px 12px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.025em;
+	color: hsl(215 20% 65%);
+}
+
+.dropdown-menu__separator {
+	margin: 4px 0;
+	height: 1px;
+	background-color: hsl(214 32% 91%);
+}
+
+.dropdown-menu__checkbox-item {
+	position: relative;
+	display: flex;
+	cursor: default;
+	user-select: none;
+	align-items: center;
+	padding: 6px 12px 6px 32px;
+	color: hsl(215 25% 27%);
+	outline: none;
+}
+
+.dropdown-menu__checkbox-item:hover {
+	background-color: hsl(210 40% 96%);
+}
+
+.dropdown-menu__checkbox-item[data-disabled] {
+	opacity: 0.5;
+}
+
+.dropdown-menu__item-indicator {
+	position: absolute;
+	left: 8px;
+	display: flex;
+	height: 16px;
+	width: 16px;
+	align-items: center;
+	justify-content: center;
+}
+
+.dropdown-menu__item-label {
+	font-weight: 500;
+}
+
+.dropdown-menu__item-description {
+	font-size: 12px;
+	color: hsl(215 20% 65%);
+}
+
+.dropdown-menu__wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.dropdown-menu__row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.dropdown-menu__state {
+	font-size: 12px;
+	color: hsl(215 16% 47%);
+}

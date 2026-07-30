@@ -1,0 +1,241 @@
+.file-field__root {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	font-family: ui-sans-serif, system-ui, sans-serif;
+	width: 320px;
+}
+
+.file-field__root--w-72 {
+	width: 288px;
+}
+
+.file-field__label {
+	font-size: 14px;
+	font-weight: 500;
+	color: hsl(215 25% 47%);
+}
+
+.file-field__label--disabled {
+	color: hsl(215 16% 67%);
+}
+
+.file-field__trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	border: 1px solid hsl(217 33% 91%);
+	background-color: hsl(0 0% 100%);
+	color: hsl(215 25% 47%);
+	cursor: pointer;
+	transition: background-color 150ms;
+	outline: none;
+}
+
+.file-field__trigger:hover {
+	background-color: hsl(210 40% 98%);
+}
+
+.file-field__trigger:focus-visible {
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+.file-field__dropzone {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	border-radius: 8px;
+	border: 2px dashed hsl(214 20% 80%);
+	background-color: hsl(210 40% 98%);
+	padding: 1.5rem;
+	font-size: 14px;
+	color: hsl(215 16% 67%);
+	cursor: pointer;
+	transition:
+		border-color 150ms,
+		background-color 150ms;
+	outline: none;
+}
+
+.file-field__dropzone:hover {
+	border-color: hsl(213 94% 68%);
+	background-color: hsl(213 98% 97%);
+}
+
+.file-field__dropzone:focus-visible {
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+.file-field__dropzone[data-dragging] {
+	border-color: hsl(217 91% 60%);
+	background-color: hsl(213 98% 97%);
+}
+
+.file-field__dropzone-icon {
+	font-size: 24px;
+}
+
+.file-field__dropzone-hint {
+	font-size: 12px;
+	color: hsl(215 16% 67%);
+}
+
+.file-field__item-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.file-field__item-list--grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
+}
+
+.file-field__item-list--gap-sm {
+	gap: 4px;
+}
+
+.file-field__item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	border-radius: 6px;
+	border: 1px solid hsl(217 33% 91%);
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+.file-field__item--image {
+	position: relative;
+	border-radius: 6px;
+	overflow: hidden;
+	border: 1px solid hsl(217 33% 91%);
+	aspect-ratio: 1;
+}
+
+.file-field__item-content {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.file-field__item-name {
+	font-size: 14px;
+	color: hsl(224 71% 4%);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.file-field__item-name--image {
+	font-size: 12px;
+	color: hsl(0 0% 100%);
+}
+
+.file-field__item-size {
+	font-size: 12px;
+	color: hsl(215 16% 67%);
+}
+
+.file-field__item-preview {
+	height: 100%;
+	width: 100%;
+}
+
+.file-field__item-preview-image {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+
+.file-field__item-delete {
+	flex-shrink: 0;
+	color: hsl(215 16% 67%);
+	cursor: pointer;
+	background: none;
+	border: none;
+	font-size: 18px;
+	line-height: 1;
+	transition: color 150ms;
+	padding: 0;
+}
+
+.file-field__item-delete:hover {
+	color: hsl(0 84% 60%);
+}
+
+.file-field__item-delete--image {
+	color: hsl(0 0% 100% / 0.8);
+	font-size: 14px;
+}
+
+.file-field__item-delete--image:hover {
+	color: hsl(0 0% 100%);
+}
+
+.file-field__item-image-overlay {
+	position: absolute;
+	inset-inline: 0;
+	bottom: 0;
+	background-color: hsl(0 0% 0% / 0.5);
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	opacity: 0;
+	transition: opacity 150ms;
+}
+
+.file-field__item:hover .file-field__item-image-overlay {
+	opacity: 1;
+}
+
+.file-field__item-image-name {
+	font-size: 12px;
+	color: hsl(0 0% 100%);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.file-field__item-image-delete {
+	color: hsl(0 0% 100% / 0.8);
+	cursor: pointer;
+	background: none;
+	border: none;
+	font-size: 14px;
+	line-height: 1;
+	flex-shrink: 0;
+	padding: 0;
+	transition: color 150ms;
+}
+
+.file-field__item-image-delete:hover {
+	color: hsl(0 0% 100%);
+}
+
+.file-field__description {
+	font-size: 12px;
+	color: hsl(215 16% 67%);
+}
+
+.file-field__error {
+	font-size: 12px;
+	color: hsl(0 84% 60%);
+}

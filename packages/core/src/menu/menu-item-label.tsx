@@ -14,8 +14,11 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type MenuItemDataSet, useMenuItemContext } from "./menu-item.context";
+} from "../polymorphic/index.tsx";
+import {
+	type MenuItemDataSet,
+	useMenuItemContext,
+} from "./menu-item.context.tsx";
 
 export interface MenuItemLabelOptions {}
 

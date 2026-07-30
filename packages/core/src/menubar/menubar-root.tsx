@@ -12,7 +12,6 @@ import {
 	mergeDefaultProps,
 	mergeRefs,
 	type Orientation,
-	OverrideComponentProps,
 } from "@kobalte/utils";
 import { interactOutside } from "@solid-primitives/interaction";
 import { isServer, type ValidComponent } from "@solidjs/web";
@@ -29,13 +28,13 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	MenubarContext,
 	type MenubarContextValue,
 	type MenubarDataSet,
-} from "./menubar-context";
+} from "./menubar-context.tsx";
 
 export interface MenubarRootOptions {
 	/** The value of the menu that should be open when initially rendered. Use when you do not need to control the value state. */
@@ -110,7 +109,10 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		},
 	);
 
-	const [lastValue, setLastValue] = createSignal<string | undefined>(undefined, { ownedWrite: true });
+	const [lastValue, setLastValue] = createSignal<string | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const [menuRefs, setMenuRefs] = createSignal<Map<string, Array<HTMLElement>>>(
 		new Map<string, Array<HTMLElement>>(),
@@ -143,7 +145,9 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		registerMenu: (value, refs) => {
 			setMenuRefs((prev) => {
 				const map = new Map<string, Array<HTMLElement>>();
-				prev.forEach((value, key) => map.set(key, value));
+				for (const [key, val] of prev) {
+					map.set(key, val);
+				}
 				map.set(value, refs);
 				return map;
 			});
@@ -152,7 +156,9 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			setMenuRefs((prev) => {
 				prev.delete(value);
 				const map = new Map<string, Array<HTMLElement>>();
-				prev.forEach((value, key) => map.set(key, value));
+				for (const [key, val] of prev) {
+					map.set(key, val);
+				}
 				return map;
 			});
 		},

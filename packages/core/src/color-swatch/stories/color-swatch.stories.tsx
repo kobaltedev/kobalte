@@ -6,7 +6,8 @@ import {
 } from "@solid-primitives/utils/colors";
 import { createSignal, For } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Root } from "../index";
+import { Root } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/ColorSwatch",
@@ -27,9 +28,9 @@ const meta = preview.meta({
 export default meta;
 
 const sizeMap = {
-	sm: "w-6 h-6",
-	md: "w-10 h-10",
-	lg: "w-16 h-16",
+	sm: style.swatchSm,
+	md: style.swatchMd,
+	lg: style.swatchLg,
 };
 
 /** Single color swatch — the basic use case. */
@@ -47,7 +48,7 @@ export const Default = meta.story({
 		return (
 			<Root
 				value={color()}
-				class={`${sizeMap[args.size as keyof typeof sizeMap]} rounded-md border border-slate-200 shadow-sm forced-colors:forced-color-adjust-none`}
+				class={sizeMap[args.size as keyof typeof sizeMap]}
 			/>
 		);
 	},
@@ -63,14 +64,9 @@ export const Palette = meta.story({
 			7,
 		);
 		return (
-			<div class="flex gap-2 font-sans">
+			<div class={style.paletteWrapper}>
 				<For each={scale}>
-					{(color) => (
-						<Root
-							value={color}
-							class="w-10 h-10 rounded-md border border-slate-200 shadow-sm forced-colors:forced-color-adjust-none"
-						/>
-					)}
+					{(color) => <Root value={color} class={style.paletteSwatch} />}
 				</For>
 			</div>
 		);
@@ -83,14 +79,9 @@ export const ColorScale = meta.story({
 	render: () => {
 		const scale = colorScale(parseColor("#000000"), parseColor("#ffffff"), 9);
 		return (
-			<div class="flex gap-1 font-sans">
+			<div class={style.scaleWrapper}>
 				<For each={scale}>
-					{(color) => (
-						<Root
-							value={color}
-							class="w-8 h-8 rounded border border-slate-200 forced-colors:forced-color-adjust-none"
-						/>
-					)}
+					{(color) => <Root value={color} class={style.scaleSwatch} />}
 				</For>
 			</div>
 		);
@@ -103,7 +94,7 @@ export const Transparent = meta.story({
 	render: () => (
 		<Root
 			value={parseColor("rgba(59, 130, 246, 0)")}
-			class="w-10 h-10 rounded-md border border-slate-200 shadow-sm forced-colors:forced-color-adjust-none"
+			class={style.transparentSwatch}
 		/>
 	),
 });
@@ -124,13 +115,13 @@ function SelectableSwatchDemo() {
 	const [selected, setSelected] = createSignal<Color>(palette[4]);
 
 	return (
-		<div class="flex flex-col gap-3 font-sans">
-			<div class="flex gap-2 flex-wrap">
+		<div class={style.selectableWrapper}>
+			<div class={style.selectableGrid}>
 				<For each={palette}>
 					{(color) => (
 						<button
 							type="button"
-							class="rounded-md border-2 p-0.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+							class={style.selectableButton}
 							style={{
 								"border-color":
 									selected().toString("hex") === color.toString("hex")
@@ -139,15 +130,12 @@ function SelectableSwatchDemo() {
 							}}
 							onClick={() => setSelected(color)}
 						>
-							<Root
-								value={color}
-								class="w-8 h-8 rounded forced-colors:forced-color-adjust-none"
-							/>
+							<Root value={color} class={style.selectableSwatch} />
 						</button>
 					)}
 				</For>
 			</div>
-			<p class="text-xs text-slate-500">
+			<p class={style.selectableText}>
 				Selected: <strong>{selected().toString("hex")}</strong>
 			</p>
 		</div>
@@ -163,13 +151,13 @@ export const Selectable = meta.story({
 export const CustomName = meta.story({
 	name: "Custom Name",
 	render: () => (
-		<div class="flex gap-3 items-center font-sans">
+		<div class={style.customNameWrapper}>
 			<Root
 				value={parseColor("#0f172a")}
 				colorName="Midnight Navy"
-				class="w-10 h-10 rounded-md border border-slate-200 shadow-sm"
+				class={style.customNameSwatch}
 			/>
-			<span class="text-sm text-slate-600">Midnight Navy</span>
+			<span class={style.customNameText}>Midnight Navy</span>
 		</div>
 	),
 });

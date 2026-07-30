@@ -8,7 +8,7 @@
 
 import type { ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
-import { Polymorphic, type PolymorphicProps } from "../polymorphic";
+import { Polymorphic, type PolymorphicProps } from "../polymorphic/index.tsx";
 
 export interface BadgeRootOptions {
 	/**
@@ -26,7 +26,7 @@ export interface BadgeRootRenderProps extends BadgeRootCommonProps {
 }
 
 export type BadgeRootProps<
-	T extends ValidComponent | HTMLElement = HTMLElement,
+	_T extends ValidComponent | HTMLElement = HTMLElement,
 > = BadgeRootOptions & Partial<BadgeRootCommonProps>;
 
 export function BadgeRoot<T extends ValidComponent = "span">(

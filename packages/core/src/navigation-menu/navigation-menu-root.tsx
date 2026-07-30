@@ -1,7 +1,7 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import { createPresence } from "@solid-primitives/presence";
-import type { JSX, ValidComponent } from "@solidjs/web";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
@@ -16,16 +16,16 @@ import type {
 	MenubarRootCommonProps,
 	MenubarRootOptions,
 	MenubarRootRenderProps,
-} from "../menubar";
-import { MenubarRoot } from "../menubar/menubar-root";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper, type PopperRootOptions } from "../popper";
-import type { Placement } from "../popper/utils";
+} from "../menubar/index.tsx";
+import { MenubarRoot } from "../menubar/menubar-root.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
+import type { Placement } from "../popper/utils.ts";
 import {
 	NavigationMenuContext,
 	type NavigationMenuContextValue,
 	type NavigationMenuDataSet,
-} from "./navigation-menu-context";
+} from "./navigation-menu-context.tsx";
 
 export interface NavigationMenuRootOptions
 	extends MenubarRootOptions,

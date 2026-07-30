@@ -1,16 +1,16 @@
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, createMemo, omit } from "solid-js";
-import { useLocale } from "../i18n";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import * as Slider from "../slider";
-import { useSliderContext } from "../slider/slider-context";
-import { useColorSliderContext } from "./color-slider-context";
+import { useLocale } from "../i18n/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import * as Slider from "../slider/index.tsx";
+import { useSliderContext } from "../slider/slider-context.tsx";
+import { useColorSliderContext } from "./color-slider-context.tsx";
 
 export interface ColorSliderTrackOptions extends Slider.SliderTrackOptions {}
 
 export interface ColorSliderTrackCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	style?: JSX.CSSProperties | string;
 }

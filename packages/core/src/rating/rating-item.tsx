@@ -14,22 +14,25 @@ import {
 	omit,
 } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { useLocale } from "../i18n";
+import { useFormControlContext } from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type CollectionItemWithRef, createRegisterId } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { useRatingContext } from "./rating-context";
+} from "../polymorphic/index.tsx";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import {
+	type CollectionItemWithRef,
+	createRegisterId,
+} from "../primitives/index.ts";
+import { useRatingContext } from "./rating-context.tsx";
 import {
 	RatingItemContext,
 	type RatingItemContextValue,
 	type RatingItemDataSet,
-} from "./rating-item-context";
-import { getEventPoint, getRelativePoint } from "./utils";
+} from "./rating-item-context.tsx";
+import { getEventPoint, getRelativePoint } from "./utils.ts";
 
 export interface RatingItemOptions {}
 

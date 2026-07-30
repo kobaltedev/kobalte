@@ -10,7 +10,8 @@ import {
 	Thumb,
 	Track,
 	ValueLabel,
-} from "../index";
+} from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Slider",
@@ -19,28 +20,19 @@ const meta = preview.meta({
 
 export default meta;
 
-const trackClass =
-	"relative flex items-center h-2 w-64 rounded-full bg-slate-200 cursor-pointer select-none touch-none";
-const fillClass =
-	"absolute h-full rounded-full bg-blue-500 data-[disabled]:bg-slate-400";
-const thumbClass =
-	"block h-5 w-5 rounded-full border-2 border-blue-500 bg-white shadow" +
-	" focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" +
-	" data-[disabled]:border-slate-400";
-
 /** Single horizontal thumb at the default value. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<div class="flex flex-col gap-2 font-sans">
-			<Root defaultValue={[40]} class="flex flex-col gap-2 w-64">
-				<div class="flex justify-between text-sm text-slate-600">
+		<div class={style.root}>
+			<Root defaultValue={[40]} class={style.sliderColumn}>
+				<div class={style.labelRow}>
 					<Label>Volume</Label>
 					<ValueLabel />
 				</div>
-				<Track class={trackClass}>
-					<Fill class={fillClass} />
-					<Thumb class={thumbClass}>
+				<Track class={style.track}>
+					<Fill class={style.fill} />
+					<Thumb class={style.thumb}>
 						<Input />
 					</Thumb>
 				</Track>
@@ -53,24 +45,20 @@ export const Default = meta.story({
 function ControlledDemo() {
 	const [value, setValue] = createSignal([25]);
 	return (
-		<div class="flex flex-col gap-3 font-sans">
-			<Root
-				value={value()}
-				onChange={setValue}
-				class="flex flex-col gap-2 w-64"
-			>
-				<div class="flex justify-between text-sm text-slate-600">
+		<div class={style.root}>
+			<Root value={value()} onChange={setValue} class={style.sliderColumn}>
+				<div class={style.labelRow}>
 					<Label>Brightness</Label>
 					<ValueLabel />
 				</div>
-				<Track class={trackClass}>
-					<Fill class={fillClass} />
-					<Thumb class={thumbClass}>
+				<Track class={style.track}>
+					<Fill class={style.fill} />
+					<Thumb class={style.thumb}>
 						<Input />
 					</Thumb>
 				</Track>
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style.stateText}>
 				Signal value: <strong>{value()[0]}</strong>
 			</p>
 		</div>
@@ -89,20 +77,19 @@ export const RangeSlider = meta.story({
 		<Root
 			defaultValue={[20, 80]}
 			minStepsBetweenThumbs={5}
-			class="flex flex-col gap-2 w-64 font-sans"
+			getValueLabel={({ values }) => `$${values[0]} – $${values[1]}`}
+			class={[style.sliderColumn, style.root]}
 		>
-			<div class="flex justify-between text-sm text-slate-600">
+			<div class={style.labelRow}>
 				<Label>Price range</Label>
-				<ValueLabel
-					getValueLabel={({ values }) => `$${values[0]} – $${values[1]}`}
-				/>
+				<ValueLabel />
 			</div>
-			<Track class={trackClass}>
-				<Fill class={fillClass} />
-				<Thumb class={thumbClass}>
+			<Track class={style.track}>
+				<Fill class={style.fill} />
+				<Thumb class={style.thumb}>
 					<Input />
 				</Thumb>
-				<Thumb class={thumbClass}>
+				<Thumb class={style.thumb}>
 					<Input />
 				</Thumb>
 			</Track>
@@ -117,15 +104,15 @@ export const StepSize = meta.story({
 		<Root
 			defaultValue={[50]}
 			step={10}
-			class="flex flex-col gap-2 w-64 font-sans"
+			class={[style.sliderColumn, style.root]}
 		>
-			<div class="flex justify-between text-sm text-slate-600">
+			<div class={style.labelRow}>
 				<Label>Opacity</Label>
 				<ValueLabel />
 			</div>
-			<Track class={trackClass}>
-				<Fill class={fillClass} />
-				<Thumb class={thumbClass}>
+			<Track class={style.track}>
+				<Fill class={style.fill} />
+				<Thumb class={style.thumb}>
 					<Input />
 				</Thumb>
 			</Track>
@@ -137,18 +124,14 @@ export const StepSize = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root
-			defaultValue={[60]}
-			disabled
-			class="flex flex-col gap-2 w-64 font-sans"
-		>
-			<div class="flex justify-between text-sm text-slate-600">
+		<Root defaultValue={[60]} disabled class={[style.sliderColumn, style.root]}>
+			<div class={style.labelRow}>
 				<Label>Locked</Label>
 				<ValueLabel />
 			</div>
-			<Track class="relative flex items-center h-2 w-64 rounded-full bg-slate-100 cursor-not-allowed select-none">
-				<Fill class={fillClass} />
-				<Thumb class={thumbClass}>
+			<Track class={style.trackDisabled}>
+				<Fill class={style.fillDisabled} />
+				<Thumb class={style.thumbDisabled}>
 					<Input />
 				</Thumb>
 			</Track>
@@ -163,16 +146,16 @@ export const Vertical = meta.story({
 		<Root
 			defaultValue={[60]}
 			orientation="vertical"
-			class="relative inline-flex flex-col items-center h-48 font-sans"
+			class={style.verticalContainer}
 		>
-			<Label class="text-sm text-slate-600 mb-2">Level</Label>
-			<Track class="relative flex justify-center w-2 flex-1 rounded-full bg-slate-200 cursor-pointer touch-none">
-				<Fill class="absolute w-full rounded-full bg-blue-500 bottom-0 [height:var(--kb-slider-thumb-transform,auto)]" />
-				<Thumb class={thumbClass}>
+			<Label class={style.verticalLabel}>Level</Label>
+			<Track class={style.verticalTrack}>
+				<Fill class={style.verticalFill} />
+				<Thumb class={style.thumb}>
 					<Input />
 				</Thumb>
 			</Track>
-			<ValueLabel class="text-xs text-slate-500 mt-2" />
+			<ValueLabel class={style.verticalValueLabel} />
 		</Root>
 	),
 });
@@ -184,22 +167,20 @@ export const WithValidation = meta.story({
 		<Root
 			defaultValue={[15]}
 			validationState="invalid"
-			class="flex flex-col gap-2 w-64 font-sans"
+			class={[style.sliderColumn, style.root]}
 		>
-			<div class="flex justify-between text-sm text-slate-600">
+			<div class={style.labelRow}>
 				<Label>Threshold</Label>
 				<ValueLabel />
 			</div>
-			<Track class={trackClass}>
-				<Fill class="absolute h-full rounded-full bg-red-500" />
-				<Thumb class="block h-5 w-5 rounded-full border-2 border-red-500 bg-white shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+			<Track class={style.track}>
+				<Fill class={style.fillInvalid} />
+				<Thumb class={style.thumbInvalid}>
 					<Input />
 				</Thumb>
 			</Track>
-			<Description class="text-xs text-slate-500">
-				Set a value above 20.
-			</Description>
-			<ErrorMessage class="text-xs text-red-600">
+			<Description class={style.description}>Set a value above 20.</Description>
+			<ErrorMessage class={style.errorMessage}>
 				Value must be at least 20.
 			</ErrorMessage>
 		</Root>

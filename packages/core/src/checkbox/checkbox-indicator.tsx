@@ -5,13 +5,16 @@ import { createSignal, omit, Show } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
+} from "../polymorphic/index.tsx";
+import {
+	type CheckboxDataSet,
+	useCheckboxContext,
+} from "./checkbox-context.tsx";
 
 export interface CheckboxIndicatorOptions {
 	/**
@@ -48,7 +51,7 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
-	const [ref, setRef] = createSignal<HTMLElement>();
+	const [_ref, setRef] = createSignal<HTMLElement>();
 
 	const mergedProps = mergeDefaultProps(
 		{

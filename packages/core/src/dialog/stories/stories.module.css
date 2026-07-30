@@ -1,0 +1,259 @@
+.dialog__trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	font-weight: 500;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: white;
+	color: hsl(215 25% 27%);
+	transition:
+		250ms background-color,
+		250ms color;
+}
+
+.dialog__trigger:hover {
+	background-color: hsl(210 40% 96%);
+}
+
+.dialog__trigger:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+	outline-offset: 2px;
+}
+
+.dialog__overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 50;
+	background-color: rgb(0 0 0 / 0.4);
+	backdrop-filter: blur(4px);
+}
+
+.dialog__content {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	z-index: 50;
+	width: 100%;
+	max-width: 448px;
+	transform: translate(-50%, -50%);
+	border-radius: 8px;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: white;
+	padding: 24px;
+	box-shadow:
+		0 20px 25px -5px rgb(0 0 0 / 0.1),
+		0 8px 10px -6px rgb(0 0 0 / 0.1);
+	outline: none;
+}
+
+.dialog__content--sm {
+	max-width: 384px;
+}
+
+.dialog__close {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	display: inline-flex;
+	height: 28px;
+	width: 28px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	color: hsl(215 20% 65%);
+}
+
+.dialog__close:hover {
+	background-color: hsl(210 40% 96%);
+	color: hsl(215 25% 27%);
+}
+
+.dialog__close:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+.dialog__title {
+	margin-bottom: 4px;
+	font-size: 16px;
+	font-weight: 600;
+	color: hsl(222 47% 11%);
+}
+
+.dialog__description {
+	font-size: 14px;
+	color: hsl(215 16% 47%);
+}
+
+.dialog__description--mb {
+	margin-bottom: 16px;
+}
+
+.dialog__action-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	font-weight: 500;
+	background-color: hsl(222 47% 11%);
+	color: white;
+}
+
+.dialog__action-btn:hover {
+	background-color: hsl(217 33% 17%);
+}
+
+.dialog__action-btn:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+	outline-offset: 2px;
+}
+
+.dialog__cancel-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	font-weight: 500;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: white;
+	color: hsl(215 25% 27%);
+}
+
+.dialog__cancel-btn:hover {
+	background-color: hsl(210 40% 96%);
+}
+
+.dialog__cancel-btn:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+	outline-offset: 2px;
+}
+
+.dialog__footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+.dialog__wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.dialog__row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.dialog__state {
+	font-size: 12px;
+	color: hsl(215 16% 47%);
+}
+
+.dialog__form {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.dialog__field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.dialog__label {
+	font-size: 12px;
+	font-weight: 500;
+	color: hsl(215 19% 35%);
+}
+
+.dialog__input {
+	border-radius: 6px;
+	border: 1px solid hsl(214 32% 91%);
+	padding: 6px 10px;
+	font-size: 14px;
+}
+
+.dialog__input:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+.dialog__textarea {
+	border-radius: 6px;
+	border: 1px solid hsl(214 32% 91%);
+	padding: 6px 10px;
+	font-size: 14px;
+	resize: none;
+}
+
+.dialog__textarea:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+.dialog__destructive-trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	font-weight: 500;
+	background-color: hsl(0 72% 51%);
+	color: white;
+	transition:
+		250ms background-color,
+		250ms color;
+}
+
+.dialog__destructive-trigger:hover {
+	background-color: hsl(0 74% 42%);
+}
+
+.dialog__destructive-trigger:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(0 84% 60%);
+	outline-offset: 2px;
+}
+
+.dialog__destructive-action {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	font-weight: 500;
+	background-color: hsl(0 72% 51%);
+	color: white;
+}
+
+.dialog__destructive-action:hover {
+	background-color: hsl(0 74% 42%);
+}
+
+.dialog__destructive-action:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(0 84% 60%);
+	outline-offset: 2px;
+}
+
+.dialog__form-footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 4px;
+}

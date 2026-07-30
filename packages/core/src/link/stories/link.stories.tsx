@@ -1,5 +1,6 @@
 import preview from "../../../../../.storybook/preview.js";
-import { Root } from "../index";
+import { Root } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Link",
@@ -8,17 +9,11 @@ const meta = preview.meta({
 
 export default meta;
 
-const baseClass =
-	"font-sans text-sm text-blue-600 underline underline-offset-2 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 rounded-sm";
-
-const disabledClass =
-	"font-sans text-sm text-slate-400 underline underline-offset-2 cursor-not-allowed data-[disabled]:pointer-events-none";
-
 /** A standard anchor link. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={baseClass} href="https://kobalte.dev">
+		<Root class={style.link__base} href="https://kobalte.dev">
 			Kobalte docs
 		</Root>
 	),
@@ -29,7 +24,7 @@ export const ExternalLink = meta.story({
 	name: "External Link",
 	render: () => (
 		<Root
-			class={baseClass}
+			class={style.link__base}
 			href="https://kobalte.dev"
 			target="_blank"
 			rel="noopener noreferrer"
@@ -43,7 +38,7 @@ export const ExternalLink = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<Root class={disabledClass} href="https://kobalte.dev" disabled>
+		<Root class={style.link__disabled} href="https://kobalte.dev" disabled>
 			Disabled link
 		</Root>
 	),
@@ -55,7 +50,7 @@ export const AsButton = meta.story({
 	render: () => (
 		<Root
 			as="button"
-			class={`${baseClass} bg-transparent border-0 p-0 cursor-pointer`}
+			class={[style.link__base, style["link__as-button"]]}
 			onClick={() => alert("navigate!")}
 		>
 			Navigate (button)
@@ -67,14 +62,14 @@ export const AsButton = meta.story({
 export const InProse = meta.story({
 	name: "In Prose",
 	render: () => (
-		<p class="font-sans text-sm text-slate-700 max-w-xs leading-relaxed">
+		<p class={style.link__prose}>
 			Kobalte is a UI toolkit for building accessible web applications with{" "}
-			<Root class={baseClass} href="https://www.solidjs.com">
+			<Root class={style.link__base} href="https://www.solidjs.com">
 				SolidJS
 			</Root>
 			. It provides a collection of low-level, unstyled components and
 			primitives. Learn more on the{" "}
-			<Root class={baseClass} href="https://kobalte.dev">
+			<Root class={style.link__base} href="https://kobalte.dev">
 				Kobalte website
 			</Root>
 			.

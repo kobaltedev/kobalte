@@ -8,7 +8,6 @@
 
 import type { Accessor, Setter } from "solid-js";
 
-
 /** A size value: a fraction (0–1) or a CSS pixel string like `"200px"`. */
 export type ResizableSize = number | `${number}px`;
 
@@ -80,7 +79,6 @@ export type HoverState =
 	| null;
 export type CursorStyle = "horizontal" | "vertical" | "both" | null;
 
-
 const PRECISION = 6;
 
 export const fixToPrecision = (value: number) =>
@@ -116,7 +114,6 @@ export const splitPanels = (props: {
 	);
 	return [preceding, following];
 };
-
 
 const getDistributablePercentage = (props: {
 	desiredPercentage: number;
@@ -488,7 +485,8 @@ export const resizePanel = (props: {
 				? followingPanels
 				: [props.panel, ...followingPanels];
 
-		if (props.strategy === "preceding") props.deltaPercentage = -props.deltaPercentage;
+		if (props.strategy === "preceding")
+			props.deltaPercentage = -props.deltaPercentage;
 
 		const distributable = getDistributablePercentage({
 			desiredPercentage: props.deltaPercentage,
@@ -501,7 +499,9 @@ export const resizePanel = (props: {
 		applyResize({
 			initialSizes: props.initialSizes,
 			collapsible: true,
-			resizeActions: [{ precedingPanels, followingPanels, deltaPercentage: distributable }],
+			resizeActions: [
+				{ precedingPanels, followingPanels, deltaPercentage: distributable },
+			],
 			resizableData: props.resizableData,
 		});
 	}
@@ -605,7 +605,9 @@ export const deltaResize = (props: {
 		applyResize({
 			initialSizes: props.initialSizes,
 			collapsible: true,
-			resizeActions: [{ precedingPanels, followingPanels, deltaPercentage: distributable }],
+			resizeActions: [
+				{ precedingPanels, followingPanels, deltaPercentage: distributable },
+			],
 			resizableData: props.resizableData,
 		});
 
@@ -651,23 +653,22 @@ export const deltaResize = (props: {
 	}
 };
 
-
 let globalCursorStyle: CursorStyle = null;
 let cursorStyleElement: HTMLStyleElement | null = null;
 let globalResizeConstraints = 0b0000;
 let cachedCursorStyle: string | null = null;
 
 const constraintToCursorMap: Record<number, string> = {
-	0b0001: "e-resize",
-	0b0010: "w-resize",
-	0b0011: "ew-resize",
-	0b0100: "s-resize",
-	0b1000: "n-resize",
-	0b1100: "ns-resize",
-	0b0101: "se-resize",
-	0b1001: "ne-resize",
-	0b0110: "sw-resize",
-	0b1010: "nw-resize",
+	1: "e-resize",
+	2: "w-resize",
+	3: "ew-resize",
+	4: "s-resize",
+	8: "n-resize",
+	12: "ns-resize",
+	5: "se-resize",
+	9: "ne-resize",
+	6: "sw-resize",
+	10: "nw-resize",
 };
 
 const updateCursorStyle = () => {
@@ -781,7 +782,6 @@ export const handleResizeConstraints = (props: {
 	}
 };
 
-
 const handles: ResizableHandleInstance[] = [];
 let dragStartPos: { x: number; y: number } | null = null;
 let globalHovered: HoverState = null;
@@ -797,7 +797,10 @@ export const registerHandle = (
 
 	for (const h of handles) {
 		for (const compare of handles) {
-			if (h.orientation === compare.orientation || h.element === compare.element)
+			if (
+				h.orientation === compare.orientation ||
+				h.element === compare.element
+			)
 				continue;
 
 			const hRect = h.element.getBoundingClientRect();
@@ -941,7 +944,11 @@ const onMove = (x: number, y: number, altKey: boolean) => {
 const onDragEnd = (event: PointerEvent | TouchEvent | MouseEvent) => {
 	for (const handle of handles) {
 		if (!handle.dragging()) {
-			if (handle.hovered() || handle.focused() || handle.hoveredAsIntersection()) {
+			if (
+				handle.hovered() ||
+				handle.focused() ||
+				handle.hoveredAsIntersection()
+			) {
 				handle.setActive(true);
 				if (handle.handleCursorStyle()) {
 					setGlobalCursorStyle(handle.orientation);

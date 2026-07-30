@@ -79,7 +79,13 @@ const config: StorybookConfig = {
 						).pathname,
 					},
 				],
-				dedupe: ["react", "react-dom", "solid-js", "@solidjs/signals", "@solidjs/web"],
+				dedupe: [
+					"react",
+					"react-dom",
+					"solid-js",
+					"@solidjs/signals",
+					"@solidjs/web",
+				],
 			},
 		});
 	},

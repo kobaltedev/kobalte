@@ -10,12 +10,12 @@ import {
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createMemo, createUniqueId, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import * as Slider from "../slider";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import * as Slider from "../slider/index.tsx";
 import {
 	ColorSliderContext,
 	type ColorSliderContextValue,
-} from "./color-slider-context";
+} from "./color-slider-context.tsx";
 
 export interface ColorSliderRootOptions {
 	/** The controlled values of the slider. */
@@ -78,7 +78,7 @@ export interface ColorSliderRootOptions {
 }
 
 export interface ColorSliderRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

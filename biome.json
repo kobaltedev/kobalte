@@ -4,16 +4,16 @@
 		"includes": [
 			"**",
 			"!tsconfig.json",
-			"!**/*/netlify/**/*",
+			"!**/netlify",
 			"!**/package.json",
-			"!.claude"
+			"!.claude",
+			"!**/public"
 		]
 	},
 	"css": {
 		"parser": {
 			"cssModules": false,
-			"allowWrongLineComments": false,
-			"tailwindDirectives": true
+			"allowWrongLineComments": false
 		}
 	},
 	"vcs": {
@@ -28,12 +28,14 @@
 			"a11y": {
 				"noAutofocus": "off",
 				"noNoninteractiveTabindex": "off",
-				"noNoninteractiveElementToInteractiveRole": "off"
+				"noNoninteractiveElementToInteractiveRole": "off",
+				"noSvgWithoutTitle": "off"
 			},
 			"suspicious": {
 				"noEmptyInterface": "off",
 				"noExplicitAny": "off",
-				"noAssignInExpressions": "off"
+				"noAssignInExpressions": "off",
+				"noDocumentCookie": "off"
 			},
 			"style": {
 				"noNonNullAssertion": "off"
@@ -42,5 +44,17 @@
 				"noBannedTypes": "off"
 			}
 		}
-	}
+	},
+	"overrides": [
+		{
+			"includes": ["**/*.stories.tsx"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"useValidAnchor": "off"
+					}
+				}
+			}
+		}
+	]
 }

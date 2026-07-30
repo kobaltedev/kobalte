@@ -7,19 +7,17 @@
  * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-	OverrideComponentProps,
-} from "@kobalte/utils";
+import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
 
-import * as Button from "../button";
-import { useFormControlContext } from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
+import * as Button from "../button/index.tsx";
+import { useFormControlContext } from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import {
+	type ComboboxDataSet,
+	useComboboxContext,
+} from "./combobox-context.tsx";
 
 export interface ComboboxTriggerOptions {}
 

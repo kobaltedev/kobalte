@@ -16,17 +16,20 @@ import {
 	omit,
 	type ParentProps,
 } from "solid-js";
-import { Popper, type PopperRootOptions } from "../popper";
-import { createDisclosureState, createRegisterId } from "../primitives";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
+import {
+	createDisclosureState,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	POPOVER_INTL_TRANSLATIONS,
 	type PopoverIntlTranslations,
-} from "./popover.intl";
+} from "./popover.intl.ts";
 import {
 	PopoverContext,
 	type PopoverContextValue,
 	type PopoverDataSet,
-} from "./popover-context";
+} from "./popover-context.tsx";
 
 export interface PopoverRootOptions
 	extends Omit<

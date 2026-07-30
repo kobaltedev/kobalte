@@ -1,10 +1,16 @@
+import { getHtmlProps } from "@kobalte/solidbase/server";
 import { createHandler, StartServer } from "@solidjs/start/server";
 
 export default createHandler(() => (
 	<StartServer
 		document={({ assets, children, scripts }) => (
-			<html lang="en">
+			<html {...getHtmlProps()}>
 				<head>
+					<title>Kobalte</title>
+					<meta
+						name="description"
+						content="Unstyled components and primitives for building accessible web apps and design systems with SolidJS."
+					/>
 					<meta charset="utf-8" />
 					<meta name="viewport" content="width=device-width, initial-scale=1" />
 					<link rel="icon" href="/favicon.ico" />

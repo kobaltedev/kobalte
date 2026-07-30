@@ -9,7 +9,7 @@ import {
 	type FormControlErrorMessageOptions as SelectErrorMessageOptions,
 	type FormControlErrorMessageProps as SelectErrorMessageProps,
 	type FormControlErrorMessageRenderProps as SelectErrorMessageRenderProps,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	Item,
 	ItemDescription,
@@ -33,54 +33,54 @@ import {
 	type ListboxItemProps as SelectItemProps,
 	type ListboxItemRenderProps as SelectItemRenderProps,
 	type ListboxSectionProps as SelectSectionProps,
-} from "../listbox";
+} from "../listbox/index.tsx";
 import {
 	Arrow,
 	type PopperArrowCommonProps as SelectArrowCommonProps,
 	type PopperArrowOptions as SelectArrowOptions,
 	type PopperArrowProps as SelectArrowProps,
 	type PopperArrowRenderProps as SelectArrowRenderProps,
-} from "../popper";
+} from "../popper/index.tsx";
 import type {
 	SelectBaseItemComponentProps as SelectRootItemComponentProps,
 	SelectBaseSectionComponentProps as SelectRootSectionComponentProps,
-} from "./select-base";
+} from "./select-base.tsx";
 import {
 	SelectContent as Content,
 	type SelectContentCommonProps,
 	type SelectContentOptions,
 	type SelectContentProps,
 	type SelectContentRenderProps,
-} from "./select-content";
+} from "./select-content.tsx";
 import {
 	SelectHiddenSelect as HiddenSelect,
 	type SelectHiddenSelectProps,
-} from "./select-hidden-select";
+} from "./select-hidden-select.tsx";
 import {
 	SelectIcon as Icon,
 	type SelectIconCommonProps,
 	type SelectIconOptions,
 	type SelectIconProps,
 	type SelectIconRenderProps,
-} from "./select-icon";
+} from "./select-icon.tsx";
 import {
 	SelectLabel as Label,
 	type SelectLabelCommonProps,
 	type SelectLabelOptions,
 	type SelectLabelProps,
 	type SelectLabelRenderProps,
-} from "./select-label";
+} from "./select-label.tsx";
 import {
 	SelectListbox as Listbox,
 	type SelectListboxCommonProps,
 	type SelectListboxOptions,
 	type SelectListboxProps,
 	type SelectListboxRenderProps,
-} from "./select-listbox";
+} from "./select-listbox.tsx";
 import {
 	SelectPortal as Portal,
 	type SelectPortalProps,
-} from "./select-portal";
+} from "./select-portal.tsx";
 import {
 	SelectRoot as Root,
 	type SelectMultipleSelectionOptions,
@@ -89,21 +89,21 @@ import {
 	type SelectRootProps,
 	type SelectRootRenderProps,
 	type SelectSingleSelectionOptions,
-} from "./select-root";
+} from "./select-root.tsx";
 import {
 	type SelectTriggerCommonProps,
 	type SelectTriggerOptions,
 	type SelectTriggerProps,
 	type SelectTriggerRenderProps,
 	SelectTrigger as Trigger,
-} from "./select-trigger";
+} from "./select-trigger.tsx";
 import {
 	type SelectValueCommonProps,
 	type SelectValueOptions,
 	type SelectValueProps,
 	type SelectValueRenderProps,
 	SelectValue as Value,
-} from "./select-value";
+} from "./select-value.tsx";
 
 export type {
 	SelectArrowCommonProps,
@@ -213,4 +213,7 @@ export const Select = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type SelectContextValue, useSelectContext } from "./select-context";
+export {
+	type SelectContextValue,
+	useSelectContext,
+} from "./select-context.tsx";

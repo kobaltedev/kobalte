@@ -7,18 +7,21 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createEffect, createMemo, omit } from "solid-js";
-import { createFormControlField, useFormControlContext } from "../form-control";
-import { announce, clearAnnouncer } from "../live-announcer";
+import {
+	createFormControlField,
+	useFormControlContext,
+} from "../form-control/index.ts";
+import { announce, clearAnnouncer } from "../live-announcer/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	SPIN_BUTTON_INTL_TRANSLATIONS,
 	type SpinButtonIntlTranslations,
-} from "../spin-button/spin-button.intl";
-import { useNumberFieldContext } from "./number-field-context";
+} from "../spin-button/spin-button.intl.ts";
+import { useNumberFieldContext } from "./number-field-context.tsx";
 
 export interface NumberFieldInputOptions {
 	/** The localized strings of the component. */
@@ -150,7 +153,6 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 		}
 
 		switch (e.key) {
-			// biome-ignore lint/suspicious/noFallthroughSwitchClause: PageUp falls through to ArrowUp
 			case "PageUp":
 				e.preventDefault();
 				context.varyValue(context.largeStep());
@@ -160,7 +162,6 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 				e.preventDefault();
 				context.varyValue(context.step());
 				break;
-			// biome-ignore lint/suspicious/noFallthroughSwitchClause: PageDown falls through to ArrowDown
 			case "PageDown":
 				e.preventDefault();
 				context.varyValue(-context.largeStep());
@@ -244,13 +245,10 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			onFocus={onFocus}
 			onBlur={onBlur}
 			onChange={(e) => {
-				// @ts-expect-error: Polymorphic event type
 				callHandler(e, mergedProps.onChange);
 				context.format();
 			}}
-			// @ts-expect-error: Polymorphic event type
 			onWheel={(e) => {
-				// @ts-expect-error: Polymorphic event type
 				callHandler(e, mergedProps.onWheel);
 				if (
 					!context.changeOnWheel() ||

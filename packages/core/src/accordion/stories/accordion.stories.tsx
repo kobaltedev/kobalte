@@ -5,7 +5,8 @@ import {
 	Item as AccordionItem,
 	Root as AccordionRoot,
 	Trigger as AccordionTrigger,
-} from "../index";
+} from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Accordion",
@@ -27,20 +28,12 @@ function Chevron() {
 			stroke-linecap="round"
 			stroke-linejoin="round"
 			aria-hidden="true"
-			class="shrink-0 transition-transform duration-200 group-data-[expanded]:rotate-180"
+			class={style.accordion__chevron}
 		>
 			<path d="M6 9l6 6 6-6" />
 		</svg>
 	);
 }
-
-const triggerClass =
-	"group flex w-full items-center justify-between bg-white px-4 py-3.5 text-left text-sm font-medium text-slate-900 hover:bg-slate-50 transition-colors data-[expanded]:text-blue-600 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 cursor-pointer";
-
-const contentClass = "overflow-hidden bg-slate-50";
-
-const rootClass =
-	"w-80 divide-y divide-slate-200 rounded-lg border border-slate-200 overflow-hidden font-sans";
 
 interface ItemProps {
 	value: string;
@@ -52,16 +45,14 @@ interface ItemProps {
 function Item(props: ItemProps) {
 	return (
 		<AccordionItem value={props.value} disabled={props.disabled}>
-			<AccordionHeader class="flex">
-				<AccordionTrigger class={triggerClass}>
+			<AccordionHeader class={style.accordion__header}>
+				<AccordionTrigger class={style.accordion__trigger}>
 					<span>{props.question}</span>
 					<Chevron />
 				</AccordionTrigger>
 			</AccordionHeader>
-			<AccordionContent class={contentClass}>
-				<p class="px-4 py-3 text-sm text-slate-600 leading-relaxed m-0">
-					{props.answer}
-				</p>
+			<AccordionContent class={style.accordion__content}>
+				<p class={style.accordion__contentText}>{props.answer}</p>
 			</AccordionContent>
 		</AccordionItem>
 	);
@@ -89,7 +80,7 @@ export const Default = meta.story({
 		<AccordionRoot
 			collapsible={args.collapsible}
 			multiple={args.multiple}
-			class={rootClass}
+			class={style.accordion__root}
 		>
 			<Item
 				value="item-1"
@@ -114,7 +105,7 @@ export const Default = meta.story({
 export const Multiple = meta.story({
 	name: "Multiple",
 	render: () => (
-		<AccordionRoot multiple collapsible class={rootClass}>
+		<AccordionRoot multiple collapsible class={style.accordion__root}>
 			<Item
 				value="item-1"
 				question="Section one"
@@ -138,7 +129,11 @@ export const Multiple = meta.story({
 export const DefaultOpen = meta.story({
 	name: "Default Open",
 	render: () => (
-		<AccordionRoot defaultValue={["item-2"]} collapsible class={rootClass}>
+		<AccordionRoot
+			defaultValue={["item-2"]}
+			collapsible
+			class={style.accordion__root}
+		>
 			<Item
 				value="item-1"
 				question="First item"
@@ -172,7 +167,7 @@ export const WithDisabledItem = meta.story({
 		},
 	},
 	render: (args) => (
-		<AccordionRoot collapsible class={rootClass}>
+		<AccordionRoot collapsible class={style.accordion__root}>
 			<Item
 				value="item-1"
 				disabled={args.disabledItem === "item-1"}
@@ -203,7 +198,7 @@ export const WithDisabledItem = meta.story({
 export const Animated = meta.story({
 	name: "Animated",
 	render: () => (
-		<AccordionRoot collapsible class={rootClass}>
+		<AccordionRoot collapsible class={style.accordion__root}>
 			<AnimatedItem
 				value="item-1"
 				question="Is it accessible?"
@@ -226,17 +221,15 @@ export const Animated = meta.story({
 function AnimatedItem(props: ItemProps) {
 	return (
 		<AccordionItem value={props.value} forceMount>
-			<AccordionHeader class="flex">
-				<AccordionTrigger class={triggerClass}>
+			<AccordionHeader class={style.accordion__header}>
+				<AccordionTrigger class={style.accordion__trigger}>
 					<span>{props.question}</span>
 					<Chevron />
 				</AccordionTrigger>
 			</AccordionHeader>
-			<AccordionContent class="grid bg-slate-50 transition-[grid-template-rows] duration-300 ease-out data-[expanded]:grid-rows-[1fr] data-[closed]:grid-rows-[0fr]">
-				<div class="overflow-hidden">
-					<p class="px-4 py-3 text-sm text-slate-600 leading-relaxed m-0">
-						{props.answer}
-					</p>
+			<AccordionContent class={style["accordion__content--animated"]}>
+				<div class={style.accordion__animatedInner}>
+					<p class={style.accordion__contentText}>{props.answer}</p>
 				</div>
 			</AccordionContent>
 		</AccordionItem>
@@ -268,7 +261,7 @@ export const Controlled = meta.story({
 				...(args.item3 ? ["item-3"] : []),
 			]}
 			multiple
-			class={rootClass}
+			class={style.accordion__root}
 		>
 			<Item
 				value="item-1"

@@ -1,0 +1,142 @@
+.menubar__root {
+	display: flex;
+	align-items: center;
+	gap: 0.125rem;
+	border-radius: 0.375rem;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: white;
+	padding: 0.25rem 0.25rem;
+	box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.menubar__trigger {
+	border-radius: 0.25rem;
+	padding: 0.375rem 0.75rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: hsl(215 25% 27%);
+}
+
+.menubar__trigger:hover {
+	background-color: hsl(210 40% 96.1%);
+}
+
+.menubar__trigger:focus {
+	outline: none;
+}
+
+.menubar__trigger:focus-visible {
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+.menubar__trigger[data-expanded] {
+	background-color: hsl(210 40% 96.1%);
+	color: hsl(222 47% 11%);
+}
+
+.menubar__content {
+	min-width: 180px;
+	border-radius: 0.375rem;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: white;
+	padding: 0.25rem 0;
+	box-shadow:
+		0 4px 6px -1px rgb(0 0 0 / 0.1),
+		0 2px 4px -2px rgb(0 0 0 / 0.1);
+	outline: none;
+	z-index: 50;
+	font-size: 0.875rem;
+}
+
+.menubar__item {
+	position: relative;
+	display: flex;
+	cursor: default;
+	user-select: none;
+	align-items: center;
+	border-radius: 0.25rem;
+	padding: 0.375rem 0.75rem;
+	color: hsl(215 25% 27%);
+	outline: none;
+}
+
+.menubar__item:hover {
+	background-color: hsl(210 40% 96.1%);
+	color: hsl(222 47% 11%);
+}
+
+.menubar__item[data-disabled] {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.menubar__item--flex-col {
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.menubar__item--destructive {
+	color: hsl(0 72% 51%);
+}
+
+.menubar__item--destructive:hover {
+	background-color: hsl(0 86% 97%);
+}
+
+.menubar__checkboxItem {
+	position: relative;
+	display: flex;
+	cursor: default;
+	user-select: none;
+	align-items: center;
+	padding: 0.375rem 0.75rem 0.375rem 2rem;
+	color: hsl(215 25% 27%);
+	outline: none;
+}
+
+.menubar__checkboxItem:hover {
+	background-color: hsl(210 40% 96.1%);
+}
+
+.menubar__checkboxItem[data-disabled] {
+	opacity: 0.5;
+}
+
+.menubar__itemIndicator {
+	position: absolute;
+	left: 0.5rem;
+	display: flex;
+	height: 1rem;
+	width: 1rem;
+	align-items: center;
+	justify-content: center;
+}
+
+.menubar__label {
+	padding: 0.25rem 0.75rem;
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.025em;
+	color: hsl(215 20% 65%);
+}
+
+.menubar__separator {
+	margin: 0.25rem 0;
+	height: 1px;
+	background-color: hsl(214 32% 91%);
+}
+
+.menubar__itemLabel {
+	font-weight: 500;
+}
+
+.menubar__itemDescription {
+	font-size: 0.75rem;
+	color: hsl(215 20% 65%);
+}
+
+.menubar__capitalize {
+	text-transform: capitalize;
+}

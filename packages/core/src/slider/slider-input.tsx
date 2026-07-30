@@ -10,9 +10,9 @@ import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
-} from "../form-control";
-import { useSliderContext } from "./slider-context";
-import { useThumbContext } from "./slider-thumb";
+} from "../form-control/index.ts";
+import { useSliderContext } from "./slider-context.tsx";
+import { useThumbContext } from "./slider-thumb.tsx";
 
 export interface SliderInputProps extends ComponentProps<"input"> {
 	style?: JSX.CSSProperties | string;
@@ -99,7 +99,6 @@ export function SliderInput(props: SliderInputProps) {
 			aria-invalid={
 				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() ? "true" : undefined}
 			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
 			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onChange={onChange}

@@ -20,28 +20,31 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal, createRegisterId } from "../primitives";
+} from "../polymorphic/index.tsx";
+import {
+	createControllableSignal,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	TIME_FIELD_INTL_MESSAGES,
 	type TimeFieldIntlTranslations,
-} from "./time-field.intl";
+} from "./time-field.intl.ts";
 import {
 	TimeFieldContext,
 	type TimeFieldContextValue,
-} from "./time-field-context";
-import { TimeFieldValueDescription } from "./time-field-value-description";
+} from "./time-field-context.tsx";
+import { TimeFieldValueDescription } from "./time-field-value-description.tsx";
 import type {
 	SegmentType,
 	Time,
 	TimeFieldGranularity,
 	TimeFieldHourCycle,
-} from "./types";
+} from "./types.ts";
 
 export interface TimeFieldRootOptions {
 	/** The current value (controlled). */
@@ -203,7 +206,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	>({
 		value: () => mergedProps.value,
 		defaultValue: () => mergedProps.defaultValue,
-		// @ts-ignore
+		// @ts-expect-error
 		onChange: (value) => mergedProps.onChange?.(value!),
 	});
 
@@ -233,12 +236,15 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 		const minTime = Number.parseInt(
 			`${(mergedProps.min?.hour ?? "00").toString().padStart(2, "0")}${(mergedProps.min?.minute ?? "00").toString().padStart(2, "0")}${(mergedProps.min?.second ?? "00").toString().padStart(2, "0")}`,
+			10,
 		);
 		const maxTime = Number.parseInt(
 			`${(mergedProps.max?.hour ?? "23").toString().padStart(2, "0")}${(mergedProps.max?.minute ?? "59").toString().padStart(2, "0")}${(mergedProps.max?.second ?? "59").toString().padStart(2, "0")}`,
+			10,
 		);
 		const val = Number.parseInt(
 			`${(value()?.hour ?? "00").toString().padStart(2, "0")}${(value()?.minute ?? "00").toString().padStart(2, "0")}${(value()?.second ?? "00").toString().padStart(2, "0")}`,
+			10,
 		);
 
 		if (val > maxTime || val < minTime) return "invalid";

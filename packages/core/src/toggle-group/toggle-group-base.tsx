@@ -7,21 +7,24 @@ import {
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createSignal, createUniqueId, omit } from "solid-js";
-import { useLocale } from "../i18n";
-import { createListState } from "../list";
+import { useLocale } from "../i18n/index.tsx";
+import { createListState } from "../list/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
-import { createSelectableCollection, type SelectionMode } from "../selection";
-import { TabsKeyboardDelegate } from "../tabs/tabs-keyboard-delegate";
+} from "../polymorphic/index.tsx";
+import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import {
+	createSelectableCollection,
+	type SelectionMode,
+} from "../selection/index.ts";
+import { TabsKeyboardDelegate } from "../tabs/tabs-keyboard-delegate.ts";
 import {
 	ToggleGroupContext,
 	type ToggleGroupContextValue,
-} from "./toggle-group-context";
+} from "./toggle-group-context.tsx";
 
 export interface ToggleGroupBaseOptions {
 	/** The controlled value of the toggle group. */

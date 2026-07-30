@@ -1,0 +1,35 @@
+.breadcrumbs__root {
+	font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.breadcrumbs__list {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+}
+
+.breadcrumbs__link {
+	color: hsl(221 83% 53%);
+}
+
+.breadcrumbs__link:hover {
+	text-decoration: underline;
+}
+
+.breadcrumbs__link[data-current] {
+	color: hsl(215 25% 27%);
+	font-weight: 500;
+	pointer-events: none;
+}
+
+.breadcrumbs__link[data-disabled] {
+	opacity: 0.4;
+	pointer-events: none;
+}
+
+.breadcrumbs__separator {
+	color: hsl(215 20% 65%);
+	user-select: none;
+}

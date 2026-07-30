@@ -1,0 +1,101 @@
+/* ─── Panel ────────────────────────────────────────────────────────────────── */
+
+.i18n__panel {
+	font-family: sans-serif;
+	font-size: 14px;
+	line-height: 20px;
+	border-radius: 8px;
+	border: 1px solid hsl(214 32% 91%);
+	overflow: hidden;
+}
+
+/* ─── Row ─────────────────────────────────────────────────────────────────── */
+
+.i18n__row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 16px;
+	border-bottom: 1px solid hsl(210 40% 96%);
+}
+
+.i18n__row:last-child {
+	border-bottom: none;
+}
+
+/* ─── Label ───────────────────────────────────────────────────────────────── */
+
+.i18n__label {
+	color: hsl(215 19% 35%);
+	width: 144px;
+	flex-shrink: 0;
+}
+
+/* ─── Value ───────────────────────────────────────────────────────────────── */
+
+.i18n__value {
+	font-family:
+		ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Courier New",
+		monospace;
+	color: hsl(218 28% 21%);
+}
+
+.i18n__value--truncate {
+	font-family:
+		ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Courier New",
+		monospace;
+	color: hsl(218 28% 21%);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* ─── Filter wrapper ──────────────────────────────────────────────────────── */
+
+.i18n__filter-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	font-family: sans-serif;
+}
+
+/* ─── Filter input ────────────────────────────────────────────────────────── */
+
+.i18n__filter-input {
+	border: 1px solid hsl(214 32% 91%);
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 20px;
+	width: 192px;
+}
+
+.i18n__filter-input:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+/* ─── Filter count ────────────────────────────────────────────────────────── */
+
+.i18n__filter-count {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(215 19% 35%);
+}
+
+/* ─── Filter tags ─────────────────────────────────────────────────────────── */
+
+.i18n__filter-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.i18n__filter-tag {
+	padding: 2px 8px;
+	border-radius: 9999px;
+	background-color: hsl(210 40% 96%);
+	color: hsl(215 25% 27%);
+	font-size: 12px;
+	line-height: 16px;
+}

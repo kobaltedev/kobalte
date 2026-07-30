@@ -8,7 +8,6 @@
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, within } from "@solidjs/testing-library";
-import { createSignal, Show } from "solid-js";
 import { vi } from "vitest";
 import * as Combobox from ".";
 
@@ -3209,11 +3208,11 @@ describe("Combobox", () => {
 
 			expect(options.length).toBe(4);
 
-			options.forEach(
-				(option, index) =>
-					index > 0 &&
-					expect(option).toHaveTextContent(dataSource[index - 1].label),
-			);
+			options.forEach((option, index) => {
+				if (index > 0) {
+					expect(option).toHaveTextContent(dataSource[index - 1].label);
+				}
+			});
 
 			fireEvent.change(hiddenSelectBase, { target: { value: "FR" } });
 			await Promise.resolve();

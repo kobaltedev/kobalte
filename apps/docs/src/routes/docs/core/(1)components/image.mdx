@@ -1,0 +1,103 @@
+---
+title: Image
+badges:
+  - icon: npm
+    label: "Since v0.5.0"
+  - label: "@kobalte/core/image"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/image"
+---
+
+import { BasicExample } from "../../../../examples/image";
+
+# {frontmatter.title}
+
+An image element with an optional fallback for loading and error status.
+
+## Import
+
+```ts
+import { Image } from "@kobalte/core/image";
+// or
+import { Root, Img, ... } from "@kobalte/core/image";
+// or (deprecated)
+import { Image } from "@kobalte/core";
+```
+
+## Features
+
+- Automatic and manual control over when the image renders.
+- Fallback part accepts any children.
+- Optionally delay fallback rendering to avoid content flashing.
+
+## Anatomy
+
+The image consists of:
+
+- **Image:** The root container for an image.
+- **Image.Img:** The image to render. By default, it will only render when it has loaded.
+- **Image.Fallback:** An element that renders when the image hasn't loaded. This means whilst it's loading, or if there was an error.
+
+```tsx
+<Image>
+	<Image.Img />
+	<Image.Fallback />
+</Image>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/image.tsx#L3-L21"
+
+```
+
+```css title="style.css" tab file="../../../../examples/image.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Avoid flash during loading
+
+By default `Image.Fallback` will render when the image hasn't loaded. This means whilst it's loading, or if there was an error.
+
+If you notice a flash during loading, use the `fallbackDelay` prop to delay its rendering, so it only renders for those with slower internet connections.
+
+```tsx {1}
+<Image fallbackDelay={600} class="image">
+	<Image.Img
+		class="image__img"
+		src="https://randomuser.me/api/portraits/women/44.jpg"
+		alt="Nicole Steeves"
+	/>
+	<Image.Fallback class="image__fallback">NS</Image.Fallback>
+</Image>
+```
+
+## API Reference
+
+### Image
+
+`Image` is equivalent to the `Root` import from `@kobalte/core/image` (and deprecated `Image.Root`).
+
+| Prop                  | Description                                                                                                                                                                                                                                    |
+| :-------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| fallbackDelay         | `number` <br/> The delay (in ms) before displaying the image fallback. Useful if you notice a flash during loading for delaying rendering, so it only appears for those with slower internet connections.                                      |
+| onLoadingStatusChange | `(status: "idle" \| "loading" \| "loaded" \| "error") => void` <br/> A callback providing information about the loading status of the image. This is useful in case you want to control more precisely what to render as the image is loading. |
+
+## Rendered elements
+
+| Component        | Default rendered element |
+| :--------------- | :----------------------- |
+| `Image`          | `span`                   |
+| `Image.Img`      | `img`                    |
+| `Image.Fallback` | `span`                   |

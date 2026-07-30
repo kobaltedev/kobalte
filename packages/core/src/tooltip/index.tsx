@@ -4,30 +4,30 @@ import {
 	type PopperArrowOptions as TooltipArrowOptions,
 	type PopperArrowProps as TooltipArrowProps,
 	type PopperArrowRenderProps as TooltipArrowRenderProps,
-} from "../popper";
+} from "../popper/index.tsx";
 import {
 	TooltipContent as Content,
 	type TooltipContentCommonProps,
 	type TooltipContentOptions,
 	type TooltipContentProps,
 	type TooltipContentRenderProps,
-} from "./tooltip-content";
+} from "./tooltip-content.tsx";
 import {
 	TooltipPortal as Portal,
 	type TooltipPortalProps,
-} from "./tooltip-portal";
+} from "./tooltip-portal.tsx";
 import {
 	TooltipRoot as Root,
 	type TooltipRootOptions,
 	type TooltipRootProps,
-} from "./tooltip-root";
+} from "./tooltip-root.tsx";
 import {
 	type TooltipTriggerCommonProps,
 	type TooltipTriggerOptions,
 	type TooltipTriggerProps,
 	type TooltipTriggerRenderProps,
 	TooltipTrigger as Trigger,
-} from "./tooltip-trigger";
+} from "./tooltip-trigger.tsx";
 
 export type {
 	TooltipArrowCommonProps,
@@ -59,4 +59,7 @@ export const Tooltip = Object.assign(Root, {
 /**
  * API will most probably change
  */
-export { type TooltipContextValue, useTooltipContext } from "./tooltip-context";
+export {
+	type TooltipContextValue,
+	useTooltipContext,
+} from "./tooltip-context.tsx";

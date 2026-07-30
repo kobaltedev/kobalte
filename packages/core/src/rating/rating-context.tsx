@@ -5,7 +5,7 @@ import {
 	type Setter,
 	useContext,
 } from "solid-js";
-import type { CollectionItemWithRef } from "../primitives";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
 
 export interface RatingContextValue {
 	value: Accessor<number | undefined>;

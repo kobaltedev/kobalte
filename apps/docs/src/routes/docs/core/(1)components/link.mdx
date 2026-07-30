@@ -1,0 +1,111 @@
+---
+title: Link
+badges:
+  - icon: npm
+    label: "Since v0.1.0"
+  - label: "@kobalte/core/link"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/link"
+  - icon: aria
+    label: "Link"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
+---
+
+import { BasicExample, DisabledExample } from "../../../../examples/link";
+
+# {frontmatter.title}
+
+Allows a user to navigate to another page or resource within a web page or application.
+
+## Import
+
+```ts
+import { Link } from "@kobalte/core/link";
+// or
+import { Root } from "@kobalte/core/link";
+// or (deprecated)
+import { Link } from "@kobalte/core";
+```
+
+## Features
+
+- Native HTML `<a>` element support.
+- Custom element type support via the [WAI ARIA Link](https://www.w3.org/WAI/ARIA/apg/patterns/link/) design pattern.
+- Support for disabled links.
+
+## Anatomy
+
+The link consists of:
+
+- **Link:** The root container for a link.
+
+```tsx
+<Link />
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/link.tsx#L3-L11"
+
+```
+
+```css title="style.css" tab file="../../../../examples/link.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Disabled state
+
+Use the `disabled` prop to disable a link while keeping it accessible for screen readers.
+
+:::preview
+
+<DisabledExample />
+
+---
+
+```tsx
+<Link href="https://kobalte.dev" disabled>
+	Kobalte
+</Link>
+```
+
+:::
+
+## API Reference
+
+### Link
+
+`Link` is equivalent to the `Root` import from `@kobalte/core/link` (and deprecated `Link.Root`).
+
+| Prop     | Description                                                                                                                                         |
+| :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| disabled | `boolean` <br/> Whether the link is disabled. Native navigation will be disabled, and the link will be exposed as disabled to assistive technology. |
+
+| Data attribute | Description                        |
+| :------------- | :--------------------------------- |
+| data-disabled  | Present when the link is disabled. |
+
+## Rendered elements
+
+| Component | Default rendered element |
+| :-------- | :----------------------- |
+| `Link`    | `a`                      |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description         |
+| :--------------- | :------------------ |
+| <kbd>Enter</kbd> | Activates the link. |

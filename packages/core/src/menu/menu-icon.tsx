@@ -6,12 +6,12 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type MenuDataSet, useMenuContext } from "./menu-context";
+} from "../polymorphic/index.tsx";
+import { type MenuDataSet, useMenuContext } from "./menu-context.tsx";
 
 export interface MenuIconOptions {}
 
-export interface MenuIconCommonProps<T extends HTMLElement = HTMLElement> {
+export interface MenuIconCommonProps<_T extends HTMLElement = HTMLElement> {
 	children: Element;
 }
 

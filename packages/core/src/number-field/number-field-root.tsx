@@ -22,19 +22,19 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
-import { useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal } from "../primitives";
-import type { SpinButtonRootOptions } from "../spin-button";
+} from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
+import type { SpinButtonRootOptions } from "../spin-button/index.tsx";
 import {
 	NumberFieldContext,
 	type NumberFieldContextValue,
-} from "./number-field-context";
+} from "./number-field-context.tsx";
 
 export interface NumberFieldRootOptions
 	extends Pick<SpinButtonRootOptions, "textValue" | "translations"> {

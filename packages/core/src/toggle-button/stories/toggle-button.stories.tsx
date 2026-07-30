@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Root } from "../index";
+import { Root } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/ToggleButton",
@@ -9,20 +10,17 @@ const meta = preview.meta({
 
 export default meta;
 
-const btnClass =
-	"inline-flex items-center justify-center rounded-md px-3 py-1.5 text-sm font-medium border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 data-[pressed]:bg-slate-900 data-[pressed]:text-white data-[pressed]:border-slate-900 data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed";
-
 /** A basic toggle that flips between pressed and unpressed. */
 export const Default = meta.story({
 	name: "Default",
-	render: () => <Root class={btnClass}>Bold</Root>,
+	render: () => <Root class={style["toggle-button__root"]}>Bold</Root>,
 });
 
 /** `defaultPressed` starts the button in the pressed state. */
 export const DefaultPressed = meta.story({
 	name: "Default Pressed",
 	render: () => (
-		<Root class={btnClass} defaultPressed>
+		<Root class={style["toggle-button__root"]} defaultPressed>
 			Italic
 		</Root>
 	),
@@ -32,11 +30,11 @@ export const DefaultPressed = meta.story({
 export const Disabled = meta.story({
 	name: "Disabled",
 	render: () => (
-		<div class="flex gap-2 font-sans">
-			<Root class={btnClass} disabled>
+		<div class={style["toggle-button__demo"]}>
+			<Root class={style["toggle-button__root"]} disabled>
 				Off
 			</Root>
-			<Root class={btnClass} disabled defaultPressed>
+			<Root class={style["toggle-button__root"]} disabled defaultPressed>
 				On
 			</Root>
 		</div>
@@ -47,11 +45,15 @@ export const Disabled = meta.story({
 function ControlledDemo() {
 	const [pressed, setPressed] = createSignal(false);
 	return (
-		<div class="flex flex-col gap-3 font-sans">
-			<Root class={btnClass} pressed={pressed()} onChange={setPressed}>
+		<div class={style["toggle-button__wrapper"]}>
+			<Root
+				class={style["toggle-button__root"]}
+				pressed={pressed()}
+				onChange={setPressed}
+			>
 				{(state) => (state.pressed() ? "Muted" : "Unmuted")}
 			</Root>
-			<p class="text-xs text-slate-500">
+			<p class={style["toggle-button__text"]}>
 				State: <strong>{pressed() ? "pressed" : "unpressed"}</strong>
 			</p>
 		</div>
@@ -67,9 +69,9 @@ export const Controlled = meta.story({
 export const RenderProp = meta.story({
 	name: "Render Prop",
 	render: () => (
-		<Root class={btnClass}>
+		<Root class={style["toggle-button__root"]}>
 			{(state) => (
-				<span class="flex items-center gap-1.5">
+				<span class={style["toggle-button__span"]}>
 					<span>{state.pressed() ? "★" : "☆"}</span>
 					<span>{state.pressed() ? "Starred" : "Star"}</span>
 				</span>
@@ -82,10 +84,10 @@ export const RenderProp = meta.story({
 export const Toolbar = meta.story({
 	name: "Toolbar",
 	render: () => (
-		<div class="inline-flex gap-1 rounded-lg border border-slate-200 bg-white p-1 font-sans">
+		<div class={style["toggle-button__toolbar"]}>
 			{(["B", "I", "U"] as const).map((label) => (
 				<Root
-					class="inline-flex h-8 w-8 items-center justify-center rounded text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 data-[pressed]:bg-slate-900 data-[pressed]:text-white"
+					class={style["toggle-button__toolbarItem"]}
 					aria-label={
 						label === "B" ? "Bold" : label === "I" ? "Italic" : "Underline"
 					}

@@ -22,14 +22,14 @@ import {
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
+} from "../dismissable-layer/index.ts";
 import {
 	type MenubarDataSet,
 	useMenubarContext,
-} from "../menubar/menubar-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
-import { useNavigationMenuContext } from "./navigation-menu-context";
+} from "../menubar/menubar-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
+import { useNavigationMenuContext } from "./navigation-menu-context.tsx";
 
 export interface NavigationMenuViewportOptions {
 	/**
@@ -97,7 +97,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 		menubarContext.closeMenu();
 	};
 
-	const onEscapeKeyDown = (e: KeyboardEvent) => {
+	const onEscapeKeyDown = (_e: KeyboardEvent) => {
 		close();
 	};
 

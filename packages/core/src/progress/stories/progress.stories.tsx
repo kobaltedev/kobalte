@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Fill, Label, Root, Track, ValueLabel } from "../index";
+import { Fill, Label, Root, Track, ValueLabel } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Progress",
@@ -35,17 +36,17 @@ export const Playground = meta.story({
 		<Root
 			value={args.indeterminate ? undefined : args.value}
 			indeterminate={args.indeterminate}
-			class="flex flex-col gap-1.5 w-72 font-sans"
+			class={style.progress__root}
 		>
-			<div class="flex justify-between text-sm text-slate-600">
+			<div class={style["progress__label-row"]}>
 				<Label>{args.label}</Label>
 				{!args.indeterminate && <ValueLabel />}
 			</div>
-			<Track class="h-2 w-full rounded-full bg-slate-200 overflow-hidden relative">
+			<Track class={[style.progress__track, style["progress__track-relative"]]}>
 				{args.indeterminate ? (
-					<Fill class="absolute inset-y-0 w-1/3 bg-blue-500 rounded-full animate-[indeterminate_1.5s_ease-in-out_infinite]" />
+					<Fill class={style["progress__fill-animated"]} />
 				) : (
-					<Fill class="h-full bg-blue-500 rounded-full transition-all duration-300 [width:var(--kb-progress-fill-width)]" />
+					<Fill class={style.progress__fill} />
 				)}
 			</Track>
 		</Root>
@@ -56,34 +57,34 @@ export const Playground = meta.story({
 function ControlledDemo() {
 	const [value, setValue] = createSignal(0);
 	return (
-		<div class="flex flex-col gap-3 font-sans w-72">
+		<div class={style.progress__root}>
 			<Root value={value()} class="flex flex-col gap-1.5">
-				<div class="flex justify-between text-sm text-slate-600">
+				<div class={style["progress__label-row"]}>
 					<Label>Upload</Label>
 					<ValueLabel />
 				</div>
-				<Track class="h-2 rounded-full bg-slate-200 overflow-hidden">
-					<Fill class="h-full bg-blue-500 rounded-full transition-all duration-300 [width:var(--kb-progress-fill-width)]" />
+				<Track class={style.progress__track}>
+					<Fill class={style.progress__fill} />
 				</Track>
 			</Root>
-			<div class="flex gap-2">
+			<div class={style.progress__controls}>
 				<button
 					type="button"
-					class="px-3 py-1 text-xs rounded border border-slate-200 bg-white hover:bg-slate-50"
+					class={style["progress__control-btn"]}
 					onClick={() => setValue((v) => Math.max(0, v - 10))}
 				>
 					−10%
 				</button>
 				<button
 					type="button"
-					class="px-3 py-1 text-xs rounded border border-slate-200 bg-white hover:bg-slate-50"
+					class={style["progress__control-btn"]}
 					onClick={() => setValue((v) => Math.min(100, v + 10))}
 				>
 					+10%
 				</button>
 				<button
 					type="button"
-					class="px-3 py-1 text-xs rounded border border-slate-200 bg-white hover:bg-slate-50"
+					class={style["progress__control-btn"]}
 					onClick={() => setValue(0)}
 				>
 					Reset
@@ -114,14 +115,14 @@ export const CustomLabel = meta.story({
 			minValue={0}
 			maxValue={5}
 			getValueLabel={({ value, max }) => `Step ${value} of ${max}`}
-			class="flex flex-col gap-1.5 w-72 font-sans"
+			class={style.progress__root}
 		>
-			<div class="flex justify-between text-sm text-slate-600">
+			<div class={style["progress__label-row"]}>
 				<Label>Setup</Label>
 				<ValueLabel />
 			</div>
-			<Track class="h-2 rounded-full bg-slate-200 overflow-hidden">
-				<Fill class="h-full bg-blue-500 rounded-full transition-all duration-300 [width:var(--kb-progress-fill-width)]" />
+			<Track class={style.progress__track}>
+				<Fill class={style.progress__fill} />
 			</Track>
 		</Root>
 	),

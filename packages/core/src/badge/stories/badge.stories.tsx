@@ -1,5 +1,6 @@
 import preview from "../../../../../.storybook/preview.js";
-import { Root } from "../index";
+import { Root } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Badge",
@@ -8,14 +9,11 @@ const meta = preview.meta({
 
 export default meta;
 
-const baseClass =
-	"inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-semibold";
-
 /** A basic badge with text content. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={`${baseClass} bg-slate-100 text-slate-700`}>Default</Root>
+		<Root class={[style.badge__base, style.badge__default]}>Default</Root>
 	),
 });
 
@@ -23,12 +21,12 @@ export const Default = meta.story({
 export const Variants = meta.story({
 	name: "Variants",
 	render: () => (
-		<div class="flex flex-wrap gap-3 font-sans">
-			<Root class={`${baseClass} bg-slate-100 text-slate-700`}>Default</Root>
-			<Root class={`${baseClass} bg-blue-100 text-blue-700`}>Info</Root>
-			<Root class={`${baseClass} bg-green-100 text-green-700`}>Success</Root>
-			<Root class={`${baseClass} bg-yellow-100 text-yellow-700`}>Warning</Root>
-			<Root class={`${baseClass} bg-red-100 text-red-700`}>Error</Root>
+		<div class={style.badge__variants}>
+			<Root class={[style.badge__base, style.badge__default]}>Default</Root>
+			<Root class={[style.badge__base, style.badge__info]}>Info</Root>
+			<Root class={[style.badge__base, style.badge__success]}>Success</Root>
+			<Root class={[style.badge__base, style.badge__warning]}>Warning</Root>
+			<Root class={[style.badge__base, style.badge__error]}>Error</Root>
 		</div>
 	),
 });
@@ -37,12 +35,20 @@ export const Variants = meta.story({
 export const Solid = meta.story({
 	name: "Solid",
 	render: () => (
-		<div class="flex flex-wrap gap-3 font-sans">
-			<Root class={`${baseClass} bg-slate-600 text-white`}>Default</Root>
-			<Root class={`${baseClass} bg-blue-600 text-white`}>Info</Root>
-			<Root class={`${baseClass} bg-green-600 text-white`}>Success</Root>
-			<Root class={`${baseClass} bg-yellow-500 text-white`}>Warning</Root>
-			<Root class={`${baseClass} bg-red-600 text-white`}>Error</Root>
+		<div class={style.badge__variants}>
+			<Root class={[style.badge__base, style["badge__solid-default"]]}>
+				Default
+			</Root>
+			<Root class={[style.badge__base, style["badge__solid-info"]]}>Info</Root>
+			<Root class={[style.badge__base, style["badge__solid-success"]]}>
+				Success
+			</Root>
+			<Root class={[style.badge__base, style["badge__solid-warning"]]}>
+				Warning
+			</Root>
+			<Root class={[style.badge__base, style["badge__solid-error"]]}>
+				Error
+			</Root>
 		</div>
 	),
 });
@@ -51,10 +57,14 @@ export const Solid = meta.story({
 export const WithTextValue = meta.story({
 	name: "With Text Value",
 	render: () => (
-		<div class="flex flex-wrap gap-3 font-sans items-center">
-			<span class="text-sm text-slate-600">Notifications</span>
+		<div class={style["badge__text-value"]}>
+			<span class={style["badge__text-sm"]}>Notifications</span>
 			<Root
-				class={`${baseClass} bg-red-600 text-white min-w-[1.25rem]`}
+				class={[
+					style.badge__base,
+					style.badge__error,
+					style["badge__min-width"],
+				]}
 				textValue="3 unread notifications"
 			>
 				3
@@ -67,23 +77,23 @@ export const WithTextValue = meta.story({
 export const InContext = meta.story({
 	name: "In Context",
 	render: () => (
-		<div class="flex flex-col gap-4 font-sans w-64">
-			<div class="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3">
-				<span class="text-sm font-medium text-slate-700">Inbox</span>
+		<div class={style["badge__in-context"]}>
+			<div class={style.badge__card}>
+				<span class={style["badge__card-label"]}>Inbox</span>
 				<Root
-					class={`${baseClass} bg-blue-600 text-white`}
+					class={[style.badge__base, style["badge__solid-info"]]}
 					textValue="12 unread messages"
 				>
 					12
 				</Root>
 			</div>
-			<div class="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3">
-				<span class="text-sm font-medium text-slate-700">Drafts</span>
-				<Root class={`${baseClass} bg-slate-100 text-slate-600`}>4</Root>
+			<div class={style.badge__card}>
+				<span class={style["badge__card-label"]}>Drafts</span>
+				<Root class={[style.badge__base, style.badge__default]}>4</Root>
 			</div>
-			<div class="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3">
-				<span class="text-sm font-medium text-slate-700">Sent</span>
-				<Root class={`${baseClass} bg-green-100 text-green-700`}>Done</Root>
+			<div class={style.badge__card}>
+				<span class={style["badge__card-label"]}>Sent</span>
+				<Root class={[style.badge__base, style.badge__success]}>Done</Root>
 			</div>
 		</div>
 	),

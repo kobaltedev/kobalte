@@ -1,0 +1,156 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.track {
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 8px;
+	width: 256px;
+	border-radius: 9999px;
+	background-color: hsl(220 14% 96%);
+	cursor: pointer;
+	user-select: none;
+	touch-action: none;
+}
+
+.trackDisabled {
+	background-color: hsl(220 14% 93%);
+	cursor: not-allowed;
+	user-select: none;
+	touch-action: none;
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 8px;
+	width: 256px;
+	border-radius: 9999px;
+}
+
+.fill {
+	position: absolute;
+	height: 100%;
+	border-radius: 9999px;
+	background-color: hsl(217 91% 60%);
+}
+
+.fillDisabled {
+	background-color: hsl(215 16% 77%);
+}
+
+.fillInvalid {
+	background-color: hsl(0 84% 60%);
+}
+
+.thumb {
+	display: block;
+	height: 20px;
+	width: 20px;
+	border-radius: 9999px;
+	border: 2px solid hsl(217 91% 60%);
+	background-color: hsl(0 0% 100%);
+	box-shadow:
+		0 1px 3px 0 rgb(0 0 0 / 0.1),
+		0 1px 2px -1px rgb(0 0 0 / 0.1);
+	outline: none;
+}
+
+.thumb:focus-visible {
+	box-shadow:
+		0 0 0 2px hsl(210 40% 96.1%),
+		0 0 0 4px hsl(213 94% 68%);
+}
+
+.thumbDisabled {
+	border-color: hsl(215 16% 77%);
+}
+
+.thumbInvalid {
+	border-color: hsl(0 84% 60%);
+}
+
+.thumbInvalid:focus-visible {
+	box-shadow:
+		0 0 0 2px hsl(210 40% 96.1%),
+		0 0 0 4px hsl(0 84% 57%);
+}
+
+.sliderColumn {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	width: 256px;
+}
+
+.labelRow {
+	display: flex;
+	justify-content: space-between;
+	font-size: 14px;
+	line-height: 20px;
+	color: hsl(220 9% 46%);
+}
+
+.stateText {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(224 71% 45%);
+}
+
+.verticalContainer {
+	position: relative;
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	height: 192px;
+	font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.verticalTrack {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	width: 8px;
+	flex: 1;
+	border-radius: 9999px;
+	background-color: hsl(220 14% 96%);
+	cursor: pointer;
+	touch-action: none;
+}
+
+.verticalFill {
+	position: absolute;
+	width: 100%;
+	border-radius: 9999px;
+	background-color: hsl(217 91% 60%);
+	bottom: 0;
+}
+
+.verticalLabel {
+	font-size: 14px;
+	line-height: 20px;
+	color: hsl(220 9% 46%);
+	margin-bottom: 8px;
+}
+
+.verticalValueLabel {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(224 71% 45%);
+	margin-top: 8px;
+}
+
+.description {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(224 71% 45%);
+}
+
+.errorMessage {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(0 84% 60%);
+}

@@ -2,11 +2,11 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { createEffect, onCleanup } from "solid-js";
 
-import { Polymorphic, type PolymorphicProps } from "../polymorphic";
+import { Polymorphic, type PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "./form-control-context";
+} from "./form-control-context.tsx";
 
 export interface FormControlDescriptionOptions {}
 

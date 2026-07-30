@@ -28,11 +28,11 @@
 	transition: width 250ms linear;
 }
 
-[data-kb-theme="dark"] .meter__label,
-[data-kb-theme="dark"] .meter__value-label {
+[data-theme*="dark"] .meter__label,
+[data-theme*="dark"] .meter__value-label {
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .meter__track {
+[data-theme*="dark"] .meter__track {
 	background-color: hsl(240 5% 26%);
 }

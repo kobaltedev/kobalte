@@ -1,5 +1,6 @@
 import preview from "../../../../../.storybook/preview.js";
-import { Link, Root, Separator } from "../index";
+import { Link, Root, Separator } from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Breadcrumbs",
@@ -8,32 +9,26 @@ const meta = preview.meta({
 
 export default meta;
 
-const navClass = "font-sans";
-const listClass = "flex items-center gap-1 text-sm";
-const linkClass =
-	"text-blue-600 hover:underline data-[current]:text-slate-700 data-[current]:font-medium data-[current]:pointer-events-none data-[disabled]:opacity-40 data-[disabled]:pointer-events-none";
-const separatorClass = "text-slate-400 select-none";
-
 /** Three-level path with the default "/" separator. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={navClass}>
-			<ol class={listClass}>
+		<Root class={style.breadcrumbs__root}>
+			<ol class={style.breadcrumbs__list}>
 				<li>
-					<Link class={linkClass} href="#">
+					<Link class={style.breadcrumbs__link} href="#">
 						Home
 					</Link>
 				</li>
-				<Separator as="li" class={separatorClass} />
+				<Separator as="li" class={style.breadcrumbs__separator} />
 				<li>
-					<Link class={linkClass} href="#">
+					<Link class={style.breadcrumbs__link} href="#">
 						Library
 					</Link>
 				</li>
-				<Separator as="li" class={separatorClass} />
+				<Separator as="li" class={style.breadcrumbs__separator} />
 				<li>
-					<Link class={linkClass} current>
+					<Link class={style.breadcrumbs__link} current>
 						Data
 					</Link>
 				</li>
@@ -46,22 +41,22 @@ export const Default = meta.story({
 export const ChevronSeparator = meta.story({
 	name: "Chevron Separator",
 	render: () => (
-		<Root class={navClass} separator="›">
-			<ol class={listClass}>
+		<Root class={style.breadcrumbs__root} separator="›">
+			<ol class={style.breadcrumbs__list}>
 				<li>
-					<Link class={linkClass} href="#">
+					<Link class={style.breadcrumbs__link} href="#">
 						Home
 					</Link>
 				</li>
-				<Separator as="li" class={separatorClass} />
+				<Separator as="li" class={style.breadcrumbs__separator} />
 				<li>
-					<Link class={linkClass} href="#">
+					<Link class={style.breadcrumbs__link} href="#">
 						Products
 					</Link>
 				</li>
-				<Separator as="li" class={separatorClass} />
+				<Separator as="li" class={style.breadcrumbs__separator} />
 				<li>
-					<Link class={linkClass} current>
+					<Link class={style.breadcrumbs__link} current>
 						Shoes
 					</Link>
 				</li>
@@ -74,22 +69,22 @@ export const ChevronSeparator = meta.story({
 export const DotSeparator = meta.story({
 	name: "Dot Separator",
 	render: () => (
-		<Root class={navClass} separator="·">
-			<ol class={listClass}>
+		<Root class={style.breadcrumbs__root} separator="·">
+			<ol class={style.breadcrumbs__list}>
 				<li>
-					<Link class={linkClass} href="#">
+					<Link class={style.breadcrumbs__link} href="#">
 						Home
 					</Link>
 				</li>
-				<Separator as="li" class={separatorClass} />
+				<Separator as="li" class={style.breadcrumbs__separator} />
 				<li>
-					<Link class={linkClass} href="#">
+					<Link class={style.breadcrumbs__link} href="#">
 						Docs
 					</Link>
 				</li>
-				<Separator as="li" class={separatorClass} />
+				<Separator as="li" class={style.breadcrumbs__separator} />
 				<li>
-					<Link class={linkClass} current>
+					<Link class={style.breadcrumbs__link} current>
 						Getting started
 					</Link>
 				</li>
@@ -102,22 +97,22 @@ export const DotSeparator = meta.story({
 export const WithDisabledLink = meta.story({
 	name: "With Disabled Link",
 	render: () => (
-		<Root class={navClass}>
-			<ol class={listClass}>
+		<Root class={style.breadcrumbs__root}>
+			<ol class={style.breadcrumbs__list}>
 				<li>
-					<Link class={linkClass} href="#">
+					<Link class={style.breadcrumbs__link} href="#">
 						Home
 					</Link>
 				</li>
-				<Separator as="li" class={separatorClass} />
+				<Separator as="li" class={style.breadcrumbs__separator} />
 				<li>
-					<Link class={linkClass} disabled>
+					<Link class={style.breadcrumbs__link} disabled>
 						Restricted
 					</Link>
 				</li>
-				<Separator as="li" class={separatorClass} />
+				<Separator as="li" class={style.breadcrumbs__separator} />
 				<li>
-					<Link class={linkClass} current>
+					<Link class={style.breadcrumbs__link} current>
 						Report
 					</Link>
 				</li>
@@ -132,13 +127,13 @@ export const DeepPath = meta.story({
 	render: () => {
 		const crumbs = ["Home", "Org", "Workspace", "Project", "Settings"] as const;
 		return (
-			<Root class={navClass}>
-				<ol class={listClass}>
+			<Root class={style.breadcrumbs__root}>
+				<ol class={style.breadcrumbs__list}>
 					{crumbs.map((label, i) => (
 						<>
 							<li>
 								<Link
-									class={linkClass}
+									class={style.breadcrumbs__link}
 									href={i < crumbs.length - 1 ? "#" : undefined}
 									current={i === crumbs.length - 1}
 								>
@@ -146,7 +141,7 @@ export const DeepPath = meta.story({
 								</Link>
 							</li>
 							{i < crumbs.length - 1 && (
-								<Separator as="li" class={separatorClass} />
+								<Separator as="li" class={style.breadcrumbs__separator} />
 							)}
 						</>
 					))}

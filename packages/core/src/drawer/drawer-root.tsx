@@ -16,21 +16,24 @@ import {
 	type Setter,
 	untrack,
 } from "solid-js";
-import { DialogRoot, type DialogRootOptions } from "../dialog/dialog-root";
-import { createControllableSignal, createDisclosureState } from "../primitives";
+import { DialogRoot, type DialogRootOptions } from "../dialog/dialog-root.tsx";
+import {
+	createControllableSignal,
+	createDisclosureState,
+} from "../primitives/index.ts";
 import {
 	DrawerContext,
 	type DrawerContextValue,
 	DrawerInternalContext,
 	type DrawerInternalContextValue,
 	type DrawerTransitionState,
-} from "./drawer-context";
+} from "./drawer-context.tsx";
 import {
 	afterPaint,
 	type DrawerSide,
 	type DrawerSize,
 	resolveSnapPoint,
-} from "./drawer-lib";
+} from "./drawer-lib.ts";
 
 export interface DrawerRootOptions
 	extends Omit<DialogRootOptions, "forceMount"> {

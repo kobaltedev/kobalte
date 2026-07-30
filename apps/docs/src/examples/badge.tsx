@@ -1,5 +1,4 @@
 import { Badge } from "@kobalte/core/badge";
-
 import style from "./badge.module.css";
 
 export function BasicExample() {

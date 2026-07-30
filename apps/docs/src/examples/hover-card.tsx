@@ -1,5 +1,4 @@
 import { HoverCard } from "@kobalte/core/hover-card";
-
 import style from "./hover-card.module.css";
 
 export function BasicExample() {

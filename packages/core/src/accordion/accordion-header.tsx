@@ -1,20 +1,19 @@
-import { OverrideComponentProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 
 import {
 	type CollapsibleDataSet,
 	useCollapsibleContext,
-} from "../collapsible/collapsible-context";
+} from "../collapsible/collapsible-context.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
 export interface AccordionHeaderOptions {}
 
 export interface AccordionHeaderCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface AccordionHeaderRenderProps

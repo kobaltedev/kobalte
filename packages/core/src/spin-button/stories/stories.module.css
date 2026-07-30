@@ -1,0 +1,123 @@
+.spin-button__root {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	border-radius: 6px;
+	border: 1px solid hsl(217 33% 91%);
+	background-color: hsl(0 0% 100%);
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	font-family: ui-sans-serif, system-ui, sans-serif;
+	outline: none;
+}
+
+.spin-button__root:focus-visible {
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+.spin-button__root[data-invalid] {
+	border-color: hsl(0 72% 51%);
+}
+
+.spin-button__root--w-36 {
+	width: 144px;
+}
+
+.spin-button__root--gap-1 {
+	gap: 4px;
+}
+
+.spin-button__trigger {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 4px;
+	color: hsl(215 25% 47%);
+	background-color: transparent;
+	cursor: pointer;
+	border: none;
+	padding: 0;
+}
+
+.spin-button__trigger:hover {
+	background-color: hsl(210 40% 96%);
+}
+
+.spin-button__trigger:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.spin-button__value {
+	width: 24px;
+	text-align: center;
+	font-size: 14px;
+	font-weight: 500;
+	color: hsl(224 71% 4%);
+	user-select: none;
+}
+
+.spin-button__star {
+	font-size: 20px;
+	line-height: 1;
+	border: none;
+	background: none;
+	cursor: pointer;
+	outline: none;
+	padding: 0;
+}
+
+.spin-button__wrapper {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	border-radius: 6px;
+	border: 1px solid hsl(217 33% 91%);
+	background-color: hsl(0 0% 100%);
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	outline: none;
+}
+
+.spin-button__wrapper:focus-visible {
+	box-shadow: 0 0 0 2px hsl(217 91% 60%);
+}
+
+.spin-button__container {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.spin-button__container--gap-sm {
+	gap: 6px;
+}
+
+.spin-button__label {
+	font-size: 14px;
+	font-weight: 500;
+	color: hsl(215 25% 47%);
+}
+
+.spin-button__description {
+	font-size: 12px;
+	color: hsl(215 25% 47%);
+}
+
+.spin-button__error {
+	font-size: 12px;
+	color: hsl(0 72% 51%);
+}
+
+.spin-button__form-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	font-family: ui-sans-serif, system-ui, sans-serif;
+}
