@@ -24,7 +24,7 @@
 		"dev:core": "pnpm -F @kobalte/core dev",
 		"dev:docs": "pnpm -F @kobalte/docs dev",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build",
+		"build:storybook": "storybook build",
 		"format": "biome check --write && prettier . --write",
 		"check": "biome check",
 		"test": "pnpm --filter @kobalte/tests --filter @kobalte/utils run build && pnpm -r run test",
