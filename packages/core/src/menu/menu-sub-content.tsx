@@ -111,6 +111,14 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 		const isSubMenu = context.parentMenuContext() != null;
 
 		if (isKeyDownInside && isCloseKey && isSubMenu) {
+			// Mark this key as handled so `MenuContentBase`'s own `onKeyDown`
+			// (composed on the same element) doesn't also treat it as a
+			// menubar "previous menu" key. It can't rely on `context.isOpen()`
+			// or the `data-closed` attribute for this, since `context.close()`
+			// only queues a signal write that isn't reflected until the next
+			// microtask flush.
+			e.preventDefault();
+
 			context.close();
 
 			// We focus manually because we prevented it in `onCloseAutoFocus`.

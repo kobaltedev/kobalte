@@ -396,8 +396,7 @@ describe("Toast", () => {
 		},
 	);
 
-	// don't know how to test implicit promise rejection
-	it.skip("supports promise reject", async () => {
+	it("supports promise reject", async () => {
 		const timeout = 1000;
 
 		const promise = () =>
@@ -427,15 +426,18 @@ describe("Toast", () => {
 		));
 
 		fireEvent.click(getByTestId("trigger"));
+		await Promise.resolve();
 
 		expect(getByRole("status")).toHaveTextContent("pending");
 
 		vi.advanceTimersByTime(timeout);
-		try {
-			await Promise.reject();
-		} catch (_e) {
-			// noop
-		}
+		// Unlike the resolve case, rejection goes through an extra microtask
+		// hop (the internal `.then().catch()` chain adds one more `then`
+		// than a plain `.then()`), so flush a few more times to let the
+		// `.catch()` callback run and `toastStore.update` flush.
+		await Promise.resolve();
+		await Promise.resolve();
+		await Promise.resolve();
 
 		expect(getByRole("status")).toHaveTextContent("rejected - error");
 	});

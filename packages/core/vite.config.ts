@@ -16,7 +16,7 @@ export default defineConfig({
 	test: {
 		environment: "jsdom",
 		globals: true,
-		setupFiles: ["@testing-library/jest-dom/vitest"],
+		setupFiles: ["@testing-library/jest-dom/vitest", "./test-setup.ts"],
 		isolate: false,
 		transformMode: {
 			web: [/\.[jt]sx$/],

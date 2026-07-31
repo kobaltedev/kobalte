@@ -73,7 +73,7 @@ for (const target of targets) {
 			const hit = resolveSpecifier(file, spec);
 			if (!hit) {
 				problems.push(
-					`$path.relative(rootDir, file):$i + 1: cannot resolve "${spec}"`,
+					`${path.relative(rootDir, file)}:${i + 1}: cannot resolve "${spec}"`,
 				);
 				continue;
 			}
@@ -102,7 +102,7 @@ console.log(
 	`Rewrote ${specifiersChanged} specifiers across ${filesChanged} files.`,
 );
 if (problems.length > 0) {
-	console.error(`\n$problems.lengthunresolved specifier(s):`);
+	console.error(`\n${problems.length} unresolved specifier(s):`);
 	for (const p of problems) console.error(`  ${p}`);
 	process.exit(1);
 }

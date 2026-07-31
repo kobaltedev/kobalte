@@ -85,7 +85,9 @@ export type ListboxItemProps<
 export function ListboxItem<T extends ValidComponent = "li">(
 	props: PolymorphicProps<T, ListboxItemProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const listBoxContext = useListboxContext();
 
@@ -139,7 +141,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 			shouldUseVirtualFocus: listBoxContext.shouldUseVirtualFocus,
 			disabled: () => mergedProps.item.disabled,
 		},
-		() => ref,
+		ref,
 	);
 
 	const ariaSelected = () => {
@@ -227,7 +229,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 		<ListboxItemContext value={context}>
 			<Polymorphic<ListboxItemRenderProps>
 				as="li"
-				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+				ref={mergeRefs(setRef, mergedProps.ref)}
 				role="option"
 				tabindex={selectableItem.tabIndex()}
 				aria-disabled={selectableItem.isDisabled() ? "true" : "false"}

@@ -17,6 +17,7 @@ import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
+	createSignal,
 	createUniqueId,
 	For,
 	Match,
@@ -171,7 +172,9 @@ export function ListboxRoot<
 	OptGroup = never,
 	T extends ValidComponent = "ul",
 >(props: PolymorphicProps<T, ListboxRootProps<Option, OptGroup, T>>) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `listbox-${createUniqueId()}`;
 
@@ -258,7 +261,7 @@ export function ListboxRoot<
 			isVirtualized: () => mergedProps.virtualized,
 			scrollToKey: () => mergedProps.scrollToItem,
 		},
-		() => ref,
+		ref,
 		() => mergedProps.scrollRef?.(),
 	);
 
@@ -275,7 +278,7 @@ export function ListboxRoot<
 		<ListboxContext value={context}>
 			<Polymorphic<ListboxRootRenderProps>
 				as="ul"
-				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+				ref={mergeRefs(setRef, mergedProps.ref)}
 				role="listbox"
 				tabindex={selectableList.tabIndex()}
 				aria-multiselectable={

@@ -25,17 +25,22 @@ const DATA_SOURCE: DataSourceItem[] = [
 	{ key: "3", label: "Three", textValue: "Three", disabled: false },
 ];
 
-// Skipped: jsdom stub for pointerEvent issue with vitest
-describe.skip("Select", () => {
+describe("Select", () => {
 	installPointerEvent();
 
 	const onValueChange = vi.fn();
 
 	beforeEach(() => {
 		vi.useFakeTimers();
+		vi.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => {
+			cb(0);
+			return 0;
+		});
 	});
 
 	afterEach(() => {
+		// @ts-expect-error
+		window.requestAnimationFrame.mockRestore();
 		vi.clearAllMocks();
 		vi.clearAllTimers();
 	});
@@ -154,7 +159,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -196,6 +201,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -254,7 +260,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -296,6 +302,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -365,7 +372,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -407,6 +414,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -465,7 +473,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -507,6 +515,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -556,7 +565,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -596,6 +605,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -648,7 +658,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -688,6 +698,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -737,7 +748,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -777,6 +788,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("3");
@@ -829,7 +841,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -869,6 +881,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("3");
@@ -879,7 +892,7 @@ describe.skip("Select", () => {
 		it("can be opened on mouse down", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -907,7 +920,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -928,7 +941,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -949,7 +962,7 @@ describe.skip("Select", () => {
 		it("can be opened on touch up", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -977,7 +990,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -990,7 +1003,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			fireEvent(
 				trigger,
@@ -1008,7 +1021,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1029,7 +1042,7 @@ describe.skip("Select", () => {
 		it("can be opened on Space key down", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1057,7 +1070,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -1065,7 +1078,7 @@ describe.skip("Select", () => {
 			fireEvent.keyUp(trigger, { key: " " });
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1086,7 +1099,7 @@ describe.skip("Select", () => {
 		it("can be opened on Enter key down", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1114,7 +1127,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -1122,7 +1135,7 @@ describe.skip("Select", () => {
 			fireEvent.keyUp(trigger, { key: "Enter" });
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1143,7 +1156,7 @@ describe.skip("Select", () => {
 		it("can be opened on ArrowDown key down and auto focuses the first item", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1171,7 +1184,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -1179,7 +1192,7 @@ describe.skip("Select", () => {
 			fireEvent.keyUp(trigger, { key: "ArrowDown" });
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1200,7 +1213,7 @@ describe.skip("Select", () => {
 		it("can be opened on ArrowUp key down and auto focuses the last item", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1228,7 +1241,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -1236,7 +1249,7 @@ describe.skip("Select", () => {
 			fireEvent.keyUp(trigger, { key: "ArrowUp" });
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1257,7 +1270,7 @@ describe.skip("Select", () => {
 		it("can change item focus with arrow keys", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1285,7 +1298,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -1293,7 +1306,7 @@ describe.skip("Select", () => {
 			fireEvent.keyUp(trigger, { key: "ArrowDown" });
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1363,7 +1376,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
@@ -1417,7 +1430,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
@@ -1442,7 +1455,7 @@ describe.skip("Select", () => {
 		it("can be closed by clicking on the button", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1470,7 +1483,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -1485,7 +1498,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1503,6 +1516,7 @@ describe.skip("Select", () => {
 			await Promise.resolve();
 
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -1516,7 +1530,7 @@ describe.skip("Select", () => {
 		it("can be closed by clicking outside", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1544,7 +1558,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -1565,7 +1579,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1600,7 +1614,7 @@ describe.skip("Select", () => {
 		it("can be closed by pressing the Escape key", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1628,7 +1642,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -1641,7 +1655,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1659,6 +1673,7 @@ describe.skip("Select", () => {
 			expect(onOpenChange).toHaveBeenCalledWith(false);
 
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 		});
@@ -1666,7 +1681,7 @@ describe.skip("Select", () => {
 		it("does not close in controlled open state", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, getByLabelText } = render(() => (
+			const { getByLabelText } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1695,7 +1710,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
@@ -1717,7 +1732,7 @@ describe.skip("Select", () => {
 		it("closes in default open state", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, getByLabelText } = render(() => (
+			const { getByLabelText } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1746,7 +1761,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
@@ -1859,7 +1874,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(listbox).toHaveAttribute("aria-labelledby", label.id);
@@ -1913,7 +1928,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(listbox).toHaveAttribute("aria-labelledby", trigger.id);
@@ -1963,7 +1978,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(listbox).toHaveAttribute("aria-labelledby", "foo");
@@ -2017,7 +2032,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			expect(listbox).toBeVisible();
 			expect(listbox).toHaveAttribute("aria-labelledby", `foo ${trigger.id}`);
 		});
@@ -2150,7 +2165,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2182,6 +2197,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -2230,7 +2246,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2261,6 +2277,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("One");
@@ -2307,7 +2324,7 @@ describe.skip("Select", () => {
 			fireEvent.keyUp(trigger, { key: "ArrowUp" });
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2387,7 +2404,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2430,6 +2447,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -2437,7 +2455,7 @@ describe.skip("Select", () => {
 
 		it("does not clear selection on escape closing the listbox", async () => {
 			const onOpenChangeSpy = vi.fn();
-			const { getByRole, getAllByText, queryByRole } = render(() => (
+			const { getByRole, getAllByText } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2482,7 +2500,7 @@ describe.skip("Select", () => {
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
 
-			let listbox = getByRole("listbox");
+			let listbox = within(document.body).getByRole("listbox");
 			const label = getAllByText("Label")[0];
 
 			expect(listbox).toBeVisible();
@@ -2514,7 +2532,11 @@ describe.skip("Select", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(2);
-			expect(queryByRole("listbox")).toBeNull();
+
+			vi.runAllTimers();
+			await Promise.resolve();
+
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			fireEvent(
 				trigger,
@@ -2527,7 +2549,7 @@ describe.skip("Select", () => {
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(3);
 
-			listbox = getByRole("listbox");
+			listbox = within(document.body).getByRole("listbox");
 			item1 = within(listbox).getByText("One");
 
 			fireEvent.keyDown(item1, { key: "Escape" });
@@ -2536,10 +2558,15 @@ describe.skip("Select", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1); // still expecting it to have only been called once
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(4);
-			expect(queryByRole("listbox")).toBeNull();
+
+			vi.runAllTimers();
+			await Promise.resolve();
+
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -2587,7 +2614,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2620,13 +2647,14 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Two");
 		});
 
 		it("supports controlled clear selection", async () => {
-			const { getByRole, getByTestId } = render(() => {
+			const { getByTestId } = render(() => {
 				const [value, setValue] = createSignal(DATA_SOURCE[1]);
 
 				return (
@@ -2682,7 +2710,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2715,6 +2743,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Two");
@@ -2768,7 +2797,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2800,6 +2829,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("One");
@@ -2854,7 +2884,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2892,6 +2922,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Three");
@@ -2943,7 +2974,7 @@ describe.skip("Select", () => {
 			fireEvent.keyDown(trigger, { key: "ArrowDown" });
 			await Promise.resolve();
 
-			let listbox = getByRole("listbox");
+			let listbox = within(document.body).getByRole("listbox");
 			let items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(4);
@@ -2988,7 +3019,7 @@ describe.skip("Select", () => {
 			fireEvent.keyDown(trigger, { key: "ArrowDown" });
 			await Promise.resolve();
 
-			listbox = getByRole("listbox");
+			listbox = within(document.body).getByRole("listbox");
 			items = within(listbox).getAllByRole("option");
 
 			expect(document.activeElement).toBe(items[2]);
@@ -3051,7 +3082,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(document.activeElement).toBe(items[1]);
@@ -3078,6 +3109,7 @@ describe.skip("Select", () => {
 
 			// run restore focus rAF
 			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(document.activeElement).toBe(trigger);
 			expect(trigger).toHaveTextContent("Two");
@@ -3131,6 +3163,7 @@ describe.skip("Select", () => {
 			expect(trigger).toHaveTextContent("One");
 
 			fireEvent.keyDown(trigger, { key: "ArrowRight" });
+			await Promise.resolve();
 
 			expect(onValueChange).toHaveBeenCalledTimes(2);
 			expect(trigger).toHaveTextContent("Two");
@@ -3209,7 +3242,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(listbox).toHaveAttribute("aria-multiselectable", "true");
@@ -3316,7 +3349,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -3400,7 +3433,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -3484,7 +3517,7 @@ describe.skip("Select", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(listbox).toHaveAttribute("aria-multiselectable", "true");
@@ -3591,7 +3624,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -3907,7 +3940,7 @@ describe.skip("Select", () => {
 			const hiddenInput = getByRole("textbox", { hidden: true }); // get the hidden ones
 
 			expect(hiddenInput).toHaveAttribute("tabIndex", "0");
-			expect(hiddenInput).toHaveAttribute("style", "font-size: 16px;");
+			expect(hiddenInput).toHaveAttribute("style", "font-size:16px");
 			expect(hiddenInput.parentElement).toHaveAttribute("aria-hidden", "true");
 
 			hiddenInput.focus();
@@ -3965,7 +3998,7 @@ describe.skip("Select", () => {
 		it("does not open on mouse down when disabled is true", async () => {
 			const onOpenChange = vi.fn();
 
-			const { queryByRole, getByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -3994,7 +4027,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -4007,7 +4040,7 @@ describe.skip("Select", () => {
 			);
 			await Promise.resolve();
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			expect(onOpenChange).toBeCalledTimes(0);
 
@@ -4016,7 +4049,7 @@ describe.skip("Select", () => {
 
 		it("does not open on Space key press when disabled is true", async () => {
 			const onOpenChange = vi.fn();
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Select.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -4045,7 +4078,7 @@ describe.skip("Select", () => {
 				</Select.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -4055,7 +4088,7 @@ describe.skip("Select", () => {
 			fireEvent.keyUp(trigger, { key: " " });
 			await Promise.resolve();
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			expect(onOpenChange).toBeCalledTimes(0);
 
