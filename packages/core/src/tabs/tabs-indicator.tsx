@@ -51,10 +51,8 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 
 	const [local, others] = splitProps(props as TabsIndicatorProps, ["style"]);
 
-	const [style, setStyle] = createSignal<JSX.CSSProperties>({
-		width: undefined,
-		height: undefined,
-	});
+	// Undefined means the indicator has not been initialized.
+	const [style, setStyle] = createSignal<JSX.CSSProperties>();
 
 	const { direction } = useLocale();
 
@@ -70,6 +68,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 			transform: undefined,
 			width: undefined,
 			height: undefined,
+			transition: style() == null ? "none" : undefined,
 		};
 
 		// In RTL, calculate the transform from the right edge of the tab list
@@ -100,7 +99,9 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		on(
 			[context.selectedTab, context.orientation, direction],
 			() => {
-				computeStyle();
+				if (style() != null) {
+					computeStyle();
+				}
 			},
 			{ defer: true },
 		),
@@ -134,7 +135,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		<Polymorphic<TabsIndicatorRenderProps>
 			as="div"
 			role="presentation"
-			style={combineStyle(style(), local.style)}
+			style={combineStyle(style() ?? { visibility: "hidden" }, local.style)}
 			data-orientation={context.orientation()}
 			data-resizing={resizing()}
 			{...others}
