@@ -11,7 +11,6 @@ import {
 	createEffect,
 	createSignal,
 	on,
-	onMount,
 	splitProps,
 } from "solid-js";
 
@@ -62,7 +61,8 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 	const computeStyle = () => {
 		const selectedTab = context.selectedTab();
 
-		if (selectedTab == null) {
+		// Check whether the selected tab participates in layout.
+		if (selectedTab == null || selectedTab.getClientRects().length === 0) {
 			return;
 		}
 
@@ -96,15 +96,6 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		setStyle(styleObj);
 	};
 
-	// For the first run, wait for all tabs to be mounted and registered in tabs DOM collection
-	// before computing the style.
-	onMount(() => {
-		queueMicrotask(() => {
-			computeStyle();
-		});
-	});
-
-	// Compute style normally for subsequent runs.
 	createEffect(
 		on(
 			[context.selectedTab, context.orientation, direction],
@@ -122,6 +113,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 	createResizeObserver(context.selectedTab, (_, t) => {
 		if (prevTarget !== t) {
 			prevTarget = t;
+			computeStyle();
 			return;
 		}
 
