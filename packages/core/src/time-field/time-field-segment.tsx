@@ -26,6 +26,7 @@ import {
 	createUniqueId,
 	omit,
 	Show,
+	untrack,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
@@ -521,10 +522,15 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			"0",
 		);
 
+	const refCallback = mergeRefs(
+		(el: HTMLElement) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<>
 			<SpinButton.Root
-				ref={mergeRefs((el: HTMLElement) => (ref = el), mergedProps.ref)}
+				ref={refCallback}
 				tabindex={formControlContext.isDisabled() ? undefined : 0}
 				value={getValue()}
 				textValue={textValue()}

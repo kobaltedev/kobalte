@@ -10,7 +10,13 @@
 import { getWindow, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, createEffect, createSignal, omit } from "solid-js";
+import {
+	type Accessor,
+	createEffect,
+	createSignal,
+	omit,
+	untrack,
+} from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -90,10 +96,15 @@ export function PopperArrow<T extends ValidComponent = "div">(
 		} ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE}) translate(0 2)`;
 	};
 
+	const refCallback = mergeRefs(
+		context.setArrowRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Polymorphic<PopperArrowRenderProps>
 			as="div"
-			ref={mergeRefs(context.setArrowRef, mergedProps.ref)}
+			ref={refCallback}
 			aria-hidden="true"
 			style={combineStyle(
 				{

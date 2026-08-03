@@ -15,6 +15,7 @@ import {
 	omit,
 	onSettled,
 	Show,
+	untrack,
 } from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
 import {
@@ -459,6 +460,14 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 		return { ...inputStyle(), ...userStyle };
 	};
 
+	const refCallback = mergeRefs(
+		(el) => {
+			inputRef = el as HTMLInputElement;
+			inputRef.value = context.value();
+		},
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<>
 			<Show when={mergedProps.noScriptCSSFallback !== null && isServer}>
@@ -468,10 +477,7 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 			</Show>
 			<Polymorphic<OTPFieldInputRenderProps>
 				as="input"
-				ref={mergeRefs((el) => {
-					inputRef = el as HTMLInputElement;
-					inputRef.value = context.value();
-				}, mergedProps.ref)}
+				ref={refCallback}
 				onInput={onInput}
 				onFocus={onFocus}
 				onBlur={onBlur}

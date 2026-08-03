@@ -14,7 +14,7 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, untrack } from "solid-js";
 
 import {
 	createFormControlField,
@@ -300,13 +300,18 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	};
 
 	// Omit `formControlContext.name()` here because it's used in the hidden select.
+	const refCallback = mergeRefs(
+		(el) => {
+			context.setInputRef(el);
+			ref = el;
+		},
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Polymorphic<ComboboxInputRenderProps>
 			as="input"
-			ref={mergeRefs((el) => {
-				context.setInputRef(el);
-				ref = el;
-			}, mergedProps.ref)}
+			ref={refCallback}
 			id={fieldProps.id()}
 			value={context.inputValue()}
 			required={formControlContext.isRequired()}

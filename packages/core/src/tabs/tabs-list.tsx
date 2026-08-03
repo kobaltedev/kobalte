@@ -12,7 +12,7 @@ import {
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, omit, untrack } from "solid-js";
 
 import { useLocale } from "../i18n/index.tsx";
 import {
@@ -96,10 +96,15 @@ export function TabsList<T extends ValidComponent = "div">(
 		},
 	);
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => (props as TabsListProps).ref),
+	);
+
 	return (
 		<Polymorphic<TabsListRenderProps>
 			as="div"
-			ref={mergeRefs((el) => (ref = el), (props as TabsListProps).ref)}
+			ref={refCallback}
 			role="tablist"
 			aria-orientation={context.orientation()}
 			data-orientation={context.orientation()}

@@ -6,7 +6,7 @@ import {
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, omit, untrack } from "solid-js";
 import { useLocale } from "../i18n/index.tsx";
 import { createListState } from "../list/index.ts";
 import {
@@ -144,13 +144,18 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 		orientation: () => mergedProps.orientation!,
 	};
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<DomCollectionProvider>
 			<ToggleGroupContext value={context}>
 				<Polymorphic<ToggleGroupBaseRenderProps>
 					as="div"
 					role="group"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={refCallback}
 					tabindex={
 						!mergedProps.disabled ? selectableList.tabIndex() : undefined
 					}

@@ -248,6 +248,11 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 		(id) => context.registerTriggerId(id),
 	);
 
+	const refCallback = mergeRefs(
+		context.setTriggerRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Button.Root<
 			Component<
@@ -257,7 +262,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
+			ref={refCallback}
 			data-kb-menu-value-trigger={rootContext.value()}
 			id={mergedProps.id}
 			disabled={mergedProps.disabled}

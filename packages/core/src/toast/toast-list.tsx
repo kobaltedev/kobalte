@@ -167,10 +167,15 @@ export function ToastList<T extends ValidComponent = "ol">(
 		},
 	);
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => props.ref as any),
+	);
+
 	return (
 		<Polymorphic<ToastListRenderProps>
 			as="ol"
-			ref={mergeRefs((el) => (ref = el), props.ref as any)}
+			ref={refCallback}
 			tabindex={-1}
 			onFocusIn={onFocusIn}
 			onFocusOut={onFocusOut}

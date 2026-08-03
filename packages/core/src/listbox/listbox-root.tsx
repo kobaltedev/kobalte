@@ -24,6 +24,7 @@ import {
 	omit,
 	Show,
 	Switch,
+	untrack,
 } from "solid-js";
 
 import {
@@ -274,11 +275,16 @@ export function ListboxRoot<
 		isVirtualized: () => mergedProps.virtualized,
 	};
 
+	const refCallback = mergeRefs(
+		setRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<ListboxContext value={context}>
 			<Polymorphic<ListboxRootRenderProps>
 				as="ul"
-				ref={mergeRefs(setRef, mergedProps.ref)}
+				ref={refCallback}
 				role="listbox"
 				tabindex={selectableList.tabIndex()}
 				aria-multiselectable={

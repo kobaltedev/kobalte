@@ -10,7 +10,7 @@ import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { PointerDownOutsideEvent } from "@solid-primitives/interaction";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, Show } from "solid-js";
+import { type Component, createEffect, omit, Show, untrack } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
@@ -74,6 +74,13 @@ export function TooltipContent<T extends ValidComponent = "div">(
 		(id) => context.registerContentId(id!),
 	);
 
+	const refCallback = mergeRefs(
+		(el) => {
+			context.setContentRef(el);
+		},
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Show when={context.contentPresent()}>
 			<Popper.Positioner>
@@ -82,9 +89,7 @@ export function TooltipContent<T extends ValidComponent = "div">(
 						Omit<TooltipContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={mergeRefs((el) => {
-						context.setContentRef(el);
-					}, mergedProps.ref)}
+					ref={refCallback}
 					role="tooltip"
 					disableOutsidePointerEvents={false}
 					style={combineStyle(

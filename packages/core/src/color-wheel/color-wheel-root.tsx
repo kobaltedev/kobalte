@@ -14,7 +14,13 @@ import {
 	type ColorIntlTranslations,
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, createUniqueId, omit } from "solid-js";
+import {
+	createMemo,
+	createSignal,
+	createUniqueId,
+	omit,
+	untrack,
+} from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -289,12 +295,17 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 		generateId: createGenerateId(() => access(formControlProps.id)!),
 	};
 
+	const refCallback = mergeRefs(
+		setRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<FormControlContext value={formControlContext}>
 			<ColorWheelContext value={context}>
 				<Polymorphic<ColorWheelRootRenderProps>
 					as="div"
-					ref={mergeRefs(setRef, mergedProps.ref)}
+					ref={refCallback}
 					role="group"
 					id={access(formControlProps.id)!}
 					{...formControlContext.dataset()}

@@ -301,10 +301,15 @@ export function ResizablePanel<T extends ValidComponent = "div">(
 		panelId: () => p.panelId,
 	};
 
+	const refCallback = mergeRefs(
+		setRef,
+		untrack(() => p.ref as any),
+	);
+
 	return (
 		<ResizablePanelContext value={ctxValue}>
 			<div
-				ref={mergeRefs(setRef, p.ref as any)}
+				ref={refCallback}
 				id={p.panelId}
 				style={combineStyle(p.style, {
 					// flex-basis must come after user style — combineStyle gives

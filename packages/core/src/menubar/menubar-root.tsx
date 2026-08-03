@@ -23,6 +23,7 @@ import {
 	createUniqueId,
 	omit,
 	type Setter,
+	untrack,
 } from "solid-js";
 import {
 	type ElementOf,
@@ -251,11 +252,17 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		},
 	);
 
+	const refCallback = mergeRefs(
+		interactOutsideRef,
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<MenubarContext value={context}>
 			<Polymorphic<MenubarRootRenderProps>
 				as="div"
-				ref={mergeRefs(interactOutsideRef, (el) => (ref = el), mergedProps.ref)}
+				ref={refCallback}
 				role="menubar"
 				data-orientation={mergedProps.orientation!}
 				aria-orientation={mergedProps.orientation!}

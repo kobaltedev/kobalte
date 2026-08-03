@@ -24,6 +24,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	untrack,
 } from "solid-js";
 import {
 	createFormControl,
@@ -216,12 +217,17 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		setInputRef,
 	};
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<FormControlContext value={formControlContext}>
 			<CheckboxContext value={context}>
 				<Polymorphic<CheckboxRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={refCallback}
 					role="group"
 					id={access(formControlProps.id)}
 					onPointerDown={onPointerDown}

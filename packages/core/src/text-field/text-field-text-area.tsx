@@ -13,7 +13,7 @@ import {
 	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, omit, untrack } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 import { useTextFieldContext } from "./text-field-context.tsx";
@@ -96,6 +96,11 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 		}
 	};
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	) as any;
+
 	return (
 		<TextFieldInputBase<
 			Component<
@@ -105,7 +110,7 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 			as="textarea"
 			aria-multiline={mergedProps.submitOnEnter ? "false" : undefined}
 			onKeyPress={composeEventHandlers([mergedProps.onKeyPress, onKeyPress])}
-			ref={mergeRefs((el) => (ref = el), mergedProps.ref) as any}
+			ref={refCallback}
 			{...others}
 		/>
 	);

@@ -1,6 +1,6 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, omit, untrack } from "solid-js";
 
 import {
 	type ElementOf,
@@ -136,10 +136,15 @@ export function SliderTrack<T extends ValidComponent = "div">(
 		}
 	};
 
+	const refCallback = mergeRefs(
+		context.registerTrack,
+		untrack(() => props.ref),
+	);
+
 	return (
 		<Polymorphic<SliderTrackRenderProps>
 			as="div"
-			ref={mergeRefs(context.registerTrack, props.ref)}
+			ref={refCallback}
 			onPointerDown={onPointerDown}
 			onPointerMove={onPointerMove}
 			onPointerUp={onPointerUp}

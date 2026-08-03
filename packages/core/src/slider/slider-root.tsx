@@ -22,6 +22,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	untrack,
 } from "solid-js";
 import {
 	createFormControl,
@@ -412,13 +413,18 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		getValueLabel: mergedProps.getValueLabel,
 	};
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<DomCollectionProvider>
 			<FormControlContext value={formControlContext}>
 				<SliderContext value={context}>
 					<Polymorphic<SliderRootRenderProps>
 						as="div"
-						ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+						ref={refCallback}
 						role="group"
 						id={access(mergedProps.id)!}
 						{...dataset()}

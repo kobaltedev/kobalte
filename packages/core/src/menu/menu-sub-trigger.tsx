@@ -21,7 +21,13 @@ import {
 	type Orientation,
 } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
-import { createEffect, createUniqueId, omit, onCleanup } from "solid-js";
+import {
+	createEffect,
+	createUniqueId,
+	omit,
+	onCleanup,
+	untrack,
+} from "solid-js";
 
 import { type Direction, useLocale } from "../i18n/index.tsx";
 import {
@@ -352,13 +358,18 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		clearOpenTimeout();
 	});
 
+	const refCallback = mergeRefs(
+		(el) => {
+			context.setTriggerRef(el);
+			ref = el;
+		},
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Polymorphic<MenuSubTriggerRenderProps>
 			as="div"
-			ref={mergeRefs((el) => {
-				context.setTriggerRef(el);
-				ref = el;
-			}, mergedProps.ref)}
+			ref={refCallback}
 			id={mergedProps.id}
 			role="menuitem"
 			tabindex={selectableItem.tabIndex()}

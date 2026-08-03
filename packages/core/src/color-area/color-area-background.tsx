@@ -6,7 +6,7 @@ import {
 	parseColor,
 } from "@solid-primitives/utils/colors";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, omit } from "solid-js";
+import { createMemo, createSignal, omit, untrack } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -210,10 +210,15 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 		}
 	});
 
+	const refCallback = mergeRefs(
+		context.setBackgroundRef,
+		untrack(() => props.ref),
+	);
+
 	return (
 		<Polymorphic<ColorAreaBackgroundRenderProps>
 			as="div"
-			ref={mergeRefs(context.setBackgroundRef, props.ref)}
+			ref={refCallback}
 			style={combineStyle(
 				{
 					"touch-action": "none",

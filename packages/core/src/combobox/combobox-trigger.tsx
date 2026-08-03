@@ -9,7 +9,7 @@
 
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit } from "solid-js";
+import { type Component, omit, untrack } from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import { useFormControlContext } from "../form-control/index.ts";
@@ -112,13 +112,18 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 		);
 	};
 
+	const refCallback = mergeRefs(
+		context.setTriggerRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Button.Root<
 			Component<
 				Omit<ComboboxTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
+			ref={refCallback}
 			disabled={isDisabled()}
 			tabindex={-1}
 			aria-haspopup="listbox"

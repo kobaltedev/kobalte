@@ -13,7 +13,7 @@ import {
 } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, Show } from "solid-js";
+import { createEffect, createSignal, omit, Show, untrack } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -114,11 +114,16 @@ export function TabsContent<T extends ValidComponent = "div">(
 		},
 	);
 
+	const refCallback = mergeRefs(
+		setRef,
+		untrack(() => (props as TabsContentProps).ref),
+	);
+
 	return (
 		<Show when={present()}>
 			<Polymorphic<TabsContentRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, (props as TabsContentProps).ref)}
+				ref={refCallback}
 				id={id()}
 				role="tabpanel"
 				tabindex={tabIndex()}

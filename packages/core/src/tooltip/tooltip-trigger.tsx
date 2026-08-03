@@ -21,7 +21,7 @@
 import { callHandler, getDocument, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { isServer } from "@solidjs/web";
-import { omit, onCleanup } from "solid-js";
+import { omit, onCleanup, untrack } from "solid-js";
 
 import {
 	type ElementOf,
@@ -190,15 +190,20 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		getDocument(ref).removeEventListener("pointerup", handlePointerUp);
 	});
 
+	const refCallback = mergeRefs(
+		(el) => {
+			context.setTriggerRef(el);
+			ref = el;
+		},
+		untrack(() => p.ref),
+	);
+
 	// We purposefully avoid using Kobalte `Button` here because tooltip triggers can be any element
 	// and should not always be announced as a button to screen readers.
 	return (
 		<Polymorphic<TooltipTriggerRenderProps>
 			as="button"
-			ref={mergeRefs((el) => {
-				context.setTriggerRef(el);
-				ref = el;
-			}, p.ref)}
+			ref={refCallback}
 			aria-describedby={context.isOpen() ? context.contentId() : undefined}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}

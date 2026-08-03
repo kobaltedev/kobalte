@@ -22,7 +22,7 @@ import {
 
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, Show } from "solid-js";
+import { type Component, createEffect, omit, Show, untrack } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -217,6 +217,14 @@ export function DialogContent<T extends ValidComponent = "div">(
 		(id) => context.registerContentId(id!),
 	);
 
+	const refCallback = mergeRefs(
+		(el) => {
+			context.setContentRef(el);
+			ref = el;
+		},
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Show when={context.contentPresent()}>
 			<DismissableLayer<
@@ -224,10 +232,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 					Omit<DialogContentRenderProps, keyof DismissableLayerRenderProps>
 				>
 			>
-				ref={mergeRefs((el) => {
-					context.setContentRef(el);
-					ref = el;
-				}, mergedProps.ref)}
+				ref={refCallback}
 				role="dialog"
 				tabindex={-1}
 				disableOutsidePointerEvents={context.modal() && context.isOpen()}

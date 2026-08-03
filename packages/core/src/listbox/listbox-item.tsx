@@ -23,6 +23,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	untrack,
 } from "solid-js";
 
 import {
@@ -225,11 +226,16 @@ export function ListboxItem<T extends ValidComponent = "li">(
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};
 
+	const refCallback = mergeRefs(
+		setRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<ListboxItemContext value={context}>
 			<Polymorphic<ListboxItemRenderProps>
 				as="li"
-				ref={mergeRefs(setRef, mergedProps.ref)}
+				ref={refCallback}
 				role="option"
 				tabindex={selectableItem.tabIndex()}
 				aria-disabled={selectableItem.isDisabled() ? "true" : "false"}

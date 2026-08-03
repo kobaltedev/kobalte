@@ -7,7 +7,7 @@ import {
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, omit, untrack } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -187,13 +187,18 @@ export function RatingRoot<T extends ValidComponent = "div">(
 		setItems,
 	};
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<DomCollectionProvider>
 			<FormControlContext value={formControlContext}>
 				<RatingContext value={context}>
 					<Polymorphic<RatingRootRenderProps>
 						as="div"
-						ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+						ref={refCallback}
 						role="radiogroup"
 						id={access(mergedProps.id)!}
 						aria-invalid={

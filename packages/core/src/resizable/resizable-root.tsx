@@ -515,11 +515,16 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 		onKeyDown,
 	};
 
+	const refCallback = mergeRefs(
+		setRef,
+		untrack(() => p.ref as any),
+	);
+
 	return (
 		<ResizableContext value={ctxValue}>
 			<ResizableInternalContext value={internalCtxValue}>
 				<div
-					ref={mergeRefs(setRef, p.ref as any)}
+					ref={refCallback}
 					style={combineStyle(
 						{
 							display: "flex",

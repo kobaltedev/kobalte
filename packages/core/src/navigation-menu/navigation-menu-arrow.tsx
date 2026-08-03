@@ -1,6 +1,12 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createSignal, omit } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	omit,
+	untrack,
+} from "solid-js";
 
 import { useMenubarContext } from "../menubar/menubar-context.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -81,13 +87,18 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 		},
 	);
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<PopperArrow<
 			Component<
 				Omit<NavigationMenuArrowRenderProps, keyof PopperArrowRenderProps>
 			>
 		>
-			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+			ref={refCallback}
 			style={{
 				transform: `translate${horizontal() ? "X" : "Y"}(${offset()}px)`,
 				color: "red",

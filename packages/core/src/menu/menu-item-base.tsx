@@ -21,6 +21,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	untrack,
 } from "solid-js";
 
 import {
@@ -298,11 +299,16 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		registerDescription: createRegisterId(setDescriptionId),
 	};
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<MenuItemContext value={context}>
 			<Polymorphic<MenuItemBaseRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+				ref={refCallback}
 				tabindex={selectableItem.tabIndex()}
 				aria-checked={ariaChecked()}
 				aria-disabled={mergedProps.disabled ? "true" : undefined}

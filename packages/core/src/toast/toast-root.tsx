@@ -438,12 +438,17 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};
 
+	const refCallback = mergeRefs(
+		setRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Show when={present()}>
 			<ToastContext value={context}>
 				<Polymorphic<ToastRootRenderProps>
 					as="li"
-					ref={mergeRefs(setRef, mergedProps.ref)}
+					ref={refCallback}
 					role="status"
 					tabindex={0}
 					style={combineStyle(

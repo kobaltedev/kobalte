@@ -15,7 +15,7 @@ import {
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, omit, untrack } from "solid-js";
 
 import {
 	type ElementOf,
@@ -139,10 +139,15 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 		},
 	);
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Polymorphic<TabsTriggerRenderProps>
 			as="button"
-			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+			ref={refCallback}
 			id={id()}
 			role="tab"
 			tabindex={!isDisabled() ? selectableItem.tabIndex() : undefined}

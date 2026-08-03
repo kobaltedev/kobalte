@@ -1,6 +1,6 @@
 import { composeEventHandlers, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, omit, untrack } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -112,6 +112,11 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 		context.processFiles(fileList);
 	};
 
+	const refCallback = mergeRefs(
+		(el: HTMLElement) => context.setDropzoneRef(el),
+		untrack(() => props.ref as (el: HTMLElement) => void),
+	);
+
 	return (
 		<Polymorphic<FileFieldDropzoneRenderProps>
 			as="div"
@@ -120,10 +125,7 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 			tabindex="0"
 			aria-disabled={context.disabled() ? "true" : undefined}
 			data-dragging={isDragging()}
-			ref={mergeRefs(
-				(el: HTMLElement) => context.setDropzoneRef(el),
-				props.ref as (el: HTMLElement) => void,
-			)}
+			ref={refCallback}
 			onClick={composeEventHandlers([props.onClick, onClick])}
 			onKeyDown={composeEventHandlers([props.onKeyDown, onKeyDown])}
 			onDragOver={composeEventHandlers([props.onDragOver, onDragOver])}

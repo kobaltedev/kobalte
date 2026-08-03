@@ -26,6 +26,7 @@ import {
 	createUniqueId,
 	omit,
 	onSettled,
+	untrack,
 	useContext,
 } from "solid-js";
 import {
@@ -212,11 +213,16 @@ export function SliderThumb<T extends ValidComponent = "span">(
 		context.state.setThumbEditable(index(), !context.state.isDisabled());
 	});
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<ThumbContext value={{ index }}>
 			<Polymorphic<SliderThumbRenderProps>
 				as="span"
-				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+				ref={refCallback}
 				role="slider"
 				id={fieldProps.id()}
 				tabindex={context.state.isDisabled() ? undefined : 0}

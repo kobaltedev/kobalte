@@ -15,7 +15,7 @@ import {
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, untrack } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -130,10 +130,15 @@ export function SwitchInput<T extends ValidComponent = "input">(
 		context.setIsFocused(false);
 	};
 
+	const refCallback = mergeRefs(
+		context.setInputRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Polymorphic<SwitchInputRenderProps>
 			as="input"
-			ref={mergeRefs(context.setInputRef, mergedProps.ref)}
+			ref={refCallback}
 			type="checkbox"
 			role="switch"
 			id={fieldProps.id()}

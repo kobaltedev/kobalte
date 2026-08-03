@@ -1,6 +1,6 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, createEffect, For, omit } from "solid-js";
+import { type Accessor, createEffect, For, omit, untrack } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import { useLocale } from "../i18n/index.tsx";
@@ -118,11 +118,16 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 		}
 	};
 
+	const refCallback = mergeRefs(
+		timeFieldContext.setInputRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Polymorphic<TimeFieldInputRenderProps>
 			as="div"
 			role="presentation"
-			ref={mergeRefs(timeFieldContext.setInputRef, mergedProps.ref)}
+			ref={refCallback}
 			aria-labelledby={timeFieldContext.fieldAriaLabelledBy()}
 			aria-describedby={timeFieldContext.fieldAriaDescribedBy()}
 			onKeyDown={onKeyDown}

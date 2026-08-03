@@ -208,6 +208,11 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 		setPreviousMenu,
 	};
 
+	const refCallback = mergeRefs(
+		context.setRootRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<NavigationMenuContext value={context}>
 			<Popper
@@ -224,7 +229,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 						>
 					>
 						as="ul"
-						ref={mergeRefs(context.setRootRef, mergedProps.ref)}
+						ref={refCallback}
 						value={value() ?? null}
 						onValueChange={setValue}
 						autoFocusMenu={autoFocusMenu()}

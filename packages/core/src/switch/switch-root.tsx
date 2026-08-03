@@ -24,6 +24,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	untrack,
 } from "solid-js";
 import {
 	createFormControl,
@@ -188,12 +189,17 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 		setInputRef,
 	};
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<FormControlContext value={formControlContext}>
 			<SwitchContext value={context}>
 				<Polymorphic<SwitchRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={refCallback}
 					role="group"
 					id={access(mergedProps.id)}
 					onPointerDown={onPointerDown}

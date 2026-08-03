@@ -8,7 +8,7 @@
 
 import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { createEffect, For, omit, Show } from "solid-js";
+import { createEffect, For, omit, Show, untrack } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import type { Collection, CollectionNode } from "../primitives/index.ts";
@@ -98,6 +98,11 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 		{ defer: true },
 	);
 
+	const refCallback = mergeRefs(
+		(el) => (ref = el),
+		untrack(() => props.ref as any),
+	);
+
 	// If virtualized, only render the selected options in the hidden <select> so the value can be submitted to a server.
 	// Otherwise, render all options so that browser autofill will work.
 	return (
@@ -112,7 +117,7 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 				onFocus={() => props.focusTrigger()}
 			/>
 			<select
-				ref={mergeRefs((el) => (ref = el), props.ref as any)}
+				ref={refCallback}
 				tabindex={-1}
 				multiple={props.isMultiple}
 				name={formControlContext.name()}

@@ -8,7 +8,7 @@
 
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit } from "solid-js";
+import { type Component, omit, untrack } from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -62,13 +62,18 @@ export function PopoverTrigger<T extends ValidComponent = "button">(
 		context.toggle();
 	};
 
+	const refCallback = mergeRefs(
+		context.setTriggerRef,
+		untrack(() => p.ref),
+	);
+
 	return (
 		<Button.Root<
 			Component<
 				Omit<PopoverTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, p.ref)}
+			ref={refCallback}
 			aria-haspopup="dialog"
 			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}

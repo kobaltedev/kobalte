@@ -1,7 +1,7 @@
 import { callHandler, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit, Show } from "solid-js";
+import { omit, Show, untrack } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -48,11 +48,16 @@ export function DialogOverlay<T extends ValidComponent = "div">(
 		}
 	};
 
+	const refCallback = mergeRefs(
+		context.setOverlayRef,
+		untrack(() => p.ref),
+	);
+
 	return (
 		<Show when={context.overlayPresent()}>
 			<Polymorphic<DialogOverlayRenderProps>
 				as="div"
-				ref={mergeRefs(context.setOverlayRef, p.ref)}
+				ref={refCallback}
 				// We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling.
 				style={combineStyle({ "pointer-events": "auto" }, p.style)}
 				data-expanded={context.isOpen() ? "" : undefined}

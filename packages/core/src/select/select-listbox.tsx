@@ -1,6 +1,6 @@
 import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, omit, untrack } from "solid-js";
 import type {
 	ListboxRootCommonProps,
 	ListboxRootRenderProps,
@@ -64,13 +64,18 @@ export function SelectListbox<
 		}
 	};
 
+	const refCallback = mergeRefs(
+		context.setListboxRef,
+		untrack(() => mergedProps.ref),
+	);
+
 	return (
 		<Listbox.Root<
 			Option,
 			OptGroup,
 			Component<Omit<SelectListboxRenderProps, keyof ListboxRootRenderProps>>
 		>
-			ref={mergeRefs(context.setListboxRef, mergedProps.ref)}
+			ref={refCallback}
 			id={mergedProps.id}
 			state={context.listState()}
 			virtualized={context.isVirtualized()}
