@@ -1,6 +1,6 @@
 import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, onCleanup } from "solid-js";
+import { createEffect, createSignal, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -58,9 +58,7 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 
 	createEffect(
 		() => others.id,
-		(id) => {
-			onCleanup(context.registerLabel(id));
-		},
+		(id) => context.registerLabel(id),
 	);
 
 	return (

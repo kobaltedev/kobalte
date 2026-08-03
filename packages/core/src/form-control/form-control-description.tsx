@@ -1,6 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, onCleanup } from "solid-js";
+import { createEffect } from "solid-js";
 
 import { Polymorphic, type PolymorphicProps } from "../polymorphic/index.tsx";
 import {
@@ -38,9 +38,7 @@ export function FormControlDescription<T extends ValidComponent = "div">(
 
 	createEffect(
 		() => mergedProps.id!,
-		(id) => {
-			onCleanup(context.registerDescription(id));
-		},
+		(id) => context.registerDescription(id),
 	);
 
 	return (

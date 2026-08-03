@@ -14,7 +14,7 @@ import {
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, onCleanup } from "solid-js";
+import { createEffect, createSignal, omit } from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
@@ -167,9 +167,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	);
 	createEffect(
 		() => others.id,
-		(id) => {
-			onCleanup(radioContext.registerInput(id!));
-		},
+		(id) => radioContext.registerInput(id!),
 	);
 
 	return (
