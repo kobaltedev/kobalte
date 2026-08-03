@@ -3,12 +3,12 @@ packages:
   - packages/*
 catalog:
   # Solid 2.0 core — keep these three in lockstep on the same beta number
-  solid-js: 2.0.0-beta.18
-  "@solidjs/web": 2.0.0-beta.18
-  "@solidjs/signals": 2.0.0-beta.18
+  solid-js: 2.0.0-beta.29
+  "@solidjs/web": 2.0.0-beta.29
+  "@solidjs/signals": 2.0.0-beta.29
   "@solidjs/testing-library": 1.0.0-beta.2
   # Mirrored in the "babel-preset-solid" override below (overrides can't use catalog:)
-  babel-preset-solid: 2.0.0-beta.18
+  babel-preset-solid: 2.0.0-beta.29
   # Build tooling shared across root + published packages
   typescript: 7.0.2
   tsdown: 0.22.7
@@ -37,7 +37,7 @@ overrides:
   # unplugin-solid@1.0.0's own babel-preset-solid dependency (^1.9.9) predates
   # Solid 2.0's rename of the `use:` directive runtime helper (`use` ->
   # `ref`/`applyRef`), which crashes at runtime against @solidjs/web@2.x.
-  "babel-preset-solid": "2.0.0-beta.18"
+  "babel-preset-solid": "2.0.0-beta.29"
   "@solidjs/testing-library": "1.0.0-beta.2"
   "@solid-primitives/a11y": "next"
   "@solid-primitives/controlled-signal": "1.0.0-next.1"
@@ -93,10 +93,10 @@ minimumReleaseAgeExclude:
   - rolldown-plugin-dts@0.27.8
   - tsdown@0.22.7
   - "@dom-expressions/babel-plugin-jsx@0.50.0-next.21"
-  - "@solidjs/signals@2.0.0-beta.18"
-  - "@solidjs/web@2.0.0-beta.18"
-  - babel-preset-solid@2.0.0-beta.18
-  - solid-js@2.0.0-beta.18
+  - "@solidjs/signals@2.0.0-beta.29"
+  - "@solidjs/web@2.0.0-beta.29"
+  - babel-preset-solid@2.0.0-beta.29
+  - solid-js@2.0.0-beta.29
 dedupePeerDependents: true
 patchedDependencies:
   storybook-solidjs-vite@10.6.0: patches/storybook-solidjs-vite@10.6.0.patch
