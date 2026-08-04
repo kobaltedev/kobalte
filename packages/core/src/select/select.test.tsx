@@ -197,6 +197,10 @@ describe("Select", () => {
 				CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2],
 			);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -297,6 +301,10 @@ describe("Select", () => {
 			expect(onValueChange.mock.calls[0][0]).toBe(
 				CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2],
 			);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -410,6 +418,10 @@ describe("Select", () => {
 				CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2],
 			);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -511,6 +523,10 @@ describe("Select", () => {
 				CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2],
 			);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -600,6 +616,10 @@ describe("Select", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe("Three");
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -694,6 +714,10 @@ describe("Select", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe("Three");
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -783,6 +807,10 @@ describe("Select", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(3);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -876,6 +904,10 @@ describe("Select", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(3);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -1518,6 +1550,10 @@ describe("Select", () => {
 			vi.runAllTimers();
 			await Promise.resolve();
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveAttribute("aria-expanded", "false");
 			expect(trigger).not.toHaveAttribute("aria-controls");
@@ -1604,6 +1640,10 @@ describe("Select", () => {
 
 			vi.runAllTimers();
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveAttribute("aria-expanded", "false");
 			expect(trigger).not.toHaveAttribute("aria-controls");
@@ -1664,6 +1704,10 @@ describe("Select", () => {
 			expect(trigger).toHaveAttribute("aria-controls", listbox.id);
 
 			fireEvent.keyDown(listbox, { key: "Escape" });
+			await Promise.resolve();
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
 			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
@@ -1773,6 +1817,10 @@ describe("Select", () => {
 
 			fireEvent.keyDown(listbox, { key: "Escape" });
 			fireEvent.keyUp(listbox, { key: "Escape" });
+			await Promise.resolve();
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
 			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
@@ -2193,6 +2241,10 @@ describe("Select", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[2]);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2273,6 +2325,10 @@ describe("Select", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[0]);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2350,6 +2406,10 @@ describe("Select", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[1]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveTextContent("Two");
@@ -2443,6 +2503,10 @@ describe("Select", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[2]);
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2643,6 +2707,10 @@ describe("Select", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[0]);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2739,6 +2807,10 @@ describe("Select", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[0]);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2824,6 +2896,10 @@ describe("Select", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[0]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -2918,6 +2994,10 @@ describe("Select", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(dataSource[2]);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -3010,6 +3090,10 @@ describe("Select", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(dataSource[2]);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveTextContent("Three");
 
@@ -3031,6 +3115,10 @@ describe("Select", () => {
 			await Promise.resolve();
 
 			fireEvent.keyUp(document.activeElement!, { key: "Enter" });
+			await Promise.resolve();
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
 			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
@@ -3104,6 +3192,10 @@ describe("Select", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(DATA_SOURCE[1]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 

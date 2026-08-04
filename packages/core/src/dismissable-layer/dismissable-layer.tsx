@@ -12,7 +12,7 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/dismissable/src/dismissable-layer.ts
  */
 
-import { contains, mergeRefs } from "@kobalte/utils";
+import { contains } from "@kobalte/utils";
 import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
@@ -252,13 +252,13 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	return (
 		<DismissableLayerContext value={context}>
 			<div
-				ref={mergeRefs(
+				ref={[
 					(el) => {
 						ref = el;
 					},
 					interactOutsideRef as (el: HTMLElement) => void,
-					props.ref as any,
-				)}
+					props.ref,
+				]}
 				{...(others as any)}
 			>
 				{(others as any).children}
