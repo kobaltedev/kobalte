@@ -27,6 +27,7 @@ import {
 	createMemo,
 	omit,
 	onSettled,
+	type Ref,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
@@ -82,7 +83,7 @@ export interface DismissableLayerOptions {
 export interface DismissableLayerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface DismissableLayerRenderProps

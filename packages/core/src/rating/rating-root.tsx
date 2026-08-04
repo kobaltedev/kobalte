@@ -6,7 +6,7 @@ import {
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -72,7 +72,7 @@ export interface RatingRootOptions {
 
 export interface RatingRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	"aria-label"?: string;
@@ -192,7 +192,7 @@ export function RatingRoot<T extends ValidComponent = "div">(
 				<RatingContext value={context}>
 					<Polymorphic<RatingRootRenderProps>
 						as="div"
-						ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+						ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 						role="radiogroup"
 						id={access(mergedProps.id)!}
 						aria-invalid={

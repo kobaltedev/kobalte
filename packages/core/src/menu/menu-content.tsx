@@ -1,4 +1,3 @@
-import { mergeRefs } from "@kobalte/utils";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
@@ -44,9 +43,12 @@ export function MenuContent<T extends ValidComponent = "div">(
 		<MenuContentBase<
 			Component<Omit<MenuContentRenderProps, keyof MenuContentBaseRenderProps>>
 		>
-			ref={mergeRefs((el: HTMLElement) => {
-				ref = el;
-			}, props.ref)}
+			ref={[
+				(el: HTMLElement) => {
+					ref = el;
+				},
+				props.ref,
+			]}
 			{...others}
 		/>
 	);

@@ -23,6 +23,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
@@ -102,7 +103,7 @@ export interface CheckboxRootOptions {
 
 export interface CheckboxRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
@@ -220,7 +221,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 			<CheckboxContext value={context}>
 				<Polymorphic<CheckboxRootRenderProps>
 					as="div"
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 					role="group"
 					id={access(formControlProps.id)}
 					onPointerDown={onPointerDown}

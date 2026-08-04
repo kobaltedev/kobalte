@@ -1,5 +1,5 @@
 import type { ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -11,7 +11,7 @@ import { type PopoverDataSet, usePopoverContext } from "./popover-context.tsx";
 export interface PopoverAnchorOptions {}
 
 export interface PopoverAnchorCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface PopoverAnchorRenderProps

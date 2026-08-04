@@ -20,7 +20,13 @@ import {
 	type Orientation,
 } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
-import { createEffect, createUniqueId, omit, onCleanup } from "solid-js";
+import {
+	createEffect,
+	createUniqueId,
+	omit,
+	onCleanup,
+	type Ref,
+} from "solid-js";
 
 import { type Direction, useLocale } from "../i18n/index.tsx";
 import {
@@ -49,7 +55,7 @@ export interface MenuSubTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;

@@ -6,7 +6,7 @@ import {
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createUniqueId, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -65,7 +65,7 @@ export interface TextFieldRootOptions {
 
 export interface TextFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface TextFieldRootRenderProps
@@ -151,7 +151,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 			<TextFieldContext value={context}>
 				<Polymorphic<TextFieldRootRenderProps>
 					as="div"
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)}
 					{...formControlContext.dataset()}

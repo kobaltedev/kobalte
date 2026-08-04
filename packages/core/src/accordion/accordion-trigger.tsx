@@ -120,7 +120,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 			data-key={selectableItem.dataKey()}
 			onPointerDown={composeEventHandlers([
 				mergedProps.onPointerDown,

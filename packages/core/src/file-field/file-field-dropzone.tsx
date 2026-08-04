@@ -1,6 +1,6 @@
 import { composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, omit, type Ref } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -14,7 +14,7 @@ export interface FileFieldDropzoneOptions {}
 export interface FileFieldDropzoneCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onDragOver: JSX.EventHandlerUnion<T, DragEvent>;

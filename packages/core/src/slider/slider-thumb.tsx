@@ -25,6 +25,7 @@ import {
 	createUniqueId,
 	omit,
 	onSettled,
+	type Ref,
 	useContext,
 } from "solid-js";
 import {
@@ -44,7 +45,7 @@ export interface SliderThumbOptions {}
 
 export interface SliderThumbCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style?: JSX.CSSProperties | string;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -215,7 +216,7 @@ export function SliderThumb<T extends ValidComponent = "span">(
 		<ThumbContext value={{ index }}>
 			<Polymorphic<SliderThumbRenderProps>
 				as="span"
-				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 				role="slider"
 				id={fieldProps.id()}
 				tabindex={context.state.isDisabled() ? undefined : 0}

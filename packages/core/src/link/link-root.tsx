@@ -7,7 +7,7 @@
  */
 
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -22,7 +22,7 @@ export interface LinkRootOptions {
 }
 
 export interface LinkRootCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	href: string | undefined;
 }
 
@@ -54,7 +54,7 @@ export function LinkRoot<T extends ValidComponent = "a">(
 	return (
 		<Polymorphic<LinkRootRenderProps>
 			as="a"
-			ref={[setRef, (props as LinkRootProps).ref] as any}
+			ref={[setRef, (props as LinkRootProps).ref]}
 			role={tagName() !== "a" || props.disabled ? "link" : undefined}
 			tabindex={tagName() !== "a" && !props.disabled ? 0 : undefined}
 			href={!props.disabled ? props.href : undefined}

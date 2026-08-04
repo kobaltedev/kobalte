@@ -21,6 +21,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 	type Setter,
 } from "solid-js";
 import {
@@ -60,7 +61,7 @@ export interface MenubarRootOptions {
 
 export interface MenubarRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface MenubarRootRenderProps extends MenubarRootCommonProps {

@@ -14,7 +14,7 @@ import {
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, type Ref } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -34,7 +34,7 @@ export interface SwitchInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style?: JSX.CSSProperties | string;
 	onChange: JSX.EventHandlerUnion<T, Event>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -132,7 +132,7 @@ export function SwitchInput<T extends ValidComponent = "input">(
 	return (
 		<Polymorphic<SwitchInputRenderProps>
 			as="input"
-			ref={[context.setInputRef, mergedProps.ref] as any}
+			ref={[context.setInputRef, mergedProps.ref]}
 			type="checkbox"
 			role="switch"
 			id={fieldProps.id()}

@@ -24,6 +24,7 @@ import {
 	createMemo,
 	createUniqueId,
 	omit,
+	type Ref,
 	Show,
 } from "solid-js";
 
@@ -48,7 +49,7 @@ export interface TimeFieldSegmentCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onBeforeInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;

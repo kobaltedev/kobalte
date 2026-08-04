@@ -9,7 +9,7 @@
 
 import { callHandler, contains, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, type Ref } from "solid-js";
 
 import {
 	createFormControlField,
@@ -29,7 +29,7 @@ export interface ComboboxInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;

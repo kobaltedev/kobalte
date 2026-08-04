@@ -23,6 +23,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
@@ -93,7 +94,7 @@ export interface SwitchRootOptions {
 
 export interface SwitchRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
@@ -192,7 +193,7 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 			<SwitchContext value={context}>
 				<Polymorphic<SwitchRootRenderProps>
 					as="div"
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)}
 					onPointerDown={onPointerDown}

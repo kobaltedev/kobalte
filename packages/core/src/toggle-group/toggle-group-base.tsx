@@ -5,7 +5,7 @@ import {
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
 import { useLocale } from "../i18n/index.tsx";
 import { createListState } from "../list/index.ts";
 import {
@@ -52,7 +52,7 @@ export interface ToggleGroupBaseCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -149,7 +149,7 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 				<Polymorphic<ToggleGroupBaseRenderProps>
 					as="div"
 					role="group"
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 					tabindex={
 						!mergedProps.disabled ? selectableList.tabIndex() : undefined
 					}

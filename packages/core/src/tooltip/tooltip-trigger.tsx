@@ -21,7 +21,7 @@
 import { callHandler, getDocument } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { isServer } from "@solidjs/web";
-import { omit, onCleanup } from "solid-js";
+import { omit, onCleanup, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -35,7 +35,7 @@ export interface TooltipTriggerOptions {}
 export interface TooltipTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;

@@ -9,6 +9,7 @@ import {
 	createMemo,
 	createSignal,
 	omit,
+	type Ref,
 	type Setter,
 	untrack,
 } from "solid-js";
@@ -56,7 +57,7 @@ export interface NavigationMenuRootOptions
 export interface NavigationMenuRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > extends MenubarRootCommonProps<T> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface NavigationMenuRootRenderProps

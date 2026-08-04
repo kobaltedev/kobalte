@@ -8,7 +8,7 @@
 
 import { mergeDefaultProps, type Orientation } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -23,7 +23,7 @@ export interface SeparatorRootOptions {
 }
 
 export interface SeparatorRootCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface SeparatorRootRenderProps extends SeparatorRootCommonProps {
@@ -60,7 +60,7 @@ export function SeparatorRoot<T extends ValidComponent = "hr">(
 	return (
 		<Polymorphic<SeparatorRootRenderProps>
 			as="hr"
-			ref={[setRef, mergedProps.ref] as any}
+			ref={[setRef, mergedProps.ref]}
 			role={tagName() !== "hr" ? "separator" : undefined}
 			aria-orientation={
 				mergedProps.orientation === "vertical" ? "vertical" : undefined

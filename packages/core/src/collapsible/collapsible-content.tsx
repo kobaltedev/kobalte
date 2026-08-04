@@ -10,7 +10,14 @@ import { mergeDefaultProps } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, onSettled, Show } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	omit,
+	onSettled,
+	type Ref,
+	Show,
+} from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -27,7 +34,7 @@ export interface CollapsibleContentCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 }
 
@@ -128,7 +135,7 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<CollapsibleContentRenderProps>
 				as="div"
-				ref={[setRef, mergedProps.ref] as any}
+				ref={[setRef, mergedProps.ref]}
 				id={mergedProps.id}
 				style={combineStyle(
 					{

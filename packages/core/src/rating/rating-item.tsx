@@ -11,6 +11,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
@@ -37,7 +38,7 @@ export interface RatingItemOptions {}
 
 export interface RatingItemCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	"aria-label"?: string;
@@ -271,7 +272,7 @@ export function RatingItem<T extends ValidComponent = "div">(
 		<RatingItemContext value={context}>
 			<Polymorphic<RatingItemRenderProps>
 				as="div"
-				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 				role="radio"
 				tabindex={tabIndex()}
 				aria-checked={equal() ? "true" : "false"}

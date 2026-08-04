@@ -20,6 +20,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 } from "solid-js";
 
 import {
@@ -72,7 +73,7 @@ export interface MenuItemBaseOptions {
 
 export interface MenuItemBaseCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -301,7 +302,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		<MenuItemContext value={context}>
 			<Polymorphic<MenuItemBaseRenderProps>
 				as="div"
-				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 				tabindex={selectableItem.tabIndex()}
 				aria-checked={ariaChecked()}
 				aria-disabled={mergedProps.disabled ? "true" : undefined}

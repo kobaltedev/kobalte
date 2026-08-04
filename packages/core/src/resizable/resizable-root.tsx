@@ -14,6 +14,7 @@ import {
 	createMemo,
 	createSignal,
 	omit,
+	type Ref,
 	type Setter,
 	untrack,
 } from "solid-js";
@@ -63,7 +64,7 @@ export interface ResizableRootOptions {
 }
 
 export interface ResizableRootCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 	children: JSX.Element | ((props: ResizableRootChildrenProps) => JSX.Element);
 }
@@ -519,7 +520,7 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 		<ResizableContext value={ctxValue}>
 			<ResizableInternalContext value={internalCtxValue}>
 				<div
-					ref={[setRef, p.ref] as any}
+					ref={[setRef, p.ref] as Ref<HTMLDivElement>}
 					style={combineStyle(
 						{
 							display: "flex",

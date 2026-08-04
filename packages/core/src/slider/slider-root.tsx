@@ -21,6 +21,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
@@ -136,7 +137,7 @@ export interface SliderRootOptions {
 
 export interface SliderRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface SliderRootRenderProps
@@ -417,7 +418,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 				<SliderContext value={context}>
 					<Polymorphic<SliderRootRenderProps>
 						as="div"
-						ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+						ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 						role="group"
 						id={access(mergedProps.id)!}
 						{...dataset()}

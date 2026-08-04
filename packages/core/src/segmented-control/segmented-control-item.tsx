@@ -1,5 +1,11 @@
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createSignal, omit } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	omit,
+	type Ref,
+} from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	RadioGroup,
@@ -15,7 +21,7 @@ export interface SegmentedControlItemOptions extends RadioGroupItemOptions {}
 export interface SegmentedControlItemCommonProps<
 	T extends HTMLElement = HTMLElement,
 > extends RadioGroupItemCommonProps<T> {
-	ref?: T | ((el: T) => void);
+	ref?: Ref<T>;
 }
 
 export interface SegmentedControlItemRenderProps

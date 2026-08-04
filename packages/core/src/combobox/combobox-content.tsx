@@ -1,4 +1,4 @@
-import { focusWithoutScrolling, mergeRefs } from "@kobalte/utils";
+import { focusWithoutScrolling } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -151,10 +151,13 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 						Omit<ComboboxContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={mergeRefs((el: HTMLElement) => {
-						context.setContentRef(el);
-						ref = el;
-					}, props.ref)}
+					ref={[
+						(el: HTMLElement) => {
+							context.setContentRef(el);
+							ref = el;
+						},
+						props.ref,
+					]}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.controlRef]}
 					style={combineStyle(

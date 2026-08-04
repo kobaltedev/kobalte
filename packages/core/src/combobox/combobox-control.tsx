@@ -1,6 +1,6 @@
 import { isFunction } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, children, omit } from "solid-js";
+import { type Accessor, children, omit, type Ref } from "solid-js";
 
 import {
 	type FormControlDataSet,
@@ -40,7 +40,7 @@ export interface ComboboxControlOptions<Option> {
 export interface ComboboxControlCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface ComboboxControlRenderProps

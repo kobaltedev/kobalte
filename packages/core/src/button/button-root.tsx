@@ -14,7 +14,7 @@
 
 import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, omit } from "solid-js";
+import { createMemo, createSignal, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -30,7 +30,7 @@ export interface ButtonRootCommonProps<T extends HTMLElement = HTMLElement> {
 	/** Whether the button is disabled. */
 	disabled: boolean | undefined;
 	type: string | undefined;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	tabindex: number | string | undefined;
 }
 
@@ -86,7 +86,7 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 	return (
 		<Polymorphic<ButtonRootRenderProps>
 			as="button"
-			ref={[setRef, mergedProps.ref] as any}
+			ref={[setRef, mergedProps.ref]}
 			type={isNativeButton() || isNativeInput() ? mergedProps.type : undefined}
 			role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
 			tabindex={

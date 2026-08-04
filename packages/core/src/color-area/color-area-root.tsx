@@ -13,7 +13,7 @@ import {
 	parseColor,
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -101,7 +101,7 @@ export interface ColorAreaRootOptions {
 
 export interface ColorAreaRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface ColorAreaRootRenderProps
@@ -316,7 +316,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 			<ColorAreaContext value={context}>
 				<Polymorphic<ColorAreaRootRenderProps>
 					as="div"
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)!}
 					{...formControlContext.dataset()}

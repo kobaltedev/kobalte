@@ -5,7 +5,7 @@ import {
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createUniqueId, omit } from "solid-js";
+import { type Component, createUniqueId, omit, type Ref } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
 import type { CollectionItemWithRef } from "../primitives/index.ts";
@@ -26,7 +26,7 @@ export interface ToggleGroupItemCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	disabled: boolean | undefined;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;

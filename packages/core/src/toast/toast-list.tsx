@@ -20,7 +20,7 @@ import {
 	getWindow,
 } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
-import { createEffect, For, omit, untrack } from "solid-js";
+import { createEffect, For, omit, type Ref, untrack } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -32,7 +32,7 @@ import { useToastRegionContext } from "./toast-region-context.tsx";
 export interface ToastListOptions {}
 
 export interface ToastListCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
 	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -169,7 +169,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	return (
 		<Polymorphic<ToastListRenderProps>
 			as="ol"
-			ref={[(el: HTMLElement) => (ref = el), props.ref as any] as any}
+			ref={[(el: HTMLElement) => (ref = el), (props as ToastListProps).ref]}
 			tabindex={-1}
 			onFocusIn={onFocusIn}
 			onFocusOut={onFocusOut}

@@ -112,7 +112,7 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 				onFocus={() => props.focusTrigger()}
 			/>
 			<select
-				ref={[(el) => (ref = el), props.ref as any]}
+				ref={[(el) => (ref = el), props.ref]}
 				tabindex={-1}
 				multiple={props.isMultiple}
 				name={formControlContext.name()}

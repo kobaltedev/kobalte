@@ -12,7 +12,7 @@ import {
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createUniqueId, omit, type Ref } from "solid-js";
 
 import { createListState, createSelectableList } from "../list/index.ts";
 import {
@@ -52,7 +52,7 @@ export interface AccordionRootOptions {
 
 export interface AccordionRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>; // TODO: remove next breaking
@@ -138,7 +138,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 				<Polymorphic<AccordionRootRenderProps>
 					as="div"
 					id={mergedProps.id}
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 					onKeyDown={composeEventHandlers([
 						mergedProps.onKeyDown,
 						selectableList.onKeyDown,

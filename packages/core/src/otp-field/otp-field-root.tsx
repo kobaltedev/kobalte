@@ -20,6 +20,7 @@ import {
 	createUniqueId,
 	omit,
 	onSettled,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
@@ -85,7 +86,7 @@ export interface OTPFieldRootOptions {
 
 export interface OTPFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 }
 

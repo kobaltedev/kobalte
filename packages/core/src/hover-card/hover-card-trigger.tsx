@@ -8,7 +8,7 @@
 
 import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, onCleanup } from "solid-js";
+import { type Component, omit, onCleanup, type Ref } from "solid-js";
 
 import * as Link from "../link/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -23,7 +23,7 @@ export interface HoverCardTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	disabled: boolean;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;

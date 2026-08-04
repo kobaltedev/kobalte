@@ -10,7 +10,13 @@
 import { getWindow, mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, createEffect, createSignal, omit } from "solid-js";
+import {
+	type Accessor,
+	createEffect,
+	createSignal,
+	omit,
+	type Ref,
+} from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -38,7 +44,7 @@ export interface PopperArrowOptions {
 }
 
 export interface PopperArrowCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style?: JSX.CSSProperties | string;
 }
 
@@ -93,7 +99,7 @@ export function PopperArrow<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<PopperArrowRenderProps>
 			as="div"
-			ref={[context.setArrowRef, mergedProps.ref] as any}
+			ref={[context.setArrowRef, mergedProps.ref]}
 			aria-hidden="true"
 			style={combineStyle(
 				{

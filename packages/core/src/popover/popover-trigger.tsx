@@ -8,7 +8,7 @@
 
 import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit } from "solid-js";
+import { type Component, omit, type Ref } from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -19,7 +19,7 @@ export interface PopoverTriggerOptions {}
 export interface PopoverTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }

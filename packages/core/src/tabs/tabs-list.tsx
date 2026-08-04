@@ -8,7 +8,7 @@
 
 import { composeEventHandlers, type Orientation } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, omit, type Ref } from "solid-js";
 
 import { useLocale } from "../i18n/index.tsx";
 import {
@@ -23,7 +23,7 @@ import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate.ts";
 export interface TabsListOptions {}
 
 export interface TabsListCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;

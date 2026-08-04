@@ -1,6 +1,6 @@
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, type Ref } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -13,7 +13,7 @@ export interface PopperPositionerOptions {}
 export interface PopperPositionerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style?: JSX.CSSProperties | string;
 }
 

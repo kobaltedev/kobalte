@@ -9,7 +9,7 @@
 
 import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, omit, type Ref } from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import {
@@ -26,7 +26,7 @@ export interface SelectTriggerOptions {}
 export interface SelectTriggerCommonProps<T extends HTMLElement = HTMLElement>
 	extends Button.ButtonRootCommonProps<T> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;

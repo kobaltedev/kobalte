@@ -1,6 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit } from "solid-js";
+import { createEffect, createSignal, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -19,7 +19,7 @@ export interface FormControlLabelCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface FormControlLabelRenderProps
@@ -64,7 +64,7 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 	return (
 		<Polymorphic<FormControlLabelRenderProps>
 			as="label"
-			ref={[setRef, mergedProps.ref] as any}
+			ref={[setRef, mergedProps.ref]}
 			for={tagName() === "label" ? context.fieldId() : undefined}
 			{...context.dataset()}
 			{...others}

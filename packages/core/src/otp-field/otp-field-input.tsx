@@ -14,6 +14,7 @@ import {
 	flush,
 	omit,
 	onSettled,
+	type Ref,
 	Show,
 } from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
@@ -43,7 +44,7 @@ export interface OTPFieldInputOptions {
 }
 
 export interface OTPFieldInputCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;

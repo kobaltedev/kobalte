@@ -10,7 +10,6 @@ import {
 	contains,
 	focusWithoutScrolling,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
@@ -224,10 +223,13 @@ export function DialogContent<T extends ValidComponent = "div">(
 					Omit<DialogContentRenderProps, keyof DismissableLayerRenderProps>
 				>
 			>
-				ref={mergeRefs((el: HTMLElement) => {
-					context.setContentRef(el);
-					ref = el;
-				}, mergedProps.ref)}
+				ref={[
+					(el: HTMLElement) => {
+						context.setContentRef(el);
+						ref = el;
+					},
+					mergedProps.ref,
+				]}
 				role="dialog"
 				tabindex={-1}
 				disableOutsidePointerEvents={context.modal() && context.isOpen()}

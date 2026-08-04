@@ -15,6 +15,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
@@ -109,7 +110,7 @@ export interface NumberFieldRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface NumberFieldRootRenderProps
@@ -378,7 +379,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			<NumberFieldContext value={context}>
 				<Polymorphic<NumberFieldRootRenderProps>
 					as="div"
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 					role="group"
 					id={access(formControlProps.id)}
 					{...formControlContext.dataset()}

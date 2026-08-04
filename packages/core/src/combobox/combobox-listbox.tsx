@@ -1,6 +1,6 @@
 import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, omit, type Ref } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import * as Listbox from "../listbox/index.tsx";
@@ -17,7 +17,7 @@ export interface ComboboxListboxCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface ComboboxListboxRenderProps

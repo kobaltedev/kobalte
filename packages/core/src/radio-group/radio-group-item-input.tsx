@@ -13,7 +13,7 @@ import {
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit } from "solid-js";
+import { createEffect, createSignal, omit, type Ref } from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
@@ -32,7 +32,7 @@ export interface RadioGroupItemInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	onChange: JSX.EventHandlerUnion<T, Event>;
@@ -172,7 +172,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	return (
 		<Polymorphic<RadioGroupItemInputRenderProps>
 			as="input"
-			ref={[radioContext.setInputRef, mergedProps.ref] as any}
+			ref={[radioContext.setInputRef, mergedProps.ref]}
 			type="radio"
 			name={formControlContext.name()}
 			value={radioContext.value()}

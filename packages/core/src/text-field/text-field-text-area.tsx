@@ -9,7 +9,7 @@
 
 import { composeEventHandlers, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, omit, type Ref } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 import { useTextFieldContext } from "./text-field-context.tsx";
@@ -30,7 +30,7 @@ export interface TextFieldTextAreaOptions {
 export interface TextFieldTextAreaCommonProps<
 	T extends HTMLElement = HTMLElement,
 > extends TextFieldInputCommonProps<T> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyPress: JSX.EventHandlerUnion<T, KeyboardEvent>;
 }
 
@@ -101,7 +101,7 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 			as="textarea"
 			aria-multiline={mergedProps.submitOnEnter ? "false" : undefined}
 			onKeyPress={composeEventHandlers([mergedProps.onKeyPress, onKeyPress])}
-			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
+			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 			{...others}
 		/>
 	);
