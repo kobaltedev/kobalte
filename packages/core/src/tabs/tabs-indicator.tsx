@@ -11,7 +11,6 @@ import {
 	createEffect,
 	createSignal,
 	on,
-	onMount,
 	splitProps,
 } from "solid-js";
 
@@ -52,17 +51,16 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 
 	const [local, others] = splitProps(props as TabsIndicatorProps, ["style"]);
 
-	const [style, setStyle] = createSignal<JSX.CSSProperties>({
-		width: undefined,
-		height: undefined,
-	});
+	// Undefined means the indicator has not been initialized.
+	const [style, setStyle] = createSignal<JSX.CSSProperties>();
 
 	const { direction } = useLocale();
 
 	const computeStyle = () => {
 		const selectedTab = context.selectedTab();
 
-		if (selectedTab == null) {
+		// Check whether the selected tab participates in layout.
+		if (selectedTab == null || selectedTab.getClientRects().length === 0) {
 			return;
 		}
 
@@ -70,6 +68,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 			transform: undefined,
 			width: undefined,
 			height: undefined,
+			transition: style() == null ? "none" : undefined,
 		};
 
 		// In RTL, calculate the transform from the right edge of the tab list
@@ -96,20 +95,13 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		setStyle(styleObj);
 	};
 
-	// For the first run, wait for all tabs to be mounted and registered in tabs DOM collection
-	// before computing the style.
-	onMount(() => {
-		queueMicrotask(() => {
-			computeStyle();
-		});
-	});
-
-	// Compute style normally for subsequent runs.
 	createEffect(
 		on(
 			[context.selectedTab, context.orientation, direction],
 			() => {
-				computeStyle();
+				if (style() != null) {
+					computeStyle();
+				}
 			},
 			{ defer: true },
 		),
@@ -122,6 +114,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 	createResizeObserver(context.selectedTab, (_, t) => {
 		if (prevTarget !== t) {
 			prevTarget = t;
+			computeStyle();
 			return;
 		}
 
@@ -142,7 +135,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		<Polymorphic<TabsIndicatorRenderProps>
 			as="div"
 			role="presentation"
-			style={combineStyle(style(), local.style)}
+			style={combineStyle(style() ?? { visibility: "hidden" }, local.style)}
 			data-orientation={context.orientation()}
 			data-resizing={resizing()}
 			{...others}
