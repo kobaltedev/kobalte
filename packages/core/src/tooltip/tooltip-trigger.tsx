@@ -18,10 +18,10 @@
  * https://github.com/radix-ui/primitives/blob/1b05a8e35cf35f3020484979086d70aefbaf4095/packages/react/tooltip/src/Tooltip.tsx
  */
 
-import { callHandler, getDocument, mergeRefs } from "@kobalte/utils";
+import { callHandler, getDocument } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { isServer } from "@solidjs/web";
-import { omit, onCleanup, untrack } from "solid-js";
+import { omit, onCleanup } from "solid-js";
 
 import {
 	type ElementOf,
@@ -190,20 +190,20 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		getDocument(ref).removeEventListener("pointerup", handlePointerUp);
 	});
 
-	const refCallback = mergeRefs(
-		(el) => {
-			context.setTriggerRef(el);
-			ref = el;
-		},
-		untrack(() => p.ref),
-	);
-
 	// We purposefully avoid using Kobalte `Button` here because tooltip triggers can be any element
 	// and should not always be announced as a button to screen readers.
 	return (
 		<Polymorphic<TooltipTriggerRenderProps>
 			as="button"
-			ref={refCallback}
+			ref={
+				[
+					(el: HTMLElement) => {
+						context.setTriggerRef(el);
+						ref = el;
+					},
+					p.ref,
+				] as any
+			}
 			aria-describedby={context.isOpen() ? context.contentId() : undefined}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}

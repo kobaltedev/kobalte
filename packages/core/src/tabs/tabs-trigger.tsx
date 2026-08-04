@@ -11,11 +11,10 @@ import {
 	focusWithoutScrolling,
 	isWebKit,
 	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, omit, untrack } from "solid-js";
+import { createEffect, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -139,15 +138,10 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 		},
 	);
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Polymorphic<TabsTriggerRenderProps>
 			as="button"
-			ref={refCallback}
+			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 			id={id()}
 			role="tab"
 			tabindex={!isDisabled() ? selectableItem.tabIndex() : undefined}

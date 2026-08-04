@@ -10,17 +10,10 @@ import {
 	callHandler,
 	createGlobalListeners,
 	getScrollParent,
-	mergeRefs,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Component,
-	createEffect,
-	createMemo,
-	omit,
-	untrack,
-} from "solid-js";
+import { type Component, createEffect, createMemo, omit } from "solid-js";
 import {
 	DialogContent,
 	type DialogContentCommonProps,
@@ -410,8 +403,6 @@ export function DrawerContent<T extends ValidComponent = "div">(
 		},
 	);
 
-	const refCallback = mergeRefs(untrack(() => p.ref as any));
-
 	return (
 		<DialogContent<
 			Component<
@@ -428,7 +419,7 @@ export function DrawerContent<T extends ValidComponent = "div">(
 				>
 			>
 		>
-			ref={refCallback}
+			ref={p.ref}
 			style={combineStyle(
 				{
 					transform: transformValue(),

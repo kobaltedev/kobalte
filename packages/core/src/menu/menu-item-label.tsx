@@ -6,9 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit, untrack } from "solid-js";
+import { createEffect, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -58,15 +58,10 @@ export function MenuItemLabel<T extends ValidComponent = "div">(
 		(id) => context.registerLabel(id),
 	);
 
-	const refCallback = mergeRefs(
-		context.setLabelRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Polymorphic<MenuItemLabelRenderProps>
 			as="div"
-			ref={refCallback}
+			ref={[context.setLabelRef, mergedProps.ref] as any}
 			id={mergedProps.id}
 			{...context.dataset()}
 			{...others}

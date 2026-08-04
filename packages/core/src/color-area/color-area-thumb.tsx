@@ -1,8 +1,8 @@
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import { COLOR_INTL_TRANSLATIONS } from "@solid-primitives/utils/colors";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit, untrack } from "solid-js";
+import { omit } from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
@@ -121,15 +121,10 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 		}
 	};
 
-	const refCallback = mergeRefs(
-		context.setThumbRef,
-		untrack(() => props.ref),
-	);
-
 	return (
 		<Polymorphic<ColorAreaThumbRenderProps>
 			as="span"
-			ref={refCallback}
+			ref={[context.setThumbRef, props.ref]}
 			role="presentation"
 			tabindex={context.state.isDisabled() ? undefined : 0}
 			style={combineStyle(

@@ -1,7 +1,7 @@
 import { mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, Show, untrack } from "solid-js";
+import { type Component, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
@@ -45,13 +45,6 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 	const p = props as HoverCardContentProps;
 	const others = omit(p, "ref", "style");
 
-	const refCallback = mergeRefs(
-		(el) => {
-			context.setContentRef(el);
-		},
-		untrack(() => p.ref),
-	);
-
 	return (
 		<Show when={context.contentPresent()}>
 			<Popper.Positioner>
@@ -60,7 +53,9 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 						Omit<HoverCardContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={refCallback}
+					ref={mergeRefs((el: HTMLElement) => {
+						context.setContentRef(el);
+					}, p.ref)}
 					disableOutsidePointerEvents={false}
 					style={combineStyle(
 						{

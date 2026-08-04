@@ -1,4 +1,4 @@
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import {
 	type Color,
@@ -6,7 +6,7 @@ import {
 	parseColor,
 } from "@solid-primitives/utils/colors";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, omit, untrack } from "solid-js";
+import { createMemo, createSignal, omit } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -210,15 +210,10 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 		}
 	});
 
-	const refCallback = mergeRefs(
-		context.setBackgroundRef,
-		untrack(() => props.ref),
-	);
-
 	return (
 		<Polymorphic<ColorAreaBackgroundRenderProps>
 			as="div"
-			ref={refCallback}
+			ref={[context.setBackgroundRef, props.ref]}
 			style={combineStyle(
 				{
 					"touch-action": "none",

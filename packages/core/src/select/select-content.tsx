@@ -10,7 +10,7 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, Show, untrack } from "solid-js";
+import { type Component, createEffect, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -148,14 +148,6 @@ export function SelectContent<T extends ValidComponent = "div">(
 		},
 	);
 
-	const refCallback = mergeRefs(
-		(el) => {
-			context.setContentRef(el);
-			ref = el;
-		},
-		untrack(() => props.ref),
-	);
-
 	return (
 		<Show when={context.contentPresent()}>
 			<Popper.Positioner>
@@ -164,7 +156,10 @@ export function SelectContent<T extends ValidComponent = "div">(
 						Omit<SelectContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={refCallback}
+					ref={mergeRefs((el: HTMLElement) => {
+						context.setContentRef(el);
+						ref = el;
+					}, props.ref)}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.triggerRef]}
 					style={combineStyle(

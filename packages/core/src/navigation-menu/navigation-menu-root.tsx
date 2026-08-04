@@ -1,4 +1,4 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
@@ -208,11 +208,6 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 		setPreviousMenu,
 	};
 
-	const refCallback = mergeRefs(
-		context.setRootRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<NavigationMenuContext value={context}>
 			<Popper
@@ -229,7 +224,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 						>
 					>
 						as="ul"
-						ref={refCallback}
+						ref={[context.setRootRef, mergedProps.ref]}
 						value={value() ?? null}
 						onValueChange={setValue}
 						autoFocusMenu={autoFocusMenu()}

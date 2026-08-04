@@ -7,13 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-spectrum/textfield/src/TextArea.tsx
  */
 
-import {
-	composeEventHandlers,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { composeEventHandlers, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, untrack } from "solid-js";
+import { type Component, createEffect, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 import { useTextFieldContext } from "./text-field-context.tsx";
@@ -96,11 +92,6 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 		}
 	};
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	) as any;
-
 	return (
 		<TextFieldInputBase<
 			Component<
@@ -110,7 +101,7 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 			as="textarea"
 			aria-multiline={mergedProps.submitOnEnter ? "false" : undefined}
 			onKeyPress={composeEventHandlers([mergedProps.onKeyPress, onKeyPress])}
-			ref={refCallback}
+			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 			{...others}
 		/>
 	);

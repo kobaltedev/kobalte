@@ -1,7 +1,7 @@
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, omit, untrack } from "solid-js";
+import { createSignal, omit } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -123,15 +123,10 @@ export function ColorWheelTrack<T extends ValidComponent = "div">(
       )
     `;
 
-	const refCallback = mergeRefs(
-		context.setTrackRef,
-		untrack(() => props.ref),
-	);
-
 	return (
 		<Polymorphic<ColorWheelTrackRenderProps>
 			as="div"
-			ref={refCallback}
+			ref={[context.setTrackRef, props.ref]}
 			style={combineStyle(
 				{
 					"touch-action": "none",

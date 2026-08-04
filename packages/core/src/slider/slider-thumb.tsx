@@ -15,7 +15,6 @@
 import {
 	callHandler,
 	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
@@ -26,7 +25,6 @@ import {
 	createUniqueId,
 	omit,
 	onSettled,
-	untrack,
 	useContext,
 } from "solid-js";
 import {
@@ -213,16 +211,11 @@ export function SliderThumb<T extends ValidComponent = "span">(
 		context.state.setThumbEditable(index(), !context.state.isDisabled());
 	});
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<ThumbContext value={{ index }}>
 			<Polymorphic<SliderThumbRenderProps>
 				as="span"
-				ref={refCallback}
+				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 				role="slider"
 				id={fieldProps.id()}
 				tabindex={context.state.isDisabled() ? undefined : 0}

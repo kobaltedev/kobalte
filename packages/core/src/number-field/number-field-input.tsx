@@ -2,11 +2,10 @@ import {
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createMemo, omit, untrack } from "solid-js";
+import { createEffect, createMemo, omit } from "solid-js";
 import {
 	createFormControlField,
 	useFormControlContext,
@@ -205,18 +204,13 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 
 	const asComponent: ValidComponent = (mergedProps as any).as || "input";
 
-	const refCallback = mergeRefs(
-		context.setInputRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Polymorphic<NumberFieldInputRenderProps>
 			as={asComponent}
 			role="spinbutton"
 			type="text"
 			id={fieldProps.id()}
-			ref={refCallback}
+			ref={[context.setInputRef, mergedProps.ref] as any}
 			value={
 				Number.isNaN(context.rawValue()) || context.value() === undefined
 					? ""

@@ -6,9 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-aria/select/src/HiddenSelect.tsx
  */
 
-import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { createEffect, For, omit, Show, untrack } from "solid-js";
+import { createEffect, For, omit, Show } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import type { Collection, CollectionNode } from "../primitives/index.ts";
@@ -98,11 +98,6 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 		{ defer: true },
 	);
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => props.ref as any),
-	);
-
 	// If virtualized, only render the selected options in the hidden <select> so the value can be submitted to a server.
 	// Otherwise, render all options so that browser autofill will work.
 	return (
@@ -117,7 +112,7 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 				onFocus={() => props.focusTrigger()}
 			/>
 			<select
-				ref={refCallback}
+				ref={[(el) => (ref = el), props.ref as any]}
 				tabindex={-1}
 				multiple={props.isMultiple}
 				name={formControlContext.name()}

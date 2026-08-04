@@ -16,7 +16,6 @@ import {
 	callHandler,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { combineStyle } from "@solid-primitives/props";
@@ -438,17 +437,12 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};
 
-	const refCallback = mergeRefs(
-		setRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Show when={present()}>
 			<ToastContext value={context}>
 				<Polymorphic<ToastRootRenderProps>
 					as="li"
-					ref={refCallback}
+					ref={[setRef, mergedProps.ref] as any}
 					role="status"
 					tabindex={0}
 					style={combineStyle(

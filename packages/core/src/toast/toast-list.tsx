@@ -18,7 +18,6 @@ import {
 	focusWithoutScrolling,
 	getDocument,
 	getWindow,
-	mergeRefs,
 } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
 import { createEffect, For, omit, untrack } from "solid-js";
@@ -167,15 +166,10 @@ export function ToastList<T extends ValidComponent = "ol">(
 		},
 	);
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => props.ref as any),
-	);
-
 	return (
 		<Polymorphic<ToastListRenderProps>
 			as="ol"
-			ref={refCallback}
+			ref={[(el: HTMLElement) => (ref = el), props.ref as any] as any}
 			tabindex={-1}
 			onFocusIn={onFocusIn}
 			onFocusOut={onFocusOut}

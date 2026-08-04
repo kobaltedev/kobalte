@@ -3,7 +3,6 @@ import {
 	createGenerateId,
 	EventKey,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -12,7 +11,6 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
-	untrack,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
@@ -269,16 +267,11 @@ export function RatingItem<T extends ValidComponent = "div">(
 		registerDescription: createRegisterId(setDescriptionId),
 	};
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<RatingItemContext value={context}>
 			<Polymorphic<RatingItemRenderProps>
 				as="div"
-				ref={refCallback}
+				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 				role="radio"
 				tabindex={tabIndex()}
 				aria-checked={equal() ? "true" : "false"}

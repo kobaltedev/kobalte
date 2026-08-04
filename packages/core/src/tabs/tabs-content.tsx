@@ -6,14 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabPanel.ts
  */
 
-import {
-	getFocusableTreeWalker,
-	mergeRefs,
-	type Orientation,
-} from "@kobalte/utils";
+import { getFocusableTreeWalker, type Orientation } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, Show, untrack } from "solid-js";
+import { createEffect, createSignal, omit, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -114,16 +110,11 @@ export function TabsContent<T extends ValidComponent = "div">(
 		},
 	);
 
-	const refCallback = mergeRefs(
-		setRef,
-		untrack(() => (props as TabsContentProps).ref),
-	);
-
 	return (
 		<Show when={present()}>
 			<Polymorphic<TabsContentRenderProps>
 				as="div"
-				ref={refCallback}
+				ref={[setRef, (props as TabsContentProps).ref] as any}
 				id={id()}
 				role="tabpanel"
 				tabindex={tabIndex()}

@@ -1,6 +1,6 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, untrack } from "solid-js";
+import { type Component, createEffect, omit } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import * as Listbox from "../listbox/index.tsx";
@@ -67,11 +67,6 @@ export function ComboboxListbox<
 		(id) => context.registerListboxId(id),
 	);
 
-	const refCallback = mergeRefs(
-		context.setListboxRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Listbox.Root<
 			Option,
@@ -80,7 +75,7 @@ export function ComboboxListbox<
 				Omit<ComboboxListboxRenderProps, keyof Listbox.ListboxRootRenderProps>
 			>
 		>
-			ref={refCallback}
+			ref={[context.setListboxRef, mergedProps.ref]}
 			state={context.listState()}
 			autoFocus={context.autoFocus()}
 			shouldUseVirtualFocus

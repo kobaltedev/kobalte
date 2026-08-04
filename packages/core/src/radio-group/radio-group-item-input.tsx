@@ -9,12 +9,11 @@
 import {
 	callHandler,
 	mergeDefaultProps,
-	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, untrack } from "solid-js";
+import { createEffect, createSignal, omit } from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
@@ -170,15 +169,10 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 		(id) => radioContext.registerInput(id!),
 	);
 
-	const refCallback = mergeRefs(
-		radioContext.setInputRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Polymorphic<RadioGroupItemInputRenderProps>
 			as="input"
-			ref={refCallback}
+			ref={[radioContext.setInputRef, mergedProps.ref] as any}
 			type="radio"
 			name={formControlContext.name()}
 			value={radioContext.value()}

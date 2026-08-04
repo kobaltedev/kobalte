@@ -3,7 +3,6 @@ import {
 	clamp,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -14,7 +13,7 @@ import {
 	parseColor,
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit, untrack } from "solid-js";
+import { createSignal, createUniqueId, omit } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -312,17 +311,12 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 		generateId: createGenerateId(() => access(mergedProps.id)!),
 	};
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<FormControlContext value={formControlContext}>
 			<ColorAreaContext value={context}>
 				<Polymorphic<ColorAreaRootRenderProps>
 					as="div"
-					ref={refCallback}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 					role="group"
 					id={access(mergedProps.id)!}
 					{...formControlContext.dataset()}

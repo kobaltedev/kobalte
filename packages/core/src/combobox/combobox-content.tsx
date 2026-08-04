@@ -10,7 +10,7 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, Show, untrack } from "solid-js";
+import { type Component, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -143,14 +143,6 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 		},
 	});
 
-	const refCallback = mergeRefs(
-		(el) => {
-			context.setContentRef(el);
-			ref = el;
-		},
-		untrack(() => props.ref),
-	);
-
 	return (
 		<Show when={context.contentPresent()}>
 			<Popper.Positioner>
@@ -159,7 +151,10 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 						Omit<ComboboxContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={refCallback}
+					ref={mergeRefs((el: HTMLElement) => {
+						context.setContentRef(el);
+						ref = el;
+					}, props.ref)}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.controlRef]}
 					style={combineStyle(

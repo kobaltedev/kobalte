@@ -10,12 +10,11 @@
 import {
 	callHandler,
 	mergeDefaultProps,
-	mergeRefs,
 	visuallyHiddenStyles,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, untrack } from "solid-js";
+import { createEffect, createSignal, omit } from "solid-js";
 
 import {
 	createFormControlField,
@@ -175,18 +174,18 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 		},
 	);
 
-	const refCallback = mergeRefs(
-		(el) => {
-			context.setInputRef(el);
-			setRef(el);
-		},
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Polymorphic<CheckboxInputRenderProps>
 			as="input"
-			ref={refCallback}
+			ref={
+				[
+					(el: HTMLInputElement) => {
+						context.setInputRef(el);
+						setRef(el);
+					},
+					mergedProps.ref,
+				] as any
+			}
 			type="checkbox"
 			id={fieldProps.id()}
 			name={formControlContext.name()}

@@ -2,7 +2,6 @@ import {
 	access,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -14,13 +13,7 @@ import {
 	type ColorIntlTranslations,
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
-import {
-	createMemo,
-	createSignal,
-	createUniqueId,
-	omit,
-	untrack,
-} from "solid-js";
+import { createMemo, createSignal, createUniqueId, omit } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -295,17 +288,12 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 		generateId: createGenerateId(() => access(formControlProps.id)!),
 	};
 
-	const refCallback = mergeRefs(
-		setRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<FormControlContext value={formControlContext}>
 			<ColorWheelContext value={context}>
 				<Polymorphic<ColorWheelRootRenderProps>
 					as="div"
-					ref={refCallback}
+					ref={[setRef, mergedProps.ref] as any}
 					role="group"
 					id={access(formControlProps.id)!}
 					{...formControlContext.dataset()}

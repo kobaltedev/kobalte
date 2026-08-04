@@ -7,16 +7,10 @@
  * https://github.com/ariakit/ariakit/blob/a178c2f2dcc6571ba338fd74c79e3b0eab2a27c5/packages/ariakit/src/popover/__popover-arrow-path.ts
  */
 
-import { getWindow, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { getWindow, mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	type Accessor,
-	createEffect,
-	createSignal,
-	omit,
-	untrack,
-} from "solid-js";
+import { type Accessor, createEffect, createSignal, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -96,15 +90,10 @@ export function PopperArrow<T extends ValidComponent = "div">(
 		} ${HALF_DEFAULT_SIZE} ${HALF_DEFAULT_SIZE}) translate(0 2)`;
 	};
 
-	const refCallback = mergeRefs(
-		context.setArrowRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Polymorphic<PopperArrowRenderProps>
 			as="div"
-			ref={refCallback}
+			ref={[context.setArrowRef, mergedProps.ref] as any}
 			aria-hidden="true"
 			style={combineStyle(
 				{

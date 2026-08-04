@@ -14,7 +14,6 @@ import {
 	isMac,
 	isWebKit,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -23,7 +22,6 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
-	untrack,
 } from "solid-js";
 
 import {
@@ -226,16 +224,11 @@ export function ListboxItem<T extends ValidComponent = "li">(
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};
 
-	const refCallback = mergeRefs(
-		setRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<ListboxItemContext value={context}>
 			<Polymorphic<ListboxItemRenderProps>
 				as="li"
-				ref={refCallback}
+				ref={[setRef, mergedProps.ref] as any}
 				role="option"
 				tabindex={selectableItem.tabIndex()}
 				aria-disabled={selectableItem.isDisabled() ? "true" : "false"}

@@ -10,10 +10,9 @@ import {
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit, untrack } from "solid-js";
+import { createUniqueId, omit } from "solid-js";
 
 import { createListState, createSelectableList } from "../list/index.ts";
 import {
@@ -133,18 +132,13 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 		generateId: createGenerateId(() => mergedProps.id),
 	};
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<DomCollectionProvider>
 			<AccordionContext value={context}>
 				<Polymorphic<AccordionRootRenderProps>
 					as="div"
 					id={mergedProps.id}
-					ref={refCallback}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 					onKeyDown={composeEventHandlers([
 						mergedProps.onKeyDown,
 						selectableList.onKeyDown,

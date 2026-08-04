@@ -1,7 +1,7 @@
 import { mergeRefs } from "@kobalte/utils";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, omit, untrack } from "solid-js";
+import { type Component, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	MenuContentBase,
@@ -40,18 +40,13 @@ export function MenuContent<T extends ValidComponent = "div">(
 		enabled: () => context.contentPresent() && rootContext.preventScroll(),
 	});
 
-	const refCallback = mergeRefs(
-		(el) => {
-			ref = el;
-		},
-		untrack(() => props.ref),
-	);
-
 	return (
 		<MenuContentBase<
 			Component<Omit<MenuContentRenderProps, keyof MenuContentBaseRenderProps>>
 		>
-			ref={refCallback}
+			ref={mergeRefs((el: HTMLElement) => {
+				ref = el;
+			}, props.ref)}
 			{...others}
 		/>
 	);

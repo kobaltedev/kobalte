@@ -6,9 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/link/src/useLink.ts
  */
 
-import { mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit, untrack } from "solid-js";
+import { createSignal, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -52,15 +51,10 @@ export function LinkRoot<T extends ValidComponent = "a">(
 
 	const tagName = createTagName(ref, () => "a");
 
-	const refCallback = mergeRefs(
-		setRef,
-		untrack(() => (props as LinkRootProps).ref),
-	);
-
 	return (
 		<Polymorphic<LinkRootRenderProps>
 			as="a"
-			ref={refCallback}
+			ref={[setRef, (props as LinkRootProps).ref] as any}
 			role={tagName() !== "a" || props.disabled ? "link" : undefined}
 			tabindex={tagName() !== "a" && !props.disabled ? 0 : undefined}
 			href={!props.disabled ? props.href : undefined}

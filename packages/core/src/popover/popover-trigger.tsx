@@ -6,9 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/src/useOverlayTrigger.ts
  */
 
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, untrack } from "solid-js";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -62,18 +62,13 @@ export function PopoverTrigger<T extends ValidComponent = "button">(
 		context.toggle();
 	};
 
-	const refCallback = mergeRefs(
-		context.setTriggerRef,
-		untrack(() => p.ref),
-	);
-
 	return (
 		<Button.Root<
 			Component<
 				Omit<PopoverTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={refCallback}
+			ref={[context.setTriggerRef, p.ref]}
 			aria-haspopup="dialog"
 			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}

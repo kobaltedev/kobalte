@@ -15,7 +15,6 @@ import {
 	isIOS,
 	isMac,
 	mergeDefaultProps,
-	mergeRefs,
 	scrollIntoViewport,
 } from "@kobalte/utils";
 import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
@@ -26,7 +25,6 @@ import {
 	createUniqueId,
 	omit,
 	Show,
-	untrack,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
@@ -522,15 +520,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			"0",
 		);
 
-	const refCallback = mergeRefs(
-		(el: HTMLElement) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<>
 			<SpinButton.Root
-				ref={refCallback}
+				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 				tabindex={formControlContext.isDisabled() ? undefined : 0}
 				value={getValue()}
 				textValue={textValue()}

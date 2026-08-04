@@ -1,7 +1,6 @@
-import { mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit, untrack } from "solid-js";
+import { omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -38,15 +37,15 @@ export function PopperPositioner<T extends ValidComponent = "div">(
 
 	const others = omit(props as PopperPositionerProps, "ref", "style");
 
-	const refCallback = mergeRefs(
-		context.setPositionerRef,
-		untrack(() => props.ref as (el: HTMLElement) => void),
-	);
-
 	return (
 		<Polymorphic<PopperPositionerRenderProps>
 			as="div"
-			ref={refCallback}
+			ref={
+				[
+					context.setPositionerRef,
+					props.ref as (el: HTMLElement) => void,
+				] as any
+			}
 			data-popper-positioner=""
 			style={combineStyle(
 				{

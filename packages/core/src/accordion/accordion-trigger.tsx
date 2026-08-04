@@ -10,10 +10,9 @@ import {
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, untrack } from "solid-js";
+import { type Component, createEffect, omit } from "solid-js";
 import { useCollapsibleContext } from "../collapsible/collapsible-context.tsx";
 import * as Collapsible from "../collapsible/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -112,11 +111,6 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 		(id) => itemContext.registerTriggerId(id),
 	);
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Collapsible.Trigger<
 			Component<
@@ -126,7 +120,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={refCallback}
+			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 			data-key={selectableItem.dataKey()}
 			onPointerDown={composeEventHandlers([
 				mergedProps.onPointerDown,

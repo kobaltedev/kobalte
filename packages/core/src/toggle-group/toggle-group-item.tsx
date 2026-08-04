@@ -2,11 +2,10 @@ import {
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createUniqueId, omit, untrack } from "solid-js";
+import { type Component, createUniqueId, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
 import type { CollectionItemWithRef } from "../primitives/index.ts";
@@ -110,11 +109,6 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 		callHandler(e, selectableItem.onKeyDown);
 	};
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<ToggleButton.Root<
 			Component<
@@ -124,7 +118,7 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={refCallback}
+			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
 			pressed={selectionManager().isSelected(mergedProps.value)}
 			tabindex={selectableItem.tabIndex()}
 			data-orientation={rootContext.orientation()}

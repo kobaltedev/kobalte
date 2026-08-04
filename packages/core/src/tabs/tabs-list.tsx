@@ -6,13 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import {
-	composeEventHandlers,
-	mergeRefs,
-	type Orientation,
-} from "@kobalte/utils";
+import { composeEventHandlers, type Orientation } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, omit, untrack } from "solid-js";
+import { createEffect, omit } from "solid-js";
 
 import { useLocale } from "../i18n/index.tsx";
 import {
@@ -96,15 +92,12 @@ export function TabsList<T extends ValidComponent = "div">(
 		},
 	);
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => (props as TabsListProps).ref),
-	);
-
 	return (
 		<Polymorphic<TabsListRenderProps>
 			as="div"
-			ref={refCallback}
+			ref={
+				[(el: HTMLElement) => (ref = el), (props as TabsListProps).ref] as any
+			}
 			role="tablist"
 			aria-orientation={context.orientation()}
 			data-orientation={context.orientation()}

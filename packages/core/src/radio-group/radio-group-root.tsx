@@ -10,13 +10,12 @@
 import {
 	access,
 	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import type { ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit, untrack } from "solid-js";
+import { createUniqueId, omit } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -201,17 +200,12 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 		setSelectedValue,
 	};
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<FormControlContext value={formControlContext}>
 			<RadioGroupContext value={context}>
 				<Polymorphic<RadioGroupRootRenderProps>
 					as="div"
-					ref={refCallback}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 					role="radiogroup"
 					id={access(formControlProps.id)!}
 					aria-invalid={

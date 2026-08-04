@@ -11,7 +11,6 @@ import {
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -24,7 +23,6 @@ import {
 	omit,
 	Show,
 	Switch,
-	untrack,
 } from "solid-js";
 
 import {
@@ -275,16 +273,11 @@ export function ListboxRoot<
 		isVirtualized: () => mergedProps.virtualized,
 	};
 
-	const refCallback = mergeRefs(
-		setRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<ListboxContext value={context}>
 			<Polymorphic<ListboxRootRenderProps>
 				as="ul"
-				ref={refCallback}
+				ref={[setRef, mergedProps.ref] as any}
 				role="listbox"
 				tabindex={selectableList.tabIndex()}
 				aria-multiselectable={

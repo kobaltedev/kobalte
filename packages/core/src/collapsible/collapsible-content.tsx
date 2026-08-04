@@ -6,18 +6,11 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import {
-	createEffect,
-	createSignal,
-	omit,
-	onSettled,
-	Show,
-	untrack,
-} from "solid-js";
+import { createEffect, createSignal, omit, onSettled, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -131,16 +124,11 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 		(id) => context.registerContentId(id),
 	);
 
-	const refCallback = mergeRefs(
-		setRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Show when={present()}>
 			<Polymorphic<CollapsibleContentRenderProps>
 				as="div"
-				ref={refCallback}
+				ref={[setRef, mergedProps.ref] as any}
 				id={mergedProps.id}
 				style={combineStyle(
 					{

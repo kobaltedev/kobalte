@@ -15,7 +15,7 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, Show, untrack } from "solid-js";
+import { type Component, createEffect, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
@@ -215,14 +215,6 @@ export function PopoverContent<T extends ValidComponent = "div">(
 		(id) => context.registerContentId(id!),
 	);
 
-	const refCallback = mergeRefs(
-		(el) => {
-			context.setContentRef(el);
-			ref = el;
-		},
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Show when={context.contentPresent()}>
 			<Popper.Positioner>
@@ -231,7 +223,10 @@ export function PopoverContent<T extends ValidComponent = "div">(
 						Omit<PopoverContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={refCallback}
+					ref={mergeRefs((el: HTMLElement) => {
+						context.setContentRef(el);
+						ref = el;
+					}, mergedProps.ref)}
 					role="dialog"
 					tabindex={-1}
 					disableOutsidePointerEvents={context.isOpen() && context.isModal()}

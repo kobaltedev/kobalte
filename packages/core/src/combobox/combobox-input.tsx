@@ -7,14 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
  */
 
-import {
-	callHandler,
-	contains,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { callHandler, contains, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit, untrack } from "solid-js";
+import { omit } from "solid-js";
 
 import {
 	createFormControlField,
@@ -300,18 +295,18 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	};
 
 	// Omit `formControlContext.name()` here because it's used in the hidden select.
-	const refCallback = mergeRefs(
-		(el) => {
-			context.setInputRef(el);
-			ref = el;
-		},
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Polymorphic<ComboboxInputRenderProps>
 			as="input"
-			ref={refCallback}
+			ref={
+				[
+					(el: HTMLInputElement) => {
+						context.setInputRef(el);
+						ref = el;
+					},
+					mergedProps.ref,
+				] as any
+			}
 			id={fieldProps.id()}
 			value={context.inputValue()}
 			required={formControlContext.isRequired()}

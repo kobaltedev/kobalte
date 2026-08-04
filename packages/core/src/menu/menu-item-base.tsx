@@ -12,7 +12,6 @@ import {
 	createGenerateId,
 	focusWithoutScrolling,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -21,7 +20,6 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
-	untrack,
 } from "solid-js";
 
 import {
@@ -299,16 +297,11 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		registerDescription: createRegisterId(setDescriptionId),
 	};
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<MenuItemContext value={context}>
 			<Polymorphic<MenuItemBaseRenderProps>
 				as="div"
-				ref={refCallback}
+				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 				tabindex={selectableItem.tabIndex()}
 				aria-checked={ariaChecked()}
 				aria-disabled={mergedProps.disabled ? "true" : undefined}

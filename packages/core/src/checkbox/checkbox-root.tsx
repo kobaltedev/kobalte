@@ -12,7 +12,6 @@ import {
 	createGenerateId,
 	isFunction,
 	mergeDefaultProps,
-	mergeRefs,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -24,7 +23,6 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
-	untrack,
 } from "solid-js";
 import {
 	createFormControl,
@@ -217,17 +215,12 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		setInputRef,
 	};
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<FormControlContext value={formControlContext}>
 			<CheckboxContext value={context}>
 				<Polymorphic<CheckboxRootRenderProps>
 					as="div"
-					ref={refCallback}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 					role="group"
 					id={access(formControlProps.id)}
 					onPointerDown={onPointerDown}

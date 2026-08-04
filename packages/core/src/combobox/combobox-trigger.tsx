@@ -7,9 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
  */
 
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, untrack } from "solid-js";
+import { type Component, omit } from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import { useFormControlContext } from "../form-control/index.ts";
@@ -112,18 +112,13 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 		);
 	};
 
-	const refCallback = mergeRefs(
-		context.setTriggerRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<Button.Root<
 			Component<
 				Omit<ComboboxTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={refCallback}
+			ref={[context.setTriggerRef, mergedProps.ref]}
 			disabled={isDisabled()}
 			tabindex={-1}
 			aria-haspopup="listbox"

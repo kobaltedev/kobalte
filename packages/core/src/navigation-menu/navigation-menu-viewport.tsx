@@ -18,7 +18,6 @@ import {
 	createSignal,
 	omit,
 	Show,
-	untrack,
 } from "solid-js";
 import {
 	DismissableLayer,
@@ -126,11 +125,6 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 		return size.width;
 	});
 
-	const refCallback = mergeRefs(
-		context.setViewportRef,
-		untrack(() => props.ref),
-	);
-
 	return (
 		<Show when={context.viewportPresent()}>
 			<Popper.Positioner role="presentation">
@@ -144,7 +138,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 				>
 					as="li"
 					role="presentation"
-					ref={refCallback}
+					ref={mergeRefs(context.setViewportRef, props.ref)}
 					excludedElements={[context.rootRef]}
 					bypassTopMostLayerCheck
 					style={combineStyle(

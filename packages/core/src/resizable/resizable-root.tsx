@@ -6,7 +6,7 @@
  * https://github.com/corvudev/corvu/tree/main/packages/resizable
  */
 
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -515,16 +515,11 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 		onKeyDown,
 	};
 
-	const refCallback = mergeRefs(
-		setRef,
-		untrack(() => p.ref as any),
-	);
-
 	return (
 		<ResizableContext value={ctxValue}>
 			<ResizableInternalContext value={internalCtxValue}>
 				<div
-					ref={refCallback}
+					ref={[setRef, p.ref] as any}
 					style={combineStyle(
 						{
 							display: "flex",

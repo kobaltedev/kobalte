@@ -6,7 +6,7 @@
  * https://github.com/corvudev/corvu/blob/main/packages/otp-field/src/Input.tsx
  */
 
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	createMemo,
@@ -15,7 +15,6 @@ import {
 	omit,
 	onSettled,
 	Show,
-	untrack,
 } from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
 import {
@@ -460,14 +459,6 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 		return { ...inputStyle(), ...userStyle };
 	};
 
-	const refCallback = mergeRefs(
-		(el) => {
-			inputRef = el as HTMLInputElement;
-			inputRef.value = context.value();
-		},
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<>
 			<Show when={mergedProps.noScriptCSSFallback !== null && isServer}>
@@ -477,7 +468,15 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 			</Show>
 			<Polymorphic<OTPFieldInputRenderProps>
 				as="input"
-				ref={refCallback}
+				ref={
+					[
+						(el: HTMLInputElement) => {
+							inputRef = el as HTMLInputElement;
+							inputRef.value = context.value();
+						},
+						mergedProps.ref,
+					] as any
+				}
 				onInput={onInput}
 				onFocus={onFocus}
 				onBlur={onBlur}

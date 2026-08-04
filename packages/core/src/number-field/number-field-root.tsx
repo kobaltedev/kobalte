@@ -4,7 +4,6 @@ import {
 	createGenerateId,
 	getPrecision,
 	mergeDefaultProps,
-	mergeRefs,
 	snapValueToStep,
 	type ValidationState,
 } from "@kobalte/utils";
@@ -16,7 +15,6 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
-	untrack,
 } from "solid-js";
 import {
 	createFormControl,
@@ -375,17 +373,12 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		{ defer: true },
 	);
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<FormControlContext value={formControlContext}>
 			<NumberFieldContext value={context}>
 				<Polymorphic<NumberFieldRootRenderProps>
 					as="div"
-					ref={refCallback}
+					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref] as any}
 					role="group"
 					id={access(formControlProps.id)}
 					{...formControlContext.dataset()}

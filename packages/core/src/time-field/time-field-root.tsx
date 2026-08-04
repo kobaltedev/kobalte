@@ -3,7 +3,6 @@ import {
 	createFocusManager,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -14,7 +13,6 @@ import {
 	createUniqueId,
 	merge,
 	omit,
-	untrack,
 } from "solid-js";
 import {
 	createFormControl,
@@ -362,17 +360,12 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		setFieldAriaDescribedBy,
 	};
 
-	const refCallback = mergeRefs(
-		setRef,
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<FormControlContext value={formControlContext}>
 			<TimeFieldContext value={context}>
 				<Polymorphic<TimeFieldRootRenderProps>
 					as="div"
-					ref={refCallback}
+					ref={[setRef, mergedProps.ref] as any}
 					role="group"
 					id={access(mergedProps.id)!}
 					aria-invalid={

@@ -10,7 +10,6 @@ import {
 	access,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -21,7 +20,6 @@ import {
 	createUniqueId,
 	omit,
 	onSettled,
-	untrack,
 } from "solid-js";
 import {
 	createFormControl,
@@ -201,17 +199,17 @@ export function OTPFieldRoot<T extends ValidComponent = "div">(
 		setActiveSlots,
 	};
 
-	const refCallback = mergeRefs(
-		(el) => (ref = el as HTMLDivElement),
-		untrack(() => mergedProps.ref),
-	);
-
 	return (
 		<FormControlContext value={formControlContext}>
 			<OTPFieldContext value={context}>
 				<Polymorphic<OTPFieldRootRenderProps>
 					as="div"
-					ref={refCallback}
+					ref={
+						[
+							(el: HTMLDivElement) => (ref = el as HTMLDivElement),
+							mergedProps.ref,
+						] as any
+					}
 					style={resolvedStyle()}
 					role="group"
 					id={access(mergedProps.id)}

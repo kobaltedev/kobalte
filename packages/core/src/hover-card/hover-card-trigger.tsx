@@ -6,9 +6,9 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard-anchor.ts
  */
 
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, onCleanup, untrack } from "solid-js";
+import { type Component, omit, onCleanup } from "solid-js";
 
 import * as Link from "../link/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -116,18 +116,13 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 
 	onCleanup(context.cancelOpening);
 
-	const refCallback = mergeRefs(
-		context.setTriggerRef,
-		untrack(() => p.ref),
-	);
-
 	return (
 		<Link.Root<
 			Component<
 				Omit<HoverCardTriggerRenderProps, keyof Link.LinkRootRenderProps>
 			>
 		>
-			ref={refCallback}
+			ref={[context.setTriggerRef, p.ref]}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}
 			onFocus={onFocus}
