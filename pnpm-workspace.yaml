@@ -99,4 +99,6 @@ minimumReleaseAgeExclude:
   - solid-js@2.0.0-beta.29
 dedupePeerDependents: true
 patchedDependencies:
+  "@solidjs/web": patches/@solidjs__web.patch
+  solid-js@2.0.0-beta.29: patches/solid-js@2.0.0-beta.29.patch
   storybook-solidjs-vite@10.6.0: patches/storybook-solidjs-vite@10.6.0.patch

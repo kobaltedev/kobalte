@@ -14,7 +14,7 @@ import {
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit } from "solid-js";
+import { createEffect, createSignal, omit, type Ref } from "solid-js";
 
 import {
 	createFormControlField,
@@ -37,7 +37,7 @@ export interface CheckboxInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 	onChange: JSX.EventHandlerUnion<T, InputEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -177,15 +177,13 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 	return (
 		<Polymorphic<CheckboxInputRenderProps>
 			as="input"
-			ref={
-				[
-					(el: HTMLInputElement) => {
-						context.setInputRef(el);
-						setRef(el);
-					},
-					mergedProps.ref,
-				] as any
-			}
+			ref={[
+				(el: HTMLInputElement) => {
+					context.setInputRef(el);
+					setRef(el);
+				},
+				mergedProps.ref,
+			]}
 			type="checkbox"
 			id={fieldProps.id()}
 			name={formControlContext.name()}

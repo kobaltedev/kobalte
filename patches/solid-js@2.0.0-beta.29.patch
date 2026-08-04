@@ -1,0 +1,13 @@
+diff --git a/types/client/component.d.ts b/types/client/component.d.ts
+index 4705e366b50f6bed2716c8bf597e140070aab3b4..cf1c79e6e60050c400295b247c5e83ae0aff537a 100644
+--- a/types/client/component.d.ts
++++ b/types/client/component.d.ts
+@@ -57,7 +57,7 @@ export type ComponentProps<T extends ValidComponent> = T extends Component<infer
+  *
+  * @example Component<{ref: Ref<Element>}>
+  */
+-export type Ref<T> = T | ((val: T) => void);
++export type Ref<T> = T | ((val: T) => void) | undefined | Ref<T>[];
+ /**
+  * Invokes a component, wrapping the call in `untrack` so that reactive reads
+  * inside the component body don't subscribe the parent computation. Compiled
