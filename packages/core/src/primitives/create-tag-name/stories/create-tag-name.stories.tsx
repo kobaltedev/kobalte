@@ -1,3 +1,4 @@
+import { createSignal } from "solid-js";
 import preview from "../../../../../../.storybook/preview.js";
 import { createTagName } from "../index.ts";
 
@@ -19,15 +20,12 @@ const badgeClass =
 export const Default = meta.story({
 	name: "Default",
 	render: () => {
-		let ref: HTMLDivElement | undefined;
-		const tagName = createTagName(
-			() => ref,
-			() => "div",
-		);
+		const [ref, setRef] = createSignal<HTMLDivElement>();
+		const tagName = createTagName(ref, () => "div");
 		return (
 			<div class="flex flex-col gap-2 font-sans">
 				<div
-					ref={ref}
+					ref={setRef}
 					class="rounded-md border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
 				>
 					I am a <code class={badgeClass}>div</code>
@@ -44,16 +42,13 @@ export const Default = meta.story({
 export const WithFallback = meta.story({
 	name: "With Fallback",
 	render: () => {
-		let ref: HTMLButtonElement | undefined;
-		const tagName = createTagName(
-			() => ref,
-			() => "button",
-		);
+		const [ref, setRef] = createSignal<HTMLButtonElement>();
+		const tagName = createTagName(ref, () => "button");
 		return (
 			<div class="flex flex-col gap-2 font-sans">
 				<button
 					type="button"
-					ref={ref}
+					ref={setRef}
 					class="rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
 				>
 					I am a <code class={badgeClass}>button</code>
@@ -73,7 +68,7 @@ export const WithFallback = meta.story({
 export const FallbackVsResolved = meta.story({
 	name: "Fallback vs Resolved",
 	render: () => {
-		let ref: HTMLButtonElement | undefined;
+		const [ref, setRef] = createSignal<HTMLButtonElement>();
 
 		// No ref — only the fallback "span" is used
 		const fallbackOnly = createTagName(
@@ -81,10 +76,7 @@ export const FallbackVsResolved = meta.story({
 			() => "span",
 		);
 		// Ref attached to a <button> — resolves to "button", ignoring the "span" fallback
-		const resolved = createTagName(
-			() => ref,
-			() => "span",
-		);
+		const resolved = createTagName(ref, () => "span");
 
 		return (
 			<div class="flex flex-col gap-3 font-sans text-sm">
@@ -95,7 +87,7 @@ export const FallbackVsResolved = meta.story({
 				<div class="rounded-md border border-slate-200 bg-white px-4 py-3 flex items-center justify-between">
 					<button
 						type="button"
-						ref={ref}
+						ref={setRef}
 						class="text-slate-700 bg-transparent outline-none"
 					>
 						Button ref (fallback = "span")
@@ -111,18 +103,18 @@ export const FallbackVsResolved = meta.story({
 export const Multiple = meta.story({
 	name: "Multiple",
 	render: () => {
-		let divRef: HTMLDivElement | undefined;
-		let btnRef: HTMLButtonElement | undefined;
-		let inputRef: HTMLInputElement | undefined;
+		const [divRef, setDivRef] = createSignal<HTMLDivElement>();
+		const [btnRef, setBtnRef] = createSignal<HTMLButtonElement>();
+		const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
 
-		const divTag = createTagName(() => divRef);
-		const btnTag = createTagName(() => btnRef);
-		const inputTag = createTagName(() => inputRef);
+		const divTag = createTagName(divRef);
+		const btnTag = createTagName(btnRef);
+		const inputTag = createTagName(inputRef);
 
 		return (
 			<div class="flex flex-col gap-2 font-sans text-sm">
 				<div class="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2">
-					<div ref={divRef} class="text-slate-700">
+					<div ref={setDivRef} class="text-slate-700">
 						Section
 					</div>
 					<span class="text-xs text-slate-400">
@@ -132,7 +124,7 @@ export const Multiple = meta.story({
 				<div class="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2">
 					<button
 						type="button"
-						ref={btnRef}
+						ref={setBtnRef}
 						class="text-slate-700 outline-none bg-transparent"
 					>
 						Action
@@ -143,7 +135,7 @@ export const Multiple = meta.story({
 				</div>
 				<div class="flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2">
 					<input
-						ref={inputRef}
+						ref={setInputRef}
 						placeholder="Field"
 						class="text-slate-700 outline-none bg-transparent"
 					/>

@@ -14,7 +14,7 @@ import {
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, omit, type Ref } from "solid-js";
+import { createEffect, createSignal, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -70,7 +70,9 @@ export type TabsTriggerProps<
 export function TabsTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, TabsTriggerProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useTabsContext();
 
@@ -107,7 +109,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
-			ref: () => ref,
+			ref,
 			type: "item",
 			key: mergedProps.value,
 			textValue: "", // not applicable here
@@ -121,7 +123,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 			selectionManager: () => context.listState().selectionManager(),
 			disabled: isDisabled,
 		},
-		() => ref,
+		ref,
 	);
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
@@ -141,7 +143,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 	return (
 		<Polymorphic<TabsTriggerRenderProps>
 			as="button"
-			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+			ref={[setRef, mergedProps.ref]}
 			id={id()}
 			role="tab"
 			tabindex={!isDisabled() ? selectableItem.tabIndex() : undefined}

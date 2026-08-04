@@ -116,7 +116,9 @@ export type SwitchRootProps<
 export function SwitchRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SwitchRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `switch-${createUniqueId()}`;
 
@@ -156,9 +158,8 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 		isReadOnly: () => formControlContext.isReadOnly(),
 	});
 
-	createFormResetListener(
-		() => ref,
-		() => state.setIsSelected(mergedProps.defaultChecked ?? false),
+	createFormResetListener(ref, () =>
+		state.setIsSelected(mergedProps.defaultChecked ?? false),
 	);
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
@@ -193,7 +194,7 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 			<SwitchContext value={context}>
 				<Polymorphic<SwitchRootRenderProps>
 					as="div"
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)}
 					onPointerDown={onPointerDown}

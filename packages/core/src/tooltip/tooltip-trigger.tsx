@@ -21,7 +21,7 @@
 import { callHandler, getDocument } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { isServer } from "@solidjs/web";
-import { omit, onCleanup, type Ref } from "solid-js";
+import { createSignal, omit, onCleanup, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -58,7 +58,9 @@ export type TooltipTriggerProps<
 export function TooltipTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, TooltipTriggerProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useTooltipContext();
 
@@ -139,7 +141,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		callHandler(e, p.onPointerDown);
 
 		isPointerDown = true;
-		getDocument(ref).addEventListener("pointerup", handlePointerUp, {
+		getDocument(ref()).addEventListener("pointerup", handlePointerUp, {
 			once: true,
 		});
 	};
@@ -187,7 +189,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 			return;
 		}
 
-		getDocument(ref).removeEventListener("pointerup", handlePointerUp);
+		getDocument(ref()).removeEventListener("pointerup", handlePointerUp);
 	});
 
 	// We purposefully avoid using Kobalte `Button` here because tooltip triggers can be any element
@@ -199,7 +201,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 				[
 					(el: HTMLElement) => {
 						context.setTriggerRef(el);
-						ref = el;
+						setRef(el);
 					},
 					p.ref,
 				] as any

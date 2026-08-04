@@ -153,7 +153,9 @@ export type SliderRootProps<
 export function SliderRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SliderRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `slider-${createUniqueId()}`;
 
@@ -213,10 +215,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 	const { DomCollectionProvider, items: thumbs } =
 		createDomCollection<CollectionItemWithRef>();
 
-	createFormResetListener(
-		() => ref,
-		() => state.resetValues(),
-	);
+	createFormResetListener(ref, () => state.resetValues());
 
 	const isLTR = () => direction() === "ltr";
 
@@ -418,7 +417,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 				<SliderContext value={context}>
 					<Polymorphic<SliderRootRenderProps>
 						as="div"
-						ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+						ref={[setRef, mergedProps.ref]}
 						role="group"
 						id={access(mergedProps.id)!}
 						{...dataset()}

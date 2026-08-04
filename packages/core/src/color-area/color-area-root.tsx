@@ -117,7 +117,9 @@ export type ColorAreaRootProps<
 export function ColorAreaRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorAreaRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `colorarea-${createUniqueId()}`;
 
@@ -165,10 +167,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 		isDisabled: () => formControlContext.isDisabled() ?? false,
 	});
 
-	createFormResetListener(
-		() => ref,
-		() => state.resetValue(),
-	);
+	createFormResetListener(ref, () => state.resetValue());
 
 	const isLTR = () => direction() === "ltr";
 
@@ -316,7 +315,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 			<ColorAreaContext value={context}>
 				<Polymorphic<ColorAreaRootRenderProps>
 					as="div"
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)!}
 					{...formControlContext.dataset()}

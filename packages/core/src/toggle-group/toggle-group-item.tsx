@@ -5,7 +5,13 @@ import {
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createUniqueId, omit, type Ref } from "solid-js";
+import {
+	type Component,
+	createSignal,
+	createUniqueId,
+	omit,
+	type Ref,
+} from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
 import type { CollectionItemWithRef } from "../primitives/index.ts";
@@ -50,7 +56,9 @@ export type ToggleGroupItemProps<
 export function ToggleGroupItem<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, ToggleGroupItemProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const rootContext = useToggleGroupContext();
 
@@ -82,7 +90,7 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
-			ref: () => ref,
+			ref,
 			type: "item",
 			key: mergedProps.value,
 			textValue: "",
@@ -96,7 +104,7 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 			selectionManager: selectionManager,
 			disabled: isDisabled,
 		},
-		() => ref,
+		ref,
 	);
 
 	const onKeyDown: JSX.EventHandlerUnion<Element, KeyboardEvent> = (e) => {
@@ -118,7 +126,7 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+			ref={[setRef, mergedProps.ref]}
 			pressed={selectionManager().isSelected(mergedProps.value)}
 			tabindex={selectableItem.tabIndex()}
 			data-orientation={rootContext.orientation()}

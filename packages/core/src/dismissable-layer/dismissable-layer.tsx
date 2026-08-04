@@ -25,6 +25,7 @@ import {
 	type Accessor,
 	createEffect,
 	createMemo,
+	createSignal,
 	omit,
 	onSettled,
 	type Ref,
@@ -97,7 +98,9 @@ export type DismissableLayerProps<
 export function DismissableLayer<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, DismissableLayerProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const parentContext = useOptionalDismissableLayerContext();
 	const others = omit(
@@ -127,7 +130,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	};
 
 	const shouldExcludeElement = (element: Element) => {
-		if (!ref) {
+		if (!ref()) {
 			return false;
 		}
 
@@ -138,11 +141,11 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	};
 
 	const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
-		if (!ref || layerStack.isBelowPointerBlockingLayer(ref)) {
+		if (!ref() || layerStack.isBelowPointerBlockingLayer(ref()!)) {
 			return;
 		}
 
-		if (!props.bypassTopMostLayerCheck && !layerStack.isTopMostLayer(ref)) {
+		if (!props.bypassTopMostLayerCheck && !layerStack.isTopMostLayer(ref()!)) {
 			return;
 		}
 
@@ -171,7 +174,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	createShortcut(
 		["Escape"],
 		(e) => {
-			if (!e || !ref || !layerStack.isTopMostLayer(ref)) {
+			if (!e || !ref() || !layerStack.isTopMostLayer(ref()!)) {
 				return;
 			}
 
@@ -186,40 +189,42 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	);
 
 	onSettled(() => {
-		if (!ref) {
+		if (!ref()) {
 			return;
 		}
 
 		layerStack.addLayer({
-			node: ref,
+			node: ref()!,
 			isPointerBlocking: isPointerBlocking(),
 			dismiss: props.onDismiss,
 		});
 
-		const unregisterFromParentLayer = parentContext?.registerNestedLayer(ref);
+		const unregisterFromParentLayer = parentContext?.registerNestedLayer(
+			ref()!,
+		);
 
 		layerStack.assignPointerEventToLayers();
 
-		layerStack.disableBodyPointerEvents(ref);
+		layerStack.disableBodyPointerEvents(ref()!);
 
 		return () => {
-			if (!ref) {
+			if (!ref()) {
 				return;
 			}
 
-			layerStack.removeLayer(ref);
+			layerStack.removeLayer(ref()!);
 
 			unregisterFromParentLayer?.();
 
 			// Re-assign pointer event to remaining layers.
 			layerStack.assignPointerEventToLayers();
 
-			layerStack.restoreBodyPointerEvents(ref);
+			layerStack.restoreBodyPointerEvents(ref()!);
 		};
 	});
 
 	createEffect(
-		() => ({ ref, disabled: isPointerBlocking() }),
+		() => ({ ref: ref(), disabled: isPointerBlocking() }),
 		({ ref, disabled: disableOutsidePointerEvents }) => {
 			if (!ref) return;
 
@@ -253,9 +258,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 		<DismissableLayerContext value={context}>
 			<div
 				ref={[
-					(el) => {
-						ref = el;
-					},
+					setRef,
 					interactOutsideRef as (el: HTMLElement) => void,
 					props.ref,
 				]}

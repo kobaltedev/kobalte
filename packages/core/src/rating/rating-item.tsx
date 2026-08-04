@@ -65,7 +65,9 @@ export type RatingItemProps<
 export function RatingItem<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, RatingItemProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const formControlContext = useFormControlContext();
 	const RatingContext = useRatingContext();
@@ -91,7 +93,7 @@ export function RatingItem<T extends ValidComponent = "div">(
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
-			ref: () => ref,
+			ref,
 			disabled: formControlContext.isDisabled()!,
 			key: others.id,
 			textValue: "",
@@ -137,15 +139,15 @@ export function RatingItem<T extends ValidComponent = "div">(
 	);
 
 	const index = () =>
-		ref ? RatingContext.items().findIndex((v) => v.ref() === ref) : -1;
+		ref() ? RatingContext.items().findIndex((v) => v.ref() === ref()) : -1;
 
 	// Always read items() so the memo re-runs when the collection registers.
 	// onSettled fired before createDomCollectionItem effects flushed in Solid 2.0,
 	// leaving index() === -1 and value === 0 for every item — all stars highlighted.
 	const value = createMemo((): number | undefined => {
 		const items = RatingContext.items();
-		if (!ref) return undefined;
-		const i = items.findIndex((v) => v.ref() === ref);
+		if (!ref()) return undefined;
+		const i = items.findIndex((v) => v.ref() === ref());
 		if (i === -1) return undefined;
 		return direction() === "ltr" ? i + 1 : items.length - i;
 	});
@@ -272,7 +274,7 @@ export function RatingItem<T extends ValidComponent = "div">(
 		<RatingItemContext value={context}>
 			<Polymorphic<RatingItemRenderProps>
 				as="div"
-				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+				ref={[setRef, mergedProps.ref]}
 				role="radio"
 				tabindex={tabIndex()}
 				aria-checked={equal() ? "true" : "false"}

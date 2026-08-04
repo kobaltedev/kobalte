@@ -1,6 +1,6 @@
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, omit } from "solid-js";
+import { type Component, createSignal, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	MenuContentBase,
@@ -27,7 +27,9 @@ export type MenuContentProps<
 export function MenuContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
@@ -35,7 +37,7 @@ export function MenuContent<T extends ValidComponent = "div">(
 	const others = omit(props as MenuContentProps, "ref");
 
 	createPreventScroll({
-		element: () => ref ?? undefined,
+		element: ref,
 		enabled: () => context.contentPresent() && rootContext.preventScroll(),
 	});
 
@@ -43,12 +45,7 @@ export function MenuContent<T extends ValidComponent = "div">(
 		<MenuContentBase<
 			Component<Omit<MenuContentRenderProps, keyof MenuContentBaseRenderProps>>
 		>
-			ref={[
-				(el: HTMLElement) => {
-					ref = el;
-				},
-				props.ref,
-			]}
+			ref={[setRef, props.ref]}
 			{...others}
 		/>
 	);

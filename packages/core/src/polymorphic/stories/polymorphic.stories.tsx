@@ -78,7 +78,7 @@ export const AsCustomComponent = meta.story({
 export const PropForwarding = meta.story({
 	name: "Prop Forwarding",
 	render: () => {
-		let ref: HTMLButtonElement | undefined;
+		const [ref, setRef] = createSignal<HTMLButtonElement>();
 		const [info, setInfo] = createSignal("");
 
 		return (
@@ -91,10 +91,10 @@ export const PropForwarding = meta.story({
 					aria-label="A labelled polymorphic button"
 					tabIndex={0}
 					class={style.element}
-					ref={ref}
+					ref={setRef}
 					onClick={() =>
 						setInfo(
-							`id=${ref?.id}  data-custom=${ref?.dataset.custom}  tagName=${ref?.tagName}`,
+							`id=${ref()?.id}  data-custom=${ref()?.dataset.custom}  tagName=${ref()?.tagName}`,
 						)
 					}
 				>

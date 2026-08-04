@@ -9,7 +9,7 @@
 
 import { callHandler, contains, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit, type Ref } from "solid-js";
+import { createSignal, omit, type Ref } from "solid-js";
 
 import {
 	createFormControlField,
@@ -72,7 +72,9 @@ export type ComboboxInputProps<
 export function ComboboxInput<T extends ValidComponent = "input">(
 	props: PolymorphicProps<T, ComboboxInputProps<T>>,
 ) {
-	let ref: HTMLInputElement | undefined;
+	const [ref, setRef] = createSignal<HTMLInputElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
@@ -268,14 +270,15 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	) => {
 		callHandler(e, mergedProps.onTouchEnd);
 
-		if (!ref || formControlContext.isReadOnly() || isDisabled()) {
+		const inputEl = ref();
+		if (!inputEl || formControlContext.isReadOnly() || isDisabled()) {
 			return;
 		}
 
 		// Sometimes VoiceOver on iOS fires two touchend events in quick succession. Ignore the second one.
 		if (e.timeStamp - lastEventTime < 500) {
 			e.preventDefault();
-			ref.focus();
+			inputEl.focus();
 			return;
 		}
 
@@ -287,7 +290,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 
 		if (touch.clientX === centerX && touch.clientY === centerY) {
 			e.preventDefault();
-			ref.focus();
+			inputEl.focus();
 			context.toggle(false, "manual");
 
 			lastEventTime = e.timeStamp;
@@ -302,7 +305,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 				[
 					(el: HTMLInputElement) => {
 						context.setInputRef(el);
-						ref = el;
+						setRef(el);
 					},
 					mergedProps.ref,
 				] as any

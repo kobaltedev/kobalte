@@ -96,7 +96,9 @@ export type RatingRootProps<
 export function RatingRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, RatingRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `Rating-${createUniqueId()}`;
 
@@ -148,10 +150,7 @@ export function RatingRoot<T extends ValidComponent = "div">(
 
 	const { formControlContext } = createFormControl(formControlProps);
 
-	createFormResetListener(
-		() => ref,
-		() => setValue(mergedProps.defaultValue!),
-	);
+	createFormResetListener(ref, () => setValue(mergedProps.defaultValue!));
 
 	const ariaLabelledBy = () => {
 		return formControlContext.getAriaLabelledBy(
@@ -192,7 +191,7 @@ export function RatingRoot<T extends ValidComponent = "div">(
 				<RatingContext value={context}>
 					<Polymorphic<RatingRootRenderProps>
 						as="div"
-						ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+						ref={[setRef, mergedProps.ref]}
 						role="radiogroup"
 						id={access(mergedProps.id)!}
 						aria-invalid={

@@ -72,7 +72,9 @@ export type ToggleGroupBaseProps<
 export function ToggleGroupBase<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ToggleGroupBaseProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `group-${createUniqueId()}`;
 
@@ -132,7 +134,7 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 				listState.selectionManager().disallowEmptySelection(),
 			disallowTypeAhead: true,
 		},
-		() => ref,
+		ref,
 	);
 
 	const context: ToggleGroupContextValue = {
@@ -149,7 +151,7 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 				<Polymorphic<ToggleGroupBaseRenderProps>
 					as="div"
 					role="group"
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+					ref={[setRef, mergedProps.ref]}
 					tabindex={
 						!mergedProps.disabled ? selectableList.tabIndex() : undefined
 					}

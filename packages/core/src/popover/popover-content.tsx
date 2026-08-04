@@ -14,7 +14,14 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, type Ref, Show } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	omit,
+	type Ref,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
@@ -89,7 +96,9 @@ export type PopoverContentProps<
 export function PopoverContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, PopoverContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = usePopoverContext();
 
@@ -193,17 +202,20 @@ export function PopoverContent<T extends ValidComponent = "div">(
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
 		disabled: () => !(context.isOpen() && context.isModal()),
-		targets: () => (ref ? [ref] : []),
+		targets: () => {
+			const el = ref();
+			return el ? [el] : [];
+		},
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createPreventScroll({
-		element: () => ref ?? undefined,
+		element: ref,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => context.isOpen() && context.isModal(),
 		onInitialFocus: mergedProps.onOpenAutoFocus,
 		onFinalFocus: onCloseAutoFocus,
@@ -225,7 +237,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 					ref={[
 						(el: HTMLElement) => {
 							context.setContentRef(el);
-							ref = el;
+							setRef(el);
 						},
 						mergedProps.ref,
 					]}

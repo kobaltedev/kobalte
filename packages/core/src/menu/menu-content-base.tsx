@@ -25,6 +25,7 @@ import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
 	createEffect,
+	createSignal,
 	createUniqueId,
 	omit,
 	onCleanup,
@@ -118,7 +119,9 @@ export type MenuContentBaseProps<
 export function MenuContentBase<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuContentBaseProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
@@ -174,11 +177,11 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			orientation: () =>
 				rootContext.orientation() === "horizontal" ? "vertical" : "horizontal",
 		},
-		() => ref,
+		ref,
 	);
 
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => isRootModalContent() && context.isOpen(),
 		onInitialFocus: (event) => {
 			if (optionalMenubarContext === undefined)
@@ -306,7 +309,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			ref: [
 				(el) => {
 					context.setContentRef(el);
-					ref = el;
+					setRef(el);
 				},
 				mergedProps.ref,
 			],

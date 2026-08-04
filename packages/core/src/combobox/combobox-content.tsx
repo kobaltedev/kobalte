@@ -10,7 +10,7 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, Show } from "solid-js";
+import { type Component, createSignal, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -69,7 +69,9 @@ export type ComboboxContentProps<
 export function ComboboxContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ComboboxContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useComboboxContext();
 
@@ -107,8 +109,8 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 		targets: () => {
 			const excludedElements = [];
 
-			if (ref) {
-				excludedElements.push(ref);
+			if (ref()) {
+				excludedElements.push(ref()!);
 			}
 
 			const controlEl = context.controlRef();
@@ -122,12 +124,12 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 	});
 
 	createPreventScroll({
-		element: () => ref ?? undefined,
+		element: ref,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => context.isOpen() && context.isModal(),
 		onInitialFocus: (e) => {
 			// We prevent open autofocus because it's handled by the `Listbox`.
@@ -154,7 +156,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 					ref={[
 						(el: HTMLElement) => {
 							context.setContentRef(el);
-							ref = el;
+							setRef(el);
 						},
 						props.ref,
 					]}

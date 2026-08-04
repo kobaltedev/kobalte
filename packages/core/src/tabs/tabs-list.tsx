@@ -8,7 +8,7 @@
 
 import { composeEventHandlers, type Orientation } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, omit, type Ref } from "solid-js";
+import { createEffect, createSignal, omit, type Ref } from "solid-js";
 
 import { useLocale } from "../i18n/index.tsx";
 import {
@@ -46,7 +46,9 @@ export type TabsListProps<
 export function TabsList<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, TabsListProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useTabsContext();
 
@@ -75,13 +77,13 @@ export function TabsList<T extends ValidComponent = "div">(
 			shouldFocusWrap: false, // handled by the keyboard delegate
 			disallowEmptySelection: true,
 		},
-		() => ref,
+		ref,
 	);
 
 	createEffect(
 		() => {
-			if (ref == null) return null;
-			return ref.querySelector(
+			if (ref() == null) return null;
+			return ref()!.querySelector(
 				`[data-key="${context.listState().selectedKey()}"]`,
 			) as HTMLElement | null;
 		},
@@ -95,9 +97,7 @@ export function TabsList<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<TabsListRenderProps>
 			as="div"
-			ref={
-				[(el: HTMLElement) => (ref = el), (props as TabsListProps).ref] as any
-			}
+			ref={[setRef, (props as TabsListProps).ref] as any}
 			role="tablist"
 			aria-orientation={context.orientation()}
 			data-orientation={context.orientation()}

@@ -22,6 +22,7 @@ import {
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
+	createSignal,
 	createUniqueId,
 	omit,
 	onCleanup,
@@ -106,7 +107,9 @@ const SUB_OPEN_KEYS = {
 export function MenuSubTrigger<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuSubTriggerProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
@@ -176,7 +179,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			allowsDifferentPressOrigin: true,
 			disabled: () => mergedProps.disabled,
 		},
-		() => ref,
+		ref,
 	);
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
@@ -317,7 +320,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 
 	createEffect(
 		() => ({
-			textValue: mergedProps.textValue ?? ref?.textContent ?? "",
+			textValue: mergedProps.textValue ?? ref()?.textContent ?? "",
 			disabled: mergedProps.disabled ?? false,
 			key: key(),
 		}),
@@ -331,7 +334,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			}
 			// Register the item trigger on the parent menu that contains it.
 			return context.registerItemToParentDomCollection({
-				ref: () => ref,
+				ref,
 				type: "item",
 				...data,
 			});
@@ -364,7 +367,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 				[
 					(el: HTMLElement) => {
 						context.setTriggerRef(el);
-						ref = el;
+						setRef(el);
 					},
 					mergedProps.ref,
 				] as any

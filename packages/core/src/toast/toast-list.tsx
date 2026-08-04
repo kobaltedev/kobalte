@@ -20,7 +20,14 @@ import {
 	getWindow,
 } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
-import { createEffect, For, omit, type Ref, untrack } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	For,
+	omit,
+	type Ref,
+	untrack,
+} from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -55,7 +62,9 @@ export type ToastListProps<
 export function ToastList<T extends ValidComponent = "ol">(
 	props: PolymorphicProps<T, ToastListProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useToastRegionContext();
 
@@ -90,7 +99,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		);
 
 		// The newly focused element isn't inside the toast list.
-		if (!contains(ref, e.relatedTarget as HTMLElement)) {
+		if (!contains(ref(), e.relatedTarget as HTMLElement)) {
 			context.resumeAllTimer();
 		}
 	};
@@ -121,7 +130,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		);
 
 		// The current active element isn't inside the toast list.
-		if (!contains(ref, getDocument(ref).activeElement)) {
+		if (!contains(ref(), getDocument(ref()).activeElement)) {
 			context.resumeAllTimer();
 		}
 	};
@@ -129,9 +138,9 @@ export function ToastList<T extends ValidComponent = "ol">(
 	createEffect(
 		() => context.hotkey(),
 		(hotkey) => {
-			if (isServer || !ref) return;
+			if (isServer || !ref()) return;
 
-			const doc = getDocument(ref);
+			const doc = getDocument(ref());
 
 			const onKeyDown = (event: KeyboardEvent) => {
 				const isHotkeyPressed = hotkey.every(
@@ -139,7 +148,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 				);
 
 				if (isHotkeyPressed) {
-					focusWithoutScrolling(ref);
+					focusWithoutScrolling(ref());
 				}
 			};
 
@@ -154,7 +163,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		(pauseOnPageIdle) => {
 			if (!pauseOnPageIdle) return;
 
-			const win = getWindow(ref);
+			const win = getWindow(ref());
 
 			win.addEventListener("blur", context.pauseAllTimer);
 			win.addEventListener("focus", context.resumeAllTimer);
@@ -169,7 +178,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	return (
 		<Polymorphic<ToastListRenderProps>
 			as="ol"
-			ref={[(el: HTMLElement) => (ref = el), (props as ToastListProps).ref]}
+			ref={[setRef, (props as ToastListProps).ref]}
 			tabindex={-1}
 			onFocusIn={onFocusIn}
 			onFocusOut={onFocusOut}

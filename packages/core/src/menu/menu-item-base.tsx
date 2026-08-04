@@ -105,7 +105,9 @@ export type MenuItemBaseProps<
 export function MenuItemBase<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuItemBaseProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const rootContext = useMenuRootContext();
 	const menuContext = useMenuContext();
@@ -171,13 +173,13 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
-			ref: () => ref,
+			ref,
 			type: "item",
 			key: key(),
 			textValue:
 				mergedProps.textValue ??
 				labelRef()?.textContent ??
-				ref?.textContent ??
+				ref()?.textContent ??
 				"",
 			disabled: mergedProps.disabled ?? false,
 		}),
@@ -191,7 +193,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			allowsDifferentPressOrigin: true,
 			disabled: () => mergedProps.disabled,
 		},
-		() => ref,
+		ref,
 	);
 
 	/**
@@ -302,7 +304,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		<MenuItemContext value={context}>
 			<Polymorphic<MenuItemBaseRenderProps>
 				as="div"
-				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+				ref={[setRef, mergedProps.ref]}
 				tabindex={selectableItem.tabIndex()}
 				aria-checked={ariaChecked()}
 				aria-disabled={mergedProps.disabled ? "true" : undefined}

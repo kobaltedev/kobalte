@@ -125,7 +125,9 @@ export type CheckboxRootProps<
 export function CheckboxRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, CheckboxRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `checkbox-${createUniqueId()}`;
 
@@ -182,9 +184,8 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		isReadOnly: () => formControlContext.isReadOnly(),
 	});
 
-	createFormResetListener(
-		() => ref,
-		() => state.setIsSelected(mergedProps.defaultChecked ?? false),
+	createFormResetListener(ref, () =>
+		state.setIsSelected(mergedProps.defaultChecked ?? false),
 	);
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
@@ -221,7 +222,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 			<CheckboxContext value={context}>
 				<Polymorphic<CheckboxRootRenderProps>
 					as="div"
-					ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(formControlProps.id)}
 					onPointerDown={onPointerDown}

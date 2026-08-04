@@ -9,7 +9,13 @@
 
 import { composeEventHandlers, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, type Ref } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	omit,
+	type Ref,
+} from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 import { useTextFieldContext } from "./text-field-context.tsx";
@@ -51,7 +57,10 @@ export type TextFieldTextAreaProps<
 export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 	props: PolymorphicProps<T, TextFieldTextAreaProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLTextAreaElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const context = useTextFieldContext();
 
@@ -73,20 +82,22 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 	createEffect(
 		() => ({ autoResize: mergedProps.autoResize, value: context.value() }),
 		({ autoResize }) => {
-			if (!ref || !autoResize) return;
-			adjustHeight(ref);
+			const el = ref();
+			if (!el || !autoResize) return;
+			adjustHeight(el);
 		},
 	);
 
 	const onKeyPress = (event: KeyboardEvent) => {
+		const el = ref();
 		if (
-			ref &&
+			el &&
 			mergedProps.submitOnEnter &&
 			event.key === "Enter" &&
 			!event.shiftKey
 		) {
-			if ((ref as HTMLTextAreaElement).form) {
-				(ref as HTMLTextAreaElement).form!.requestSubmit();
+			if (el.form) {
+				el.form.requestSubmit();
 				event.preventDefault();
 			}
 		}
@@ -101,7 +112,7 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 			as="textarea"
 			aria-multiline={mergedProps.submitOnEnter ? "false" : undefined}
 			onKeyPress={composeEventHandlers([mergedProps.onKeyPress, onKeyPress])}
-			ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+			ref={[setRef, mergedProps.ref]}
 			{...others}
 		/>
 	);

@@ -8,7 +8,7 @@
 
 import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { createEffect, For, omit, Show } from "solid-js";
+import { createEffect, createSignal, For, omit, Show } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import type { Collection, CollectionNode } from "../primitives/index.ts";
@@ -48,7 +48,9 @@ export interface HiddenSelectBaseProps extends ComponentProps<"select"> {
  * form autofill, mobile form navigation, and native form submission.
  */
 export function HiddenSelectBase(props: HiddenSelectBaseProps) {
-	let ref: HTMLSelectElement | undefined;
+	const [ref, setRef] = createSignal<HTMLSelectElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const others = omit(
 		props,
@@ -88,10 +90,10 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 
 			isInternalChangeEvent = true;
 
-			ref?.dispatchEvent(
+			ref()?.dispatchEvent(
 				new Event("input", { bubbles: true, cancelable: true }),
 			);
-			ref?.dispatchEvent(
+			ref()?.dispatchEvent(
 				new Event("change", { bubbles: true, cancelable: true }),
 			);
 		},
@@ -112,7 +114,7 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 				onFocus={() => props.focusTrigger()}
 			/>
 			<select
-				ref={[(el) => (ref = el), props.ref]}
+				ref={[setRef, props.ref]}
 				tabindex={-1}
 				multiple={props.isMultiple}
 				name={formControlContext.name()}

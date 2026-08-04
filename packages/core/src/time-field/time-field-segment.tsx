@@ -22,6 +22,7 @@ import {
 	children,
 	createEffect,
 	createMemo,
+	createSignal,
 	createUniqueId,
 	omit,
 	type Ref,
@@ -82,7 +83,9 @@ export type TimeFieldSegmentProps<
 export function TimeFieldSegment<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, TimeFieldSegmentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const formControlContext = useFormControlContext();
 	const context = useTimeFieldContext();
@@ -321,14 +324,15 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				}
 				break;
 			case "insertCompositionText":
-				if (ref) {
+				if (ref()) {
+					const el = ref()!;
 					// insertCompositionText cannot be canceled.
 					// Record the current state of the element, so we can restore it in the `input` event below.
-					composition = ref.textContent;
+					composition = el.textContent;
 
 					// Safari gets stuck in a composition state unless we also assign to the value here.
 					// biome-ignore lint/correctness/noSelfAssign: comment above
-					ref.textContent = ref.textContent;
+					el.textContent = el.textContent;
 				}
 				break;
 			default:
@@ -344,10 +348,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		const { inputType, data } = e;
 
-		if (ref && data != null) {
+		if (ref() && data != null) {
 			switch (inputType) {
 				case "insertCompositionText":
-					ref.textContent = composition;
+					ref()!.textContent = composition;
 
 					// Android sometimes fires key presses of letters as composition events. Need to handle am/pm keys here too.
 					// Can also happen e.g. with Pinyin keyboard on iOS.
@@ -365,15 +369,15 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, mergedProps.onFocus);
 
-		if (ref) {
+		if (ref()) {
 			enteredKeys = "";
-			scrollIntoViewport(ref, {
-				containingElement: getScrollParent(ref),
+			scrollIntoViewport(ref()!, {
+				containingElement: getScrollParent(ref()!),
 			});
 
 			// Collapse selection to start or Chrome won't fire input events.
-			const selection = getWindow(ref).getSelection();
-			selection?.collapse(ref);
+			const selection = getWindow(ref()!).getSelection();
+			selection?.collapse(ref()!);
 		}
 	};
 
@@ -478,7 +482,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	createEffect(
 		() => context.focusManager(),
 		(focusManager) => {
-			const element = ref;
+			const element = ref();
 			return () => {
 				if (getActiveElement(element) === element) {
 					const prev = focusManager.focusPrevious();
@@ -524,7 +528,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	return (
 		<>
 			<SpinButton.Root
-				ref={[(el: HTMLElement) => (ref = el), mergedProps.ref]}
+				ref={[setRef, mergedProps.ref]}
 				tabindex={formControlContext.isDisabled() ? undefined : 0}
 				value={getValue()}
 				textValue={textValue()}
