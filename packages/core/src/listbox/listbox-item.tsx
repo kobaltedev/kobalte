@@ -10,7 +10,6 @@ import {
 	callHandler,
 	composeEventHandlers,
 	createGenerateId,
-	focusWithoutScrolling,
 	isMac,
 	isWebKit,
 	mergeDefaultProps,
@@ -205,7 +204,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 		}
 
 		if (!selectableItem.isDisabled() && listBoxContext.shouldFocusOnHover()) {
-			focusWithoutScrolling(e.currentTarget);
+			e.currentTarget.focus({ preventScroll: true });
 			selectionManager().setFocused(true);
 			selectionManager().setFocusedKey(mergedProps.item.key);
 		}

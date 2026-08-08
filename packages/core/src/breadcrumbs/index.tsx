@@ -38,7 +38,7 @@ export const Breadcrumbs = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type BreadcrumbsContextValue,

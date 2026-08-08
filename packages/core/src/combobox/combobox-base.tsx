@@ -10,7 +10,6 @@
 import {
 	access,
 	createGenerateId,
-	focusWithoutScrolling,
 	isAppleDevice,
 	isFunction,
 	mergeDefaultProps,
@@ -601,7 +600,7 @@ export function ComboboxBase<
 				// Move cursor to the end of the input.
 				inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
 
-				focusWithoutScrolling(inputEl);
+				inputEl.focus({ preventScroll: true });
 			}
 		},
 		allowDuplicateSelectionEvents: () =>

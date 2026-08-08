@@ -8,7 +8,6 @@
 
 import {
 	contains,
-	focusWithoutScrolling,
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
@@ -180,11 +179,11 @@ export function DialogContent<T extends ValidComponent = "div">(
 
 		if (context.modal()) {
 			e.preventDefault();
-			focusWithoutScrolling(context.triggerRef());
+			context.triggerRef()?.focus({ preventScroll: true });
 		} else {
 			if (!e.defaultPrevented) {
 				if (!hasInteractedOutside) {
-					focusWithoutScrolling(context.triggerRef());
+					context.triggerRef()?.focus({ preventScroll: true });
 				}
 
 				// Always prevent autofocus because we either focus manually or want user agent focus

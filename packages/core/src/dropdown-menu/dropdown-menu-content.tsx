@@ -1,4 +1,3 @@
-import { focusWithoutScrolling } from "@kobalte/utils";
 import type { InteractOutsideEvent } from "@solid-primitives/interaction";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
@@ -44,7 +43,7 @@ export function DropdownMenuContent<T extends ValidComponent = "div">(
 		props.onCloseAutoFocus?.(e);
 
 		if (!hasInteractedOutside) {
-			focusWithoutScrolling(context.triggerRef());
+			context.triggerRef()?.focus({ preventScroll: true });
 		}
 
 		hasInteractedOutside = false;

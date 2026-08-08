@@ -10,7 +10,6 @@ import {
 	callHandler,
 	composeEventHandlers,
 	createGenerateId,
-	focusWithoutScrolling,
 	mergeDefaultProps,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
@@ -222,7 +221,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			menuContext.onItemEnter(e);
 
 			if (!e.defaultPrevented) {
-				focusWithoutScrolling(e.currentTarget);
+				e.currentTarget.focus({ preventScroll: true });
 				menuContext.listState().selectionManager().setFocused(true);
 				menuContext.listState().selectionManager().setFocusedKey(key());
 			}

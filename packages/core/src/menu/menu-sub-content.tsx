@@ -9,7 +9,6 @@
 import {
 	callHandler,
 	contains,
-	focusWithoutScrolling,
 	type Orientation,
 } from "@kobalte/utils";
 import type { FocusOutsideEvent } from "@solid-primitives/interaction";
@@ -122,7 +121,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 			context.close();
 
 			// We focus manually because we prevented it in `onCloseAutoFocus`.
-			focusWithoutScrolling(context.triggerRef());
+			context.triggerRef()?.focus({ preventScroll: true });
 		}
 	};
 

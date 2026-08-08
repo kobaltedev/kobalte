@@ -1,15 +1,12 @@
 import type { JSX } from "@solidjs/web";
 
-import { isFunction } from "./assertion.ts";
-import { isMac } from "./platform.ts";
-
 /** Call a JSX.EventHandlerUnion with the event. */
 export function callHandler<T, E extends Event>(
 	event: E & { currentTarget: T; target: Element },
 	handler: JSX.EventHandlerUnion<T, E> | undefined,
 ) {
 	if (handler) {
-		if (isFunction(handler)) {
+		if (typeof handler === "function") {
 			handler(event);
 		} else {
 			handler[0](handler[1], event);
@@ -28,12 +25,4 @@ export function composeEventHandlers<T>(
 			callHandler(event, handler);
 		}
 	};
-}
-
-export function isCtrlKey(e: Pick<KeyboardEvent, "ctrlKey" | "metaKey">) {
-	if (isMac()) {
-		return e.metaKey && !e.ctrlKey;
-	}
-
-	return e.ctrlKey && !e.metaKey;
 }

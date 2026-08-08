@@ -9,7 +9,6 @@
 import {
 	access,
 	createGenerateId,
-	focusWithoutScrolling,
 	isFunction,
 	mergeDefaultProps,
 	type ValidationState,
@@ -492,7 +491,7 @@ export function SelectBase<
 		const listboxEl = listboxRef();
 
 		if (listboxEl) {
-			focusWithoutScrolling(listboxEl);
+			listboxEl.focus({ preventScroll: true });
 		}
 	};
 

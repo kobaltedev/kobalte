@@ -8,7 +8,6 @@
 
 import {
 	composeEventHandlers,
-	focusWithoutScrolling,
 	isWebKit,
 	mergeDefaultProps,
 	type Orientation,
@@ -129,7 +128,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// Force focusing the trigger on click on safari.
 		if (isWebKit()) {
-			focusWithoutScrolling(e.currentTarget);
+			e.currentTarget.focus({ preventScroll: true });
 		}
 	};
 

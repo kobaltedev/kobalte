@@ -10,7 +10,6 @@ import {
 	access,
 	callHandler,
 	createEventListener,
-	focusWithoutScrolling,
 	type MaybeAccessor,
 	type Orientation,
 	scrollIntoView,
@@ -353,7 +352,7 @@ export function createSelectableCollection<
 						} while (last);
 
 						if (next && !next.contains(document.activeElement)) {
-							focusWithoutScrolling(next);
+							next.focus({ preventScroll: true });
 						}
 					}
 					break;
@@ -439,7 +438,7 @@ export function createSelectableCollection<
 
 				if (element) {
 					// This prevents a flash of focus on the first/last element in the collection
-					focusWithoutScrolling(element as HTMLElement);
+					(element as HTMLElement).focus({ preventScroll: true });
 					scrollIntoView(scrollEl, element as HTMLElement);
 				}
 			}
@@ -500,7 +499,7 @@ export function createSelectableCollection<
 			focusedKey == null &&
 			!access(mergedProps.shouldUseVirtualFocus)
 		) {
-			// `focusWithoutScrolling` below synchronously dispatches a native
+			// The focus call below synchronously dispatches a native
 			// focus event back into this same collection's `onFocusIn`. Solid
 			// batches the `setFocused(true)` write above, so without this guard
 			// `onFocusIn` would read stale (pre-write) state and re-run its own
@@ -509,7 +508,7 @@ export function createSelectableCollection<
 			// forcing unrelated pending effects elsewhere to run before their
 			// DOM refs are ready (e.g. Menu's own deferred submenu auto-focus).
 			isSelfFocusing = true;
-			focusWithoutScrolling(refEl);
+			refEl.focus({ preventScroll: true });
 			isSelfFocusing = false;
 		}
 	};

@@ -42,6 +42,6 @@ export const Image = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export { type ImageContextValue, useImageContext } from "./image-context.tsx";

@@ -15,7 +15,6 @@
 import {
 	callHandler,
 	contains,
-	focusWithoutScrolling,
 	getDocument,
 	getWindow,
 } from "@kobalte/utils";
@@ -148,7 +147,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 				);
 
 				if (isHotkeyPressed) {
-					focusWithoutScrolling(ref());
+					ref.focus({ preventScroll: true });
 				}
 			};
 

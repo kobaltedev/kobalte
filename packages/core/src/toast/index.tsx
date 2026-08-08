@@ -129,6 +129,6 @@ export const Toast = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export { type ToastContextValue, useToastContext } from "./toast-context.tsx";

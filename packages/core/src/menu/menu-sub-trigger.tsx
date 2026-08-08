@@ -15,7 +15,6 @@
 import {
 	callHandler,
 	composeEventHandlers,
-	focusWithoutScrolling,
 	mergeDefaultProps,
 	type Orientation,
 } from "@kobalte/utils";
@@ -231,7 +230,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			}
 
 			// Restore visual focus to parent menu content.
-			focusWithoutScrolling(e.currentTarget);
+			e.currentTarget.focus({ preventScroll: true });
 			parentMenuContext?.listState().selectionManager().setFocused(true);
 			parentMenuContext?.listState().selectionManager().setFocusedKey(key());
 		}
