@@ -1,4 +1,4 @@
-import { focusWithoutScrolling, mergeRefs } from "@kobalte/utils";
+import { focusWithoutScrolling } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -10,7 +10,13 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, Show } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	omit,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -66,7 +72,9 @@ export type SelectContentProps<
 export function SelectContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SelectContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useSelectContext();
 
@@ -98,12 +106,15 @@ export function SelectContent<T extends ValidComponent = "div">(
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
 		disabled: () => !(context.isOpen() && context.isModal()),
-		targets: () => (ref ? [ref] : []),
+		targets: () => {
+			const el = ref();
+			return el ? [el] : [];
+		},
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createPreventScroll({
-		element: () => ref ?? undefined,
+		element: ref,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
@@ -117,7 +128,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 	};
 
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => context.isOpen() && context.isModal(),
 		onInitialFocus: (e) => {
 			// We prevent open autofocus because it's handled by the `Listbox`.
@@ -156,10 +167,13 @@ export function SelectContent<T extends ValidComponent = "div">(
 						Omit<SelectContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={mergeRefs((el) => {
-						context.setContentRef(el);
-						ref = el;
-					}, props.ref)}
+					ref={[
+						(el: HTMLElement) => {
+							context.setContentRef(el);
+							setRef(el);
+						},
+						props.ref,
+					]}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.triggerRef]}
 					style={combineStyle(

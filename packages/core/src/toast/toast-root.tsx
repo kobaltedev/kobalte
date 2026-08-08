@@ -16,7 +16,6 @@ import {
 	callHandler,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { combineStyle } from "@solid-primitives/props";
@@ -28,6 +27,7 @@ import {
 	createUniqueId,
 	omit,
 	onSettled,
+	type Ref,
 	Show,
 	untrack,
 } from "solid-js";
@@ -113,7 +113,7 @@ export interface ToastRootOptions {
 export interface ToastRootCommonProps<T extends HTMLElement = HTMLElement> {
 	style?: JSX.CSSProperties | string;
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -443,7 +443,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 			<ToastContext value={context}>
 				<Polymorphic<ToastRootRenderProps>
 					as="li"
-					ref={mergeRefs(setRef, mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="status"
 					tabindex={0}
 					style={combineStyle(

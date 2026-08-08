@@ -1,4 +1,4 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createSignal, omit } from "solid-js";
@@ -142,7 +142,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 	return (
 		<Polymorphic<ColorWheelThumbRenderProps>
 			as="span"
-			ref={mergeRefs(context.setThumbRef, props.ref)}
+			ref={[context.setThumbRef, props.ref]}
 			role="slider"
 			id={fieldProps.id()}
 			tabindex={context.state.isDisabled() ? undefined : 0}

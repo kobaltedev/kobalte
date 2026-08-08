@@ -9,7 +9,6 @@
 import {
 	callHandler,
 	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 	scrollIntoViewport,
 } from "@kobalte/utils";
@@ -257,7 +256,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
+			ref={[context.setTriggerRef, mergedProps.ref]}
 			data-kb-menu-value-trigger={rootContext.value()}
 			id={mergedProps.id}
 			disabled={mergedProps.disabled}

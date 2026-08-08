@@ -11,7 +11,6 @@ import {
 	composeEventHandlers,
 	contains,
 	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
@@ -26,9 +25,11 @@ import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
 	createEffect,
+	createSignal,
 	createUniqueId,
 	omit,
 	onCleanup,
+	type Ref,
 	Show,
 } from "solid-js";
 import {
@@ -91,7 +92,7 @@ export interface MenuContentBaseCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
@@ -118,7 +119,9 @@ export type MenuContentBaseProps<
 export function MenuContentBase<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuContentBaseProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
@@ -174,11 +177,11 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			orientation: () =>
 				rootContext.orientation() === "horizontal" ? "vertical" : "horizontal",
 		},
-		() => ref,
+		ref,
 	);
 
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => isRootModalContent() && context.isOpen(),
 		onInitialFocus: (event) => {
 			if (optionalMenubarContext === undefined)
@@ -303,10 +306,13 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	const commonAttributes: Omit<MenuContentBaseRenderProps, keyof MenuDataSet> =
 		{
-			ref: mergeRefs((el) => {
-				context.setContentRef(el);
-				ref = el;
-			}, mergedProps.ref),
+			ref: [
+				(el) => {
+					context.setContentRef(el);
+					setRef(el);
+				},
+				mergedProps.ref,
+			],
 			role: "menu",
 			get id() {
 				return mergedProps.id;

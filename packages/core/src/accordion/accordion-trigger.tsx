@@ -10,10 +10,9 @@ import {
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, createSignal, omit } from "solid-js";
 import { useCollapsibleContext } from "../collapsible/collapsible-context.tsx";
 import * as Collapsible from "../collapsible/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -53,7 +52,9 @@ export type AccordionTriggerProps<
 export function AccordionTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, AccordionTriggerProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const accordionContext = useAccordionContext();
 	const itemContext = useAccordionItemContext();
@@ -79,7 +80,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
-			ref: () => ref,
+			ref,
 			type: "item",
 			key: itemContext.value(),
 			textValue: "", // not applicable here
@@ -94,7 +95,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 			disabled: () => collapsibleContext.disabled(),
 			shouldSelectOnPressUp: true,
 		},
-		() => ref,
+		ref,
 	);
 
 	const onKeyDown: JSX.EventHandlerUnion<Element, KeyboardEvent> = (e) => {
@@ -121,7 +122,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+			ref={[setRef, mergedProps.ref]}
 			data-key={selectableItem.dataKey()}
 			onPointerDown={composeEventHandlers([
 				mergedProps.onPointerDown,

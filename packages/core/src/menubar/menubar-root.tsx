@@ -10,7 +10,6 @@ import {
 	contains,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 } from "@kobalte/utils";
 import { interactOutside } from "@solid-primitives/interaction";
@@ -22,6 +21,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 	type Setter,
 } from "solid-js";
 import {
@@ -61,7 +61,7 @@ export interface MenubarRootOptions {
 
 export interface MenubarRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface MenubarRootRenderProps extends MenubarRootCommonProps {
@@ -80,7 +80,9 @@ export type MenubarRootProps<
 export function MenubarRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenubarRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 	const defaultId = `menubar-${createUniqueId()}`;
 
 	const mergedProps = mergeDefaultProps(
@@ -219,7 +221,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			setTimeout(() => context.closeMenu());
 		},
 		shouldExcludeElement: (element) => {
-			return [ref, ...menuRefs().values()]
+			return [ref(), ...menuRefs().values()]
 				.flat()
 				.some((ref) => contains(ref, element));
 		},
@@ -255,7 +257,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		<MenubarContext value={context}>
 			<Polymorphic<MenubarRootRenderProps>
 				as="div"
-				ref={mergeRefs(interactOutsideRef, (el) => (ref = el), mergedProps.ref)}
+				ref={[interactOutsideRef, setRef, mergedProps.ref] as any}
 				role="menubar"
 				data-orientation={mergedProps.orientation!}
 				aria-orientation={mergedProps.orientation!}

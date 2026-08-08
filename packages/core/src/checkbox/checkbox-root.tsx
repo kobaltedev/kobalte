@@ -12,7 +12,6 @@ import {
 	createGenerateId,
 	isFunction,
 	mergeDefaultProps,
-	mergeRefs,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -24,6 +23,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
@@ -103,7 +103,7 @@ export interface CheckboxRootOptions {
 
 export interface CheckboxRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
@@ -125,7 +125,9 @@ export type CheckboxRootProps<
 export function CheckboxRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, CheckboxRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `checkbox-${createUniqueId()}`;
 
@@ -182,9 +184,8 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		isReadOnly: () => formControlContext.isReadOnly(),
 	});
 
-	createFormResetListener(
-		() => ref,
-		() => state.setIsSelected(mergedProps.defaultChecked ?? false),
+	createFormResetListener(ref, () =>
+		state.setIsSelected(mergedProps.defaultChecked ?? false),
 	);
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
@@ -221,7 +222,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 			<CheckboxContext value={context}>
 				<Polymorphic<CheckboxRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(formControlProps.id)}
 					onPointerDown={onPointerDown}

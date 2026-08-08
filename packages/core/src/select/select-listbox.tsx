@@ -1,4 +1,4 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, createEffect, omit } from "solid-js";
 import type {
@@ -70,7 +70,7 @@ export function SelectListbox<
 			OptGroup,
 			Component<Omit<SelectListboxRenderProps, keyof ListboxRootRenderProps>>
 		>
-			ref={mergeRefs(context.setListboxRef, mergedProps.ref)}
+			ref={[context.setListboxRef, mergedProps.ref]}
 			id={mergedProps.id}
 			state={context.listState()}
 			virtualized={context.isVirtualized()}

@@ -1,7 +1,7 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit, Show } from "solid-js";
+import { createSignal, omit, type Ref, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -24,7 +24,7 @@ export interface RadioGroupItemIndicatorCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface RadioGroupItemIndicatorRenderProps
@@ -65,7 +65,7 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<RadioGroupItemIndicatorRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				{...context.dataset()}
 				{...others}
 			/>

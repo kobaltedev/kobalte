@@ -18,9 +18,9 @@ import {
  * Returns the tag name by parsing an element ref.
  * @example
  * function Component(props) {
- *   let ref: HTMLDivElement | undefined;
- *   const tagName = createTagName(() => ref, () => "button"); // div
- *   return <div ref={ref} {...props} />;
+ *   const [ref, setRef] = createSignal<HTMLDivElement>();
+ *   const tagName = createTagName(ref, () => "button"); // div
+ *   return <div ref={setRef} {...props} />;
  * }
  */
 export function createTagName(

@@ -10,13 +10,12 @@
 import {
 	access,
 	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import type { ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -80,7 +79,7 @@ export interface RadioGroupRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	"aria-label"?: string;
@@ -108,7 +107,9 @@ export type RadioGroupRootProps<
 export function RadioGroupRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, RadioGroupRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `radiogroup-${createUniqueId()}`;
 
@@ -150,9 +151,8 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 
 	const { formControlContext } = createFormControl(formControlProps);
 
-	createFormResetListener(
-		() => ref,
-		() => setSelected(mergedProps.defaultValue ?? ""),
+	createFormResetListener(ref, () =>
+		setSelected(mergedProps.defaultValue ?? ""),
 	);
 
 	const ariaLabelledBy = () => {
@@ -187,11 +187,13 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 		// Sync all radio input checked state in the group with the selected value.
 		// This is necessary because checked state might be out of sync
 		// (ex: when using controlled radio-group).
-		if (ref)
-			for (const el of ref.querySelectorAll("[type='radio']")) {
+		if (ref()) {
+			const rootEl = ref()!;
+			for (const el of rootEl.querySelectorAll("[type='radio']")) {
 				const radio = el as HTMLInputElement;
 				radio.checked = isSelectedValue(radio.value);
 			}
+		}
 	};
 
 	const context: RadioGroupContextValue = {
@@ -206,7 +208,7 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 			<RadioGroupContext value={context}>
 				<Polymorphic<RadioGroupRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="radiogroup"
 					id={access(formControlProps.id)!}
 					aria-invalid={

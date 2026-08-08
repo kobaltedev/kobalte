@@ -10,11 +10,16 @@ import {
 	callHandler,
 	createGlobalListeners,
 	getScrollParent,
-	mergeRefs,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createMemo, omit } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createMemo,
+	omit,
+	type Ref,
+} from "solid-js";
 import {
 	DialogContent,
 	type DialogContentCommonProps,
@@ -34,7 +39,7 @@ export interface DrawerContentOptions extends DialogContentOptions {}
 
 export interface DrawerContentCommonProps<T extends HTMLElement = HTMLElement>
 	extends DialogContentCommonProps<T> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onTouchStart: JSX.EventHandlerUnion<T, TouchEvent>;
@@ -420,7 +425,7 @@ export function DrawerContent<T extends ValidComponent = "div">(
 				>
 			>
 		>
-			ref={mergeRefs(p.ref as any)}
+			ref={p.ref}
 			style={combineStyle(
 				{
 					transform: transformValue(),

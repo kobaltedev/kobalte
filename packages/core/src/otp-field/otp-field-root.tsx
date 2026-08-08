@@ -10,7 +10,6 @@ import {
 	access,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -21,6 +20,7 @@ import {
 	createUniqueId,
 	omit,
 	onSettled,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
@@ -86,7 +86,7 @@ export interface OTPFieldRootOptions {
 
 export interface OTPFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 }
 
@@ -105,7 +105,9 @@ export type OTPFieldRootProps<
 export function OTPFieldRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, OTPFieldRootProps<T>>,
 ) {
-	let ref: HTMLDivElement | undefined;
+	const [ref, setRef] = createSignal<HTMLDivElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `otpfield-${createUniqueId()}`;
 
@@ -142,12 +144,13 @@ export function OTPFieldRoot<T extends ValidComponent = "div">(
 
 	const [rootHeight, setRootHeight] = createSignal<number | null>(null);
 	onSettled(() => {
-		if (!ref) return;
-		setRootHeight(ref.getBoundingClientRect().height);
+		const el = ref();
+		if (!el) return;
+		setRootHeight(el.getBoundingClientRect().height);
 		const observer = new ResizeObserver((entries) => {
 			setRootHeight(entries[0]?.contentRect.height ?? null);
 		});
-		observer.observe(ref);
+		observer.observe(el);
 		return () => observer.disconnect();
 	});
 
@@ -160,10 +163,7 @@ export function OTPFieldRoot<T extends ValidComponent = "div">(
 		},
 	);
 
-	createFormResetListener(
-		() => ref,
-		() => setValue(mergedProps.defaultValue ?? ""),
-	);
+	createFormResetListener(ref, () => setValue(mergedProps.defaultValue ?? ""));
 
 	const [isFocused, setIsFocused] = createSignal(false);
 	const [isHovered, setIsHovered] = createSignal(false);
@@ -205,7 +205,7 @@ export function OTPFieldRoot<T extends ValidComponent = "div">(
 			<OTPFieldContext value={context}>
 				<Polymorphic<OTPFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el as HTMLDivElement), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref] as any}
 					style={resolvedStyle()}
 					role="group"
 					id={access(mergedProps.id)}

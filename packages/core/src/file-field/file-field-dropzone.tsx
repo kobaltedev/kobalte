@@ -1,6 +1,6 @@
-import { composeEventHandlers, mergeRefs } from "@kobalte/utils";
+import { composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, omit, type Ref } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -14,7 +14,7 @@ export interface FileFieldDropzoneOptions {}
 export interface FileFieldDropzoneCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onDragOver: JSX.EventHandlerUnion<T, DragEvent>;
@@ -120,10 +120,12 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 			tabindex="0"
 			aria-disabled={context.disabled() ? "true" : undefined}
 			data-dragging={isDragging()}
-			ref={mergeRefs(
-				(el: HTMLElement) => context.setDropzoneRef(el),
-				props.ref as (el: HTMLElement) => void,
-			)}
+			ref={
+				[
+					(el: HTMLElement) => context.setDropzoneRef(el),
+					props.ref as (el: HTMLElement) => void,
+				] as any
+			}
 			onClick={composeEventHandlers([props.onClick, onClick])}
 			onKeyDown={composeEventHandlers([props.onKeyDown, onKeyDown])}
 			onDragOver={composeEventHandlers([props.onDragOver, onDragOver])}

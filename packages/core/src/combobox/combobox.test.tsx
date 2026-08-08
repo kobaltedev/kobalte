@@ -196,6 +196,10 @@ describe("Combobox", () => {
 				CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2],
 			);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -296,6 +300,10 @@ describe("Combobox", () => {
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(
 				CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2],
 			);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -409,6 +417,10 @@ describe("Combobox", () => {
 				CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2],
 			);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -510,6 +522,10 @@ describe("Combobox", () => {
 				CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2],
 			);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -600,6 +616,10 @@ describe("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe("Three");
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -696,6 +716,10 @@ describe("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe("Three");
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -786,6 +810,10 @@ describe("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(3);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -881,6 +909,10 @@ describe("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(3);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -1412,6 +1444,10 @@ describe("Combobox", () => {
 
 			vi.runAllTimers();
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveAttribute("aria-expanded", "false");
 			expect(trigger).not.toHaveAttribute("aria-controls");
@@ -1499,6 +1535,10 @@ describe("Combobox", () => {
 
 			vi.runAllTimers();
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveAttribute("aria-expanded", "false");
 			expect(trigger).not.toHaveAttribute("aria-controls");
@@ -1569,6 +1609,10 @@ describe("Combobox", () => {
 			expect(input).toHaveAttribute("aria-controls", listbox.id);
 
 			fireEvent.keyDown(input, { key: "Escape" });
+			await Promise.resolve();
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
 			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
@@ -1677,6 +1721,10 @@ describe("Combobox", () => {
 
 			fireEvent.keyDown(input, { key: "Escape" });
 			fireEvent.keyUp(input, { key: "Escape" });
+			await Promise.resolve();
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
 			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
@@ -2003,6 +2051,10 @@ describe("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[2]);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2080,6 +2132,10 @@ describe("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[1]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 			expect(input).toHaveValue("Two");
@@ -2173,6 +2229,10 @@ describe("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[2]);
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2501,6 +2561,10 @@ describe("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[0]);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2581,6 +2645,10 @@ describe("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[0]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -2675,6 +2743,10 @@ describe("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(dataSource[2]);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2742,6 +2814,10 @@ describe("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[1]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 

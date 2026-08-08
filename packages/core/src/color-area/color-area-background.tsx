@@ -1,4 +1,4 @@
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import {
 	type Color,
@@ -213,7 +213,7 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<ColorAreaBackgroundRenderProps>
 			as="div"
-			ref={mergeRefs(context.setBackgroundRef, props.ref)}
+			ref={[context.setBackgroundRef, props.ref]}
 			style={combineStyle(
 				{
 					"touch-action": "none",

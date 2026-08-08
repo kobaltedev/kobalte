@@ -4,7 +4,6 @@ import {
 	createGenerateId,
 	getPrecision,
 	mergeDefaultProps,
-	mergeRefs,
 	snapValueToStep,
 	type ValidationState,
 } from "@kobalte/utils";
@@ -16,6 +15,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
@@ -110,7 +110,7 @@ export interface NumberFieldRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface NumberFieldRootRenderProps
@@ -129,7 +129,9 @@ export type NumberFieldRootProps<
 export function NumberFieldRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, NumberFieldRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `NumberField-${createUniqueId()}`;
 
@@ -234,12 +236,9 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 
 	const { formControlContext } = createFormControl(formControlProps);
 
-	createFormResetListener(
-		() => ref,
-		() => {
-			setValue(mergedProps.defaultValue ?? "");
-		},
-	);
+	createFormResetListener(ref, () => {
+		setValue(mergedProps.defaultValue ?? "");
+	});
 
 	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(
 		undefined,
@@ -379,7 +378,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			<NumberFieldContext value={context}>
 				<Polymorphic<NumberFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(formControlProps.id)}
 					{...formControlContext.dataset()}

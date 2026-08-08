@@ -2,12 +2,11 @@ import {
 	access,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -66,7 +65,7 @@ export interface TextFieldRootOptions {
 
 export interface TextFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface TextFieldRootRenderProps
@@ -85,7 +84,9 @@ export type TextFieldRootProps<
 export function TextFieldRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, TextFieldRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `textfield-${createUniqueId()}`;
 
@@ -116,10 +117,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 
 	const { formControlContext } = createFormControl(mergedProps);
 
-	createFormResetListener(
-		() => ref,
-		() => setValue(mergedProps.defaultValue ?? ""),
-	);
+	createFormResetListener(ref, () => setValue(mergedProps.defaultValue ?? ""));
 
 	const onInput: JSX.EventHandlerUnion<
 		HTMLInputElement | HTMLTextAreaElement,
@@ -152,7 +150,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 			<TextFieldContext value={context}>
 				<Polymorphic<TextFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)}
 					{...formControlContext.dataset()}

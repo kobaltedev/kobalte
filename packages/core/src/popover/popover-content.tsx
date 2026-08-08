@@ -2,7 +2,6 @@ import {
 	contains,
 	focusWithoutScrolling,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
@@ -15,7 +14,14 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, Show } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	omit,
+	type Ref,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
@@ -66,7 +72,7 @@ export interface PopoverContentCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style?: JSX.CSSProperties | string;
 }
 
@@ -90,7 +96,9 @@ export type PopoverContentProps<
 export function PopoverContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, PopoverContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = usePopoverContext();
 
@@ -194,17 +202,20 @@ export function PopoverContent<T extends ValidComponent = "div">(
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
 		disabled: () => !(context.isOpen() && context.isModal()),
-		targets: () => (ref ? [ref] : []),
+		targets: () => {
+			const el = ref();
+			return el ? [el] : [];
+		},
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createPreventScroll({
-		element: () => ref ?? undefined,
+		element: ref,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => context.isOpen() && context.isModal(),
 		onInitialFocus: mergedProps.onOpenAutoFocus,
 		onFinalFocus: onCloseAutoFocus,
@@ -223,10 +234,13 @@ export function PopoverContent<T extends ValidComponent = "div">(
 						Omit<PopoverContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={mergeRefs((el) => {
-						context.setContentRef(el);
-						ref = el;
-					}, mergedProps.ref)}
+					ref={[
+						(el: HTMLElement) => {
+							context.setContentRef(el);
+							setRef(el);
+						},
+						mergedProps.ref,
+					]}
 					role="dialog"
 					tabindex={-1}
 					disableOutsidePointerEvents={context.isOpen() && context.isModal()}

@@ -10,7 +10,6 @@ import {
 	contains,
 	focusWithoutScrolling,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
@@ -22,7 +21,13 @@ import {
 
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, Show } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	omit,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -91,7 +96,9 @@ export type DialogContentProps<
 export function DialogContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, DialogContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useDialogContext();
 
@@ -201,12 +208,12 @@ export function DialogContent<T extends ValidComponent = "div">(
 	});
 
 	createPreventScroll({
-		element: () => ref ?? undefined,
+		element: ref,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => context.isOpen() && context.modal(),
 		onInitialFocus: mergedProps.onOpenAutoFocus,
 		onFinalFocus: onCloseAutoFocus,
@@ -224,10 +231,13 @@ export function DialogContent<T extends ValidComponent = "div">(
 					Omit<DialogContentRenderProps, keyof DismissableLayerRenderProps>
 				>
 			>
-				ref={mergeRefs((el) => {
-					context.setContentRef(el);
-					ref = el;
-				}, mergedProps.ref)}
+				ref={[
+					(el: HTMLElement) => {
+						context.setContentRef(el);
+						setRef(el);
+					},
+					mergedProps.ref,
+				]}
 				role="dialog"
 				tabindex={-1}
 				disableOutsidePointerEvents={context.modal() && context.isOpen()}

@@ -10,10 +10,9 @@ import {
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
 
 import { createListState, createSelectableList } from "../list/index.ts";
 import {
@@ -53,7 +52,7 @@ export interface AccordionRootOptions {
 
 export interface AccordionRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>; // TODO: remove next breaking
@@ -72,7 +71,9 @@ export type AccordionRootProps<
 export function AccordionRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, AccordionRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `accordion-${createUniqueId()}`;
 
@@ -125,7 +126,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 			disallowTypeAhead: true,
 			allowsTabNavigation: true,
 		},
-		() => ref,
+		ref,
 	);
 
 	const context: AccordionContextValue = {
@@ -139,7 +140,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 				<Polymorphic<AccordionRootRenderProps>
 					as="div"
 					id={mergedProps.id}
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					onKeyDown={composeEventHandlers([
 						mergedProps.onKeyDown,
 						selectableList.onKeyDown,

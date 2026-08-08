@@ -12,7 +12,7 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/dismissable/src/dismissable-layer.ts
  */
 
-import { contains, mergeRefs } from "@kobalte/utils";
+import { contains } from "@kobalte/utils";
 import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
@@ -25,8 +25,10 @@ import {
 	type Accessor,
 	createEffect,
 	createMemo,
+	createSignal,
 	omit,
 	onSettled,
+	type Ref,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
@@ -82,7 +84,7 @@ export interface DismissableLayerOptions {
 export interface DismissableLayerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface DismissableLayerRenderProps
@@ -96,7 +98,9 @@ export type DismissableLayerProps<
 export function DismissableLayer<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, DismissableLayerProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const parentContext = useOptionalDismissableLayerContext();
 	const others = omit(
@@ -126,7 +130,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	};
 
 	const shouldExcludeElement = (element: Element) => {
-		if (!ref) {
+		if (!ref()) {
 			return false;
 		}
 
@@ -137,11 +141,11 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	};
 
 	const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
-		if (!ref || layerStack.isBelowPointerBlockingLayer(ref)) {
+		if (!ref() || layerStack.isBelowPointerBlockingLayer(ref()!)) {
 			return;
 		}
 
-		if (!props.bypassTopMostLayerCheck && !layerStack.isTopMostLayer(ref)) {
+		if (!props.bypassTopMostLayerCheck && !layerStack.isTopMostLayer(ref()!)) {
 			return;
 		}
 
@@ -170,7 +174,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	createShortcut(
 		["Escape"],
 		(e) => {
-			if (!e || !ref || !layerStack.isTopMostLayer(ref)) {
+			if (!e || !ref() || !layerStack.isTopMostLayer(ref()!)) {
 				return;
 			}
 
@@ -185,40 +189,42 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	);
 
 	onSettled(() => {
-		if (!ref) {
+		if (!ref()) {
 			return;
 		}
 
 		layerStack.addLayer({
-			node: ref,
+			node: ref()!,
 			isPointerBlocking: isPointerBlocking(),
 			dismiss: props.onDismiss,
 		});
 
-		const unregisterFromParentLayer = parentContext?.registerNestedLayer(ref);
+		const unregisterFromParentLayer = parentContext?.registerNestedLayer(
+			ref()!,
+		);
 
 		layerStack.assignPointerEventToLayers();
 
-		layerStack.disableBodyPointerEvents(ref);
+		layerStack.disableBodyPointerEvents(ref()!);
 
 		return () => {
-			if (!ref) {
+			if (!ref()) {
 				return;
 			}
 
-			layerStack.removeLayer(ref);
+			layerStack.removeLayer(ref()!);
 
 			unregisterFromParentLayer?.();
 
 			// Re-assign pointer event to remaining layers.
 			layerStack.assignPointerEventToLayers();
 
-			layerStack.restoreBodyPointerEvents(ref);
+			layerStack.restoreBodyPointerEvents(ref()!);
 		};
 	});
 
 	createEffect(
-		() => ({ ref, disabled: isPointerBlocking() }),
+		() => ({ ref: ref(), disabled: isPointerBlocking() }),
 		({ ref, disabled: disableOutsidePointerEvents }) => {
 			if (!ref) return;
 
@@ -251,13 +257,11 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	return (
 		<DismissableLayerContext value={context}>
 			<div
-				ref={mergeRefs(
-					(el) => {
-						ref = el;
-					},
+				ref={[
+					setRef,
 					interactOutsideRef as (el: HTMLElement) => void,
-					props.ref as any,
-				)}
+					props.ref,
+				]}
 				{...(others as any)}
 			>
 				{(others as any).children}

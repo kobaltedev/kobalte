@@ -11,7 +11,6 @@ import {
 	composeEventHandlers,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -22,6 +21,7 @@ import {
 	For,
 	Match,
 	omit,
+	type Ref,
 	Show,
 	Switch,
 } from "solid-js";
@@ -144,7 +144,7 @@ export interface ListboxRootOptions<Option, OptGroup = never> {
 
 export interface ListboxRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -278,7 +278,7 @@ export function ListboxRoot<
 		<ListboxContext value={context}>
 			<Polymorphic<ListboxRootRenderProps>
 				as="ul"
-				ref={mergeRefs(setRef, mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				role="listbox"
 				tabindex={selectableList.tabIndex()}
 				aria-multiselectable={

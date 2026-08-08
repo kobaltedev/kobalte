@@ -1,7 +1,7 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit, Show } from "solid-js";
+import { createSignal, omit, type Ref, Show } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -28,7 +28,7 @@ export interface CheckboxIndicatorCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface CheckboxIndicatorRenderProps
@@ -75,7 +75,7 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<CheckboxIndicatorRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				{...formControlContext.dataset()}
 				{...context.dataset()}
 				{...others}

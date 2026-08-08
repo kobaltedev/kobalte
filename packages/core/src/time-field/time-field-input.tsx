@@ -1,6 +1,6 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, createEffect, For, omit } from "solid-js";
+import { type Accessor, createEffect, For, omit, type Ref } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import { useLocale } from "../i18n/index.tsx";
@@ -20,7 +20,7 @@ export interface TimeFieldInputCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
 	"aria-labelledby": string | undefined;
@@ -122,7 +122,7 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 		<Polymorphic<TimeFieldInputRenderProps>
 			as="div"
 			role="presentation"
-			ref={mergeRefs(timeFieldContext.setInputRef, mergedProps.ref)}
+			ref={[timeFieldContext.setInputRef, mergedProps.ref]}
 			aria-labelledby={timeFieldContext.fieldAriaLabelledBy()}
 			aria-describedby={timeFieldContext.fieldAriaDescribedBy()}
 			onKeyDown={onKeyDown}

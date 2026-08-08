@@ -1,4 +1,4 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
@@ -9,6 +9,7 @@ import {
 	createMemo,
 	createSignal,
 	omit,
+	type Ref,
 	type Setter,
 	untrack,
 } from "solid-js";
@@ -56,7 +57,7 @@ export interface NavigationMenuRootOptions
 export interface NavigationMenuRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > extends MenubarRootCommonProps<T> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface NavigationMenuRootRenderProps
@@ -224,7 +225,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 						>
 					>
 						as="ul"
-						ref={mergeRefs(context.setRootRef, mergedProps.ref)}
+						ref={[context.setRootRef, mergedProps.ref]}
 						value={value() ?? null}
 						onValueChange={setValue}
 						autoFocusMenu={autoFocusMenu()}

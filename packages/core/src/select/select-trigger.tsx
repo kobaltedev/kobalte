@@ -7,9 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuTrigger.ts
  */
 
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, omit, type Ref } from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import {
@@ -26,7 +26,7 @@ export interface SelectTriggerOptions {}
 export interface SelectTriggerCommonProps<T extends HTMLElement = HTMLElement>
 	extends Button.ButtonRootCommonProps<T> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
@@ -237,7 +237,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 				Omit<SelectTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
+			ref={[context.setTriggerRef, mergedProps.ref]}
 			id={fieldProps.id()}
 			disabled={isDisabled()}
 			aria-haspopup="listbox"

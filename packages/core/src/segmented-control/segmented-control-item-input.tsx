@@ -1,4 +1,3 @@
-import { mergeRefs } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createSignal, omit } from "solid-js";
@@ -52,7 +51,7 @@ export const SegmentedControlItemInput = <T extends ValidComponent = "input">(
 				>
 			>
 		>
-			ref={mergeRefs(setRef, props.ref)}
+			ref={[setRef, props.ref]}
 			{...otherProps}
 		/>
 	);

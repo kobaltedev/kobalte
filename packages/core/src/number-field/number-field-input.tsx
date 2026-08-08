@@ -2,11 +2,10 @@ import {
 	callHandler,
 	composeEventHandlers,
 	mergeDefaultProps,
-	mergeRefs,
 } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createMemo, omit } from "solid-js";
+import { createEffect, createMemo, omit, type Ref } from "solid-js";
 import {
 	createFormControlField,
 	useFormControlContext,
@@ -33,7 +32,7 @@ export interface NumberFieldInputCommonProps<
 > {
 	id: string;
 	style?: JSX.CSSProperties | string | false;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onChange: JSX.EventHandlerUnion<T, Event>;
 	onWheel: JSX.EventHandlerUnion<T, WheelEvent>;
@@ -211,7 +210,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			role="spinbutton"
 			type="text"
 			id={fieldProps.id()}
-			ref={mergeRefs(context.setInputRef, mergedProps.ref)}
+			ref={[context.setInputRef, mergedProps.ref]}
 			value={
 				Number.isNaN(context.rawValue()) || context.value() === undefined
 					? ""

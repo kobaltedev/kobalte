@@ -6,14 +6,16 @@
  * https://github.com/corvudev/corvu/blob/main/packages/otp-field/src/Input.tsx
  */
 
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	createMemo,
 	createRenderEffect,
+	createSignal,
 	flush,
 	omit,
 	onSettled,
+	type Ref,
 	Show,
 } from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
@@ -43,7 +45,7 @@ export interface OTPFieldInputOptions {
 }
 
 export interface OTPFieldInputCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -107,7 +109,10 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 
 	let shiftKeyDown = false;
 
-	let inputRef: HTMLInputElement | null = null;
+	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const context = useOTPFieldContext();
 	const formControlContext = useFormControlContext();
@@ -117,7 +122,7 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 		const handler = () => onSelectionChange();
 		document.addEventListener("selectionchange", handler);
 
-		const el = inputRef;
+		const el = inputRef();
 		const onCopy = (e: ClipboardEvent) => {
 			if (!formControlContext.isReadOnly()) return;
 			e.clipboardData?.setData("text/plain", context.value());
@@ -134,7 +139,7 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 
 	// Sync value back after form reset.
 	onSettled(() => {
-		const el = inputRef;
+		const el = inputRef();
 		if (!el) return;
 		const form = el.form;
 		if (!form) return;
@@ -151,8 +156,9 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 	createRenderEffect(
 		() => context.value(),
 		(value) => {
-			if (!inputRef) return;
-			inputRef.value = value;
+			const el = inputRef();
+			if (!el) return;
+			el.value = value;
 		},
 	);
 
@@ -318,7 +324,7 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 	};
 
 	const onSelectionChange = (inputType?: string) => {
-		const el = inputRef;
+		const el = inputRef();
 		if (!el) return;
 
 		if (
@@ -468,10 +474,15 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 			</Show>
 			<Polymorphic<OTPFieldInputRenderProps>
 				as="input"
-				ref={mergeRefs((el) => {
-					inputRef = el as HTMLInputElement;
-					inputRef.value = context.value();
-				}, mergedProps.ref)}
+				ref={
+					[
+						(el: HTMLInputElement) => {
+							setInputRef(el);
+							el.value = context.value();
+						},
+						mergedProps.ref,
+					] as any
+				}
 				onInput={onInput}
 				onFocus={onFocus}
 				onBlur={onBlur}

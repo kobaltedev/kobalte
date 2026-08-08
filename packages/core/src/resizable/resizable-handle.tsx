@@ -6,10 +6,17 @@
  * https://github.com/corvudev/corvu/tree/main/packages/resizable
  */
 
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler, mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createMemo, createSignal, omit, Show } from "solid-js";
+import {
+	createEffect,
+	createMemo,
+	createSignal,
+	omit,
+	type Ref,
+	Show,
+} from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import { useResizableInternalContext } from "./resizable-context.tsx";
 import {
@@ -51,7 +58,7 @@ export interface ResizableHandleOptions {
 export interface ResizableHandleCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 	disabled: boolean | undefined;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -316,7 +323,7 @@ export function ResizableHandle<T extends ValidComponent = "button">(
 	return (
 		// biome-ignore lint/a11y/useSemanticElements: Resizable separator
 		<button
-			ref={mergeRefs(setRef, p.ref as any)}
+			ref={[setRef, p.ref] as Ref<HTMLButtonElement>}
 			type="button"
 			style={combineStyle(
 				{

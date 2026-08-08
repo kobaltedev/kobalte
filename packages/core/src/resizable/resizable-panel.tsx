@@ -6,7 +6,7 @@
  * https://github.com/corvudev/corvu/tree/main/packages/resizable
  */
 
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -15,6 +15,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 	untrack,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -76,7 +77,7 @@ export interface ResizablePanelOptions {
 export interface ResizablePanelCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 	children: JSX.Element | ((props: ResizablePanelChildrenProps) => JSX.Element);
 }
@@ -304,7 +305,7 @@ export function ResizablePanel<T extends ValidComponent = "div">(
 	return (
 		<ResizablePanelContext value={ctxValue}>
 			<div
-				ref={mergeRefs(setRef, p.ref as any)}
+				ref={[setRef, p.ref] as Ref<HTMLDivElement>}
 				id={p.panelId}
 				style={combineStyle(p.style, {
 					// flex-basis must come after user style — combineStyle gives

@@ -3,7 +3,6 @@ import {
 	clamp,
 	createGenerateId,
 	mergeDefaultProps,
-	mergeRefs,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -14,7 +13,7 @@ import {
 	parseColor,
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -102,7 +101,7 @@ export interface ColorAreaRootOptions {
 
 export interface ColorAreaRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface ColorAreaRootRenderProps
@@ -118,7 +117,9 @@ export type ColorAreaRootProps<
 export function ColorAreaRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorAreaRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `colorarea-${createUniqueId()}`;
 
@@ -166,10 +167,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 		isDisabled: () => formControlContext.isDisabled() ?? false,
 	});
 
-	createFormResetListener(
-		() => ref,
-		() => state.resetValue(),
-	);
+	createFormResetListener(ref, () => state.resetValue());
 
 	const isLTR = () => direction() === "ltr";
 
@@ -317,7 +315,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 			<ColorAreaContext value={context}>
 				<Polymorphic<ColorAreaRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)!}
 					{...formControlContext.dataset()}

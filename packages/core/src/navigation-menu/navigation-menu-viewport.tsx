@@ -1,8 +1,4 @@
-import {
-	composeEventHandlers,
-	mergeRefs,
-	type Orientation,
-} from "@kobalte/utils";
+import { composeEventHandlers, type Orientation } from "@kobalte/utils";
 import type {
 	FocusOutsideEvent,
 	InteractOutsideEvent,
@@ -17,6 +13,7 @@ import {
 	createMemo,
 	createSignal,
 	omit,
+	type Ref,
 	Show,
 } from "solid-js";
 import {
@@ -60,7 +57,7 @@ export interface NavigationMenuViewportOptions {
 export interface NavigationMenuViewportCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 }
 
@@ -138,7 +135,7 @@ export function NavigationMenuViewport<T extends ValidComponent = "li">(
 				>
 					as="li"
 					role="presentation"
-					ref={mergeRefs(context.setViewportRef, props.ref)}
+					ref={[context.setViewportRef, props.ref]}
 					excludedElements={[context.rootRef]}
 					bypassTopMostLayerCheck
 					style={combineStyle(

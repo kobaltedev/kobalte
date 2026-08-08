@@ -12,7 +12,6 @@ import {
 	createGenerateId,
 	isFunction,
 	mergeDefaultProps,
-	mergeRefs,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -24,6 +23,7 @@ import {
 	createSignal,
 	createUniqueId,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
@@ -94,7 +94,7 @@ export interface SwitchRootOptions {
 
 export interface SwitchRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
@@ -116,7 +116,9 @@ export type SwitchRootProps<
 export function SwitchRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SwitchRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `switch-${createUniqueId()}`;
 
@@ -156,9 +158,8 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 		isReadOnly: () => formControlContext.isReadOnly(),
 	});
 
-	createFormResetListener(
-		() => ref,
-		() => state.setIsSelected(mergedProps.defaultChecked ?? false),
+	createFormResetListener(ref, () =>
+		state.setIsSelected(mergedProps.defaultChecked ?? false),
 	);
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
@@ -193,7 +194,7 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 			<SwitchContext value={context}>
 				<Polymorphic<SwitchRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)}
 					onPointerDown={onPointerDown}
