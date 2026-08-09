@@ -1,4 +1,4 @@
-import type { FocusManager } from "@kobalte/utils";
+import type { FocusGroup } from "@solid-primitives/focus";
 import { type Accessor, createContext, useContext } from "solid-js";
 import type { TimeFieldIntlTranslations } from "./time-field.intl.ts";
 import type { SegmentType, Time, TimeFieldHourCycle } from "./types.ts";
@@ -18,7 +18,7 @@ export interface TimeFieldContextValue {
 	placeholder: Accessor<Time | undefined>;
 	formattedValue: Accessor<string | undefined>;
 	isDisabled: Accessor<boolean>;
-	focusManager: Accessor<FocusManager>;
+	focusManager: Accessor<FocusGroup>;
 	ariaDescribedBy: Accessor<string | undefined>;
 	inputRef: Accessor<HTMLElement | undefined>;
 	setInputRef: (el: HTMLElement) => void;

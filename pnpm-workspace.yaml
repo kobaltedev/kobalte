@@ -18,7 +18,7 @@ catalog:
   "@solid-primitives/a11y": next
   "@solid-primitives/controlled-signal": 1.0.0-next.1
   "@solid-primitives/event-listener": next
-  "@solid-primitives/focus": next
+  "@solid-primitives/focus": 1.0.0-next.3
   "@solid-primitives/form": next
   "@solid-primitives/i18n": next
   "@solid-primitives/interaction": next
@@ -42,7 +42,7 @@ overrides:
   "@solid-primitives/a11y": "next"
   "@solid-primitives/controlled-signal": "1.0.0-next.1"
   "@solid-primitives/event-listener": "next"
-  "@solid-primitives/focus": "next"
+  "@solid-primitives/focus": "1.0.0-next.3"
   "@solid-primitives/form": "next"
   "@solid-primitives/i18n": "next"
   "@solid-primitives/interaction": "1.0.0-next.1"
@@ -72,7 +72,7 @@ minimumReleaseAgeExclude:
   - "@solid-primitives/a11y@1.0.0-next.0"
   - "@solid-primitives/controlled-signal@1.0.0-next.1"
   - "@solid-primitives/event-listener@3.0.0-next.0"
-  - "@solid-primitives/focus@1.0.0-next.0"
+  - "@solid-primitives/focus@1.0.0-next.3"
   - "@solid-primitives/form@1.0.0-next.0"
   - "@solid-primitives/i18n@3.0.0-next.0"
   - "@solid-primitives/interaction@1.0.0-next.0"
