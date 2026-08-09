@@ -34,7 +34,7 @@ overrides:
   '@solid-primitives/a11y': next
   '@solid-primitives/controlled-signal': 1.0.0-next.1
   '@solid-primitives/event-listener': next
-  '@solid-primitives/focus': next
+  '@solid-primitives/focus': 1.0.0-next.3
   '@solid-primitives/form': next
   '@solid-primitives/i18n': next
   '@solid-primitives/interaction': 1.0.0-next.1
@@ -207,8 +207,8 @@ importers:
         specifier: 1.0.0-next.1
         version: 1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/focus':
-        specifier: next
-        version: 1.0.0-next.0(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
+        specifier: 1.0.0-next.3
+        version: 1.0.0-next.3(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/form':
         specifier: next
         version: 1.0.0-next.0(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
@@ -1837,11 +1837,11 @@ packages:
       '@solidjs/web': ^2.0.0-beta.20
       solid-js: ^2.0.0-beta.20
 
-  '@solid-primitives/focus@1.0.0-next.0':
-    resolution: {integrity: sha512-fgW0lse+B4x8PX6IXrswrA4xVQdqYmLYWVc7B9KjrfuVzVQkOqmZ4bg+8X5v+c+bNn9FgLc1YcTPmvKwRXZJbA==}
+  '@solid-primitives/focus@1.0.0-next.3':
+    resolution: {integrity: sha512-3/zRsCsr0PVjjWdODZgnk58To30kmmCU7o3ucd7Un0I21uKq0bEfU96NAD1jybfBFRJUn6MLEDtcWcSgSRgK+Q==}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-beta.15
-      solid-js: ^2.0.0-beta.15
+      '@solidjs/web': ^2.0.0-beta.31
+      solid-js: ^2.0.0-beta.31
 
   '@solid-primitives/form@1.0.0-next.0':
     resolution: {integrity: sha512-E+zRif9lnL8ekOb+cBxyD7XGOrirR8J4/ieDxChNgZlmZu+hfeZq7UOTTn1qw1I7cO6elfj/aCbwhZ4kubu/AA==}
@@ -7397,7 +7397,7 @@ snapshots:
       '@solidjs/web': 2.0.0-beta.32(solid-js@2.0.0-beta.32)
       solid-js: 2.0.0-beta.32
 
-  '@solid-primitives/focus@1.0.0-next.0(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)':
+  '@solid-primitives/focus@1.0.0-next.3(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)':
     dependencies:
       '@solid-primitives/event-listener': 3.0.0-next.2(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/utils': 7.0.0-next.3(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)

@@ -6,7 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabPanel.ts
  */
 
-import { getFocusableTreeWalker, type Orientation } from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
+import { getFocusableTreeWalker } from "@solid-primitives/focus";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
 import { createEffect, createSignal, omit, type Ref, Show } from "solid-js";

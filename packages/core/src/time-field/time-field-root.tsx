@@ -1,10 +1,10 @@
 import {
 	access,
-	createFocusManager,
 	createGenerateId,
 	mergeDefaultProps,
 	type ValidationState,
 } from "@kobalte/utils";
+import { createFocusGroup } from "@solid-primitives/focus";
 import { createFormResetListener } from "@solid-primitives/form";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -199,7 +199,11 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	const [fieldAriaDescribedBy, setFieldAriaDescribedBy] =
 		createSignal<string>();
 
-	const focusManager = createFocusManager(inputRef);
+	// Segment navigation is driven manually (see `time-field-segment.tsx`), so
+	// disable `createFocusGroup`'s automatic arrow-key/Home/End/Tab handling.
+	const focusManager = createFocusGroup(inputRef, () => ({
+		keyboardNavigation: false,
+	}));
 
 	const [value, _setValue] = createControllableSignal<
 		Partial<Time> | undefined

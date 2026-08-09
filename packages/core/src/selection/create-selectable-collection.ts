@@ -11,11 +11,11 @@ import {
 	callHandler,
 	createEventListener,
 	focusWithoutScrolling,
-	getFocusableTreeWalker,
 	type MaybeAccessor,
 	type Orientation,
 	scrollIntoView,
 } from "@kobalte/utils";
+import { getFocusableTreeWalker } from "@solid-primitives/focus";
 import type { JSX } from "@solidjs/web";
 import {
 	type Accessor,
