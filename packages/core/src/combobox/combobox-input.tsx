@@ -256,6 +256,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		}
 
 		context.setIsInputFocused(false);
+		context.resetInputValue(context.listState().selectionManager().selectedKeys());
 	};
 
 	// If a touch happens on direct center of Combobox input, might be virtual click from iPad so open ComboBox menu
