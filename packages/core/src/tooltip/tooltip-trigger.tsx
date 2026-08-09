@@ -41,6 +41,7 @@ export interface TooltipTriggerCommonProps<
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onBlur: JSX.EventHandlerUnion<T, FocusEvent>;
+	type: "submit" | "reset" | "button";
 }
 
 export interface TooltipTriggerRenderProps extends TooltipTriggerCommonProps {
@@ -203,6 +204,7 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 			onClick={onClick}
 			onFocus={onFocus}
 			onBlur={onBlur}
+			type="button"
 			{...context.dataset()}
 			{...others}
 		/>
