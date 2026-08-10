@@ -99,12 +99,15 @@ export function SelectRoot<
 		return local.defaultValue;
 	});
 
-	const onChange = (value: Option[]) => {
+	const onChange = (val: Option[]) => {
+		// only call when changed
+		if (val === value()) return;
+
 		if (local.multiple) {
-			local.onChange?.((value ?? []) as any);
+			local.onChange?.((val ?? []) as any);
 		} else {
 			// use `null` as "no value" because `undefined` mean the component is "uncontrolled".
-			local.onChange?.((value[0] ?? null) as any); // TODO: maybe return undefined? breaking change!
+			local.onChange?.((val[0] ?? null) as any); // TODO: maybe return undefined? breaking change!
 		}
 	};
 
