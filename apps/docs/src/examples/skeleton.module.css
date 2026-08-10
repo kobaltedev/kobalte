@@ -28,7 +28,7 @@
 	content: "";
 	inset: 0;
 	z-index: 10;
-	background-color: white;
+	background-color: color-mix(in hsl, var(--sb-tint-color) 20%, var(--sb-background-color));
 }
 
 .skeleton[data-visible="true"]::after {
@@ -36,7 +36,11 @@
 	content: "";
 	inset: 0;
 	z-index: 11;
-	background-color: gray;
+	background-color: color-mix(
+		in hsl,
+		var(--sb-tint-color-opposite) 20%,
+		var(--sb-background-color)
+	);
 }
 
 .multiple-root {

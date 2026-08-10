@@ -1,5 +1,6 @@
 .dropdown-menu__trigger {
 	appearance: none;
+	border: none;
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
