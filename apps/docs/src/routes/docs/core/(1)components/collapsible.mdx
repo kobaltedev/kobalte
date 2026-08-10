@@ -72,15 +72,14 @@ The collapsible consists of:
 
 We expose the CSS custom properties `--kb-collapsible-content-width` and `--kb-collapsible-content-height` which you can use to animate the size of the content when it opens/closes.
 
-```css {15,21}
-/* style.css */
+```css {15,21} title="style.css"
 .collapsible__content {
 	overflow: hidden;
-	animation: slideUp 300ms ease-out;
+	animation: slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1);
 }
 
 .collapsible__content[data-expanded] {
-	animation: slideDown 300ms ease-out;
+	animation: slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1);
 }
 
 @keyframes slideDown {

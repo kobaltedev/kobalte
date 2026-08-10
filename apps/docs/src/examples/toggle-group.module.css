@@ -12,6 +12,7 @@
 	padding: 0.5rem;
 	border-radius: 0.5rem;
 	appearance: none;
+	border: none;
 	user-select: none;
 	outline: none;
 	display: flex;

@@ -45,6 +45,7 @@
 .hovercard__avatar {
 	height: 56px;
 	width: 56px;
+	border-radius: 0.5rem;
 }
 
 @keyframes contentShow {

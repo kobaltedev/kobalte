@@ -45,6 +45,7 @@
 
 .number-field__increment,
 .number-field__decrement {
+	border: none;
 	right: 0.25rem;
 	position: absolute;
 	height: 1rem;
@@ -71,9 +72,11 @@
 .number-field__decrement svg,
 .number-field__increment svg {
 	height: 150%;
-	left: -25%;
+	left: -4%;
 	position: relative;
 	top: -25%;
+	scale: 2;
+	pointer-events: none;
 }
 
 .number-field__custom-trigger-decrement,

@@ -40,6 +40,8 @@
 
 .tabs__trigger {
 	display: inline-block;
+	border: none;
+	background: none;
 	padding: 8px 16px;
 	outline: none;
 }

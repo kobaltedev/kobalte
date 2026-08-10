@@ -27,6 +27,7 @@
 
 .combobox__input {
 	appearance: none;
+	border: none;
 	display: inline-flex;
 	min-width: 0;
 	min-height: 40px;
@@ -44,6 +45,7 @@
 
 .combobox__trigger {
 	appearance: none;
+	border: none;
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
