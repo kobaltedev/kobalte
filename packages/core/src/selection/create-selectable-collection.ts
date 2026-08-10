@@ -318,11 +318,12 @@ export function createSelectableCollection<
 				}
 				break;
 			case "Escape":
-				if (!e.defaultPrevented) {
+				if (
+					!e.defaultPrevented &&
+					!access(mergedProps.disallowEmptySelection)
+				) {
 					e.preventDefault();
-					if (!access(mergedProps.disallowEmptySelection)) {
-						manager.clearSelection();
-					}
+					manager.clearSelection();
 				}
 				break;
 			case "Tab": {
