@@ -318,7 +318,10 @@ export function createSelectableCollection<
 				}
 				break;
 			case "Escape":
-				if (!e.defaultPrevented && !access(mergedProps.disallowEmptySelection)) {
+				if (
+					!e.defaultPrevented &&
+					!access(mergedProps.disallowEmptySelection)
+				) {
 					e.preventDefault();
 					manager.clearSelection();
 				}
