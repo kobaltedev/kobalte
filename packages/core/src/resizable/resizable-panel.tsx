@@ -6,7 +6,6 @@
  * https://github.com/corvudev/corvu/tree/main/packages/resizable
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -14,6 +13,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 	untrack,
@@ -141,7 +141,7 @@ type ResolvedPanelProps = ResizablePanelOptions &
 export function ResizablePanel<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ResizablePanelProps<T>>,
 ) {
-	const p = mergeDefaultProps(
+	const p = merge(
 		{
 			initialSize: undefined as ResizableSize | undefined,
 			minSize: 0 as ResizableSize,

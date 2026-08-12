@@ -1,4 +1,4 @@
-import { clamp, mergeDefaultProps } from "@kobalte/utils";
+import { clamp } from "@kobalte/utils";
 import {
 	type Color,
 	type ColorChannel,
@@ -6,7 +6,13 @@ import {
 	parseColor,
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createMemo, createUniqueId, omit } from "solid-js";
+import {
+	type Component,
+	createMemo,
+	createUniqueId,
+	merge,
+	omit,
+} from "solid-js";
 import * as NumberField from "../number-field/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import { createControllableSignal } from "../primitives/index.ts";
@@ -59,7 +65,7 @@ export function ColorChannelFieldRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `colorchannelfield-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},

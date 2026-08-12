@@ -1,4 +1,4 @@
-import { mergeDefaultProps, type ValidationState } from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import {
 	COLOR_INTL_TRANSLATIONS,
@@ -9,7 +9,13 @@ import {
 	parseColor,
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createMemo, createUniqueId, omit } from "solid-js";
+import {
+	type Component,
+	createMemo,
+	createUniqueId,
+	merge,
+	omit,
+} from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import * as Slider from "../slider/index.tsx";
 import {
@@ -96,7 +102,7 @@ export function ColorSliderRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `colorslider-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			translations: COLOR_INTL_TRANSLATIONS,

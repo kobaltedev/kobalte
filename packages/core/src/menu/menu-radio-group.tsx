@@ -7,9 +7,8 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createUniqueId, omit } from "solid-js";
+import { type Component, createUniqueId, merge, omit } from "solid-js";
 
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import { createControllableSignal } from "../primitives/index.ts";
@@ -67,7 +66,7 @@ export function MenuRadioGroup<
 
 	const defaultId = rootContext.generateId(`radiogroup-${createUniqueId()}`);
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},

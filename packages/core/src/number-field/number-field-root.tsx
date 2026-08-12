@@ -1,19 +1,18 @@
 import { NumberFormatter, NumberParser } from "@internationalized/number";
 import {
-	access,
-	createGenerateId,
 	getPrecision,
-	mergeDefaultProps,
 	snapValueToStep,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -135,7 +134,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `NumberField-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			format: true,
@@ -285,7 +284,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		value,
 		setValue,
 		rawValue: () => parseRawValue(value()),
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 		formatNumber,
 		format: () => {
 			if (!mergedProps.format) return;

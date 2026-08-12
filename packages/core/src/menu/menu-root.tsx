@@ -1,9 +1,5 @@
-import {
-	createGenerateId,
-	mergeDefaultProps,
-	type Orientation,
-} from "@kobalte/utils";
-import { createUniqueId, omit, type ParentProps } from "solid-js";
+import type { Orientation } from "@kobalte/utils";
+import { createUniqueId, merge, omit, type ParentProps } from "solid-js";
 
 import { useOptionalMenubarContext } from "../menubar/menubar-context.tsx";
 import { createDisclosureState } from "../primitives/index.ts";
@@ -63,7 +59,7 @@ export function MenuRoot(props: MenuRootProps) {
 
 	const defaultId = `menu-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			modal: true,
@@ -94,7 +90,7 @@ export function MenuRoot(props: MenuRootProps) {
 		isModal: () => mergedProps.modal ?? true,
 		preventScroll: () => mergedProps.preventScroll ?? context.isModal(),
 		forceMount: () => mergedProps.forceMount ?? false,
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 		value: () => mergedProps.value,
 		orientation: () =>
 			mergedProps.orientation ??

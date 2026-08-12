@@ -6,7 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableList.ts
  */
 
-import { access, type MaybeAccessor, type Orientation } from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
+import { access, type MaybeAccessor } from "@solid-primitives/utils";
 import { type Accessor, createMemo } from "solid-js";
 
 import { createCollator } from "../i18n/index.tsx";

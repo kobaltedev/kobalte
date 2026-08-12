@@ -6,12 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-aria/listbox/src/useListBox.ts
  */
 
-import {
-	access,
-	composeEventHandlers,
-	createGenerateId,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { composeEventHandlers } from "@kobalte/utils";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -20,6 +16,7 @@ import {
 	createUniqueId,
 	For,
 	Match,
+	merge,
 	omit,
 	type Ref,
 	Show,
@@ -178,7 +175,7 @@ export function ListboxRoot<
 
 	const defaultId = `listbox-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			selectionMode: "single",
@@ -267,7 +264,7 @@ export function ListboxRoot<
 
 	const context: ListboxContextValue = {
 		listState,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		shouldUseVirtualFocus: () => mergedProps.shouldUseVirtualFocus,
 		shouldSelectOnPressUp: () => mergedProps.shouldSelectOnPressUp,
 		shouldFocusOnHover: () => mergedProps.shouldFocusOnHover,

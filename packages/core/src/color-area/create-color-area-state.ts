@@ -1,11 +1,11 @@
-import { clamp, mergeDefaultProps, snapValueToStep } from "@kobalte/utils";
+import { clamp, snapValueToStep } from "@kobalte/utils";
 import {
 	type Color,
 	type ColorChannel,
 	type ColorSpace,
 	parseColor,
 } from "@solid-primitives/utils/colors";
-import { type Accessor, createMemo, createSignal } from "solid-js";
+import { type Accessor, createMemo, createSignal, merge } from "solid-js";
 import { createControllableSignal } from "../primitives/index.ts";
 
 export interface ColorAreaState {
@@ -54,7 +54,7 @@ interface StateOpts {
 }
 
 export function createColorAreaState(props: StateOpts): ColorAreaState {
-	const mergedProps: StateOpts = mergeDefaultProps(
+	const mergedProps: StateOpts = merge(
 		{
 			isDisabled: () => false,
 			defaultValue: () => parseColor("hsl(0, 100%, 50%)"),

@@ -1,11 +1,6 @@
-import {
-	access,
-	clamp,
-	createGenerateId,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import { clamp, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import {
 	type Color,
 	type ColorChannel,
@@ -13,7 +8,7 @@ import {
 	parseColor,
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -123,7 +118,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `colorarea-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			translations: COLOR_AREA_INTL_TRANSLATIONS,
@@ -307,7 +302,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 		setBackgroundRef,
 		thumbRef,
 		setThumbRef,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 	};
 
 	return (

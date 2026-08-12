@@ -12,10 +12,15 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, createUniqueId, omit } from "solid-js";
+import {
+	createMemo,
+	createSignal,
+	createUniqueId,
+	merge,
+	omit,
+} from "solid-js";
 import { DATA_TOP_LAYER_ATTR } from "../dismissable-layer/layer-stack.tsx";
 import {
 	type ElementOf,
@@ -109,13 +114,13 @@ export type ToastRegionProps<
 export function ToastRegion<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ToastRegionProps<T>>,
 ) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: `toast-region-${createUniqueId()}`,
 			hotkey: ["altKey", "KeyT"],
 			duration: 5000,
 			limit: 3,
-			swipeDirection: "right",
+			swipeDirection: "right" as const,
 			swipeThreshold: 50,
 			pauseOnInteraction: true,
 			pauseOnPageIdle: true,
@@ -185,7 +190,7 @@ export function ToastRegion<T extends ValidComponent = "div">(
 		pauseOnPageIdle: () => mergedProps.pauseOnPageIdle!,
 		pauseAllTimer: () => setIsPaused(true),
 		resumeAllTimer: () => setIsPaused(false),
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 	};
 
 	return (

@@ -6,10 +6,10 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/context-menu/src/ContextMenu.tsx
  */
 
-import { callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
-import { omit, onCleanup, type Ref } from "solid-js";
+import { merge, omit, onCleanup, type Ref } from "solid-js";
 import { type MenuDataSet, useMenuContext } from "../menu/menu-context.tsx";
 import { useMenuRootContext } from "../menu/menu-root-context.tsx";
 import {
@@ -53,7 +53,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 	const menuContext = useMenuContext();
 	const context = useContextMenuContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId("trigger"),
 		},

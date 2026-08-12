@@ -6,18 +6,15 @@
  * https://github.com/corvudev/corvu/blob/main/packages/otp-field/src/Root.tsx
  */
 
-import {
-	access,
-	createGenerateId,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onSettled,
 	type Ref,
@@ -111,7 +108,7 @@ export function OTPFieldRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `otpfield-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ id: defaultId, shiftPWManagers: true },
 		props as OTPFieldRootProps,
 	);
@@ -192,7 +189,7 @@ export function OTPFieldRoot<T extends ValidComponent = "div">(
 		activeSlots,
 		shiftPWManagers: () => mergedProps.shiftPWManagers ?? true,
 		rootHeight,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		setValue,
 		setIsFocused,
 		setIsHovered,

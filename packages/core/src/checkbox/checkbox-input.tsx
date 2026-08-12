@@ -7,14 +7,10 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/toggle/src/useToggle.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, type Ref } from "solid-js";
+import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	createFormControlField,
@@ -81,7 +77,7 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("input"),
 		},

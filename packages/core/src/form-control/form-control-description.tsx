@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect } from "solid-js";
+import { createEffect, merge } from "solid-js";
 
 import { Polymorphic, type PolymorphicProps } from "../polymorphic/index.tsx";
 import {
@@ -29,7 +28,7 @@ export function FormControlDescription<T extends ValidComponent = "div">(
 ) {
 	const context = useFormControlContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("description"),
 		},

@@ -12,11 +12,7 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/slider/src/useSliderThumb.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	type Orientation,
-} from "@kobalte/utils";
+import { callHandler, type Orientation } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -24,6 +20,7 @@ import {
 	createContext,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onSettled,
 	type Ref,
@@ -84,7 +81,7 @@ export function SliderThumb<T extends ValidComponent = "span">(
 
 	const context = useSliderContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId(`thumb-${createUniqueId()}`),
 		},

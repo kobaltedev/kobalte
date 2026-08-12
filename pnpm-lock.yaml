@@ -42,6 +42,7 @@ overrides:
   '@solid-primitives/keyed': next
   '@solid-primitives/map': next
   '@solid-primitives/media': next
+  '@solid-primitives/platform': next
   '@solid-primitives/presence': next
   '@solid-primitives/props': next
   '@solid-primitives/refs': next
@@ -191,9 +192,6 @@ importers:
       '@floating-ui/dom':
         specifier: ^1.5.1
         version: 1.6.10
-      '@internationalized/date':
-        specifier: ^3.4.0
-        version: 3.12.2
       '@internationalized/number':
         specifier: ^3.2.1
         version: 3.5.3
@@ -206,6 +204,9 @@ importers:
       '@solid-primitives/controlled-signal':
         specifier: 1.0.0-next.1
         version: 1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
+      '@solid-primitives/event-listener':
+        specifier: next
+        version: 3.0.0-next.2(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/focus':
         specifier: 1.0.0-next.3
         version: 1.0.0-next.3(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
@@ -221,12 +222,18 @@ importers:
       '@solid-primitives/keyboard':
         specifier: next
         version: 2.0.0-next.4(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
+      '@solid-primitives/platform':
+        specifier: next
+        version: 1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/presence':
         specifier: next
         version: 1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/props':
         specifier: next
         version: 4.0.0-next.2(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
+      '@solid-primitives/refs':
+        specifier: next
+        version: 3.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/resize-observer':
         specifier: next
         version: 4.0.0-next.2(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
@@ -1090,9 +1097,6 @@ packages:
       '@types/node':
         optional: true
 
-  '@internationalized/date@3.12.2':
-    resolution: {integrity: sha512-FY1Y+H64NDs+HAF6omlnWxm3mEpfgaCSWtL5l551ZZfImA+kGjPFgrnJrGjH6lfmLL0g8Z/mBu1R3kufeCp6Jw==}
-
   '@internationalized/number@3.5.3':
     resolution: {integrity: sha512-rd1wA3ebzlp0Mehj5YTuTI50AQEx80gWFyHcQu+u91/5NgdwBecO8BH6ipPfE+lmQ9d63vpB3H9SHoIUiupllw==}
 
@@ -1885,10 +1889,11 @@ packages:
       '@solidjs/web': ^2.0.0-beta.20
       solid-js: ^2.0.0-beta.20
 
-  '@solid-primitives/platform@0.1.2':
-    resolution: {integrity: sha512-sSxcZfuUrtxcwV0vdjmGnZQcflACzMfLriVeIIWXKp8hzaS3Or3tO6EFQkTd3L8T5dTq+kTtLvPscXIpL0Wzdg==}
+  '@solid-primitives/platform@1.0.0-next.1':
+    resolution: {integrity: sha512-mOIS9Xit8VFqjK8jSDuA09XlosHj01ckZlbmq6obG80YUplRh4qHgvgNsVEKbNWY/Kn5E3mkpJ68adYXUqzXvg==}
     peerDependencies:
-      solid-js: ^1.6.12
+      '@solidjs/web': ^2.0.0-beta.20
+      solid-js: ^2.0.0-beta.20
 
   '@solid-primitives/presence@1.0.0-next.1':
     resolution: {integrity: sha512-W09yQEORihKzxF6ZLaH8Foj7a+xmZPTzKVqC13BdKHkh4GvAQyOQkJ9eJIfzpLn+1SQYIuLkBO9DQIRfqSulYQ==}
@@ -6721,10 +6726,6 @@ snapshots:
     optionalDependencies:
       '@types/node': 26.0.1
 
-  '@internationalized/date@3.12.2':
-    dependencies:
-      '@swc/helpers': 0.5.11
-
   '@internationalized/number@3.5.3':
     dependencies:
       '@swc/helpers': 0.5.11
@@ -6790,7 +6791,7 @@ snapshots:
       '@solid-primitives/event-listener': 3.0.0-next.2(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/keyboard': 2.0.0-next.4(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/media': 4.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
-      '@solid-primitives/platform': 0.1.2(solid-js@2.0.0-beta.32)
+      '@solid-primitives/platform': 1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/scroll': 3.0.0-next.3(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/storage': 4.3.5(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solidjs/meta': 0.29.4(solid-js@2.0.0-beta.32)
@@ -7451,8 +7452,9 @@ snapshots:
       '@solidjs/web': 2.0.0-beta.32(solid-js@2.0.0-beta.32)
       solid-js: 2.0.0-beta.32
 
-  '@solid-primitives/platform@0.1.2(solid-js@2.0.0-beta.32)':
+  '@solid-primitives/platform@1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)':
     dependencies:
+      '@solidjs/web': 2.0.0-beta.32(solid-js@2.0.0-beta.32)
       solid-js: 2.0.0-beta.32
 
   '@solid-primitives/presence@1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)':

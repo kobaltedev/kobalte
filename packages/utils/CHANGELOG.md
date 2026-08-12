@@ -1,5 +1,11 @@
 # @kobalte/utils
 
+## 2.0.0-alpha.0
+
+### Major Changes
+
+- e2c056e: Initial v2 alpha release
+
 ## 0.9.2
 
 ### Patch Changes

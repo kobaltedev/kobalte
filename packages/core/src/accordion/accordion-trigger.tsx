@@ -6,13 +6,15 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import {
-	callHandler,
-	composeEventHandlers,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { callHandler, composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createSignal, omit } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+} from "solid-js";
 import { useCollapsibleContext } from "../collapsible/collapsible-context.tsx";
 import * as Collapsible from "../collapsible/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -62,10 +64,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 
 	const defaultId = itemContext.generateId("trigger");
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as AccordionTriggerProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as AccordionTriggerProps);
 
 	const others = omit(
 		mergedProps,

@@ -6,9 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/e6808d1b5e80cef7af7e63974f658043593b2e1e/packages/@react-aria/menu/src/useMenuSection.ts
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, merge, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -42,7 +41,7 @@ export function MenuGroupLabel<T extends ValidComponent = "span">(
 ) {
 	const context = useMenuGroupContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("label"),
 		},

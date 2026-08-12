@@ -6,13 +6,14 @@
  * https://github.com/corvudev/corvu/tree/main/packages/resizable
  */
 
-import { callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
 	createMemo,
 	createSignal,
+	merge,
 	omit,
 	type Ref,
 	Show,
@@ -106,7 +107,7 @@ type ResolvedHandleProps = ResizableHandleOptions &
 export function ResizableHandle<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, ResizableHandleProps<T>>,
 ) {
-	const p = mergeDefaultProps(
+	const p = merge(
 		{
 			startIntersection: true,
 			endIntersection: true,

@@ -1,6 +1,11 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createSignal, omit } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+} from "solid-js";
 
 import { useMenubarContext } from "../menubar/menubar-context.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -39,7 +44,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 
 	const menubarContext = useMenubarContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			size: 15,
 		},

@@ -1,6 +1,6 @@
-import { callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { merge, omit } from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
@@ -32,7 +32,7 @@ export function RatingControl<T extends ValidComponent = "div">(
 
 	const defaultId = `${formControlContext.generateId("control")}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},

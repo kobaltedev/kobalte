@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, type Ref } from "solid-js";
+import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -45,7 +44,7 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 
 	const context = useFormControlContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("label"),
 		},

@@ -6,19 +6,14 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import {
-	callHandler,
-	composeEventHandlers,
-	createGenerateId,
-	focusWithoutScrolling,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { callHandler, composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -112,7 +107,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	const rootContext = useMenuRootContext();
 	const menuContext = useMenuContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId(`item-${createUniqueId()}`),
 		},
@@ -222,7 +217,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			menuContext.onItemEnter(e);
 
 			if (!e.defaultPrevented) {
-				focusWithoutScrolling(e.currentTarget);
+				e.currentTarget.focus({ preventScroll: true });
 				menuContext.listState().selectionManager().setFocused(true);
 				menuContext.listState().selectionManager().setFocusedKey(key());
 			}
@@ -295,7 +290,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		isChecked: () => mergedProps.checked,
 		dataset,
 		setLabelRef,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerLabel: createRegisterId(setLabelId),
 		registerDescription: createRegisterId(setDescriptionId),
 	};

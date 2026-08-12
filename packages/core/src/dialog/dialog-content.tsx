@@ -6,11 +6,6 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/dialog/src/Dialog.tsx
  */
 
-import {
-	contains,
-	focusWithoutScrolling,
-	mergeDefaultProps,
-} from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -25,6 +20,7 @@ import {
 	type Component,
 	createEffect,
 	createSignal,
+	merge,
 	omit,
 	Show,
 } from "solid-js";
@@ -102,7 +98,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 
 	const context = useDialogContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("content"),
 		},
@@ -162,7 +158,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 		// Prevent dismissing when clicking the trigger.
 		// As the trigger is already setup to close, without doing so would
 		// cause it to close and immediately open.
-		if (contains(context.triggerRef(), e.target as HTMLElement)) {
+		if (context.triggerRef()?.contains(e.target as HTMLElement)) {
 			e.preventDefault();
 		}
 
@@ -180,11 +176,11 @@ export function DialogContent<T extends ValidComponent = "div">(
 
 		if (context.modal()) {
 			e.preventDefault();
-			focusWithoutScrolling(context.triggerRef());
+			context.triggerRef()?.focus({ preventScroll: true });
 		} else {
 			if (!e.defaultPrevented) {
 				if (!hasInteractedOutside) {
-					focusWithoutScrolling(context.triggerRef());
+					context.triggerRef()?.focus({ preventScroll: true });
 				}
 
 				// Always prevent autofocus because we either focus manually or want user agent focus

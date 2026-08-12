@@ -12,7 +12,6 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/dismissable/src/dismissable-layer.ts
  */
 
-import { contains } from "@kobalte/utils";
 import {
 	type FocusOutsideEvent,
 	type InteractOutsideEvent,
@@ -135,8 +134,8 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 		}
 
 		return (
-			props.excludedElements?.some((node) => contains(node(), element)) ||
-			[...nestedLayers].some((layer) => contains(layer, element))
+			props.excludedElements?.some((node) => node()?.contains(element)) ||
+			[...nestedLayers].some((layer) => layer.contains(element))
 		);
 	};
 

@@ -7,9 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
  */
 
-import { callHandler, contains, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, omit, type Ref } from "solid-js";
+import { createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	createFormControlField,
@@ -79,7 +79,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("input"),
 		},
@@ -253,8 +253,8 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 
 		// Ignore blur if focused moved into the control or menu.
 		if (
-			contains(context.controlRef(), e.relatedTarget as any) ||
-			contains(context.contentRef(), e.relatedTarget as any)
+			context.controlRef()?.contains(e.relatedTarget as any) ||
+			context.contentRef()?.contains(e.relatedTarget as any)
 		) {
 			return;
 		}

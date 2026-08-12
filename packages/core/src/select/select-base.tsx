@@ -6,16 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/useSelect.ts
  */
 
-import {
-	access,
-	createGenerateId,
-	focusWithoutScrolling,
-	isFunction,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { createPresence } from "@solid-primitives/presence";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -24,6 +18,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 import {
@@ -231,7 +226,7 @@ export function SelectBase<
 >(props: PolymorphicProps<T, SelectBaseProps<Option, OptGroup, T>>) {
 	const defaultId = `select-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			selectionMode: "single",
@@ -241,7 +236,7 @@ export function SelectBase<
 			gutter: 8,
 			sameWidth: true,
 			modal: false,
-		},
+		} as const,
 		props as SelectBaseProps<Option, OptGroup>,
 	);
 
@@ -401,7 +396,7 @@ export function SelectBase<
 
 		// Get the value from the option object as a string.
 		return String(
-			isFunction(optionValue)
+			typeof optionValue === "function"
 				? optionValue(option as any)
 				: (option as any)[optionValue],
 		);
@@ -492,7 +487,7 @@ export function SelectBase<
 		const listboxEl = listboxRef();
 
 		if (listboxEl) {
-			focusWithoutScrolling(listboxEl);
+			listboxEl.focus({ preventScroll: true });
 		}
 	};
 
@@ -619,7 +614,7 @@ export function SelectBase<
 		renderItem,
 		renderSection,
 		removeOptionFromSelection,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 		registerTriggerId: createRegisterId(setTriggerId),
 		registerValueId: createRegisterId(setValueId),
 		registerListboxId: createRegisterId(setListboxId),

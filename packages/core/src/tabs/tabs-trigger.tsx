@@ -6,15 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTab.ts
  */
 
-import {
-	composeEventHandlers,
-	focusWithoutScrolling,
-	isWebKit,
-	mergeDefaultProps,
-	type Orientation,
-} from "@kobalte/utils";
+import { composeEventHandlers, type Orientation } from "@kobalte/utils";
+import { isWebKit } from "@solid-primitives/platform";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, type Ref } from "solid-js";
+import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -76,7 +71,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 
 	const context = useTabsContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			type: "button",
 		} as const,
@@ -128,8 +123,8 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// Force focusing the trigger on click on safari.
-		if (isWebKit()) {
-			focusWithoutScrolling(e.currentTarget);
+		if (isWebKit) {
+			e.currentTarget.focus({ preventScroll: true });
 		}
 	};
 

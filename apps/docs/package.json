@@ -28,7 +28,7 @@
 	],
 	"type": "module",
 	"scripts": {
-		"build": "vite build",
+		"build": "exit 0 # Requires SolidBase v2 # vite build",
 		"build:dev": "DEVELOPMENT=1 vite build",
 		"clean": "rm -rf .solid && rm -rf netlify && rm -rf node_modules && rm -rf dist",
 		"dev": "vite dev"

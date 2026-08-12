@@ -1,6 +1,10 @@
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
-import { createSignal, createUniqueId, type ParentProps } from "solid-js";
+import {
+	createSignal,
+	createUniqueId,
+	merge,
+	type ParentProps,
+} from "solid-js";
 import {
 	createDisclosureState,
 	createRegisterId,
@@ -62,7 +66,7 @@ export interface DialogRootProps extends ParentProps<DialogRootOptions> {}
 export function DialogRoot(props: DialogRootProps) {
 	const defaultId = `dialog-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			modal: true,
@@ -132,7 +136,7 @@ export function DialogRoot(props: DialogRootProps) {
 		close: disclosureState.close,
 		toggle: disclosureState.toggle,
 		setTriggerRef,
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 		registerContentId: createRegisterId(setContentId),
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),

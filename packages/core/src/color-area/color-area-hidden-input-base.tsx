@@ -1,12 +1,8 @@
-import {
-	callHandler,
-	mergeDefaultProps,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import { COLOR_INTL_TRANSLATIONS } from "@solid-primitives/utils/colors";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { createMemo, omit } from "solid-js";
+import { createMemo, merge, omit } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -28,11 +24,11 @@ export function ColorAreaHiddenInputBase(props: ColorAreaHiddenInputBaseProps) {
 	const formControlContext = useFormControlContext();
 	const context = useColorAreaContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("input"),
 			orientation: "horizontal",
-		},
+		} as const,
 		props,
 	);
 

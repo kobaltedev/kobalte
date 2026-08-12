@@ -1,4 +1,3 @@
-import { focusWithoutScrolling } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -139,7 +138,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 			props.onCloseAutoFocus?.(e);
 
 			if (!e.defaultPrevented) {
-				focusWithoutScrolling(context.inputRef());
+				context.inputRef()?.focus({ preventScroll: true });
 				e.preventDefault();
 			}
 		},

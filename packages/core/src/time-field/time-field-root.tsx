@@ -1,11 +1,7 @@
-import {
-	access,
-	createGenerateId,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFocusGroup } from "@solid-primitives/focus";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createMemo,
@@ -144,7 +140,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `time-field-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			granularity: "minute",
@@ -354,7 +350,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		setInputRef,
 		valueDescriptionId,
 		registerValueDescriptionId: createRegisterId(setValueDescriptionId),
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		segments,
 		fieldAriaLabel,
 		fieldAriaLabelledBy,

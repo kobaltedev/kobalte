@@ -1,12 +1,8 @@
-import {
-	access,
-	createGenerateId,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -90,10 +86,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `textfield-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as TextFieldRootProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as TextFieldRootProps);
 
 	const others = omit(
 		mergedProps,
@@ -141,7 +134,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 
 	const context: TextFieldContextValue = {
 		value,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		onInput,
 	};
 

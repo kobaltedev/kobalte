@@ -1,6 +1,12 @@
-import { isFunction, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, children, createEffect, omit, Show } from "solid-js";
+import {
+	type Accessor,
+	children,
+	createEffect,
+	merge,
+	omit,
+	Show,
+} from "solid-js";
 
 import {
 	type FormControlDataSet,
@@ -60,7 +66,7 @@ export function SelectValue<Option, T extends ValidComponent = "span">(
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("value"),
 		},
@@ -120,7 +126,7 @@ interface SelectValueChildProps<T>
 function SelectValueChild<T>(props: SelectValueChildProps<T>) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

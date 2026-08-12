@@ -6,13 +6,13 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
 	createSignal,
+	merge,
 	omit,
 	onSettled,
 	type Ref,
@@ -57,7 +57,7 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 
 	const context = useCollapsibleContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ id: context.generateId("content") },
 		props as CollapsibleContentProps,
 	);

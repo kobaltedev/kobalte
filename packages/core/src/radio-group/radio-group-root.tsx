@@ -7,15 +7,11 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
  */
 
-import {
-	access,
-	mergeDefaultProps,
-	type Orientation,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { Orientation, ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -113,11 +109,11 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `radiogroup-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			orientation: "vertical",
-		},
+		} as const,
 		props as RadioGroupRootProps,
 	);
 

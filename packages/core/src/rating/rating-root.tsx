@@ -1,12 +1,8 @@
-import {
-	access,
-	mergeDefaultProps,
-	type Orientation,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { Orientation, ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -102,11 +98,11 @@ export function RatingRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `Rating-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			orientation: "horizontal",
-		},
+		} as const,
 		props as RatingRootProps,
 	);
 

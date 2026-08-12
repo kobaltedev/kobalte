@@ -44,7 +44,7 @@ export const Popper = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type PopperContextValue,

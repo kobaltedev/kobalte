@@ -7,12 +7,13 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-spectrum/textfield/src/TextArea.tsx
  */
 
-import { composeEventHandlers, mergeDefaultProps } from "@kobalte/utils";
+import { composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
 	createEffect,
 	createSignal,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -64,7 +65,7 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 
 	const context = useTextFieldContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("textarea"),
 		},

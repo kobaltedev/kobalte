@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, omit } from "solid-js";
+import { type Component, merge, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 import {
@@ -41,7 +40,7 @@ export function MenuRadioItem<
 >(props: PolymorphicProps<T, MenuRadioItemProps<T, TValue>>) {
 	const context = useMenuRadioGroupContext<TValue>();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ closeOnSelect: false },
 		props as MenuRadioItemProps<T, TValue>,
 	);

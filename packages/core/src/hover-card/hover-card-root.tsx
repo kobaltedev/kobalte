@@ -6,13 +6,8 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard.tsx
  */
 
-import {
-	contains,
-	createGlobalListeners,
-	getEventPoint,
-	isPointInPolygon,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { isPointInPolygon } from "@kobalte/utils";
+import { createEventListener } from "@solid-primitives/event-listener";
 import { createPresence } from "@solid-primitives/presence";
 import { isServer } from "@solidjs/web";
 import {
@@ -21,6 +16,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onCleanup,
 	type ParentProps,
@@ -83,7 +79,7 @@ export interface HoverCardRootProps extends ParentProps<HoverCardRootOptions> {}
 export function HoverCardRoot(props: HoverCardRootProps) {
 	const defaultId = `hovercard-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			openDelay: 700,
@@ -131,8 +127,6 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 		{ transitionDuration: 0 },
 	);
 
-	const { addGlobalListener, removeGlobalListener } = createGlobalListeners();
-
 	const openWithDelay = () => {
 		if (isServer) {
 			return;
@@ -174,7 +168,10 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 	};
 
 	const isTargetOnHoverCard = (target: Node | null) => {
-		return contains(triggerRef(), target) || contains(contentRef(), target);
+		return (
+			(triggerRef()?.contains(target) ?? false) ||
+			(contentRef()?.contains(target) ?? false)
+		);
 	};
 
 	const getPolygonSafeArea = (placement: Placement) => {
@@ -201,7 +198,10 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 			const polygon = getPolygonSafeArea(currentPlacement());
 
 			//Don't close if the current's event mouse position is inside the polygon safe area.
-			if (polygon && isPointInPolygon(getEventPoint(event), polygon)) {
+			if (
+				polygon &&
+				isPointInPolygon([event.clientX, event.clientY], polygon)
+			) {
 				cancelClosing();
 				return;
 			}
@@ -223,10 +223,7 @@ export function HoverCardRoot(props: HoverCardRootProps) {
 
 			// Checks whether the mouse is moving outside the hovercard.
 			// If yes, hide the card after the close delay.
-			addGlobalListener(document, "pointermove", onHoverOutside, true);
-
-			return () =>
-				removeGlobalListener(document, "pointermove", onHoverOutside, true);
+			createEventListener(document, "pointermove", onHoverOutside, true);
 		},
 	);
 

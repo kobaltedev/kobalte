@@ -1,11 +1,7 @@
-import {
-	callHandler,
-	mergeDefaultProps,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { omit } from "solid-js";
+import { merge, omit } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -21,7 +17,7 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 	const formControlContext = useFormControlContext();
 	const context = useColorWheelContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("input"),
 		},

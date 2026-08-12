@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-stately/list/src/useSingleSelectListState.ts
  */
 
-import { access } from "@kobalte/utils";
+import { access } from "@solid-primitives/utils";
 import { type Accessor, createMemo, merge, omit } from "solid-js";
 
 import {

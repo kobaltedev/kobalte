@@ -1,6 +1,6 @@
 {
 	"name": "@kobalte/core",
-	"version": "0.13.12",
+	"version": "2.0.0-alpha.0",
 	"private": false,
 	"description": "Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
 	"keywords": [
@@ -48,31 +48,30 @@
 		}
 	},
 	"files": [
-		"dist",
-		"NOTICE.txt"
+		"dist"
 	],
 	"scripts": {
-		"build": "pnpm build:cp && pnpm build:tsdown",
-		"build:cp": "cp ../../NOTICE.txt .",
-		"build:tsdown": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsdown",
-		"clean": "rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
+		"build": "tsdown",
+		"clean": "rm -rf node_modules && rm -rf dist",
 		"dev": "vite serve dev --host",
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@floating-ui/dom": "^1.5.1",
-		"@internationalized/date": "^3.4.0",
 		"@internationalized/number": "^3.2.1",
 		"@kobalte/utils": "workspace:*",
 		"@solid-primitives/a11y": "catalog:",
 		"@solid-primitives/controlled-signal": "catalog:",
+		"@solid-primitives/event-listener": "catalog:",
 		"@solid-primitives/i18n": "catalog:",
 		"@solid-primitives/focus": "catalog:",
 		"@solid-primitives/form": "catalog:",
 		"@solid-primitives/interaction": "catalog:",
 		"@solid-primitives/keyboard": "catalog:",
+		"@solid-primitives/platform": "catalog:",
 		"@solid-primitives/props": "catalog:",
+		"@solid-primitives/refs": "catalog:",
 		"@solid-primitives/resize-observer": "catalog:",
 		"@solid-primitives/presence": "catalog:",
 		"@solid-primitives/scroll": "catalog:",

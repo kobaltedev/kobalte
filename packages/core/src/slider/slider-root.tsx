@@ -6,20 +6,16 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/slider/src/Slider.tsx
  */
 
-import {
-	access,
-	clamp,
-	createGenerateId,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import { clamp, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -159,7 +155,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `slider-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			minValue: 0,
@@ -169,8 +165,8 @@ export function SliderRoot<T extends ValidComponent = "div">(
 			orientation: "horizontal",
 			disabled: false,
 			inverted: false,
-			getValueLabel: (params) => params.values.join(", "),
-		},
+			getValueLabel: (params: GetValueLabelParams) => params.values.join(", "),
+		} as const,
 		props as SliderRootProps,
 	);
 
@@ -407,7 +403,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		startEdge,
 		endEdge,
 		registerTrack: (ref: HTMLElement) => setTrackRef(ref),
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		getValueLabel: mergedProps.getValueLabel,
 	};
 

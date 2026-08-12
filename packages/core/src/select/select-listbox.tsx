@@ -1,6 +1,6 @@
-import { callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, merge, omit } from "solid-js";
 import type {
 	ListboxRootCommonProps,
 	ListboxRootRenderProps,
@@ -41,7 +41,7 @@ export function SelectListbox<
 >(props: PolymorphicProps<T, SelectListboxProps<Option, OptGroup, T>>) {
 	const context = useSelectContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("listbox"),
 		},

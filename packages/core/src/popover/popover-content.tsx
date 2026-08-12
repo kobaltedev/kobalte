@@ -1,8 +1,3 @@
-import {
-	contains,
-	focusWithoutScrolling,
-	mergeDefaultProps,
-} from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -18,6 +13,7 @@ import {
 	type Component,
 	createEffect,
 	createSignal,
+	merge,
 	omit,
 	type Ref,
 	Show,
@@ -102,7 +98,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 
 	const context = usePopoverContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("content"),
 		},
@@ -131,12 +127,12 @@ export function PopoverContent<T extends ValidComponent = "div">(
 			e.preventDefault();
 
 			if (!isRightClickOutside) {
-				focusWithoutScrolling(context.triggerRef());
+				context.triggerRef()?.focus({ preventScroll: true });
 			}
 		} else {
 			if (!e.defaultPrevented) {
 				if (!hasInteractedOutside) {
-					focusWithoutScrolling(context.triggerRef());
+					context.triggerRef()?.focus({ preventScroll: true });
 				}
 
 				// Always prevent autofocus because we either focus manually or want user agent focus
@@ -186,7 +182,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 		// Prevent dismissing when clicking the trigger.
 		// As the trigger is already setup to close, without doing so would
 		// cause it to close and immediately open.
-		if (contains(context.triggerRef(), e.target as HTMLElement)) {
+		if (context.triggerRef()?.contains(e.target as HTMLElement)) {
 			e.preventDefault();
 		}
 

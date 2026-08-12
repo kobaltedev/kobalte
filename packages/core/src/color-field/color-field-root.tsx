@@ -1,4 +1,3 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import { parseColor } from "@solid-primitives/utils/colors";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -6,6 +5,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -37,10 +37,7 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `colorfield-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as ColorFieldRootProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as ColorFieldRootProps);
 
 	const others = omit(mergedProps, "value", "defaultValue", "onChange");
 

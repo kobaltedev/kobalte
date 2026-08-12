@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect } from "solid-js";
+import { createEffect, merge } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -39,7 +38,7 @@ export function RadioGroupItemLabel<T extends ValidComponent = "label">(
 ) {
 	const context = useRadioGroupItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("label"),
 		},

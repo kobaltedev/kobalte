@@ -66,6 +66,6 @@ export const Meter = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export { type MeterContextValue, useMeterContext } from "./meter-context.tsx";

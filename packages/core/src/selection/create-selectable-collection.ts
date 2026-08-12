@@ -6,16 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableCollection.ts
  */
 
-import {
-	access,
-	callHandler,
-	createEventListener,
-	focusWithoutScrolling,
-	type MaybeAccessor,
-	type Orientation,
-	scrollIntoView,
-} from "@kobalte/utils";
+import { callHandler, type Orientation } from "@kobalte/utils";
+import { createEventListener } from "@solid-primitives/event-listener";
 import { getFocusableTreeWalker } from "@solid-primitives/focus";
+import { access, type MaybeAccessor } from "@solid-primitives/utils";
 import type { JSX } from "@solidjs/web";
 import {
 	type Accessor,
@@ -353,7 +347,7 @@ export function createSelectableCollection<
 						} while (last);
 
 						if (next && !next.contains(document.activeElement)) {
-							focusWithoutScrolling(next);
+							next.focus({ preventScroll: true });
 						}
 					}
 					break;
@@ -439,8 +433,8 @@ export function createSelectableCollection<
 
 				if (element) {
 					// This prevents a flash of focus on the first/last element in the collection
-					focusWithoutScrolling(element as HTMLElement);
-					scrollIntoView(scrollEl, element as HTMLElement);
+					(element as HTMLElement).focus({ preventScroll: true });
+					element.scrollIntoView({ block: "nearest" });
 				}
 			}
 		}
@@ -500,7 +494,7 @@ export function createSelectableCollection<
 			focusedKey == null &&
 			!access(mergedProps.shouldUseVirtualFocus)
 		) {
-			// `focusWithoutScrolling` below synchronously dispatches a native
+			// The focus call below synchronously dispatches a native
 			// focus event back into this same collection's `onFocusIn`. Solid
 			// batches the `setFocused(true)` write above, so without this guard
 			// `onFocusIn` would read stale (pre-write) state and re-run its own
@@ -509,7 +503,7 @@ export function createSelectableCollection<
 			// forcing unrelated pending effects elsewhere to run before their
 			// DOM refs are ready (e.g. Menu's own deferred submenu auto-focus).
 			isSelfFocusing = true;
-			focusWithoutScrolling(refEl);
+			refEl.focus({ preventScroll: true });
 			isSelfFocusing = false;
 		}
 	};
@@ -539,7 +533,7 @@ export function createSelectableCollection<
 					const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
 
 					if (element) {
-						scrollIntoView(scrollEl, element as HTMLElement);
+						element.scrollIntoView({ block: "nearest" });
 					}
 				}
 			}

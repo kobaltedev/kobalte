@@ -6,21 +6,15 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import {
-	callHandler,
-	composeEventHandlers,
-	createGenerateId,
-	focusWithoutScrolling,
-	isMac,
-	isWebKit,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { callHandler, composeEventHandlers } from "@kobalte/utils";
+import { isMac, isWebKit } from "@solid-primitives/platform";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -93,10 +87,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 
 	const defaultId = `${listBoxContext.generateId("item")}-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as ListboxItemProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as ListboxItemProps);
 
 	const others = omit(
 		mergedProps,
@@ -155,7 +146,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 	// Safari with VoiceOver on macOS misreads options with aria-labelledby or aria-label as simply "text".
 	// We should not map slots to the label and description on Safari and instead just have VoiceOver read the textContent.
 	// https://bugs.webkit.org/show_bug.cgi?id=209279
-	const isNotSafariMacOS = createMemo(() => !(isMac() && isWebKit()));
+	const isNotSafariMacOS = createMemo(() => !(isMac && isWebKit));
 
 	const ariaLabel = () =>
 		isNotSafariMacOS() ? mergedProps["aria-label"] : undefined;
@@ -205,7 +196,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 		}
 
 		if (!selectableItem.isDisabled() && listBoxContext.shouldFocusOnHover()) {
-			focusWithoutScrolling(e.currentTarget);
+			e.currentTarget.focus({ preventScroll: true });
 			selectionManager().setFocused(true);
 			selectionManager().setFocusedKey(mergedProps.item.key);
 		}
@@ -220,7 +211,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 	const context: ListboxItemContextValue = {
 		isSelected: selectableItem.isSelected,
 		dataset,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerLabelId: createRegisterId(setLabelId),
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};

@@ -1,4 +1,3 @@
-import { isFunction } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Accessor, children, omit, type Ref } from "solid-js";
 
@@ -102,7 +101,7 @@ function ComboboxControlChild<Option>(
 ) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

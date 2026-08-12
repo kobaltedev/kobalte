@@ -6,12 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/ea6376900d54af536dbb7b71b4fefd6ec2ce9dc0/packages/react/menubar/src/Menubar.tsx
  */
 
-import {
-	contains,
-	createGenerateId,
-	mergeDefaultProps,
-	type Orientation,
-} from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
 import { interactOutside } from "@solid-primitives/interaction";
 import { isServer, type ValidComponent } from "@solidjs/web";
 import {
@@ -20,6 +15,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 	type Setter,
@@ -85,8 +81,8 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 	});
 	const defaultId = `menubar-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId, loop: true, orientation: "horizontal" },
+	const mergedProps = merge(
+		{ id: defaultId, loop: true, orientation: "horizontal" } as const,
 		props as MenubarRootProps,
 	);
 
@@ -204,7 +200,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		},
 		autoFocusMenu: () => autoFocusMenu()!,
 		setAutoFocusMenu,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		orientation: () => mergedProps.orientation!,
 	};
 
@@ -223,7 +219,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		shouldExcludeElement: (element) => {
 			return [ref(), ...menuRefs().values()]
 				.flat()
-				.some((ref) => contains(ref, element));
+				.some((ref) => ref?.contains(element));
 		},
 	});
 

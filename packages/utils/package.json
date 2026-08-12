@@ -1,6 +1,6 @@
 {
 	"name": "@kobalte/utils",
-	"version": "0.9.2",
+	"version": "2.0.0-alpha.0",
 	"private": false,
 	"description": "Common utilities and types for Kobalte.",
 	"keywords": [
@@ -23,7 +23,10 @@
 		"url": "git+https://github.com/kobaltedev/kobalte.git"
 	},
 	"license": "MIT",
-	"author": "Fabien Marie-Louise <fabienml.dev@gmail.com>",
+	"author": "jer3m01 <jer3m01@jer3m01.com>",
+	"contributors": [
+		"Fabien Marie-Louise <fabienml.dev@gmail.com>"
+	],
 	"sideEffects": false,
 	"type": "module",
 	"exports": {

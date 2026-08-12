@@ -1,11 +1,7 @@
-import {
-	access,
-	createGenerateId,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { createElementSize } from "@solid-primitives/resize-observer";
+import { access } from "@solid-primitives/utils";
 
 import {
 	COLOR_INTL_TRANSLATIONS,
@@ -17,6 +13,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -112,10 +109,10 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `colorwheel-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
-			getValueLabel: (param) => param.formatChannelValue("hue"),
+			getValueLabel: (param: Color) => param.formatChannelValue("hue"),
 			translations: COLOR_INTL_TRANSLATIONS,
 			disabled: false,
 			thickness: 30,
@@ -291,7 +288,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 		setTrackRef,
 		thumbRef,
 		setThumbRef,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 	};
 
 	return (

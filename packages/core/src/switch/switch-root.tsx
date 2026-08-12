@@ -6,15 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/switch/src/useSwitch.ts
  */
 
-import {
-	access,
-	callHandler,
-	createGenerateId,
-	isFunction,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import { callHandler, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -22,6 +16,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -122,7 +117,7 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `switch-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			value: "on",
 			id: defaultId,
@@ -182,7 +177,7 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 		dataset,
 		checked: () => state.isSelected(),
 		inputRef,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		toggle: () => state.toggle(),
 		setIsChecked: (isChecked) => state.setIsSelected(isChecked),
 		setIsFocused,
@@ -218,7 +213,7 @@ interface SwitchRootChildProps extends Pick<SwitchRootOptions, "children"> {
 function SwitchRootChild(props: SwitchRootChildProps) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

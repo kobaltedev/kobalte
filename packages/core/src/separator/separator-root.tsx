@@ -6,9 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/separator/src/useSeparator.ts
  */
 
-import { mergeDefaultProps, type Orientation } from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit, type Ref } from "solid-js";
+import { createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -46,10 +46,10 @@ export function SeparatorRoot<T extends ValidComponent = "hr">(
 		ownedWrite: true,
 	});
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			orientation: "horizontal",
-		},
+		} as const,
 		props as SeparatorRootProps,
 	);
 

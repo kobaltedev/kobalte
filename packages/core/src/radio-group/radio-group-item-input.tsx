@@ -6,14 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, type Ref } from "solid-js";
+import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
@@ -69,7 +65,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	const radioGroupContext = useRadioGroupContext();
 	const radioContext = useRadioGroupItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: radioContext.generateId("input"),
 		},

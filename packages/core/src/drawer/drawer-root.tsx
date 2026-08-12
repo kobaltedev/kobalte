@@ -6,11 +6,11 @@
  * https://github.com/corvudev/corvu/tree/main/packages/drawer
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	createEffect,
 	createMemo,
 	createSignal,
+	merge,
 	omit,
 	type ParentProps,
 	type Setter,
@@ -111,7 +111,7 @@ export interface DrawerRootProps extends ParentProps<DrawerRootOptions> {}
  * by Jasmin Noetzli (MIT).
  */
 export function DrawerRoot(props: DrawerRootProps) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			side: "bottom" as DrawerSide,
 			snapPoints: [0, 1] as DrawerSize[],

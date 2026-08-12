@@ -1,11 +1,7 @@
-import {
-	callHandler,
-	composeEventHandlers,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { callHandler, composeEventHandlers } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createMemo, omit, type Ref } from "solid-js";
+import { createEffect, createMemo, merge, omit, type Ref } from "solid-js";
 import {
 	createFormControlField,
 	useFormControlContext,
@@ -77,7 +73,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 	const formControlContext = useFormControlContext();
 	const context = useNumberFieldContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("input"),
 			inputMode: "decimal",

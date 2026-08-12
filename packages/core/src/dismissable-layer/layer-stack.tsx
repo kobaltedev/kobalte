@@ -12,8 +12,6 @@
  * https://github.com/chakra-ui/zag/blob/d1dbf9e240803c9e3ed81ebef363739be4273de0/packages/utilities/dismissable/src/layer-stack.ts
  */
 
-import { getDocument } from "@kobalte/utils";
-
 export interface LayerModel {
 	node: HTMLElement;
 	isPointerBlocking?: boolean;
@@ -84,7 +82,7 @@ function assignPointerEventToLayers() {
  */
 function disableBodyPointerEvents(node: HTMLElement) {
 	if (hasPointerBlockingLayer() && !hasDisabledBodyPointerEvents) {
-		const ownerDocument = getDocument(node);
+		const ownerDocument = node.ownerDocument;
 
 		originalBodyPointerEvents = document.body.style.pointerEvents;
 		ownerDocument.body.style.pointerEvents = "none";
@@ -101,7 +99,7 @@ function restoreBodyPointerEvents(node: HTMLElement) {
 		return;
 	}
 
-	const ownerDocument = getDocument(node);
+	const ownerDocument = node.ownerDocument;
 
 	ownerDocument.body.style.pointerEvents = originalBodyPointerEvents;
 
