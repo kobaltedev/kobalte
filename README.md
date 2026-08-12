@@ -35,7 +35,7 @@ Support us on [Open Collective](https://opencollective.com/kobalte).
 
 ## Roadmap
 
-`0.13.x` is the least feature release for Solid 1, only non-breaking bugfixes will be released.
+`0.13.x` is the last feature release for Solid 1, only non-breaking bugfixes will be released.
 
 `1.0.0` releases will be skipped to avoid confusion for Solid v2.
 
