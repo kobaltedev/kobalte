@@ -52,10 +52,8 @@
 		"NOTICE.txt"
 	],
 	"scripts": {
-		"build": "pnpm build:cp && pnpm build:tsdown",
-		"build:cp": "cp ../../NOTICE.txt .",
-		"build:tsdown": "NODE_OPTIONS=\"--max-old-space-size=8192\" tsdown",
-		"clean": "rm -rf node_modules && rm -rf dist && rm NOTICE.txt",
+		"build": "tsdown",
+		"clean": "rm -rf node_modules && rm -rf dist",
 		"dev": "vite serve dev --host",
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit"
