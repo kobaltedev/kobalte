@@ -1,14 +1,12 @@
 {
-  "mode": "pre",
-  "tag": "alpha",
-  "initialVersions": {
-    "@kobalte/core": "2.0.0",
-    "@kobalte/tailwindcss": "0.9.0",
-    "@kobalte/tests": "0.6.0",
-    "@kobalte/utils": "2.0.0",
-    "@kobalte/vanilla-extract": "0.5.0"
-  },
-  "changesets": [
-    "full-suns-grow"
-  ]
+	"mode": "pre",
+	"tag": "alpha",
+	"initialVersions": {
+		"@kobalte/core": "2.0.0",
+		"@kobalte/tailwindcss": "0.9.0",
+		"@kobalte/tests": "0.6.0",
+		"@kobalte/utils": "2.0.0",
+		"@kobalte/vanilla-extract": "0.5.0"
+	},
+	"changesets": ["full-suns-grow"]
 }
