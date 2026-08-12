@@ -22,7 +22,7 @@ A UI toolkit for building accessible web apps and design systems with [SolidJS](
 
 ## Documentation
 
-For full documentation, visit [kobalte.dev](https://kobalte.dev/).
+Storybook for Kobalte v2 is available at https://kobalte.solidjs.community.
 
 ## Sponsors
 

@@ -192,9 +192,6 @@ importers:
       '@floating-ui/dom':
         specifier: ^1.5.1
         version: 1.6.10
-      '@internationalized/date':
-        specifier: ^3.4.0
-        version: 3.12.2
       '@internationalized/number':
         specifier: ^3.2.1
         version: 3.5.3
@@ -1099,9 +1096,6 @@ packages:
     peerDependenciesMeta:
       '@types/node':
         optional: true
-
-  '@internationalized/date@3.12.2':
-    resolution: {integrity: sha512-FY1Y+H64NDs+HAF6omlnWxm3mEpfgaCSWtL5l551ZZfImA+kGjPFgrnJrGjH6lfmLL0g8Z/mBu1R3kufeCp6Jw==}
 
   '@internationalized/number@3.5.3':
     resolution: {integrity: sha512-rd1wA3ebzlp0Mehj5YTuTI50AQEx80gWFyHcQu+u91/5NgdwBecO8BH6ipPfE+lmQ9d63vpB3H9SHoIUiupllw==}
@@ -6731,10 +6725,6 @@ snapshots:
       iconv-lite: 0.7.3
     optionalDependencies:
       '@types/node': 26.0.1
-
-  '@internationalized/date@3.12.2':
-    dependencies:
-      '@swc/helpers': 0.5.11
 
   '@internationalized/number@3.5.3':
     dependencies:
