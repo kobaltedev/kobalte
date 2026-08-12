@@ -18,23 +18,27 @@ export function clamp(
 }
 
 export function roundToStepPrecision(value: number, step: number): number {
-	let precision = 0;
-	const stepString = step.toString();
-	// Handle negative exponents in exponential notation (e.g., "1e-7" → precision 8)
-	const eIndex = stepString.toLowerCase().indexOf("e-");
-	if (eIndex > 0) {
-		precision = Math.abs(Math.floor(Math.log10(Math.abs(step)))) + eIndex;
-	} else {
-		const pointIndex = stepString.indexOf(".");
-		if (pointIndex >= 0) {
-			precision = stepString.length - pointIndex;
-		}
-	}
+	const precision = getPrecision(step);
 	if (precision > 0) {
 		const pow = 10 ** precision;
 		value = Math.round(value * pow) / pow;
 	}
 	return value;
+}
+
+/** Number of decimals needed to represent the step. */
+export function getPrecision(step: number): number {
+	const stepString = step.toString();
+	// Handle negative exponents in exponential notation (e.g., "1e-7" → precision 8)
+	const eIndex = stepString.toLowerCase().indexOf("e-");
+	if (eIndex > 0) {
+		return Math.abs(Math.floor(Math.log10(Math.abs(step)))) + eIndex;
+	}
+	const pointIndex = stepString.indexOf(".");
+	if (pointIndex >= 0) {
+		return stepString.length - pointIndex;
+	}
+	return 0;
 }
 
 export function snapValueToStep(

@@ -9,7 +9,6 @@
 import {
 	callHandler,
 	composeEventHandlers,
-	contains,
 	type Orientation,
 } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
@@ -192,7 +191,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		// Submenu key events bubble through portals. We only care about keys in this menu.
-		if (!contains(e.currentTarget, e.target)) {
+		if (!e.currentTarget.contains(e.target)) {
 			return;
 		}
 
@@ -291,7 +290,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 		// We don't use `event.movementX` for this check because Safari will
 		// always return `0` on a pointer event.
-		if (contains(e.currentTarget, target) && pointerXHasChanged) {
+		if (e.currentTarget.contains(target) && pointerXHasChanged) {
 			context.setPointerDir(e.clientX > lastPointerX ? "right" : "left");
 			lastPointerX = e.clientX;
 		}

@@ -6,7 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import { callHandler, contains, type Orientation } from "@kobalte/utils";
+import { callHandler, type Orientation } from "@kobalte/utils";
 import type { FocusOutsideEvent } from "@solid-primitives/interaction";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
@@ -84,7 +84,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 
 		// We prevent closing when the trigger is focused to avoid triggering a re-open animation
 		// on pointer interaction.
-		if (!contains(context.triggerRef(), target)) {
+		if (!context.triggerRef()?.contains(target)) {
 			context.close();
 		}
 	};
@@ -98,7 +98,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 		);
 
 		// Submenu key events bubble through portals. We only care about keys in this menu.
-		const isKeyDownInside = contains(e.currentTarget, e.target);
+		const isKeyDownInside = e.currentTarget.contains(e.target);
 		const isCloseKey = SUB_CLOSE_KEYS.close(
 			direction(),
 			rootContext.orientation(),

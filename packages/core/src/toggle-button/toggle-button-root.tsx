@@ -12,7 +12,7 @@
  * https://github.com/adobe/react-spectrum/blob/a13802d8be6f83af1450e56f7a88527b10d9cadf/packages/@react-aria/button/src/useToggleButton.ts
  */
 
-import { callHandler, isFunction } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Accessor, type Component, children, omit } from "solid-js";
 
@@ -120,7 +120,7 @@ interface ToggleButtonRootChildProps
 function ToggleButtonRootChild(props: ToggleButtonRootChildProps) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

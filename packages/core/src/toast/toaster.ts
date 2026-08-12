@@ -1,5 +1,3 @@
-import { isFunction } from "@kobalte/utils";
-
 import { toastStore } from "./toast-store.ts";
 import type {
 	ShowToastOptions,
@@ -42,7 +40,7 @@ function promise<T, U = any>(
 		});
 	}, options);
 
-	(isFunction(promise) ? promise() : promise)
+	(typeof promise === "function" ? promise() : promise)
 		.then((data) =>
 			update(id, (props) => {
 				return toastComponent({

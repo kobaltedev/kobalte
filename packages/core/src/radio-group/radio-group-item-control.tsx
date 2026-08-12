@@ -1,4 +1,4 @@
-import { callHandler, EventKey } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { merge, omit } from "solid-js";
 
@@ -58,7 +58,7 @@ export function RadioGroupItemControl<T extends ValidComponent = "div">(
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
 		callHandler(e, mergedProps.onKeyDown);
 
-		if (e.key === EventKey.Space) {
+		if (e.key === " ") {
 			context.select();
 			context.inputRef()?.focus({ preventScroll: true });
 		}

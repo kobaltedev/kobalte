@@ -1,4 +1,3 @@
-import { isFunction } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -127,7 +126,7 @@ interface SelectValueChildProps<T>
 function SelectValueChild<T>(props: SelectValueChildProps<T>) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

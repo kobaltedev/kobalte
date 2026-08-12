@@ -7,7 +7,6 @@
  * https://github.com/ariakit/ariakit/blob/a178c2f2dcc6571ba338fd74c79e3b0eab2a27c5/packages/ariakit/src/popover/__popover-arrow-path.ts
  */
 
-import { getWindow } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -138,7 +137,7 @@ function createComputedStyle(element: Accessor<Element | undefined>) {
 	createEffect(
 		() => element(),
 		(el) => {
-			if (el) setStyle(getWindow(el).getComputedStyle(el));
+			if (el) setStyle((el.ownerDocument.defaultView ?? window).getComputedStyle(el));
 		},
 	);
 

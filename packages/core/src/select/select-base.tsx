@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/useSelect.ts
  */
 
-import { isFunction, type ValidationState } from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { createPresence } from "@solid-primitives/presence";
 import { access } from "@solid-primitives/utils";
@@ -396,7 +396,7 @@ export function SelectBase<
 
 		// Get the value from the option object as a string.
 		return String(
-			isFunction(optionValue)
+			typeof optionValue === "function"
 				? optionValue(option as any)
 				: (option as any)[optionValue],
 		);

@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableCollection.ts
  */
 
-import { callHandler, type Orientation, scrollIntoView } from "@kobalte/utils";
+import { callHandler, type Orientation } from "@kobalte/utils";
 import { createEventListener } from "@solid-primitives/event-listener";
 import { getFocusableTreeWalker } from "@solid-primitives/focus";
 import { access, type MaybeAccessor } from "@solid-primitives/utils";
@@ -434,7 +434,7 @@ export function createSelectableCollection<
 				if (element) {
 					// This prevents a flash of focus on the first/last element in the collection
 					(element as HTMLElement).focus({ preventScroll: true });
-					scrollIntoView(scrollEl, element as HTMLElement);
+					element.scrollIntoView({ block: "nearest" });
 				}
 			}
 		}
@@ -533,7 +533,7 @@ export function createSelectableCollection<
 					const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
 
 					if (element) {
-						scrollIntoView(scrollEl, element as HTMLElement);
+						element.scrollIntoView({ block: "nearest" });
 					}
 				}
 			}

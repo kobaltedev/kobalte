@@ -6,12 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import {
-	callHandler,
-	composeEventHandlers,
-	isMac,
-	isWebKit,
-} from "@kobalte/utils";
+import { callHandler, composeEventHandlers } from "@kobalte/utils";
+import { isMac, isWebKit } from "@solid-primitives/platform";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -150,7 +146,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 	// Safari with VoiceOver on macOS misreads options with aria-labelledby or aria-label as simply "text".
 	// We should not map slots to the label and description on Safari and instead just have VoiceOver read the textContent.
 	// https://bugs.webkit.org/show_bug.cgi?id=209279
-	const isNotSafariMacOS = createMemo(() => !(isMac() && isWebKit()));
+	const isNotSafariMacOS = createMemo(() => !(isMac && isWebKit));
 
 	const ariaLabel = () =>
 		isNotSafariMacOS() ? mergedProps["aria-label"] : undefined;

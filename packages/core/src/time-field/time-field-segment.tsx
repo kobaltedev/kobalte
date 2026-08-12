@@ -7,15 +7,9 @@
  */
 
 import { NumberParser } from "@internationalized/number";
-import {
-	callHandler,
-	getActiveElement,
-	getScrollParent,
-	getWindow,
-	isIOS,
-	isMac,
-	scrollIntoViewport,
-} from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
+import { createFocusSignal } from "@solid-primitives/focus";
+import { isIOS, isMac } from "@solid-primitives/platform";
 import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
 import {
 	children,
@@ -118,7 +112,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	// spin buttons cannot be focused with VoiceOver on iOS.
 	const touchPropOverrides = createMemo(() => {
 		return (
-			isIOS()
+			isIOS
 				? {
 						role: "textbox",
 						"aria-valuemax": undefined,
@@ -218,7 +212,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		// Firefox does not fire selectstart for Ctrl/Cmd + A
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=1742153
-		if (e.key === "a" && (isMac() ? e.metaKey : e.ctrlKey)) {
+		if (e.key === "a" && (isMac ? e.metaKey : e.ctrlKey)) {
 			e.preventDefault();
 		}
 
@@ -371,12 +365,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		if (ref()) {
 			enteredKeys = "";
-			scrollIntoViewport(ref()!, {
-				containingElement: getScrollParent(ref()!),
-			});
+			ref()!.scrollIntoView({ block: "nearest" });
 
 			// Collapse selection to start or Chrome won't fire input events.
-			const selection = getWindow(ref()!).getSelection();
+			const selection = (ref()!.ownerDocument.defaultView ?? window).getSelection();
 			selection?.collapse(ref()!);
 		}
 	};
@@ -483,8 +475,9 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		() => context.focusManager(),
 		(focusManager) => {
 			const element = ref();
+			const isFocused = createFocusSignal(() => element as Element);
 			return () => {
-				if (getActiveElement(element) === element) {
+				if (isFocused()) {
 					const prev = focusManager.focusPrevious();
 					if (!prev) {
 						focusManager.focusNext();

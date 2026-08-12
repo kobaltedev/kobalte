@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/checkbox/src/useCheckbox.ts
  */
 
-import { callHandler, isFunction, type ValidationState } from "@kobalte/utils";
+import { callHandler, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
@@ -241,7 +241,7 @@ interface CheckboxRootChildProps extends Pick<CheckboxRootOptions, "children"> {
 function CheckboxRootChild(props: CheckboxRootChildProps) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

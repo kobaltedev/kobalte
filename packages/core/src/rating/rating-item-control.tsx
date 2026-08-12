@@ -1,4 +1,3 @@
-import { isFunction } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { children, merge, omit } from "solid-js";
 
@@ -79,7 +78,7 @@ interface RatingItemControlChildProps
 function RatingItemControlChild(props: RatingItemControlChildProps) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

@@ -12,7 +12,7 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import { callHandler, contains, getDocument, getWindow } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
@@ -93,7 +93,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		);
 
 		// The newly focused element isn't inside the toast list.
-		if (!contains(ref(), e.relatedTarget as HTMLElement)) {
+		if (!ref()?.contains(e.relatedTarget as HTMLElement)) {
 			context.resumeAllTimer();
 		}
 	};
@@ -124,7 +124,9 @@ export function ToastList<T extends ValidComponent = "ol">(
 		);
 
 		// The current active element isn't inside the toast list.
-		if (!contains(ref(), getDocument(ref()).activeElement)) {
+		if (
+			!ref()?.contains((ref()?.ownerDocument ?? document).activeElement)
+		) {
 			context.resumeAllTimer();
 		}
 	};
@@ -134,7 +136,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		(hotkey) => {
 			if (isServer || !ref()) return;
 
-			const doc = getDocument(ref());
+			const doc = ref()?.ownerDocument ?? document;
 
 			const onKeyDown = (event: KeyboardEvent) => {
 				const isHotkeyPressed = hotkey.every(
@@ -157,7 +159,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		(pauseOnPageIdle) => {
 			if (!pauseOnPageIdle) return;
 
-			const win = getWindow(ref());
+			const win = ref()?.ownerDocument?.defaultView ?? window;
 
 			win.addEventListener("blur", context.pauseAllTimer);
 			win.addEventListener("focus", context.resumeAllTimer);

@@ -6,7 +6,6 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/dialog/src/Dialog.tsx
  */
 
-import { contains } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -159,7 +158,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 		// Prevent dismissing when clicking the trigger.
 		// As the trigger is already setup to close, without doing so would
 		// cause it to close and immediately open.
-		if (contains(context.triggerRef(), e.target as HTMLElement)) {
+		if (context.triggerRef()?.contains(e.target as HTMLElement)) {
 			e.preventDefault();
 		}
 

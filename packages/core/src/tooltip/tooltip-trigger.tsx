@@ -18,7 +18,7 @@
  * https://github.com/radix-ui/primitives/blob/1b05a8e35cf35f3020484979086d70aefbaf4095/packages/react/tooltip/src/Tooltip.tsx
  */
 
-import { callHandler, getDocument } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { isServer } from "@solidjs/web";
 import { createSignal, omit, onCleanup, type Ref } from "solid-js";
@@ -141,9 +141,13 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		callHandler(e, p.onPointerDown);
 
 		isPointerDown = true;
-		getDocument(ref()).addEventListener("pointerup", handlePointerUp, {
-			once: true,
-		});
+		(ref()?.ownerDocument ?? document).addEventListener(
+			"pointerup",
+			handlePointerUp,
+			{
+				once: true,
+			},
+		);
 	};
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
@@ -189,7 +193,10 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 			return;
 		}
 
-		getDocument(ref()).removeEventListener("pointerup", handlePointerUp);
+		(ref()?.ownerDocument ?? document).removeEventListener(
+			"pointerup",
+			handlePointerUp,
+		);
 	});
 
 	// We purposefully avoid using Kobalte `Button` here because tooltip triggers can be any element

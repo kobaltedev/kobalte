@@ -8,7 +8,6 @@
  * https://github.com/ariakit/ariakit/blob/da142672eddefa99365773ced72171facc06fdcb/packages/ariakit/src/collection/collection-item.ts
  */
 
-import { addItemToArray } from "@kobalte/utils";
 import type { MaybeAccessor } from "@solid-primitives/utils";
 import {
 	createComponent,
@@ -61,7 +60,13 @@ export function createDomCollection<
 		setItems((prevItems) => {
 			// Finds the item group based on the DOM hierarchy
 			const index = findDOMIndex(prevItems, item);
-			return addItemToArray(prevItems, item, index);
+			return index >= 0 && index < prevItems.length
+				? [
+						...prevItems.slice(0, index),
+						item,
+						...prevItems.slice(index),
+					]
+				: [...prevItems, item];
 		});
 
 		return () => {

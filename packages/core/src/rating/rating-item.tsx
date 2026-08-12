@@ -1,4 +1,4 @@
-import { callHandler, EventKey } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -217,8 +217,8 @@ export function RatingItem<T extends ValidComponent = "div">(
 		callHandler(e, mergedProps.onKeyDown);
 
 		switch (e.key) {
-			case EventKey.ArrowLeft:
-			case EventKey.ArrowUp:
+			case "ArrowLeft":
+			case "ArrowUp":
 				e.preventDefault();
 				if (isLTR()) {
 					setPrevValue();
@@ -226,8 +226,8 @@ export function RatingItem<T extends ValidComponent = "div">(
 					setNextValue();
 				}
 				break;
-			case EventKey.ArrowRight:
-			case EventKey.ArrowDown:
+			case "ArrowRight":
+			case "ArrowDown":
 				e.preventDefault();
 				if (isLTR()) {
 					setNextValue();
@@ -235,15 +235,15 @@ export function RatingItem<T extends ValidComponent = "div">(
 					setPrevValue();
 				}
 				break;
-			case EventKey.Space:
+			case " ":
 				e.preventDefault();
 				RatingContext.setValue(newValue()!);
 				break;
-			case EventKey.Home:
+			case "Home":
 				e.preventDefault();
 				RatingContext.setValue(1);
 				break;
-			case EventKey.End:
+			case "End":
 				e.preventDefault();
 				RatingContext.setValue(RatingContext.items().length);
 				break;

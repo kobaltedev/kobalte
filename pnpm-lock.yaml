@@ -42,6 +42,7 @@ overrides:
   '@solid-primitives/keyed': next
   '@solid-primitives/map': next
   '@solid-primitives/media': next
+  '@solid-primitives/platform': next
   '@solid-primitives/presence': next
   '@solid-primitives/props': next
   '@solid-primitives/refs': next
@@ -224,6 +225,9 @@ importers:
       '@solid-primitives/keyboard':
         specifier: next
         version: 2.0.0-next.4(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
+      '@solid-primitives/platform':
+        specifier: next
+        version: 1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/presence':
         specifier: next
         version: 1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
@@ -1891,10 +1895,11 @@ packages:
       '@solidjs/web': ^2.0.0-beta.20
       solid-js: ^2.0.0-beta.20
 
-  '@solid-primitives/platform@0.1.2':
-    resolution: {integrity: sha512-sSxcZfuUrtxcwV0vdjmGnZQcflACzMfLriVeIIWXKp8hzaS3Or3tO6EFQkTd3L8T5dTq+kTtLvPscXIpL0Wzdg==}
+  '@solid-primitives/platform@1.0.0-next.1':
+    resolution: {integrity: sha512-mOIS9Xit8VFqjK8jSDuA09XlosHj01ckZlbmq6obG80YUplRh4qHgvgNsVEKbNWY/Kn5E3mkpJ68adYXUqzXvg==}
     peerDependencies:
-      solid-js: ^1.6.12
+      '@solidjs/web': ^2.0.0-beta.20
+      solid-js: ^2.0.0-beta.20
 
   '@solid-primitives/presence@1.0.0-next.1':
     resolution: {integrity: sha512-W09yQEORihKzxF6ZLaH8Foj7a+xmZPTzKVqC13BdKHkh4GvAQyOQkJ9eJIfzpLn+1SQYIuLkBO9DQIRfqSulYQ==}
@@ -6796,7 +6801,7 @@ snapshots:
       '@solid-primitives/event-listener': 3.0.0-next.2(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/keyboard': 2.0.0-next.4(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/media': 4.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
-      '@solid-primitives/platform': 0.1.2(solid-js@2.0.0-beta.32)
+      '@solid-primitives/platform': 1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/scroll': 3.0.0-next.3(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solid-primitives/storage': 4.3.5(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)
       '@solidjs/meta': 0.29.4(solid-js@2.0.0-beta.32)
@@ -7457,8 +7462,9 @@ snapshots:
       '@solidjs/web': 2.0.0-beta.32(solid-js@2.0.0-beta.32)
       solid-js: 2.0.0-beta.32
 
-  '@solid-primitives/platform@0.1.2(solid-js@2.0.0-beta.32)':
+  '@solid-primitives/platform@1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)':
     dependencies:
+      '@solidjs/web': 2.0.0-beta.32(solid-js@2.0.0-beta.32)
       solid-js: 2.0.0-beta.32
 
   '@solid-primitives/presence@1.0.0-next.1(@solidjs/web@2.0.0-beta.32(solid-js@2.0.0-beta.32))(solid-js@2.0.0-beta.32)':

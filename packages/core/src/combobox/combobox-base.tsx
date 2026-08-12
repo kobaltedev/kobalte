@@ -7,11 +7,8 @@
  * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
  */
 
-import {
-	isAppleDevice,
-	isFunction,
-	type ValidationState,
-} from "@kobalte/utils";
+import { isAppleDevice } from "@solid-primitives/platform";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { createPresence } from "@solid-primitives/presence";
 import { access } from "@solid-primitives/utils";
@@ -444,7 +441,7 @@ export function ComboboxBase<
 
 		// Get the value from the option object as a string.
 		return String(
-			isFunction(optionValue)
+			typeof optionValue === "function"
 				? optionValue(option as any)
 				: (option as any)[optionValue],
 		);
@@ -460,7 +457,7 @@ export function ComboboxBase<
 
 		// Get the label from the option object as a string.
 		return String(
-			isFunction(optionLabel)
+			typeof optionLabel === "function"
 				? optionLabel(option as any)
 				: (option as any)[optionLabel],
 		);
@@ -476,7 +473,7 @@ export function ComboboxBase<
 
 		// Get the label from the option object as a string.
 		return String(
-			isFunction(optionTextValue)
+			typeof optionTextValue === "function"
 				? optionTextValue(option as any)
 				: (option as any)[optionTextValue],
 		);
@@ -506,7 +503,7 @@ export function ComboboxBase<
 		const optionGroupChildren = mergedProps.optionGroupChildren;
 
 		const filterFn = (option: Option): boolean => {
-			if (isFunction(defaultFilter)) {
+			if (typeof defaultFilter === "function") {
 				return defaultFilter(option as any, inputVal) ?? false;
 			}
 
@@ -814,7 +811,7 @@ export function ComboboxBase<
 		},
 		({ focusedKey, focusedItem, isSelected }) => {
 			if (
-				isAppleDevice() &&
+				isAppleDevice &&
 				focusedItem != null &&
 				focusedKey !== lastAnnouncedFocusedKey
 			) {
@@ -847,7 +844,7 @@ export function ComboboxBase<
 			// focused item, otherwise screen readers will typically read e.g. "1 of 6".
 			// The exception is VoiceOver since this isn't included in the message above.
 			const didOpenWithoutFocusedItem =
-				isOpen !== lastOpen && (focusedKey == null || isAppleDevice());
+				isOpen !== lastOpen && (focusedKey == null || isAppleDevice);
 
 			if (
 				isOpen &&
@@ -876,7 +873,7 @@ export function ComboboxBase<
 		},
 		({ lastSelectedKey, lastSelectedItem }) => {
 			if (
-				isAppleDevice() &&
+				isAppleDevice &&
 				isInputFocused() &&
 				lastSelectedItem &&
 				lastSelectedKey !== lastAnnouncedSelectedKey
