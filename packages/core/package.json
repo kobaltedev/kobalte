@@ -75,7 +75,6 @@
 		"@solid-primitives/props": "catalog:",
 		"@solid-primitives/refs": "catalog:",
 		"@solid-primitives/resize-observer": "catalog:",
-		"@solid-primitives/platform": "catalog:",
 		"@solid-primitives/presence": "catalog:",
 		"@solid-primitives/scroll": "catalog:",
 		"@solid-primitives/upload": "catalog:",

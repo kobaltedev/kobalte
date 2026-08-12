@@ -368,7 +368,9 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 			ref()!.scrollIntoView({ block: "nearest" });
 
 			// Collapse selection to start or Chrome won't fire input events.
-			const selection = (ref()!.ownerDocument.defaultView ?? window).getSelection();
+			const selection = (
+				ref()!.ownerDocument.defaultView ?? window
+			).getSelection();
 			selection?.collapse(ref()!);
 		}
 	};

@@ -124,9 +124,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		);
 
 		// The current active element isn't inside the toast list.
-		if (
-			!ref()?.contains((ref()?.ownerDocument ?? document).activeElement)
-		) {
+		if (!ref()?.contains((ref()?.ownerDocument ?? document).activeElement)) {
 			context.resumeAllTimer();
 		}
 	};

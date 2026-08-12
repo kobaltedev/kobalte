@@ -137,7 +137,8 @@ function createComputedStyle(element: Accessor<Element | undefined>) {
 	createEffect(
 		() => element(),
 		(el) => {
-			if (el) setStyle((el.ownerDocument.defaultView ?? window).getComputedStyle(el));
+			if (el)
+				setStyle((el.ownerDocument.defaultView ?? window).getComputedStyle(el));
 		},
 	);
 

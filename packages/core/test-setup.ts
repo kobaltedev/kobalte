@@ -1,5 +1,5 @@
 import { cleanup } from "@solidjs/testing-library";
-import { afterEach } from "vitest";
+import { afterEach, beforeEach } from "vitest";
 
 // `@solidjs/testing-library` registers its own `afterEach(cleanup)` as a
 // module-level side effect. With `isolate: false` (see vite.config.ts),
@@ -11,3 +11,9 @@ import { afterEach } from "vitest";
 // re-evaluated per test file even with isolate disabled) makes cleanup run
 // for every file regardless of import order.
 afterEach(() => cleanup());
+
+// jsdom does not implement element.scrollIntoView
+// https://github.com/jsdom/jsdom/issues/1695
+beforeEach(() => {
+	window.HTMLElement.prototype.scrollIntoView = () => {};
+});

@@ -61,11 +61,7 @@ export function createDomCollection<
 			// Finds the item group based on the DOM hierarchy
 			const index = findDOMIndex(prevItems, item);
 			return index >= 0 && index < prevItems.length
-				? [
-						...prevItems.slice(0, index),
-						item,
-						...prevItems.slice(index),
-					]
+				? [...prevItems.slice(0, index), item, ...prevItems.slice(index)]
 				: [...prevItems, item];
 		});
 

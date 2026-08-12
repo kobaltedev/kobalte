@@ -7,9 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
  */
 
-import { isAppleDevice } from "@solid-primitives/platform";
 import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { isAppleDevice } from "@solid-primitives/platform";
 import { createPresence } from "@solid-primitives/presence";
 import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
