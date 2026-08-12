@@ -6,11 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import {
-	callHandler,
-	composeEventHandlers,
-	createGenerateId,
-} from "@kobalte/utils";
+import { callHandler, composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -294,7 +290,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		isChecked: () => mergedProps.checked,
 		dataset,
 		setLabelRef,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerLabel: createRegisterId(setLabelId),
 		registerDescription: createRegisterId(setDescriptionId),
 	};

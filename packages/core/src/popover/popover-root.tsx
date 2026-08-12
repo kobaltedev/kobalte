@@ -6,7 +6,6 @@
  * https://github.com/ariakit/ariakit/blob/232bc79018ec20967fec1e097a9474aba3bb5be7/packages/ariakit/src/popover/popover-state.ts
  */
 
-import { createGenerateId } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import {
 	type Accessor,
@@ -175,7 +174,7 @@ export function PopoverRoot(props: PopoverRootProps) {
 		setContentRef,
 		close: disclosureState.close,
 		toggle: disclosureState.toggle,
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 		registerContentId: createRegisterId(setContentId),
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),

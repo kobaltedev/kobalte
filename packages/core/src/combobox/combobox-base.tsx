@@ -8,14 +8,13 @@
  */
 
 import {
-	access,
-	createGenerateId,
 	isAppleDevice,
 	isFunction,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { createPresence } from "@solid-primitives/presence";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -942,7 +941,7 @@ export function ComboboxBase<
 		renderSection,
 		removeOptionFromSelection,
 		onInputKeyDown: (e) => selectableCollection.onKeyDown(e),
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 		registerListboxId: createRegisterId(setListboxId),
 	};
 

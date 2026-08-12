@@ -6,7 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/ea6376900d54af536dbb7b71b4fefd6ec2ce9dc0/packages/react/menubar/src/Menubar.tsx
  */
 
-import { contains, createGenerateId, type Orientation } from "@kobalte/utils";
+import { contains, type Orientation } from "@kobalte/utils";
 import { interactOutside } from "@solid-primitives/interaction";
 import { isServer, type ValidComponent } from "@solidjs/web";
 import {
@@ -200,7 +200,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 		},
 		autoFocusMenu: () => autoFocusMenu()!,
 		setAutoFocusMenu,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		orientation: () => mergedProps.orientation!,
 	};
 

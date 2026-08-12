@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableItem.ts
  */
 
-import { access, type MaybeAccessor } from "@kobalte/utils";
+import { access, type MaybeAccessor } from "@solid-primitives/utils";
 import type { JSX } from "@solidjs/web";
 import { type Accessor, createEffect, createMemo } from "solid-js";
 

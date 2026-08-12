@@ -7,8 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-stately/radio/src/useRadioGroupState.ts
  */
 
-import { access, type Orientation, type ValidationState } from "@kobalte/utils";
+import type { Orientation, ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import {

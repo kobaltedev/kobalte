@@ -12,7 +12,7 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import { callHandler, createGenerateId } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
@@ -430,7 +430,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		duration,
 		isPersistent: () => mergedProps.persistent ?? false,
 		closeTimerStartTime: () => closeTimerStartTime,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};

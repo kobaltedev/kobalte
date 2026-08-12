@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import { callHandler, createGenerateId } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -136,7 +136,7 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 		descriptionId,
 		inputRef,
 		select: () => radioGroupContext.setSelectedValue(mergedProps.value),
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerInput: createRegisterId(setInputId),
 		registerLabel: createRegisterId(setLabelId),
 		registerDescription: createRegisterId(setDescriptionId),

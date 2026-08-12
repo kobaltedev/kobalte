@@ -6,14 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/checkbox/src/useCheckbox.ts
  */
 
-import {
-	access,
-	callHandler,
-	createGenerateId,
-	isFunction,
-	type ValidationState,
-} from "@kobalte/utils";
+import { callHandler, isFunction, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -210,7 +205,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		checked: () => state.isSelected(),
 		indeterminate: () => mergedProps.indeterminate ?? false,
 		inputRef,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 		toggle: () => state.toggle(),
 		setIsChecked: (isChecked) => state.setIsSelected(isChecked),
 		setIsFocused,

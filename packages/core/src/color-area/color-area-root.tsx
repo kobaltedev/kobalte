@@ -1,10 +1,6 @@
-import {
-	access,
-	clamp,
-	createGenerateId,
-	type ValidationState,
-} from "@kobalte/utils";
+import { clamp, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import {
 	type Color,
 	type ColorChannel,
@@ -306,7 +302,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 		setBackgroundRef,
 		thumbRef,
 		setThumbRef,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 	};
 
 	return (

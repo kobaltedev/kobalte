@@ -12,7 +12,6 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import { createGenerateId } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -191,7 +190,7 @@ export function ToastRegion<T extends ValidComponent = "div">(
 		pauseOnPageIdle: () => mergedProps.pauseOnPageIdle!,
 		pauseAllTimer: () => setIsPaused(true),
 		resumeAllTimer: () => setIsPaused(false),
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 	};
 
 	return (

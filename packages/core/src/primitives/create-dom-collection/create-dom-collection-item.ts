@@ -1,4 +1,4 @@
-import type { MaybeAccessor } from "@kobalte/utils";
+import type { MaybeAccessor } from "@solid-primitives/utils";
 import { createEffect, merge } from "solid-js";
 
 import { useDomCollectionContext } from "./dom-collection-context.ts";

@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/meter/src/useMeter.ts
  */
 
-import { clamp, createGenerateId } from "@kobalte/utils";
+import { clamp } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -164,7 +164,7 @@ export function MeterRoot<T extends ValidComponent = "div">(
 		valueLabel,
 		labelId,
 		meterFillWidth,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerLabelId: createRegisterId(setLabelId),
 	};
 

@@ -1,6 +1,7 @@
-import { access, createGenerateId, type ValidationState } from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { createElementSize } from "@solid-primitives/resize-observer";
+import { access } from "@solid-primitives/utils";
 
 import {
 	COLOR_INTL_TRANSLATIONS,
@@ -287,7 +288,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 		setTrackRef,
 		thumbRef,
 		setThumbRef,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 	};
 
 	return (

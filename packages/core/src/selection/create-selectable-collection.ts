@@ -6,15 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableCollection.ts
  */
 
-import {
-	access,
-	callHandler,
-	createEventListener,
-	type MaybeAccessor,
-	type Orientation,
-	scrollIntoView,
-} from "@kobalte/utils";
+import { callHandler, type Orientation, scrollIntoView } from "@kobalte/utils";
+import { createEventListener } from "@solid-primitives/event-listener";
 import { getFocusableTreeWalker } from "@solid-primitives/focus";
+import { access, type MaybeAccessor } from "@solid-primitives/utils";
 import type { JSX } from "@solidjs/web";
 import {
 	type Accessor,

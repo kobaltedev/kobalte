@@ -14,7 +14,6 @@
 
 import {
 	contains,
-	createGenerateId,
 	getDocument,
 	getEventPoint,
 	getWindow,
@@ -402,7 +401,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 		openTooltip,
 		hideTooltip,
 		cancelOpening,
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 		registerContentId: createRegisterId(setContentId),
 		isTargetOnTooltip,
 		setTriggerRef,

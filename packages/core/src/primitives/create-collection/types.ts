@@ -1,5 +1,4 @@
-import type { MaybeAccessor } from "@kobalte/utils";
-
+import type { MaybeAccessor } from "@solid-primitives/utils";
 import type { DomCollectionItem } from "../create-dom-collection/index.ts";
 
 export interface CollectionItem {

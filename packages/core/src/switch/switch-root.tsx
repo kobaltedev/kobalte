@@ -6,14 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/switch/src/useSwitch.ts
  */
 
-import {
-	access,
-	callHandler,
-	createGenerateId,
-	isFunction,
-	type ValidationState,
-} from "@kobalte/utils";
+import { callHandler, isFunction, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -182,7 +177,7 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 		dataset,
 		checked: () => state.isSelected(),
 		inputRef,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		toggle: () => state.toggle(),
 		setIsChecked: (isChecked) => state.setIsSelected(isChecked),
 		setIsFocused,

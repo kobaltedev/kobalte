@@ -6,7 +6,6 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import { createGenerateId } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -112,7 +111,7 @@ export function CollapsibleRoot<T extends ValidComponent = "div">(
 		shouldMount: () => mergedProps.forceMount || disclosureState.isOpen(),
 		contentId,
 		toggle: disclosureState.toggle,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerContentId: createRegisterId(setContentId),
 	};
 

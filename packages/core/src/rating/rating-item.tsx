@@ -1,4 +1,4 @@
-import { callHandler, createGenerateId, EventKey } from "@kobalte/utils";
+import { callHandler, EventKey } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -260,7 +260,7 @@ export function RatingItem<T extends ValidComponent = "div">(
 	const context: RatingItemContextValue = {
 		state: { highlighted, half },
 		dataset,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		itemId: () => others.id,
 		registerLabel: createRegisterId(setLabelId),
 		registerDescription: createRegisterId(setDescriptionId),

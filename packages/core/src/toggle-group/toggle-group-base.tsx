@@ -1,8 +1,4 @@
-import {
-	composeEventHandlers,
-	createGenerateId,
-	type Orientation,
-} from "@kobalte/utils";
+import { composeEventHandlers, type Orientation } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import { useLocale } from "../i18n/index.tsx";
@@ -140,7 +136,7 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 		listState: () => listState,
 		isDisabled: () => mergedProps.disabled ?? false,
 		isMultiple: () => mergedProps.selectionMode === "multiple",
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		orientation: () => mergedProps.orientation!,
 	};
 

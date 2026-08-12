@@ -1,4 +1,4 @@
-import { createGenerateId, type Orientation } from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
 import { createUniqueId, merge, omit, type ParentProps } from "solid-js";
 
 import { useOptionalMenubarContext } from "../menubar/menubar-context.tsx";
@@ -90,7 +90,7 @@ export function MenuRoot(props: MenuRootProps) {
 		isModal: () => mergedProps.modal ?? true,
 		preventScroll: () => mergedProps.preventScroll ?? context.isModal(),
 		forceMount: () => mergedProps.forceMount ?? false,
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 		value: () => mergedProps.value,
 		orientation: () =>
 			mergedProps.orientation ??

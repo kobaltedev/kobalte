@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/1ddcde7b4fef9af7f08e11bb78d71fe60bbcc64b/packages/@react-aria/progress/src/useProgressBar.ts
  */
 
-import { clamp, createGenerateId } from "@kobalte/utils";
+import { clamp } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -140,7 +140,7 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 		valueLabel,
 		labelId,
 		progressFillWidth,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerLabelId: createRegisterId(setLabelId),
 	};
 

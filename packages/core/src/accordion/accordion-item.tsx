@@ -6,7 +6,6 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import { createGenerateId } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Component,
@@ -85,7 +84,7 @@ export function AccordionItem<T extends ValidComponent = "div">(
 		value: () => mergedProps.value,
 		triggerId,
 		contentId,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerTriggerId: createRegisterId(setTriggerId),
 		registerContentId: createRegisterId(setContentId),
 	};

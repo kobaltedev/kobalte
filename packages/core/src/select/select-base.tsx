@@ -6,14 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/useSelect.ts
  */
 
-import {
-	access,
-	createGenerateId,
-	isFunction,
-	type ValidationState,
-} from "@kobalte/utils";
+import { isFunction, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { createPresence } from "@solid-primitives/presence";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -618,7 +614,7 @@ export function SelectBase<
 		renderItem,
 		renderSection,
 		removeOptionFromSelection,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 		registerTriggerId: createRegisterId(setTriggerId),
 		registerValueId: createRegisterId(setValueId),
 		registerListboxId: createRegisterId(setListboxId),

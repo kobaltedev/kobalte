@@ -1,4 +1,3 @@
-import { createGenerateId } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import {
 	createSignal,
@@ -137,7 +136,7 @@ export function DialogRoot(props: DialogRootProps) {
 		close: disclosureState.close,
 		toggle: disclosureState.toggle,
 		setTriggerRef,
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 		registerContentId: createRegisterId(setContentId),
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),

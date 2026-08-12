@@ -8,7 +8,7 @@
  * https://github.com/adobe/react-spectrum/blob/bfce84fee12a027d9cbc38b43e1747e3e4b4b169/packages/@react-types/shared/src/selection.d.ts
  */
 
-import type { MaybeAccessor } from "@kobalte/utils";
+import type { MaybeAccessor } from "@solid-primitives/utils";
 import type { Accessor } from "solid-js";
 
 export type SelectionMode = "none" | "single" | "multiple";

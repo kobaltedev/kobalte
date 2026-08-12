@@ -9,7 +9,6 @@
 import {
 	callHandler,
 	composeEventHandlers,
-	createGenerateId,
 	isMac,
 	isWebKit,
 } from "@kobalte/utils";
@@ -216,7 +215,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 	const context: ListboxItemContextValue = {
 		isSelected: selectableItem.isSelected,
 		dataset,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerLabelId: createRegisterId(setLabelId),
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};

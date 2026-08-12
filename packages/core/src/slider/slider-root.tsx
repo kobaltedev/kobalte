@@ -6,13 +6,9 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/slider/src/Slider.tsx
  */
 
-import {
-	access,
-	clamp,
-	createGenerateId,
-	type ValidationState,
-} from "@kobalte/utils";
+import { clamp, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -407,7 +403,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		startEdge,
 		endEdge,
 		registerTrack: (ref: HTMLElement) => setTrackRef(ref),
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		getValueLabel: mergedProps.getValueLabel,
 	};
 

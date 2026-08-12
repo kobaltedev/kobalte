@@ -6,7 +6,6 @@
  * https://github.com/adobe/react-spectrum/blob/e6808d1b5e80cef7af7e63974f658043593b2e1e/packages/@react-aria/menu/src/useMenuSection.ts
  */
 
-import { createGenerateId } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { createSignal, createUniqueId, merge } from "solid-js";
 
@@ -57,7 +56,7 @@ export function MenuGroup<T extends ValidComponent = "div">(
 	});
 
 	const context: MenuGroupContextValue = {
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 		registerLabelId: createRegisterId(setLabelId),
 	};
 
