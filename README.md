@@ -14,12 +14,11 @@ A UI toolkit for building accessible web apps and design systems with [SolidJS](
 
 ## Packages
 
-| Name                                                  |                                     Version                                      | Description                                                                                                            |
-| :---------------------------------------------------- | :------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------- |
-| [@kobalte/core](/packages/core)                       |            [![core-npm]](https://www.npmjs.com/package/@kobalte/core)            | Unstyled components and primitives for building accessible web apps and design systems.                                |
+| Name                            |                          Version                           | Description                                                                             |
+| :------------------------------ | :--------------------------------------------------------: | :-------------------------------------------------------------------------------------- |
+| [@kobalte/core](/packages/core) | [![core-npm]](https://www.npmjs.com/package/@kobalte/core) | Unstyled components and primitives for building accessible web apps and design systems. |
 
-
-[core-npm]: https://img.shields.io/npm/v/@kobalte/core/next
+[core-npm]: https://img.shields.io/npm/v/@kobalte/core/alpha
 
 ## Documentation
 
@@ -49,7 +48,7 @@ All contributions are moderated under the [Contributor Covenant Code of Conduct]
 ## Acknowledgment
 
 | [Ariakit](https://ariakit.org/) | [Radix UI](https://www.radix-ui.com/) | [React Aria](https://react-spectrum.adobe.com/react-aria/) | [Zag](https://zagjs.com/) | [corvu](https://corvu.dev/) |
-| --- | --- | --- | --- | --- |
+| ------------------------------- | ------------------------------------- | ---------------------------------------------------------- | ------------------------- | --------------------------- |
 
 Created by Fabien Marie-Louise.
 
