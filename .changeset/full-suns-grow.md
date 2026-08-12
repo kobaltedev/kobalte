@@ -1,6 +1,6 @@
 ---
-"@kobalte/utils": patch
-"@kobalte/core": patch
+"@kobalte/utils": major
+"@kobalte/core": major
 ---
 
 Initial v2 alpha release

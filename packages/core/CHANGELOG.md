@@ -1,5 +1,16 @@
 # @kobalte/core
 
+## 2.0.0-alpha.0
+
+### Major Changes
+
+- e2c056e: Initial v2 alpha release
+
+### Patch Changes
+
+- Updated dependencies [e2c056e]
+  - @kobalte/utils@2.0.0-alpha.0
+
 ## 0.13.12
 
 ### Patch Changes
