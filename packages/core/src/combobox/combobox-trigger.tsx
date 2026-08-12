@@ -7,9 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
  */
 
-import { callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, type Ref } from "solid-js";
+import { type Component, merge, omit, type Ref } from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import { useFormControlContext } from "../form-control/index.ts";
@@ -50,7 +50,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("trigger"),
 		},

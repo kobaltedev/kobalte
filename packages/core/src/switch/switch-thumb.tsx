@@ -1,5 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
+import { merge } from "solid-js";
 
 import {
 	type FormControlDataSet,
@@ -36,7 +36,7 @@ export function SwitchThumb<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("thumb"),
 		},

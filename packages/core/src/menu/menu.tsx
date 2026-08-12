@@ -6,7 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import { mergeDefaultProps, removeItemFromArray } from "@kobalte/utils";
+import { removeItemFromArray } from "@kobalte/utils";
 import { createHideOutside } from "@solid-primitives/interaction";
 
 import { createPresence } from "@solid-primitives/presence";
@@ -15,6 +15,7 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
+	merge,
 	omit,
 	onCleanup,
 	type ParentProps,
@@ -74,13 +75,13 @@ export function Menu(props: MenuProps) {
 	const optionalMenubarContext = useOptionalMenubarContext();
 	const optionalNavigationMenuContext = useOptionalNavigationMenuContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			placement:
 				rootContext.orientation() === "horizontal"
 					? "bottom-start"
 					: "right-start",
-		},
+		} as const,
 		props,
 	);
 

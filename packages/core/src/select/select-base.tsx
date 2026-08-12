@@ -10,7 +10,6 @@ import {
 	access,
 	createGenerateId,
 	isFunction,
-	mergeDefaultProps,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -23,6 +22,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 import {
@@ -230,7 +230,7 @@ export function SelectBase<
 >(props: PolymorphicProps<T, SelectBaseProps<Option, OptGroup, T>>) {
 	const defaultId = `select-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			selectionMode: "single",
@@ -240,7 +240,7 @@ export function SelectBase<
 			gutter: 8,
 			sameWidth: true,
 			modal: false,
-		},
+		} as const,
 		props as SelectBaseProps<Option, OptGroup>,
 	);
 

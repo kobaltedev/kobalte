@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit, Show } from "solid-js";
+import { createEffect, merge, omit, Show } from "solid-js";
 
 import {
 	type ElementOf,
@@ -43,7 +42,7 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 ) {
 	const context = useFormControlContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("error-message"),
 		},

@@ -6,10 +6,7 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/dialog/src/Dialog.tsx
  */
 
-import {
-	contains,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { contains } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -24,6 +21,7 @@ import {
 	type Component,
 	createEffect,
 	createSignal,
+	merge,
 	omit,
 	Show,
 } from "solid-js";
@@ -101,7 +99,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 
 	const context = useDialogContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("content"),
 		},

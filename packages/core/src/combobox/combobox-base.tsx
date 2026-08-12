@@ -12,7 +12,6 @@ import {
 	createGenerateId,
 	isAppleDevice,
 	isFunction,
-	mergeDefaultProps,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -25,6 +24,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 import {
@@ -278,7 +278,7 @@ export function ComboboxBase<
 
 	const filter = createFilter({ sensitivity: "base" });
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			selectionMode: "single",
@@ -293,7 +293,7 @@ export function ComboboxBase<
 			defaultFilter: "contains",
 			triggerMode: "input",
 			translations: COMBOBOX_INTL_TRANSLATIONS,
-		},
+		} as const,
 		props as ComboboxBaseProps<Option, OptGroup>,
 	);
 

@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, type Ref } from "solid-js";
+import { type Component, createEffect, merge, omit, type Ref } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import * as Listbox from "../listbox/index.tsx";
@@ -45,7 +44,7 @@ export function ComboboxListbox<
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("listbox"),
 		},

@@ -12,12 +12,7 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import {
-	callHandler,
-	contains,
-	getDocument,
-	getWindow,
-} from "@kobalte/utils";
+import { callHandler, contains, getDocument, getWindow } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
@@ -147,7 +142,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 				);
 
 				if (isHotkeyPressed) {
-					ref.focus({ preventScroll: true });
+					ref()?.focus({ preventScroll: true });
 				}
 			};
 

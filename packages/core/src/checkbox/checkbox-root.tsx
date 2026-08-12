@@ -11,7 +11,6 @@ import {
 	callHandler,
 	createGenerateId,
 	isFunction,
-	mergeDefaultProps,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -22,6 +21,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -131,7 +131,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `checkbox-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			value: "on",
 			id: defaultId,

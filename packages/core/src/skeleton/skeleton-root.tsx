@@ -5,10 +5,9 @@
  * Credits to the Mantine team:
  * https://github.com/mantinedev/mantine/blob/master/src/mantine-core/src/components/Skeleton/Skeleton.tsx
  */
-import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createUniqueId, merge, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -55,7 +54,7 @@ export function Skeleton<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `skeleton-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			visible: true,
 			animate: true,

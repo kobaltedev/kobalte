@@ -1,7 +1,4 @@
-import {
-	contains,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { contains } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -17,6 +14,7 @@ import {
 	type Component,
 	createEffect,
 	createSignal,
+	merge,
 	omit,
 	type Ref,
 	Show,
@@ -101,7 +99,7 @@ export function PopoverContent<T extends ValidComponent = "div">(
 
 	const context = usePopoverContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("content"),
 		},

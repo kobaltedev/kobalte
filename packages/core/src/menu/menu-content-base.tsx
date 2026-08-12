@@ -10,7 +10,6 @@ import {
 	callHandler,
 	composeEventHandlers,
 	contains,
-	mergeDefaultProps,
 	type Orientation,
 } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
@@ -27,6 +26,7 @@ import {
 	createEffect,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onCleanup,
 	type Ref,
@@ -130,7 +130,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	const { direction } = useLocale();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId(`content-${createUniqueId()}`),
 		},

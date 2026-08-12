@@ -15,7 +15,6 @@
 import {
 	callHandler,
 	composeEventHandlers,
-	mergeDefaultProps,
 	type Orientation,
 } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
@@ -23,6 +22,7 @@ import {
 	createEffect,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onCleanup,
 	type Ref,
@@ -113,7 +113,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId(`sub-trigger-${createUniqueId()}`),
 		},

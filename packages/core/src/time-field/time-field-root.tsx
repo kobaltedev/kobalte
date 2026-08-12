@@ -1,9 +1,4 @@
-import {
-	access,
-	createGenerateId,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import { access, createGenerateId, type ValidationState } from "@kobalte/utils";
 import { createFocusGroup } from "@solid-primitives/focus";
 import { createFormResetListener } from "@solid-primitives/form";
 import type { JSX, ValidComponent } from "@solidjs/web";
@@ -144,7 +139,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `time-field-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			granularity: "minute",

@@ -1,11 +1,7 @@
-import {
-	callHandler,
-	mergeDefaultProps,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { createEffect, createSignal, omit } from "solid-js";
+import { createEffect, createSignal, merge, omit } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -26,7 +22,7 @@ export function SliderInput(props: SliderInputProps) {
 	const context = useSliderContext();
 	const thumb = useThumbContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("input"),
 		},

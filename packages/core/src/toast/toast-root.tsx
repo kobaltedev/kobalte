@@ -12,11 +12,7 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import {
-	callHandler,
-	createGenerateId,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { callHandler, createGenerateId } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
@@ -25,6 +21,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onSettled,
 	type Ref,
@@ -134,7 +131,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 ) {
 	const rootContext = useToastRegionContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: `toast-${createUniqueId()}`,
 			priority: "high",

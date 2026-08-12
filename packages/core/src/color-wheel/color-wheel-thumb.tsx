@@ -1,7 +1,7 @@
-import { callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, merge, omit } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -49,7 +49,7 @@ export function ColorWheelThumb<T extends ValidComponent = "span">(
 	const context = useColorWheelContext();
 	const formControlContext = useFormControlContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("thumb"),
 		},

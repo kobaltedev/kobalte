@@ -1,10 +1,11 @@
-import { mergeDefaultProps, type ValidationState } from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import type { UploadFile } from "@solid-primitives/upload";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	createSignal,
 	createStore,
 	createUniqueId,
+	merge,
 	omit,
 	snapshot,
 } from "solid-js";
@@ -104,7 +105,7 @@ export function FileField<T extends ValidComponent = "div">(
 		FileRejection[]
 	>([]);
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			allowDragAndDrop: true,

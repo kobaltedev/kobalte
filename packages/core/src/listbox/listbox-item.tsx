@@ -12,7 +12,6 @@ import {
 	createGenerateId,
 	isMac,
 	isWebKit,
-	mergeDefaultProps,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -20,6 +19,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -92,10 +92,7 @@ export function ListboxItem<T extends ValidComponent = "li">(
 
 	const defaultId = `${listBoxContext.generateId("item")}-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as ListboxItemProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as ListboxItemProps);
 
 	const others = omit(
 		mergedProps,

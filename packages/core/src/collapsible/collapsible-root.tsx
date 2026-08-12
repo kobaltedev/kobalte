@@ -6,13 +6,14 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { createGenerateId } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 
@@ -76,10 +77,7 @@ export function CollapsibleRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `collapsible-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as CollapsibleRootProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as CollapsibleRootProps);
 
 	const others = omit(
 		mergedProps,

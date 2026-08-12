@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import { type Color, parseColor } from "@solid-primitives/utils/colors";
-import { type Accessor, createMemo, createSignal } from "solid-js";
+import { type Accessor, createMemo, createSignal, merge } from "solid-js";
 import { createControllableSignal } from "../primitives/index.ts";
 import {
 	angleToCartesian,
@@ -39,7 +38,7 @@ interface StateOpts {
 }
 
 export function createColorWheelState(props: StateOpts): ColorWheelState {
-	const mergedProps: StateOpts = mergeDefaultProps(
+	const mergedProps: StateOpts = merge(
 		{
 			isDisabled: () => false,
 		},

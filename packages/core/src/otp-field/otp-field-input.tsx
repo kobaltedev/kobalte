@@ -6,13 +6,14 @@
  * https://github.com/corvudev/corvu/blob/main/packages/otp-field/src/Input.tsx
  */
 
-import { callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
 import {
 	createMemo,
 	createRenderEffect,
 	createSignal,
 	flush,
+	merge,
 	omit,
 	onSettled,
 	type Ref,
@@ -78,7 +79,7 @@ export type OTPFieldInputProps<
 export function OTPFieldInput<T extends ValidComponent = "input">(
 	props: PolymorphicProps<T, OTPFieldInputProps<T>>,
 ) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			pattern: "^\\d*$",
 			noScriptCSSFallback: DEFAULT_NOSCRIPT_CSS_FALLBACK,

@@ -6,17 +6,14 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import {
-	callHandler,
-	createGenerateId,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { callHandler, createGenerateId } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 
@@ -75,7 +72,7 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 		"item",
 	)}-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},

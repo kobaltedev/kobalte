@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { omit, Show } from "solid-js";
+import { merge, omit, Show } from "solid-js";
 
 import {
 	type ElementOf,
@@ -44,7 +43,7 @@ export function MenuItemIndicator<T extends ValidComponent = "div">(
 ) {
 	const context = useMenuItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("indicator"),
 		},

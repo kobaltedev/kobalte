@@ -1,4 +1,3 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
@@ -8,6 +7,7 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
+	merge,
 	omit,
 	type Ref,
 	type Setter,
@@ -75,7 +75,7 @@ export type NavigationMenuRootProps<
 export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	props: PolymorphicProps<T, NavigationMenuRootProps<T>>,
 ) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			delayDuration: 200,
 			skipDelayDuration: 300,

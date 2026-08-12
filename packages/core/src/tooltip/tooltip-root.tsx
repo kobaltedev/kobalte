@@ -19,7 +19,6 @@ import {
 	getEventPoint,
 	getWindow,
 	isPointInPolygon,
-	mergeDefaultProps,
 } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { isServer } from "@solidjs/web";
@@ -29,6 +28,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onCleanup,
 	type ParentProps,
@@ -114,7 +114,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 	// This is not the DOM id.
 	const tooltipId = `${++tooltipsCounter}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			openDelay: 700,

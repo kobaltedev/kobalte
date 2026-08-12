@@ -1,5 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
+import { merge } from "solid-js";
 
 import {
 	type ElementOf,
@@ -36,10 +36,7 @@ export function ComboboxIcon<T extends ValidComponent = "span">(
 ) {
 	const context = useComboboxContext();
 
-	const mergedProps = mergeDefaultProps(
-		{ children: "▼" },
-		props as ComboboxIconProps,
-	);
+	const mergedProps = merge({ children: "▼" }, props as ComboboxIconProps);
 
 	return (
 		<Polymorphic

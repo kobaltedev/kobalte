@@ -1,7 +1,6 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit, type Ref, Show } from "solid-js";
+import { createSignal, merge, omit, type Ref, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -45,7 +44,7 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 ) {
 	const context = useRadioGroupItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("indicator"),
 		},

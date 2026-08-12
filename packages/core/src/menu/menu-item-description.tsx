@@ -6,9 +6,8 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, merge, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -46,7 +45,7 @@ export function MenuItemDescription<T extends ValidComponent = "div">(
 ) {
 	const context = useMenuItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("description"),
 		},

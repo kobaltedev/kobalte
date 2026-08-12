@@ -1,11 +1,10 @@
 import {
 	composeEventHandlers,
 	createGenerateId,
-	mergeDefaultProps,
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import { useLocale } from "../i18n/index.tsx";
 import { createListState } from "../list/index.ts";
 import {
@@ -78,12 +77,12 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 
 	const defaultId = `group-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			selectionMode: "single",
 			orientation: "horizontal",
-		},
+		} as const,
 		props as ToggleGroupBaseProps,
 	);
 

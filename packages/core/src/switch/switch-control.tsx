@@ -1,6 +1,6 @@
-import { callHandler, EventKey, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler, EventKey } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { merge, omit } from "solid-js";
 
 import {
 	type FormControlDataSet,
@@ -39,7 +39,7 @@ export function SwitchControl<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("control"),
 		},

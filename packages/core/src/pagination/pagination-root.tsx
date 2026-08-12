@@ -1,6 +1,11 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createUniqueId, omit, type Setter } from "solid-js";
+import {
+	type Component,
+	createUniqueId,
+	merge,
+	omit,
+	type Setter,
+} from "solid-js";
 
 import {
 	type ElementOf,
@@ -77,7 +82,7 @@ export function PaginationRoot<T extends ValidComponent = "nav">(
 ) {
 	const defaultId = `pagination-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},

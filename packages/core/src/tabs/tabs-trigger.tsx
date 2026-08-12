@@ -9,11 +9,10 @@
 import {
 	composeEventHandlers,
 	isWebKit,
-	mergeDefaultProps,
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, type Ref } from "solid-js";
+import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -75,7 +74,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 
 	const context = useTabsContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			type: "button",
 		} as const,

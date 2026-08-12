@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect } from "solid-js";
+import { createEffect, merge } from "solid-js";
 
 import {
 	type ElementOf,
@@ -34,7 +33,7 @@ export function RatingItemDescription<T extends ValidComponent = "div">(
 ) {
 	const context = useRatingItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("description"),
 		},

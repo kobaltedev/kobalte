@@ -1,6 +1,13 @@
-import { callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, createEffect, For, omit, type Ref } from "solid-js";
+import {
+	type Accessor,
+	createEffect,
+	For,
+	merge,
+	omit,
+	type Ref,
+} from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import { useLocale } from "../i18n/index.tsx";
@@ -43,7 +50,7 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const timeFieldContext = useTimeFieldContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: timeFieldContext.generateId("input"),
 		},

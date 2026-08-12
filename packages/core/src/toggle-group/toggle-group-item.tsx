@@ -1,7 +1,6 @@
 import {
 	callHandler,
 	composeEventHandlers,
-	mergeDefaultProps,
 	type Orientation,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
@@ -9,6 +8,7 @@ import {
 	type Component,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -64,7 +64,7 @@ export function ToggleGroupItem<T extends ValidComponent = "button">(
 
 	const defaultID = rootContext.generateId(`item-${createUniqueId()}`);
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultID,
 		},

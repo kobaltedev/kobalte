@@ -6,8 +6,13 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/context-menu/src/ContextMenu.tsx
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
-import { createSignal, createUniqueId, omit, type ParentProps } from "solid-js";
+import {
+	createSignal,
+	createUniqueId,
+	merge,
+	omit,
+	type ParentProps,
+} from "solid-js";
 
 import { useLocale } from "../i18n/index.tsx";
 import { MenuRoot, type MenuRootOptions } from "../menu/index.ts";
@@ -31,13 +36,13 @@ export function ContextMenuRoot(props: ContextMenuRootProps) {
 
 	const { direction } = useLocale();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			placement: direction() === "rtl" ? "left-start" : "right-start",
 			gutter: 2,
 			shift: 2,
-		},
+		} as const,
 		props,
 	);
 

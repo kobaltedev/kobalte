@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, omit } from "solid-js";
+import { type Component, merge, omit } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 import { createToggleState } from "../primitives/index.ts";
@@ -47,7 +46,7 @@ export type MenuCheckboxItemProps<
 export function MenuCheckboxItem<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuCheckboxItemProps<T>>,
 ) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			closeOnSelect: false,
 		},

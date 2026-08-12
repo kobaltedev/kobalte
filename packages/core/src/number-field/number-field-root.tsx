@@ -3,7 +3,6 @@ import {
 	access,
 	createGenerateId,
 	getPrecision,
-	mergeDefaultProps,
 	snapValueToStep,
 	type ValidationState,
 } from "@kobalte/utils";
@@ -14,6 +13,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -135,7 +135,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `NumberField-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			format: true,

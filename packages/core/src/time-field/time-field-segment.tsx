@@ -14,7 +14,6 @@ import {
 	getWindow,
 	isIOS,
 	isMac,
-	mergeDefaultProps,
 	scrollIntoViewport,
 } from "@kobalte/utils";
 import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
@@ -24,6 +23,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 	Show,
@@ -90,7 +90,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useTimeFieldContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: `${context.generateId("segment")}-${createUniqueId()}`,
 		},

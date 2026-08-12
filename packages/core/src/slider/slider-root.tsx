@@ -10,7 +10,6 @@ import {
 	access,
 	clamp,
 	createGenerateId,
-	mergeDefaultProps,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -20,6 +19,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -159,7 +159,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `slider-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			minValue: 0,
@@ -169,8 +169,8 @@ export function SliderRoot<T extends ValidComponent = "div">(
 			orientation: "horizontal",
 			disabled: false,
 			inverted: false,
-			getValueLabel: (params) => params.values.join(", "),
-		},
+			getValueLabel: (params: GetValueLabelParams) => params.values.join(", "),
+		} as const,
 		props as SliderRootProps,
 	);
 

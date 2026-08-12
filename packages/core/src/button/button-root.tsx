@@ -12,9 +12,8 @@
  * https://github.com/ariakit/ariakit/blob/8a13899ff807bbf39f3d89d2d5964042ba4d5287/packages/ariakit/src/button/button.ts
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, omit, type Ref } from "solid-js";
+import { createMemo, createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -56,10 +55,7 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 		ownedWrite: true,
 	});
 
-	const mergedProps = mergeDefaultProps(
-		{ type: "button" },
-		props as ButtonRootProps,
-	);
+	const mergedProps = merge({ type: "button" }, props as ButtonRootProps);
 
 	const others = omit(mergedProps, "ref", "type", "disabled");
 

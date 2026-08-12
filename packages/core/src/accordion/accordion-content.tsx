@@ -6,10 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, merge, omit } from "solid-js";
 import * as Collapsible from "../collapsible/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import { useAccordionItemContext } from "./accordion-item-context.tsx";
@@ -44,10 +43,7 @@ export function AccordionContent<T extends ValidComponent = "div">(
 
 	const defaultId = itemContext.generateId("content");
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as AccordionContentProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as AccordionContentProps);
 
 	const others = omit(mergedProps, "id", "style");
 

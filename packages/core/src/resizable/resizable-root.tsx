@@ -6,13 +6,13 @@
  * https://github.com/corvudev/corvu/tree/main/packages/resizable
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
 	createMemo,
 	createSignal,
+	merge,
 	omit,
 	type Ref,
 	type Setter,
@@ -122,7 +122,7 @@ type ResolvedRootProps = ResizableRootOptions &
 export function ResizableRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ResizableRootProps<T>>,
 ) {
-	const p = mergeDefaultProps(
+	const p = merge(
 		{
 			orientation: "horizontal" as "horizontal" | "vertical",
 			initialSizes: [] as ResizableSize[],

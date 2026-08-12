@@ -8,7 +8,6 @@
 
 import {
 	callHandler,
-	mergeDefaultProps,
 	type Orientation,
 	scrollIntoViewport,
 } from "@kobalte/utils";
@@ -17,6 +16,7 @@ import {
 	type Component,
 	createEffect,
 	createMemo,
+	merge,
 	omit,
 	untrack,
 } from "solid-js";
@@ -86,7 +86,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 
 	const { direction } = useLocale();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId("trigger"),
 		},

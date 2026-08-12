@@ -18,11 +18,11 @@ import {
 	shift,
 	size,
 } from "@floating-ui/dom";
-import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Accessor,
 	createSignal,
 	createTrackedEffect,
+	merge,
 	type ParentProps,
 } from "solid-js";
 
@@ -119,9 +119,9 @@ export interface PopperRootProps extends ParentProps<PopperRootOptions> {}
  * Display a floating content relative to an anchor element with an optional arrow.
  */
 export function PopperRoot(props: PopperRootProps) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
-			getAnchorRect: (anchor) => anchor?.getBoundingClientRect(),
+			getAnchorRect: (anchor?: HTMLElement) => anchor?.getBoundingClientRect(),
 			placement: "bottom",
 			gutter: 0,
 			shift: 0,
@@ -134,7 +134,7 @@ export function PopperRoot(props: PopperRootProps) {
 			detachedPadding: 0,
 			arrowPadding: 4,
 			overflowPadding: 8,
-		},
+		} as const,
 		props,
 	);
 

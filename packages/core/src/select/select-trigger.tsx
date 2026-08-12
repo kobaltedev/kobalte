@@ -7,9 +7,9 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuTrigger.ts
  */
 
-import { callHandler, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, type Ref } from "solid-js";
+import { type Component, createEffect, merge, omit, type Ref } from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import {
@@ -57,7 +57,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("trigger"),
 		},

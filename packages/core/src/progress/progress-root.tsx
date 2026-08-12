@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/1ddcde7b4fef9af7f08e11bb78d71fe60bbcc64b/packages/@react-aria/progress/src/useProgressBar.ts
  */
 
-import { clamp, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { clamp, createGenerateId } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -14,6 +14,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 
@@ -59,7 +60,7 @@ export function ProgressRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `progress-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			value: 0,

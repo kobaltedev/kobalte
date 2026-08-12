@@ -1,4 +1,3 @@
-import type { OverrideProps } from "@kobalte/utils";
 import {
 	type ComponentProps,
 	Dynamic,
@@ -7,11 +6,28 @@ import {
 } from "@solidjs/web";
 import { omit, untrack } from "solid-js";
 
-export type { OverrideComponentProps, OverrideProps } from "@kobalte/utils";
-
 /* -------------------------------------------------------------------------------------------------
  * Polymorphic
  * -----------------------------------------------------------------------------------------------*/
+
+/**
+ * Allows for extending a set of props (`Source`) by an overriding set of props (`Override`),
+ * ensuring that any duplicates are overridden by the overriding set of props.
+ */
+export type OverrideProps<Source = {}, Override = {}> = Omit<
+	Source,
+	keyof Override
+> &
+	Override;
+
+/**
+ * Allows for extending a set of `ComponentProps` by an overriding set of props,
+ * ensuring that any duplicates are overridden by the overriding set of props.
+ */
+export type OverrideComponentProps<T extends ValidComponent, P> = OverrideProps<
+	ComponentProps<T>,
+	P
+>;
 
 export type ElementOf<T> = T extends HTMLElement
 	? T

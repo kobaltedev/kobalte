@@ -7,14 +7,10 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/toggle/src/useToggle.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit, type Ref } from "solid-js";
+import { merge, omit, type Ref } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -75,7 +71,7 @@ export function SwitchInput<T extends ValidComponent = "input">(
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ id: context.generateId("input") },
 		props as SwitchInputProps,
 	);

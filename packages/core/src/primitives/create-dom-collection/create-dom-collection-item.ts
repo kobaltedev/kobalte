@@ -1,5 +1,5 @@
-import { type MaybeAccessor, mergeDefaultProps } from "@kobalte/utils";
-import { createEffect } from "solid-js";
+import type { MaybeAccessor } from "@kobalte/utils";
+import { createEffect, merge } from "solid-js";
 
 import { useDomCollectionContext } from "./dom-collection-context.ts";
 import type { DomCollectionItem } from "./types.ts";
@@ -19,7 +19,7 @@ export function createDomCollectionItem<
 >(props: CreateDomCollectionItemProps<T>) {
 	const context = useDomCollectionContext<T>();
 
-	const mergedProps = mergeDefaultProps({ shouldRegisterItem: true }, props);
+	const mergedProps = merge({ shouldRegisterItem: true }, props);
 
 	createEffect(
 		() => (mergedProps.shouldRegisterItem ? mergedProps.getItem() : undefined),

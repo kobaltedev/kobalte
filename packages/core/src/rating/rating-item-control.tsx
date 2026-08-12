@@ -1,6 +1,6 @@
-import { isFunction, mergeDefaultProps } from "@kobalte/utils";
+import { isFunction } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { children, omit } from "solid-js";
+import { children, merge, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -44,7 +44,7 @@ export function RatingItemControl<T extends ValidComponent = "div">(
 
 	const defaultId = `${context.generateId("control")}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},

@@ -11,7 +11,6 @@ import {
 	createGlobalListeners,
 	getEventPoint,
 	isPointInPolygon,
-	mergeDefaultProps,
 } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { isServer } from "@solidjs/web";
@@ -21,6 +20,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onCleanup,
 	type ParentProps,
@@ -83,7 +83,7 @@ export interface HoverCardRootProps extends ParentProps<HoverCardRootOptions> {}
 export function HoverCardRoot(props: HoverCardRootProps) {
 	const defaultId = `hovercard-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			openDelay: 700,

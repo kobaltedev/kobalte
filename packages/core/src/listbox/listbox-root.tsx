@@ -6,12 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-aria/listbox/src/useListBox.ts
  */
 
-import {
-	access,
-	composeEventHandlers,
-	createGenerateId,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { access, composeEventHandlers, createGenerateId } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -20,6 +15,7 @@ import {
 	createUniqueId,
 	For,
 	Match,
+	merge,
 	omit,
 	type Ref,
 	Show,
@@ -178,7 +174,7 @@ export function ListboxRoot<
 
 	const defaultId = `listbox-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			selectionMode: "single",

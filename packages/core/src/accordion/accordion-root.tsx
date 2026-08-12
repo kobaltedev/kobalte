@@ -6,13 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import {
-	composeEventHandlers,
-	createGenerateId,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { composeEventHandlers, createGenerateId } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit, type Ref } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 
 import { createListState, createSelectableList } from "../list/index.ts";
 import {
@@ -77,7 +73,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `accordion-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			multiple: false,

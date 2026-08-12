@@ -10,7 +10,6 @@ import {
 	callHandler,
 	composeEventHandlers,
 	createGenerateId,
-	mergeDefaultProps,
 } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -18,6 +17,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -111,7 +111,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	const rootContext = useMenuRootContext();
 	const menuContext = useMenuContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId(`item-${createUniqueId()}`),
 		},

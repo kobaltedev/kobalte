@@ -1,15 +1,11 @@
-import {
-	callHandler,
-	createGenerateId,
-	EventKey,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { callHandler, createGenerateId, EventKey } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type Ref,
 } from "solid-js";
@@ -74,7 +70,7 @@ export function RatingItem<T extends ValidComponent = "div">(
 
 	const defaultId = `${formControlContext.generateId("item")}-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},

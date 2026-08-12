@@ -6,11 +6,17 @@
  * https://github.com/radix-ui/primitives/blob/1b05a8e35cf35f3020484979086d70aefbaf4095/packages/react/tooltip/src/Tooltip.tsx
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { PointerDownOutsideEvent } from "@solid-primitives/interaction";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, type Ref, Show } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	merge,
+	omit,
+	type Ref,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
@@ -60,7 +66,7 @@ export function TooltipContent<T extends ValidComponent = "div">(
 ) {
 	const context = useTooltipContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("content"),
 		},

@@ -1,5 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
+import { merge } from "solid-js";
 
 import {
 	type ElementOf,
@@ -33,10 +33,7 @@ export function SelectIcon<T extends ValidComponent = "span">(
 ) {
 	const context = useSelectContext();
 
-	const mergedProps = mergeDefaultProps(
-		{ children: "▼" },
-		props as SelectIconProps,
-	);
+	const mergedProps = merge({ children: "▼" }, props as SelectIconProps);
 
 	return (
 		<Polymorphic<SelectIconRenderProps>

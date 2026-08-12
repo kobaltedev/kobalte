@@ -7,9 +7,15 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import { mergeDefaultProps, type Orientation } from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, createUniqueId, omit } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	createUniqueId,
+	merge,
+	omit,
+} from "solid-js";
 
 import { createSingleSelectListState } from "../list/index.ts";
 import {
@@ -66,12 +72,12 @@ export function TabsRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `tabs-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			orientation: "horizontal",
 			activationMode: "automatic",
-		},
+		} as const,
 		props as TabsRootProps,
 	);
 

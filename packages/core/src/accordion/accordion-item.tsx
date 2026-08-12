@@ -6,9 +6,15 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { createGenerateId } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createSignal, createUniqueId, omit } from "solid-js";
+import {
+	type Component,
+	createSignal,
+	createUniqueId,
+	merge,
+	omit,
+} from "solid-js";
 
 import * as Collapsible from "../collapsible/index.tsx";
 import type { PolymorphicProps } from "../polymorphic/index.tsx";
@@ -55,10 +61,7 @@ export function AccordionItem<T extends ValidComponent = "div">(
 		"item",
 	)}-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as AccordionItemProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as AccordionItemProps);
 
 	const others = omit(mergedProps, "value", "disabled");
 
