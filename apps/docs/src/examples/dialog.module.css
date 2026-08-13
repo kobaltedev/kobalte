@@ -1,5 +1,6 @@
 .dialog__trigger {
 	appearance: none;
+	border: none;
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
@@ -74,8 +75,8 @@
 }
 
 .dialog__close-button {
-	height: 16px;
-	width: 16px;
+	height: 25px;
+	width: 25px;
 	color: hsl(240 5% 34%);
 }
 

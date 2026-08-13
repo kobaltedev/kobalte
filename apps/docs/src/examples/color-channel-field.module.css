@@ -45,6 +45,7 @@
 
 .color-channel-field__increment,
 .color-channel-field__decrement {
+	border: none;
 	right: 0.25rem;
 	position: absolute;
 	height: 1rem;
@@ -71,9 +72,10 @@
 .color-channel-field__decrement svg,
 .color-channel-field__increment svg {
 	height: 150%;
-	left: -25%;
+	left: -75%;
 	position: relative;
 	top: -25%;
+	pointer-events: none;
 }
 
 .color-channel-field__custom-trigger-decrement,

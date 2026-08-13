@@ -23,6 +23,7 @@
 
 .search__input {
 	appearance: none;
+	border: none;
 	display: inline-flex;
 	width: 100%;
 	min-height: 40px;
