@@ -14,6 +14,8 @@ pnpm add @kobalte/core@alpha
 
 ## Documentation
 
+For full documentation, visit [kobalte.dev](https://kobalte.dev/).
+
 Storybook for Kobalte v2 is available at https://kobalte.solidjs.community.
 
 ## Roadmap

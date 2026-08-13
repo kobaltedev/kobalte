@@ -24,6 +24,7 @@
 
 .accordion__item-header {
 	display: flex;
+	margin: 0;
 }
 
 .accordion__item-trigger {

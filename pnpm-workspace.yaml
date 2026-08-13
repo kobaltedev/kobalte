@@ -2,65 +2,65 @@ packages:
   - apps/*
   - packages/*
 catalog:
-  # Solid 2.0 core — keep these three in lockstep on the same beta number
-  solid-js: 2.0.0-beta.32
-  "@solidjs/web": 2.0.0-beta.32
-  "@solidjs/signals": 2.0.0-beta.32
+  # Solid 2.0 core — keep these three in lockstep on the same rc number
+  solid-js: 2.0.0-rc.0
+  "@solidjs/web": 2.0.0-rc.0
+  "@solidjs/signals": 2.0.0-rc.0
   "@solidjs/testing-library": 1.0.0-beta.2
   # Mirrored in the "babel-preset-solid" override below (overrides can't use catalog:)
-  babel-preset-solid: 2.0.0-beta.32
+  babel-preset-solid: 2.0.0-rc.0
   # Build tooling shared across root + published packages
   typescript: 7.0.2
   tsdown: 0.22.7
   unplugin-solid: 1.0.0
   vitest: 4.1.10
   # solid-primitives — versions mirrored in the overrides block below
-  "@solid-primitives/a11y": next
-  "@solid-primitives/controlled-signal": 1.0.0-next.1
-  "@solid-primitives/event-listener": next
-  "@solid-primitives/focus": 1.0.0-next.3
-  "@solid-primitives/form": next
-  "@solid-primitives/i18n": next
-  "@solid-primitives/interaction": next
-  "@solid-primitives/keyboard": next
-  "@solid-primitives/keyed": next
-  "@solid-primitives/map": next
-  "@solid-primitives/media": next
-  "@solid-primitives/presence": next
-  "@solid-primitives/props": next
-  "@solid-primitives/refs": next
-  "@solid-primitives/resize-observer": next
-  "@solid-primitives/scroll": next
-  "@solid-primitives/upload": next
-  "@solid-primitives/utils": next
+  "@solid-primitives/a11y": 1.0.0-next.3
+  "@solid-primitives/controlled-signal": 1.0.0-next.3
+  "@solid-primitives/event-listener": 3.0.0-next.3
+  "@solid-primitives/focus": 1.0.0-next.4
+  "@solid-primitives/form": 1.0.0-next.2
+  "@solid-primitives/i18n": 3.0.0-next.4
+  "@solid-primitives/interaction": 1.0.0-next.4
+  "@solid-primitives/keyboard": 2.0.0-next.5
+  "@solid-primitives/keyed": 3.0.0-next.2
+  "@solid-primitives/map": 1.0.0-next.2
+  "@solid-primitives/media": 4.0.0-next.2
+  "@solid-primitives/presence": 1.0.0-next.2
+  "@solid-primitives/props": 4.0.0-next.3
+  "@solid-primitives/refs": 3.0.0-next.2
+  "@solid-primitives/resize-observer": 4.0.0-next.3
+  "@solid-primitives/scroll": 3.0.0-next.4
+  "@solid-primitives/upload": 1.0.0-next.3
+  "@solid-primitives/utils": 7.0.0-next.4
 overrides:
   # unplugin-solid@1.0.0's own babel-preset-solid dependency (^1.9.9) predates
   # Solid 2.0's rename of the `use:` directive runtime helper (`use` ->
   # `ref`/`applyRef`), which crashes at runtime against @solidjs/web@2.x.
-  "babel-preset-solid": "2.0.0-beta.32"
+  "babel-preset-solid": "2.0.0-rc.0"
   "@solidjs/testing-library": "1.0.0-beta.2"
-  "@solid-primitives/a11y": "next"
-  "@solid-primitives/controlled-signal": "1.0.0-next.1"
-  "@solid-primitives/event-listener": "next"
-  "@solid-primitives/focus": "1.0.0-next.3"
-  "@solid-primitives/form": "next"
-  "@solid-primitives/i18n": "next"
-  "@solid-primitives/interaction": "1.0.0-next.1"
-  "@solid-primitives/keyboard": "next"
-  "@solid-primitives/keyed": "next"
-  "@solid-primitives/map": "next"
-  "@solid-primitives/media": "next"
-  "@solid-primitives/platform": "next"
-  "@solid-primitives/presence": "next"
-  "@solid-primitives/props": "next"
-  "@solid-primitives/refs": "next"
-  "@solid-primitives/resize-observer": "next"
-  "@solid-primitives/rootless": "next"
-  "@solid-primitives/scroll": "next"
-  "@solid-primitives/static-store": "next"
-  "@solid-primitives/trigger": "next"
-  "@solid-primitives/upload": "next"
-  "@solid-primitives/utils": "next"
+  "@solid-primitives/a11y": "1.0.0-next.3"
+  "@solid-primitives/controlled-signal": "1.0.0-next.3"
+  "@solid-primitives/event-listener": "3.0.0-next.3"
+  "@solid-primitives/focus": "1.0.0-next.4"
+  "@solid-primitives/form": "1.0.0-next.2"
+  "@solid-primitives/i18n": "3.0.0-next.4"
+  "@solid-primitives/interaction": "1.0.0-next.4"
+  "@solid-primitives/keyboard": "2.0.0-next.5"
+  "@solid-primitives/keyed": "3.0.0-next.2"
+  "@solid-primitives/map": "1.0.0-next.2"
+  "@solid-primitives/media": "4.0.0-next.2"
+  "@solid-primitives/platform": "1.0.0-next.2"
+  "@solid-primitives/presence": "1.0.0-next.2"
+  "@solid-primitives/props": "4.0.0-next.3"
+  "@solid-primitives/refs": "3.0.0-next.2"
+  "@solid-primitives/resize-observer": "4.0.0-next.3"
+  "@solid-primitives/rootless": "2.0.0-next.2"
+  "@solid-primitives/scroll": "3.0.0-next.4"
+  "@solid-primitives/static-store": "1.0.0-next.2"
+  "@solid-primitives/trigger": "3.0.0-next.2"
+  "@solid-primitives/upload": "1.0.0-next.3"
+  "@solid-primitives/utils": "7.0.0-next.4"
   "@storybook/builder-vite": "10.5.0"
 allowBuilds:
   "@biomejs/biome": false
@@ -70,35 +70,35 @@ minimumReleaseAgeExclude:
   - "@kobalte/solidbase@0.6.4 || 0.6.7 || 0.6.8 || 0.6.9-next.0 || 0.6.9-next.1 || 0.6.9 || 0.6.10 || 0.6.11"
   - "@solidjs/router@0.16.2"
   - "@solidjs/start@2.0.0-beta.0"
-  - "@solid-primitives/a11y@1.0.0-next.0"
-  - "@solid-primitives/controlled-signal@1.0.0-next.1"
-  - "@solid-primitives/event-listener@3.0.0-next.0"
-  - "@solid-primitives/focus@1.0.0-next.3"
-  - "@solid-primitives/form@1.0.0-next.0"
-  - "@solid-primitives/i18n@3.0.0-next.0"
-  - "@solid-primitives/interaction@1.0.0-next.0"
-  - "@solid-primitives/keyboard@2.0.0-next.0"
-  - "@solid-primitives/keyed@3.0.0-next.0"
-  - "@solid-primitives/map@1.0.0-next.0"
-  - "@solid-primitives/media@4.0.0-next.0"
-  - "@solid-primitives/platform@1.0.0-next.1"
-  - "@solid-primitives/presence@1.0.0-next.0"
-  - "@solid-primitives/props@4.0.0-next.0"
-  - "@solid-primitives/refs@3.0.0-next.0"
-  - "@solid-primitives/resize-observer@4.0.0-next.0"
-  - "@solid-primitives/rootless@2.0.0-next.0"
-  - "@solid-primitives/scroll@3.0.0-next.0"
-  - "@solid-primitives/static-store@1.0.0-next.0"
-  - "@solid-primitives/trigger@3.0.0-next.0"
-  - "@solid-primitives/upload@1.0.0-next.0"
-  - "@solid-primitives/utils@7.0.0-next.0"
+  - "@solid-primitives/a11y@1.0.0-next.3"
+  - "@solid-primitives/controlled-signal@1.0.0-next.3"
+  - "@solid-primitives/event-listener@3.0.0-next.3"
+  - "@solid-primitives/focus@1.0.0-next.4"
+  - "@solid-primitives/form@1.0.0-next.2"
+  - "@solid-primitives/i18n@3.0.0-next.4"
+  - "@solid-primitives/interaction@1.0.0-next.4"
+  - "@solid-primitives/keyboard@2.0.0-next.5"
+  - "@solid-primitives/keyed@3.0.0-next.2"
+  - "@solid-primitives/map@1.0.0-next.2"
+  - "@solid-primitives/media@4.0.0-next.2"
+  - "@solid-primitives/platform@1.0.0-next.2"
+  - "@solid-primitives/presence@1.0.0-next.2"
+  - "@solid-primitives/props@4.0.0-next.3"
+  - "@solid-primitives/refs@3.0.0-next.2"
+  - "@solid-primitives/resize-observer@4.0.0-next.3"
+  - "@solid-primitives/rootless@2.0.0-next.2"
+  - "@solid-primitives/scroll@3.0.0-next.4"
+  - "@solid-primitives/static-store@1.0.0-next.2"
+  - "@solid-primitives/trigger@3.0.0-next.2"
+  - "@solid-primitives/upload@1.0.0-next.3"
+  - "@solid-primitives/utils@7.0.0-next.4"
   - rolldown-plugin-dts@0.27.8
   - tsdown@0.22.7
   - "@dom-expressions/babel-plugin-jsx@0.50.0-next.21"
-  - "@solidjs/signals@2.0.0-beta.32"
-  - "@solidjs/web@2.0.0-beta.32"
-  - babel-preset-solid@2.0.0-beta.32
-  - solid-js@2.0.0-beta.32
+  - "@solidjs/signals@2.0.0-rc.0"
+  - "@solidjs/web@2.0.0-rc.0"
+  - babel-preset-solid@2.0.0-rc.0
+  - solid-js@2.0.0-rc.0
 dedupePeerDependents: true
 patchedDependencies:
   storybook-solidjs-vite@10.6.0: patches/storybook-solidjs-vite@10.6.0.patch

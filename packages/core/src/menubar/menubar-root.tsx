@@ -199,7 +199,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			setValue(undefined);
 		},
 		autoFocusMenu: () => autoFocusMenu()!,
-		setAutoFocusMenu,
+		setAutoFocusMenu: setAutoFocusMenu as Setter<boolean>,
 		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		orientation: () => mergedProps.orientation!,
 	};

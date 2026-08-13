@@ -7,13 +7,13 @@ export function BasicExample() {
 			<Image fallbackDelay={600} class={style.image}>
 				<Image.Img
 					class={style.image__img}
-					src="https://randomuser.me/api/portraits/women/44.jpg"
-					alt="Nicole Steeves"
+					src="https://avatars.githubusercontent.com/u/124704559?s=200&v=4"
+					alt="Kobalte"
 				/>
-				<Image.Fallback class={style.image__fallback}>NS</Image.Fallback>
+				<Image.Fallback class={style.image__fallback}>KB</Image.Fallback>
 			</Image>
 			<Image class={style.image}>
-				<Image.Fallback class={style.image__fallback}>MD</Image.Fallback>
+				<Image.Fallback class={style.image__fallback}>J</Image.Fallback>
 			</Image>
 		</div>
 	);

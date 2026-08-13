@@ -1,7 +1,15 @@
-import { createSignal } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Content, Indicator, List, Root, Trigger } from "../index.tsx";
-import style from "./stories.module.css";
+import {
+	BasicExample,
+	ControlledExample,
+	DefaultValueExample,
+	DisabledTabsExample,
+	DynamicContentExample,
+	FocusableContentExample,
+	ManualActivationExample,
+	SingleDisabledTabExample,
+	VerticalOrientationExample,
+} from "../../../../../apps/docs/src/examples/tabs.tsx";
 
 const meta = preview.meta({
 	title: "Components/Tabs",
@@ -10,251 +18,56 @@ const meta = preview.meta({
 
 export default meta;
 
-/** A basic tab set with three panels. */
-export const Default = meta.story({
-	name: "Default",
-	render: () => (
-		<Root class={style.tabs__root} defaultValue="account">
-			<List class={style.tabs__list}>
-				<Trigger class={style.tabs__trigger} value="account">
-					Account
-				</Trigger>
-				<Trigger class={style.tabs__trigger} value="password">
-					Password
-				</Trigger>
-				<Trigger class={style.tabs__trigger} value="settings">
-					Settings
-				</Trigger>
-				<Indicator class={style.tabs__indicator} />
-			</List>
-			<Content class={style.tabs__content} value="account">
-				Manage your account details and preferences.
-			</Content>
-			<Content class={style.tabs__content} value="password">
-				Change your password and security settings.
-			</Content>
-			<Content class={style.tabs__content} value="settings">
-				Configure application-wide settings.
-			</Content>
-		</Root>
-	),
+/** Basic usage. */
+export const Basic = meta.story({
+	name: "Basic",
+	render: () => <BasicExample />,
 });
 
-/** `value` + `onChange` give full external control over the active tab. */
-function ControlledDemo() {
-	const [tab, setTab] = createSignal("account");
-	return (
-		<div class={style.tabs__demo}>
-			<Root class={style.tabs__root} value={tab()} onChange={setTab}>
-				<List class={style.tabs__list}>
-					<Trigger class={style.tabs__trigger} value="account">
-						Account
-					</Trigger>
-					<Trigger class={style.tabs__trigger} value="password">
-						Password
-					</Trigger>
-					<Trigger class={style.tabs__trigger} value="settings">
-						Settings
-					</Trigger>
-					<Indicator class={style.tabs__indicator} />
-				</List>
-				<Content class={style.tabs__content} value="account">
-					Manage your account details and preferences.
-				</Content>
-				<Content class={style.tabs__content} value="password">
-					Change your password and security settings.
-				</Content>
-				<Content class={style.tabs__content} value="settings">
-					Configure application-wide settings.
-				</Content>
-			</Root>
-			<p class={style.tabs__text}>
-				Active tab: <strong>{tab()}</strong>
-			</p>
-			<button
-				type="button"
-				class={style.tabs__button}
-				onClick={() => setTab("account")}
-			>
-				Reset to Account
-			</button>
-		</div>
-	);
-}
+/** Default Value example. */
+export const DefaultValue = meta.story({
+	name: "Default Value",
+	render: () => <DefaultValueExample />,
+});
 
+/** Controlled example. */
 export const Controlled = meta.story({
 	name: "Controlled",
-	render: () => <ControlledDemo />,
+	render: () => <ControlledExample />,
 });
 
-/** `activationMode="manual"` requires pressing Enter/Space after focusing a tab. */
+/** Focusable Content example. */
+export const FocusableContent = meta.story({
+	name: "Focusable Content",
+	render: () => <FocusableContentExample />,
+});
+
+/** Dynamic Content example. */
+export const DynamicContent = meta.story({
+	name: "Dynamic Content",
+	render: () => <DynamicContentExample />,
+});
+
+/** Manual Activation example. */
 export const ManualActivation = meta.story({
 	name: "Manual Activation",
-	render: () => (
-		<Root
-			class={style.tabs__root}
-			defaultValue="account"
-			activationMode="manual"
-		>
-			<List class={style.tabs__list}>
-				<Trigger class={style.tabs__trigger} value="account">
-					Account
-				</Trigger>
-				<Trigger class={style.tabs__trigger} value="password">
-					Password
-				</Trigger>
-				<Trigger class={style.tabs__trigger} value="settings">
-					Settings
-				</Trigger>
-				<Indicator class={style.tabs__indicator} />
-			</List>
-			<Content class={style.tabs__content} value="account">
-				Focus a tab and press Enter or Space to activate it.
-			</Content>
-			<Content class={style.tabs__content} value="password">
-				Change your password and security settings.
-			</Content>
-			<Content class={style.tabs__content} value="settings">
-				Configure application-wide settings.
-			</Content>
-		</Root>
-	),
+	render: () => <ManualActivationExample />,
 });
 
-/** `orientation="vertical"` stacks tabs on the left side. */
-export const Vertical = meta.story({
-	name: "Vertical",
-	render: () => (
-		<Root
-			class={style["tabs__root--vertical"]}
-			defaultValue="account"
-			orientation="vertical"
-		>
-			<List class={style["tabs__list--vertical"]}>
-				<Trigger class={style["tabs__trigger--vertical"]} value="account">
-					Account
-				</Trigger>
-				<Trigger class={style["tabs__trigger--vertical"]} value="password">
-					Password
-				</Trigger>
-				<Trigger class={style["tabs__trigger--vertical"]} value="settings">
-					Settings
-				</Trigger>
-				<Indicator class={style["tabs__indicator--vertical"]} />
-			</List>
-			<div class={style.tabs__contentInner}>
-				<Content class={style.tabs__content} value="account">
-					Manage your account details and preferences.
-				</Content>
-				<Content class={style.tabs__content} value="password">
-					Change your password and security settings.
-				</Content>
-				<Content class={style.tabs__content} value="settings">
-					Configure application-wide settings.
-				</Content>
-			</div>
-		</Root>
-	),
+/** Vertical Orientation example. */
+export const VerticalOrientation = meta.story({
+	name: "Vertical Orientation",
+	render: () => <VerticalOrientationExample />,
 });
 
-/** A single tab can be disabled independently. */
-export const DisabledTab = meta.story({
-	name: "Disabled Tab",
-	render: () => (
-		<Root class={style.tabs__root} defaultValue="account">
-			<List class={style.tabs__list}>
-				<Trigger class={style.tabs__trigger} value="account">
-					Account
-				</Trigger>
-				<Trigger class={style.tabs__trigger} value="password" disabled>
-					Password
-				</Trigger>
-				<Trigger class={style.tabs__trigger} value="settings">
-					Settings
-				</Trigger>
-				<Indicator class={style.tabs__indicator} />
-			</List>
-			<Content class={style.tabs__content} value="account">
-				Manage your account details and preferences.
-			</Content>
-			<Content class={style.tabs__content} value="password">
-				Change your password and security settings.
-			</Content>
-			<Content class={style.tabs__content} value="settings">
-				Configure application-wide settings.
-			</Content>
-		</Root>
-	),
+/** Disabled Tabs example. */
+export const DisabledTabs = meta.story({
+	name: "Disabled Tabs",
+	render: () => <DisabledTabsExample />,
 });
 
-/** `disabled` on the root prevents all tab switching. */
-export const DisabledRoot = meta.story({
-	name: "Disabled Root",
-	render: () => (
-		<Root class={style.tabs__root} defaultValue="account" disabled>
-			<List class={style.tabs__list}>
-				<Trigger class={style.tabs__trigger} value="account">
-					Account
-				</Trigger>
-				<Trigger class={style.tabs__trigger} value="password">
-					Password
-				</Trigger>
-				<Trigger class={style.tabs__trigger} value="settings">
-					Settings
-				</Trigger>
-				<Indicator class={style.tabs__indicator} />
-			</List>
-			<Content class={style.tabs__content} value="account">
-				All tabs are disabled — no switching is possible.
-			</Content>
-			<Content class={style.tabs__content} value="password">
-				Change your password and security settings.
-			</Content>
-			<Content class={style.tabs__content} value="settings">
-				Configure application-wide settings.
-			</Content>
-		</Root>
-	),
-});
-
-/** `forceMount` keeps all panels in the DOM regardless of selection. */
-export const ForceMount = meta.story({
-	name: "Force Mount",
-	render: () => (
-		<Root class={style.tabs__root} defaultValue="account">
-			<List class={style.tabs__list}>
-				<Trigger class={style.tabs__trigger} value="account">
-					Account
-				</Trigger>
-				<Trigger class={style.tabs__trigger} value="password">
-					Password
-				</Trigger>
-				<Trigger class={style.tabs__trigger} value="settings">
-					Settings
-				</Trigger>
-				<Indicator class={style.tabs__indicator} />
-			</List>
-			<Content
-				class={[style.tabs__content, style["tabs__content--hidden"]]}
-				value="account"
-				forceMount
-			>
-				Always in the DOM — useful for CSS-only transitions.
-			</Content>
-			<Content
-				class={[style.tabs__content, style["tabs__content--hidden"]]}
-				value="password"
-				forceMount
-			>
-				Change your password and security settings.
-			</Content>
-			<Content
-				class={[style.tabs__content, style["tabs__content--hidden"]]}
-				value="settings"
-				forceMount
-			>
-				Configure application-wide settings.
-			</Content>
-		</Root>
-	),
+/** Single Disabled Tab example. */
+export const SingleDisabledTab = meta.story({
+	name: "Single Disabled Tab",
+	render: () => <SingleDisabledTabExample />,
 });

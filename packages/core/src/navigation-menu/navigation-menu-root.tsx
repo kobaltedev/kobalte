@@ -189,7 +189,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 		delayDuration: () => mergedProps.delayDuration!,
 		skipDelayDuration: () => mergedProps.skipDelayDuration!,
 		autoFocusMenu: autoFocusMenu as Accessor<boolean>,
-		setAutoFocusMenu,
+		setAutoFocusMenu: setAutoFocusMenu as Setter<boolean>,
 		startLeaveTimer: () => {
 			timeoutId = window.setTimeout(() => {
 				context.setAutoFocusMenu(false);
@@ -229,7 +229,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 						value={value() ?? null}
 						onValueChange={setValue}
 						autoFocusMenu={autoFocusMenu()}
-						onAutoFocusMenuChange={setAutoFocusMenu}
+						onAutoFocusMenuChange={setAutoFocusMenu as Setter<boolean>}
 						{...others}
 					/>
 				</nav>

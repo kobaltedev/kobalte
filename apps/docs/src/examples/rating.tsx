@@ -1,5 +1,5 @@
 import { Rating } from "@kobalte/core/rating";
-import { createSignal, Index } from "solid-js";
+import { createSignal, Repeat } from "solid-js";
 import style from "./rating.module.css";
 
 export function BasicExample() {
@@ -7,7 +7,7 @@ export function BasicExample() {
 		<Rating class={style.rating}>
 			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
 			<Rating.Control class={style.rating__control}>
-				<Index each={Array(5)}>
+				<Repeat each={Array(5)}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
 							<Rating.ItemControl>
@@ -15,7 +15,7 @@ export function BasicExample() {
 							</Rating.ItemControl>
 						</Rating.Item>
 					)}
-				</Index>
+				</Repeat>
 			</Rating.Control>
 		</Rating>
 	);
@@ -25,7 +25,7 @@ export function DefaultValueExample() {
 	return (
 		<Rating class={style.rating} defaultValue={3}>
 			<Rating.Control class={style.rating__control}>
-				<Index each={Array(5)}>
+				<Repeat each={Array(5)}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
 							<Rating.ItemControl>
@@ -33,7 +33,7 @@ export function DefaultValueExample() {
 							</Rating.ItemControl>
 						</Rating.Item>
 					)}
-				</Index>
+				</Repeat>
 			</Rating.Control>
 		</Rating>
 	);
@@ -46,7 +46,7 @@ export function ControlledExample() {
 		<>
 			<Rating class={style.rating} value={value()} onChange={setValue}>
 				<Rating.Control class={style.rating__control}>
-					<Index each={Array(5)}>
+					<Repeat each={Array(5)}>
 						{(_) => (
 							<Rating.Item class={style["rating-item"]}>
 								<Rating.ItemControl>
@@ -54,7 +54,7 @@ export function ControlledExample() {
 								</Rating.ItemControl>
 							</Rating.Item>
 						)}
-					</Index>
+					</Repeat>
 				</Rating.Control>
 			</Rating>
 			<p
@@ -74,7 +74,7 @@ export function HalfRatingsExample() {
 	return (
 		<Rating class={style.rating} allowHalf>
 			<Rating.Control class={style.rating__control}>
-				<Index each={Array(5)}>
+				<Repeat each={Array(5)}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
 							<Rating.ItemControl>
@@ -82,7 +82,7 @@ export function HalfRatingsExample() {
 							</Rating.ItemControl>
 						</Rating.Item>
 					)}
-				</Index>
+				</Repeat>
 			</Rating.Control>
 		</Rating>
 	);
@@ -93,7 +93,7 @@ export function DescriptionExample() {
 		<Rating class={style.rating}>
 			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
 			<Rating.Control class={style.rating__control}>
-				<Index each={Array(5)}>
+				<Repeat each={Array(5)}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
 							<Rating.ItemControl>
@@ -101,7 +101,7 @@ export function DescriptionExample() {
 							</Rating.ItemControl>
 						</Rating.Item>
 					)}
-				</Index>
+				</Repeat>
 			</Rating.Control>
 			<Rating.Description class={style.rating__description}>
 				Rate your experience with us.
@@ -122,7 +122,7 @@ export function ErrorMessageExample() {
 		>
 			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
 			<Rating.Control class={style.rating__control}>
-				<Index each={Array(5)}>
+				<Repeat each={Array(5)}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
 							<Rating.ItemControl>
@@ -130,7 +130,7 @@ export function ErrorMessageExample() {
 							</Rating.ItemControl>
 						</Rating.Item>
 					)}
-				</Index>
+				</Repeat>
 			</Rating.Control>
 			<Rating.ErrorMessage class={style["rating__error-message"]}>
 				Please select a rating between 1 and 5.
@@ -164,7 +164,7 @@ export function HTMLFormExample() {
 		>
 			<Rating class={style.rating} name="rate">
 				<Rating.Control class={style.rating__control}>
-					<Index each={Array(5)}>
+					<Repeat each={Array(5)}>
 						{(_) => (
 							<Rating.Item class={style["rating-item"]}>
 								<Rating.ItemControl>
@@ -172,7 +172,7 @@ export function HTMLFormExample() {
 								</Rating.ItemControl>
 							</Rating.Item>
 						)}
-					</Index>
+					</Repeat>
 				</Rating.Control>
 				<Rating.HiddenInput />
 			</Rating>
