@@ -72,6 +72,16 @@ const config: StorybookConfig = {
 				alias: [
 					{ find: "solid-js/web", replacement: "@solidjs/web" },
 					{
+						find: "@kobalte/core/",
+						replacement: new URL("../packages/core/src/", import.meta.url)
+							.pathname,
+					},
+					{
+						find: "@kobalte/core",
+						replacement: new URL("../packages/core/src", import.meta.url)
+							.pathname,
+					},
+					{
 						find: "@kobalte/utils",
 						replacement: new URL(
 							"../packages/utils/src/index.ts",
