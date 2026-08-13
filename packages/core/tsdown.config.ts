@@ -20,7 +20,7 @@ function generateConfig(jsx: boolean): UserConfig {
 		outExtensions: () => (jsx ? { js: ".jsx" } : {}),
 		inputOptions: jsx ? { transform: { jsx: "preserve" } } : undefined,
 		outputOptions(options) {
-			options.chunkFileNames = "[name]/[hash].js";
+			options.chunkFileNames = jsx ? "[name]/[hash].jsx" : "[name]/[hash].js";
 			return options;
 		},
 		plugins: jsx
