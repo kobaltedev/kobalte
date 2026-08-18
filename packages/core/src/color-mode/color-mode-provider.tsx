@@ -64,9 +64,12 @@ export function ColorModeProvider(props: ColorModeProviderProps) {
 		setColorMode(colorMode() === "dark" ? "light" : "dark");
 	};
 
-	createEffect(() => {
-		setColorMode(colorModeManager().get() ?? fallbackColorMode());
-	});
+	createEffect(
+		() => colorModeManager().get() ?? fallbackColorMode(), 
+		(mode) => {
+			setColorMode(mode);
+		}
+	);
 
 	onCleanup(() => {
 		// ensure listener is always cleaned when component is destroyed.
