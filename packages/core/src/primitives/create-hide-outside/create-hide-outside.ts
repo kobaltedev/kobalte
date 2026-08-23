@@ -206,11 +206,20 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
 			}
 
 			if (count === 1) {
-				// Deferred to match hide() above.
+				// Deferred to match hide() above. Keep the final reference until this
+				// runs so another call can acquire it before aria-hidden is removed.
 				setTimeout(() =>
-					requestAnimationFrame(() => node.removeAttribute("aria-hidden")),
+					requestAnimationFrame(() => {
+						const currentCount = refCountMap.get(node);
+
+						if (currentCount === 1) {
+							node.removeAttribute("aria-hidden");
+							refCountMap.delete(node);
+						} else if (currentCount != null && currentCount > 1) {
+							refCountMap.set(node, currentCount - 1);
+						}
+					}),
 				);
-				refCountMap.delete(node);
 			} else {
 				refCountMap.set(node, count - 1);
 			}

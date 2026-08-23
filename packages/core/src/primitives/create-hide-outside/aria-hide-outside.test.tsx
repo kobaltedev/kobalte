@@ -401,6 +401,34 @@ describe("ariaHideOutside", () => {
 		expect(() => getByRole("button")).not.toThrow();
 	});
 
+	it("keeps elements hidden during an immediate ownership handoff", async () => {
+		const { getByRole } = render(() => (
+			<>
+				<input type="checkbox" />
+				<button type="button">Button</button>
+			</>
+		));
+
+		const checkbox = getByRole("checkbox");
+		const button = getByRole("button");
+
+		const revert1 = ariaHideOutside([button]);
+		await flush();
+
+		expect(checkbox).toHaveAttribute("aria-hidden", "true");
+
+		revert1();
+		const revert2 = ariaHideOutside([button]);
+		await flush();
+
+		expect(checkbox).toHaveAttribute("aria-hidden", "true");
+
+		revert2();
+		await flush();
+
+		expect(checkbox).not.toHaveAttribute("aria-hidden");
+	});
+
 	it("should hide everything except the provided element [row]", async () => {
 		const { getAllByRole } = render(() => (
 			<div role="grid">
