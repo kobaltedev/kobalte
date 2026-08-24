@@ -65,10 +65,10 @@ export function ColorModeProvider(props: ColorModeProviderProps) {
 	};
 
 	createEffect(
-		() => colorModeManager().get() ?? fallbackColorMode(), 
+		() => colorModeManager().get() ?? fallbackColorMode(),
 		(mode) => {
 			setColorMode(mode);
-		}
+		},
 	);
 
 	onCleanup(() => {
