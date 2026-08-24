@@ -372,10 +372,6 @@ export function ComboboxBase<
 
 	const [showAllOptions, setShowAllOptions] = createSignal(false);
 
-	const [lastDisplayedOptions, setLastDisplayedOptions] = createSignal(
-		local.options!,
-	);
-
 	const disclosureState = createDisclosureState({
 		open: () => local.open,
 		defaultOpen: () => local.defaultOpen,
@@ -515,13 +511,10 @@ export function ComboboxBase<
 	});
 
 	const displayedOptions = createMemo(() => {
-		if (disclosureState.isOpen()) {
-			if (showAllOptions()) {
-				return local.options!;
-			}
-			return filteredOptions();
+		if (showAllOptions()) {
+			return local.options!;
 		}
-		return lastDisplayedOptions();
+		return filteredOptions();
 	});
 
 	// Track what action is attempting to open the combobox.
@@ -733,28 +726,6 @@ export function ComboboxBase<
 	const renderSection = (section: CollectionNode) => {
 		return local.sectionComponent?.({ section });
 	};
-
-	// If combobox is going to close, freeze the displayed options
-	// Prevents the popover contents from updating as the combobox closes.
-	createEffect(
-		on([filteredOptions, showAllOptions], (input, prevInput) => {
-			if (disclosureState.isOpen() && prevInput != null) {
-				const prevFilteredOptions = prevInput[0];
-				const prevShowAllOptions = prevInput[1];
-
-				setLastDisplayedOptions(
-					prevShowAllOptions ? local.options! : prevFilteredOptions,
-				);
-			} else {
-				const filteredOptions = input[0];
-				const showAllOptions = input[1];
-
-				setLastDisplayedOptions(
-					showAllOptions ? local.options! : filteredOptions,
-				);
-			}
-		}),
-	);
 
 	// Display filtered collection again when input value changes.
 	createEffect(
