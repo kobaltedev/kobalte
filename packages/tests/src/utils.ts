@@ -67,7 +67,16 @@ export function installPointerEvent() {
 }
 
 export function createPointerEvent(type: any, opts: any) {
-	const evt = new Event(type, { bubbles: true, cancelable: true });
+	// `bubbles`, `cancelable` and `composed` are read-only on `Event`, so they have to go through
+	// the constructor rather than the `Object.assign` below.
+	const { bubbles, cancelable, composed, ...rest } = opts ?? {};
+
+	const evt = new Event(type, {
+		bubbles: bubbles ?? true,
+		cancelable: cancelable ?? true,
+		composed: composed ?? false,
+	});
+
 	Object.assign(
 		evt,
 		{
@@ -79,7 +88,7 @@ export function createPointerEvent(type: any, opts: any) {
 			width: 1,
 			height: 1,
 		},
-		opts,
+		rest,
 	);
 	return evt;
 }
