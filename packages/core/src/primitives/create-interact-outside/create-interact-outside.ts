@@ -16,7 +16,6 @@ import {
 	type MaybeAccessor,
 	access,
 	composeEventHandlers,
-	contains,
 	getDocument,
 	isCtrlKey,
 	noop,
@@ -25,6 +24,7 @@ import { type Accessor, createEffect, onCleanup } from "solid-js";
 import { isServer } from "solid-js/web";
 
 import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
+import { closestComposed, containsComposed, getEventTarget } from "./utils";
 
 type EventDetails<T> = {
 	originalEvent: T;
@@ -83,22 +83,27 @@ export function createInteractOutside<T extends Element>(
 		props.onInteractOutside?.(e);
 
 	const isEventOutside = (e: Event) => {
-		const target = e.target as Element | null;
+		// The element the interaction started on, not `e.target` — these listeners
+		// are on the document, so an interaction inside a shadow tree reports that
+		// tree's host instead. The distinction decides this function: a layer
+		// rendered inside a shadow root sees each of its own clicks as the host,
+		// which is outside itself, and dismisses on pointerdown.
+		const target = getEventTarget(e);
 
-		if (!(target instanceof Element)) {
+		if (!target) {
 			return false;
 		}
 
 		// If the target is within a top layer element (e.g. toasts), ignore.
-		if (target.closest(`[${DATA_TOP_LAYER_ATTR}]`)) {
+		if (closestComposed(target, `[${DATA_TOP_LAYER_ATTR}]`)) {
 			return false;
 		}
 
-		if (!contains(ownerDocument(), target)) {
+		if (!containsComposed(ownerDocument(), target)) {
 			return false;
 		}
 
-		if (contains(ref(), target)) {
+		if (containsComposed(ref(), target)) {
 			return false;
 		}
 
@@ -108,7 +113,7 @@ export function createInteractOutside<T extends Element>(
 	const onPointerDown = (e: PointerEvent) => {
 		function handler() {
 			const container = ref();
-			const target = e.target as Element | null;
+			const target = getEventTarget(e);
 
 			if (!container || !target || !isEventOutside(e)) {
 				return;
@@ -161,7 +166,7 @@ export function createInteractOutside<T extends Element>(
 
 	const onFocusIn = (e: FocusEvent) => {
 		const container = ref();
-		const target = e.target as Element | null;
+		const target = getEventTarget(e);
 
 		if (!container || !target || !isEventOutside(e)) {
 			return;

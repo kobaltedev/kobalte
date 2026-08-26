@@ -1,6 +1,6 @@
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
-import type { JSX } from "solid-js";
+import { type JSX, createRoot } from "solid-js";
 
 import {
 	type CreateInteractOutsideProps,
@@ -194,6 +194,93 @@ describe("createInteractOutside", () => {
 				expect(mocks.onPointerDownOutside).not.toHaveBeenCalled();
 				expect(mocks.onInteractOutside).not.toHaveBeenCalled();
 			});
+		});
+	});
+
+	describe("Shadow DOM", () => {
+		/**
+		 * A layer whose content lives inside a shadow root — what happens when a portal target is
+		 * itself shadowed, rather than being in the light DOM.
+		 *
+		 * These listeners are on the document, so `event.target` is retargeted to the shadow host.
+		 * The host is an *ancestor* of the layer, so `contains(layer, host)` is false and every
+		 * interaction with the layer's own content read as "outside": the layer dismissed itself on
+		 * pointerdown, the content unmounted, and pointerup never landed on anything. The symptom is
+		 * a menu that closes when you click an item, without the item ever activating.
+		 */
+		const setupShadowTest = () => {
+			const onFocusOutside = vi.fn();
+			const onPointerDownOutside = vi.fn();
+			const onInteractOutside = vi.fn();
+
+			const host = document.createElement("div");
+			document.body.appendChild(host);
+			const shadowRoot = host.attachShadow({ mode: "open" });
+
+			// The layer (what `ref()` returns) and a child of it — clicking the child is the case
+			// that broke, since only the child is deep enough for retargeting to matter.
+			const inside = document.createElement("div");
+			const insideChild = document.createElement("span");
+			inside.appendChild(insideChild);
+			shadowRoot.appendChild(inside);
+
+			// A sibling in the same shadow root: genuinely outside the layer, and must stay so.
+			const outside = document.createElement("div");
+			shadowRoot.appendChild(outside);
+
+			const dispose = createRoot((disposer) => {
+				createInteractOutside(
+					{ onFocusOutside, onPointerDownOutside, onInteractOutside },
+					() => inside,
+				);
+
+				return disposer;
+			});
+
+			vi.runAllTimers();
+
+			onTestFinished(() => {
+				dispose();
+				host.remove();
+			});
+
+			return {
+				mocks: { onFocusOutside, onPointerDownOutside, onInteractOutside },
+				elements: { inside, insideChild, outside },
+			};
+		};
+
+		it("should NOT trigger when clicking the layer's own content inside a shadow root", () => {
+			const { mocks, elements } = setupShadowTest();
+
+			fireEvent(
+				elements.insideChild,
+				createPointerEvent("pointerdown", { bubbles: true, composed: true }),
+			);
+
+			expect(mocks.onPointerDownOutside).not.toHaveBeenCalled();
+			expect(mocks.onInteractOutside).not.toHaveBeenCalled();
+		});
+
+		it("should still trigger when clicking a sibling inside the same shadow root", () => {
+			const { mocks, elements } = setupShadowTest();
+
+			fireEvent(
+				elements.outside,
+				createPointerEvent("pointerdown", { bubbles: true, composed: true }),
+			);
+
+			expect(mocks.onPointerDownOutside).toHaveBeenCalledTimes(1);
+			expect(mocks.onInteractOutside).toHaveBeenCalledTimes(1);
+		});
+
+		it("should NOT trigger when focus moves to the layer's own content inside a shadow root", () => {
+			const { mocks, elements } = setupShadowTest();
+
+			fireEvent.focusIn(elements.insideChild, { composed: true });
+
+			expect(mocks.onFocusOutside).not.toHaveBeenCalled();
+			expect(mocks.onInteractOutside).not.toHaveBeenCalled();
 		});
 	});
 
