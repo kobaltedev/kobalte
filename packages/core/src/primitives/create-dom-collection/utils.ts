@@ -6,7 +6,7 @@
  * https://github.com/ariakit/ariakit/blob/da142672eddefa99365773ced72171facc06fdcb/packages/ariakit/src/collection/collection-state.ts
  */
 
-import { type Accessor, createEffect } from "solid-js";
+import { type Accessor, createEffect, untrack } from "solid-js";
 
 import type { DomCollectionItem } from "./types.ts";
 
@@ -123,7 +123,7 @@ function createTimeoutObserver<T extends DomCollectionItem = DomCollectionItem>(
 		() => {},
 		() => {
 			const timeout = setTimeout(() => {
-				setItemsBasedOnDOMPosition(items(), setItems);
+				setItemsBasedOnDOMPosition(untrack(() => items()), setItems);
 			});
 			return () => clearTimeout(timeout);
 		},
@@ -146,21 +146,21 @@ export function createSortBasedOnDOMPosition<
 		(currentItems) => {
 			const callback = () => {
 				const hasPreviousItems = !!previousItems.length;
-				previousItems = items();
+				previousItems = untrack(() => items());
 
 				// We don't want to sort items if items have been just registered.
 				if (!hasPreviousItems) {
 					return;
 				}
 
-				setItemsBasedOnDOMPosition(items(), setItems);
+				setItemsBasedOnDOMPosition(untrack(() => items()), setItems);
 			};
 
 			const root = getCommonParent(currentItems);
 			const observer = new IntersectionObserver(callback, { root });
 
 			for (const item of currentItems) {
-				const itemEl = item.ref();
+				const itemEl = untrack(() => item.ref());
 
 				if (itemEl) {
 					observer.observe(itemEl);
