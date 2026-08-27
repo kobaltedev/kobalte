@@ -12,6 +12,7 @@ import {
 	createSignal,
 	on,
 	splitProps,
+	untrack,
 } from "solid-js";
 
 import type { Orientation } from "@kobalte/utils";
@@ -99,8 +100,8 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 		on(
 			[context.selectedTab, context.orientation, direction],
 			() => {
-				if (style() != null) {
-					computeStyle();
+				if (untrack(() => style()) != null) {
+					untrack(() => computeStyle());
 				}
 			},
 			{ defer: true },
@@ -114,7 +115,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 	createResizeObserver(context.selectedTab, (_, t) => {
 		if (prevTarget !== t) {
 			prevTarget = t;
-			computeStyle();
+			untrack(() => computeStyle());
 			return;
 		}
 
@@ -128,7 +129,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 			setResizing(false);
 		}, 1);
 
-		computeStyle();
+		untrack(() => computeStyle());
 	});
 
 	return (
