@@ -6,13 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/950d45db36e63851f411ed0dc6a5aad0af57da68/packages/@react-types/datepicker/src/index.d.ts
  */
 
-import type {
-	CalendarDate,
-	CalendarDateTime,
-	ZonedDateTime,
-} from "@internationalized/date";
-
-export type DateValue = CalendarDate | CalendarDateTime | ZonedDateTime;
+export type { DateValue } from "../calendar/types.ts";
 
 export type DateFieldGranularity = "day" | "hour" | "minute" | "second";
 export type DateFieldMaxGranularity = "year" | "month" | DateFieldGranularity;
