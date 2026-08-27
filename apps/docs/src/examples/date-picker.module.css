@@ -1,0 +1,113 @@
+.date-picker {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.date-picker__label {
+	color: hsl(240 6% 10%);
+	font-size: 14px;
+	font-weight: 500;
+	user-select: none;
+}
+
+.date-picker__trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 220px;
+	border-radius: 6px;
+	padding: 0 10px;
+	min-height: 36px;
+	outline: none;
+	forced-color-adjust: none;
+	background-color: #fff;
+	border: 1px solid hsl(240 6% 90%);
+	color: hsl(240 4% 16%);
+	font-size: 14px;
+	cursor: pointer;
+	transition:
+		border-color 250ms,
+		color 250ms;
+}
+
+.date-picker__trigger:hover {
+	border-color: hsl(240 5% 65%);
+}
+
+.date-picker__trigger:focus-visible {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
+
+.date-picker__trigger[data-disabled] {
+	background-color: hsl(240 5% 96%);
+	color: hsl(240 4% 46%);
+	cursor: default;
+}
+
+.date-picker__trigger[data-invalid] {
+	border-color: hsl(0 72% 51%);
+	color: hsl(0 72% 51%);
+}
+
+.date-picker__value {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.date-picker__value[data-placeholder-shown] {
+	color: hsl(240 4% 46%);
+	font-style: italic;
+}
+
+.date-picker__description {
+	color: hsl(240 5% 26%);
+	font-size: 12px;
+	user-select: none;
+}
+
+.date-picker__error-message {
+	color: hsl(0 72% 51%);
+	font-size: 12px;
+	user-select: none;
+}
+
+.date-picker__content {
+	background-color: white;
+	border-radius: 6px;
+	border: 1px solid hsl(240 6% 90%);
+	box-shadow:
+		0 4px 6px -1px rgb(0 0 0 / 0.1),
+		0 2px 4px -2px rgb(0 0 0 / 0.1);
+	transform-origin: var(--kb-popover-content-transform-origin);
+	padding: 12px;
+}
+
+[data-theme*="dark"] .date-picker__label {
+	color: hsl(240 5% 84%);
+}
+
+[data-theme*="dark"] .date-picker__trigger {
+	background-color: hsl(240 4% 16%);
+	border: 1px solid hsl(240 5% 34%);
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-theme*="dark"] .date-picker__trigger:hover {
+	border-color: hsl(240 5% 34%);
+}
+
+[data-theme*="dark"] .date-picker__value[data-placeholder-shown] {
+	color: hsl(0 100% 100% / 0.5);
+}
+
+[data-theme*="dark"] .date-picker__description {
+	color: hsl(240 5% 65%);
+}
+
+[data-theme*="dark"] .date-picker__content {
+	background-color: hsl(240 4% 16%);
+	border: 1px solid hsl(240 5% 34%);
+}
