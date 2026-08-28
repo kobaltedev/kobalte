@@ -1,4 +1,3 @@
-import { CalendarDate } from "@internationalized/date";
 import { fireEvent, render } from "@solidjs/testing-library";
 import { vi } from "vitest";
 
@@ -53,7 +52,7 @@ describe("Calendar", () => {
 		const { getByRole } = render(() => (
 			<CalendarExample
 				selectionMode="single"
-				defaultFocusedValue={new CalendarDate(2024, 1, 15)}
+				defaultFocusedValue={new Date(2024, 0, 15)}
 			/>
 		));
 
@@ -70,7 +69,7 @@ describe("Calendar", () => {
 		const { container } = render(() => (
 			<CalendarExample
 				selectionMode="single"
-				defaultFocusedValue={new CalendarDate(2024, 1, 15)}
+				defaultFocusedValue={new Date(2024, 0, 15)}
 				onChange={onChangeSpy}
 			/>
 		));
@@ -78,7 +77,7 @@ describe("Calendar", () => {
 		fireEvent.click(getCell(container, "2024-01-15"));
 
 		expect(onChangeSpy).toHaveBeenCalledTimes(1);
-		expect((onChangeSpy.mock.calls[0]![0] as CalendarDate).day).toBe(15);
+		expect((onChangeSpy.mock.calls[0]![0] as Date).getDate()).toBe(15);
 	});
 
 	it("selects multiple dates by click in 'multiple' selection mode", () => {
@@ -87,7 +86,7 @@ describe("Calendar", () => {
 		const { container } = render(() => (
 			<CalendarExample
 				selectionMode="multiple"
-				defaultFocusedValue={new CalendarDate(2024, 1, 15)}
+				defaultFocusedValue={new Date(2024, 0, 15)}
 				onChange={onChangeSpy}
 			/>
 		));
@@ -95,9 +94,9 @@ describe("Calendar", () => {
 		fireEvent.click(getCell(container, "2024-01-15"));
 
 		expect(onChangeSpy).toHaveBeenCalledTimes(1);
-		const dates = onChangeSpy.mock.calls[0]![0] as CalendarDate[];
+		const dates = onChangeSpy.mock.calls[0]![0] as Date[];
 		expect(dates).toHaveLength(1);
-		expect(dates[0]!.day).toBe(15);
+		expect(dates[0]!.getDate()).toBe(15);
 	});
 
 	it("selects a range by clicking a start then an end date in 'range' selection mode", async () => {
@@ -106,7 +105,7 @@ describe("Calendar", () => {
 		const { container } = render(() => (
 			<CalendarExample
 				selectionMode="range"
-				defaultFocusedValue={new CalendarDate(2024, 1, 15)}
+				defaultFocusedValue={new Date(2024, 0, 15)}
 				onChange={onChangeSpy}
 			/>
 		));
@@ -125,19 +124,19 @@ describe("Calendar", () => {
 		expect(onChangeSpy).toHaveBeenCalledTimes(1);
 
 		const range = onChangeSpy.mock.calls[0]![0] as {
-			start: CalendarDate;
-			end: CalendarDate;
+			start: Date;
+			end: Date;
 		};
 
-		expect(range.start.day).toBe(10);
-		expect(range.end.day).toBe(20);
+		expect(range.start.getDate()).toBe(10);
+		expect(range.end.getDate()).toBe(20);
 	});
 
 	it("moves focus with arrow keys", async () => {
 		const { container, getByRole } = render(() => (
 			<CalendarExample
 				selectionMode="single"
-				defaultFocusedValue={new CalendarDate(2024, 1, 15)}
+				defaultFocusedValue={new Date(2024, 0, 15)}
 			/>
 		));
 
@@ -154,9 +153,9 @@ describe("Calendar", () => {
 		const { container } = render(() => (
 			<CalendarExample
 				selectionMode="single"
-				defaultFocusedValue={new CalendarDate(2024, 1, 15)}
-				minValue={new CalendarDate(2024, 1, 10)}
-				maxValue={new CalendarDate(2024, 1, 20)}
+				defaultFocusedValue={new Date(2024, 0, 15)}
+				minValue={new Date(2024, 0, 10)}
+				maxValue={new Date(2024, 0, 20)}
 			/>
 		));
 
@@ -177,7 +176,7 @@ describe("Calendar", () => {
 		const { getByRole } = render(() => (
 			<CalendarExample
 				selectionMode="single"
-				defaultFocusedValue={new CalendarDate(2024, 1, 15)}
+				defaultFocusedValue={new Date(2024, 0, 15)}
 				disabled
 			/>
 		));

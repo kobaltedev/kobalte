@@ -1,4 +1,3 @@
-import { CalendarDate, type DateValue } from "@internationalized/date";
 import { DatePicker } from "@kobalte/core/date-picker";
 import { createSignal, Show } from "solid-js";
 import calendarStyle from "./calendar.module.css";
@@ -120,9 +119,9 @@ export function MinMaxExample() {
 		<DatePicker
 			class={style["date-picker"]}
 			selectionMode="single"
-			defaultValue={new CalendarDate(2024, 6, 15)}
-			minValue={new CalendarDate(2024, 1, 1)}
-			maxValue={new CalendarDate(2024, 12, 31)}
+			defaultValue={new Date(2024, 5, 15)}
+			minValue={new Date(2024, 0, 1)}
+			maxValue={new Date(2024, 11, 31)}
 		>
 			<DatePicker.Label class={style["date-picker__label"]}>
 				Date
@@ -161,7 +160,7 @@ export function DescriptionExample() {
 }
 
 export function ErrorMessageExample() {
-	const [value, setValue] = createSignal<DateValue | undefined>(undefined);
+	const [value, setValue] = createSignal<Date | undefined>(undefined);
 
 	return (
 		<DatePicker

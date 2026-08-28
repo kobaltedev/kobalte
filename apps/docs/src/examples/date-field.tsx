@@ -1,4 +1,3 @@
-import { CalendarDate } from "@internationalized/date";
 import { DateField } from "@kobalte/core/date-field";
 import { createSignal, Show } from "solid-js";
 import style from "./date-field.module.css";
@@ -23,10 +22,7 @@ export function BasicExample() {
 
 export function DefaultValueExample() {
 	return (
-		<DateField
-			class={style["date-field"]}
-			defaultValue={new CalendarDate(2024, 1, 15)}
-		>
+		<DateField class={style["date-field"]} defaultValue={new Date(2024, 0, 15)}>
 			<DateField.Input class={style["date-field__field"]}>
 				{(segment) => (
 					<DateField.Segment
@@ -40,7 +36,7 @@ export function DefaultValueExample() {
 }
 
 export function ControlledValueExample() {
-	const [value, setValue] = createSignal(new CalendarDate(2024, 1, 15));
+	const [value, setValue] = createSignal(new Date(2024, 0, 15));
 
 	return (
 		<>
@@ -67,7 +63,7 @@ export function ControlledValueExample() {
 			>
 				Selected date:{" "}
 				<Show when={value()} fallback={"--"}>
-					{value().toString()}
+					{value().toLocaleDateString()}
 				</Show>
 			</p>
 		</>
@@ -93,9 +89,9 @@ export function MinMaxExample() {
 	return (
 		<DateField
 			class={style["date-field"]}
-			defaultValue={new CalendarDate(2024, 6, 15)}
-			minValue={new CalendarDate(2024, 1, 1)}
-			maxValue={new CalendarDate(2024, 12, 31)}
+			defaultValue={new Date(2024, 5, 15)}
+			minValue={new Date(2024, 0, 1)}
+			maxValue={new Date(2024, 11, 31)}
 		>
 			<DateField.Input class={style["date-field__field"]}>
 				{(segment) => (
@@ -116,7 +112,7 @@ export function PlaceholderValueExample() {
 	return (
 		<DateField
 			class={style["date-field"]}
-			placeholderValue={new CalendarDate(2030, 1, 1)}
+			placeholderValue={new Date(2030, 0, 1)}
 		>
 			<DateField.Input class={style["date-field__field"]}>
 				{(segment) => (

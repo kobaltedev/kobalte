@@ -49,7 +49,6 @@ export function DatePickerCalendar<T extends ValidComponent = "div">(
 			value={context.value() as any}
 			onChange={onChange as any}
 			locale={context.locale()}
-			createCalendar={context.createCalendar}
 			isDateUnavailable={context.isDateUnavailable}
 			visibleDuration={context.visibleDuration()}
 			allowsNonContiguousRanges={context.allowsNonContiguousRanges()}

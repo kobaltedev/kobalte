@@ -5,15 +5,11 @@
  * Credits to the React Spectrum team:
  * https://github.com/adobe/react-spectrum/blob/99ca82e87ba2d7fdd54f5b49326fd242320b4b51/packages/@react-stately/datepicker/src/useDateFieldState.ts
  * https://github.com/adobe/react-spectrum/blob/99ca82e87ba2d7fdd54f5b49326fd242320b4b51/packages/@react-aria/datepicker/src/useDateField.ts
+ *
+ * Reworked for native `Date` values — no calendar-system (`createCalendar`) or explicit
+ * time-zone concept, so the historical calendar-conversion/timezone-tracking logic is gone.
  */
 
-import {
-	type Calendar,
-	createCalendar as createCalendarFn,
-	DateFormatter,
-	GregorianCalendar,
-	toCalendar,
-} from "@internationalized/date";
 import type { ValidationState } from "@kobalte/utils";
 import { createFocusGroup } from "@solid-primitives/focus";
 import { createFormResetListener } from "@solid-primitives/form";
@@ -31,12 +27,21 @@ import {
 	untrack,
 } from "solid-js";
 import {
+	compareDates,
+	setDay,
+	setHours,
+	setMinutes,
+	setMonth,
+	setSeconds,
+	setYear,
+} from "../calendar/date-math.ts";
+import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
 } from "../form-control/index.ts";
-import { useLocale } from "../i18n/index.tsx";
+import { createDateFormatter, useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -66,7 +71,6 @@ import type {
 } from "./types.ts";
 import {
 	addSegment,
-	convertValue,
 	createPlaceholderDate,
 	type FormatterOptions,
 	getDateFieldFormatOptions,
@@ -83,7 +87,6 @@ const EDITABLE_SEGMENTS = {
 	minute: true,
 	second: true,
 	dayPeriod: true,
-	era: true,
 };
 
 const PAGE_STEP = {
@@ -99,6 +102,44 @@ const PAGE_STEP = {
 const TYPE_MAPPING = {
 	dayperiod: "dayPeriod",
 };
+
+function getFieldValue(date: Date, part: SegmentType): number | undefined {
+	switch (part) {
+		case "year":
+			return date.getFullYear();
+		case "month":
+			return date.getMonth() + 1;
+		case "day":
+			return date.getDate();
+		case "hour":
+			return date.getHours();
+		case "minute":
+			return date.getMinutes();
+		case "second":
+			return date.getSeconds();
+		default:
+			return undefined;
+	}
+}
+
+function applyFieldValue(date: Date, part: SegmentType, value: number): Date {
+	switch (part) {
+		case "year":
+			return setYear(date, value);
+		case "month":
+			return setMonth(date, value - 1);
+		case "day":
+			return setDay(date, value);
+		case "hour":
+			return setHours(date, value);
+		case "minute":
+			return setMinutes(date, value);
+		case "second":
+			return setSeconds(date, value);
+		default:
+			return date;
+	}
+}
 
 export interface DateFieldRootOptions {
 	/** The current value (controlled). */
@@ -137,22 +178,11 @@ export interface DateFieldRootOptions {
 	/** Determines the largest unit that is displayed in the date field. Defaults to `"year"`. */
 	maxGranularity?: DateFieldMaxGranularity;
 
-	/** Whether to hide the time zone abbreviation. */
-	hideTimeZone?: boolean;
-
 	/**
 	 * Whether to always show leading zeros in the day/month/hour fields.
 	 * By default, this is determined by the user's locale.
 	 */
 	shouldForceLeadingZeros?: boolean;
-
-	/**
-	 * A function that creates a [Calendar](https://react-spectrum.adobe.com/internationalized/date/Calendar.html)
-	 * object for a given calendar identifier. Such a function may be imported from the
-	 * `@internationalized/date` package, or manually implemented to include support for
-	 * only certain calendars.
-	 */
-	createCalendar?: (name: string) => Calendar;
 
 	/**
 	 * A unique identifier for the component.
@@ -217,9 +247,7 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 		{
 			id: defaultId,
 			maxGranularity: "year",
-			hideTimeZone: false,
 			shouldForceLeadingZeros: false,
-			createCalendar: createCalendarFn,
 			translations: DATE_FIELD_INTL_MESSAGES,
 		} as const,
 		props as DateFieldRootProps,
@@ -235,9 +263,7 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 		"hourCycle",
 		"granularity",
 		"maxGranularity",
-		"hideTimeZone",
 		"shouldForceLeadingZeros",
-		"createCalendar",
 		"validationState",
 		"value",
 		"defaultValue",
@@ -256,9 +282,7 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 		"hourCycle",
 		"granularity",
 		"maxGranularity",
-		"hideTimeZone",
 		"shouldForceLeadingZeros",
-		"createCalendar",
 		"validationState",
 		"value",
 		"defaultValue",
@@ -291,55 +315,22 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 		onChange: (value) => mergedProps.onChange?.(value!),
 	});
 
-	const defaultFormatter = createMemo(() => new DateFormatter(locale()));
-
-	const calendar = createMemo(() => {
-		return mergedProps.createCalendar!(
-			defaultFormatter().resolvedOptions().calendar as any,
-		);
-	});
-
-	const timeZone = createMemo(() => {
-		const resolvedValue = value();
-		return resolvedValue && "timeZone" in resolvedValue
-			? resolvedValue.timeZone
-			: undefined;
-	});
-
-	const calendarValue = createMemo(() => convertValue(value(), calendar()));
-
 	// We keep track of the placeholder date separately in state so that onChange is not called
 	// until all segments are set.
 	const [placeholderDate, setPlaceholderDate] = createSignal(
-		untrack(() =>
-			createPlaceholderDate(
-				mergedProps.placeholderValue,
-				mergedProps.granularity ?? "day",
-				calendar(),
-				timeZone() ?? "UTC",
-			),
-		),
-	);
-
-	const val = createMemo(() => calendarValue() || placeholderDate());
-
-	const showEra = createMemo(
-		() => calendar().identifier === "gregory" && val()?.era === "BC",
+		untrack(() => createPlaceholderDate(mergedProps.placeholderValue)),
 	);
 
 	const formatOpts: Accessor<FormatterOptions> = createMemo(() => ({
 		granularity: mergedProps.granularity ?? "day",
 		maxGranularity: mergedProps.maxGranularity ?? "year",
-		timeZone: timeZone(),
-		hideTimeZone: mergedProps.hideTimeZone,
 		hourCycle: mergedProps.hourCycle,
-		showEra: showEra(),
 		shouldForceLeadingZeros: mergedProps.shouldForceLeadingZeros,
 	}));
 
 	const opts = createMemo(() => getDateFieldFormatOptions({}, formatOpts()));
 
-	const dateFormatter = createMemo(() => new DateFormatter(locale(), opts()));
+	const dateFormatter = createDateFormatter(opts);
 	const resolvedOptions = createMemo(() => dateFormatter().resolvedOptions());
 
 	// Determine how many editable segments there are for validation purposes.
@@ -367,9 +358,9 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 
 	// If all segments are valid, use the date from state, otherwise use the placeholder date.
 	const displayValue = createMemo(() => {
-		return calendarValue() &&
+		return value() &&
 			Object.keys(validSegments()).length >= Object.keys(allSegments()).length
-			? calendarValue()
+			? value()
 			: placeholderDate();
 	});
 
@@ -377,19 +368,16 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 		if (
 			Object.keys(validSegments()).length >= Object.keys(allSegments()).length
 		) {
-			const v = value();
-
-			// The display calendar should not have any effect on the emitted value.
-			// Emit dates in the same calendar as the original value, if any, otherwise gregorian.
-			_setValue(toCalendar(newValue, v?.calendar || new GregorianCalendar()));
+			_setValue(newValue);
 		} else {
 			setPlaceholderDate(newValue);
 		}
 	};
 
-	const dateValue = createMemo(() =>
-		displayValue()?.toDate(timeZone() ?? "UTC"),
-	);
+	// `dateValue` used to be a separate `.toDate(timeZone)` conversion of `displayValue`
+	// (needed to bridge `@internationalized/date`'s value types to a native `Date` for
+	// `Intl.DateTimeFormat`) — values are already native `Date` now, so it's the same value.
+	const dateValue = displayValue;
 
 	const segments = createMemo(() => {
 		const resolvedDateValue = dateValue();
@@ -402,19 +390,13 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 		return dateFormatter()
 			.formatToParts(resolvedDateValue)
 			.map((segment) => {
-				const isOriginallyEditable =
+				const isEditable =
 					EDITABLE_SEGMENTS[segment.type as keyof typeof EDITABLE_SEGMENTS];
 
-				let isEditable = isOriginallyEditable;
-
-				if (segment.type === "era" && calendar().getEras().length === 1) {
-					isEditable = false;
-				}
-
 				const isPlaceholder =
-					isOriginallyEditable && !(validSegments() as any)[segment.type];
+					isEditable && !(validSegments() as any)[segment.type];
 
-				const placeholder = isOriginallyEditable
+				const placeholder = isEditable
 					? getPlaceholder(
 							mergedProps.translations!,
 							segment.type,
@@ -440,15 +422,7 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 	});
 
 	const markValid = (part: Intl.DateTimeFormatPartTypes) => {
-		setValidSegments((prev) => {
-			const newValue = { ...prev, [part]: true };
-
-			if (part === "year" && allSegments().era) {
-				newValue.era = true;
-			}
-
-			return newValue;
-		});
+		setValidSegments((prev) => ({ ...prev, [part]: true }));
 	};
 
 	const adjustSegment = (
@@ -537,39 +511,33 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 			return newValue;
 		});
 
-		const placeholder = createPlaceholderDate(
-			mergedProps.placeholderValue,
-			mergedProps.granularity ?? "day",
-			calendar(),
-			timeZone() ?? "UTC",
-		);
-
+		const placeholder = createPlaceholderDate(mergedProps.placeholderValue);
 		const resolvedDisplayValue = displayValue();
 		let newValue = resolvedDisplayValue;
 
 		// Reset day period to default without changing the hour.
 		if (resolvedDisplayValue && placeholder) {
-			if (
-				part === "dayPeriod" &&
-				"hour" in resolvedDisplayValue &&
-				"hour" in placeholder
-			) {
-				const isPM = resolvedDisplayValue.hour >= 12;
-				const shouldBePM = placeholder.hour >= 12;
+			if (part === "dayPeriod") {
+				const isPM = resolvedDisplayValue.getHours() >= 12;
+				const shouldBePM = placeholder.getHours() >= 12;
 
 				if (isPM && !shouldBePM) {
-					newValue = resolvedDisplayValue.set({
-						hour: resolvedDisplayValue.hour - 12,
-					});
+					newValue = setHours(
+						resolvedDisplayValue,
+						resolvedDisplayValue.getHours() - 12,
+					);
 				} else if (!isPM && shouldBePM) {
-					newValue = resolvedDisplayValue.set({
-						hour: resolvedDisplayValue.hour + 12,
-					});
+					newValue = setHours(
+						resolvedDisplayValue,
+						resolvedDisplayValue.getHours() + 12,
+					);
 				}
-			} else if (part in resolvedDisplayValue) {
-				newValue = resolvedDisplayValue.set({
-					[part]: placeholder[part as keyof typeof placeholder],
-				});
+			} else {
+				const fieldValue = getFieldValue(placeholder, part);
+
+				if (fieldValue != null) {
+					newValue = applyFieldValue(resolvedDisplayValue, part, fieldValue);
+				}
 			}
 		}
 
@@ -584,17 +552,17 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 	const formatValue = (fieldOptions: DateFieldOptions) => {
 		const resolvedDateValue = dateValue();
 
-		if (!calendarValue() || !resolvedDateValue) {
+		if (!value() || !resolvedDateValue) {
 			return "";
 		}
 
 		const formatOptions = getDateFieldFormatOptions(fieldOptions, formatOpts());
-		const formatter = new DateFormatter(locale(), formatOptions);
+		const formatter = new Intl.DateTimeFormat(locale(), formatOptions);
 		return formatter.format(resolvedDateValue);
 	};
 
 	const formattedValue = createMemo(() =>
-		calendarValue() ? formatValue({}) : undefined,
+		value() ? formatValue({}) : undefined,
 	);
 
 	createFormResetListener(ref, () => {
@@ -614,14 +582,14 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 
 		if (
 			mergedProps.minValue &&
-			resolvedValue.compare(mergedProps.minValue) < 0
+			compareDates(resolvedValue, mergedProps.minValue) < 0
 		) {
 			return "invalid";
 		}
 
 		if (
 			mergedProps.maxValue &&
-			resolvedValue.compare(mergedProps.maxValue) > 0
+			compareDates(resolvedValue, mergedProps.maxValue) > 0
 		) {
 			return "invalid";
 		}
@@ -672,52 +640,11 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 
 	// If the value is set to undefined and all segments are valid, reset the placeholder.
 	createEffect(
-		() =>
-			[
-				value(),
-				mergedProps.placeholderValue,
-				mergedProps.granularity,
-				calendar(),
-				timeZone(),
-			] as const,
-		([
-			resolvedValue,
-			placeholderValue,
-			granularity,
-			resolvedCalendar,
-			resolvedTimeZone,
-		]) => {
+		() => [value(), mergedProps.placeholderValue] as const,
+		([resolvedValue, placeholderValue]) => {
 			if (resolvedValue == null) {
 				setValidSegments({});
-				setPlaceholderDate(
-					createPlaceholderDate(
-						placeholderValue,
-						granularity ?? "day",
-						resolvedCalendar,
-						resolvedTimeZone ?? "UTC",
-					),
-				);
-			}
-		},
-	);
-
-	// When the era field appears, mark it valid if the year field is already valid.
-	// If the era field disappears, remove it from the valid segments.
-	createEffect(
-		() => ({
-			hasEraSegment: !!allSegments().era,
-			isYearValid: !!validSegments().year,
-			isEraValid: !!validSegments().era,
-		}),
-		({ hasEraSegment, isYearValid, isEraValid }) => {
-			if (hasEraSegment && isYearValid && !isEraValid) {
-				setValidSegments((prev) => ({ ...prev, era: true }));
-			} else if (!hasEraSegment && isEraValid) {
-				setValidSegments((prev) => {
-					const newValue = { ...prev };
-					newValue.era = undefined;
-					return newValue;
-				});
+				setPlaceholderDate(createPlaceholderDate(placeholderValue));
 			}
 		},
 	);
@@ -726,7 +653,7 @@ export function DateFieldRoot<T extends ValidComponent = "div">(
 		translations: () => mergedProps.translations!,
 		value,
 		setValue: commit,
-		calendar,
+		granularity: () => mergedProps.granularity ?? "day",
 		dateValue,
 		dateFormatterResolvedOptions: resolvedOptions,
 		segments,

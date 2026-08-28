@@ -1,4 +1,3 @@
-import { CalendarDate } from "@internationalized/date";
 import { Calendar, type DateValue } from "@kobalte/core/calendar";
 import { createSignal, Show } from "solid-js";
 import style from "./calendar.module.css";
@@ -81,7 +80,7 @@ export function RangeExample() {
 
 export function ControlledExample() {
 	const [value, setValue] = createSignal<DateValue | null>(
-		new CalendarDate(2024, 1, 15),
+		new Date(2024, 0, 15),
 	);
 
 	return (
@@ -97,7 +96,7 @@ export function ControlledExample() {
 			<p style={{ "font-size": "14px", "margin-top": "16px" }}>
 				Selected date:{" "}
 				<Show when={value()} fallback={"--"}>
-					{value()!.toString()}
+					{value()!.toLocaleDateString()}
 				</Show>
 			</p>
 		</>
@@ -109,9 +108,9 @@ export function MinMaxExample() {
 		<Calendar
 			selectionMode="single"
 			class={style.calendar}
-			defaultFocusedValue={new CalendarDate(2024, 1, 15)}
-			minValue={new CalendarDate(2024, 1, 5)}
-			maxValue={new CalendarDate(2024, 1, 25)}
+			defaultFocusedValue={new Date(2024, 0, 15)}
+			minValue={new Date(2024, 0, 5)}
+			maxValue={new Date(2024, 0, 25)}
 		>
 			<CalendarContent />
 		</Calendar>
@@ -127,8 +126,8 @@ export function DisabledExample() {
 }
 
 export function UnavailableDatesExample() {
-	const isDateUnavailable = (date: { day: number }) => {
-		return date.day % 7 === 0;
+	const isDateUnavailable = (date: Date) => {
+		return date.getDate() % 7 === 0;
 	};
 
 	return (

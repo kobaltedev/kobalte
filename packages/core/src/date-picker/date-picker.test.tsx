@@ -1,4 +1,3 @@
-import { CalendarDate } from "@internationalized/date";
 import { fireEvent, render, screen } from "@solidjs/testing-library";
 import { vi } from "vitest";
 
@@ -89,7 +88,7 @@ describe("DatePicker", () => {
 		render(() => (
 			<DatePickerExample
 				selectionMode="single"
-				defaultValue={new CalendarDate(2024, 1, 15)}
+				defaultValue={new Date(2024, 0, 15)}
 				onChange={onChangeSpy}
 			/>
 		));
@@ -102,7 +101,7 @@ describe("DatePicker", () => {
 		await Promise.resolve();
 
 		expect(onChangeSpy).toHaveBeenCalledTimes(1);
-		expect((onChangeSpy.mock.calls[0]![0] as CalendarDate).day).toBe(20);
+		expect((onChangeSpy.mock.calls[0]![0] as Date).getDate()).toBe(20);
 
 		// flush the exit transition timer and Solid's microtask scheduler
 		vi.runAllTimers();
@@ -117,7 +116,7 @@ describe("DatePicker", () => {
 		render(() => (
 			<DatePickerExample
 				selectionMode="multiple"
-				defaultValue={[new CalendarDate(2024, 1, 15)]}
+				defaultValue={[new Date(2024, 0, 15)]}
 				onChange={onChangeSpy}
 			/>
 		));
@@ -128,8 +127,8 @@ describe("DatePicker", () => {
 		await Promise.resolve();
 
 		expect(onChangeSpy).toHaveBeenCalledTimes(1);
-		const dates = onChangeSpy.mock.calls[0]![0] as CalendarDate[];
-		expect(dates.map((d) => d.day).sort()).toEqual([15, 20]);
+		const dates = onChangeSpy.mock.calls[0]![0] as Date[];
+		expect(dates.map((d) => d.getDate()).sort()).toEqual([15, 20]);
 		expect(screen.getByRole("dialog")).toBeInTheDocument();
 	});
 
@@ -139,7 +138,7 @@ describe("DatePicker", () => {
 		render(() => (
 			<DatePickerExample
 				selectionMode="range"
-				placeholderValue={new CalendarDate(2024, 1, 15)}
+				placeholderValue={new Date(2024, 0, 15)}
 				onChange={onChangeSpy}
 			/>
 		));
@@ -157,19 +156,19 @@ describe("DatePicker", () => {
 
 		expect(onChangeSpy).toHaveBeenCalledTimes(1);
 		const range = onChangeSpy.mock.calls[0]![0] as {
-			start: CalendarDate;
-			end: CalendarDate;
+			start: Date;
+			end: Date;
 		};
-		expect(range.start.day).toBe(10);
-		expect(range.end.day).toBe(20);
+		expect(range.start.getDate()).toBe(10);
+		expect(range.end.getDate()).toBe(20);
 	});
 
 	it("reflects invalid validation state on the input when value is outside min/max", () => {
 		render(() => (
 			<DatePickerExample
 				selectionMode="single"
-				value={new CalendarDate(2024, 1, 1)}
-				minValue={new CalendarDate(2024, 6, 1)}
+				value={new Date(2024, 0, 1)}
+				minValue={new Date(2024, 5, 1)}
 			/>
 		));
 

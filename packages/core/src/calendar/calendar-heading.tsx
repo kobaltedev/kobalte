@@ -45,7 +45,6 @@ export function CalendarHeading<T extends ValidComponent = "h2">(
 			rootContext.translations(),
 			rootContext.startDate(),
 			rootContext.endDate(),
-			rootContext.timeZone(),
 			false,
 		);
 	});

@@ -6,12 +6,6 @@
  * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-aria/calendar/src/useCalendarGrid.ts
  */
 
-import {
-	type DateDuration,
-	endOfMonth,
-	startOfWeek,
-	today,
-} from "@internationalized/date";
 import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createMemo, merge, omit } from "solid-js";
@@ -27,6 +21,13 @@ import {
 	CalendarGridContext,
 	type CalendarGridContextValue,
 } from "./calendar-grid-context.tsx";
+import {
+	addDuration,
+	type DateDuration,
+	endOfMonth,
+	startOfWeek,
+	todayDate,
+} from "./date-math.ts";
 import { getVisibleRangeDescription } from "./utils.ts";
 
 export interface CalendarGridOptions {
@@ -88,7 +89,7 @@ export function CalendarGrid<T extends ValidComponent = "table">(
 
 	const startDate = createMemo(() => {
 		if (mergedProps.offset) {
-			return rootContext.startDate().add(mergedProps.offset);
+			return addDuration(rootContext.startDate(), mergedProps.offset);
 		}
 
 		return rootContext.startDate();
@@ -98,18 +99,14 @@ export function CalendarGrid<T extends ValidComponent = "table">(
 
 	const dayFormatter = createDateFormatter(() => ({
 		weekday: mergedProps.weekDayFormat,
-		timeZone: rootContext.timeZone(),
 	}));
 
 	const weekDays = createMemo(() => {
-		const firstDayOfWeek = startOfWeek(
-			today(rootContext.timeZone()),
-			rootContext.locale(),
-		);
+		const firstDayOfWeek = startOfWeek(todayDate(), rootContext.locale());
 
 		return [...new Array(7).keys()].map((index) => {
-			const date = firstDayOfWeek.add({ days: index });
-			return dayFormatter().format(date.toDate(rootContext.timeZone()));
+			const date = addDuration(firstDayOfWeek, { days: index });
+			return dayFormatter().format(date);
 		});
 	});
 
@@ -119,7 +116,6 @@ export function CalendarGrid<T extends ValidComponent = "table">(
 			rootContext.translations(),
 			startDate(),
 			endDate(),
-			rootContext.timeZone(),
 			true,
 		);
 	});

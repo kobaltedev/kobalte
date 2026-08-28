@@ -6,7 +6,6 @@
  * https://github.com/adobe/react-spectrum/blob/a8903d3b8c462b85cc34e8565e1a1084827d0a29/packages/@react-aria/calendar/src/useCalendarCell.ts
  */
 
-import { isToday } from "@internationalized/date";
 import type { ValidComponent } from "@solidjs/web";
 import { createMemo, omit } from "solid-js";
 
@@ -20,6 +19,7 @@ import {
 	CalendarGridBodyCellContext,
 	type CalendarGridBodyCellContextValue,
 } from "./calendar-grid-body-cell-context.tsx";
+import { isToday, toLocalISOString } from "./date-math.ts";
 import type { DateValue } from "./types.ts";
 
 export interface CalendarGridBodyCellOptions {
@@ -86,7 +86,7 @@ export function CalendarGridBodyCell<T extends ValidComponent = "td">(
 		return rootContext.validationState() === "invalid" && isSelected();
 	});
 
-	const isDateToday = () => isToday(props.date, rootContext.timeZone());
+	const isDateToday = () => isToday(props.date);
 
 	const context: CalendarGridBodyCellContextValue = {
 		date: () => props.date,
@@ -108,7 +108,7 @@ export function CalendarGridBodyCell<T extends ValidComponent = "td">(
 				aria-selected={isSelected() ? "true" : undefined}
 				aria-invalid={isInvalid() ? "true" : undefined}
 				aria-current={isDateToday() ? "date" : undefined}
-				data-value={props.date.toString()}
+				data-value={toLocalISOString(props.date, "day")}
 				{...others}
 			/>
 		</CalendarGridBodyCellContext>

@@ -1,5 +1,6 @@
 import { type RangeValue, visuallyHiddenStyles } from "@kobalte/utils";
 
+import { toLocalISOString } from "../calendar/date-math.ts";
 import type { CalendarSelectionMode, DateValue } from "../calendar/types.ts";
 import {
 	asArrayValue,
@@ -26,11 +27,16 @@ export function DatePickerHiddenInput(props: DatePickerHiddenInputProps) {
 		}
 
 		if (props.selectionMode === "single") {
-			return asSingleValue(props.value)?.toString() ?? "";
+			const date = asSingleValue(props.value);
+			return date ? toLocalISOString(date, "day") : "";
 		}
 
 		if (props.selectionMode === "multiple") {
-			return asArrayValue(props.value)?.map(String).join(",") ?? "";
+			return (
+				asArrayValue(props.value)
+					?.map((date) => toLocalISOString(date, "day"))
+					.join(",") ?? ""
+			);
 		}
 
 		const range = asRangeValue(props.value);
@@ -39,7 +45,7 @@ export function DatePickerHiddenInput(props: DatePickerHiddenInputProps) {
 			return "";
 		}
 
-		return `${range.start.toString()}/${range.end.toString()}`;
+		return `${toLocalISOString(range.start, "day")}/${toLocalISOString(range.end, "day")}`;
 	};
 
 	return (

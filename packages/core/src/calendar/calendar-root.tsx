@@ -10,11 +10,6 @@
  * tracking) — see `calendar-grid-body-cell-trigger.tsx` for the corvu credit.
  */
 
-import {
-	type Calendar,
-	createCalendar as createCalendarFn,
-	type DateDuration,
-} from "@internationalized/date";
 import type { RangeValue, ValidationState } from "@kobalte/utils";
 import { createInteractOutside } from "@solid-primitives/interaction";
 import type { ValidComponent } from "@solidjs/web";
@@ -42,6 +37,7 @@ import {
 	type CalendarDataSet,
 } from "./calendar-context.tsx";
 import { createCalendarState } from "./create-calendar-state.ts";
+import type { DateDuration } from "./date-math.ts";
 import type { DateAlignment, DateValue } from "./types.ts";
 import { getVisibleRangeDescription } from "./utils.ts";
 
@@ -103,14 +99,6 @@ export type CalendarRootOptions = (
 ) & {
 	/** The localized strings of the component. */
 	translations?: CalendarIntlTranslations;
-
-	/**
-	 * A function that creates a [Calendar](https://react-spectrum.adobe.com/internationalized/date/Calendar.html)
-	 * object for a given calendar identifier. Such a function may be imported from the
-	 * `@internationalized/date` package, or manually implemented to include support for
-	 * only certain calendars.
-	 */
-	createCalendar?: (name: string) => Calendar;
 
 	/** The locale to display and edit the value according to. */
 	locale?: string;
@@ -193,7 +181,6 @@ export function CalendarRoot<T extends ValidComponent = "div">(
 			visibleDuration: { months: 1 },
 			selectionMode: "single",
 			translations: CALENDAR_INTL_MESSAGES,
-			createCalendar: createCalendarFn as (name: string) => Calendar,
 		} as const,
 		props as CalendarRootProps,
 	);
@@ -203,7 +190,6 @@ export function CalendarRoot<T extends ValidComponent = "div">(
 		"ref",
 		"translations",
 		"locale",
-		"createCalendar",
 		"visibleDuration",
 		"selectionAlignment",
 		"selectionMode",
@@ -232,7 +218,6 @@ export function CalendarRoot<T extends ValidComponent = "div">(
 			state.translations(),
 			state.startDate(),
 			state.endDate(),
-			state.timeZone(),
 			true,
 		);
 	});

@@ -1,4 +1,3 @@
-import { CalendarDate } from "@internationalized/date";
 import { fireEvent, render } from "@solidjs/testing-library";
 import { vi } from "vitest";
 
@@ -27,7 +26,8 @@ describe("DateField", () => {
 
 	it("renders the segments for a default value", () => {
 		const { getByText } = render(() => (
-			<DateFieldExample defaultValue={new CalendarDate(2024, 1, 15)} />
+			// January 15, 2024 (native Date months are 0-indexed).
+			<DateFieldExample defaultValue={new Date(2024, 0, 15)} />
 		));
 
 		expect(getByText("1")).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe("DateField", () => {
 
 		const { getAllByRole } = render(() => (
 			<DateFieldExample
-				defaultValue={new CalendarDate(2024, 1, 15)}
+				defaultValue={new Date(2024, 0, 15)}
 				onChange={onChangeSpy}
 			/>
 		));
@@ -50,7 +50,7 @@ describe("DateField", () => {
 		fireEvent.keyDown(daySegment!, { key: "ArrowUp" });
 
 		expect(onChangeSpy).toHaveBeenCalledTimes(1);
-		expect((onChangeSpy.mock.calls[0]![0] as CalendarDate).day).toBe(16);
+		expect((onChangeSpy.mock.calls[0]![0] as Date).getDate()).toBe(16);
 	});
 
 	it("does not commit a value until all segments are filled in (uncontrolled)", () => {
@@ -79,8 +79,8 @@ describe("DateField", () => {
 	it("has 'invalid' validation state when value is outside min/max", () => {
 		const { getByRole } = render(() => (
 			<DateFieldExample
-				value={new CalendarDate(2024, 1, 1)}
-				minValue={new CalendarDate(2024, 6, 1)}
+				value={new Date(2024, 0, 1)}
+				minValue={new Date(2024, 5, 1)}
 			/>
 		));
 

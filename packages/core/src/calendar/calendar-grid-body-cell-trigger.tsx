@@ -6,13 +6,10 @@
  * https://github.com/corvudev/corvu/blob/main/packages/calendar/src/CellTrigger.tsx
  *
  * Date formatting/labeling and the min/max-aware ARIA description are carried
- * over from the original react-spectrum-derived implementation, since corvu's
- * cell trigger (built on native `Date`) has no equivalent to
- * `@internationalized/date`'s calendar-system-aware formatting:
+ * over from the original react-spectrum-derived implementation:
  * https://github.com/adobe/react-spectrum/blob/a8903d3b8c462b85cc34e8565e1a1084827d0a29/packages/@react-aria/calendar/src/useCalendarCell.ts
  */
 
-import { isSameDay, isSameMonth, isWeekend } from "@internationalized/date";
 import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -34,10 +31,15 @@ import { useCalendarContext } from "./calendar-context.tsx";
 import { useCalendarGridBodyCellContext } from "./calendar-grid-body-cell-context.tsx";
 import { useCalendarGridContext } from "./calendar-grid-context.tsx";
 import {
-	asRangeValue,
-	getEraFormat,
-	getSelectedDateDescription,
-} from "./utils.ts";
+	addDuration,
+	compareDates,
+	isSameDay,
+	isSameMonth,
+	isWeekend,
+	subtractDuration,
+	toLocalISOString,
+} from "./date-math.ts";
+import { asRangeValue, getSelectedDateDescription } from "./utils.ts";
 
 export interface CalendarGridBodyCellTriggerOptions {
 	/** Whether the cell trigger is disabled. */
@@ -109,8 +111,8 @@ export function CalendarGridBodyCellTrigger<T extends ValidComponent = "div">(
 
 	const isOutsideVisibleRange = () => {
 		return (
-			context.date().compare(rootContext.startDate()) < 0 ||
-			context.date().compare(rootContext.endDate()) > 0
+			compareDates(context.date(), rootContext.startDate()) < 0 ||
+			compareDates(context.date(), rootContext.endDate()) > 0
 		);
 	};
 
@@ -151,23 +153,15 @@ export function CalendarGridBodyCellTrigger<T extends ValidComponent = "div">(
 		day: "numeric",
 		month: "long",
 		year: "numeric",
-		era: getEraFormat(context.date()),
-		timeZone: rootContext.timeZone(),
 	}));
 
 	const cellDateFormatter = createDateFormatter(() => ({
 		day: "numeric",
-		timeZone: rootContext.timeZone(),
-		calendar: context.date().calendar.identifier,
 	}));
-
-	const nativeDate = createMemo(() => {
-		return context.date().toDate(rootContext.timeZone());
-	});
 
 	const formattedDate = createMemo(() => {
 		return cellDateFormatter()
-			.formatToParts(nativeDate())
+			.formatToParts(context.date())
 			.find((part) => part.type === "day")?.value;
 	});
 
@@ -188,12 +182,11 @@ export function CalendarGridBodyCellTrigger<T extends ValidComponent = "div">(
 					rootContext.locale(),
 					rootContext.translations(),
 					context.date(),
-					rootContext.timeZone(),
 				)}, `;
 			}
 		}
 
-		label += labelDateFormatter().format(nativeDate());
+		label += labelDateFormatter().format(context.date());
 		if (context.isDateToday()) {
 			// If date is today, set appropriate string depending on selected state:
 			label = rootContext.translations().todayDate(label, context.isSelected());
@@ -250,10 +243,10 @@ export function CalendarGridBodyCellTrigger<T extends ValidComponent = "div">(
 			// For range selection, auto-advance the focused date by one if using keyboard.
 			// This gives an indication that you're selecting a range rather than a single date.
 			rootContext.selectDate(context.date());
-			let nextDay = context.date().add({ days: 1 });
+			let nextDay = addDuration(context.date(), { days: 1 });
 
 			if (rootContext.isCellInvalid(nextDay)) {
-				nextDay = context.date().subtract({ days: 1 });
+				nextDay = subtractDuration(context.date(), { days: 1 });
 			}
 
 			if (!rootContext.isCellInvalid(nextDay)) {
@@ -285,7 +278,7 @@ export function CalendarGridBodyCellTrigger<T extends ValidComponent = "div">(
 			data-disabled={isDisabled() ? "" : undefined}
 			data-invalid={context.isInvalid() ? "" : undefined}
 			data-selected={context.isSelected() ? "" : undefined}
-			data-value={context.date().toString()}
+			data-value={toLocalISOString(context.date(), "day")}
 			data-type="day"
 			data-today={context.isDateToday() ? "" : undefined}
 			data-weekend={isDateWeekend() ? "" : undefined}

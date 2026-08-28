@@ -24,7 +24,7 @@ import { Root, Trigger, Value, Calendar, ... } from "@kobalte/core/date-picker";
 ## Features
 
 - Supports single date, multiple dates, and date range selection modes.
-- Values are typed [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html) objects, not native `Date`, so they're calendar and timezone aware.
+- Values are native JS `Date` objects (Gregorian calendar only) rather than a separate date library's types.
 - The selected value is displayed as formatted, human-readable text by `DatePicker.Value` — never a raw editable segment.
 - Closes automatically on selection, configurable via `closeOnSelect`.
 - Support for minimum and maximum dates, and arbitrary unavailable dates.
@@ -222,9 +222,7 @@ By default, the popover closes automatically after a complete selection for `"si
 An initial, uncontrolled value can be provided using the `defaultValue` prop.
 
 ```tsx
-import { CalendarDate } from "@internationalized/date";
-
-<DatePicker selectionMode="single" defaultValue={new CalendarDate(2024, 6, 15)}>
+<DatePicker selectionMode="single" defaultValue={new Date(2024, 5, 15)}>
 	...
 </DatePicker>;
 ```
@@ -233,12 +231,11 @@ import { CalendarDate } from "@internationalized/date";
 
 The `value` prop, combined with `onChange`, can be used to make the value controlled.
 
-```tsx {3,6-7}
+```tsx {3,6}
 import { createSignal } from "solid-js";
-import type { DateValue } from "@internationalized/date";
 
 function ControlledExample() {
-	const [value, setValue] = createSignal<DateValue | null>(null);
+	const [value, setValue] = createSignal<Date | null>(null);
 
 	return (
 		<DatePicker selectionMode="single" value={value()} onChange={setValue}>
@@ -259,9 +256,9 @@ Use the `minValue` and `maxValue` props to restrict the range of selectable date
 ```tsx {2-3}
 <DatePicker
 	selectionMode="single"
-	defaultValue={new CalendarDate(2024, 6, 15)}
-	minValue={new CalendarDate(2024, 1, 1)}
-	maxValue={new CalendarDate(2024, 12, 31)}
+	defaultValue={new Date(2024, 5, 15)}
+	minValue={new Date(2024, 0, 1)}
+	maxValue={new Date(2024, 11, 31)}
 >
 	...
 </DatePicker>
@@ -274,7 +271,7 @@ The `isDateUnavailable` callback can mark arbitrary dates as unavailable, for ex
 ```tsx {2-3}
 <DatePicker
 	selectionMode="single"
-	isDateUnavailable={date => date.toDate("UTC").getDay() === 0 || date.toDate("UTC").getDay() === 6}
+	isDateUnavailable={date => date.getDay() === 0 || date.getDay() === 6}
 >
 	...
 </DatePicker>
@@ -308,12 +305,11 @@ By default, it will render only when `validationState` is set to `"invalid"`; us
 	<ErrorMessageExample />
 </Preview>
 
-```tsx {5,10}
+```tsx {4,9}
 import { createSignal } from "solid-js";
-import type { DateValue } from "@internationalized/date";
 
 function ErrorMessageExample() {
-	const [value, setValue] = createSignal<DateValue | undefined>(undefined);
+	const [value, setValue] = createSignal<Date | undefined>(undefined);
 
 	return (
 		<DatePicker
@@ -406,7 +402,6 @@ Since `DatePicker.Content` is Kobalte's `Popover.Content` under the hood, the sa
 | defaultValue              | Same as `value` <br/> The value when initially rendered. Useful when you do not need to control the value.                                                                                                                                                   |
 | onChange                  | `(value) => void` <br/> Event handler called when the value changes.                                                                                                                                                                                          |
 | translations              | [`DatePickerIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/date-picker/date-picker.intl.ts) <br/> Localization strings.                                                                                                |
-| createCalendar            | `(name: string) => Calendar` <br/> A function that creates a [`Calendar`](https://react-spectrum.adobe.com/internationalized/date/Calendar.html) object for a given calendar identifier.                                                                    |
 | locale                    | `string` <br/> The locale to display and select the date(s) according to. Defaults to the current i18n locale.                                                                                                                                               |
 | visibleDuration           | `DateDuration` <br/> The amount of days/weeks/months displayed at once in the calendar. Affects how pagination works. **Default:** `{ months: 1 }`                                                                                                          |
 | minValue                  | `DateValue` <br/> The minimum allowed date that a user may select.                                                                                                                                                                                           |

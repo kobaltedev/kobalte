@@ -11,17 +11,11 @@
  * segmented-text-input control.
  */
 
-import {
-	type Calendar,
-	createCalendar as createCalendarFn,
-	type DateDuration,
-	DateFormatter,
-} from "@internationalized/date";
 import type { RangeValue, ValidationState } from "@kobalte/utils";
 import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createMemo, createUniqueId, merge, omit } from "solid-js";
-
+import { type DateDuration, toLocalISOString } from "../calendar/date-math.ts";
 import type {
 	CalendarMultipleSelectionOptions,
 	CalendarRangeSelectionOptions,
@@ -67,14 +61,6 @@ export type DatePickerRootOptions = (
 	> & {
 		/** The localized strings of the component. */
 		translations?: DatePickerIntlTranslations;
-
-		/**
-		 * A function that creates a [Calendar](https://react-spectrum.adobe.com/internationalized/date/Calendar.html)
-		 * object for a given calendar identifier. Such a function may be imported from the
-		 * `@internationalized/date` package, or manually implemented to include support for
-		 * only certain calendars.
-		 */
-		createCalendar?: (name: string) => Calendar;
 
 		/** The locale to display and edit the value according to. */
 		locale?: string;
@@ -165,7 +151,6 @@ export function DatePickerRoot<T extends ValidComponent = "div">(
 			sameWidth: false,
 			placement: "bottom-start",
 			translations: DATE_PICKER_INTL_MESSAGES,
-			createCalendar: createCalendarFn as (name: string) => Calendar,
 		} as const,
 		props as DatePickerRootProps,
 	);
@@ -215,7 +200,6 @@ export function DatePickerRoot<T extends ValidComponent = "div">(
 	const nonGroupPropNames = [
 		"translations",
 		"locale",
-		"createCalendar",
 		"visibleDuration",
 		"selectionMode",
 		"isDateUnavailable",
@@ -278,17 +262,19 @@ export function DatePickerRoot<T extends ValidComponent = "div">(
 		return isSomeDateInvalid ? "invalid" : undefined;
 	});
 
+	// Not `createDateFormatter` from `../i18n` — that primitive always reads the
+	// ambient locale, but this needs to respect a per-instance `locale` override
+	// (`locale()` below already falls back to the ambient locale itself).
 	const dateFormatter = createMemo(() => {
-		return new DateFormatter(locale(), {
+		return new Intl.DateTimeFormat(locale(), {
 			year: "numeric",
 			month: "long",
 			day: "numeric",
-			timeZone: "UTC",
 		});
 	});
 
 	const formatDate = (date: DateValue | null | undefined) => {
-		return date ? dateFormatter().format(date.toDate("UTC")) : "";
+		return date ? dateFormatter().format(date) : "";
 	};
 
 	const formattedValue = createMemo(() => {
@@ -330,8 +316,8 @@ export function DatePickerRoot<T extends ValidComponent = "div">(
 			}
 
 			return mergedProps.translations!.selectedRangeDescription(
-				range.start.toString(),
-				range.end.toString(),
+				toLocalISOString(range.start, "day"),
+				toLocalISOString(range.end, "day"),
 			);
 		}
 
@@ -341,14 +327,15 @@ export function DatePickerRoot<T extends ValidComponent = "div">(
 				: asSingleValue(resolvedValue);
 
 		return firstValue
-			? mergedProps.translations!.selectedDateDescription(firstValue.toString())
+			? mergedProps.translations!.selectedDateDescription(
+					toLocalISOString(firstValue, "day"),
+				)
 			: undefined;
 	};
 
 	const nonFormControlPropNames = [
 		"translations",
 		"locale",
-		"createCalendar",
 		"visibleDuration",
 		"selectionMode",
 		"isDateUnavailable",
@@ -413,7 +400,6 @@ export function DatePickerRoot<T extends ValidComponent = "div">(
 		validationState,
 		value,
 		formattedValue,
-		createCalendar: (name) => mergedProps.createCalendar!(name),
 		isDateUnavailable: (date) => mergedProps.isDateUnavailable?.(date) ?? false,
 		setDateValue: (newValue) => setValue(newValue as any),
 		generateId: (part) => `${access(mergedProps.id)}-${part}`,

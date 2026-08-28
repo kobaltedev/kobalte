@@ -10,27 +10,29 @@
  *
  * Credits to the Chakra UI team:
  * https://github.com/chakra-ui/zag/blob/main/packages/utilities/date-utils/src/pagination.ts
+ *
+ * Reworked for native `Date` values — no calendar-system conversion (`toCalendar`) or
+ * explicit time-zone concept, so date math delegates to `./date-math.ts` and formatting
+ * delegates to native `Intl.DateTimeFormat` instead of `@internationalized/date`.
  */
 
+import type { RangeValue } from "@kobalte/utils";
+
+import type { CalendarIntlTranslations } from "./calendar.intl.ts";
 import {
-	type CalendarDate,
+	addDuration,
+	compareDates,
 	type DateDuration,
-	DateFormatter,
 	endOfMonth,
 	endOfWeek,
-	GregorianCalendar,
 	isSameDay,
 	maxDate,
 	minDate,
 	startOfMonth,
 	startOfWeek,
 	startOfYear,
-	toCalendar,
-	toCalendarDate,
-} from "@internationalized/date";
-import type { RangeValue } from "@kobalte/utils";
-
-import type { CalendarIntlTranslations } from "./calendar.intl.ts";
+	subtractDuration,
+} from "./date-math.ts";
 import type {
 	CalendarSelectionMode,
 	DateAlignment,
@@ -51,18 +53,14 @@ export function constrainStart(
 ): DateValue {
 	let computedDate = aligned;
 
-	if (min && date.compare(min) >= 0) {
+	if (min && compareDates(date, min) >= 0) {
 		computedDate =
-			maxDate(
-				computedDate,
-				alignStart(toCalendarDate(min), duration, locale),
-			) ?? computedDate;
+			maxDate(computedDate, alignStart(min, duration, locale)) ?? computedDate;
 	}
 
-	if (max && date.compare(max) <= 0) {
+	if (max && compareDates(date, max) <= 0) {
 		computedDate =
-			minDate(computedDate, alignEnd(toCalendarDate(max), duration, locale)) ??
-			computedDate;
+			minDate(computedDate, alignEnd(max, duration, locale)) ?? computedDate;
 	}
 
 	return computedDate;
@@ -76,11 +74,11 @@ export function constrainValue(
 	let computedDate = date;
 
 	if (min) {
-		computedDate = maxDate(computedDate, toCalendarDate(min)) ?? computedDate;
+		computedDate = maxDate(computedDate, min) ?? computedDate;
 	}
 
 	if (max) {
-		computedDate = minDate(computedDate, toCalendarDate(max)) ?? computedDate;
+		computedDate = minDate(computedDate, max) ?? computedDate;
 	}
 
 	return computedDate;
@@ -130,7 +128,10 @@ export function alignCenter(
 		}
 	}
 
-	const aligned = alignStart(date, duration, locale).subtract(halfDuration);
+	const aligned = subtractDuration(
+		alignStart(date, duration, locale),
+		halfDuration,
+	);
 	return constrainStart(date, aligned, duration, locale, min, max);
 }
 
@@ -154,7 +155,7 @@ export function alignEnd(
 		d.years--;
 	}
 
-	const aligned = alignStart(date, duration, locale).subtract(d);
+	const aligned = subtractDuration(alignStart(date, duration, locale), d);
 	return constrainStart(date, aligned, duration, locale, min, max);
 }
 
@@ -185,10 +186,10 @@ export function alignStartDate(
 	min?: DateValue | undefined,
 	max?: DateValue | undefined,
 ) {
-	if (date.compare(startDate) < 0) {
+	if (compareDates(date, startDate) < 0) {
 		return alignEnd(date, duration, locale, min, max);
 	}
-	if (date.compare(endDate) > 0) {
+	if (compareDates(date, endDate) > 0) {
 		return alignStart(date, duration, locale, min, max);
 	}
 	return startDate;
@@ -205,8 +206,8 @@ export function isDateInvalid(
 ) {
 	return (
 		date != null &&
-		((minValue != null && date.compare(minValue) < 0) ||
-			(maxValue != null && date.compare(maxValue) > 0))
+		((minValue != null && compareDates(date, minValue) < 0) ||
+			(maxValue != null && compareDates(date, maxValue) > 0))
 	);
 }
 
@@ -215,7 +216,7 @@ export function isPreviousVisibleRangeInvalid(
 	min?: DateValue | null,
 	max?: DateValue | null,
 ) {
-	const prevDate = startDate.subtract({ days: 1 });
+	const prevDate = subtractDuration(startDate, { days: 1 });
 
 	return isSameDay(prevDate, startDate) || isDateInvalid(prevDate, min, max);
 }
@@ -225,9 +226,7 @@ export function isNextVisibleRangeInvalid(
 	min?: DateValue | null,
 	max?: DateValue | null,
 ) {
-	// Adding may return the same date if we reached the end of time
-	// according to the calendar system (e.g. 9999-12-31).
-	const nextDate = endDate.add({ days: 1 });
+	const nextDate = addDuration(endDate, { days: 1 });
 
 	return isSameDay(nextDate, endDate) || isDateInvalid(nextDate, min, max);
 }
@@ -245,7 +244,7 @@ export function getEndDate(startDate: DateValue, duration: DateDuration) {
 		d.days = -1;
 	}
 
-	return startDate.add(d);
+	return addDuration(startDate, d);
 }
 
 export function getAdjustedDateFn(
@@ -270,7 +269,7 @@ export function getAdjustedDateFn(
 			};
 		}
 
-		if (focusedDate.compare(startDate) < 0) {
+		if (compareDates(focusedDate, startDate) < 0) {
 			return {
 				startDate: alignEnd(focusedDate, visibleDuration, locale, min, max),
 				endDate,
@@ -278,7 +277,7 @@ export function getAdjustedDateFn(
 			};
 		}
 
-		if (focusedDate.compare(endDate) > 0) {
+		if (compareDates(focusedDate, endDate) > 0) {
 			return {
 				startDate: alignStart(focusedDate, visibleDuration, locale, min, max),
 				endDate,
@@ -312,16 +311,18 @@ export function getNextUnavailableDate(
 	isDateUnavailableFn: (date: DateValue) => boolean,
 	dir: number,
 ): DateValue | undefined {
-	let nextDate = anchorDate.add({ days: dir });
+	let nextDate = addDuration(anchorDate, { days: dir });
 	while (
-		(dir < 0 ? nextDate.compare(start) >= 0 : nextDate.compare(end) <= 0) &&
+		(dir < 0
+			? compareDates(nextDate, start) >= 0
+			: compareDates(nextDate, end) <= 0) &&
 		!isDateUnavailableFn(nextDate)
 	) {
-		nextDate = nextDate.add({ days: dir });
+		nextDate = addDuration(nextDate, { days: dir });
 	}
 
 	if (isDateUnavailableFn(nextDate)) {
-		return nextDate.add({ days: -dir });
+		return addDuration(nextDate, { days: -dir });
 	}
 
 	return undefined;
@@ -336,19 +337,13 @@ export function getPreviousAvailableDate(
 		return date;
 	}
 
-	while (date.compare(min) >= 0 && isDateUnavailable(date)) {
-		date = date.subtract({ days: 1 });
+	while (compareDates(date, min) >= 0 && isDateUnavailable(date)) {
+		date = subtractDuration(date, { days: 1 });
 	}
 
-	if (date.compare(min) >= 0) {
+	if (compareDates(date, min) >= 0) {
 		return date;
 	}
-}
-
-export function getEraFormat(date: DateValue): "short" | undefined {
-	return date?.calendar.identifier === "gregory" && date.era === "BC"
-		? "short"
-		: undefined;
 }
 
 /** Return the first value of the selection depending on the selection mode. */
@@ -394,16 +389,12 @@ export function getArrayValueOfSelection(
  * -----------------------------------------------------------------------------*/
 
 function formatRange(
-	dateFormatter: DateFormatter,
+	dateFormatter: Intl.DateTimeFormat,
 	translations: CalendarIntlTranslations,
 	start: DateValue,
 	end: DateValue,
-	timeZone: string,
 ) {
-	const parts = dateFormatter.formatRangeToParts(
-		start.toDate(timeZone),
-		end.toDate(timeZone),
-	);
+	const parts = dateFormatter.formatRangeToParts(start, end);
 
 	// Find the separator between the start and end date. This is determined
 	// by finding the last shared literal before the end range.
@@ -442,20 +433,15 @@ export function getSelectedDateDescription(
 	locale: string,
 	translations: CalendarIntlTranslations,
 	value: DateValue,
-	timeZone: string,
 ) {
-	const dateFormatter = new DateFormatter(locale, {
+	const dateFormatter = new Intl.DateTimeFormat(locale, {
 		weekday: "long",
 		month: "long",
 		year: "numeric",
 		day: "numeric",
-		era: getEraFormat(value),
-		timeZone: timeZone,
 	});
 
-	return translations.selectedDateDescription(
-		dateFormatter.format(value.toDate(timeZone)),
-	);
+	return translations.selectedDateDescription(dateFormatter.format(value));
 }
 
 export function getSelectedDateRangeDescription(
@@ -463,34 +449,25 @@ export function getSelectedDateRangeDescription(
 	translations: CalendarIntlTranslations,
 	highlightedRange: { start?: DateValue; end?: DateValue },
 	anchorDate: DateValue | undefined,
-	timeZone: string,
 ) {
 	const start = highlightedRange.start;
 	const end = highlightedRange.end;
 
 	if (!anchorDate && start && end) {
-		const dateFormatter = new DateFormatter(locale, {
+		const dateFormatter = new Intl.DateTimeFormat(locale, {
 			weekday: "long",
 			month: "long",
 			year: "numeric",
 			day: "numeric",
-			era: getEraFormat(start) || getEraFormat(end),
-			timeZone: timeZone,
 		});
 
 		// Use a single date message if the start and end dates are the same day,
 		// otherwise include both dates.
 		if (isSameDay(start, end)) {
-			const date = dateFormatter.format(start.toDate(timeZone));
+			const date = dateFormatter.format(start);
 			return translations.selectedDateDescription(date);
 		}
-		const dateRange = formatRange(
-			dateFormatter,
-			translations,
-			start,
-			end,
-			timeZone,
-		);
+		const dateRange = formatRange(dateFormatter, translations, start, end);
 		return translations.selectedRangeDescription(dateRange);
 	}
 
@@ -503,66 +480,39 @@ export function getVisibleRangeDescription(
 	translations: CalendarIntlTranslations,
 	startDate: DateValue,
 	endDate: DateValue,
-	timeZone: string,
 	isAria: boolean,
 ) {
-	const era = getEraFormat(startDate) || getEraFormat(endDate);
-
-	const monthFormatter = new DateFormatter(locale, {
+	const monthFormatter = new Intl.DateTimeFormat(locale, {
 		month: "long",
 		year: "numeric",
-		era,
-		calendar: startDate.calendar.identifier,
-		timeZone,
 	});
 
-	const dateFormatter = new DateFormatter(locale, {
+	const dateFormatter = new Intl.DateTimeFormat(locale, {
 		month: "long",
 		year: "numeric",
 		day: "numeric",
-		era,
-		calendar: startDate.calendar.identifier,
-		timeZone,
 	});
 
 	// Special case for month granularity. Format as a single month if only a
 	// single month is visible, otherwise format as a range of months.
 	if (isSameDay(startDate, startOfMonth(startDate))) {
 		if (isSameDay(endDate, endOfMonth(startDate))) {
-			return monthFormatter.format(startDate.toDate(timeZone));
+			return monthFormatter.format(startDate);
 		}
 		if (isSameDay(endDate, endOfMonth(endDate))) {
 			if (isAria) {
-				return formatRange(
-					monthFormatter,
-					translations,
-					startDate,
-					endDate,
-					timeZone,
-				);
+				return formatRange(monthFormatter, translations, startDate, endDate);
 			}
 
-			return monthFormatter.formatRange(
-				startDate.toDate(timeZone),
-				endDate.toDate(timeZone),
-			);
+			return monthFormatter.formatRange(startDate, endDate);
 		}
 	}
 
 	if (isAria) {
-		return formatRange(
-			dateFormatter,
-			translations,
-			startDate,
-			endDate,
-			timeZone,
-		);
+		return formatRange(dateFormatter, translations, startDate, endDate);
 	}
 
-	return dateFormatter.formatRange(
-		startDate.toDate(timeZone),
-		endDate.toDate(timeZone),
-	);
+	return dateFormatter.formatRange(startDate, endDate);
 }
 
 /* -----------------------------------------------------------------------------
@@ -578,10 +528,10 @@ export function getNextPage(
 	max?: DateValue,
 ) {
 	const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
-	const start = startDate.add(visibleDuration);
+	const start = addDuration(startDate, visibleDuration);
 
 	return adjust({
-		focusedDate: focusedDate.add(visibleDuration),
+		focusedDate: addDuration(focusedDate, visibleDuration),
 		startDate: alignStart(
 			constrainStart(focusedDate, start, visibleDuration, locale, min, max),
 			visibleDuration,
@@ -599,10 +549,10 @@ export function getPreviousPage(
 	max?: DateValue,
 ) {
 	const adjust = getAdjustedDateFn(visibleDuration, locale, min, max);
-	const start = startDate.subtract(visibleDuration);
+	const start = subtractDuration(startDate, visibleDuration);
 
 	return adjust({
-		focusedDate: focusedDate.subtract(visibleDuration),
+		focusedDate: subtractDuration(focusedDate, visibleDuration),
 		startDate: alignStart(
 			constrainStart(focusedDate, start, visibleDuration, locale, min, max),
 			visibleDuration,
@@ -638,7 +588,7 @@ export function getNextRow(
 		visibleDuration.years
 	) {
 		return adjust({
-			focusedDate: focusedDate.add({ weeks: 1 }),
+			focusedDate: addDuration(focusedDate, { weeks: 1 }),
 			startDate,
 		});
 	}
@@ -671,7 +621,7 @@ export function getPreviousRow(
 		visibleDuration.years
 	) {
 		return adjust({
-			focusedDate: focusedDate.subtract({ weeks: 1 }),
+			focusedDate: subtractDuration(focusedDate, { weeks: 1 }),
 			startDate,
 		});
 	}
@@ -755,7 +705,7 @@ export function getNextSection(
 
 	if (!larger && !visibleDuration.days) {
 		return adjust({
-			focusedDate: focusedDate.add(getUnitDuration(visibleDuration)),
+			focusedDate: addDuration(focusedDate, getUnitDuration(visibleDuration)),
 			startDate,
 		});
 	}
@@ -773,14 +723,14 @@ export function getNextSection(
 
 	if (visibleDuration.weeks) {
 		return adjust({
-			focusedDate: focusedDate.add({ months: 1 }),
+			focusedDate: addDuration(focusedDate, { months: 1 }),
 			startDate,
 		});
 	}
 
 	if (visibleDuration.months || visibleDuration.years) {
 		return adjust({
-			focusedDate: focusedDate.add({ years: 1 }),
+			focusedDate: addDuration(focusedDate, { years: 1 }),
 			startDate,
 		});
 	}
@@ -799,7 +749,10 @@ export function getPreviousSection(
 
 	if (!larger && !visibleDuration.days) {
 		return adjust({
-			focusedDate: focusedDate.subtract(getUnitDuration(visibleDuration)),
+			focusedDate: subtractDuration(
+				focusedDate,
+				getUnitDuration(visibleDuration),
+			),
 			startDate,
 		});
 	}
@@ -817,14 +770,14 @@ export function getPreviousSection(
 
 	if (visibleDuration.weeks) {
 		return adjust({
-			focusedDate: focusedDate.subtract({ months: 1 }),
+			focusedDate: subtractDuration(focusedDate, { months: 1 }),
 			startDate,
 		});
 	}
 
 	if (visibleDuration.months || visibleDuration.years) {
 		return adjust({
-			focusedDate: focusedDate.subtract({ years: 1 }),
+			focusedDate: subtractDuration(focusedDate, { years: 1 }),
 			startDate,
 		});
 	}
@@ -860,39 +813,39 @@ export function asRangeValue(
  * -----------------------------------------------------------------------------*/
 
 export function sortDates(values: DateValue[]) {
-	return values.sort((a, b) => a.compare(b));
+	return values.sort((a, b) => compareDates(a, b));
 }
 
 export function makeCalendarDateRange(
 	start?: DateValue,
 	end?: DateValue,
-): RangeValue<CalendarDate> | undefined {
+): RangeValue<DateValue> | undefined {
 	if (!start || !end) {
 		return undefined;
 	}
 
-	if (end.compare(start) < 0) {
+	if (compareDates(end, start) < 0) {
 		[start, end] = [end, start];
 	}
 
-	return { start: toCalendarDate(start), end: toCalendarDate(end) };
+	return { start, end };
 }
 
+/** Preserves the time-of-day of `oldValue` (if any) onto `newValue`'s date. */
 export function convertValue(
 	newValue: DateValue,
 	oldValue?: DateValue | null,
 ): DateValue {
-	// The display calendar should not have any effect on the emitted value.
-	// Emit dates in the same calendar as the original value, if any, otherwise gregorian.
-	newValue = toCalendar(
-		newValue,
-		oldValue?.calendar || new GregorianCalendar(),
-	);
-
-	// Preserve time if the input value had one.
-	if (oldValue && "hour" in oldValue) {
-		return oldValue.set(newValue);
+	if (!oldValue) {
+		return newValue;
 	}
 
-	return newValue;
+	const result = new Date(newValue);
+	result.setHours(
+		oldValue.getHours(),
+		oldValue.getMinutes(),
+		oldValue.getSeconds(),
+		oldValue.getMilliseconds(),
+	);
+	return result;
 }

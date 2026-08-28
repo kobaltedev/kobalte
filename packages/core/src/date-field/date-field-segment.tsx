@@ -6,7 +6,6 @@
  * https://github.com/adobe/react-spectrum/blob/99ca82e87ba2d7fdd54f5b49326fd242320b4b51/packages/@react-aria/datepicker/src/useDateSegment.ts
  */
 
-import { CalendarDate, toCalendar } from "@internationalized/date";
 import { NumberParser } from "@internationalized/number";
 import { callHandler } from "@kobalte/utils";
 import { isIOS, isMac } from "@solid-primitives/platform";
@@ -117,7 +116,7 @@ export function DateFieldSegment<T extends ValidComponent = "div">(
 	// spin buttons cannot be focused with VoiceOver on iOS.
 	const touchPropOverrides = createMemo(() => {
 		return (
-			isIOS || mergedProps.segment.type === "timeZoneName"
+			isIOS
 				? {
 						role: "textbox",
 						"aria-valuemax": undefined,
@@ -183,7 +182,6 @@ export function DateFieldSegment<T extends ValidComponent = "div">(
 	const inputMode = createMemo(() => {
 		return formControlContext.isDisabled() ||
 			mergedProps.segment.type === "dayPeriod" ||
-			mergedProps.segment.type === "era" ||
 			!isEditable()
 			? undefined
 			: "numeric";
@@ -195,13 +193,6 @@ export function DateFieldSegment<T extends ValidComponent = "div">(
 	const options = createMemo(() => context.dateFormatterResolvedOptions());
 
 	const { locale } = useLocale();
-
-	// Get a list of formatted era names so users can type the first character to choose one.
-	const eraFormatter = createDateFormatter({
-		year: "numeric",
-		era: "narrow",
-		timeZone: "UTC",
-	});
 
 	const monthDateFormatter = createDateFormatter(() => ({
 		month: "long",
@@ -217,38 +208,6 @@ export function DateFieldSegment<T extends ValidComponent = "div">(
 	const amPmFormatter = createDateFormatter({
 		hour: "numeric",
 		hour12: true,
-	});
-
-	const eras = createMemo(() => {
-		if (mergedProps.segment.type !== "era") {
-			return [];
-		}
-
-		const date = toCalendar(new CalendarDate(1, 1, 1), context.calendar());
-		const eras = context
-			.calendar()
-			.getEras()
-			.map((era) => {
-				const eraDate = date
-					.set({ year: 1, month: 1, day: 1, era })
-					.toDate("UTC");
-				const parts = eraFormatter().formatToParts(eraDate);
-				const formatted = parts.find((p) => p.type === "era")?.value ?? "";
-				return { era, formatted };
-			});
-
-		// Remove the common prefix from formatted values. This is so that in calendars with eras like
-		// ERA0 and ERA1 (e.g. Ethiopic), users can press "0" and "1" to select an era. In other cases,
-		// the first letter is used.
-		const prefixLength = commonPrefixLength(eras.map((era) => era.formatted));
-
-		if (prefixLength) {
-			for (const era of eras) {
-				era.formatted = era.formatted.slice(prefixLength);
-			}
-		}
-
-		return eras;
 	});
 
 	const am = createMemo(() => {
@@ -339,14 +298,6 @@ export function DateFieldSegment<T extends ValidComponent = "div">(
 				}
 				context.focusManager().focusNext();
 				break;
-			case "era": {
-				const matched = eras().find((e) => filter.startsWith(e.formatted, key));
-				if (matched) {
-					context.setSegment("era", +matched.era);
-					context.focusManager().focusNext();
-				}
-				break;
-			}
 			case "day":
 			case "hour":
 			case "minute":
@@ -643,20 +594,4 @@ export function DateFieldSegment<T extends ValidComponent = "div">(
 			</SpinButton.Root>
 		</Show>
 	);
-}
-
-function commonPrefixLength(strings: string[]): number {
-	// Sort the strings, and compare the characters in the first and last to find the common prefix.
-	strings.sort();
-
-	const first = strings[0];
-	const last = strings[strings.length - 1];
-
-	for (let i = 0; i < first.length; i++) {
-		if (first[i] !== last[i]) {
-			return i;
-		}
-	}
-
-	return 0;
 }

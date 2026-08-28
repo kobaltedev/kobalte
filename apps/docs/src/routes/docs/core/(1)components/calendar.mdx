@@ -41,8 +41,7 @@ import {
 ## Features
 
 - Single, multiple, or range date selection via the `selectionMode` prop.
-- Values are calendar-system-aware [`@internationalized/date`](https://react-spectrum.adobe.com/internationalized/date/index.html) objects (`CalendarDate`, `CalendarDateTime`, or `ZonedDateTime`) rather than native JS `Date`.
-- Non-Gregorian calendar systems (Buddhist, Islamic, Hebrew, Japanese, etc.) supported through the `createCalendar` prop.
+- Values are native JS `Date` objects (Gregorian calendar only) rather than a separate date library's types.
 - Click-only range selection — no pointer-drag tracking — see the corvu credit above.
 - Can be controlled (`value` / `onChange`) or uncontrolled (`defaultValue`).
 - `minValue`, `maxValue`, and `isDateUnavailable` to constrain selectable dates.
@@ -52,6 +51,7 @@ import {
 - Full keyboard navigation between cells, months, and years.
 - `disabled` and `readOnly` states.
 - Automatic live-region announcements when the visible range or selection changes.
+- Date arithmetic (day/week/month navigation) runs in the browser's local time zone; there's no explicit per-value time zone tracking, so operations that cross a daylight-saving transition follow the local system clock.
 
 ## Anatomy
 
@@ -102,10 +102,11 @@ The calendar consists of:
 </Calendar>
 ```
 
-<!-- Note: `Calendar.GridBodyRow`'s children render prop can receive a `null` date accessor
-     for cells that fall outside the calendar system's valid range at the start/end of a
-     week — the real example guards this with a `<Show>`/fallback `<td>`, omitted above
-     for anatomy brevity. See the Example section for the guarded version. -->
+<!-- Note: `Calendar.GridBodyRow`'s children render prop type still allows a `null` date
+     accessor for backward compatibility, but since dates are native `Date` objects there's
+     no calendar-system boundary that can produce one in practice. The example still guards
+     with a `<Show>`/fallback `<td>` defensively — omitted above for anatomy brevity. See the
+     Example section for the guarded version. -->
 
 ## Example
 
@@ -268,19 +269,18 @@ Selection is click-only, following corvu's model: the first click on a cell sets
 
 ### Controlled value
 
-Use `value` and `onChange` to control the selected date yourself. Values are `@internationalized/date` objects — use their `.toString()` (ISO 8601) or formatter APIs to display them, not native `Date` methods.
+Use `value` and `onChange` to control the selected date yourself. Values are native `Date` objects, so any native `Date` method or formatter (e.g. `toLocaleDateString()`, `Intl.DateTimeFormat`) works directly — no separate date library is involved.
 
 <Preview>
 	<ControlledExample />
 </Preview>
 
-```tsx {2,6-11}
-import { CalendarDate } from "@internationalized/date";
+```tsx {5}
 import { Calendar, type DateValue } from "@kobalte/core/calendar";
 import { createSignal, Show } from "solid-js";
 
 function ControlledExample() {
-	const [value, setValue] = createSignal<DateValue | null>(new CalendarDate(2024, 1, 15));
+	const [value, setValue] = createSignal<DateValue | null>(new Date(2024, 0, 15));
 
 	return (
 		<>
@@ -288,7 +288,7 @@ function ControlledExample() {
 				{/* ...anatomy... */}
 			</Calendar>
 			<p>
-				Selected date: <Show when={value()} fallback="--">{value()!.toString()}</Show>
+				Selected date: <Show when={value()} fallback="--">{value()!.toLocaleDateString()}</Show>
 			</p>
 		</>
 	);
@@ -306,9 +306,9 @@ Use `minValue` and `maxValue` to constrain the selectable range. Cells outside t
 ```tsx
 <Calendar
 	selectionMode="single"
-	defaultFocusedValue={new CalendarDate(2024, 1, 15)}
-	minValue={new CalendarDate(2024, 1, 5)}
-	maxValue={new CalendarDate(2024, 1, 25)}
+	defaultFocusedValue={new Date(2024, 0, 15)}
+	minValue={new Date(2024, 0, 5)}
+	maxValue={new Date(2024, 0, 25)}
 >
 	{/* ...anatomy... */}
 </Calendar>
@@ -338,7 +338,7 @@ Use `isDateUnavailable` to mark specific dates as unavailable without disabling 
 
 ```tsx {1-3}
 function isDateUnavailable(date: DateValue) {
-	return date.day % 7 === 0;
+	return date.getDate() % 7 === 0;
 }
 
 <Calendar selectionMode="single" isDateUnavailable={isDateUnavailable}>
@@ -361,7 +361,6 @@ Its props are a discriminated union keyed by the required `selectionMode` prop.
 | Prop                      | Description                                                                                                                                                                    |
 | :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | translations              | `CalendarIntlTranslations` <br/> The localized strings of the component.                                                                                                       |
-| createCalendar            | `(name: string) => Calendar` <br/> Creates an [`@internationalized/date` Calendar](https://react-spectrum.adobe.com/internationalized/date/Calendar.html) object for a calendar identifier. Pass a custom implementation to support only certain (e.g. non-Gregorian) calendar systems. |
 | locale                    | `string` <br/> The locale to display and edit the value according to. Defaults to the ambient Kobalte i18n locale.                                                            |
 | visibleDuration           | `DateDuration` <br/> The amount of days/months/years visible at once. Affects pagination. **Default:** `{ months: 1 }`                                                        |
 | selectionAlignment        | `"start" \| "center" \| "end"` <br/> How to align the initial selection relative to the visible date range.                                                                    |
@@ -470,7 +469,7 @@ No additional props. Renders a single weekday name cell (`<th>`).
 | Prop      | Description                                                                                                          |
 | :-------- | :--------------------------------------------------------------------------------------------------------------------- |
 | weekIndex | `number` <br/> The index of the week to render.                                                                       |
-| children  | `(date: Accessor<DateValue \| null>) => JSX.Element` <br/> Render prop called once per day in the week. The date accessor returns `null` for out-of-range placeholder cells at the start/end of the calendar system. |
+| children  | `(date: Accessor<DateValue \| null>) => JSX.Element` <br/> Render prop called once per day in the week. The date accessor type still allows `null`, kept for backward compatibility, but never returns it in practice. |
 
 ### Calendar.GridBodyCell
 

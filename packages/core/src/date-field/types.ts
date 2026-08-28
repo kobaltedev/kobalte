@@ -19,7 +19,6 @@ export type DateFieldOptions = Pick<
 >;
 
 export type SegmentType =
-	| "era"
 	| "year"
 	| "month"
 	| "day"
@@ -27,8 +26,7 @@ export type SegmentType =
 	| "minute"
 	| "second"
 	| "dayPeriod"
-	| "literal"
-	| "timeZoneName";
+	| "literal";
 
 export interface DateSegment {
 	/** The type of segment. */

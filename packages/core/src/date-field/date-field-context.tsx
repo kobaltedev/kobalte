@@ -1,8 +1,8 @@
-import type { Calendar } from "@internationalized/date";
 import type { FocusGroup } from "@solid-primitives/focus";
 import { type Accessor, createContext, useContext } from "solid-js";
 import type { DateFieldIntlTranslations } from "./date-field.intl.ts";
 import type {
+	DateFieldGranularity,
 	DateFieldOptions,
 	DateSegment,
 	DateValue,
@@ -13,7 +13,7 @@ export interface DateFieldContextValue {
 	translations: Accessor<DateFieldIntlTranslations>;
 	value: Accessor<DateValue | undefined>;
 	setValue: (value: DateValue) => void;
-	calendar: Accessor<Calendar>;
+	granularity: Accessor<DateFieldGranularity>;
 	dateValue: Accessor<Date | undefined>;
 	dateFormatterResolvedOptions: Accessor<Intl.ResolvedDateTimeFormatOptions>;
 	segments: Accessor<DateSegment[]>;

@@ -5,21 +5,12 @@
  * Credits to the React Spectrum team:
  * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-stately/calendar/src/useCalendarState.ts
  * https://github.com/adobe/react-spectrum/blob/0a1d0cd4e1b2f77eed7c0ea08fce8a04f8de6921/packages/@react-aria/calendar/src/useCalendarBase.ts
+ *
+ * Reworked for native `Date` values — no calendar-system (`createCalendar`) or explicit
+ * time-zone concept, so the historical calendar-identifier-change effect and per-value
+ * time-zone tracking are gone.
  */
 
-import {
-	type Calendar,
-	type DateDuration,
-	DateFormatter,
-	getDayOfWeek,
-	isSameDay,
-	maxDate,
-	minDate,
-	startOfWeek,
-	toCalendar,
-	toCalendarDate,
-	today,
-} from "@internationalized/date";
 import type { RangeValue, ValidationState } from "@kobalte/utils";
 import {
 	type Accessor,
@@ -40,6 +31,17 @@ import {
 	CALENDAR_INTL_MESSAGES,
 	type CalendarIntlTranslations,
 } from "./calendar.intl.ts";
+import {
+	addDuration,
+	compareDates,
+	type DateDuration,
+	isSameDay,
+	maxDate,
+	minDate,
+	startOfWeek,
+	subtractDuration,
+	todayDate,
+} from "./date-math.ts";
 import type {
 	CalendarSelectionMode,
 	DateAlignment,
@@ -56,7 +58,6 @@ import {
 	getAdjustedDateFn,
 	getArrayValueOfSelection,
 	getEndDate,
-	getFirstValueOfSelection,
 	getNextPage,
 	getNextRow,
 	getNextSection,
@@ -78,11 +79,6 @@ import {
 export interface CreateCalendarStateProps {
 	/** The localized strings of the component. */
 	translations?: CalendarIntlTranslations;
-
-	/**
-	 * A function that creates a `Calendar` object for a given calendar identifier.
-	 */
-	createCalendar: (name: string) => Calendar;
 
 	/** The locale to display and edit the value according to. */
 	locale?: string;
@@ -170,7 +166,6 @@ export interface CalendarState {
 	direction: Accessor<Direction>;
 	min: Accessor<DateValue | undefined>;
 	max: Accessor<DateValue | undefined>;
-	timeZone: Accessor<string>;
 	highlightedRange: Accessor<RangeValue<DateValue> | undefined>;
 	translations: Accessor<CalendarIntlTranslations>;
 	setStartDate: (date: DateValue) => void;
@@ -210,18 +205,10 @@ export function createCalendarState(
 
 	const locale = createMemo(() => props.locale ?? localeContext.locale());
 
-	const resolvedOptions = createMemo(() => {
-		return new DateFormatter(locale()).resolvedOptions();
-	});
-
 	const direction = createMemo(() => {
 		return props.locale
 			? getReadingDirection(locale())
 			: localeContext.direction();
-	});
-
-	const calendar = createMemo(() => {
-		return props.createCalendar(resolvedOptions().calendar);
 	});
 
 	const [value, setControlledValue] = createControllableSignal<
@@ -242,16 +229,18 @@ export function createCalendarState(
 
 			if (valueRange?.start && valueRange.end) {
 				const start = alignCenter(
-					toCalendarDate(valueRange.start),
+					valueRange.start,
 					visibleDuration(),
 					locale(),
 					props.minValue,
 					props.maxValue,
 				);
 
-				const end = start.add(visibleDuration()).subtract({ days: 1 });
+				const end = subtractDuration(addDuration(start, visibleDuration()), {
+					days: 1,
+				});
 
-				if (valueRange.end.compare(end) > 0) {
+				if (compareDates(valueRange.end, end) > 0) {
 					return "start";
 				}
 			}
@@ -282,47 +271,27 @@ export function createCalendarState(
 		return props.maxValue;
 	});
 
-	const calendarDateValue = createMemo(() => {
-		return getArrayValueOfSelection(selectionMode(), value()).map((date) =>
-			toCalendar(toCalendarDate(date), calendar()),
-		);
+	const selectedDates = createMemo(() => {
+		return getArrayValueOfSelection(selectionMode(), value());
 	});
 
-	const timeZone = createMemo(() => {
-		const firstValue = getFirstValueOfSelection(selectionMode(), value());
-
-		if (firstValue && "timeZone" in firstValue) {
-			return firstValue.timeZone;
-		}
-
-		return resolvedOptions().timeZone;
+	const focusedDateFromProps = createMemo(() => {
+		return props.focusedValue
+			? constrainValue(props.focusedValue, min(), max())
+			: undefined;
 	});
 
-	const focusedCalendarDate = createMemo(() => {
-		if (props.focusedValue) {
-			return constrainValue(
-				toCalendar(toCalendarDate(props.focusedValue), calendar()),
-				min(),
-				max(),
-			);
-		}
-
-		return undefined;
-	});
-
-	const defaultFocusedCalendarDate = createMemo(() => {
+	const defaultFocusedDate = createMemo(() => {
 		return constrainValue(
-			props.defaultFocusedValue
-				? toCalendar(toCalendarDate(props.defaultFocusedValue), calendar())
-				: calendarDateValue()[0] || toCalendar(today(timeZone()), calendar()),
+			props.defaultFocusedValue ?? selectedDates()[0] ?? todayDate(),
 			min(),
 			max(),
 		);
 	});
 
 	const [focusedDate, setFocusedDate] = createControllableSignal({
-		value: focusedCalendarDate,
-		defaultValue: defaultFocusedCalendarDate,
+		value: focusedDateFromProps,
+		defaultValue: defaultFocusedDate,
 		onChange: (value) => props.onFocusChange?.(value!),
 	});
 
@@ -360,7 +329,6 @@ export function createCalendarState(
 			props.translations ?? CALENDAR_INTL_MESSAGES,
 			startDate(),
 			endDate(),
-			timeZone(),
 			true,
 		);
 	});
@@ -368,8 +336,8 @@ export function createCalendarState(
 	const isCellDisabled = (date: DateValue) => {
 		return (
 			!!props.disabled ||
-			date.compare(startDate()) < 0 ||
-			date.compare(endDate()) > 0 ||
+			compareDates(date, startDate()) < 0 ||
+			compareDates(date, endDate()) > 0 ||
 			isDateInvalid(date, min(), max())
 		);
 	};
@@ -428,7 +396,7 @@ export function createCalendarState(
 			return props.validationState;
 		}
 
-		if (calendarDateValue().length <= 0) {
+		if (selectedDates().length <= 0) {
 			return null;
 		}
 
@@ -436,7 +404,7 @@ export function createCalendarState(
 			return null;
 		}
 
-		const isSomeDateInvalid = calendarDateValue().some((date) => {
+		const isSomeDateInvalid = selectedDates().some((date) => {
 			return (
 				props.isDateUnavailable?.(date) || isDateInvalid(date, min(), max())
 			);
@@ -454,16 +422,15 @@ export function createCalendarState(
 
 			const isInRange =
 				start != null &&
-				cellDate.compare(start) >= 0 &&
+				compareDates(cellDate, start) >= 0 &&
 				end != null &&
-				cellDate.compare(end) <= 0;
+				compareDates(cellDate, end) <= 0;
 
 			return isInRange && isAvailable;
 		}
 
 		return (
-			calendarDateValue().some((date) => isSameDay(cellDate, date)) &&
-			isAvailable
+			selectedDates().some((date) => isSameDay(cellDate, date)) && isAvailable
 		);
 	};
 
@@ -572,11 +539,11 @@ export function createCalendarState(
 	};
 
 	const focusNextDay = () => {
-		focusCell(focusedDate()!.add({ days: 1 }));
+		focusCell(addDuration(focusedDate()!, { days: 1 }));
 	};
 
 	const focusPreviousDay = () => {
-		focusCell(focusedDate()!.subtract({ days: 1 }));
+		focusCell(subtractDuration(focusedDate()!, { days: 1 }));
 	};
 
 	const focusNextRow = () => {
@@ -705,64 +672,23 @@ export function createCalendarState(
 		}
 	};
 
-	const getDatesInWeek = (weekIndex: number, from: DateValue) => {
-		let date = from.add({ weeks: weekIndex });
-		const dates: Array<DateValue | null> = [];
-
-		date = startOfWeek(date, locale());
-
-		// startOfWeek will clamp dates within the calendar system's valid range, which may
-		// start in the middle of a week. In this case, add null placeholders.
-		const dayOfWeek = getDayOfWeek(date, locale());
-		for (let i = 0; i < dayOfWeek; i++) {
-			dates.push(null);
-		}
-
-		while (dates.length < 7) {
-			dates.push(date);
-			const nextDate = date.add({ days: 1 });
-			if (isSameDay(date, nextDate)) {
-				// If the next day is the same, we have hit the end of the calendar system.
-				break;
-			}
-			date = nextDate;
-		}
-
-		// Add null placeholders if at the end of the calendar system.
-		while (dates.length < 7) {
-			dates.push(null);
-		}
-
-		return dates;
+	// Native `Date` has no calendar-system boundary to clamp against (unlike
+	// `@internationalized/date`, which could clamp `startOfWeek` short of a
+	// calendar's minimum date), so this can never actually produce a `null`
+	// placeholder in practice — the `Array<DateValue | null>` return type is
+	// kept only for backward compatibility with existing render-prop consumers.
+	const getDatesInWeek = (
+		weekIndex: number,
+		from: DateValue,
+	): Array<DateValue | null> => {
+		const weekStart = startOfWeek(
+			addDuration(from, { weeks: weekIndex }),
+			locale(),
+		);
+		return Array.from({ length: 7 }, (_, i) =>
+			addDuration(weekStart, { days: i }),
+		);
 	};
-
-	// Reset focused date and visible range when calendar changes.
-	let lastCalendarIdentifier = untrack(() => calendar().identifier);
-
-	createEffect(
-		() => calendar(),
-		(resolvedCalendar) => {
-			untrack(() => {
-				if (resolvedCalendar.identifier !== lastCalendarIdentifier) {
-					const newFocusedDate = toCalendar(focusedDate()!, resolvedCalendar);
-
-					setStartDate(
-						alignCenter(
-							newFocusedDate,
-							visibleDuration(),
-							locale(),
-							min(),
-							max(),
-						),
-					);
-
-					setFocusedDate(newFocusedDate);
-
-					lastCalendarIdentifier = resolvedCalendar.identifier;
-				}
-			});
-		},
-	);
 
 	createEffect(
 		() => {
@@ -807,7 +733,6 @@ export function createCalendarState(
 						locale(),
 						props.translations ?? CALENDAR_INTL_MESSAGES,
 						date,
-						timeZone(),
 					);
 			} else if (selectionMode() === "multiple") {
 				const dates = asArrayValue(value());
@@ -817,7 +742,6 @@ export function createCalendarState(
 							locale(),
 							props.translations ?? CALENDAR_INTL_MESSAGES,
 							date,
-							timeZone(),
 						),
 					)
 					.join(", ");
@@ -828,7 +752,6 @@ export function createCalendarState(
 					props.translations ?? CALENDAR_INTL_MESSAGES,
 					dateRange,
 					anchorDate(),
-					timeZone(),
 				);
 			}
 
@@ -874,7 +797,6 @@ export function createCalendarState(
 		direction,
 		min,
 		max,
-		timeZone,
 		translations: () => props.translations ?? CALENDAR_INTL_MESSAGES,
 		setStartDate,
 		setAnchorDate,

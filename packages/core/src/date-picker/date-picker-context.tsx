@@ -1,7 +1,7 @@
-import type { Calendar, DateDuration } from "@internationalized/date";
 import type { RangeValue, ValidationState } from "@kobalte/utils";
 import { type Accessor, createContext, useContext } from "solid-js";
 
+import type { DateDuration } from "../calendar/date-math.ts";
 import type { CalendarSelectionMode, DateValue } from "../calendar/types.ts";
 import type { DatePickerIntlTranslations } from "./date-picker.intl.ts";
 
@@ -28,7 +28,6 @@ export interface DatePickerContextValue {
 		DateValue | DateValue[] | RangeValue<DateValue> | null | undefined
 	>;
 	formattedValue: Accessor<string>;
-	createCalendar: (name: string) => Calendar;
 	isDateUnavailable: (date: DateValue) => boolean;
 	setDateValue: (
 		newValue: DateValue | DateValue[] | RangeValue<DateValue> | undefined,

@@ -1,10 +1,9 @@
-import {
-	parseDate,
-	parseDateTime,
-	parseZonedDateTime,
-} from "@internationalized/date";
 import { visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps } from "@solidjs/web";
+import {
+	parseLocalISOString,
+	toLocalISOString,
+} from "../calendar/date-math.ts";
 import { useFormControlContext } from "../form-control/index.ts";
 import { useDateFieldContext } from "./date-field-context.tsx";
 
@@ -14,6 +13,11 @@ export function DateFieldHiddenInput(props: DateFieldHiddenInputProps) {
 	const formControlContext = useFormControlContext();
 	const context = useDateFieldContext();
 
+	const serializedValue = () => {
+		const value = context.value();
+		return value ? toLocalISOString(value, context.granularity()) : "";
+	};
+
 	return (
 		// biome-ignore lint/a11y/noAriaHiddenOnFocusable: it is not focusable.
 		<input
@@ -21,27 +25,16 @@ export function DateFieldHiddenInput(props: DateFieldHiddenInputProps) {
 			tabindex={-1}
 			style={visuallyHiddenStyles}
 			name={formControlContext.name()}
-			value={context.value()?.toString() ?? ""}
+			value={serializedValue()}
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}
 			aria-hidden="true"
 			onChange={(e) => {
-				const parsed = parseDateValue(e.currentTarget.value);
+				const parsed = parseLocalISOString(e.currentTarget.value);
 				if (parsed) context.setValue(parsed);
 			}}
 			{...props}
 		/>
 	);
 }
-
-const parseDateValue = (value: string) => {
-	for (const parser of [parseZonedDateTime, parseDateTime, parseDate]) {
-		try {
-			return parser(value);
-		} catch {
-			// try the next, less specific parser
-		}
-	}
-	return undefined;
-};

@@ -180,8 +180,8 @@ function DateFormatterDisplay() {
 }
 
 /**
- * `createDateFormatter` wraps `@internationalized/date`'s `DateFormatter` and
- * re-creates it whenever the locale or options change.
+ * `createDateFormatter` wraps native `Intl.DateTimeFormat` and re-creates it
+ * whenever the locale or options change.
  */
 export const DateFormatterStory = meta.story({
 	name: "Date Formatter",
