@@ -1,6 +1,6 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createUniqueId, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -8,8 +8,8 @@ import {
 	type PolymorphicProps,
 } from "../polymorphic";
 import { createRovingCollectionItem } from "../primitives/create-roving-collection";
-import { useComboboxControlContext } from "./combobox-control-context";
 import { useComboboxContext } from "./combobox-context";
+import { useComboboxControlContext } from "./combobox-control-context";
 
 export interface ComboboxControlItemOptions<Option> {
 	/** The selected option this chip represents. */
@@ -26,7 +26,7 @@ export interface ComboboxControlItemCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 }
@@ -68,7 +68,7 @@ export function ComboboxControlItem<Option, T extends ValidComponent = "div">(
 
 	const defaultId = context.generateId(`control-item-${createUniqueId()}`);
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ id: defaultId },
 		props as ComboboxControlItemProps<Option>,
 	);
@@ -99,8 +99,7 @@ export function ComboboxControlItem<Option, T extends ValidComponent = "div">(
 	);
 
 	const isHighlighted = () =>
-		controlContext.rovingListState().selectionManager().focusedKey() ===
-		key();
+		controlContext.rovingListState().selectionManager().focusedKey() === key();
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, mergedProps.onKeyDown as typeof onKeyDown);
@@ -152,7 +151,7 @@ export function ComboboxControlItem<Option, T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<ComboboxControlItemRenderProps>
 			as="div"
-			ref={mergeRefs((el) => (ref = el as HTMLElement), mergedProps.ref)}
+			ref={[(el) => (ref = el), mergedProps.ref]}
 			id={mergedProps.id}
 			tabindex={selectableItem.tabIndex()}
 			data-highlighted={isHighlighted() ? "" : undefined}

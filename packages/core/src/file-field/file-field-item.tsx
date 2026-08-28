@@ -1,15 +1,15 @@
-import type { JSX, ValidComponent } from "@solidjs/web";
+import type { ValidComponent } from "@solidjs/web";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
 export interface FileFieldItemOptions {}
 
 export interface FileFieldItemCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface FileFieldItemRenderProps extends FileFieldItemCommonProps {}

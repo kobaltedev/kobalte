@@ -6,13 +6,13 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 
@@ -20,13 +20,16 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createDisclosureState, createRegisterId } from "../primitives";
+} from "../polymorphic/index.tsx";
+import {
+	createDisclosureState,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	CollapsibleContext,
 	type CollapsibleContextValue,
 	type CollapsibleDataSet,
-} from "./collapsible-context";
+} from "./collapsible-context.tsx";
 
 export interface CollapsibleRootOptions {
 	/** The controlled open state of the collapsible. */
@@ -52,7 +55,7 @@ export interface CollapsibleRootOptions {
 }
 
 export interface CollapsibleRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
@@ -73,10 +76,7 @@ export function CollapsibleRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `collapsible-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as CollapsibleRootProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as CollapsibleRootProps);
 
 	const others = omit(
 		mergedProps,
@@ -111,7 +111,7 @@ export function CollapsibleRoot<T extends ValidComponent = "div">(
 		shouldMount: () => mergedProps.forceMount || disclosureState.isOpen(),
 		contentId,
 		toggle: disclosureState.toggle,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerContentId: createRegisterId(setContentId),
 	};
 

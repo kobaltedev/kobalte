@@ -1,6 +1,6 @@
 import { createStore } from "solid-js";
 
-import type { ToastConfig } from "./types";
+import type { ToastConfig } from "./types.ts";
 
 const [state, setState] = createStore({
 	toasts: [] as ToastConfig[],

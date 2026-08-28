@@ -1,4 +1,4 @@
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { ComponentProps, JSX } from "@solidjs/web";
 import { createSignal, omit, onSettled, Show, untrack } from "solid-js";
 import { useTagsInputContext } from "./tags-input-context";
@@ -52,7 +52,12 @@ function TagsInputItemInputField(props: TagsInputItemInputProps) {
 	};
 
 	const onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
-		callHandler(e, props.onInput);
+		callHandler(
+			e as InputEvent & { currentTarget: HTMLInputElement; target: Element },
+			props.onInput as
+				| JSX.EventHandlerUnion<HTMLInputElement, InputEvent>
+				| undefined,
+		);
 		setDraft((e.target as HTMLInputElement).value);
 	};
 
@@ -77,7 +82,12 @@ function TagsInputItemInputField(props: TagsInputItemInputProps) {
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
-		callHandler(e, props.onBlur);
+		callHandler(
+			e as FocusEvent & { currentTarget: HTMLInputElement; target: Element },
+			props.onBlur as
+				| JSX.EventHandlerUnion<HTMLInputElement, FocusEvent>
+				| undefined,
+		);
 		commit();
 	};
 
@@ -88,10 +98,7 @@ function TagsInputItemInputField(props: TagsInputItemInputProps) {
 
 	return (
 		<input
-			ref={mergeRefs(
-				(el) => (ref = el),
-				props.ref as HTMLInputElement | ((el: HTMLInputElement) => void),
-			)}
+			ref={[(el) => (ref = el), props.ref]}
 			value={draft()}
 			type="text"
 			onInput={onInput}

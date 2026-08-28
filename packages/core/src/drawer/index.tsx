@@ -30,7 +30,7 @@ import {
 	Portal,
 	Title,
 	Trigger,
-} from "../dialog";
+} from "../dialog/index.tsx";
 
 // Drawer-specific components
 import {
@@ -39,26 +39,26 @@ import {
 	type DrawerContentOptions,
 	type DrawerContentProps,
 	type DrawerContentRenderProps,
-} from "./drawer-content";
+} from "./drawer-content.tsx";
 import {
 	type DrawerContextValue,
 	type DrawerInternalContextValue,
 	type DrawerTransitionState,
 	useDrawerContext as useContext,
-} from "./drawer-context";
-import type { DrawerSide, DrawerSize } from "./drawer-lib";
+} from "./drawer-context.tsx";
+import type { DrawerSide, DrawerSize } from "./drawer-lib.ts";
 import {
 	type DrawerOverlayCommonProps,
 	type DrawerOverlayOptions,
 	type DrawerOverlayProps,
 	type DrawerOverlayRenderProps,
 	DrawerOverlay as Overlay,
-} from "./drawer-overlay";
+} from "./drawer-overlay.tsx";
 import {
 	type DrawerRootOptions,
 	type DrawerRootProps,
 	DrawerRoot as Root,
-} from "./drawer-root";
+} from "./drawer-root.tsx";
 
 export type {
 	// Shared from Dialog

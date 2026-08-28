@@ -11,17 +11,19 @@ import { combineStyle } from "@solid-primitives/props";
 import { createResizeObserver } from "@solid-primitives/resize-observer";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { createEffect, createSignal, omit, onSettled } from "solid-js";
-import { useLocale } from "../i18n";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useTabsContext } from "./tabs-context";
+} from "../polymorphic/index.tsx";
+import { useTabsContext } from "./tabs-context.tsx";
 
 export interface TabsIndicatorOptions {}
 
-export interface TabsIndicatorCommonProps<T extends HTMLElement = HTMLElement> {
+export interface TabsIndicatorCommonProps<
+	_T extends HTMLElement = HTMLElement,
+> {
 	style?: JSX.CSSProperties | string;
 }
 
@@ -108,7 +110,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 
 	const [resizing, setResizing] = createSignal(false);
 
-	let timeout: NodeJS.Timeout | null = null;
+	let timeout: ReturnType<typeof setTimeout> | null = null;
 	let prevTarget: any = null;
 	createResizeObserver(context.selectedTab, (_, t) => {
 		if (prevTarget !== t) {

@@ -1,21 +1,21 @@
-import { mergeDefaultProps, visuallyHiddenStyles } from "@kobalte/utils";
+import { visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, merge, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type RatingItemDataSet,
 	useRatingItemContext,
-} from "./rating-item-context";
+} from "./rating-item-context.tsx";
 
 export interface RatingItemLabelOptions {}
 
 export interface RatingItemLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 	style: JSX.CSSProperties | string;
@@ -36,7 +36,7 @@ export function RatingItemLabel<T extends ValidComponent = "label">(
 ) {
 	const context = useRatingItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("label"),
 		},

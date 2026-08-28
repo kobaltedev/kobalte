@@ -6,22 +6,24 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/listbox/src/useOption.ts
  */
 
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type MenuItemDataSet, useMenuItemContext } from "./menu-item.context";
+} from "../polymorphic/index.tsx";
+import {
+	type MenuItemDataSet,
+	useMenuItemContext,
+} from "./menu-item.context.tsx";
 
 export interface MenuItemLabelOptions {}
 
 export interface MenuItemLabelCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface MenuItemLabelRenderProps
@@ -41,7 +43,7 @@ export function MenuItemLabel<T extends ValidComponent = "div">(
 ) {
 	const context = useMenuItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("label"),
 		},
@@ -58,7 +60,7 @@ export function MenuItemLabel<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<MenuItemLabelRenderProps>
 			as="div"
-			ref={mergeRefs(context.setLabelRef, mergedProps.ref)}
+			ref={[context.setLabelRef, mergedProps.ref]}
 			id={mergedProps.id}
 			{...context.dataset()}
 			{...others}

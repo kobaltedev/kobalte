@@ -26,7 +26,10 @@ const ResizableExample = () => (
 describe("Resizable", () => {
 	it("root has data-orientation='horizontal' by default", () => {
 		const { getByTestId } = render(() => <ResizableExample />);
-		expect(getByTestId("root")).toHaveAttribute("data-orientation", "horizontal");
+		expect(getByTestId("root")).toHaveAttribute(
+			"data-orientation",
+			"horizontal",
+		);
 	});
 
 	it("root has data-orientation='vertical' when specified", () => {

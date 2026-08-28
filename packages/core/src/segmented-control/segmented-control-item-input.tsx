@@ -1,15 +1,14 @@
-import { mergeRefs } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, createSignal, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	RadioGroup,
 	type RadioGroupItemInputCommonProps,
 	type RadioGroupItemInputOptions,
 	type RadioGroupItemInputRenderProps,
-} from "../radio-group";
-import { useRadioGroupItemContext } from "../radio-group/radio-group-item-context";
+} from "../radio-group/index.tsx";
+import { useRadioGroupItemContext } from "../radio-group/radio-group-item-context.tsx";
 
 export interface SegmentedControlItemInputOptions
 	extends RadioGroupItemInputOptions {}
@@ -52,7 +51,7 @@ export const SegmentedControlItemInput = <T extends ValidComponent = "input">(
 				>
 			>
 		>
-			ref={mergeRefs(setRef, props.ref)}
+			ref={[setRef, props.ref]}
 			{...otherProps}
 		/>
 	);

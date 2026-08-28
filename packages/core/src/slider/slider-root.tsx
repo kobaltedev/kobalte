@@ -6,47 +6,43 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/slider/src/Slider.tsx
  */
 
-import {
-	access,
-	clamp,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-	type ValidationState,
-} from "@kobalte/utils";
+import { clamp, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
-} from "../form-control";
-import { createNumberFormatter, useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { createNumberFormatter, useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
-import { createSliderState } from "./create-slider-state";
+} from "../polymorphic/index.tsx";
+import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import { createSliderState } from "./create-slider-state.ts";
 import {
 	SliderContext,
 	type SliderContextValue,
 	type SliderDataSet,
-} from "./slider-context";
+} from "./slider-context.tsx";
 import {
 	getNextSortedValues,
 	hasMinStepsBetweenValues,
 	stopEventDefaultAndPropagation,
-} from "./utils";
+} from "./utils.ts";
 
 export interface GetValueLabelParams {
 	values: number[];
@@ -137,7 +133,7 @@ export interface SliderRootOptions {
 
 export interface SliderRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface SliderRootRenderProps
@@ -153,11 +149,13 @@ export type SliderRootProps<
 export function SliderRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SliderRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `slider-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			minValue: 0,
@@ -167,8 +165,8 @@ export function SliderRoot<T extends ValidComponent = "div">(
 			orientation: "horizontal",
 			disabled: false,
 			inverted: false,
-			getValueLabel: (params) => params.values.join(", "),
-		},
+			getValueLabel: (params: GetValueLabelParams) => params.values.join(", "),
+		} as const,
 		props as SliderRootProps,
 	);
 
@@ -213,10 +211,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 	const { DomCollectionProvider, items: thumbs } =
 		createDomCollection<CollectionItemWithRef>();
 
-	createFormResetListener(
-		() => ref,
-		() => state.resetValues(),
-	);
+	createFormResetListener(ref, () => state.resetValues());
 
 	const isLTR = () => direction() === "ltr";
 
@@ -408,7 +403,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 		startEdge,
 		endEdge,
 		registerTrack: (ref: HTMLElement) => setTrackRef(ref),
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		getValueLabel: mergedProps.getValueLabel,
 	};
 
@@ -418,7 +413,7 @@ export function SliderRoot<T extends ValidComponent = "div">(
 				<SliderContext value={context}>
 					<Polymorphic<SliderRootRenderProps>
 						as="div"
-						ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+						ref={[setRef, mergedProps.ref]}
 						role="group"
 						id={access(mergedProps.id)!}
 						{...dataset()}

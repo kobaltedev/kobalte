@@ -1,16 +1,19 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
+import { merge } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
+} from "../polymorphic/index.tsx";
+import {
+	type ComboboxDataSet,
+	useComboboxContext,
+} from "./combobox-context.tsx";
 
 export interface ComboboxIconOptions {}
 
-export interface ComboboxIconCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ComboboxIconCommonProps<_T extends HTMLElement = HTMLElement> {
 	children: JSX.Element;
 }
 
@@ -33,10 +36,7 @@ export function ComboboxIcon<T extends ValidComponent = "span">(
 ) {
 	const context = useComboboxContext();
 
-	const mergedProps = mergeDefaultProps(
-		{ children: "▼" },
-		props as ComboboxIconProps,
-	);
+	const mergedProps = merge({ children: "▼" }, props as ComboboxIconProps);
 
 	return (
 		<Polymorphic

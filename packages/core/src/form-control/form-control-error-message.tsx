@@ -1,16 +1,15 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit, onCleanup, Show } from "solid-js";
+import { createEffect, merge, omit, Show } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "./form-control-context";
+} from "./form-control-context.tsx";
 
 export interface FormControlErrorMessageOptions {
 	/**
@@ -21,7 +20,7 @@ export interface FormControlErrorMessageOptions {
 }
 
 export interface FormControlErrorMessageCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
@@ -43,7 +42,7 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 ) {
 	const context = useFormControlContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("error-message"),
 		},
@@ -58,7 +57,7 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 		() => (isInvalid() ? others.id! : undefined),
 		(id) => {
 			if (!id) return;
-			onCleanup(context.registerErrorMessage(id));
+			return context.registerErrorMessage(id);
 		},
 	);
 

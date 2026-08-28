@@ -7,27 +7,21 @@
  * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
  */
 
-import {
-	callHandler,
-	contains,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	createFormControlField,
-	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useComboboxContext } from "./combobox-context";
+} from "../polymorphic/index.tsx";
+import { useComboboxContext } from "./combobox-context.tsx";
 
 export interface ComboboxInputOptions {}
 
@@ -35,7 +29,7 @@ export interface ComboboxInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
@@ -78,12 +72,14 @@ export type ComboboxInputProps<
 export function ComboboxInput<T extends ValidComponent = "input">(
 	props: PolymorphicProps<T, ComboboxInputProps<T>>,
 ) {
-	let ref: HTMLInputElement | undefined;
+	const [ref, setRef] = createSignal<HTMLInputElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("input"),
 		},
@@ -257,8 +253,8 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 
 		// Ignore blur if focused moved into the control or menu.
 		if (
-			contains(context.controlRef(), e.relatedTarget as any) ||
-			contains(context.contentRef(), e.relatedTarget as any)
+			context.controlRef()?.contains(e.relatedTarget as any) ||
+			context.contentRef()?.contains(e.relatedTarget as any)
 		) {
 			return;
 		}
@@ -274,14 +270,15 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	) => {
 		callHandler(e, mergedProps.onTouchEnd);
 
-		if (!ref || formControlContext.isReadOnly() || isDisabled()) {
+		const inputEl = ref();
+		if (!inputEl || formControlContext.isReadOnly() || isDisabled()) {
 			return;
 		}
 
 		// Sometimes VoiceOver on iOS fires two touchend events in quick succession. Ignore the second one.
 		if (e.timeStamp - lastEventTime < 500) {
 			e.preventDefault();
-			ref.focus();
+			inputEl.focus();
 			return;
 		}
 
@@ -293,7 +290,7 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 
 		if (touch.clientX === centerX && touch.clientY === centerY) {
 			e.preventDefault();
-			ref.focus();
+			inputEl.focus();
 			context.toggle(false, "manual");
 
 			lastEventTime = e.timeStamp;
@@ -304,10 +301,15 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 	return (
 		<Polymorphic<ComboboxInputRenderProps>
 			as="input"
-			ref={mergeRefs((el) => {
-				context.setInputRef(el);
-				ref = el;
-			}, mergedProps.ref)}
+			ref={
+				[
+					(el: HTMLInputElement) => {
+						context.setInputRef(el);
+						setRef(el);
+					},
+					mergedProps.ref,
+				] as any
+			}
 			id={fieldProps.id()}
 			value={context.inputValue()}
 			required={formControlContext.isRequired()}

@@ -1,0 +1,205 @@
+---
+title: Hover Card
+badges:
+  - icon: npm
+    label: "Since v0.1.0"
+  - label: "@kobalte/core/hover-card"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/hover-card"
+---
+
+import { BasicExample } from "../../../../examples/hover-card";
+
+# {frontmatter.title}
+
+Allows sighted users to preview content available behind a link.
+
+## Import
+
+```ts
+import { HoverCard } from "@kobalte/core/hover-card";
+// or
+import { Root, Trigger, ... } from "@kobalte/core/hover-card";
+// or (deprecated)
+import { HoverCard } from "@kobalte/core";
+```
+
+## Features
+
+- Opens on hover only.
+- Supports custom open and close delays.
+- Optionally render a pointing arrow.
+- Ignored by screen readers.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The hovercard consists of:
+
+- **HoverCard:** The root container for a hovercard.
+- **HoverCard.Trigger:** The link that opens the hovercard.
+- **HoverCard.Portal:** Portals its children into the `body` when the hovercard is open.
+- **HoverCard.Content:** Contains the content to be rendered when the hovercard is open.
+- **HoverCard.Arrow:** An optional arrow element to render alongside the hovercard.
+
+```tsx
+<HoverCard>
+	<HoverCard.Trigger />
+	<HoverCard.Portal>
+		<HoverCard.Content>
+			<HoverCard.Arrow />
+		</HoverCard.Content>
+	</HoverCard.Portal>
+</HoverCard>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/hover-card.tsx#L3-L32"
+
+```
+
+```css title="style.css" tab file="../../../../examples/hover-card.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Default open
+
+An initial, uncontrolled open value can be provided using the `defaultOpen` prop.
+
+```tsx
+<HoverCard defaultOpen>...</HoverCard>
+```
+
+### Controlled open
+
+The `open` prop can be used to make the open state controlled. The `onOpenChange` event is fired when the user pointer enter or leave the trigger, and receives the new value.
+
+```tsx {4,7}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [open, setOpen] = createSignal(false);
+
+	return (
+		<HoverCard open={open()} onOpenChange={setOpen}>
+			...
+		</HoverCard>
+	);
+}
+```
+
+### Origin-aware animations
+
+We expose a CSS custom property `--kb-hovercard-content-transform-origin` which can be used to animate the content from its computed origin.
+
+```css {2}
+/* style.css */
+.hovercard__content {
+	transform-origin: var(--kb-hovercard-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
+}
+
+.hovercard__content[data-expanded] {
+	animation: contentShow 250ms ease-out;
+}
+
+@keyframes contentShow {
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes contentHide {
+	from {
+		opacity: 1;
+		transform: scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+}
+```
+
+## API Reference
+
+### HoverCard
+
+`HoverCard` is equivalent to the `Root` import from `@kobalte/core/hover-card` (and deprecated `HoverCard.Root`).
+
+| Prop           | Description                                                                                                                                                                   |
+| :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| open           | `boolean` <br/> The controlled open state of the hovercard.                                                                                                                   |
+| defaultOpen    | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                        |
+| onOpenChange   | `(open: boolean) => void` <br/> Event handler called when the open state of the hovercard changes.                                                                            |
+| openDelay      | `number` <br/> The duration from when the mouse enters the trigger until the hovercard opens.                                                                                 |
+| closeDelay     | `number` <br/> The duration from when the mouse leaves the trigger or content until the hovercard closes.                                                                     |
+| ignoreSafeArea | `boolean` <br/> Whether to close the hovercard even if the user cursor is inside the safe area between the trigger and hovercard.                                             |
+| id             | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used. |
+| forceMount     | `boolean` <br/> Used to force mounting the hovercard (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.    |
+
+`HoverCard` also accepts the following props to customize the placement of the `HoverCard.Content`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                                                                                                    |
+| :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| getAnchorRect    | `(anchor?: HTMLElement) => AnchorRect  \| undefined` <br/> Function that returns the anchor element's DOMRect.                                                                                                                                                                                                                                                 |
+| placement        | `Placement` <br/> The placement of the hovercard.                                                                                                                                                                                                                                                                                                              |
+| gutter           | `number` <br/> The distance between the hovercard and the trigger element. By default, it's 0 plus half of the arrow offset, if it exists.                                                                                                                                                                                                                     |
+| shift            | `number` <br/> The skidding of the hovercard along the trigger element.                                                                                                                                                                                                                                                                                        |
+| flip             | `boolean \| string` <br/> Controls the behavior of the hovercard when it overflows the viewport:<br/> - If a `boolean`, specifies whether the hovercard should flip to the opposite side when it overflows.<br/> - If a `string`, indicates the preferred fallback placements when it overflows.<br/>The placements must be spaced-delimited, e.g. "top left". |
+| slide            | `boolean` <br/> Whether the hovercard should slide when it overflows.                                                                                                                                                                                                                                                                                          |
+| overlap          | `boolean` <br/> Whether the hovercard can overlap the trigger element when it overflows.                                                                                                                                                                                                                                                                       |
+| sameWidth        | `boolean` <br/> Whether the hovercard should have the same width as the trigger element. This will be exposed to CSS as `--kb-popper-anchor-width`.                                                                                                                                                                                                            |
+| fitViewport      | `boolean` <br/> Whether the hovercard should fit the viewport. If this is set to true, the hovercard content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.                                                                                   |
+| hideWhenDetached | `boolean` <br/> Whether to hide the hovercard when the trigger element becomes occluded.                                                                                                                                                                                                                                                                       |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                          |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the hovercard corner.                                                                                                                                                                                                                                                                                 |
+| overflowPadding  | `number` <br/> The minimum padding between the hovercard and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                 |
+
+### HoverCard.Content
+
+The popper positioner will copy the same `z-index` as the `HoverCard.Content`.
+
+### HoverCard.Trigger
+
+`HoverCard.Trigger` consists of [Link](/docs/core/components/link).
+
+| Data attribute | Description                          |
+| :------------- | :----------------------------------- |
+| data-expanded  | Present when the hovercard is open.  |
+| data-closed    | Present when the hovercard is close. |
+
+`HoverCard.Content` share the same data-attributes.
+
+## Rendered elements
+
+| Component           | Default rendered element |
+| :------------------ | :----------------------- |
+| `HoverCard`         | none                     |
+| `HoverCard.Trigger` | `a`                      |
+| `HoverCard.Portal`  | `Portal`                 |
+| `HoverCard.Content` | `div`                    |
+| `HoverCard.Arrow`   | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+The hover card is intended for mouse users only so will not respond to keyboard navigation.

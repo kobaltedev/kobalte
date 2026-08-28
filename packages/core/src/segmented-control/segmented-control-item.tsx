@@ -1,22 +1,27 @@
-import { mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createSignal, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	omit,
+	type Ref,
+} from "solid-js";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	RadioGroup,
 	type RadioGroupItemCommonProps,
 	type RadioGroupItemOptions,
 	type RadioGroupItemRenderProps,
-} from "../radio-group";
-import { useRadioGroupContext } from "../radio-group/radio-group-context";
-import { useSegmentedControlContext } from "./segmented-control-context";
+} from "../radio-group/index.tsx";
+import { useRadioGroupContext } from "../radio-group/radio-group-context.tsx";
+import { useSegmentedControlContext } from "./segmented-control-context.tsx";
 
 export interface SegmentedControlItemOptions extends RadioGroupItemOptions {}
 
 export interface SegmentedControlItemCommonProps<
 	T extends HTMLElement = HTMLElement,
 > extends RadioGroupItemCommonProps<T> {
-	ref?: T | ((el: T) => void);
+	ref?: Ref<T>;
 }
 
 export interface SegmentedControlItemRenderProps
@@ -55,7 +60,7 @@ export const SegmentedControlItem = <T extends ValidComponent = "div">(
 				Omit<SegmentedControlItemRenderProps, keyof RadioGroupItemRenderProps>
 			>
 		>
-			ref={mergeRefs(setRef, props.ref)}
+			ref={[setRef, props.ref]}
 			{...otherProps}
 		/>
 	);

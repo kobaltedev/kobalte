@@ -1,17 +1,20 @@
-import { callHandler, EventKey, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { merge, omit } from "solid-js";
 
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
+} from "../polymorphic/index.tsx";
+import {
+	type CheckboxDataSet,
+	useCheckboxContext,
+} from "./checkbox-context.tsx";
 
 export interface CheckboxControlOptions {}
 
@@ -41,7 +44,7 @@ export function CheckboxControl<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("control"),
 		},
@@ -60,7 +63,7 @@ export function CheckboxControl<T extends ValidComponent = "div">(
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, mergedProps.onKeyDown);
 
-		if (e.key === EventKey.Space) {
+		if (e.key === " ") {
 			context.toggle();
 			context.inputRef()?.focus({ preventScroll: true });
 		}

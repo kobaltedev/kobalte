@@ -1,24 +1,22 @@
-import {
-	callHandler,
-	composeEventHandlers,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { callHandler, composeEventHandlers } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createMemo, omit } from "solid-js";
-import { createFormControlField, useFormControlContext } from "../form-control";
-import { announce, clearAnnouncer } from "../live-announcer";
+import { createEffect, createMemo, merge, omit, type Ref } from "solid-js";
+import {
+	createFormControlField,
+	useFormControlContext,
+} from "../form-control/index.ts";
+import { announce, clearAnnouncer } from "../live-announcer/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	SPIN_BUTTON_INTL_TRANSLATIONS,
 	type SpinButtonIntlTranslations,
-} from "../spin-button/spin-button.intl";
-import { useNumberFieldContext } from "./number-field-context";
+} from "../spin-button/spin-button.intl.ts";
+import { useNumberFieldContext } from "./number-field-context.tsx";
 
 export interface NumberFieldInputOptions {
 	/** The localized strings of the component. */
@@ -30,7 +28,7 @@ export interface NumberFieldInputCommonProps<
 > {
 	id: string;
 	style?: JSX.CSSProperties | string | false;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onChange: JSX.EventHandlerUnion<T, Event>;
 	onWheel: JSX.EventHandlerUnion<T, WheelEvent>;
@@ -75,7 +73,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 	const formControlContext = useFormControlContext();
 	const context = useNumberFieldContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("input"),
 			inputMode: "decimal",
@@ -150,7 +148,6 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 		}
 
 		switch (e.key) {
-			// biome-ignore lint/suspicious/noFallthroughSwitchClause: PageUp falls through to ArrowUp
 			case "PageUp":
 				e.preventDefault();
 				context.varyValue(context.largeStep());
@@ -160,7 +157,6 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 				e.preventDefault();
 				context.varyValue(context.step());
 				break;
-			// biome-ignore lint/suspicious/noFallthroughSwitchClause: PageDown falls through to ArrowDown
 			case "PageDown":
 				e.preventDefault();
 				context.varyValue(-context.largeStep());
@@ -210,7 +206,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			role="spinbutton"
 			type="text"
 			id={fieldProps.id()}
-			ref={mergeRefs(context.setInputRef, mergedProps.ref)}
+			ref={[context.setInputRef, mergedProps.ref]}
 			value={
 				Number.isNaN(context.rawValue()) || context.value() === undefined
 					? ""
@@ -244,13 +240,10 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			onFocus={onFocus}
 			onBlur={onBlur}
 			onChange={(e) => {
-				// @ts-expect-error: Polymorphic event type
 				callHandler(e, mergedProps.onChange);
 				context.format();
 			}}
-			// @ts-expect-error: Polymorphic event type
 			onWheel={(e) => {
-				// @ts-expect-error: Polymorphic event type
 				callHandler(e, mergedProps.onWheel);
 				if (
 					!context.changeOnWheel() ||

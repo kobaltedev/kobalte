@@ -9,94 +9,91 @@ import {
 	type FormControlErrorMessageOptions as FileFieldErrorMessageOptions,
 	type FormControlErrorMessageProps as FileFieldErrorMessageProps,
 	type FormControlErrorMessageRenderProps as FileFieldErrorMessageRenderProps,
-} from "../form-control";
-import {
-	FileFieldContext as Context,
-	type FileFieldContextValue,
-} from "./file-field-context";
+} from "../form-control/index.ts";
+import { FileFieldContext as Context } from "./file-field-context.tsx";
 import {
 	FileFieldDropzone as Dropzone,
 	type FileFieldDropzoneCommonProps,
 	type FileFieldDropzoneOptions,
 	type FileFieldDropzoneProps,
 	type FileFieldDropzoneRenderProps,
-} from "./file-field-dropzone";
+} from "./file-field-dropzone.tsx";
 import {
 	type FileFieldHiddenInputProps,
 	FileFieldHiddenInput as HiddenInput,
-} from "./file-field-hidden-input";
+} from "./file-field-hidden-input.tsx";
 import {
 	type FileFieldItemCommonProps,
 	type FileFieldItemOptions,
 	type FileFieldItemRenderProps,
 	type FileFieldItemRootProps,
 	FileFieldItem as Item,
-} from "./file-field-item";
+} from "./file-field-item.tsx";
 import {
 	type FileFieldItemDeleteTriggerCommonProps,
 	type FileFieldItemDeleteTriggerOptions,
 	type FileFieldItemDeleteTriggerProps,
 	type FileFieldItemDeleteTriggerRenderProps,
 	FileFieldItemDeleteTrigger as ItemDeleteTrigger,
-} from "./file-field-item-delete-trigger";
+} from "./file-field-item-delete-trigger.tsx";
 import {
 	type FileFieldItemListCommonProps,
 	type FileFieldItemListOptions,
 	type FileFieldItemListProps,
 	type FileFieldItemListRenderProps,
 	FileFieldItemList as ItemList,
-} from "./file-field-item-list";
+} from "./file-field-item-list.tsx";
 import {
 	type FileFieldItemNameCommonProps,
 	type FileFieldItemNameOptions,
 	type FileFieldItemNameProps,
 	type FileFieldItemNameRenderProps,
 	FileFieldItemName as ItemName,
-} from "./file-field-item-name";
+} from "./file-field-item-name.tsx";
 import {
 	type FileFieldItemPreviewCommonProps,
 	type FileFieldItemPreviewOptions,
 	type FileFieldItemPreviewProps,
 	type FileFieldItemPreviewRenderProps,
 	FileFieldItemPreview as ItemPreview,
-} from "./file-field-item-preview";
+} from "./file-field-item-preview.tsx";
 import {
 	type FileFieldItemPreviewImageCommonProps,
 	type FileFieldItemPreviewImageOptions,
 	type FileFieldItemPreviewImageProps,
 	type FileFieldItemPreviewImageRenderProps,
 	FileFieldItemPreviewImage as ItemPreviewImage,
-} from "./file-field-item-preview-image";
+} from "./file-field-item-preview-image.tsx";
 import {
 	type FileFieldItemSizeCommonProps,
 	type FileFieldItemSizeOptions,
 	type FileFieldItemSizeProps,
 	type FileFieldItemSizeRenderProps,
 	FileFieldItemSize as ItemSize,
-} from "./file-field-item-size";
+} from "./file-field-item-size.tsx";
 import {
 	type FileFieldLabelCommonProps,
 	type FileFieldLabelOptions,
 	type FileFieldLabelProps,
 	type FileFieldLabelRenderProps,
 	FileFieldLabel as Label,
-} from "./file-field-label";
+} from "./file-field-label.tsx";
 import {
 	type FileFieldRootCommonProps,
 	type FileFieldRootOptions,
 	type FileFieldRootProps,
 	type FileFieldRootRenderProps,
 	FileField as Root,
-} from "./file-field-root";
+} from "./file-field-root.tsx";
 import {
 	type FileFieldTriggerCommonProps,
 	type FileFieldTriggerOptions,
 	type FileFieldTriggerProps,
 	type FileFieldTriggerRenderProps,
 	FileFieldTrigger as Trigger,
-} from "./file-field-trigger";
+} from "./file-field-trigger.tsx";
 
-import type { Accept, Details, FileError, FileRejection } from "./types";
+import type { Accept, Details, FileError, FileRejection } from "./types.ts";
 
 export type {
 	Accept,
@@ -194,9 +191,9 @@ export const FileField = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type FileFieldContextValue,
 	useFileFieldContext,
-} from "./file-field-context";
+} from "./file-field-context.tsx";

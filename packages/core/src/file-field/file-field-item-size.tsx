@@ -5,17 +5,17 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
-import { useFileFieldContext } from "./file-field-context";
-import { useFileFieldItemContext } from "./file-field-item-context";
+import { useFileFieldContext } from "./file-field-context.tsx";
+import { useFileFieldItemContext } from "./file-field-item-context.tsx";
 
 export interface FileFieldItemSizeOptions {
 	precision?: number;
 }
 
 export interface FileFieldItemSizeCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface FileFieldItemSizeRenderProps

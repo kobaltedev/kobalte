@@ -6,21 +6,20 @@
  * https://github.com/adobe/react-spectrum/blob/e6808d1b5e80cef7af7e63974f658043593b2e1e/packages/@react-aria/menu/src/useMenuSection.ts
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, merge, omit } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useMenuGroupContext } from "./menu-group-context";
+} from "../polymorphic/index.tsx";
+import { useMenuGroupContext } from "./menu-group-context.tsx";
 
 export interface MenuGroupLabelOptions {}
 
 export interface MenuGroupLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
@@ -42,7 +41,7 @@ export function MenuGroupLabel<T extends ValidComponent = "span">(
 ) {
 	const context = useMenuGroupContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("label"),
 		},

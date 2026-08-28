@@ -1,0 +1,958 @@
+---
+title: Combobox
+badges:
+  - icon: npm
+    label: "Since v0.9.0"
+  - label: "@kobalte/core/combobox"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/combobox"
+  - icon: aria
+    label: "Combobox"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/combobox/"
+---
+
+import {
+	BasicExample,
+	DefaultValueExample,
+	ControlledExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	HTMLFormExample,
+	ObjectExample,
+	OptionGroupExample,
+	MultipleSelectionExample,
+} from "../../../../examples/combobox";
+
+# {frontmatter.title}
+
+Combines a text input with a listbox, allowing users to filter a list of options to items matching a query.
+
+## Import
+
+```ts
+import { Combobox } from "@kobalte/core/combobox";
+// or
+import { Root, Label, ... } from "@kobalte/core/combobox";
+// or (deprecated)
+import { Combobox } from "@kobalte/core";
+```
+
+## Features
+
+- Exposed to assistive technology as a combobox using the [WAI ARIA Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) design pattern.
+- Support for single and multiple selection.
+- Support for disabled options.
+- Labeling support for accessibility.
+- Support for description and error message help text linked to the button via ARIA.
+- Tab stop focus management.
+- Keyboard support for opening the listbox using the arrow keys, including automatically focusing the first or last item accordingly.
+- Support for opening the list box when typing, on focus, or manually.
+- Browser autofill integration via a hidden native `<select>` element.
+- Custom localized announcements for option focusing, filtering, and selection using an ARIA live region to work around VoiceOver bugs.
+- Supports items, and groups of items.
+- Supports custom placeholder.
+- Can be controlled or uncontrolled.
+- Optional keyboard-navigable, removable chips for multi-selection via `Combobox.ControlItem` (arrow keys to move focus between selected options, Backspace/Delete to remove).
+- Optional array-style form submission for multi-selection via `Combobox.HiddenInputs` (one hidden `<input>` per selected value), as an alternative to the native `<select multiple>` rendered by `Combobox.HiddenSelect`.
+
+## Anatomy
+
+The combobox consists of:
+
+- **Combobox:** The root container for a combobox component.
+- **Combobox.Label:** The label that gives the user information on the combobox.
+- **Combobox.Description:** The description that gives the user more information on the combobox.
+- **Combobox.ErrorMessage:** The error message that gives the user information about how to fix a validation error on the combobox.
+- **Combobox.Control:** Contains the combobox input and trigger.
+- **Combobox.Input:** The input used to filter the combobox options and reflects the selected value.
+- **Combobox.Trigger:** The button that opens the combobox.
+- **Combobox.Icon:** A small icon often displayed next to the input as a visual affordance for the fact it can be open.
+- **Combobox.Portal:** Portals its children into the `body` when the combobox is open.
+- **Combobox.Content:** Contains the content to be rendered when the combobox is open.
+- **Combobox.Arrow:** An optional arrow element to render alongside the combobox content.
+- **Combobox.Listbox:** Contains a list of items and allows a user to combobox one or more of them.
+- **Combobox.Section:** Used to render the label of an option group. It won't be focusable using arrow keys.
+- **Combobox.Item:** An item of the combobox.
+- **Combobox.ItemLabel:** An accessible label to be announced for the item.
+- **Combobox.ItemDescription:** An optional accessible description to be announced for the item.
+- **Combobox.ItemIndicator:** The visual indicator rendered when the item is selected.
+
+```tsx
+<Combobox>
+	<Combobox.Label />
+	<Combobox.Control>
+		<Combobox.Input />
+		<Combobox.Trigger>
+			<Combobox.Icon />
+		</Combobox.Trigger>
+	</Combobox.Control>
+	<Combobox.Description />
+	<Combobox.ErrorMessage />
+
+	<Combobox.Portal>
+		<Combobox.Content>
+			<Combobox.Arrow />
+			<Combobox.Listbox />
+		</Combobox.Content>
+	</Combobox.Portal>
+</Combobox>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/combobox.tsx#L14-L45"
+
+```
+
+```css title="style.css" tab file="../../../../examples/combobox.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Filtering options
+
+The `defaultFilter` prop can be used to customize the way `Combobox` filter the list of options.
+
+For convenience, we provide 3 built-in filtering mechanism based on substring matches with locale sensitive matching support. It automatically uses the current locale set by the application, either via the default browser language or via the `I18nProvider`.
+
+- **startsWith**: Show options that starts with the input value.
+- **endsWith**: Show options that ends with the input value.
+- **contains**: Show options that contains the input value.
+
+A custom filter function can also be passed to the `defaultFilter` prop, it receives _an option and the input value_ as parameters, and should return a `boolean`.
+
+```tsx {7}
+import { Combobox } from "@kobalte/core/combobox";
+
+const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+
+function FilteringExample() {
+	return (
+		<Combobox options={ALL_OPTIONS} defaultFilter="startsWith">
+			//...rest of the component.
+		</Combobox>
+	);
+}
+```
+
+### Default value
+
+An initial, uncontrolled value can be provided using the `defaultValue` prop, which accepts a value corresponding with the `options`.
+
+:::preview
+
+<DefaultValueExample />
+
+---
+
+```tsx {9}
+import { Combobox } from "@kobalte/core/combobox";
+import { CaretSortIcon, CheckIcon } from "some-icon-library";
+
+const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+
+function DefaultValueExample() {
+	return (
+		<Combobox
+			defaultValue="Blueberry"
+			options={ALL_OPTIONS}
+			placeholder="Search a fruit…"
+			itemComponent={props => (
+				<Combobox.Item item={props.item}>
+					<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+					<Combobox.ItemIndicator>
+						<CheckIcon />
+					</Combobox.ItemIndicator>
+				</Combobox.Item>
+			)}
+		>
+			<Combobox.Control aria-label="Fruit">
+				<Combobox.Input />
+				<Combobox.Trigger>
+					<Combobox.Icon>
+						<CaretSortIcon />
+					</Combobox.Icon>
+				</Combobox.Trigger>
+			</Combobox.Control>
+			<Combobox.Portal>
+				<Combobox.Content>
+					<Combobox.Listbox />
+				</Combobox.Content>
+			</Combobox.Portal>
+		</Combobox>
+	);
+}
+```
+
+:::
+
+### Controlled value
+
+The `value` prop, which accepts a value corresponding with the `options` prop, can be used to make the value controlled. The `onChange` event is fired when the user selects an option, and receives the selected option.
+
+:::preview
+
+<ControlledExample />
+
+---
+
+```tsx {8,21-22}
+import { Combobox } from "@kobalte/core/combobox";
+import { CaretSortIcon, CheckIcon } from "some-icon-library";
+import { createSignal } from "solid-js";
+
+const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+
+function ControlledExample() {
+	const [value, setValue] = createSignal("Blueberry");
+
+	const onInputChange = (value: string) => {
+		// Remove selection when input is cleared.
+		if (value === "") {
+			setValue("");
+		}
+	};
+
+	return (
+		<>
+			<Combobox
+				options={ALL_OPTIONS}
+				value={value()}
+				onChange={setValue}
+				onInputChange={onInputChange}
+				placeholder="Search a fruit…"
+				itemComponent={props => (
+					<Combobox.Item item={props.item}>
+						<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+						<Combobox.ItemIndicator>
+							<CheckIcon />
+						</Combobox.ItemIndicator>
+					</Combobox.Item>
+				)}
+			>
+				<Combobox.Control aria-label="Fruit">
+					<Combobox.Input />
+					<Combobox.Trigger>
+						<Combobox.Icon>
+							<CaretSortIcon />
+						</Combobox.Icon>
+					</Combobox.Trigger>
+				</Combobox.Control>
+				<Combobox.Portal>
+					<Combobox.Content>
+						<Combobox.Listbox />
+					</Combobox.Content>
+				</Combobox.Portal>
+			</Combobox>
+			<p>Your favorite fruit is: {value()}.</p>
+		</>
+	);
+}
+```
+
+:::
+
+### Description
+
+The `Combobox.Description` component can be used to associate additional help text with a combobox.
+
+:::preview
+
+<DescriptionExample />
+
+---
+
+```tsx {28}
+import { Combobox } from "@kobalte/core/combobox";
+import { CaretSortIcon, CheckIcon } from "some-icon-library";
+
+const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+
+function DescriptionExample() {
+	return (
+		<Combobox
+			options={ALL_OPTIONS}
+			placeholder="Search a fruit…"
+			itemComponent={props => (
+				<Combobox.Item item={props.item}>
+					<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+					<Combobox.ItemIndicator>
+						<CheckIcon />
+					</Combobox.ItemIndicator>
+				</Combobox.Item>
+			)}
+		>
+			<Combobox.Control aria-label="Fruit">
+				<Combobox.Input />
+				<Combobox.Trigger>
+					<Combobox.Icon>
+						<CaretSortIcon />
+					</Combobox.Icon>
+				</Combobox.Trigger>
+			</Combobox.Control>
+			<Combobox.Description>Choose the fruit you like the most.</Combobox.Description>
+			<Combobox.Portal>
+				<Combobox.Content>
+					<Combobox.Listbox />
+				</Combobox.Content>
+			</Combobox.Portal>
+		</Combobox>
+	);
+}
+```
+
+:::
+
+### Error message
+
+The `Combobox.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the combobox as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+:::preview
+
+<ErrorMessageExample />
+
+---
+
+```tsx {23,42}
+import { Combobox } from "@kobalte/core/combobox";
+import { CaretSortIcon, CheckIcon } from "some-icon-library";
+import { createSignal } from "solid-js";
+
+const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+
+function ErrorMessageExample() {
+	const [value, setValue] = createSignal("Grapes");
+
+	const onInputChange = (value: string) => {
+		// Remove selection when input is cleared.
+		if (value === "") {
+			setValue("");
+		}
+	};
+
+	return (
+		<Combobox
+			options={ALL_OPTIONS}
+			value={value()}
+			onChange={setValue}
+			onInputChange={onInputChange}
+			validationState={value() !== "Apple" ? "invalid" : "valid"}
+			placeholder="Search a fruit…"
+			itemComponent={props => (
+				<Combobox.Item item={props.item}>
+					<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+					<Combobox.ItemIndicator>
+						<CheckIcon />
+					</Combobox.ItemIndicator>
+				</Combobox.Item>
+			)}
+		>
+			<Combobox.Control aria-label="Fruit">
+				<Combobox.Input />
+				<Combobox.Trigger>
+					<Combobox.Icon>
+						<CaretSortIcon />
+					</Combobox.Icon>
+				</Combobox.Trigger>
+			</Combobox.Control>
+			<Combobox.ErrorMessage>Hmm, I prefer apples.</Combobox.ErrorMessage>
+			<Combobox.Portal>
+				<Combobox.Content>
+					<Combobox.Listbox />
+				</Combobox.Content>
+			</Combobox.Portal>
+		</Combobox>
+	);
+}
+```
+
+:::
+
+### HTML forms
+
+The combobox `name` prop, paired with the `Combobox.HiddenSelect` component, can be used for integration with HTML forms.
+
+For `multiple` comboboxes, `Combobox.HiddenInputs` can be used instead of `Combobox.HiddenSelect` — it renders one `<input type="hidden">` per selected value (read with `formData.getAll(name)`) rather than a native `<select multiple>`.
+
+:::preview
+
+<HTMLFormExample />
+
+---
+
+```tsx {14,26}
+import { Combobox } from "@kobalte/core/combobox";
+import { CaretSortIcon, CheckIcon } from "some-icon-library";
+
+const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<Combobox
+				name="fruit"
+				options={ALL_OPTIONS}
+				placeholder="Search a fruit…"
+				itemComponent={props => (
+					<Combobox.Item item={props.item}>
+						<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+						<Combobox.ItemIndicator>
+							<CheckIcon />
+						</Combobox.ItemIndicator>
+					</Combobox.Item>
+				)}
+			>
+				<Combobox.HiddenSelect />
+				<Combobox.Control aria-label="Fruit">
+					<Combobox.Input />
+					<Combobox.Trigger>
+						<Combobox.Icon>
+							<CaretSortIcon />
+						</Combobox.Icon>
+					</Combobox.Trigger>
+				</Combobox.Control>
+				<Combobox.Portal>
+					<Combobox.Content>
+						<Combobox.Listbox />
+					</Combobox.Content>
+				</Combobox.Portal>
+			</Combobox>
+			<div>
+				<button type="reset">Reset</button>
+				<button>Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+:::
+
+### Using object as options
+
+Objects can be used as options instead of plain strings. In this case you have to tell the combobox how it should work with the provided options. For this you **have to use** the following props:
+
+- `optionValue`: The property name to use as the value of an option (submitted with `<form>`).
+- `optionTextValue`: The property name to use as the text value of an option for **filtering** and keyboard navigation.
+- `optionLabel`: The property name to use as the label of an option, displayed in the combobox input.
+- `optionDisabled`: The property name to use as the disabled flag of an option.
+
+:::preview
+
+<ObjectExample />
+
+---
+
+```tsx {22-25}
+import { Combobox } from "@kobalte/core/combobox";
+import { CaretSortIcon, CheckIcon } from "some-icon-library";
+
+interface Fruit {
+	value: string;
+	label: string;
+	disabled: boolean;
+}
+
+const ALL_OPTIONS: Fruit[] = [
+	{ value: "apple", label: "Apple", disabled: false },
+	{ value: "banana", label: "Banana", disabled: false },
+	{ value: "blueberry", label: "Blueberry", disabled: false },
+	{ value: "grapes", label: "Grapes", disabled: true },
+	{ value: "pineapple", label: "Pineapple", disabled: false },
+];
+
+function ObjectExample() {
+	return (
+		<Combobox
+			options={ALL_OPTIONS}
+			optionValue="value"
+			optionTextValue="label"
+			optionLabel="label"
+			optionDisabled="disabled"
+			placeholder="Search a fruit…"
+			itemComponent={props => (
+				<Combobox.Item item={props.item}>
+					<Combobox.ItemLabel>{props.item.rawValue.label}</Combobox.ItemLabel>
+					<Combobox.ItemIndicator>
+						<CheckIcon />
+					</Combobox.ItemIndicator>
+				</Combobox.Item>
+			)}
+		>
+			<Combobox.Control aria-label="Fruit">
+				<Combobox.Input />
+				<Combobox.Trigger>
+					<Combobox.Icon>
+						<CaretSortIcon />
+					</Combobox.Icon>
+				</Combobox.Trigger>
+			</Combobox.Control>
+			<Combobox.Portal>
+				<Combobox.Content>
+					<Combobox.Listbox />
+				</Combobox.Content>
+			</Combobox.Portal>
+		</Combobox>
+	);
+}
+```
+
+:::
+
+### Using option groups
+
+When using option groups you have to tell the combobox how to distinguish an option from a group. For this you **have to use** the following props:
+
+- `optionGroupChildren`: The property name that refers to the children options of an option group.
+
+Additionally, the `sectionComponent` prop is used to display the option group label in the combobox.
+
+:::preview
+
+<OptionGroupExample />
+
+---
+
+```tsx {45}
+import { Combobox } from "@kobalte/core/combobox";
+import { CaretSortIcon, CheckIcon } from "some-icon-library";
+
+interface Food {
+	value: string;
+	label: string;
+	disabled: boolean;
+}
+
+interface Category {
+	label: string;
+	options: Food[];
+}
+
+const ALL_OPTIONS: Category[] = [
+	{
+		label: "Fruits",
+		options: [
+			{ value: "apple", label: "Apple", disabled: false },
+			{ value: "banana", label: "Banana", disabled: false },
+			{ value: "blueberry", label: "Blueberry", disabled: false },
+			{ value: "grapes", label: "Grapes", disabled: true },
+			{ value: "pineapple", label: "Pineapple", disabled: false },
+		],
+	},
+	{
+		label: "Meat",
+		options: [
+			{ value: "beef", label: "Beef", disabled: false },
+			{ value: "chicken", label: "Chicken", disabled: false },
+			{ value: "lamb", label: "Lamb", disabled: false },
+			{ value: "pork", label: "Pork", disabled: false },
+		],
+	},
+];
+
+export function OptionGroupExample() {
+	return (
+		<Combobox<Food, Category>
+			options={ALL_OPTIONS}
+			optionValue="value"
+			optionTextValue="label"
+			optionLabel="label"
+			optionDisabled="disabled"
+			optionGroupChildren="options"
+			placeholder="Search a food…"
+			itemComponent={props => (
+				<Combobox.Item item={props.item}>
+					<Combobox.ItemLabel>{props.item.rawValue.label}</Combobox.ItemLabel>
+					<Combobox.ItemIndicator>
+						<CheckIcon />
+					</Combobox.ItemIndicator>
+				</Combobox.Item>
+			)}
+			sectionComponent={props => (
+				<Combobox.Section>{props.section.rawValue.label}</Combobox.Section>
+			)}
+		>
+			<Combobox.Control aria-label="Food">
+				<Combobox.Input />
+				<Combobox.Trigger>
+					<Combobox.Icon>
+						<CaretSortIcon />
+					</Combobox.Icon>
+				</Combobox.Trigger>
+			</Combobox.Control>
+			<Combobox.Portal>
+				<Combobox.Content>
+					<Combobox.Listbox />
+				</Combobox.Content>
+			</Combobox.Portal>
+		</Combobox>
+	);
+}
+```
+
+:::
+:::note
+Notice the usage of generics on `Combobox` for proper TypeScript support.
+:::
+
+### Multiple selection
+
+The `multiple` prop can be used to create a combobox that allow multi-selection. In this case the value provided to `value`, `defaultValue` and `onChange` props is of type `Array<T>`.
+
+In this case `Combobox.Input` can't display the values, instead the `Combobox.Control` children _render prop_ expose an array of selected options, and two method for removing an option from the selection and clear the selection.
+
+:::preview
+
+<MultipleSelectionExample />
+
+---
+
+```tsx {8,13,15-16,31,35,43}
+import { Combobox } from "@kobalte/core/combobox";
+import { CaretSortIcon, CheckIcon } from "some-icon-library";
+import { createSignal } from "solid-js";
+
+const ALL_OPTIONS = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+
+function MultipleSelectionExample() {
+	const [values, setValues] = createSignal(["Blueberry", "Grapes"]);
+
+	return (
+		<>
+			<Combobox<string>
+				multiple
+				options={ALL_OPTIONS}
+				value={values()}
+				onChange={setValues}
+				placeholder="Search some fruits…"
+				itemComponent={props => (
+					<Combobox.Item item={props.item}>
+						<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+						<Combobox.ItemIndicator>
+							<CheckIcon />
+						</Combobox.ItemIndicator>
+					</Combobox.Item>
+				)}
+			>
+				<Combobox.Control<string> aria-label="Fruits">
+					{state => (
+						<>
+							<div>
+								<For each={state.selectedOptions()}>
+									{option => (
+										<span onPointerDown={e => e.stopPropagation()}>
+											{option}
+											<button onClick={() => state.remove(option)}>
+												<CrossIcon />
+											</button>
+										</span>
+									)}
+								</For>
+								<Combobox.Input />
+							</div>
+							<button onPointerDown={e => e.stopPropagation()} onClick={state.clear}>
+								<CrossIcon />
+							</button>
+							<Combobox.Trigger>
+								<Combobox.Icon>
+									<CaretSortIcon />
+								</Combobox.Icon>
+							</Combobox.Trigger>
+						</>
+					)}
+				</Combobox.Control>
+				<Combobox.Portal>
+					<Combobox.Content>
+						<Combobox.Listbox />
+					</Combobox.Content>
+				</Combobox.Portal>
+			</Combobox>
+			<p>Your favorite fruits are: {values().join(", ")}.</p>
+		</>
+	);
+}
+```
+
+:::
+
+#### Keyboard-navigable chips
+
+Rendering selected options with `Combobox.ControlItem` instead of a plain element turns them into a roving-tabindex chip list: <kbd>ArrowLeft</kbd>/<kbd>ArrowRight</kbd> move focus between chips (and back to `Combobox.Input` at either end), and <kbd>Backspace</kbd>/<kbd>Delete</kbd> remove the focused chip and move focus to a neighbor. This is opt-in — the plain `state.selectedOptions()` + `state.remove(option)` pattern above still works without it.
+
+`Combobox.ControlItem` requires `option`, `index`, and `textValue` props, and **must** be rendered with `<For each={state.selectedOptions()} keyed={false}>`, not the default keyed `<For>` — keeping the same chip DOM node across removals (rather than remounting it) is what lets roving focus land on the correct neighbor.
+
+```tsx {5,8-9}
+import { Combobox } from "@kobalte/core/combobox";
+import { For } from "solid-js";
+
+<Combobox.Control<string> aria-label="Fruits">
+	{state => (
+		<For each={state.selectedOptions()} keyed={false}>
+			{(getOption, index) => (
+				<Combobox.ControlItem option={getOption()} index={index} textValue={getOption()}>
+					{getOption()}
+					<button onClick={() => state.remove(getOption())}>
+						<CrossIcon />
+					</button>
+				</Combobox.ControlItem>
+			)}
+		</For>
+	)}
+</Combobox.Control>
+```
+
+### Origin-aware animations
+
+We expose a CSS custom property `--kb-combobox-content-transform-origin` which can be used to animate the content from its computed origin.
+
+```css {2}
+/* style.css */
+.combobox__content {
+	transform-origin: var(--kb-combobox-content-transform-origin);
+	animation: contentHide 250ms ease-in forwards;
+}
+
+.combobox__content[data-expanded] {
+	animation: contentShow 250ms ease-out;
+}
+
+@keyframes contentShow {
+	from {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes contentHide {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+}
+```
+
+## API Reference
+
+### Combobox
+
+`Combobox` is equivalent to the `Root` import from `@kobalte/core/combobox` (and deprecated `Combobox.Root`).
+
+| Prop                          | Description                                                                                                                                                                                                                                                                                                                                                                               |
+| :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| defaultFilter                 | `"startsWith" \| "endsWith" \| "contains" \| ((option: Option, inputValue: string) => boolean)` <br/> The filter function used to determine if an option should be included in the combo box list.                                                                                                                                                                                        |
+| options                       | `Array<T \| U>` <br/> An array of options to display as the available options.                                                                                                                                                                                                                                                                                                            |
+| optionValue                   | `keyof T \| ((option: T) => string \| number)` <br/> Property name or getter function to use as the value of an option. This is the value that will be submitted when the combobox is part of a `<form>`.                                                                                                                                                                                 |
+| optionTextValue               | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the text value of an option for typeahead purpose.                                                                                                                                                                                                                                                  |
+| optionLabel                   | `keyof T \| ((option: T) => string)` <br/> Property name or getter function to use as the label of an option. This is the string representation of the option to display in the `Combobox.Input`.                                                                                                                                                                                         |
+| optionDisabled                | `keyof T \| ((option: T) => boolean)` <br/> Property name or getter function to use as the disabled flag of an option.                                                                                                                                                                                                                                                                    |
+| optionGroupChildren           | `keyof U` <br/> Property name that refers to the children options of an option group.                                                                                                                                                                                                                                                                                                     |
+| itemComponent                 | `Component<ComboboxItemComponentProps<T>>` <br/> When NOT virtualized, the component to render as an item in the `Combobox.Listbox`.                                                                                                                                                                                                                                                      |
+| sectionComponent              | `Component<ComboboxSectionComponentProps<U>>` <br/> When NOT virtualized, the component to render as a section in the `Combobox.Listbox`.                                                                                                                                                                                                                                                 |
+| multiple                      | `boolean` <br/> Whether the combobox allows multi-selection.                                                                                                                                                                                                                                                                                                                              |
+| placeholder                   | `JSX.Element` <br/> The content that will be rendered when no value or defaultValue is set.                                                                                                                                                                                                                                                                                               |
+| value                         | `T \| Array<T>` <br/> The controlled value of the combobox.                                                                                                                                                                                                                                                                                                                               |
+| defaultValue                  | `T \| Array<T>` <br/> The value of the combobox when initially rendered. Useful when you do not need to control the value.                                                                                                                                                                                                                                                                |
+| onChange                      | `(value: T \| Array<T>) => void` <br/> Event handler called when the value changes.                                                                                                                                                                                                                                                                                                       |
+| open                          | `boolean` <br/> The controlled open state of the combobox.                                                                                                                                                                                                                                                                                                                                |
+| defaultOpen                   | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                                                                                                                                                                                                                                    |
+| onOpenChange                  | `(open: boolean, triggerMode?: ComboboxTriggerMode) => void` <br/> Event handler called when the open state of the combobox changes. Returns the new open state and the action that caused the opening of the menu.                                                                                                                                                                       |
+| onInputChange                 | `(value: string) => void` <br/> Handler that is called when the combobox input value changes.                                                                                                                                                                                                                                                                                             |
+| triggerMode                   | `ComboboxTriggerMode` <br/> The interaction required to display the combobox menu, it can be one of the following: <br/> - **input**: open the combobox menu when the user is typing. <br/> - **focus**: open the combobox menu when the input is focused. <br/> - **manual**: open the combobox menu when pressing arrow down/up while focus is on the input or clicking on the trigger. |
+| removeOnBackspace             | `boolean` <br/> When `multiple` is true, whether the last selected option should be removed when the user press the Backspace key and the input is empty.                                                                                                                                                                                                                                 |
+| allowDuplicateSelectionEvents | `boolean` <br/> Whether `onChange` should fire even if the new value is the same as the last.                                                                                                                                                                                                                                                                                             |
+| disallowEmptySelection        | `boolean` <br/> Whether the combobox allows empty selection or not.                                                                                                                                                                                                                                                                                                                       |
+| allowsEmptyCollection         | `boolean` <br/> Whether the combobox allows the menu to be open when the collection is empty.                                                                                                                                                                                                                                                                                             |
+| closeOnSelection              | `boolean` <br/> Whether the combobox closes after selection.                                                                                                                                                                                                                                                                                                                              |
+| selectionBehavior             | `'toggle' \| 'replace'` <br/> How selection should behave in the combobox.                                                                                                                                                                                                                                                                                                                |
+| virtualized                   | `boolean` <br/> Whether the combobox uses virtual scrolling.                                                                                                                                                                                                                                                                                                                              |
+| modal                         | `boolean` <br/> Whether the combobox should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the combobox content. <br/> - elements outside the combobox content will not be visible for screen readers.                                |
+| preventScroll                 | `boolean` <br/> Whether the scroll should be locked even if the combobox is not modal.                                                                                                                                                                                                                                                                                                    |
+| forceMount                    | `boolean` <br/> Used to force mounting the combobox (portal, positioner and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                                                     |
+| name                          | `string` <br/> The name of the combobox. Submitted with its owning form as part of a name/value pair.                                                                                                                                                                                                                                                                                     |
+| validationState               | `'valid' \| 'invalid'` <br/> Whether the combobox should display its "valid" or "invalid" visual styling.                                                                                                                                                                                                                                                                                 |
+| required                      | `boolean` <br/> Whether the user must select an item before the owning form can be submitted.                                                                                                                                                                                                                                                                                             |
+| disabled                      | `boolean` <br/> Whether the combobox is disabled.                                                                                                                                                                                                                                                                                                                                         |
+| readOnly                      | `boolean` <br/> Whether the combobox items can be selected but not changed by the user.                                                                                                                                                                                                                                                                                                   |
+| autoComplete                  | `string` <br/> Describes the type of autocomplete functionality the input should provide if any. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautocomplete)                                                                                                                                                                                       |
+| translations                  | [`ComboboxIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/combobox/combobox.intl.ts) <br/> Localization strings.                                                                                                                                                                                                                                     |
+| noResetInputOnBlur            | `boolean` <br/> Prevents input reset on combobox blur when content is displayed.                                                                                                                                                                                                                                                                                                          |
+
+`Combobox` also accepts the following props to customize the placement of the `Combobox.Content`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                                                                                                                   |
+| :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| placement        | `Placement` <br/> The placement of the combobox content.                                                                                                                                                                                                                                                                                                                      |
+| gutter           | `number` <br/> The distance between the combobox content and the trigger element.                                                                                                                                                                                                                                                                                             |
+| shift            | `number` <br/> The skidding of the combobox content along the trigger element.                                                                                                                                                                                                                                                                                                |
+| flip             | `boolean \| string` <br/> Controls the behavior of the combobox content when it overflows the viewport: <br/> - If a `boolean`, specifies whether the combobox content should flip to the opposite side when it overflows.<br/> - If a `string`, indicates the preferred fallback placements when it overflows.<br/>The placements must be spaced-delimited, e.g. "top left". |
+| slide            | `boolean` <br/> Whether the combobox content should slide when it overflows.                                                                                                                                                                                                                                                                                                  |
+| overlap          | `boolean` <br/> Whether the combobox content can overlap the trigger element when it overflows.                                                                                                                                                                                                                                                                               |
+| sameWidth        | `boolean` <br/> Whether the combobox content should have the same width as the trigger element. This will be exposed to CSS as `--kb-popper-anchor-width`.                                                                                                                                                                                                                    |
+| fitViewport      | `boolean` <br/> Whether the combobox content should fit the viewport. If this is set to true, the combobox content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.                                                                                            |
+| hideWhenDetached | `boolean` <br/> Whether to hide the combobox content when the trigger element becomes occluded.                                                                                                                                                                                                                                                                               |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                                         |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the combobox content corner.                                                                                                                                                                                                                                                                                         |
+| overflowPadding  | `number` <br/> The minimum padding between the combobox content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                         |
+
+| Data attribute | Description                                                                        |
+| :------------- | :--------------------------------------------------------------------------------- |
+| data-valid     | Present when the combobox is valid according to the validation rules.              |
+| data-invalid   | Present when the combobox is invalid according to the validation rules.            |
+| data-required  | Present when the user must select an item before the owning form can be submitted. |
+| data-disabled  | Present when the combobox is disabled.                                             |
+| data-readonly  | Present when the combobox is read only.                                            |
+
+`Combobox.Label`, `Combobox.Control`, `Combobox.Input`, `Combobox.Trigger`, `Combobox.Description` and `Combobox.ErrorMessage` shares the same data-attributes.
+
+### Combobox.Control
+
+| Render Prop     | Description                                                                    |
+| :-------------- | :----------------------------------------------------------------------------- |
+| selectedOptions | `Accessor<T[]>` <br/> An array of selected options.                            |
+| remove          | `(option: T) => void` <br/> A function to remove an option from the selection. |
+| clear           | `() => void` <br/> A function to clear the selection.                          |
+
+### Combobox.ControlItem
+
+Opt-in, only used for `multiple` selection to turn selected options into a roving-tabindex, keyboard-navigable chip list inside `Combobox.Control`. See [Keyboard-navigable chips](#keyboard-navigable-chips).
+
+| Prop      | Description                                                                     |
+| :-------- | :------------------------------------------------------------------------------- |
+| option    | `T` <br/> The selected option this chip represents. **Required.**               |
+| index     | `number` <br/> The index of this chip within the list of selected options. **Required.** |
+| textValue | `string` <br/> A string value for the chip, used for features like typeahead. **Required.** |
+
+| Data attribute     | Description                                    |
+| :----------------- | :---------------------------------------------- |
+| `data-highlighted` | Present when the chip has roving keyboard focus. |
+| `data-disabled`    | Present when the combobox is disabled.          |
+
+### Combobox.HiddenInputs
+
+Opt-in alternative to `Combobox.HiddenSelect` for `multiple` selection: renders one native `<input type="hidden">` per selected value instead of a native `<select multiple>`, so the value can be read with `formData.getAll(name)`.
+
+### Combobox.Trigger
+
+`Combobox.Trigger` consists of [Button](/docs/core/components/button).
+
+| Data attribute | Description                         |
+| :------------- | :---------------------------------- |
+| data-expanded  | Present when the combobox is open.  |
+| data-closed    | Present when the combobox is close. |
+
+### Combobox.Icon
+
+| Data attribute | Description                         |
+| :------------- | :---------------------------------- |
+| data-expanded  | Present when the combobox is open.  |
+| data-closed    | Present when the combobox is close. |
+
+### Combobox.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### Combobox.Content
+
+| Data attribute | Description                         |
+| :------------- | :---------------------------------- |
+| data-expanded  | Present when the combobox is open.  |
+| data-closed    | Present when the combobox is close. |
+
+### Combobox.Arrow
+
+| Prop | Description                           |
+| :--- | :------------------------------------ |
+| size | `number` <br/> The size of the arrow. |
+
+### Combobox.Listbox
+
+| Prop         | Description                                                                                                                                                                         |
+| :----------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| scrollRef    | `Accessor<HTMLElement \| undefined>` <br/> The ref attached to the scrollable element, used to provide automatic scrolling on item focus. If not provided, defaults to the listbox. |
+| scrollToItem | `(key: string) => void` <br/> When virtualized, the Virtualizer function used to scroll to the item of the given key.                                                               |
+| children     | `(items: Accessor<Collection<CollectionNode<T \| U>>>) => JSX.Element` <br/> When virtualized, a map function that receives an _items_ signal representing all items and sections.  |
+
+### Combobox.Item
+
+| Prop | Description                                           |
+| :--- | :---------------------------------------------------- |
+| item | `CollectionNode` <br/> The collection node to render. |
+
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-selected    | Present when the item is selected.    |
+| data-highlighted | Present when the item is highlighted. |
+
+`Combobox.ItemLabel`, `Combobox.ItemDescription` and `Combobox.ItemIndicator` shares the same data-attributes.
+
+### Combobox.ItemIndicator
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                  | Default rendered element |
+| :------------------------- | :----------------------- |
+| `Combobox`                 | `div`                    |
+| `Combobox.Label`           | `span`                   |
+| `Combobox.Description`     | `div`                    |
+| `Combobox.ErrorMessage`    | `div`                    |
+| `Combobox.Control`         | `div`                    |
+| `Combobox.ControlItem`     | `div`                    |
+| `Combobox.HiddenInputs`    | `input`                  |
+| `Combobox.Input`           | `input`                  |
+| `Combobox.Trigger`         | `button`                 |
+| `Combobox.Icon`            | `span`                   |
+| `Combobox.Portal`          | `Portal`                 |
+| `Combobox.Content`         | `div`                    |
+| `Combobox.Arrow`           | `div`                    |
+| `Combobox.Listbox`         | `ul`                     |
+| `Combobox.Section`         | `li`                     |
+| `Combobox.Item`            | `li`                     |
+| `Combobox.ItemLabel`       | `div`                    |
+| `Combobox.ItemDescription` | `div`                    |
+| `Combobox.ItemIndicator`   | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                                   | Description                                                                                                                                                                       |
+| :------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <kbd>Enter</kbd>                      | When focus is virtually on an item, selects the focused item.                                                                                                                     |
+| <kbd>ArrowDown</kbd>                  | When focus is on the input, opens the combobox and virtual focuses the first or selected item. <br/> When focus is virtually on an item, moves virtual focus to the next item.    |
+| <kbd>ArrowUp</kbd>                    | When focus is on the input, opens the combobox and virtual focuses the last or selected item. <br/> When focus is virtually on an item, moves virtual focus to the previous item. |
+| <kbd>Alt</kbd> + <kbd>ArrowDown</kbd> | When focus is on the input, opens the combobox.                                                                                                                                   |
+| <kbd>Alt</kbd> + <kbd>ArrowUp</kbd>   | When focus is on the input, closes the combobox.                                                                                                                                  |
+| <kbd>Home</kbd>                       | When focus is on the input, moves virtual focus to first item.                                                                                                                    |
+| <kbd>End</kbd>                        | When focus is on the input, moves virtual focus to last item.                                                                                                                     |
+| <kbd>Esc</kbd>                        | When the combobox is open, closes the combobox. <br/> When the combobox is closed, clear the input and selection unless `noResetInputOnBlur` is set to `true`.                    |

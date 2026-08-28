@@ -1,12 +1,6 @@
-import {
-	access,
-	clamp,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-	type ValidationState,
-} from "@kobalte/utils";
+import { clamp, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import {
 	type Color,
 	type ColorChannel,
@@ -14,28 +8,28 @@ import {
 	parseColor,
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
-import { useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	COLOR_AREA_INTL_TRANSLATIONS,
 	type ColorAreaIntlTranslations,
-} from "./color-area.intl";
+} from "./color-area.intl.ts";
 import {
 	ColorAreaContext,
 	type ColorAreaContextValue,
-} from "./color-area-context";
-import { createColorAreaState } from "./create-color-area-state";
+} from "./color-area-context.tsx";
+import { createColorAreaState } from "./create-color-area-state.ts";
 
 export interface ColorAreaRootOptions {
 	/** The localized strings of the component. */
@@ -102,7 +96,7 @@ export interface ColorAreaRootOptions {
 
 export interface ColorAreaRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface ColorAreaRootRenderProps
@@ -118,11 +112,13 @@ export type ColorAreaRootProps<
 export function ColorAreaRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ColorAreaRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `colorarea-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			translations: COLOR_AREA_INTL_TRANSLATIONS,
@@ -166,10 +162,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 		isDisabled: () => formControlContext.isDisabled() ?? false,
 	});
 
-	createFormResetListener(
-		() => ref,
-		() => state.resetValue(),
-	);
+	createFormResetListener(ref, () => state.resetValue());
 
 	const isLTR = () => direction() === "ltr";
 
@@ -309,7 +302,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 		setBackgroundRef,
 		thumbRef,
 		setThumbRef,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 	};
 
 	return (
@@ -317,7 +310,7 @@ export function ColorAreaRoot<T extends ValidComponent = "div">(
 			<ColorAreaContext value={context}>
 				<Polymorphic<ColorAreaRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)!}
 					{...formControlContext.dataset()}

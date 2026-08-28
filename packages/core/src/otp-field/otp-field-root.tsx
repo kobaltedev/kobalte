@@ -6,38 +6,35 @@
  * https://github.com/corvudev/corvu/blob/main/packages/otp-field/src/Root.tsx
  */
 
-import {
-	access,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onSettled,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	OTPFieldContext,
 	type OTPFieldContextValue,
-} from "./otp-field-context";
+} from "./otp-field-context.tsx";
 
 export interface OTPFieldRootOptions {
 	/** The maximum number of characters in the OTP field. */
@@ -86,7 +83,7 @@ export interface OTPFieldRootOptions {
 
 export interface OTPFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 }
 
@@ -105,11 +102,13 @@ export type OTPFieldRootProps<
 export function OTPFieldRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, OTPFieldRootProps<T>>,
 ) {
-	let ref: HTMLDivElement | undefined;
+	const [ref, setRef] = createSignal<HTMLDivElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `otpfield-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ id: defaultId, shiftPWManagers: true },
 		props as OTPFieldRootProps,
 	);
@@ -142,12 +141,13 @@ export function OTPFieldRoot<T extends ValidComponent = "div">(
 
 	const [rootHeight, setRootHeight] = createSignal<number | null>(null);
 	onSettled(() => {
-		if (!ref) return;
-		setRootHeight(ref.getBoundingClientRect().height);
+		const el = ref();
+		if (!el) return;
+		setRootHeight(el.getBoundingClientRect().height);
 		const observer = new ResizeObserver((entries) => {
 			setRootHeight(entries[0]?.contentRect.height ?? null);
 		});
-		observer.observe(ref);
+		observer.observe(el);
 		return () => observer.disconnect();
 	});
 
@@ -160,10 +160,7 @@ export function OTPFieldRoot<T extends ValidComponent = "div">(
 		},
 	);
 
-	createFormResetListener(
-		() => ref,
-		() => setValue(mergedProps.defaultValue ?? ""),
-	);
+	createFormResetListener(ref, () => setValue(mergedProps.defaultValue ?? ""));
 
 	const [isFocused, setIsFocused] = createSignal(false);
 	const [isHovered, setIsHovered] = createSignal(false);
@@ -192,7 +189,7 @@ export function OTPFieldRoot<T extends ValidComponent = "div">(
 		activeSlots,
 		shiftPWManagers: () => mergedProps.shiftPWManagers ?? true,
 		rootHeight,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		setValue,
 		setIsFocused,
 		setIsHovered,
@@ -205,7 +202,7 @@ export function OTPFieldRoot<T extends ValidComponent = "div">(
 			<OTPFieldContext value={context}>
 				<Polymorphic<OTPFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el as HTMLDivElement), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref] as any}
 					style={resolvedStyle()}
 					role="group"
 					id={access(mergedProps.id)}

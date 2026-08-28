@@ -2,9 +2,9 @@ import { composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
 
-import * as Button from "../button";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { usePaginationContext } from "./pagination-context";
+import * as Button from "../button/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { usePaginationContext } from "./pagination-context.tsx";
 
 export interface PaginationNextOptions {}
 

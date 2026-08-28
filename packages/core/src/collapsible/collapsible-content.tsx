@@ -6,20 +6,27 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/collapsible/src/Collapsible.tsx
  */
 
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, onSettled, Show } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+	onSettled,
+	type Ref,
+	Show,
+} from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type CollapsibleDataSet,
 	useCollapsibleContext,
-} from "./collapsible-context";
+} from "./collapsible-context.tsx";
 
 export interface CollapsibleContentOptions {}
 
@@ -27,7 +34,7 @@ export interface CollapsibleContentCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 }
 
@@ -50,7 +57,7 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 
 	const context = useCollapsibleContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ id: context.generateId("content") },
 		props as CollapsibleContentProps,
 	);
@@ -128,7 +135,7 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<CollapsibleContentRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				id={mergedProps.id}
 				style={combineStyle(
 					{

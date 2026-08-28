@@ -1,15 +1,15 @@
-import type { JSX, ValidComponent } from "@solidjs/web";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useFileFieldContext } from "./file-field-context";
+} from "../polymorphic/index.tsx";
+import { useFileFieldContext } from "./file-field-context.tsx";
 
 export interface FileFieldLabelOptions {}
 
 export interface FileFieldLabelCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface FileFieldLabelRenderProps extends FileFieldLabelCommonProps {

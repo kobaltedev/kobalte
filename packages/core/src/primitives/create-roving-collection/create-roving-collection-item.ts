@@ -1,4 +1,4 @@
-import { access, type MaybeAccessor } from "@kobalte/utils";
+import { access, type MaybeAccessor } from "@solid-primitives/utils";
 import type { Accessor } from "solid-js";
 
 import { createSelectableItem } from "../../selection";

@@ -1,8 +1,8 @@
-import { access, type MaybeAccessor } from "@kobalte/utils";
 import {
 	createToggleState as createControllableToggleState,
 	type ToggleState,
 } from "@solid-primitives/controlled-signal";
+import { access, type MaybeAccessor } from "@solid-primitives/utils";
 
 export interface CreateToggleStateProps {
 	/** The controlled selected state. */

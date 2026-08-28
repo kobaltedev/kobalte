@@ -14,9 +14,9 @@ import {
 	type DialogOverlayCommonProps,
 	type DialogOverlayOptions,
 	type DialogOverlayRenderProps,
-} from "../dialog/dialog-overlay";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useDrawerInternalContext } from "./drawer-context";
+} from "../dialog/dialog-overlay.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useDrawerInternalContext } from "./drawer-context.tsx";
 
 export interface DrawerOverlayOptions extends DialogOverlayOptions {}
 

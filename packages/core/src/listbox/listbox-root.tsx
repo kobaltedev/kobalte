@@ -6,40 +6,44 @@
  * https://github.com/adobe/react-spectrum/blob/22cb32d329e66c60f55d4fc4025d1d44bb015d71/packages/@react-aria/listbox/src/useListBox.ts
  */
 
-import {
-	access,
-	composeEventHandlers,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-	OverrideComponentProps,
-} from "@kobalte/utils";
+import { composeEventHandlers } from "@kobalte/utils";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
+	createSignal,
 	createUniqueId,
 	For,
 	Match,
+	merge,
 	omit,
+	type Ref,
 	Show,
 	Switch,
 } from "solid-js";
 
-import { createListState, createSelectableList, type ListState } from "../list";
+import {
+	createListState,
+	createSelectableList,
+	type ListState,
+} from "../list/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { Collection, CollectionNode } from "../primitives";
+} from "../polymorphic/index.tsx";
+import type { Collection, CollectionNode } from "../primitives/index.ts";
 import type {
 	FocusStrategy,
 	KeyboardDelegate,
 	SelectionBehavior,
 	SelectionMode,
-} from "../selection";
-import { ListboxContext, type ListboxContextValue } from "./listbox-context";
+} from "../selection/index.ts";
+import {
+	ListboxContext,
+	type ListboxContextValue,
+} from "./listbox-context.tsx";
 
 export interface ListboxRootOptions<Option, OptGroup = never> {
 	/** The controlled value of the listbox. */
@@ -137,7 +141,7 @@ export interface ListboxRootOptions<Option, OptGroup = never> {
 
 export interface ListboxRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -165,11 +169,13 @@ export function ListboxRoot<
 	OptGroup = never,
 	T extends ValidComponent = "ul",
 >(props: PolymorphicProps<T, ListboxRootProps<Option, OptGroup, T>>) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `listbox-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			selectionMode: "single",
@@ -252,13 +258,13 @@ export function ListboxRoot<
 			isVirtualized: () => mergedProps.virtualized,
 			scrollToKey: () => mergedProps.scrollToItem,
 		},
-		() => ref,
+		ref,
 		() => mergedProps.scrollRef?.(),
 	);
 
 	const context: ListboxContextValue = {
 		listState,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		shouldUseVirtualFocus: () => mergedProps.shouldUseVirtualFocus,
 		shouldSelectOnPressUp: () => mergedProps.shouldSelectOnPressUp,
 		shouldFocusOnHover: () => mergedProps.shouldFocusOnHover,
@@ -269,7 +275,7 @@ export function ListboxRoot<
 		<ListboxContext value={context}>
 			<Polymorphic<ListboxRootRenderProps>
 				as="ul"
-				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				role="listbox"
 				tabindex={selectableList.tabIndex()}
 				aria-multiselectable={

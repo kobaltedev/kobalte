@@ -5,12 +5,12 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type MeterDataSet, useMeterContext } from "./meter-context";
+} from "../polymorphic/index.tsx";
+import { type MeterDataSet, useMeterContext } from "./meter-context.tsx";
 
 export interface MeterFillOptions {}
 
-export interface MeterFillCommonProps<T extends HTMLElement = HTMLElement> {
+export interface MeterFillCommonProps<_T extends HTMLElement = HTMLElement> {
 	style?: JSX.CSSProperties | string;
 }
 

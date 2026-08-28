@@ -1,0 +1,88 @@
+/* ─── Root ─────────────────────────────────────────────────────────────────── */
+
+.listbox__root {
+	width: 256px;
+	border-radius: 6px;
+	border: 1px solid hsl(214 32% 91%);
+	background-color: hsl(0 0% 100%);
+	padding: 4px;
+	font-family: sans-serif;
+	outline: none;
+}
+
+/* ─── Item ────────────────────────────────────────────────────────────────── */
+
+.listbox__item {
+	position: relative;
+	display: flex;
+	cursor: default;
+	user-select: none;
+	align-items: center;
+	gap: 8px;
+	border-radius: 2px;
+	padding: 8px 32px;
+	font-size: 14px;
+	line-height: 20px;
+	color: hsl(222 47% 11%);
+	outline: none;
+}
+
+.listbox__item[data-highlighted] {
+	background-color: hsl(214 95% 93%);
+	color: hsl(224 76% 32%);
+}
+
+.listbox__item[data-disabled] {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+/* ─── Item Indicator ──────────────────────────────────────────────────────── */
+
+.listbox__item-indicator {
+	position: absolute;
+	left: 8px;
+	display: flex;
+	height: 16px;
+	width: 16px;
+	align-items: center;
+	justify-content: center;
+	color: hsl(221 83% 53%);
+}
+
+/* ─── Section Label ───────────────────────────────────────────────────────── */
+
+.listbox__section-label {
+	padding: 4px 8px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.025em;
+	color: hsl(215 16% 47%);
+}
+
+/* ─── Story helpers ───────────────────────────────────────────────────────── */
+
+.listbox__wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	font-family: sans-serif;
+}
+
+.listbox__meta {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(215 19% 35%);
+}
+
+.listbox__item-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.listbox__item-description {
+	font-size: 12px;
+	line-height: 16px;
+	color: hsl(215 19% 35%);
+}

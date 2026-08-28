@@ -1,6 +1,6 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createUniqueId, merge, omit, type Ref } from "solid-js";
 import { useFormControlContext } from "../form-control";
 import {
 	type ElementOf,
@@ -19,11 +19,9 @@ export interface TagsInputItemOptions {
 	index: number;
 }
 
-export interface TagsInputItemCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {
+export interface TagsInputItemCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 	onDblClick: JSX.EventHandlerUnion<T, MouseEvent>;
@@ -55,10 +53,7 @@ export function TagsInputItem<T extends ValidComponent = "div">(
 
 	const defaultId = context.generateId(`item-${createUniqueId()}`);
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as TagsInputItemProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as TagsInputItemProps);
 
 	const others = omit(
 		mergedProps,
@@ -172,7 +167,7 @@ export function TagsInputItem<T extends ValidComponent = "div">(
 		>
 			<Polymorphic<TagsInputItemRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el as HTMLElement), mergedProps.ref)}
+				ref={[(el) => (ref = el), mergedProps.ref]}
 				id={mergedProps.id}
 				tabindex={selectableItem.tabIndex()}
 				data-highlighted={isHighlighted() ? "" : undefined}

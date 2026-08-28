@@ -1,6 +1,6 @@
 import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, type Ref } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
@@ -17,7 +17,7 @@ export interface TagsInputControlOptions {}
 export interface TagsInputControlCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
 	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -43,18 +43,14 @@ export function TagsInputControl<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useTagsInputContext();
 
-	const others = omit(
-		props as TagsInputControlProps,
-		"ref",
-		"onClick",
-		"onFocusIn",
-		"onFocusOut",
-	);
+	const p = props as TagsInputControlProps;
+
+	const others = omit(p, "ref", "onClick", "onFocusIn", "onFocusOut");
 
 	// Clicking anywhere in the control that isn't a more specific interactive
 	// child (a tag, its delete trigger, ...) should focus the text input.
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
-		callHandler(e, props.onClick);
+		callHandler(e, p.onClick);
 
 		if (e.target === e.currentTarget) {
 			context.focusInput();
@@ -62,12 +58,12 @@ export function TagsInputControl<T extends ValidComponent = "div">(
 	};
 
 	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, props.onFocusIn);
+		callHandler(e, p.onFocusIn);
 		context.setIsFocused(true);
 	};
 
 	const onFocusOut: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
-		callHandler(e, props.onFocusOut);
+		callHandler(e, p.onFocusOut);
 
 		if (!e.currentTarget.contains(e.relatedTarget as HTMLElement)) {
 			context.setIsFocused(false);
@@ -77,7 +73,7 @@ export function TagsInputControl<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<TagsInputControlRenderProps>
 			as="div"
-			ref={props.ref as (el: HTMLElement) => void}
+			ref={p.ref}
 			onClick={onClick}
 			onFocusIn={onFocusIn}
 			onFocusOut={onFocusOut}

@@ -1,7 +1,7 @@
 import {
 	ColorAreaHiddenInputBase,
 	type ColorAreaHiddenInputBaseProps,
-} from "./color-area-hidden-input-base";
+} from "./color-area-hidden-input-base.tsx";
 
 export type ColorAreaHiddenInputYProps = ColorAreaHiddenInputBaseProps;
 

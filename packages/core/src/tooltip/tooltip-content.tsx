@@ -6,18 +6,24 @@
  * https://github.com/radix-ui/primitives/blob/1b05a8e35cf35f3020484979086d70aefbaf4095/packages/react/tooltip/src/Tooltip.tsx
  */
 
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { PointerDownOutsideEvent } from "@solid-primitives/interaction";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, Show } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	merge,
+	omit,
+	type Ref,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
-import { type TooltipDataSet, useTooltipContext } from "./tooltip-context";
+} from "../dismissable-layer/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
+import { type TooltipDataSet, useTooltipContext } from "./tooltip-context.tsx";
 
 export interface TooltipContentOptions {
 	/**
@@ -37,7 +43,7 @@ export interface TooltipContentCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style?: JSX.CSSProperties | string;
 }
 
@@ -60,7 +66,7 @@ export function TooltipContent<T extends ValidComponent = "div">(
 ) {
 	const context = useTooltipContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("content"),
 		},
@@ -82,9 +88,12 @@ export function TooltipContent<T extends ValidComponent = "div">(
 						Omit<TooltipContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={mergeRefs((el) => {
-						context.setContentRef(el);
-					}, mergedProps.ref)}
+					ref={[
+						(el: HTMLElement) => {
+							context.setContentRef(el);
+						},
+						mergedProps.ref,
+					]}
 					role="tooltip"
 					disableOutsidePointerEvents={false}
 					style={combineStyle(

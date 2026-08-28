@@ -1,17 +1,19 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit, Show } from "solid-js";
+import { createSignal, merge, omit, type Ref, Show } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type CheckboxDataSet, useCheckboxContext } from "./checkbox-context";
+} from "../polymorphic/index.tsx";
+import {
+	type CheckboxDataSet,
+	useCheckboxContext,
+} from "./checkbox-context.tsx";
 
 export interface CheckboxIndicatorOptions {
 	/**
@@ -25,7 +27,7 @@ export interface CheckboxIndicatorCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface CheckboxIndicatorRenderProps
@@ -48,9 +50,9 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useCheckboxContext();
 
-	const [ref, setRef] = createSignal<HTMLElement>();
+	const [_ref, setRef] = createSignal<HTMLElement>();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("indicator"),
 		},
@@ -72,7 +74,7 @@ export function CheckboxIndicator<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<CheckboxIndicatorRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				{...formControlContext.dataset()}
 				{...context.dataset()}
 				{...others}

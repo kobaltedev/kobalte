@@ -1,8 +1,7 @@
-import { mergeDefaultProps } from "@kobalte/utils";
-import { createUniqueId, omit, type ParentProps } from "solid-js";
+import { createUniqueId, merge, omit, type ParentProps } from "solid-js";
 
-import { MenuRoot, type MenuRootOptions } from "../menu";
-import { useMenubarContext } from "./menubar-context";
+import { MenuRoot, type MenuRootOptions } from "../menu/index.ts";
+import { useMenubarContext } from "./menubar-context.tsx";
 
 export interface MenubarMenuOptions extends MenuRootOptions {}
 
@@ -14,7 +13,7 @@ export interface MenubarMenuProps extends ParentProps<MenubarMenuOptions> {}
 export function MenubarMenu(props: MenubarMenuProps) {
 	const menubarContext = useMenubarContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			modal: false,
 		},
@@ -27,7 +26,7 @@ export function MenubarMenu(props: MenubarMenuProps) {
 
 	const defaultId = menubarContext.generateId(`menubar-menu-${uniqueid}`);
 
-	const mergedPropsWithId = mergeDefaultProps({ id: defaultId }, others);
+	const mergedPropsWithId = merge({ id: defaultId }, others);
 
 	return (
 		<MenuRoot value={mergedProps.value ?? uniqueid} {...mergedPropsWithId} />

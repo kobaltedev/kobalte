@@ -1,5 +1,4 @@
 import { HoverCard } from "@kobalte/core/hover-card";
-
 import style from "./hover-card.module.css";
 
 export function BasicExample() {
@@ -7,23 +6,23 @@ export function BasicExample() {
 		<HoverCard>
 			<HoverCard.Trigger
 				class={style.hovercard__trigger}
-				href="https://twitter.com/mlfabien"
+				href="https://github.com/kobaltedev"
 				target="_blank"
 			>
-				@MLFabien
+				@kobaltedev
 			</HoverCard.Trigger>
 			<HoverCard.Portal>
 				<HoverCard.Content class={style.hovercard__content}>
 					<HoverCard.Arrow />
 					<img
-						src="https://pbs.twimg.com/profile_images/1509139491671445507/pzWYjlYN_400x400.jpg"
-						alt="Fabien MARIE-LOUISE"
+						src="https://avatars.githubusercontent.com/u/124704559?s=200&v=4"
+						alt="Kobalte"
 						class={style.hovercard__avatar}
 					/>
-					<h2 class={style.hovercard__title}>Fabien MARIE-LOUISE</h2>
+					<h2 class={style.hovercard__title}>Kobalte</h2>
 					<p class={style.hovercard__description}>
-						Developer and UI Design enthusiast. Building UI related stuffs for
-						@solid_js
+						A UI toolkit for building accessible web apps and design systems
+						with SolidJS.
 					</p>
 				</HoverCard.Content>
 			</HoverCard.Portal>

@@ -30,6 +30,7 @@
 
 .FileField__trigger {
 	background-color: hsl(201 96% 32%);
+	border: none;
 	padding: 5px 10px;
 	border-radius: 4px;
 }
@@ -106,4 +107,5 @@
 	padding: 5px 10px;
 	border-radius: 4px;
 	align-self: flex-end;
+	border: none;
 }

@@ -2,7 +2,7 @@ import type { JSX } from "@solidjs/web";
 import { createContext, useContext } from "solid-js";
 
 export interface ColorFieldContextValue {
-	onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent>;
+	onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent>;
 }
 
 export const ColorFieldContext = createContext<ColorFieldContextValue>();

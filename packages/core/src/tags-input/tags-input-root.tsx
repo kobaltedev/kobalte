@@ -1,13 +1,8 @@
-import {
-	access,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -21,7 +16,10 @@ import {
 } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import { createRovingCollection } from "../primitives/create-roving-collection";
-import { TagsInputContext, type TagsInputContextValue } from "./tags-input-context";
+import {
+	TagsInputContext,
+	type TagsInputContextValue,
+} from "./tags-input-context";
 
 export interface TagsInputValidateDetails {
 	/** The candidate tag value being validated (already trimmed/length-clamped). */
@@ -114,11 +112,9 @@ export interface TagsInputRootOptions {
 	readOnly?: boolean;
 }
 
-export interface TagsInputRootCommonProps<
-	T extends HTMLElement = HTMLElement,
-> {
+export interface TagsInputRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface TagsInputRootRenderProps
@@ -139,7 +135,7 @@ export function TagsInputRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `tags-input-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			editable: true,
@@ -154,6 +150,7 @@ export function TagsInputRoot<T extends ValidComponent = "div">(
 	const others = omit(
 		mergedProps,
 		"ref",
+		"id",
 		"value",
 		"defaultValue",
 		"onChange",
@@ -186,7 +183,9 @@ export function TagsInputRoot<T extends ValidComponent = "div">(
 	const initialInputValueIsControlled = mergedProps.inputValue !== undefined;
 	const [inputValue, setInputValueRaw] = createControllableSignal<string>({
 		value: () =>
-			initialInputValueIsControlled ? (mergedProps.inputValue ?? "") : undefined,
+			initialInputValueIsControlled
+				? (mergedProps.inputValue ?? "")
+				: undefined,
 		defaultValue: () => mergedProps.defaultInputValue ?? "",
 		onChange: (v) => mergedProps.onInputChange?.(v),
 	});
@@ -323,8 +322,11 @@ export function TagsInputRoot<T extends ValidComponent = "div">(
 		setEditingIndexRaw(undefined);
 	};
 
-	const { DomCollectionProvider, listState, focusItemAt: focusRovingKey } =
-		createRovingCollection();
+	const {
+		DomCollectionProvider,
+		listState,
+		focusItemAt: focusRovingKey,
+	} = createRovingCollection();
 
 	const [inputRef, setInputRef] = createSignal<HTMLInputElement>();
 
@@ -358,7 +360,7 @@ export function TagsInputRoot<T extends ValidComponent = "div">(
 		isFocused,
 		setIsFocused,
 		listState,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		addTagValue,
 		removeTagAt,
 		editTagAt,
@@ -374,10 +376,7 @@ export function TagsInputRoot<T extends ValidComponent = "div">(
 				<DomCollectionProvider>
 					<Polymorphic<TagsInputRootRenderProps>
 						as="div"
-						ref={mergeRefs(
-							(el) => (ref = el as HTMLDivElement),
-							mergedProps.ref,
-						)}
+						ref={[(el) => (ref = el as HTMLDivElement), mergedProps.ref]}
 						role="group"
 						id={access(mergedProps.id)}
 						data-empty={tags().length === 0 ? "" : undefined}

@@ -32,11 +32,11 @@
 	background-color: #16a34a;
 }
 
-[data-kb-theme="dark"] .progress__label,
-[data-kb-theme="dark"] .progress__value-label {
+[data-theme*="dark"] .progress__label,
+[data-theme*="dark"] .progress__value-label {
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .progress__track {
+[data-theme*="dark"] .progress__track {
 	background-color: hsl(240 5% 26%);
 }

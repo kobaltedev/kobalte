@@ -6,16 +6,15 @@
  * https://github.com/adobe/react-spectrum/blob/b35d5c02fe900badccd0cf1a8f23bb593419f238/packages/@react-aria/link/src/useLink.ts
  */
 
-import { mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createTagName } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createTagName } from "../primitives/index.ts";
 
 export interface LinkRootOptions {
 	/** Whether the link is disabled. */
@@ -23,7 +22,7 @@ export interface LinkRootOptions {
 }
 
 export interface LinkRootCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	href: string | undefined;
 }
 
@@ -55,7 +54,7 @@ export function LinkRoot<T extends ValidComponent = "a">(
 	return (
 		<Polymorphic<LinkRootRenderProps>
 			as="a"
-			ref={mergeRefs(setRef, (props as LinkRootProps).ref)}
+			ref={[setRef, (props as LinkRootProps).ref]}
 			role={tagName() !== "a" || props.disabled ? "link" : undefined}
 			tabindex={tagName() !== "a" && !props.disabled ? 0 : undefined}
 			href={!props.disabled ? props.href : undefined}

@@ -5,8 +5,8 @@ import {
 	type FormControlDescriptionOptions,
 	type FormControlDescriptionProps,
 	type FormControlDescriptionRenderProps,
-} from "../form-control";
-import type { PolymorphicProps } from "../polymorphic";
+} from "../form-control/index.ts";
+import type { PolymorphicProps } from "../polymorphic/index.tsx";
 
 export type {
 	FormControlDescriptionCommonProps as OTPFieldDescriptionCommonProps,

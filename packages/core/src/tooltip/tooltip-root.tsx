@@ -12,15 +12,7 @@
  * https://github.com/adobe/react-spectrum/blob/e67d48d4935b772f915b08f1d695d2ebafb876f0/packages/@react-stately/tooltip/src/useTooltipTriggerState.ts
  */
 
-import {
-	contains,
-	createGenerateId,
-	getDocument,
-	getEventPoint,
-	getWindow,
-	isPointInPolygon,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { isPointInPolygon } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { isServer } from "@solidjs/web";
 import {
@@ -29,19 +21,23 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onCleanup,
 	type ParentProps,
 } from "solid-js";
-import { Popper, type PopperRootOptions } from "../popper";
-import type { Placement } from "../popper/utils";
-import { createDisclosureState, createRegisterId } from "../primitives";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
+import type { Placement } from "../popper/utils.ts";
+import {
+	createDisclosureState,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	TooltipContext,
 	type TooltipContextValue,
 	type TooltipDataSet,
-} from "./tooltip-context";
-import { getTooltipSafeArea } from "./utils";
+} from "./tooltip-context.tsx";
+import { getTooltipSafeArea } from "./utils.ts";
 
 const tooltips: any = {};
 let tooltipsCounter = 0;
@@ -111,7 +107,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 	// This is not the DOM id.
 	const tooltipId = `${++tooltipsCounter}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			openDelay: 700,
@@ -296,7 +292,10 @@ export function TooltipRoot(props: TooltipRootProps) {
 	};
 
 	const isTargetOnTooltip = (target: Node | null) => {
-		return contains(triggerRef(), target) || contains(contentRef(), target);
+		return (
+			(triggerRef()?.contains(target) ?? false) ||
+			(contentRef()?.contains(target) ?? false)
+		);
 	};
 
 	const getPolygonSafeArea = (placement: Placement) => {
@@ -323,7 +322,10 @@ export function TooltipRoot(props: TooltipRootProps) {
 			const polygon = getPolygonSafeArea(currentPlacement());
 
 			//Don't close if the current's event mouse position is inside the polygon safe area.
-			if (polygon && isPointInPolygon(getEventPoint(event), polygon)) {
+			if (
+				polygon &&
+				isPointInPolygon([event.clientX, event.clientY], polygon)
+			) {
 				cancelClosing();
 				return;
 			}
@@ -345,7 +347,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 		(isOpen) => {
 			if (isServer || !isOpen) return;
 
-			const doc = getDocument();
+			const doc = document;
 			doc.addEventListener("pointermove", onHoverOutside, true);
 			return () => {
 				doc.removeEventListener("pointermove", onHoverOutside, true);
@@ -361,12 +363,12 @@ export function TooltipRoot(props: TooltipRootProps) {
 
 			const handleScroll = (event: Event) => {
 				const target = event.target as HTMLElement;
-				if (contains(target, trigger)) {
+				if (target.contains(trigger)) {
 					hideTooltip(true);
 				}
 			};
 
-			const win = getWindow();
+			const win = window;
 			win.addEventListener("scroll", handleScroll, { capture: true });
 			return () => {
 				win.removeEventListener("scroll", handleScroll, { capture: true });
@@ -399,7 +401,7 @@ export function TooltipRoot(props: TooltipRootProps) {
 		openTooltip,
 		hideTooltip,
 		cancelOpening,
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 		registerContentId: createRegisterId(setContentId),
 		isTargetOnTooltip,
 		setTriggerRef,

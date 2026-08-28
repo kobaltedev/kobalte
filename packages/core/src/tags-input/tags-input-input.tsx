@@ -1,6 +1,6 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { merge, omit, type Ref } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
@@ -20,7 +20,7 @@ export interface TagsInputInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onPaste: JSX.EventHandlerUnion<T, ClipboardEvent>;
@@ -46,8 +46,7 @@ export interface TagsInputInputRenderProps
 
 export type TagsInputInputProps<
 	T extends ValidComponent | HTMLElement = HTMLInputElement,
-> = TagsInputInputOptions &
-	Partial<TagsInputInputCommonProps<ElementOf<T>>>;
+> = TagsInputInputOptions & Partial<TagsInputInputCommonProps<ElementOf<T>>>;
 
 export function TagsInputInput<T extends ValidComponent = "input">(
 	props: PolymorphicProps<T, TagsInputInputProps<T>>,
@@ -55,7 +54,7 @@ export function TagsInputInput<T extends ValidComponent = "input">(
 	const formControlContext = useFormControlContext();
 	const context = useTagsInputContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ id: context.generateId("input") },
 		props as TagsInputInputProps,
 	);
@@ -184,7 +183,10 @@ export function TagsInputInput<T extends ValidComponent = "input">(
 
 		const text = e.clipboardData?.getData("text") ?? "";
 
-		commitSegments(context.inputValue() + text, e.currentTarget as HTMLInputElement);
+		commitSegments(
+			context.inputValue() + text,
+			e.currentTarget as HTMLInputElement,
+		);
 	};
 
 	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (e) => {
@@ -212,7 +214,7 @@ export function TagsInputInput<T extends ValidComponent = "input">(
 	return (
 		<Polymorphic<TagsInputInputRenderProps>
 			as="input"
-			ref={mergeRefs(context.setInputRef, mergedProps.ref)}
+			ref={[context.setInputRef, mergedProps.ref]}
 			id={fieldProps.id()}
 			value={context.inputValue()}
 			type="text"

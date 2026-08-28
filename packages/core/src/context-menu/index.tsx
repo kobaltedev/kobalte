@@ -64,40 +64,40 @@ import {
 	MenuSub as Sub,
 	MenuSubContent as SubContent,
 	MenuSubTrigger as SubTrigger,
-} from "../menu";
+} from "../menu/index.ts";
 import {
 	Arrow,
 	type PopperArrowCommonProps as ContextMenuArrowCommonProps,
 	type PopperArrowOptions as ContextMenuArrowOptions,
 	type PopperArrowProps as ContextMenuArrowProps,
 	type PopperArrowRenderProps as ContextMenuArrowRenderProps,
-} from "../popper";
+} from "../popper/index.tsx";
 import {
 	type SeparatorRootCommonProps as ContextMenuSeparatorCommonProps,
 	type SeparatorRootOptions as ContextMenuSeparatorOptions,
 	type SeparatorRootProps as ContextMenuSeparatorProps,
 	type SeparatorRootRenderProps as ContextMenuSeparatorRenderProps,
 	Root as Separator,
-} from "../separator";
+} from "../separator/index.tsx";
 import {
 	ContextMenuContent as Content,
 	type ContextMenuContentCommonProps,
 	type ContextMenuContentOptions,
 	type ContextMenuContentProps,
 	type ContextMenuContentRenderProps,
-} from "./context-menu-content";
+} from "./context-menu-content.tsx";
 import {
 	type ContextMenuRootOptions,
 	type ContextMenuRootProps,
 	ContextMenuRoot as Root,
-} from "./context-menu-root";
+} from "./context-menu-root.tsx";
 import {
 	type ContextMenuTriggerCommonProps,
 	type ContextMenuTriggerOptions,
 	type ContextMenuTriggerProps,
 	type ContextMenuTriggerRenderProps,
 	ContextMenuTrigger as Trigger,
-} from "./context-menu-trigger";
+} from "./context-menu-trigger.tsx";
 
 export type {
 	ContextMenuArrowCommonProps,
@@ -215,9 +215,9 @@ export const ContextMenu = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type ContextMenuContextValue,
 	useContextMenuContext,
-} from "./context-menu-context";
+} from "./context-menu-context.tsx";
