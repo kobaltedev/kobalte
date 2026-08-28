@@ -6,18 +6,19 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableList.ts
  */
 
-import { access, type MaybeAccessor, type Orientation } from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
+import { access, type MaybeAccessor } from "@solid-primitives/utils";
 import { type Accessor, createMemo } from "solid-js";
 
-import { createCollator } from "../i18n";
-import type { Collection, CollectionNode } from "../primitives";
+import { createCollator } from "../i18n/index.tsx";
+import type { Collection, CollectionNode } from "../primitives/index.ts";
 import {
 	createSelectableCollection,
 	type FocusStrategy,
 	type KeyboardDelegate,
 	type MultipleSelectionManager,
-} from "../selection";
-import { ListKeyboardDelegate } from "./list-keyboard-delegate";
+} from "../selection/index.ts";
+import { ListKeyboardDelegate } from "./list-keyboard-delegate.ts";
 
 export interface CreateSelectableListProps {
 	/** State of the collection. */

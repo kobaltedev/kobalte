@@ -1,5 +1,6 @@
 .tooltip__trigger {
 	appearance: none;
+	border: none;
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
@@ -70,20 +71,20 @@
 	}
 }
 
-[data-kb-theme="dark"] .tooltip__trigger {
+[data-theme*="dark"] .tooltip__trigger {
 	background-color: hsl(201 96% 32%);
 	color: hsla(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .tooltip__trigger:hover {
+[data-theme*="dark"] .tooltip__trigger:hover {
 	background-color: hsl(200 98% 39%);
 }
 
-[data-kb-theme="dark"] .tooltip__trigger:active {
+[data-theme*="dark"] .tooltip__trigger:active {
 	background-color: hsl(199 89% 48%);
 }
 
-[data-kb-theme="dark"] .tooltip__content {
+[data-theme*="dark"] .tooltip__content {
 	border: 1px solid hsl(240 5% 26%);
 	background-color: hsl(0 0% 100% / 0.9);
 	color: hsl(240 4% 16%);

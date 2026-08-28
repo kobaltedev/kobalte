@@ -1,4 +1,5 @@
-import { fireEvent, render } from "@solidjs/testing-library";
+import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
+import { fireEvent, render, within } from "@solidjs/testing-library";
 
 import * as Menubar from ".";
 
@@ -79,184 +80,249 @@ const commonUI = () => (
 	</>
 );
 
-describe("Menubar", () => {
-	it.skip("renders correctly", async () => {
-		// Can't be tested as jsdom doesn't support onPointer events.
-		// Test code should be valid for the future.
+/**
+ * Menu content is mounted/unmounted through `createPresence`, and item
+ * autofocus is deferred via `setTimeout(fn, 0)` until the content has
+ * settled. Solid's signal writes are batched to a microtask, so we must
+ * flush once (`await Promise.resolve()`) to let pending mounts/unmounts
+ * apply *before* running timers - otherwise a `setTimeout` registered by a
+ * mount that hasn't happened yet would be missed - then flush again after
+ * `vi.runAllTimers()` so the effects triggered by those timers apply too.
+ */
+async function flush() {
+	await Promise.resolve();
+	vi.runAllTimers();
+	await Promise.resolve();
+}
 
-		const { getByText, queryByText } = render(commonUI);
+/**
+ * Simulates a real mouse click: jsdom doesn't synthesize a "click" event
+ * from a `PointerEvent` sequence, and menu trigger/item open logic is a mix
+ * of "pointerdown"/"pointerup" (e.g. `Menu.Trigger`) and native "click"
+ * (e.g. `Menu.SubTrigger`), just like in a real browser.
+ */
+async function pointerClick(element: Element) {
+	fireEvent(
+		element,
+		createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
+	);
+	await Promise.resolve();
+
+	fireEvent(
+		element,
+		createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
+	);
+	await Promise.resolve();
+
+	fireEvent.click(element);
+	await flush();
+}
+
+describe("Menubar", () => {
+	installPointerEvent();
+
+	beforeEach(() => {
+		vi.useFakeTimers();
+	});
+
+	afterEach(() => {
+		vi.clearAllTimers();
+		vi.useRealTimers();
+	});
+
+	it("renders correctly", async () => {
+		const { getByText } = render(commonUI);
 
 		expect(getByText("Test 1")).toBeVisible();
 		expect(getByText("Test 2")).toBeVisible();
 		expect(getByText("Test 3")).toBeVisible();
 
-		getByText("Test 1").click();
+		await pointerClick(getByText("Test 1"));
 
-		expect(getByText("Test 1")).toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 1")).toHaveAttribute("data-highlighted");
 
-		expect(getByText("Item 1")).toBeVisible();
-		expect(getByText("Item 2")).toBeVisible();
-		expect(getByText("Sub 3")).toBeVisible();
+		expect(within(document.body).getByText("Item 1")).toBeVisible();
+		expect(within(document.body).getByText("Item 2")).toBeVisible();
+		expect(
+			within(document.body).getByText("Sub 3", { exact: false }),
+		).toBeVisible();
 
-		getByText("Test 2").click();
+		await pointerClick(getByText("Test 2"));
 
-		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted", "true");
-		expect(getByText("Test 2")).toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted");
+		expect(getByText("Test 2")).toHaveAttribute("data-highlighted");
 
-		expect(queryByText("Item 1")).not.toBeInTheDocument();
-		expect(queryByText("Item 2")).not.toBeInTheDocument();
-		expect(queryByText("Sub 3")).not.toBeInTheDocument();
+		expect(within(document.body).queryByText("Item 1")).not.toBeInTheDocument();
+		expect(within(document.body).queryByText("Item 2")).not.toBeInTheDocument();
+		expect(
+			within(document.body).queryByText("Sub 3", { exact: false }),
+		).not.toBeInTheDocument();
 
-		expect(getByText("Item A")).toBeVisible();
-		expect(getByText("Item B")).toBeVisible();
-		expect(getByText("Sub C")).toBeVisible();
+		expect(within(document.body).getByText("Item A")).toBeVisible();
+		expect(within(document.body).getByText("Item B")).toBeVisible();
+		expect(
+			within(document.body).getByText("Sub C", { exact: false }),
+		).toBeVisible();
 
-		fireEvent.click(getByText("Sub C"));
+		await pointerClick(
+			within(document.body).getByText("Sub C", { exact: false }),
+		);
 
-		expect(getByText("Item D")).toBeVisible();
-		expect(getByText("Item E")).toBeVisible();
+		expect(within(document.body).getByText("Item D")).toBeVisible();
+		expect(within(document.body).getByText("Item E")).toBeVisible();
 
-		fireEvent.click(getByText("External"));
+		await pointerClick(getByText("External"));
 
-		expect(getByText("Test 2")).not.toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 2")).not.toHaveAttribute("data-highlighted");
 
-		expect(queryByText("Item A")).not.toBeInTheDocument();
-		expect(queryByText("Item B")).not.toBeInTheDocument();
-		expect(queryByText("Sub C")).not.toBeInTheDocument();
+		expect(within(document.body).queryByText("Item A")).not.toBeInTheDocument();
+		expect(within(document.body).queryByText("Item B")).not.toBeInTheDocument();
+		expect(
+			within(document.body).queryByText("Sub C", { exact: false }),
+		).not.toBeInTheDocument();
 	});
 
-	it.skip("handles keyboard navigation correctly", async () => {
-		// Can't be tested as jsdom doesn't support onPointer events.
-		// Test code should be valid for the future.
-
-		const { getByText, queryByText } = render(commonUI);
+	it("handles keyboard navigation correctly", async () => {
+		const { getByText } = render(commonUI);
 
 		expect(getByText("Test 1")).toHaveAttribute("tabindex", "0");
 		expect(getByText("Test 2")).toHaveAttribute("tabindex", "-1");
 		expect(getByText("Test 3")).toHaveAttribute("tabindex", "-1");
 
-		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted");
 
 		fireEvent.focus(getByText("Test 1"));
+		await flush();
 
-		expect(queryByText("Item 1")).not.toBeInTheDocument();
+		expect(within(document.body).queryByText("Item 1")).not.toBeInTheDocument();
 
-		expect(getByText("Test 1")).toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 1")).toHaveAttribute("data-highlighted");
 
-		fireEvent.keyPress(getByText("Test 1"), {
+		fireEvent.keyDown(getByText("Test 1"), {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
+		await flush();
 
-		expect(queryByText("Item A")).not.toBeInTheDocument();
+		expect(within(document.body).queryByText("Item A")).not.toBeInTheDocument();
 
-		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted", "true");
-		expect(getByText("Test 2")).toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 1")).not.toHaveAttribute("data-highlighted");
+		expect(getByText("Test 2")).toHaveAttribute("data-highlighted");
 
 		expect(getByText("Test 1")).toHaveAttribute("tabindex", "-1");
 		expect(getByText("Test 2")).toHaveAttribute("tabindex", "0");
 
 		expect(getByText("Test 2")).toHaveFocus();
 
-		fireEvent.keyPress(getByText("Test 2"), {
+		fireEvent.keyDown(getByText("Test 2"), {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
+		await flush();
 
-		expect(queryByText("Item Z")).not.toBeInTheDocument();
+		expect(within(document.body).queryByText("Item Z")).not.toBeInTheDocument();
 
-		expect(getByText("Test 2")).not.toHaveAttribute("data-highlighted", "true");
-		expect(getByText("Test 3")).toHaveAttribute("data-highlighted", "true");
+		expect(getByText("Test 2")).not.toHaveAttribute("data-highlighted");
+		expect(getByText("Test 3")).toHaveAttribute("data-highlighted");
 
 		expect(getByText("Test 2")).toHaveAttribute("tabindex", "-1");
 		expect(getByText("Test 3")).toHaveAttribute("tabindex", "0");
 
 		expect(getByText("Test 3")).toHaveFocus();
 
-		fireEvent.keyPress(getByText("Test 3"), {
+		fireEvent.keyDown(getByText("Test 3"), {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
+		await flush();
 
 		expect(getByText("Test 1")).toHaveFocus();
 
-		fireEvent.keyPress(getByText("Test 1"), {
+		fireEvent.keyDown(getByText("Test 1"), {
 			key: "ArrowDown",
 			code: "ArrowDown",
 		});
+		await flush();
 
-		expect(getByText("Item 1")).toBeVisible();
+		expect(within(document.body).getByText("Item 1")).toBeVisible();
 
-		fireEvent.keyPress(document.activeElement as Element, {
+		fireEvent.keyDown(document.activeElement as Element, {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
+		await flush();
 
-		expect(getByText("Item A")).toBeVisible();
+		// Navigating to the next menu while focus is already inside an open
+		// menu's item list (as opposed to switching via the top-level trigger
+		// itself) enters the new menu's item list directly, focusing its first
+		// item, instead of merely opening the menu with focus left on its
+		// trigger.
+		expect(within(document.body).getByText("Item A")).toHaveFocus();
 
-		fireEvent.keyPress(document.activeElement as Element, {
+		fireEvent.keyDown(document.activeElement as Element, {
 			key: "ArrowDown",
 			code: "ArrowDown",
 		});
-
-		expect(getByText("Item A")).toHaveFocus();
-
-		fireEvent.keyPress(document.activeElement as Element, {
+		await flush();
+		fireEvent.keyDown(document.activeElement as Element, {
 			key: "ArrowDown",
 			code: "ArrowDown",
 		});
-		fireEvent.keyPress(document.activeElement as Element, {
-			key: "ArrowDown",
-			code: "ArrowDown",
-		});
+		await flush();
 
-		expect(getByText("Sub C")).toHaveFocus();
+		expect(
+			within(document.body).getByText("Sub C", { exact: false }),
+		).toHaveFocus();
 
-		fireEvent.keyPress(document.activeElement as Element, {
+		fireEvent.keyDown(document.activeElement as Element, {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
+		await flush();
 
-		expect(getByText("Item D")).toHaveFocus();
+		expect(within(document.body).getByText("Item D")).toHaveFocus();
 
-		fireEvent.keyPress(document.activeElement as Element, {
+		fireEvent.keyDown(document.activeElement as Element, {
 			key: "ArrowLeft",
 			code: "ArrowLeft",
 		});
+		await flush();
 
-		expect(getByText("Sub C")).toHaveFocus();
+		expect(
+			within(document.body).getByText("Sub C", { exact: false }),
+		).toHaveFocus();
 
-		fireEvent.keyPress(document.activeElement as Element, {
+		fireEvent.keyDown(document.activeElement as Element, {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
-		fireEvent.keyPress(document.activeElement as Element, {
+		await flush();
+		fireEvent.keyDown(document.activeElement as Element, {
 			key: "ArrowRight",
 			code: "ArrowRight",
 		});
+		await flush();
 
-		expect(getByText("Item Z")).toBeVisible();
+		expect(within(document.body).getByText("Item Z")).toBeVisible();
 	});
 
-	it.skip("handles hover correctly", async () => {
-		// Can't be tested as jsdom doesn't support onPointer events.
-		// Test code should be valid for the future.
-
-		const { getByText, queryByText } = render(commonUI);
+	it("handles hover correctly", async () => {
+		const { getByText } = render(commonUI);
 
 		fireEvent.mouseEnter(getByText("Test 2"));
+		await flush();
 
 		expect(getByText("Test 1")).toHaveAttribute("tabindex", "0");
 
-		expect(queryByText("Item A")).not.toBeInTheDocument();
+		expect(within(document.body).queryByText("Item A")).not.toBeInTheDocument();
 
-		getByText("Test 1").click();
+		await pointerClick(getByText("Test 1"));
 
-		expect(getByText("Item 1")).toBeVisible();
+		expect(within(document.body).getByText("Item 1")).toBeVisible();
 
-		getByText("Test 2").click();
+		await pointerClick(getByText("Test 2"));
 
-		expect(queryByText("Item 1")).not.toBeInTheDocument();
-		expect(getByText("Item A")).toBeVisible();
+		expect(within(document.body).queryByText("Item 1")).not.toBeInTheDocument();
+		expect(within(document.body).getByText("Item A")).toBeVisible();
 	});
 });

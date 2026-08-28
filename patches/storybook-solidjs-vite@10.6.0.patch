@@ -1,0 +1,13 @@
+diff --git a/dist/chunk-3HP6KHGO.js b/dist/chunk-3HP6KHGO.js
+index 2792c200ffa415e054104c22b4ddb053f7f99348..5d5cdc6834733fdf15c11ee88ca192b49914ce05 100644
+--- a/dist/chunk-3HP6KHGO.js
++++ b/dist/chunk-3HP6KHGO.js
+@@ -1352,7 +1352,7 @@ var DEFAULT_INFERRED_OPTIONS = {
+   esModuleInterop: true,
+   allowJs: true,
+   skipLibCheck: true,
+-  jsx: ts.JsxEmit.Preserve
++  jsx: 1 /* ts.JsxEmit.Preserve */
+ };
+ var SolidComponentMetaManager = class {
+   constructor(typescript) {

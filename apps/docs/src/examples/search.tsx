@@ -1,6 +1,5 @@
 import MiniSearch from "minisearch";
 import { createSignal } from "solid-js";
-import { Search } from "../../../../packages/core/src/search";
 import { MagnifyingGlassIcon, ReloadIcon } from "../components";
 import style from "./search.module.css";
 
@@ -549,6 +548,8 @@ const queryEmojiData = (query: string, numSuggestions = 20) => {
 		.search(query, { fuzzy: 0.5, combineWith: "OR" })
 		.slice(0, numSuggestions) as never as EmojiDatum[];
 };
+
+import { Search } from "@kobalte/core/search";
 
 export function BasicExample() {
 	const [options, setOptions] = createSignal<EmojiDatum[]>([]);

@@ -1,4 +1,3 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import { parseColor } from "@solid-primitives/utils/colors";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -6,20 +5,21 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createControllableSignal } from "../primitives";
-import * as TextField from "../text-field";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
+import * as TextField from "../text-field/index.tsx";
 import {
 	ColorFieldContext,
 	type ColorFieldContextValue,
-} from "./color-field-context";
+} from "./color-field-context.tsx";
 
 export interface ColorFieldRootOptions extends TextField.TextFieldRootOptions {}
 
 export interface ColorFieldRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
@@ -37,10 +37,7 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `colorfield-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as ColorFieldRootProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as ColorFieldRootProps);
 
 	const others = omit(mergedProps, "value", "defaultValue", "onChange");
 
@@ -70,9 +67,7 @@ export function ColorFieldRoot<T extends ValidComponent = "div">(
 		}
 	};
 
-	const onBlur: JSX.FocusEventHandlerUnion<HTMLInputElement, FocusEvent> = (
-		e,
-	) => {
+	const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (_e) => {
 		if (!value()!.length) {
 			setPrevValue("");
 			return;

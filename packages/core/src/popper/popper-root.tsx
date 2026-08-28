@@ -18,16 +18,16 @@ import {
 	shift,
 	size,
 } from "@floating-ui/dom";
-import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	type Accessor,
 	createSignal,
 	createTrackedEffect,
+	merge,
 	type ParentProps,
 } from "solid-js";
 
-import { useLocale } from "../i18n";
-import { PopperContext, type PopperContextValue } from "./popper-context";
+import { useLocale } from "../i18n/index.tsx";
+import { PopperContext, type PopperContextValue } from "./popper-context.tsx";
 import {
 	type AnchorRect,
 	type BasePlacement,
@@ -35,7 +35,7 @@ import {
 	getTransformOrigin,
 	isValidPlacement,
 	type Placement,
-} from "./utils";
+} from "./utils.ts";
 
 export interface PopperRootOptions {
 	/** A ref for the anchor element. */
@@ -119,9 +119,9 @@ export interface PopperRootProps extends ParentProps<PopperRootOptions> {}
  * Display a floating content relative to an anchor element with an optional arrow.
  */
 export function PopperRoot(props: PopperRootProps) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
-			getAnchorRect: (anchor) => anchor?.getBoundingClientRect(),
+			getAnchorRect: (anchor?: HTMLElement) => anchor?.getBoundingClientRect(),
 			placement: "bottom",
 			gutter: 0,
 			shift: 0,
@@ -134,7 +134,7 @@ export function PopperRoot(props: PopperRootProps) {
 			detachedPadding: 0,
 			arrowPadding: 4,
 			overflowPadding: 8,
-		},
+		} as const,
 		props,
 	);
 

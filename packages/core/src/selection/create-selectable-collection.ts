@@ -6,33 +6,28 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useSelectableCollection.ts
  */
 
-import {
-	access,
-	callHandler,
-	createEventListener,
-	focusWithoutScrolling,
-	getFocusableTreeWalker,
-	type MaybeAccessor,
-	type Orientation,
-	scrollIntoView,
-} from "@kobalte/utils";
+import { callHandler, type Orientation } from "@kobalte/utils";
+import { createEventListener } from "@solid-primitives/event-listener";
+import { getFocusableTreeWalker } from "@solid-primitives/focus";
+import { access, type MaybeAccessor } from "@solid-primitives/utils";
 import type { JSX } from "@solidjs/web";
 import {
 	type Accessor,
 	createEffect,
 	createMemo,
+	flush,
 	merge,
 	onSettled,
 } from "solid-js";
 
-import { useLocale } from "../i18n";
-import { createTypeSelect } from "./create-type-select";
+import { useLocale } from "../i18n/index.tsx";
+import { createTypeSelect } from "./create-type-select.ts";
 import type {
 	FocusStrategy,
 	KeyboardDelegate,
 	MultipleSelectionManager,
-} from "./types";
-import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
+} from "./types.ts";
+import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils.ts";
 
 interface CreateSelectableCollectionProps {
 	/** An interface for reading and updating multiple selection state. */
@@ -102,6 +97,12 @@ export function createSelectableCollection<
 	const finalScrollRef = () => scrollRef?.() ?? ref();
 
 	const { direction } = useLocale();
+
+	// Set while `tryAutoFocus` synchronously focuses the collection itself
+	// (no specific item), so `onFocusIn` below can recognize the resulting
+	// native focus event as self-inflicted rather than a real user
+	// tabbing-in, and skip its own "auto-focus first item" logic for it.
+	let isSelfFocusing = false;
 
 	// Store the scroll position, so we can restore it later.
 	let scrollPos = { top: 0, left: 0 };
@@ -346,7 +347,7 @@ export function createSelectableCollection<
 						} while (last);
 
 						if (next && !next.contains(document.activeElement)) {
-							focusWithoutScrolling(next);
+							next.focus({ preventScroll: true });
 						}
 					}
 					break;
@@ -356,6 +357,12 @@ export function createSelectableCollection<
 	};
 
 	const onFocusIn: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+		// This is `tryAutoFocus` focusing the collection itself; it already
+		// set `isFocused`/`focusedKey` as intended, so skip re-deriving them.
+		if (isSelfFocusing) {
+			return;
+		}
+
 		const manager = access(mergedProps.selectionManager);
 		const delegate = access(mergedProps.keyboardDelegate);
 		const selectOnFocus = access(mergedProps.selectOnFocus);
@@ -383,6 +390,11 @@ export function createSelectableCollection<
 				}
 
 				manager.setFocusedKey(key);
+				// Solid 2.0 batches signal writes; flush so `focusedKey()` is
+				// synchronously up to date for the keydown handler that runs
+				// immediately after this focus event (e.g. arrow-key navigation
+				// right after the collection receives initial focus).
+				flush();
 
 				if (selectOnFocus) {
 					manager.replaceSelection(key);
@@ -421,8 +433,8 @@ export function createSelectableCollection<
 
 				if (element) {
 					// This prevents a flash of focus on the first/last element in the collection
-					focusWithoutScrolling(element as HTMLElement);
-					scrollIntoView(scrollEl, element as HTMLElement);
+					(element as HTMLElement).focus({ preventScroll: true });
+					element.scrollIntoView({ block: "nearest" });
 				}
 			}
 		}
@@ -482,7 +494,17 @@ export function createSelectableCollection<
 			focusedKey == null &&
 			!access(mergedProps.shouldUseVirtualFocus)
 		) {
-			focusWithoutScrolling(refEl);
+			// The focus call below synchronously dispatches a native
+			// focus event back into this same collection's `onFocusIn`. Solid
+			// batches the `setFocused(true)` write above, so without this guard
+			// `onFocusIn` would read stale (pre-write) state and re-run its own
+			// "auto-focus first item" logic, stealing focus from the collection
+			// itself. A local flag (rather than a global `flush()`) avoids
+			// forcing unrelated pending effects elsewhere to run before their
+			// DOM refs are ready (e.g. Menu's own deferred submenu auto-focus).
+			isSelfFocusing = true;
+			refEl.focus({ preventScroll: true });
+			isSelfFocusing = false;
 		}
 	};
 
@@ -511,7 +533,7 @@ export function createSelectableCollection<
 					const element = scrollEl.querySelector(`[data-key="${focusedKey}"]`);
 
 					if (element) {
-						scrollIntoView(scrollEl, element as HTMLElement);
+						element.scrollIntoView({ block: "nearest" });
 					}
 				}
 			}

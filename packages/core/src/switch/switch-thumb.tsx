@@ -1,20 +1,20 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
+import { merge } from "solid-js";
 
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type SwitchDataSet, useSwitchContext } from "./switch-context";
+} from "../polymorphic/index.tsx";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context.tsx";
 
 export interface SwitchThumbOptions {}
 
-export interface SwitchThumbCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SwitchThumbCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -36,7 +36,7 @@ export function SwitchThumb<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("thumb"),
 		},

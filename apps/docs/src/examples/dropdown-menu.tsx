@@ -1,6 +1,5 @@
 import { DropdownMenu } from "@kobalte/core/dropdown-menu";
 import { createSignal } from "solid-js";
-
 import {
 	CheckIcon,
 	ChevronDownIcon,

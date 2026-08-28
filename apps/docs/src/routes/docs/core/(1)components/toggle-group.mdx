@@ -1,0 +1,224 @@
+---
+title: Toggle Group
+badges:
+  - icon: npm
+    label: "Since v0.13.0"
+  - label: "@kobalte/core/toggle-group"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/toggle-group"
+---
+
+import {
+	BasicExample,
+	ControlledExample,
+	DefaultValueExample,
+	MultipleSelectionExample,
+} from "../../../../examples/toggle-group";
+
+# {frontmatter.title}
+
+A set of two-state buttons that can be toggled on (pressed) or off (not pressed).
+
+## Import
+
+```ts
+import { ToggleGroup } from "@kobalte/core/toggle-group";
+// or
+import { Root, Item, ... } from "@kobalte/core/toggle-group";
+// or (deprecated)
+import { ToggleGroup } from "@kobalte/core";
+```
+
+## Features
+
+- Supports horizontal/vertical orientation.
+- Keyboard event support for <kbd>Space</kbd> and <kbd>Enter</kbd> keys.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The toggle group consists of:
+
+- **ToggleGroup:** the root container for a toggle group.
+
+The toggle item consists of:
+
+- **ToggleGroup.Item:** the root container for a toggle button.
+
+```tsx
+<ToggleGroup>
+	<ToggleGroup.Item />
+</ToggleGroup>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/toggle-group.tsx#L4-L77"
+
+```
+
+```css title="style.css" tab file="../../../../examples/toggle-group.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Default pressed
+
+An initial, uncontrolled value can be provided using the `defaultValue` prop.
+
+:::preview
+
+<DefaultValueExample />
+
+---
+
+```tsx {1,8-10}
+<ToggleGroup defaultValue="underline">
+	<ToggleGroup.Item value="bold" aria-label="Bold">
+		<BoldIcon />
+	</ToggleGroup.Item>
+	<ToggleGroup.Item value="italic" aria-label="Italic">
+		<ItalicIcon />
+	</ToggleGroup.Item>
+	<ToggleGroup.Item value="underline" aria-label="Underline">
+		<UnderlineIcon />
+	</ToggleGroup.Item>
+</ToggleGroup>
+```
+
+:::
+
+### Controlled pressed
+
+The `value` prop can be used to make the pressed state controlled. The `onChange` event is fired when the user toggle the button, and receives the new value.
+
+:::preview
+
+<ControlledExample />
+
+---
+
+```tsx {4,8}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal("underline");
+
+	return (
+		<>
+			<ToggleGroup value={value()} onChange={setValue}>
+				...
+			</ToggleGroup>
+			<p>Your text style is: {value()}.</p>
+		</>
+	);
+}
+```
+
+:::
+
+### Multiple selection
+
+The `multiple` prop can be used to create a select that allow multi-selection.
+
+:::preview
+
+<MultipleSelectionExample />
+
+---
+
+```tsx {4,9-11,23-24,29,33,40}
+import { createSignal } from "solid-js";
+
+function MultipleSelectionExample() {
+	const [values, setValues] = createSignal(["bold", "underline"]);
+
+	return (
+		<ToggleGroup class="toggle-group" value={values()} onChange={setValues}>
+			<ToggleGroup.Item class="toggle-group__item" value="bold" aria-label="Bold">
+				<BoldIcon />
+			</ToggleGroup.Item>
+			<ToggleGroup.Item class="toggle-group__item" value="italic" aria-label="Italic">
+				<ItalicIcon />
+			</ToggleGroup.Item>
+			<ToggleGroup.Item class="toggle-group__item" value="underline" aria-label="Underline">
+				<UnderlineIcon />
+			</ToggleGroup.Item>
+		</ToggleGroup>
+	);
+}
+```
+
+:::
+
+## API Reference
+
+### ToggleGroup
+
+`ToggleGroup` is equivalent to the `Root` import from `@kobalte/core/toggle-group` (and deprecated `ToggleGroup.Root`).
+
+| Prop         | Description                                                                                                                             |
+| :----------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| value        | `string \| string[]` <br/> The controlled pressed state of the toggle button.                                                           |
+| defaultValue | `string \| string[]` <br/> The default pressed state when initially rendered. Useful when you do not need to control the pressed state. |
+| onChange     | `(value: string \| string[]) => void` <br/> Event handler called when the pressed state of an item changes.                             |
+| multiple     | `boolean` <br/> Whether the toggle group allows multi-selection.                                                                        |
+| orientation  | `'horizontal' \| 'vertical'` <br/> The orientation of the toggle group.                                                                 |
+| disabled     | `boolean` <br/> Whether toggle group should be disabled.                                                                                |
+
+| Data attribute                | Description                                            |
+| :---------------------------- | :----------------------------------------------------- |
+| data-orientation='horizontal' | Present when the separator has horizontal orientation. |
+| data-orientation='vertical'   | Present when the separator has vertical orientation.   |
+
+### ToggleGroup.Item
+
+| Prop     | Description                                                                                                                                                                   |
+| :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value    | `string` <br/> A unique value for the item.                                                                                                                                   |
+| disabled | `boolean` <br/> Whether the item is disabled.                                                                                                                                 |
+| children | `JSX.Element \| (state: ToggleButtonState) => JSX.Element` <br/> The children of the item. Can be a `JSX.Element` or a _render prop_ for having access to the internal state. |
+
+| Render Prop | Description                                                                               |
+| :---------- | :---------------------------------------------------------------------------------------- |
+| pressed     | `Accessor<boolean>` <br/> Whether the toggle button is on (pressed) or off (not pressed). |
+
+| Data attribute                | Description                                            |
+| :---------------------------- | :----------------------------------------------------- |
+| data-orientation='horizontal' | Present when the separator has horizontal orientation. |
+| data-orientation='vertical'   | Present when the separator has vertical orientation.   |
+| data-disabled                 | Present when the accordion item is disabled.           |
+| data-pressed                  | Present when the toggle button is on (pressed).        |
+
+## Rendered elements
+
+| Component          | Default rendered element |
+| :----------------- | :----------------------- |
+| `ToggleGroup`      | `div`                    |
+| `ToggleGroup.Item` | `button`                 |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                           |
+| :-------------------- | :-------------------------------------------------------------------- |
+| <kbd>Tab</kbd>        | Move focus to either the pressed item or the first item in the group. |
+| <kbd>ArrowDown</kbd>  | If orientation is vertical, moves focus to the next item.             |
+| <kbd>ArrowRight</kbd> | If orientation is horizontal, Moves focus to the next item.           |
+| <kbd>ArrowUp</kbd>    | If orientation is vertical, moves focus to the previous item.         |
+| <kbd>ArrowLeft</kbd>  | If orientation is vertical, moves focus to the previous item.         |
+| <kbd>Home</kbd>       | Moves focus to the first item.                                        |
+| <kbd>End</kbd>        | Moves focus to the last item.                                         |
+| <kbd>Enter</kbd>      | Activates/deactivates the item.                                       |
+| <kbd>Space</kbd>      | Activates/deactivates the item.                                       |

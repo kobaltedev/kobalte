@@ -6,17 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/select/src/useSelect.ts
  */
 
-import {
-	access,
-	createGenerateId,
-	focusWithoutScrolling,
-	isFunction,
-	mergeDefaultProps,
-	OverrideComponentProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { createPresence } from "@solid-primitives/presence";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -25,6 +18,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 import {
@@ -32,32 +26,32 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
-import { createCollator } from "../i18n";
-import { createListState, ListKeyboardDelegate } from "../list";
+} from "../form-control/index.ts";
+import { createCollator } from "../i18n/index.tsx";
+import { createListState, ListKeyboardDelegate } from "../list/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { Popper, type PopperRootOptions } from "../popper";
+} from "../polymorphic/index.tsx";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
 import {
 	type CollectionNode,
 	createDisclosureState,
 	createRegisterId,
-} from "../primitives";
+} from "../primitives/index.ts";
 import {
 	type FocusStrategy,
 	type KeyboardDelegate,
 	Selection,
 	type SelectionBehavior,
 	type SelectionMode,
-} from "../selection";
+} from "../selection/index.ts";
 import {
 	SelectContext,
 	type SelectContextValue,
 	type SelectDataSet,
-} from "./select-context";
+} from "./select-context.tsx";
 
 export interface SelectBaseItemComponentProps<T> {
 	/** The item to render. */
@@ -203,7 +197,7 @@ export interface SelectBaseOptions<Option, OptGroup = never>
 	readOnly?: boolean;
 }
 
-export interface SelectBaseCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SelectBaseCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -232,7 +226,7 @@ export function SelectBase<
 >(props: PolymorphicProps<T, SelectBaseProps<Option, OptGroup, T>>) {
 	const defaultId = `select-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			selectionMode: "single",
@@ -242,7 +236,7 @@ export function SelectBase<
 			gutter: 8,
 			sameWidth: true,
 			modal: false,
-		},
+		} as const,
 		props as SelectBaseProps<Option, OptGroup>,
 	);
 
@@ -402,7 +396,7 @@ export function SelectBase<
 
 		// Get the value from the option object as a string.
 		return String(
-			isFunction(optionValue)
+			typeof optionValue === "function"
 				? optionValue(option as any)
 				: (option as any)[optionValue],
 		);
@@ -493,7 +487,7 @@ export function SelectBase<
 		const listboxEl = listboxRef();
 
 		if (listboxEl) {
-			focusWithoutScrolling(listboxEl);
+			listboxEl.focus({ preventScroll: true });
 		}
 	};
 
@@ -620,7 +614,7 @@ export function SelectBase<
 		renderItem,
 		renderSection,
 		removeOptionFromSelection,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 		registerTriggerId: createRegisterId(setTriggerId),
 		registerValueId: createRegisterId(setValueId),
 		registerListboxId: createRegisterId(setListboxId),

@@ -6,18 +6,18 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/context-menu/src/ContextMenu.tsx
  */
 
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
-import { omit, onCleanup } from "solid-js";
-import { type MenuDataSet, useMenuContext } from "../menu/menu-context";
-import { useMenuRootContext } from "../menu/menu-root-context";
+import { merge, omit, onCleanup, type Ref } from "solid-js";
+import { type MenuDataSet, useMenuContext } from "../menu/menu-context.tsx";
+import { useMenuRootContext } from "../menu/menu-root-context.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useContextMenuContext } from "./context-menu-context";
+} from "../polymorphic/index.tsx";
+import { useContextMenuContext } from "./context-menu-context.tsx";
 
 export interface ContextMenuTriggerOptions {
 	/** Whether the context menu trigger is disabled. */
@@ -28,7 +28,7 @@ export interface ContextMenuTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onContextMenu: JSX.EventHandlerUnion<T, MouseEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -53,7 +53,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 	const menuContext = useMenuContext();
 	const context = useContextMenuContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId("trigger"),
 		},
@@ -164,7 +164,7 @@ export function ContextMenuTrigger<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<ContextMenuTriggerRenderProps>
 			as="div"
-			ref={mergeRefs(menuContext.setTriggerRef, mergedProps.ref)}
+			ref={[menuContext.setTriggerRef, mergedProps.ref]}
 			style={combineStyle(
 				{
 					// prevent iOS context menu from appearing

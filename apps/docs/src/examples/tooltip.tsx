@@ -1,6 +1,5 @@
 import { Tooltip } from "@kobalte/core/tooltip";
 import { createSignal } from "solid-js";
-
 import style from "./tooltip.module.css";
 
 export function BasicExample() {
@@ -22,7 +21,7 @@ export function ControlledExample() {
 
 	return (
 		<>
-			<p class="not-prose text-sm mb-2">
+			<p style={{ "font-size": "14px", "margin-bottom": "8px" }}>
 				Tooltip is {open() ? "showing" : "not showing"}.
 			</p>
 			<Tooltip open={open()} onOpenChange={setOpen}>

@@ -1,5 +1,6 @@
 .dialog__trigger {
 	appearance: none;
+	border: none;
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
@@ -74,8 +75,8 @@
 }
 
 .dialog__close-button {
-	height: 16px;
-	width: 16px;
+	height: 25px;
+	width: 25px;
 	color: hsl(240 5% 34%);
 }
 
@@ -130,33 +131,33 @@
 	}
 }
 
-[data-kb-theme="dark"] .dialog__trigger {
+[data-theme*="dark"] .dialog__trigger {
 	background-color: hsl(201 96% 32%);
 	color: hsla(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .dialog__trigger:hover {
+[data-theme*="dark"] .dialog__trigger:hover {
 	background-color: hsl(200 98% 39%);
 }
 
-[data-kb-theme="dark"] .dialog__trigger:active {
+[data-theme*="dark"] .dialog__trigger:active {
 	background-color: hsl(199 89% 48%);
 }
 
-[data-kb-theme="dark"] .dialog__content {
+[data-theme*="dark"] .dialog__content {
 	border: 1px solid hsl(240 5% 26%);
 	background-color: hsl(240 4% 16%);
 	box-shadow: none;
 }
 
-[data-kb-theme="dark"] .dialog__close-button {
+[data-theme*="dark"] .dialog__close-button {
 	color: hsl(0 100% 100% / 0.8);
 }
 
-[data-kb-theme="dark"] .dialog__title {
+[data-theme*="dark"] .dialog__title {
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .dialog__description {
+[data-theme*="dark"] .dialog__description {
 	color: hsl(0 100% 100% / 0.7);
 }

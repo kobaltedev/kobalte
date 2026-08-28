@@ -1,40 +1,39 @@
 import { NumberFormatter, NumberParser } from "@internationalized/number";
 import {
-	access,
-	createGenerateId,
 	getPrecision,
-	mergeDefaultProps,
-	mergeRefs,
 	snapValueToStep,
 	type ValidationState,
 } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
-import { useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal } from "../primitives";
-import type { SpinButtonRootOptions } from "../spin-button";
+} from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
+import type { SpinButtonRootOptions } from "../spin-button/index.tsx";
 import {
 	NumberFieldContext,
 	type NumberFieldContextValue,
-} from "./number-field-context";
+} from "./number-field-context.tsx";
 
 export interface NumberFieldRootOptions
 	extends Pick<SpinButtonRootOptions, "textValue" | "translations"> {
@@ -110,7 +109,7 @@ export interface NumberFieldRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface NumberFieldRootRenderProps
@@ -129,11 +128,13 @@ export type NumberFieldRootProps<
 export function NumberFieldRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, NumberFieldRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `NumberField-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			format: true,
@@ -234,12 +235,9 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 
 	const { formControlContext } = createFormControl(formControlProps);
 
-	createFormResetListener(
-		() => ref,
-		() => {
-			setValue(mergedProps.defaultValue ?? "");
-		},
-	);
+	createFormResetListener(ref, () => {
+		setValue(mergedProps.defaultValue ?? "");
+	});
 
 	const [inputRef, setInputRef] = createSignal<HTMLInputElement | undefined>(
 		undefined,
@@ -286,7 +284,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		value,
 		setValue,
 		rawValue: () => parseRawValue(value()),
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 		formatNumber,
 		format: () => {
 			if (!mergedProps.format) return;
@@ -379,7 +377,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			<NumberFieldContext value={context}>
 				<Polymorphic<NumberFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(formControlProps.id)}
 					{...formControlContext.dataset()}

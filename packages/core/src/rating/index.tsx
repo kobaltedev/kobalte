@@ -9,7 +9,7 @@ import {
 	type FormControlErrorMessageOptions as RatingErrorMessageOptions,
 	type FormControlErrorMessageProps as RatingErrorMessageProps,
 	type FormControlErrorMessageRenderProps as RatingErrorMessageRenderProps,
-} from "../form-control";
+} from "../form-control/index.ts";
 
 import {
 	RatingControl as Control,
@@ -17,103 +17,103 @@ import {
 	type RatingControlOptions,
 	type RatingControlProps,
 	type RatingControlRenderProps,
-} from "./rating-control";
+} from "./rating-control.tsx";
 import {
 	RatingHiddenInput as HiddenInput,
 	type RatingHiddenInputProps,
-} from "./rating-hidden-input";
+} from "./rating-hidden-input.tsx";
 import {
 	RatingItem as Item,
 	type RatingItemCommonProps,
 	type RatingItemOptions,
 	type RatingItemProps,
 	type RatingItemRenderProps,
-} from "./rating-item";
+} from "./rating-item.tsx";
 import {
 	RatingItemControl as ItemControl,
 	type RatingItemControlCommonProps,
 	type RatingItemControlOptions,
 	type RatingItemControlProps,
 	type RatingItemControlRenderProps,
-} from "./rating-item-control";
+} from "./rating-item-control.tsx";
 import {
 	RatingItemDescription as ItemDescription,
 	type RatingItemDescriptionCommonProps,
 	type RatingItemDescriptionOptions,
 	type RatingItemDescriptionProps,
 	type RatingItemDescriptionRenderProps,
-} from "./rating-item-description";
+} from "./rating-item-description.tsx";
 import {
 	RatingItemLabel as ItemLabel,
 	type RatingItemLabelCommonProps,
 	type RatingItemLabelOptions,
 	type RatingItemLabelProps,
 	type RatingItemLabelRenderProps,
-} from "./rating-item-label";
+} from "./rating-item-label.tsx";
 import {
 	RatingLabel as Label,
 	type RatingLabelCommonProps,
 	type RatingLabelOptions,
 	type RatingLabelProps,
 	type RatingLabelRenderProps,
-} from "./rating-label";
+} from "./rating-label.tsx";
 import {
 	type RatingRootCommonProps,
 	type RatingRootOptions,
 	type RatingRootProps,
 	type RatingRootRenderProps,
 	RatingRoot as Root,
-} from "./rating-root";
+} from "./rating-root.tsx";
 
 export type {
 	RatingControlCommonProps,
 	RatingControlOptions,
 	RatingControlProps,
 	RatingControlRenderProps,
-	RatingDescriptionOptions,
 	RatingDescriptionCommonProps,
-	RatingDescriptionRenderProps,
+	RatingDescriptionOptions,
 	RatingDescriptionProps,
-	RatingErrorMessageOptions,
+	RatingDescriptionRenderProps,
 	RatingErrorMessageCommonProps,
-	RatingErrorMessageRenderProps,
+	RatingErrorMessageOptions,
 	RatingErrorMessageProps,
+	RatingErrorMessageRenderProps,
 	RatingHiddenInputProps,
-	RatingItemControlOptions,
-	RatingItemControlCommonProps,
-	RatingItemControlRenderProps,
-	RatingItemControlProps,
-	RatingItemDescriptionOptions,
-	RatingItemDescriptionCommonProps,
-	RatingItemDescriptionRenderProps,
-	RatingItemDescriptionProps,
-	RatingItemLabelOptions,
-	RatingItemLabelCommonProps,
-	RatingItemLabelRenderProps,
-	RatingItemLabelProps,
-	RatingItemOptions,
 	RatingItemCommonProps,
-	RatingItemRenderProps,
+	RatingItemControlCommonProps,
+	RatingItemControlOptions,
+	RatingItemControlProps,
+	RatingItemControlRenderProps,
+	RatingItemDescriptionCommonProps,
+	RatingItemDescriptionOptions,
+	RatingItemDescriptionProps,
+	RatingItemDescriptionRenderProps,
+	RatingItemLabelCommonProps,
+	RatingItemLabelOptions,
+	RatingItemLabelProps,
+	RatingItemLabelRenderProps,
+	RatingItemOptions,
 	RatingItemProps,
-	RatingLabelOptions,
+	RatingItemRenderProps,
 	RatingLabelCommonProps,
-	RatingLabelRenderProps,
+	RatingLabelOptions,
 	RatingLabelProps,
-	RatingRootOptions,
+	RatingLabelRenderProps,
 	RatingRootCommonProps,
-	RatingRootRenderProps,
+	RatingRootOptions,
 	RatingRootProps,
+	RatingRootRenderProps,
 };
 
 export {
+	Control,
 	Description,
 	ErrorMessage,
-	Control,
 	HiddenInput,
+	Item,
 	ItemControl,
 	ItemDescription,
 	ItemLabel,
-	Item,
 	Label,
 	Root,
 };

@@ -1,16 +1,23 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, createEffect, For, omit } from "solid-js";
+import {
+	type Accessor,
+	createEffect,
+	For,
+	merge,
+	omit,
+	type Ref,
+} from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { useLocale } from "../i18n";
+import { useFormControlContext } from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useTimeFieldContext } from "./time-field-context";
-import type { SegmentType } from "./types";
+} from "../polymorphic/index.tsx";
+import { useTimeFieldContext } from "./time-field-context.tsx";
+import type { SegmentType } from "./types.ts";
 
 export interface TimeFieldInputOptions {
 	children?: (segment: Accessor<SegmentType>) => JSX.Element;
@@ -20,7 +27,7 @@ export interface TimeFieldInputCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
 	"aria-labelledby": string | undefined;
@@ -43,7 +50,7 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const timeFieldContext = useTimeFieldContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: timeFieldContext.generateId("input"),
 		},
@@ -122,7 +129,7 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 		<Polymorphic<TimeFieldInputRenderProps>
 			as="div"
 			role="presentation"
-			ref={mergeRefs(timeFieldContext.setInputRef, mergedProps.ref)}
+			ref={[timeFieldContext.setInputRef, mergedProps.ref]}
 			aria-labelledby={timeFieldContext.fieldAriaLabelledBy()}
 			aria-describedby={timeFieldContext.fieldAriaDescribedBy()}
 			onKeyDown={onKeyDown}

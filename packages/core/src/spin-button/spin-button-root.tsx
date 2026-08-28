@@ -6,24 +6,20 @@
  * https://github.com/adobe/react-spectrum/blob/99ca82e87ba2d7fdd54f5b49326fd242320b4b51/packages/%40react-aria/spinbutton/src/useSpinButton.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import { callHandler, type ValidationState } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createMemo, omit } from "solid-js";
-import { announce, clearAnnouncer } from "../live-announcer";
+import { createEffect, createMemo, merge, omit } from "solid-js";
+import { announce, clearAnnouncer } from "../live-announcer/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	SPIN_BUTTON_INTL_TRANSLATIONS,
 	type SpinButtonIntlTranslations,
-} from "./spin-button.intl";
+} from "./spin-button.intl.ts";
 
 export interface SpinButtonRootOptions {
 	/** The localized strings of the component. */
@@ -100,7 +96,7 @@ export type SpinButtonRootProps<
 export function SpinButtonRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SpinButtonRootProps<T>>,
 ) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			translations: SPIN_BUTTON_INTL_TRANSLATIONS,
 		},

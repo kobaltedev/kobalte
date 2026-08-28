@@ -5,12 +5,12 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type SliderDataSet, useSliderContext } from "./slider-context";
+} from "../polymorphic/index.tsx";
+import { type SliderDataSet, useSliderContext } from "./slider-context.tsx";
 
 export interface SliderFillOptions {}
 
-export interface SliderFillCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SliderFillCommonProps<_T extends HTMLElement = HTMLElement> {
 	style?: JSX.CSSProperties | string;
 }
 

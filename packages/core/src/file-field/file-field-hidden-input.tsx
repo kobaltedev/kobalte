@@ -2,8 +2,8 @@ import { composeEventHandlers, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { ComponentProps, JSX } from "@solidjs/web";
 import { omit } from "solid-js";
-import { useFormControlContext } from "../form-control";
-import { useFileFieldContext } from "./file-field-context";
+import { useFormControlContext } from "../form-control/index.ts";
+import { useFileFieldContext } from "./file-field-context.tsx";
 
 export interface FileFieldHiddenInputProps extends ComponentProps<"input"> {}
 

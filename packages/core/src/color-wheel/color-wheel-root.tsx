@@ -1,12 +1,7 @@
-import {
-	access,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { createElementSize } from "@solid-primitives/resize-observer";
+import { access } from "@solid-primitives/utils";
 
 import {
 	COLOR_INTL_TRANSLATIONS,
@@ -14,24 +9,31 @@ import {
 	type ColorIntlTranslations,
 } from "@solid-primitives/utils/colors";
 import type { ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, createUniqueId, omit } from "solid-js";
+import {
+	createMemo,
+	createSignal,
+	createUniqueId,
+	merge,
+	omit,
+	type Ref,
+} from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
-import { useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	ColorWheelContext,
 	type ColorWheelContextValue,
-} from "./color-wheel-context";
-import { createColorWheelState } from "./create-color-wheel-state";
+} from "./color-wheel-context.tsx";
+import { createColorWheelState } from "./create-color-wheel-state.ts";
 
 export interface ColorWheelRootOptions {
 	/** The localized strings of the component. */
@@ -44,7 +46,7 @@ export interface ColorWheelRootOptions {
 	defaultValue?: Color;
 
 	/** The thickness of the track. */
-	thickness: number;
+	thickness?: number;
 
 	/** Event handler called when the value changes. */
 	onChange?: (value: Color) => void;
@@ -87,7 +89,7 @@ export interface ColorWheelRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface ColorWheelRootRenderProps
@@ -107,10 +109,10 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `colorwheel-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
-			getValueLabel: (param) => param.formatChannelValue("hue"),
+			getValueLabel: (param: Color) => param.formatChannelValue("hue"),
 			translations: COLOR_INTL_TRANSLATIONS,
 			disabled: false,
 			thickness: 30,
@@ -286,7 +288,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 		setTrackRef,
 		thumbRef,
 		setThumbRef,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 	};
 
 	return (
@@ -294,7 +296,7 @@ export function ColorWheelRoot<T extends ValidComponent = "div">(
 			<ColorWheelContext value={context}>
 				<Polymorphic<ColorWheelRootRenderProps>
 					as="div"
-					ref={mergeRefs(setRef, mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(formControlProps.id)!}
 					{...formControlContext.dataset()}

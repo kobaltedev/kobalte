@@ -1,17 +1,16 @@
-import { mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, Show } from "solid-js";
+import { type Component, omit, type Ref, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
+} from "../dismissable-layer/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
 import {
 	type HoverCardDataSet,
 	useHoverCardContext,
-} from "./hover-card-context";
+} from "./hover-card-context.tsx";
 
 export interface HoverCardContentOptions {}
 
@@ -20,7 +19,7 @@ export interface HoverCardContentOptions {}
 export interface HoverCardContentCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style?: JSX.CSSProperties | string;
 }
 
@@ -53,9 +52,12 @@ export function HoverCardContent<T extends ValidComponent = "div">(
 						Omit<HoverCardContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={mergeRefs((el) => {
-						context.setContentRef(el);
-					}, p.ref)}
+					ref={[
+						(el: HTMLElement) => {
+							context.setContentRef(el);
+						},
+						p.ref,
+					]}
 					disableOutsidePointerEvents={false}
 					style={combineStyle(
 						{

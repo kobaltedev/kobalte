@@ -6,17 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/switch/src/useSwitch.ts
  */
 
-import {
-	access,
-	callHandler,
-	createGenerateId,
-	isFunction,
-	mergeDefaultProps,
-	mergeRefs,
-	OverrideComponentProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import { callHandler, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -24,25 +16,27 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createToggleState } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createToggleState } from "../primitives/index.ts";
 import {
 	SwitchContext,
 	type SwitchContextValue,
 	type SwitchDataSet,
-} from "./switch-context";
+} from "./switch-context.tsx";
 
 interface SwitchRootState {
 	/** Whether the switch is checked or not. */
@@ -95,7 +89,7 @@ export interface SwitchRootOptions {
 
 export interface SwitchRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
@@ -117,11 +111,13 @@ export type SwitchRootProps<
 export function SwitchRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SwitchRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `switch-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			value: "on",
 			id: defaultId,
@@ -157,9 +153,8 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 		isReadOnly: () => formControlContext.isReadOnly(),
 	});
 
-	createFormResetListener(
-		() => ref,
-		() => state.setIsSelected(mergedProps.defaultChecked ?? false),
+	createFormResetListener(ref, () =>
+		state.setIsSelected(mergedProps.defaultChecked ?? false),
 	);
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
@@ -182,7 +177,7 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 		dataset,
 		checked: () => state.isSelected(),
 		inputRef,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		toggle: () => state.toggle(),
 		setIsChecked: (isChecked) => state.setIsSelected(isChecked),
 		setIsFocused,
@@ -194,7 +189,7 @@ export function SwitchRoot<T extends ValidComponent = "div">(
 			<SwitchContext value={context}>
 				<Polymorphic<SwitchRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)}
 					onPointerDown={onPointerDown}
@@ -218,7 +213,7 @@ interface SwitchRootChildProps extends Pick<SwitchRootOptions, "children"> {
 function SwitchRootChild(props: SwitchRootChildProps) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

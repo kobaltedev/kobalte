@@ -1,9 +1,17 @@
-import { mergeDefaultProps } from "@kobalte/utils";
-import { createEffect, createSignal, createUniqueId, omit } from "solid-js";
-import type { MenubarMenuOptions, MenubarMenuProps } from "../menubar";
-import { useMenubarContext } from "../menubar/menubar-context";
-import { MenubarMenu } from "../menubar/menubar-menu";
-import { useNavigationMenuContext } from "./navigation-menu-context";
+import {
+	createEffect,
+	createSignal,
+	createUniqueId,
+	merge,
+	omit,
+} from "solid-js";
+import type {
+	MenubarMenuOptions,
+	MenubarMenuProps,
+} from "../menubar/index.tsx";
+import { useMenubarContext } from "../menubar/menubar-context.tsx";
+import { MenubarMenu } from "../menubar/menubar-menu.tsx";
+import { useNavigationMenuContext } from "./navigation-menu-context.tsx";
 
 export interface NavigationMenuMenuOptions extends MenubarMenuOptions {}
 
@@ -24,7 +32,7 @@ export function NavigationMenuMenu(props: NavigationMenuMenuProps) {
 		`navigation-menu-menu-${uniqueid}`,
 	);
 
-	const mergedPropsWithId = mergeDefaultProps({ id: defaultId }, others);
+	const mergedPropsWithId = merge({ id: defaultId }, others);
 
 	const value = () => props.value ?? uniqueid;
 

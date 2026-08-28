@@ -12,7 +12,7 @@ import type {
 	ColorModeStorageManager,
 	ConfigColorMode,
 	MaybeConfigColorMode,
-} from "./types";
+} from "./types.ts";
 
 export const COLOR_MODE_STORAGE_KEY = "kb-color-mode";
 
@@ -39,7 +39,7 @@ export function createLocalStorageManager(
 		set: (value) => {
 			try {
 				localStorage.setItem(key, value);
-			} catch (e) {
+			} catch (_e) {
 				// noop
 			}
 		},

@@ -1,15 +1,15 @@
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import { COLOR_INTL_TRANSLATIONS } from "@solid-primitives/utils/colors";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { omit } from "solid-js";
-import { useFormControlContext } from "../form-control";
+import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useColorAreaContext } from "./color-area-context";
+} from "../polymorphic/index.tsx";
+import { useColorAreaContext } from "./color-area-context.tsx";
 
 export interface ColorAreaThumbOptions {}
 
@@ -124,7 +124,7 @@ export function ColorAreaThumb<T extends ValidComponent = "span">(
 	return (
 		<Polymorphic<ColorAreaThumbRenderProps>
 			as="span"
-			ref={mergeRefs(context.setThumbRef, props.ref)}
+			ref={[context.setThumbRef, props.ref]}
 			role="presentation"
 			tabindex={context.state.isDisabled() ? undefined : 0}
 			style={combineStyle(

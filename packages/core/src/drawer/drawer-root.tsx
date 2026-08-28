@@ -6,31 +6,34 @@
  * https://github.com/corvudev/corvu/tree/main/packages/drawer
  */
 
-import { mergeDefaultProps } from "@kobalte/utils";
 import {
 	createEffect,
 	createMemo,
 	createSignal,
+	merge,
 	omit,
 	type ParentProps,
 	type Setter,
 	untrack,
 } from "solid-js";
-import { DialogRoot, type DialogRootOptions } from "../dialog/dialog-root";
-import { createControllableSignal, createDisclosureState } from "../primitives";
+import { DialogRoot, type DialogRootOptions } from "../dialog/dialog-root.tsx";
+import {
+	createControllableSignal,
+	createDisclosureState,
+} from "../primitives/index.ts";
 import {
 	DrawerContext,
 	type DrawerContextValue,
 	DrawerInternalContext,
 	type DrawerInternalContextValue,
 	type DrawerTransitionState,
-} from "./drawer-context";
+} from "./drawer-context.tsx";
 import {
 	afterPaint,
 	type DrawerSide,
 	type DrawerSize,
 	resolveSnapPoint,
-} from "./drawer-lib";
+} from "./drawer-lib.ts";
 
 export interface DrawerRootOptions
 	extends Omit<DialogRootOptions, "forceMount"> {
@@ -108,7 +111,7 @@ export interface DrawerRootProps extends ParentProps<DrawerRootOptions> {}
  * by Jasmin Noetzli (MIT).
  */
 export function DrawerRoot(props: DrawerRootProps) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			side: "bottom" as DrawerSide,
 			snapPoints: [0, 1] as DrawerSize[],

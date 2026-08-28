@@ -6,13 +6,18 @@
  * https://github.com/corvudev/corvu/tree/main/packages/resizable
  */
 
-import { type Accessor, createContext, type Setter, useContext } from "solid-js";
+import {
+	type Accessor,
+	createContext,
+	type Setter,
+	useContext,
+} from "solid-js";
 import type {
 	ResizablePanelData,
 	ResizablePanelInstance,
 	ResizableSize,
 	ResizeStrategy,
-} from "./resizable-lib";
+} from "./resizable-lib.ts";
 
 export type { ResizableSize, ResizeStrategy };
 
@@ -28,7 +33,11 @@ export interface ResizableContextValue {
 	/** Whether the component manages the global cursor style during resize. */
 	handleCursorStyle: Accessor<boolean>;
 	/** Resize a panel to a specific size with the given strategy. */
-	resize: (panelIndex: number, size: ResizableSize, strategy?: ResizeStrategy) => void;
+	resize: (
+		panelIndex: number,
+		size: ResizableSize,
+		strategy?: ResizeStrategy,
+	) => void;
 	/** Collapse a panel (requires `collapsible` on the panel). */
 	collapse: (panelIndex: number, strategy?: ResizeStrategy) => void;
 	/** Expand a panel (requires `collapsible` on the panel). */
@@ -56,7 +65,11 @@ export interface ResizableInternalContextValue extends ResizableContextValue {
 	unregisterPanel: (id: string) => void;
 	onDrag: (handle: HTMLElement, delta: number, altKey: boolean) => void;
 	onDragEnd: () => void;
-	onKeyDown: (handle: HTMLElement, event: KeyboardEvent, altKey: boolean) => void;
+	onKeyDown: (
+		handle: HTMLElement,
+		event: KeyboardEvent,
+		altKey: boolean,
+	) => void;
 }
 
 export const ResizableInternalContext =

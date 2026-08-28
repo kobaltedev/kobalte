@@ -38,16 +38,16 @@ Other affected attributes: `autocomplete`, `autocorrect`, `spellcheck`, `enterke
 
 ## Renamed helpers
 
-| Solid 1.x | Solid 2.0 |
-|-----------|-----------|
-| `mergeProps` | `merge` |
-| `splitProps` | `omit` |
-| `unwrap` | `snapshot` |
-| `onMount` | `onSettled` |
+| Solid 1.x        | Solid 2.0                                  |
+| ---------------- | ------------------------------------------ |
+| `mergeProps`     | `merge`                                    |
+| `splitProps`     | `omit`                                     |
+| `unwrap`         | `snapshot`                                 |
+| `onMount`        | `onSettled`                                |
 | `createComputed` | `createEffect` (split form) / `createMemo` |
-| `Index` | `<For keyed={false}>` |
-| `classList` | `class` (object/array accepted) |
-| `batch` | removed — writes are auto-batched |
+| `Index`          | `<For keyed={false}>`                      |
+| `classList`      | `class` (object/array accepted)            |
+| `batch`          | removed — writes are auto-batched          |
 
 ## Effects: split compute/apply form
 
@@ -55,12 +55,18 @@ Other affected attributes: `autocomplete`, `autocorrect`, `spellcheck`, `enterke
 
 ```ts
 // before
-createEffect(on(source, (value) => { el.title = value; }));
+createEffect(
+	on(source, value => {
+		el.title = value;
+	}),
+);
 
 // after
 createEffect(
-  () => source(),
-  (value) => { el.title = value; },
+	() => source(),
+	value => {
+		el.title = value;
+	},
 );
 ```
 
@@ -68,11 +74,11 @@ Cleanup is returned from the apply function instead of using `onCleanup`.
 
 ```ts
 createEffect(
-  () => source(),
-  (value) => {
-    const id = setTimeout(() => doWork(value), 100);
-    return () => clearTimeout(id);
-  },
+	() => source(),
+	value => {
+		const id = setTimeout(() => doWork(value), 100);
+		return () => clearTimeout(id);
+	},
 );
 ```
 
@@ -91,10 +97,16 @@ createEffect(
 ```ts
 // before
 import { produce } from "solid-js/store";
-setStore(produce(s => { s.count++; }));
+setStore(
+	produce(s => {
+		s.count++;
+	}),
+);
 
 // after
-setStore(s => { s.count++; });
+setStore(s => {
+	s.count++;
+});
 ```
 
 ## Signals: no writes inside reactive scope

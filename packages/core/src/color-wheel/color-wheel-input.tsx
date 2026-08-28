@@ -1,17 +1,13 @@
-import {
-	callHandler,
-	mergeDefaultProps,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { omit } from "solid-js";
+import { merge, omit } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
-} from "../form-control";
-import { useColorWheelContext } from "./color-wheel-context";
+} from "../form-control/index.ts";
+import { useColorWheelContext } from "./color-wheel-context.tsx";
 
 export interface ColorWheelInputProps extends ComponentProps<"input"> {
 	style?: JSX.CSSProperties | string;
@@ -21,7 +17,7 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 	const formControlContext = useFormControlContext();
 	const context = useColorWheelContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("input"),
 		},
@@ -81,7 +77,6 @@ export function ColorWheelInput(props: ColorWheelInputProps) {
 			aria-invalid={
 				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() ? "true" : undefined}
 			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
 			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onChange={onChange}

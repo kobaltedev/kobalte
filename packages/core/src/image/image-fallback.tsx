@@ -13,13 +13,13 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useImageContext } from "./image-context";
+} from "../polymorphic/index.tsx";
+import { useImageContext } from "./image-context.tsx";
 
 export interface ImageFallbackOptions {}
 
 export interface ImageFallbackCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface ImageFallbackRenderProps extends ImageFallbackCommonProps {}

@@ -426,8 +426,7 @@ describe("TextField", () => {
 		expect(input).not.toHaveAttribute("aria-multiline");
 	});
 
-	// Skipped: requestSubmit is not implemented
-	it.skip("form is submitted when 'submitOnEnter' is true and user presses the enter key", async () => {
+	it("form is submitted when 'submitOnEnter' is true and user presses the enter key", async () => {
 		const onSubmit = vi.fn();
 		const { getByRole } = render(() => (
 			<form onSubmit={onSubmit}>

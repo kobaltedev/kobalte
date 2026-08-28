@@ -1,4 +1,3 @@
-import { focusWithoutScrolling, OverrideComponentProps } from "@kobalte/utils";
 import type { InteractOutsideEvent } from "@solid-primitives/interaction";
 import type { ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
@@ -7,10 +6,10 @@ import {
 	type MenuContentCommonProps,
 	type MenuContentOptions,
 	type MenuContentRenderProps,
-} from "../menu";
-import { useMenuContext } from "../menu/menu-context";
-import { useMenuRootContext } from "../menu/menu-root-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+} from "../menu/index.ts";
+import { useMenuContext } from "../menu/menu-context.tsx";
+import { useMenuRootContext } from "../menu/menu-root-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
 export interface DropdownMenuContentOptions extends MenuContentOptions {}
 
@@ -44,7 +43,7 @@ export function DropdownMenuContent<T extends ValidComponent = "div">(
 		props.onCloseAutoFocus?.(e);
 
 		if (!hasInteractedOutside) {
-			focusWithoutScrolling(context.triggerRef());
+			context.triggerRef()?.focus({ preventScroll: true });
 		}
 
 		hasInteractedOutside = false;

@@ -1,41 +1,40 @@
-import {
-	callHandler,
-	createGenerateId,
-	EventKey,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
+	type Ref,
 } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { useLocale } from "../i18n";
+import { useFormControlContext } from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type CollectionItemWithRef, createRegisterId } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { useRatingContext } from "./rating-context";
+} from "../polymorphic/index.tsx";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import {
+	type CollectionItemWithRef,
+	createRegisterId,
+} from "../primitives/index.ts";
+import { useRatingContext } from "./rating-context.tsx";
 import {
 	RatingItemContext,
 	type RatingItemContextValue,
 	type RatingItemDataSet,
-} from "./rating-item-context";
-import { getEventPoint, getRelativePoint } from "./utils";
+} from "./rating-item-context.tsx";
+import { getEventPoint, getRelativePoint } from "./utils.ts";
 
 export interface RatingItemOptions {}
 
 export interface RatingItemCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	"aria-label"?: string;
@@ -62,14 +61,16 @@ export type RatingItemProps<
 export function RatingItem<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, RatingItemProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const formControlContext = useFormControlContext();
 	const RatingContext = useRatingContext();
 
 	const defaultId = `${formControlContext.generateId("item")}-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},
@@ -88,7 +89,7 @@ export function RatingItem<T extends ValidComponent = "div">(
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
-			ref: () => ref,
+			ref,
 			disabled: formControlContext.isDisabled()!,
 			key: others.id,
 			textValue: "",
@@ -134,15 +135,15 @@ export function RatingItem<T extends ValidComponent = "div">(
 	);
 
 	const index = () =>
-		ref ? RatingContext.items().findIndex((v) => v.ref() === ref) : -1;
+		ref() ? RatingContext.items().findIndex((v) => v.ref() === ref()) : -1;
 
 	// Always read items() so the memo re-runs when the collection registers.
 	// onSettled fired before createDomCollectionItem effects flushed in Solid 2.0,
 	// leaving index() === -1 and value === 0 for every item — all stars highlighted.
 	const value = createMemo((): number | undefined => {
 		const items = RatingContext.items();
-		if (!ref) return undefined;
-		const i = items.findIndex((v) => v.ref() === ref);
+		if (!ref()) return undefined;
+		const i = items.findIndex((v) => v.ref() === ref());
 		if (i === -1) return undefined;
 		return direction() === "ltr" ? i + 1 : items.length - i;
 	});
@@ -216,8 +217,8 @@ export function RatingItem<T extends ValidComponent = "div">(
 		callHandler(e, mergedProps.onKeyDown);
 
 		switch (e.key) {
-			case EventKey.ArrowLeft:
-			case EventKey.ArrowUp:
+			case "ArrowLeft":
+			case "ArrowUp":
 				e.preventDefault();
 				if (isLTR()) {
 					setPrevValue();
@@ -225,8 +226,8 @@ export function RatingItem<T extends ValidComponent = "div">(
 					setNextValue();
 				}
 				break;
-			case EventKey.ArrowRight:
-			case EventKey.ArrowDown:
+			case "ArrowRight":
+			case "ArrowDown":
 				e.preventDefault();
 				if (isLTR()) {
 					setNextValue();
@@ -234,15 +235,15 @@ export function RatingItem<T extends ValidComponent = "div">(
 					setPrevValue();
 				}
 				break;
-			case EventKey.Space:
+			case " ":
 				e.preventDefault();
 				RatingContext.setValue(newValue()!);
 				break;
-			case EventKey.Home:
+			case "Home":
 				e.preventDefault();
 				RatingContext.setValue(1);
 				break;
-			case EventKey.End:
+			case "End":
 				e.preventDefault();
 				RatingContext.setValue(RatingContext.items().length);
 				break;
@@ -259,7 +260,7 @@ export function RatingItem<T extends ValidComponent = "div">(
 	const context: RatingItemContextValue = {
 		state: { highlighted, half },
 		dataset,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		itemId: () => others.id,
 		registerLabel: createRegisterId(setLabelId),
 		registerDescription: createRegisterId(setDescriptionId),
@@ -269,7 +270,7 @@ export function RatingItem<T extends ValidComponent = "div">(
 		<RatingItemContext value={context}>
 			<Polymorphic<RatingItemRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				role="radio"
 				tabindex={tabIndex()}
 				aria-checked={equal() ? "true" : "false"}

@@ -73,35 +73,35 @@
 	user-select: none;
 }
 
-[data-kb-theme="dark"] .radio-group__label {
+[data-theme*="dark"] .radio-group__label {
 	color: hsl(240 5% 84%);
 }
 
-[data-kb-theme="dark"] .radio-group__description {
+[data-theme*="dark"] .radio-group__description {
 	color: hsl(240 5% 65%);
 }
 
-[data-kb-theme="dark"] .radio__control {
+[data-theme*="dark"] .radio__control {
 	border-color: hsl(240 5% 34%);
 	background-color: hsl(240 5% 26%);
 }
 
-[data-kb-theme="dark"] .radio__control[data-checked] {
+[data-theme*="dark"] .radio__control[data-checked] {
 	border-color: hsl(200 98% 39%);
 	background-color: hsl(200 98% 39%);
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .radio__control[data-checked][data-invalid] {
+[data-theme*="dark"] .radio__control[data-checked][data-invalid] {
 	border-color: hsl(0 72% 51%);
 	background-color: hsl(0 72% 51%);
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .radio__indicator {
+[data-theme*="dark"] .radio__indicator {
 	background-color: hsl(240 4% 16%);
 }
 
-[data-kb-theme="dark"] .radio__label {
+[data-theme*="dark"] .radio__label {
 	color: hsl(240 5% 84%);
 }

@@ -6,23 +6,23 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import {
-	callHandler,
-	composeEventHandlers,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { callHandler, composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
-
-import * as Collapsible from "../collapsible";
-import { useCollapsibleContext } from "../collapsible/collapsible-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { createSelectableItem } from "../selection";
-import { useAccordionContext } from "./accordion-context";
-import { useAccordionItemContext } from "./accordion-item-context";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+} from "solid-js";
+import { useCollapsibleContext } from "../collapsible/collapsible-context.tsx";
+import * as Collapsible from "../collapsible/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import { createSelectableItem } from "../selection/index.ts";
+import { useAccordionContext } from "./accordion-context.tsx";
+import { useAccordionItemContext } from "./accordion-item-context.tsx";
 
 export interface AccordionTriggerOptions {}
 
@@ -54,7 +54,9 @@ export type AccordionTriggerProps<
 export function AccordionTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, AccordionTriggerProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const accordionContext = useAccordionContext();
 	const itemContext = useAccordionItemContext();
@@ -62,10 +64,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 
 	const defaultId = itemContext.generateId("trigger");
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as AccordionTriggerProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as AccordionTriggerProps);
 
 	const others = omit(
 		mergedProps,
@@ -80,7 +79,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
-			ref: () => ref,
+			ref,
 			type: "item",
 			key: itemContext.value(),
 			textValue: "", // not applicable here
@@ -95,7 +94,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 			disabled: () => collapsibleContext.disabled(),
 			shouldSelectOnPressUp: true,
 		},
-		() => ref,
+		ref,
 	);
 
 	const onKeyDown: JSX.EventHandlerUnion<Element, KeyboardEvent> = (e) => {
@@ -122,7 +121,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+			ref={[setRef, mergedProps.ref]}
 			data-key={selectableItem.dataKey()}
 			onPointerDown={composeEventHandlers([
 				mergedProps.onPointerDown,

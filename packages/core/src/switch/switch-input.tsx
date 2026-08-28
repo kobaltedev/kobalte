@@ -7,28 +7,22 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/toggle/src/useToggle.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-	OverrideComponentProps,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import type { JSX, ValidComponent } from "@solidjs/web";
+import { merge, omit, type Ref } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type SwitchDataSet, useSwitchContext } from "./switch-context";
+} from "../polymorphic/index.tsx";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context.tsx";
 
 export interface SwitchInputOptions {}
 
@@ -36,7 +30,7 @@ export interface SwitchInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style?: JSX.CSSProperties | string;
 	onChange: JSX.EventHandlerUnion<T, Event>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -77,7 +71,7 @@ export function SwitchInput<T extends ValidComponent = "input">(
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ id: context.generateId("input") },
 		props as SwitchInputProps,
 	);
@@ -134,7 +128,7 @@ export function SwitchInput<T extends ValidComponent = "input">(
 	return (
 		<Polymorphic<SwitchInputRenderProps>
 			as="input"
-			ref={mergeRefs(context.setInputRef, mergedProps.ref)}
+			ref={[context.setInputRef, mergedProps.ref]}
 			type="checkbox"
 			role="switch"
 			id={fieldProps.id()}
