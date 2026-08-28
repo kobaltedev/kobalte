@@ -1,6 +1,5 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, merge, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -32,7 +31,7 @@ export function StatisticLabel<T extends ValidComponent = "span">(
 ) {
 	const context = useStatisticContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("label"),
 		},

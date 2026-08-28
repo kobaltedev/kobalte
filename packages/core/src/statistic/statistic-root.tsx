@@ -1,6 +1,6 @@
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { access } from "@solid-primitives/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, merge, omit } from "solid-js";
 
 import {
 	type ElementOf,
@@ -43,7 +43,7 @@ export function StatisticRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `statistic-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},
@@ -61,7 +61,7 @@ export function StatisticRoot<T extends ValidComponent = "div">(
 	const others = omit(mergedProps, "id");
 
 	const context: StatisticContextValue = {
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		registerLabelId: createRegisterId(setLabelId),
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};

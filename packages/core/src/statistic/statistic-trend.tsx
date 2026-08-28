@@ -1,6 +1,6 @@
-import { mergeDefaultProps, visuallyHiddenStyles } from "@kobalte/utils";
+import { visuallyHiddenStyles } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit, type ParentProps } from "solid-js";
+import { merge, omit, type ParentProps } from "solid-js";
 
 import { createNumberFormatter } from "../i18n";
 import {
@@ -57,7 +57,7 @@ export type StatisticTrendProps<
 export function StatisticTrend<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, StatisticTrendProps<T>>,
 ) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			translations: STATISTIC_INTL_TRANSLATIONS,
 		},
