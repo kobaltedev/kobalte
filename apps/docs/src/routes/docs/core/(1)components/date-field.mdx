@@ -1,4 +1,3 @@
-import { Kbd, Preview, TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	DefaultValueExample,
@@ -60,91 +59,21 @@ The date field consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { DateField } from "@kobalte/core/date-field";
+<BasicExample />
 
-    function App() {
-      return (
-        <DateField>
-          <DateField.Label>Event date</DateField.Label>
-          <DateField.Input>
-            {segment => <DateField.Segment segment={segment()} />}
-          </DateField.Input>
-        </DateField>
-      );
-    }
-    ```
+---
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .date-field {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+```tsx title="index.tsx" tab file="../../../../examples/date-field.tsx#L5-L21"
 
-    .date-field__label {
-      color: hsl(240 6% 10%);
-      font-size: 14px;
-      font-weight: 500;
-      user-select: none;
-    }
+```
 
-    .date-field__field {
-      display: flex;
-      padding: 4px 8px;
-      border-radius: 6px;
-      width: 150px;
-      white-space: nowrap;
-      background-color: #fff;
-      border: 1px solid hsl(240 6% 90%);
-      color: hsl(240 4% 16%);
-      font-size: 14px;
-    }
+```css title="style.css" tab file="../../../../examples/date-field.module.css"
 
-    .date-field__field:focus-within {
-      outline: 2px solid hsl(200 98% 39%);
-      outline-offset: -1px;
-    }
+```
 
-    .date-field__segment {
-      padding: 0 2px;
-      font-variant-numeric: tabular-nums;
-      text-align: end;
-    }
-
-    .date-field__segment[data-type="literal"] {
-      padding: 0;
-    }
-
-    .date-field__segment[data-placeholder] {
-      color: hsl(240 4% 46%);
-      font-style: italic;
-    }
-
-    .date-field__segment:focus {
-      color: #fff;
-      background: hsl(200 98% 39%);
-      outline: none;
-      border-radius: 4px;
-    }
-    ```
-
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end --> */}
-</TabsSnippets>
+:::
 
 ## Usage
 
@@ -154,9 +83,11 @@ A DateField displays a placeholder by default. An initial, uncontrolled value ca
 
 Date values are native JS `Date` objects.
 
-<Preview>
-	<DefaultValueExample />
-</Preview>
+:::preview
+
+<DefaultValueExample />
+
+---
 
 ```tsx {0}
 <DateField defaultValue={new Date(2024, 0, 15)}>
@@ -164,13 +95,17 @@ Date values are native JS `Date` objects.
 </DateField>
 ```
 
+:::
+
 ### Controlled value
 
 The `value` prop can be used to make the value controlled. The `onChange` event is fired when the date value changes.
 
-<Preview>
-	<ControlledValueExample />
-</Preview>
+:::preview
+
+<ControlledValueExample />
+
+---
 
 ```tsx {4,13}
 import { createSignal, Show } from "solid-js";
@@ -194,13 +129,17 @@ function ControlledValueExample() {
 }
 ```
 
+:::
+
 ### Granularity
 
 The `granularity` prop allows you to control the smallest unit that is displayed by a DateField. By default, dates are displayed with `"day"` granularity (no time). More granular values can be displayed by setting `granularity` to `"hour"`, `"minute"`, or `"second"`.
 
-<Preview>
-	<GranularityExample />
-</Preview>
+:::preview
+
+<GranularityExample />
+
+---
 
 ```tsx {0}
 <DateField granularity="second">
@@ -208,13 +147,17 @@ The `granularity` prop allows you to control the smallest unit that is displayed
 </DateField>
 ```
 
+:::
+
 ### Minimum and maximum values
 
 The `minValue` and `maxValue` props can be used to perform builtin validation. This marks the date field as invalid using ARIA if the user enters a date outside the allowed range.
 
-<Preview>
-	<MinMaxExample />
-</Preview>
+:::preview
+
+<MinMaxExample />
+
+---
 
 ```tsx {0}
 <DateField
@@ -227,13 +170,17 @@ The `minValue` and `maxValue` props can be used to perform builtin validation. T
 </DateField>
 ```
 
+:::
+
 ### Placeholder value
 
 A `placeholderValue` can be provided to influence the format of the placeholder shown when no value is selected, and acts as the starting point for interactions.
 
-<Preview>
-	<PlaceholderValueExample />
-</Preview>
+:::preview
+
+<PlaceholderValueExample />
+
+---
 
 ```tsx {0}
 <DateField placeholderValue={new Date(2030, 0, 1)}>
@@ -241,13 +188,17 @@ A `placeholderValue` can be provided to influence the format of the placeholder 
 </DateField>
 ```
 
+:::
+
 ### Hour cycle
 
 By default, DateField displays times in either 12 or 24-hour format depending on the user's locale. This can be overridden using the `hourCycle` prop.
 
-<Preview>
-	<HourCycleExample />
-</Preview>
+:::preview
+
+<HourCycleExample />
+
+---
 
 ```tsx {0}
 <DateField granularity="minute" hourCycle={12}>
@@ -255,13 +206,17 @@ By default, DateField displays times in either 12 or 24-hour format depending on
 </DateField>
 ```
 
+:::
+
 ### Description
 
 The `DateField.Description` component can be used to associate additional help text with a date field.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+
+<DescriptionExample />
+
+---
 
 ```tsx {4}
 <DateField>
@@ -271,15 +226,19 @@ The `DateField.Description` component can be used to associate additional help t
 </DateField>
 ```
 
+:::
+
 ### Error message
 
 The `DateField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the date field as invalid for assistive technologies.
 
 By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+
+<ErrorMessageExample />
+
+---
 
 ```tsx {10,14}
 import { createSignal } from "solid-js";
@@ -301,13 +260,17 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### HTML forms
 
 Add a `name` prop to `DateField` and render `DateField.HiddenInput` to include the value in form submissions. The hidden input's value is the date serialized as a local ISO 8601-style string (`YYYY-MM-DD`, `YYYY-MM-DDTHH:mm`, or `YYYY-MM-DDTHH:mm:ss`, depending on `granularity`) — it deliberately omits a `Z`/UTC offset, since there's no explicit time zone to make that claim about.
 
-<Preview>
-	<HTMLFormExample />
-</Preview>
+:::preview
+
+<HTMLFormExample />
+
+---
 
 ```tsx {0,5}
 <DateField name="date">
@@ -315,6 +278,8 @@ Add a `name` prop to `DateField` and render `DateField.HiddenInput` to include t
 	<DateField.HiddenInput />
 </DateField>
 ```
+
+:::
 
 ## API Reference
 
@@ -390,14 +355,14 @@ Add a `name` prop to `DateField` and render `DateField.HiddenInput` to include t
 
 | Key                   | Description                                                                                                                                                                                                                                                                          |
 | :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <Kbd>Backspace</Kbd>  | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                        |
-| <Kbd>Delete</Kbd>     | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                        |
-| <Kbd>ArrowRight</Kbd> | Moves focus to the next segment.                                                                                                                                                                                                                                                     |
-| <Kbd>ArrowLeft</Kbd>  | Moves focus to the previous segment.                                                                                                                                                                                                                                                 |
-| <Kbd>ArrowUp</Kbd>    | Increments the value of the current segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                              |
-| <Kbd>ArrowDown</Kbd>  | Decrements the value of the current segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                              |
-| <Kbd>PageUp</Kbd>     | Increments the value of the current segment by a larger amount, rounding it to the nearest increment. The amount to increment by depends on the segment, for example 5 years, 2 months, 7 days, or 15 minutes. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
-| <Kbd>PageDown</Kbd>   | Decrements the value of the current segment by a larger amount, rounding it to the nearest decrement. The amount to decrement by depends on the segment, for example 5 years, 2 months, 7 days, or 15 minutes. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
-| <Kbd>Home</Kbd>       | Sets the current segment to its minimum value.                                                                                                                                                                                                                                       |
-| <Kbd>End</Kbd>        | Sets the current segment to its maximum value.                                                                                                                                                                                                                                       |
-| <Kbd>0-9</Kbd>        | Numeric segments (year, month, day, hour, minute, second) are typed directly. Focus automatically advances to the next segment once the segment is filled. The dayPeriod segment supports typeahead of its formatted name (e.g. "A" for AM).                                        |
+| <kbd>Backspace</kbd>  | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                        |
+| <kbd>Delete</kbd>     | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                        |
+| <kbd>ArrowRight</kbd> | Moves focus to the next segment.                                                                                                                                                                                                                                                     |
+| <kbd>ArrowLeft</kbd>  | Moves focus to the previous segment.                                                                                                                                                                                                                                                 |
+| <kbd>ArrowUp</kbd>    | Increments the value of the current segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                              |
+| <kbd>ArrowDown</kbd>  | Decrements the value of the current segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                              |
+| <kbd>PageUp</kbd>     | Increments the value of the current segment by a larger amount, rounding it to the nearest increment. The amount to increment by depends on the segment, for example 5 years, 2 months, 7 days, or 15 minutes. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
+| <kbd>PageDown</kbd>   | Decrements the value of the current segment by a larger amount, rounding it to the nearest decrement. The amount to decrement by depends on the segment, for example 5 years, 2 months, 7 days, or 15 minutes. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
+| <kbd>Home</kbd>       | Sets the current segment to its minimum value.                                                                                                                                                                                                                                       |
+| <kbd>End</kbd>        | Sets the current segment to its maximum value.                                                                                                                                                                                                                                       |
+| <kbd>0-9</kbd>        | Numeric segments (year, month, day, hour, minute, second) are typed directly. Focus automatically advances to the next segment once the segment is filled. The dayPeriod segment supports typeahead of its formatted name (e.g. "A" for AM).                                        |

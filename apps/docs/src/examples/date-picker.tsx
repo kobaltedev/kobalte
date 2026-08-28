@@ -3,9 +3,12 @@ import { createSignal, Show } from "solid-js";
 import calendarStyle from "./calendar.module.css";
 import style from "./date-picker.module.css";
 
-function DatePickerContent() {
+export function BasicExample() {
 	return (
-		<>
+		<DatePicker class={style["date-picker"]} selectionMode="single">
+			<DatePicker.Label class={style["date-picker__label"]}>
+				Event date
+			</DatePicker.Label>
 			<DatePicker.Trigger class={style["date-picker__trigger"]}>
 				<DatePicker.Value class={style["date-picker__value"]}>
 					Pick a date
@@ -77,17 +80,6 @@ function DatePickerContent() {
 					</DatePicker.Calendar>
 				</DatePicker.Content>
 			</DatePicker.Portal>
-		</>
-	);
-}
-
-export function BasicExample() {
-	return (
-		<DatePicker class={style["date-picker"]} selectionMode="single">
-			<DatePicker.Label class={style["date-picker__label"]}>
-				Event date
-			</DatePicker.Label>
-			<DatePickerContent />
 		</DatePicker>
 	);
 }
@@ -98,7 +90,77 @@ export function MultipleExample() {
 			<DatePicker.Label class={style["date-picker__label"]}>
 				Event dates
 			</DatePicker.Label>
-			<DatePickerContent />
+			<DatePicker.Trigger class={style["date-picker__trigger"]}>
+				<DatePicker.Value class={style["date-picker__value"]}>
+					Pick a date
+				</DatePicker.Value>
+			</DatePicker.Trigger>
+			<DatePicker.Portal>
+				<DatePicker.Content class={style["date-picker__content"]}>
+					<DatePicker.Arrow />
+					<DatePicker.Calendar>
+						<DatePicker.CalendarHeader class={calendarStyle.calendar__header}>
+							<DatePicker.CalendarPrevTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{"<"}
+							</DatePicker.CalendarPrevTrigger>
+							<DatePicker.CalendarHeading
+								class={calendarStyle.calendar__heading}
+							/>
+							<DatePicker.CalendarNextTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{">"}
+							</DatePicker.CalendarNextTrigger>
+						</DatePicker.CalendarHeader>
+						<DatePicker.CalendarBody>
+							<DatePicker.CalendarGrid class={calendarStyle.calendar__grid}>
+								<DatePicker.CalendarGridHeader>
+									<DatePicker.CalendarGridHeaderRow>
+										{(weekDay) => (
+											<DatePicker.CalendarGridHeaderCell
+												class={calendarStyle["calendar__grid-header-cell"]}
+											>
+												{weekDay()}
+											</DatePicker.CalendarGridHeaderCell>
+										)}
+									</DatePicker.CalendarGridHeaderRow>
+								</DatePicker.CalendarGridHeader>
+								<DatePicker.CalendarGridBody>
+									{(weekIndex) => (
+										<DatePicker.CalendarGridBodyRow weekIndex={weekIndex()}>
+											{(date) => (
+												<Show
+													when={date()}
+													fallback={
+														<td
+															class={calendarStyle["calendar__grid-body-cell"]}
+														/>
+													}
+												>
+													<DatePicker.CalendarGridBodyCell
+														date={date()!}
+														class={calendarStyle["calendar__grid-body-cell"]}
+													>
+														<DatePicker.CalendarGridBodyCellTrigger
+															class={
+																calendarStyle[
+																	"calendar__grid-body-cell-trigger"
+																]
+															}
+														/>
+													</DatePicker.CalendarGridBodyCell>
+												</Show>
+											)}
+										</DatePicker.CalendarGridBodyRow>
+									)}
+								</DatePicker.CalendarGridBody>
+							</DatePicker.CalendarGrid>
+						</DatePicker.CalendarBody>
+					</DatePicker.Calendar>
+				</DatePicker.Content>
+			</DatePicker.Portal>
 		</DatePicker>
 	);
 }
@@ -109,7 +171,77 @@ export function RangeExample() {
 			<DatePicker.Label class={style["date-picker__label"]}>
 				Trip dates
 			</DatePicker.Label>
-			<DatePickerContent />
+			<DatePicker.Trigger class={style["date-picker__trigger"]}>
+				<DatePicker.Value class={style["date-picker__value"]}>
+					Pick a date
+				</DatePicker.Value>
+			</DatePicker.Trigger>
+			<DatePicker.Portal>
+				<DatePicker.Content class={style["date-picker__content"]}>
+					<DatePicker.Arrow />
+					<DatePicker.Calendar>
+						<DatePicker.CalendarHeader class={calendarStyle.calendar__header}>
+							<DatePicker.CalendarPrevTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{"<"}
+							</DatePicker.CalendarPrevTrigger>
+							<DatePicker.CalendarHeading
+								class={calendarStyle.calendar__heading}
+							/>
+							<DatePicker.CalendarNextTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{">"}
+							</DatePicker.CalendarNextTrigger>
+						</DatePicker.CalendarHeader>
+						<DatePicker.CalendarBody>
+							<DatePicker.CalendarGrid class={calendarStyle.calendar__grid}>
+								<DatePicker.CalendarGridHeader>
+									<DatePicker.CalendarGridHeaderRow>
+										{(weekDay) => (
+											<DatePicker.CalendarGridHeaderCell
+												class={calendarStyle["calendar__grid-header-cell"]}
+											>
+												{weekDay()}
+											</DatePicker.CalendarGridHeaderCell>
+										)}
+									</DatePicker.CalendarGridHeaderRow>
+								</DatePicker.CalendarGridHeader>
+								<DatePicker.CalendarGridBody>
+									{(weekIndex) => (
+										<DatePicker.CalendarGridBodyRow weekIndex={weekIndex()}>
+											{(date) => (
+												<Show
+													when={date()}
+													fallback={
+														<td
+															class={calendarStyle["calendar__grid-body-cell"]}
+														/>
+													}
+												>
+													<DatePicker.CalendarGridBodyCell
+														date={date()!}
+														class={calendarStyle["calendar__grid-body-cell"]}
+													>
+														<DatePicker.CalendarGridBodyCellTrigger
+															class={
+																calendarStyle[
+																	"calendar__grid-body-cell-trigger"
+																]
+															}
+														/>
+													</DatePicker.CalendarGridBodyCell>
+												</Show>
+											)}
+										</DatePicker.CalendarGridBodyRow>
+									)}
+								</DatePicker.CalendarGridBody>
+							</DatePicker.CalendarGrid>
+						</DatePicker.CalendarBody>
+					</DatePicker.Calendar>
+				</DatePicker.Content>
+			</DatePicker.Portal>
 		</DatePicker>
 	);
 }
@@ -126,7 +258,77 @@ export function MinMaxExample() {
 			<DatePicker.Label class={style["date-picker__label"]}>
 				Date
 			</DatePicker.Label>
-			<DatePickerContent />
+			<DatePicker.Trigger class={style["date-picker__trigger"]}>
+				<DatePicker.Value class={style["date-picker__value"]}>
+					Pick a date
+				</DatePicker.Value>
+			</DatePicker.Trigger>
+			<DatePicker.Portal>
+				<DatePicker.Content class={style["date-picker__content"]}>
+					<DatePicker.Arrow />
+					<DatePicker.Calendar>
+						<DatePicker.CalendarHeader class={calendarStyle.calendar__header}>
+							<DatePicker.CalendarPrevTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{"<"}
+							</DatePicker.CalendarPrevTrigger>
+							<DatePicker.CalendarHeading
+								class={calendarStyle.calendar__heading}
+							/>
+							<DatePicker.CalendarNextTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{">"}
+							</DatePicker.CalendarNextTrigger>
+						</DatePicker.CalendarHeader>
+						<DatePicker.CalendarBody>
+							<DatePicker.CalendarGrid class={calendarStyle.calendar__grid}>
+								<DatePicker.CalendarGridHeader>
+									<DatePicker.CalendarGridHeaderRow>
+										{(weekDay) => (
+											<DatePicker.CalendarGridHeaderCell
+												class={calendarStyle["calendar__grid-header-cell"]}
+											>
+												{weekDay()}
+											</DatePicker.CalendarGridHeaderCell>
+										)}
+									</DatePicker.CalendarGridHeaderRow>
+								</DatePicker.CalendarGridHeader>
+								<DatePicker.CalendarGridBody>
+									{(weekIndex) => (
+										<DatePicker.CalendarGridBodyRow weekIndex={weekIndex()}>
+											{(date) => (
+												<Show
+													when={date()}
+													fallback={
+														<td
+															class={calendarStyle["calendar__grid-body-cell"]}
+														/>
+													}
+												>
+													<DatePicker.CalendarGridBodyCell
+														date={date()!}
+														class={calendarStyle["calendar__grid-body-cell"]}
+													>
+														<DatePicker.CalendarGridBodyCellTrigger
+															class={
+																calendarStyle[
+																	"calendar__grid-body-cell-trigger"
+																]
+															}
+														/>
+													</DatePicker.CalendarGridBodyCell>
+												</Show>
+											)}
+										</DatePicker.CalendarGridBodyRow>
+									)}
+								</DatePicker.CalendarGridBody>
+							</DatePicker.CalendarGrid>
+						</DatePicker.CalendarBody>
+					</DatePicker.Calendar>
+				</DatePicker.Content>
+			</DatePicker.Portal>
 			<DatePicker.ErrorMessage class={style["date-picker__error-message"]}>
 				Select a date in 2024.
 			</DatePicker.ErrorMessage>
@@ -140,7 +342,77 @@ export function DisabledExample() {
 			<DatePicker.Label class={style["date-picker__label"]}>
 				Date
 			</DatePicker.Label>
-			<DatePickerContent />
+			<DatePicker.Trigger class={style["date-picker__trigger"]}>
+				<DatePicker.Value class={style["date-picker__value"]}>
+					Pick a date
+				</DatePicker.Value>
+			</DatePicker.Trigger>
+			<DatePicker.Portal>
+				<DatePicker.Content class={style["date-picker__content"]}>
+					<DatePicker.Arrow />
+					<DatePicker.Calendar>
+						<DatePicker.CalendarHeader class={calendarStyle.calendar__header}>
+							<DatePicker.CalendarPrevTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{"<"}
+							</DatePicker.CalendarPrevTrigger>
+							<DatePicker.CalendarHeading
+								class={calendarStyle.calendar__heading}
+							/>
+							<DatePicker.CalendarNextTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{">"}
+							</DatePicker.CalendarNextTrigger>
+						</DatePicker.CalendarHeader>
+						<DatePicker.CalendarBody>
+							<DatePicker.CalendarGrid class={calendarStyle.calendar__grid}>
+								<DatePicker.CalendarGridHeader>
+									<DatePicker.CalendarGridHeaderRow>
+										{(weekDay) => (
+											<DatePicker.CalendarGridHeaderCell
+												class={calendarStyle["calendar__grid-header-cell"]}
+											>
+												{weekDay()}
+											</DatePicker.CalendarGridHeaderCell>
+										)}
+									</DatePicker.CalendarGridHeaderRow>
+								</DatePicker.CalendarGridHeader>
+								<DatePicker.CalendarGridBody>
+									{(weekIndex) => (
+										<DatePicker.CalendarGridBodyRow weekIndex={weekIndex()}>
+											{(date) => (
+												<Show
+													when={date()}
+													fallback={
+														<td
+															class={calendarStyle["calendar__grid-body-cell"]}
+														/>
+													}
+												>
+													<DatePicker.CalendarGridBodyCell
+														date={date()!}
+														class={calendarStyle["calendar__grid-body-cell"]}
+													>
+														<DatePicker.CalendarGridBodyCellTrigger
+															class={
+																calendarStyle[
+																	"calendar__grid-body-cell-trigger"
+																]
+															}
+														/>
+													</DatePicker.CalendarGridBodyCell>
+												</Show>
+											)}
+										</DatePicker.CalendarGridBodyRow>
+									)}
+								</DatePicker.CalendarGridBody>
+							</DatePicker.CalendarGrid>
+						</DatePicker.CalendarBody>
+					</DatePicker.Calendar>
+				</DatePicker.Content>
+			</DatePicker.Portal>
 		</DatePicker>
 	);
 }
@@ -151,7 +423,77 @@ export function DescriptionExample() {
 			<DatePicker.Label class={style["date-picker__label"]}>
 				Date
 			</DatePicker.Label>
-			<DatePickerContent />
+			<DatePicker.Trigger class={style["date-picker__trigger"]}>
+				<DatePicker.Value class={style["date-picker__value"]}>
+					Pick a date
+				</DatePicker.Value>
+			</DatePicker.Trigger>
+			<DatePicker.Portal>
+				<DatePicker.Content class={style["date-picker__content"]}>
+					<DatePicker.Arrow />
+					<DatePicker.Calendar>
+						<DatePicker.CalendarHeader class={calendarStyle.calendar__header}>
+							<DatePicker.CalendarPrevTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{"<"}
+							</DatePicker.CalendarPrevTrigger>
+							<DatePicker.CalendarHeading
+								class={calendarStyle.calendar__heading}
+							/>
+							<DatePicker.CalendarNextTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{">"}
+							</DatePicker.CalendarNextTrigger>
+						</DatePicker.CalendarHeader>
+						<DatePicker.CalendarBody>
+							<DatePicker.CalendarGrid class={calendarStyle.calendar__grid}>
+								<DatePicker.CalendarGridHeader>
+									<DatePicker.CalendarGridHeaderRow>
+										{(weekDay) => (
+											<DatePicker.CalendarGridHeaderCell
+												class={calendarStyle["calendar__grid-header-cell"]}
+											>
+												{weekDay()}
+											</DatePicker.CalendarGridHeaderCell>
+										)}
+									</DatePicker.CalendarGridHeaderRow>
+								</DatePicker.CalendarGridHeader>
+								<DatePicker.CalendarGridBody>
+									{(weekIndex) => (
+										<DatePicker.CalendarGridBodyRow weekIndex={weekIndex()}>
+											{(date) => (
+												<Show
+													when={date()}
+													fallback={
+														<td
+															class={calendarStyle["calendar__grid-body-cell"]}
+														/>
+													}
+												>
+													<DatePicker.CalendarGridBodyCell
+														date={date()!}
+														class={calendarStyle["calendar__grid-body-cell"]}
+													>
+														<DatePicker.CalendarGridBodyCellTrigger
+															class={
+																calendarStyle[
+																	"calendar__grid-body-cell-trigger"
+																]
+															}
+														/>
+													</DatePicker.CalendarGridBodyCell>
+												</Show>
+											)}
+										</DatePicker.CalendarGridBodyRow>
+									)}
+								</DatePicker.CalendarGridBody>
+							</DatePicker.CalendarGrid>
+						</DatePicker.CalendarBody>
+					</DatePicker.Calendar>
+				</DatePicker.Content>
+			</DatePicker.Portal>
 			<DatePicker.Description class={style["date-picker__description"]}>
 				Select a meeting date.
 			</DatePicker.Description>
@@ -173,7 +515,77 @@ export function ErrorMessageExample() {
 			<DatePicker.Label class={style["date-picker__label"]}>
 				Date
 			</DatePicker.Label>
-			<DatePickerContent />
+			<DatePicker.Trigger class={style["date-picker__trigger"]}>
+				<DatePicker.Value class={style["date-picker__value"]}>
+					Pick a date
+				</DatePicker.Value>
+			</DatePicker.Trigger>
+			<DatePicker.Portal>
+				<DatePicker.Content class={style["date-picker__content"]}>
+					<DatePicker.Arrow />
+					<DatePicker.Calendar>
+						<DatePicker.CalendarHeader class={calendarStyle.calendar__header}>
+							<DatePicker.CalendarPrevTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{"<"}
+							</DatePicker.CalendarPrevTrigger>
+							<DatePicker.CalendarHeading
+								class={calendarStyle.calendar__heading}
+							/>
+							<DatePicker.CalendarNextTrigger
+								class={calendarStyle.calendar__trigger}
+							>
+								{">"}
+							</DatePicker.CalendarNextTrigger>
+						</DatePicker.CalendarHeader>
+						<DatePicker.CalendarBody>
+							<DatePicker.CalendarGrid class={calendarStyle.calendar__grid}>
+								<DatePicker.CalendarGridHeader>
+									<DatePicker.CalendarGridHeaderRow>
+										{(weekDay) => (
+											<DatePicker.CalendarGridHeaderCell
+												class={calendarStyle["calendar__grid-header-cell"]}
+											>
+												{weekDay()}
+											</DatePicker.CalendarGridHeaderCell>
+										)}
+									</DatePicker.CalendarGridHeaderRow>
+								</DatePicker.CalendarGridHeader>
+								<DatePicker.CalendarGridBody>
+									{(weekIndex) => (
+										<DatePicker.CalendarGridBodyRow weekIndex={weekIndex()}>
+											{(date) => (
+												<Show
+													when={date()}
+													fallback={
+														<td
+															class={calendarStyle["calendar__grid-body-cell"]}
+														/>
+													}
+												>
+													<DatePicker.CalendarGridBodyCell
+														date={date()!}
+														class={calendarStyle["calendar__grid-body-cell"]}
+													>
+														<DatePicker.CalendarGridBodyCellTrigger
+															class={
+																calendarStyle[
+																	"calendar__grid-body-cell-trigger"
+																]
+															}
+														/>
+													</DatePicker.CalendarGridBodyCell>
+												</Show>
+											)}
+										</DatePicker.CalendarGridBodyRow>
+									)}
+								</DatePicker.CalendarGridBody>
+							</DatePicker.CalendarGrid>
+						</DatePicker.CalendarBody>
+					</DatePicker.Calendar>
+				</DatePicker.Content>
+			</DatePicker.Portal>
 			<DatePicker.ErrorMessage class={style["date-picker__error-message"]}>
 				Please select a date.
 			</DatePicker.ErrorMessage>

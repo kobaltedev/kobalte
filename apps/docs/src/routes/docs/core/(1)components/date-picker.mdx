@@ -1,4 +1,3 @@
-import { Kbd, Preview, TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	MultipleExample,
@@ -71,115 +70,25 @@ The date picker consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { DatePicker } from "@kobalte/core/date-picker";
-    import { Show } from "solid-js";
-    import "./style.css";
+<BasicExample />
 
-    function App() {
-      return (
-        <DatePicker class="date-picker" selectionMode="single">
-          <DatePicker.Label class="date-picker__label">Event date</DatePicker.Label>
-          <DatePicker.Trigger class="date-picker__trigger">
-            <DatePicker.Value class="date-picker__value">Pick a date</DatePicker.Value>
-          </DatePicker.Trigger>
-          <DatePicker.Portal>
-            <DatePicker.Content class="date-picker__content">
-              <DatePicker.Arrow />
-              <DatePicker.Calendar>
-                <DatePicker.CalendarHeader class="calendar__header">
-                  <DatePicker.CalendarPrevTrigger class="calendar__trigger">
-                    {"<"}
-                  </DatePicker.CalendarPrevTrigger>
-                  <DatePicker.CalendarHeading class="calendar__heading" />
-                  <DatePicker.CalendarNextTrigger class="calendar__trigger">
-                    {">"}
-                  </DatePicker.CalendarNextTrigger>
-                </DatePicker.CalendarHeader>
-                <DatePicker.CalendarBody>
-                  <DatePicker.CalendarGrid class="calendar__grid">
-                    <DatePicker.CalendarGridHeader>
-                      <DatePicker.CalendarGridHeaderRow>
-                        {weekDay => (
-                          <DatePicker.CalendarGridHeaderCell>
-                            {weekDay()}
-                          </DatePicker.CalendarGridHeaderCell>
-                        )}
-                      </DatePicker.CalendarGridHeaderRow>
-                    </DatePicker.CalendarGridHeader>
-                    <DatePicker.CalendarGridBody>
-                      {weekIndex => (
-                        <DatePicker.CalendarGridBodyRow weekIndex={weekIndex()}>
-                          {date => (
-                            <Show when={date()} fallback={<td />}>
-                              <DatePicker.CalendarGridBodyCell date={date()!}>
-                                <DatePicker.CalendarGridBodyCellTrigger />
-                              </DatePicker.CalendarGridBodyCell>
-                            </Show>
-                          )}
-                        </DatePicker.CalendarGridBodyRow>
-                      )}
-                    </DatePicker.CalendarGridBody>
-                  </DatePicker.CalendarGrid>
-                </DatePicker.CalendarBody>
-              </DatePicker.Calendar>
-            </DatePicker.Content>
-          </DatePicker.Portal>
-        </DatePicker>
-      );
-    }
-    ```
+---
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .date-picker {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+```tsx title="index.tsx" tab file="../../../../examples/date-picker.tsx#L6-L85"
 
-    .date-picker__trigger {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 220px;
-      border-radius: 6px;
-      padding: 0 10px;
-      min-height: 36px;
-      background-color: #fff;
-      border: 1px solid hsl(240 6% 90%);
-      cursor: pointer;
-    }
+```
 
-    .date-picker__value[data-placeholder-shown] {
-      color: hsl(240 4% 46%);
-      font-style: italic;
-    }
+```css title="style.css" tab file="../../../../examples/date-picker.module.css"
 
-    .date-picker__content {
-      background-color: white;
-      border-radius: 6px;
-      border: 1px solid hsl(240 6% 90%);
-      transform-origin: var(--kb-popover-content-transform-origin);
-      padding: 12px;
-    }
-    ```
+```
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end --> */}
-</TabsSnippets>
+```css title="calendar.css" tab file="../../../../examples/calendar.module.css"
+
+```
+
+:::
 
 ## Usage
 
@@ -193,9 +102,11 @@ The `selectionMode` prop controls what kind of value is picked, and the shape of
 
 `DatePicker.Value` formats whichever shape is selected automatically: a single formatted date, a comma-joined list of dates, or `"start – end"` for a range.
 
-<Preview>
-	<MultipleExample />
-</Preview>
+:::preview
+
+<MultipleExample />
+
+---
 
 ```tsx {0}
 <DatePicker selectionMode="multiple">
@@ -204,9 +115,13 @@ The `selectionMode` prop controls what kind of value is picked, and the shape of
 </DatePicker>
 ```
 
-<Preview>
-	<RangeExample />
-</Preview>
+:::
+
+:::preview
+
+<RangeExample />
+
+---
 
 ```tsx {0}
 <DatePicker selectionMode="range">
@@ -214,6 +129,8 @@ The `selectionMode` prop controls what kind of value is picked, and the shape of
 	{/* ...trigger, portal, content, calendar... */}
 </DatePicker>
 ```
+
+:::
 
 By default, the popover closes automatically after a complete selection for `"single"` and `"range"`, but stays open for `"multiple"` so several dates can be picked in a row. Override this with the `closeOnSelect` prop.
 
@@ -249,9 +166,11 @@ function ControlledExample() {
 
 Use the `minValue` and `maxValue` props to restrict the range of selectable dates. Dates outside this range are rendered disabled in the calendar.
 
-<Preview>
-	<MinMaxExample />
-</Preview>
+:::preview
+
+<MinMaxExample />
+
+---
 
 ```tsx {2-3}
 <DatePicker
@@ -263,6 +182,8 @@ Use the `minValue` and `maxValue` props to restrict the range of selectable date
 	...
 </DatePicker>
 ```
+
+:::
 
 ### Unavailable dates
 
@@ -283,9 +204,11 @@ In `"range"` selection mode, `allowsNonContiguousRanges` controls whether a rang
 
 The `DatePicker.Description` component can be used to associate additional help text with a date picker.
 
-<Preview>
-	<DescriptionExample />
-</Preview>
+:::preview
+
+<DescriptionExample />
+
+---
 
 ```tsx {0}
 <DatePicker selectionMode="single">
@@ -295,15 +218,19 @@ The `DatePicker.Description` component can be used to associate additional help 
 </DatePicker>
 ```
 
+:::
+
 ### Error message
 
 The `DatePicker.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the date picker as invalid for assistive technologies.
 
 By default, it will render only when `validationState` is set to `"invalid"`; use the `forceMount` prop to always render it (e.g. for usage with animation libraries).
 
-<Preview>
-	<ErrorMessageExample />
-</Preview>
+:::preview
+
+<ErrorMessageExample />
+
+---
 
 ```tsx {4,9}
 import { createSignal } from "solid-js";
@@ -326,11 +253,15 @@ function ErrorMessageExample() {
 }
 ```
 
+:::
+
 ### Disabled
 
-<Preview>
-	<DisabledExample />
-</Preview>
+:::preview
+
+<DisabledExample />
+
+---
 
 ```tsx {0}
 <DatePicker selectionMode="single" disabled>
@@ -338,6 +269,8 @@ function ErrorMessageExample() {
 	{/* ...trigger, portal, content, calendar... */}
 </DatePicker>
 ```
+
+:::
 
 ### HTML forms
 
@@ -477,7 +410,7 @@ Portals `DatePicker.Content` into the `body` when the date picker is open. Consi
 Consists of [Popover.Content](/docs/core/components/popover). The popper positioner will copy the same `z-index` as `DatePicker.Content`.
 
 | Prop                 | Description                                                                                                                                                                                                          |
-| :------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | onOpenAutoFocus      | `(event: Event) => void` <br/> Event handler called when focus moves into the component after opening. It can be prevented by calling `event.preventDefault`.                                                       |
 | onCloseAutoFocus     | `(event: Event) => void` <br/> Event handler called when focus moves to the trigger after closing. It can be prevented by calling `event.preventDefault`.                                                           |
 | onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
@@ -525,12 +458,12 @@ All `DatePicker.Calendar*` sub-parts (`DatePicker.CalendarHeader`, `DatePicker.C
 
 | Key                                | Description                                                                     |
 | :---------------------------------- | :-------------------------------------------------------------------------------- |
-| <Kbd>Space</Kbd>                    | When focus is on the trigger, opens the date picker's calendar popover.          |
-| <Kbd>Enter</Kbd>                    | When focus is on the trigger, opens the date picker's calendar popover.          |
-| <Kbd>Tab</Kbd>                      | Moves focus to the next focusable element.                                       |
-| <Kbd>Shift</Kbd> + <Kbd>Tab</Kbd>   | Moves focus to the previous focusable element.                                   |
-| <Kbd>Esc</Kbd>                      | Closes the date picker's calendar popover and moves focus back to the trigger.    |
+| <kbd>Space</kbd>                    | When focus is on the trigger, opens the date picker's calendar popover.          |
+| <kbd>Enter</kbd>                    | When focus is on the trigger, opens the date picker's calendar popover.          |
+| <kbd>Tab</kbd>                      | Moves focus to the next focusable element.                                       |
+| <kbd>Shift</kbd> + <kbd>Tab</kbd>   | Moves focus to the previous focusable element.                                   |
+| <kbd>Esc</kbd>                      | Closes the date picker's calendar popover and moves focus back to the trigger.    |
 
-Once open, keyboard navigation inside the calendar grid (arrow keys to move between dates, <Kbd>PageUp</Kbd>/<Kbd>PageDown</Kbd> to change month, <Kbd>Enter</Kbd>/<Kbd>Space</Kbd> to select, etc.) is identical to the standalone [Calendar](/docs/core/components/calendar) component — refer to its Keyboard Interactions section for the full table.
+Once open, keyboard navigation inside the calendar grid (arrow keys to move between dates, <kbd>PageUp</kbd>/<kbd>PageDown</kbd> to change month, <kbd>Enter</kbd>/<kbd>Space</kbd> to select, etc.) is identical to the standalone [Calendar](/docs/core/components/calendar) component — refer to its Keyboard Interactions section for the full table.
 
 > corvu has no dedicated date-picker primitive — its [docs](https://corvu.dev/docs/primitives/calendar/) instead suggest combining `Calendar` with `Popover` directly. `DatePicker` composes Kobalte's own `Calendar` and `Popover` the same way.

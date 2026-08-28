@@ -1,4 +1,3 @@
-import { Kbd, Preview, TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	ControlledExample,
@@ -110,134 +109,21 @@ The calendar consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start --> */}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Calendar } from "@kobalte/core/calendar";
-    import { Show } from "solid-js";
-    import "./style.css";
+<BasicExample />
 
-    function App() {
-      return (
-        <Calendar selectionMode="single" class="calendar">
-          <Calendar.Header class="calendar__header">
-            <Calendar.PrevTrigger class="calendar__trigger">{"<"}</Calendar.PrevTrigger>
-            <Calendar.Heading class="calendar__heading" />
-            <Calendar.NextTrigger class="calendar__trigger">{">"}</Calendar.NextTrigger>
-          </Calendar.Header>
-          <Calendar.Body>
-            <Calendar.Grid class="calendar__grid">
-              <Calendar.GridHeader>
-                <Calendar.GridHeaderRow>
-                  {weekDay => (
-                    <Calendar.GridHeaderCell class="calendar__grid-header-cell">
-                      {weekDay()}
-                    </Calendar.GridHeaderCell>
-                  )}
-                </Calendar.GridHeaderRow>
-              </Calendar.GridHeader>
-              <Calendar.GridBody>
-                {weekIndex => (
-                  <Calendar.GridBodyRow weekIndex={weekIndex()}>
-                    {date => (
-                      <Show when={date()} fallback={<td class="calendar__grid-body-cell" />}>
-                        <Calendar.GridBodyCell date={date()!} class="calendar__grid-body-cell">
-                          <Calendar.GridBodyCellTrigger class="calendar__grid-body-cell-trigger" />
-                        </Calendar.GridBodyCell>
-                      </Show>
-                    )}
-                  </Calendar.GridBodyRow>
-                )}
-              </Calendar.GridBody>
-            </Calendar.Grid>
-          </Calendar.Body>
-        </Calendar>
-      );
-    }
-    ```
+---
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .calendar {
-      display: inline-flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid hsl(240 6% 90%);
-    }
+```tsx title="index.tsx" tab file="../../../../examples/calendar.tsx#L5-L55"
 
-    .calendar__header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+```
 
-    .calendar__trigger {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      border: 1px solid hsl(240 6% 90%);
-    }
+```css title="style.css" tab file="../../../../examples/calendar.module.css"
 
-    .calendar__grid {
-      border-collapse: collapse;
-    }
+```
 
-    .calendar__grid-header-cell {
-      font-size: 12px;
-      color: hsl(240 4% 46%);
-      padding: 4px;
-    }
-
-    .calendar__grid-body-cell-trigger {
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .calendar__grid-body-cell-trigger[data-outside-month] {
-      color: hsl(240 5% 65%);
-    }
-
-    .calendar__grid-body-cell-trigger[data-today] {
-      font-weight: 700;
-    }
-
-    .calendar__grid-body-cell-trigger[data-highlighted] {
-      outline: 2px solid hsl(200 98% 39%);
-      outline-offset: -1px;
-    }
-
-    .calendar__grid-body-cell-trigger[data-selected],
-    .calendar__grid-body-cell-trigger[data-selection-start],
-    .calendar__grid-body-cell-trigger[data-selection-end] {
-      background-color: hsl(200 98% 39%);
-      color: #fff;
-    }
-
-    .calendar__grid-body-cell-trigger[data-disabled],
-    .calendar__grid-body-cell-trigger[data-unavailable] {
-      opacity: 0.5;
-      cursor: not-allowed;
-      text-decoration: line-through;
-    }
-    ```
-
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end --> */}
-</TabsSnippets>
+:::
 
 ## Usage
 
@@ -245,35 +131,45 @@ The calendar consists of:
 
 Set `selectionMode="multiple"` to let the user toggle any number of individual dates. `value` / `defaultValue` become a `DateValue[] | null`, and clicking an already-selected date removes it.
 
-<Preview>
-	<MultipleExample />
-</Preview>
+:::preview
+
+<MultipleExample />
+
+---
 
 ```tsx
 <Calendar selectionMode="multiple">{/* ...anatomy... */}</Calendar>
 ```
 
+:::
+
 ### Range selection
 
 Set `selectionMode="range"` to select a contiguous range of dates. `value` / `defaultValue` become a `RangeValue<DateValue> | null` (an object with `start` and `end`).
 
-Selection is click-only, following corvu's model: the first click on a cell sets the range's start and becomes the "anchor" — `Calendar.GridBodyCellTrigger` exposes this cell via `data-selection-start`/`data-selection-end`, and every date between the anchor and the currently focused/hovered date is highlighted via `data-selected`. The second click commits the range's end and clears the anchor. Pressing <Kbd>Escape</Kbd> while an anchor is set cancels the in-progress range. There is no pointer-drag selection.
+Selection is click-only, following corvu's model: the first click on a cell sets the range's start and becomes the "anchor" — `Calendar.GridBodyCellTrigger` exposes this cell via `data-selection-start`/`data-selection-end`, and every date between the anchor and the currently focused/hovered date is highlighted via `data-selected`. The second click commits the range's end and clears the anchor. Pressing <kbd>Escape</kbd> while an anchor is set cancels the in-progress range. There is no pointer-drag selection.
 
-<Preview>
-	<RangeExample />
-</Preview>
+:::preview
+
+<RangeExample />
+
+---
 
 ```tsx
 <Calendar selectionMode="range">{/* ...anatomy... */}</Calendar>
 ```
 
+:::
+
 ### Controlled value
 
 Use `value` and `onChange` to control the selected date yourself. Values are native `Date` objects, so any native `Date` method or formatter (e.g. `toLocaleDateString()`, `Intl.DateTimeFormat`) works directly — no separate date library is involved.
 
-<Preview>
-	<ControlledExample />
-</Preview>
+:::preview
+
+<ControlledExample />
+
+---
 
 ```tsx {5}
 import { Calendar, type DateValue } from "@kobalte/core/calendar";
@@ -295,13 +191,17 @@ function ControlledExample() {
 }
 ```
 
+:::
+
 ### Min and max dates
 
 Use `minValue` and `maxValue` to constrain the selectable range. Cells outside the range become disabled and `Calendar.PrevTrigger` / `Calendar.NextTrigger` disable themselves once no further page contains a selectable date. `defaultFocusedValue` sets which date is initially focused.
 
-<Preview>
-	<MinMaxExample />
-</Preview>
+:::preview
+
+<MinMaxExample />
+
+---
 
 ```tsx
 <Calendar
@@ -314,13 +214,17 @@ Use `minValue` and `maxValue` to constrain the selectable range. Cells outside t
 </Calendar>
 ```
 
+:::
+
 ### Disabled
 
 Set `disabled` on the root to disable the whole calendar. Every cell becomes non-selectable, the root exposes `data-disabled` for styling, and the calendar remains focusable/navigable for assistive technology unless you also remove it from the tab order.
 
-<Preview>
-	<DisabledExample />
-</Preview>
+:::preview
+
+<DisabledExample />
+
+---
 
 ```tsx
 <Calendar selectionMode="single" disabled>
@@ -328,13 +232,17 @@ Set `disabled` on the root to disable the whole calendar. Every cell becomes non
 </Calendar>
 ```
 
+:::
+
 ### Unavailable dates
 
 Use `isDateUnavailable` to mark specific dates as unavailable without disabling the whole calendar. Unavailable cells expose `data-unavailable` and cannot be selected, but they're still visible (unlike dates outside `minValue`/`maxValue`, which are simply disabled).
 
-<Preview>
-	<UnavailableDatesExample />
-</Preview>
+:::preview
+
+<UnavailableDatesExample />
+
+---
 
 ```tsx {1-3}
 function isDateUnavailable(date: DateValue) {
@@ -345,6 +253,8 @@ function isDateUnavailable(date: DateValue) {
 	{/* ...anatomy... */}
 </Calendar>;
 ```
+
+:::
 
 In `"range"` mode, combine this with `allowsNonContiguousRanges` to control whether a selected range is allowed to skip over unavailable dates (defaults to requiring a contiguous, fully-available range).
 
@@ -451,7 +361,7 @@ No additional props. Renders as `<thead aria-hidden="true">` — weekday names a
 ### Calendar.GridHeaderRow
 
 | Prop     | Description                                                                                                        |
-| :------- | :--------------------------------------------------------------------------------------------------------------- |
+| :------- | :------------------------------------------------------------------------------------------------------------------ |
 | children | `(weekDay: Accessor<string>) => JSX.Element` <br/> Render prop called once per weekday, receiving its localized name. |
 
 ### Calendar.GridHeaderCell
@@ -489,7 +399,7 @@ No additional props. Renders a single weekday name cell (`<th>`).
 
 ### Calendar.GridBodyCellTrigger
 
-The interactive element inside a `Calendar.GridBodyCell`; selects its date on click or on <Kbd>Enter</Kbd>/<Kbd>Space</Kbd>.
+The interactive element inside a `Calendar.GridBodyCell`; selects its date on click or on <kbd>Enter</kbd>/<kbd>Space</kbd>.
 
 | Prop     | Description                                                                        |
 | :------- | :----------------------------------------------------------------------------------- |
@@ -538,13 +448,13 @@ Keyboard interactions are handled by `Calendar.Grid`, which must be focused (e.g
 
 | Key                                          | Description                                                                                     |
 | :-------------------------------------------- | :------------------------------------------------------------------------------------------------ |
-| <Kbd>Enter</Kbd> / <Kbd>Space</Kbd>           | Selects the focused date.                                                                        |
-| <Kbd>ArrowLeft</Kbd> / <Kbd>ArrowRight</Kbd>  | Moves focus to the previous/next day (flipped in RTL locales).                                   |
-| <Kbd>ArrowUp</Kbd> / <Kbd>ArrowDown</Kbd>     | Moves focus to the same day in the previous/next week.                                           |
-| <Kbd>PageUp</Kbd> / <Kbd>PageDown</Kbd>       | Moves focus to the same day in the previous/next month.                                          |
-| <Kbd>Shift</Kbd> + <Kbd>PageUp</Kbd> / <Kbd>PageDown</Kbd> | Moves focus to the same day in the previous/next year.                              |
-| <Kbd>Home</Kbd>                               | Moves focus to the first day of the current month.                                               |
-| <Kbd>End</Kbd>                                | Moves focus to the last day of the current month.                                                |
-| <Kbd>Escape</Kbd>                             | In `"range"` mode, cancels an in-progress range selection (clears the anchor date).               |
+| <kbd>Enter</kbd> / <kbd>Space</kbd>           | Selects the focused date.                                                                        |
+| <kbd>ArrowLeft</kbd> / <kbd>ArrowRight</kbd>  | Moves focus to the previous/next day (flipped in RTL locales).                                   |
+| <kbd>ArrowUp</kbd> / <kbd>ArrowDown</kbd>     | Moves focus to the same day in the previous/next week.                                           |
+| <kbd>PageUp</kbd> / <kbd>PageDown</kbd>       | Moves focus to the same day in the previous/next month.                                          |
+| <kbd>Shift</kbd> + <kbd>PageUp</kbd> / <kbd>PageDown</kbd> | Moves focus to the same day in the previous/next year.                              |
+| <kbd>Home</kbd>                               | Moves focus to the first day of the current month.                                               |
+| <kbd>End</kbd>                                | Moves focus to the last day of the current month.                                                |
+| <kbd>Escape</kbd>                             | In `"range"` mode, cancels an in-progress range selection (clears the anchor date).               |
 
 > Range selection's click-only interaction model — first click sets the start, second click commits the end — is adapted from [corvu/calendar](https://github.com/corvudev/corvu/tree/main/packages/calendar) by Jasmin Noetzli (MIT).
