@@ -62,21 +62,21 @@ import {
 	MenuSub as Sub,
 	MenuSubContent as SubContent,
 	MenuSubTrigger as SubTrigger,
-} from "../menu";
+} from "../menu/index.ts";
 import {
 	type SeparatorRootCommonProps as NavigationMenuSeparatorCommonProps,
 	type SeparatorRootOptions as NavigationMenuSeparatorOptions,
 	type SeparatorRootProps as NavigationMenuSeparatorProps,
 	type SeparatorRootRenderProps as NavigationMenuSeparatorRenderProps,
 	Root as Separator,
-} from "../separator";
+} from "../separator/index.tsx";
 import {
 	NavigationMenuArrow as Arrow,
 	type NavigationMenuArrowCommonProps,
 	type NavigationMenuArrowOptions,
 	type NavigationMenuArrowProps,
 	type NavigationMenuArrowRenderProps,
-} from "./navigation-menu-arrow";
+} from "./navigation-menu-arrow.tsx";
 import {
 	NavigationMenuContent as Content,
 	type Motion,
@@ -84,38 +84,38 @@ import {
 	type NavigationMenuContentOptions,
 	type NavigationMenuContentProps,
 	type NavigationMenuContentRenderProps,
-} from "./navigation-menu-content";
-import { NavigationMenuItem as Item } from "./navigation-menu-item";
+} from "./navigation-menu-content.tsx";
+import { NavigationMenuItem as Item } from "./navigation-menu-item.tsx";
 import {
 	NavigationMenuMenu as Menu,
 	type NavigationMenuMenuOptions,
 	type NavigationMenuMenuProps,
-} from "./navigation-menu-menu";
+} from "./navigation-menu-menu.tsx";
 import {
 	type NavigationMenuPortalProps,
 	NavigationMenuPortal as Portal,
-} from "./navigation-menu-portal";
+} from "./navigation-menu-portal.tsx";
 import {
 	type NavigationMenuRootCommonProps,
 	type NavigationMenuRootOptions,
 	type NavigationMenuRootProps,
 	type NavigationMenuRootRenderProps,
 	NavigationMenuRoot as Root,
-} from "./navigation-menu-root";
+} from "./navigation-menu-root.tsx";
 import {
 	type NavigationMenuTriggerCommonProps,
 	type NavigationMenuTriggerOptions,
 	type NavigationMenuTriggerProps,
 	type NavigationMenuTriggerRenderProps,
 	NavigationMenuTrigger as Trigger,
-} from "./navigation-menu-trigger";
+} from "./navigation-menu-trigger.tsx";
 import {
 	type NavigationMenuViewportCommonProps,
 	type NavigationMenuViewportOptions,
 	type NavigationMenuViewportProps,
 	type NavigationMenuViewportRenderProps,
 	NavigationMenuViewport as Viewport,
-} from "./navigation-menu-viewport";
+} from "./navigation-menu-viewport.tsx";
 
 export type {
 	Motion,
@@ -247,9 +247,9 @@ export const NavigationMenu = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type NavigationMenuContextValue,
 	useNavigationMenuContext,
-} from "./navigation-menu-context";
+} from "./navigation-menu-context.tsx";

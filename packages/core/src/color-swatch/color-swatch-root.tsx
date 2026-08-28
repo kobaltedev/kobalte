@@ -1,20 +1,19 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import {
 	COLOR_INTL_TRANSLATIONS,
 	type Color,
 } from "@solid-primitives/utils/colors";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createUniqueId, merge, omit } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	COLOR_SWATCH_INTL_TRANSLATIONS,
 	type ColorSwatchIntlTranslations,
-} from "./color-swatch.intl";
+} from "./color-swatch.intl.ts";
 
 export interface ColorSwatchRootOptions {
 	/** The color value to display in the swatch. */
@@ -33,7 +32,7 @@ export interface ColorSwatchRootOptions {
 }
 
 export interface ColorSwatchRootCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 	style?: JSX.CSSProperties | string;
@@ -53,7 +52,7 @@ export function ColorSwatchRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `colorswatch-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ id: defaultId, translations: COLOR_SWATCH_INTL_TRANSLATIONS },
 		props as ColorSwatchRootProps,
 	);

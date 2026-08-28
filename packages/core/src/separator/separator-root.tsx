@@ -6,16 +6,16 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/separator/src/useSeparator.ts
  */
 
-import { mergeDefaultProps, mergeRefs, type Orientation } from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createTagName } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createTagName } from "../primitives/index.ts";
 
 export interface SeparatorRootOptions {
 	/** The orientation of the separator. */
@@ -23,7 +23,7 @@ export interface SeparatorRootOptions {
 }
 
 export interface SeparatorRootCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface SeparatorRootRenderProps extends SeparatorRootCommonProps {
@@ -46,10 +46,10 @@ export function SeparatorRoot<T extends ValidComponent = "hr">(
 		ownedWrite: true,
 	});
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			orientation: "horizontal",
-		},
+		} as const,
 		props as SeparatorRootProps,
 	);
 
@@ -60,7 +60,7 @@ export function SeparatorRoot<T extends ValidComponent = "hr">(
 	return (
 		<Polymorphic<SeparatorRootRenderProps>
 			as="hr"
-			ref={mergeRefs(setRef, mergedProps.ref)}
+			ref={[setRef, mergedProps.ref]}
 			role={tagName() !== "hr" ? "separator" : undefined}
 			aria-orientation={
 				mergedProps.orientation === "vertical" ? "vertical" : undefined

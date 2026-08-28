@@ -6,20 +6,20 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-stately/list/src/useSingleSelectListState.ts
  */
 
-import { access } from "@kobalte/utils";
+import { access } from "@solid-primitives/utils";
 import { type Accessor, createMemo, merge, omit } from "solid-js";
 
 import {
 	type CollectionBase,
 	type CollectionNode,
 	createControllableSignal,
-} from "../primitives";
-import type { SingleSelection } from "../selection";
+} from "../primitives/index.ts";
+import type { SingleSelection } from "../selection/index.ts";
 import {
 	type CreateListStateProps,
 	createListState,
 	type ListState,
-} from "./create-list-state";
+} from "./create-list-state.ts";
 
 export interface CreateSingleSelectListStateProps
 	extends CollectionBase,
@@ -65,7 +65,10 @@ export function createSingleSelectListState(
 		allowDuplicateSelectionEvents: true,
 		selectedKeys,
 		onSelectionChange: (keys: Set<string>) => {
-			const key = (keys as Set<string>).values().next().value as string;
+			const key = (keys as Set<string>).values().next().value;
+			if (key === undefined) {
+				return;
+			}
 
 			// Always fire onSelectionChange, even if the key is the same
 			// as the current key (createControllableSignal does not).

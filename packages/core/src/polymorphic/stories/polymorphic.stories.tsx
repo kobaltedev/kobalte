@@ -1,7 +1,8 @@
 import { createSignal, type ValidComponent } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
-import { Button } from "../../button/index";
-import { Polymorphic, type PolymorphicProps } from "../polymorphic";
+import { Button } from "../../button/index.tsx";
+import { Polymorphic, type PolymorphicProps } from "../polymorphic.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Primitives/Polymorphic",
@@ -30,12 +31,10 @@ export const NativeElement = meta.story({
 	render: (args) => (
 		<Polymorphic
 			as={args.tag as unknown as ValidComponent}
-			class="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium font-sans border border-slate-200 bg-slate-50 text-slate-900 no-underline cursor-pointer"
+			class={style.element}
 		>
 			{args.label}
-			<code class="px-1.5 py-0.5 rounded text-xs font-mono bg-blue-100 text-blue-800">
-				&lt;{args.tag}&gt;
-			</code>
+			<code class={style.codeBadge}>&lt;{args.tag}&gt;</code>
 		</Polymorphic>
 	),
 });
@@ -50,11 +49,10 @@ interface CardProps {
 function Card(props: CardProps) {
 	return (
 		<div
-			class={`rounded-lg px-5 py-3 text-sm font-sans font-medium ${
-				props.variant === "primary"
-					? "bg-blue-500 text-white"
-					: "bg-slate-100 text-slate-900"
-			}`}
+			class={[
+				style.card,
+				props.variant === "primary" ? style.cardPrimary : style.cardSecondary,
+			]}
 			{...props}
 		/>
 	);
@@ -80,11 +78,11 @@ export const AsCustomComponent = meta.story({
 export const PropForwarding = meta.story({
 	name: "Prop Forwarding",
 	render: () => {
-		let ref: HTMLButtonElement | undefined;
+		const [ref, setRef] = createSignal<HTMLButtonElement>();
 		const [info, setInfo] = createSignal("");
 
 		return (
-			<div class="flex flex-col gap-3 font-sans">
+			<div class={style.stack}>
 				<Polymorphic
 					as="button"
 					id="poly-button"
@@ -92,21 +90,17 @@ export const PropForwarding = meta.story({
 					data-custom="hello"
 					aria-label="A labelled polymorphic button"
 					tabIndex={0}
-					class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium border border-slate-200 bg-slate-50 text-slate-900 cursor-pointer"
-					ref={ref}
+					class={style.element}
+					ref={setRef}
 					onClick={() =>
 						setInfo(
-							`id=${ref?.id}  data-custom=${ref?.dataset.custom}  tagName=${ref?.tagName}`,
+							`id=${ref()?.id}  data-custom=${ref()?.dataset.custom}  tagName=${ref()?.tagName}`,
 						)
 					}
 				>
 					Click to inspect forwarded attrs
 				</Polymorphic>
-				{info() && (
-					<code class="text-xs font-mono text-blue-700 bg-blue-50 px-2 py-1 rounded">
-						{info()}
-					</code>
-				)}
+				{info() && <code class={style.codeOutput}>{info()}</code>}
 			</div>
 		);
 	},
@@ -120,20 +114,18 @@ export const ReactiveClass = meta.story({
 		const [active, setActive] = createSignal(false);
 
 		return (
-			<div class="flex flex-col gap-3 font-sans">
+			<div class={style.stack}>
 				<Polymorphic
 					as="button"
 					class={[
-						"inline-flex items-center px-4 py-2 rounded-md text-sm font-medium border transition-colors",
-						active()
-							? "bg-blue-500 text-white border-blue-500"
-							: "bg-slate-50 text-slate-900 border-slate-200",
+						style.toggle,
+						active() ? style.toggleActive : style.toggleInactive,
 					]}
 					onClick={() => setActive((v) => !v)}
 				>
 					Toggle active — {active() ? "on" : "off"}
 				</Polymorphic>
-				<p class="text-xs text-slate-500 m-0">
+				<p class={style.hint}>
 					class array + reactive condition — DOM updates without re-mounting.
 				</p>
 			</div>
@@ -150,11 +142,11 @@ export const RefAccess = meta.story({
 		const [info, setInfo] = createSignal("");
 
 		return (
-			<div class="flex flex-col gap-3 font-sans">
+			<div class={style.stack}>
 				<Polymorphic
 					as="div"
 					ref={el}
-					class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium border border-slate-200 bg-slate-50 text-slate-900 cursor-pointer w-fit"
+					class={style.element}
 					onClick={() =>
 						setInfo(
 							`tagName=${el?.tagName}  width=${el?.getBoundingClientRect().width.toFixed(0)}px`,
@@ -163,11 +155,7 @@ export const RefAccess = meta.story({
 				>
 					Click to inspect ref
 				</Polymorphic>
-				{info() && (
-					<code class="text-xs font-mono text-blue-700 bg-blue-50 px-2 py-1 rounded">
-						{info()}
-					</code>
-				)}
+				{info() && <code class={style.codeOutput}>{info()}</code>}
 			</div>
 		);
 	},
@@ -181,28 +169,23 @@ export const DynamicAs = meta.story({
 		const [tag, setTag] = createSignal<(typeof options)[number]>("div");
 
 		return (
-			<div class="flex flex-col gap-4 font-sans">
-				<div class="flex gap-2">
+			<div class={style.stackWide}>
+				<div class={style.tagRow}>
 					{options.map((t) => (
 						<button
 							type="button"
 							onClick={() => setTag(t)}
-							class={`rounded px-3 py-1.5 text-xs font-medium border transition-colors ${
-								tag() === t
-									? "bg-blue-500 text-white border-blue-500"
-									: "bg-white text-slate-700 border-slate-200 hover:border-blue-300"
-							}`}
+							class={[
+								style.tagButton,
+								tag() === t ? style.tagButtonActive : style.tagButtonInactive,
+							]}
 						>
 							{t}
 						</button>
 					))}
 				</div>
-				<Polymorphic
-					as={tag()}
-					class="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium border border-slate-200 bg-slate-50 text-slate-900"
-				>
-					Rendered as{" "}
-					<code class="font-mono text-blue-700">&lt;{tag()}&gt;</code>
+				<Polymorphic as={tag()} class={style.element}>
+					Rendered as <code class={style.codeTag}>&lt;{tag()}&gt;</code>
 				</Polymorphic>
 			</div>
 		);
@@ -223,12 +206,10 @@ export const ButtonAsElement = meta.story({
 			href={args.as === "a" ? "https://kobalte.dev" : undefined}
 			target={args.as === "a" ? "_blank" : undefined}
 			rel={args.as === "a" ? "noopener noreferrer" : undefined}
-			class="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium font-sans border border-slate-200 bg-white text-slate-900 no-underline"
+			class={style.button}
 		>
 			as=&quot;{args.as}&quot;
-			<code class="px-1.5 py-0.5 rounded text-xs font-mono bg-slate-100 text-slate-600">
-				{args.as}
-			</code>
+			<code class={style.codeBadgeSlate}>{args.as}</code>
 		</Button>
 	),
 });
@@ -249,23 +230,20 @@ export const TypedPolymorphic = meta.story({
 				<Polymorphic
 					{...props}
 					as={props.as!}
-					class={`inline-flex items-center px-4 py-2 rounded-md text-sm font-sans font-medium border transition-colors ${
-						props.intent === "action"
-							? "bg-blue-500 text-white border-blue-500"
-							: "bg-slate-100 text-slate-900 border-slate-200"
+					class={`${style.block} ${
+						props.intent === "action" ? style.blockAction : style.blockDefault
 					}`}
 				/>
 			);
 		}
 
-		const intentClass = `inline-flex items-center px-4 py-2 rounded-md text-sm font-sans font-medium border transition-colors ${
-			args.intent === "action"
-				? "bg-blue-500 text-white border-blue-500"
-				: "bg-slate-100 text-slate-900 border-slate-200"
-		}`;
+		const intentClass = [
+			style.block,
+			args.intent === "action" ? style.blockAction : style.blockDefault,
+		];
 
 		return (
-			<div class="flex gap-3 font-sans flex-wrap">
+			<div class={style.stackWrap}>
 				<Polymorphic as="div" class={intentClass}>
 					Native div
 				</Polymorphic>
@@ -289,10 +267,10 @@ export const MissingAsProp = meta.story({
 		const [show, setShow] = createSignal(false);
 
 		return (
-			<div class="flex flex-col gap-3 font-sans">
+			<div class={style.stack}>
 				<button
 					type="button"
-					class="inline-flex items-center px-4 py-2 rounded-md text-sm font-medium border border-slate-200 bg-slate-50 text-slate-900 cursor-pointer w-fit"
+					class={style.toggleButton}
 					onClick={() => setShow((v) => !v)}
 				>
 					{show() ? "Unmount" : "Mount with missing as"}
@@ -302,11 +280,7 @@ export const MissingAsProp = meta.story({
 						try {
 							return <Polymorphic>broken</Polymorphic>;
 						} catch (e: unknown) {
-							return (
-								<p class="text-sm text-red-600 mt-1 m-0">
-									Error: {(e as Error).message}
-								</p>
-							);
+							return <p class={style.error}>Error: {(e as Error).message}</p>;
 						}
 					})()}
 			</div>

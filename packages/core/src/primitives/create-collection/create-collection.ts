@@ -6,11 +6,11 @@
  * https://github.com/adobe/react-spectrum/blob/bfce84fee12a027d9cbc38b43e1747e3e4b4b169/packages/@react-stately/collections/src/useCollection.ts
  */
 
-import { access } from "@kobalte/utils";
+import { access } from "@solid-primitives/utils";
 import { type Accessor, createMemo } from "solid-js";
 
-import type { Collection, CollectionBase, CollectionNode } from "./types";
-import { buildNodes } from "./utils";
+import type { Collection, CollectionBase, CollectionNode } from "./types.ts";
+import { buildNodes } from "./utils.ts";
 
 type CollectionFactory<C extends Collection<CollectionNode>> = (
 	node: Iterable<CollectionNode>,

@@ -1,0 +1,174 @@
+---
+title: Alert Dialog
+badges:
+  - icon: npm
+    label: "Since v0.8.0"
+  - label: "@kobalte/core/alert-dialog"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/alert-dialog"
+  - icon: aria
+    label: "Alert dialog"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/"
+---
+
+import { BasicExample } from "../../../../examples/alert-dialog";
+
+# {frontmatter.title}
+
+A modal dialog that interrupts the user's workflow to communicate an important message and acquire a response. Examples include action confirmation prompts and error message confirmations. The alertdialog role enables assistive technologies and browsers to distinguish alert dialogs from other dialogs so they have the option of giving alert dialogs special treatment, such as playing a system alert sound.
+
+## Import
+
+```ts
+import { AlertDialog } from "@kobalte/core/alert-dialog";
+// or
+import { Root, Trigger, ... } from "@kobalte/core/alert-dialog";
+// or (deprecated)
+import { AlertDialog } from "@kobalte/core";
+```
+
+## Features
+
+- Follow the [WAI ARIA Alert Dialog](https://www.w3.org/WAI/ARIA/apg/patterns/alertdialog/) design pattern.
+- Supports modal and non-modal modes.
+- Provides screen reader announcements via rendered title and description.
+- Focus is trapped and scrolling is blocked while it is open.
+- Pressing <kbd>Esc</kbd> closes the alert dialog.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The alert dialog consists of:
+
+- **AlertDialog:** Contains all the parts of a dialog.
+- **AlertDialog.Trigger:** The button that opens the dialog.
+- **AlertDialog.Portal:** Portals its children into the `body` when the dialog is open.
+- **AlertDialog.Overlay:** The layer that covers the inert portion of the view when the dialog is open.
+- **AlertDialog.Content:** Contains the content to be rendered when the dialog is open.
+- **AlertDialog.CloseButton:** The button that closes the dialog.
+- **AlertDialog.Title:** An accessible title to be announced when the dialog is opened.
+- **AlertDialog.Description:** An optional accessible description to be announced when the dialog is opened.
+
+```tsx
+<AlertDialog>
+	<AlertDialog.Trigger />
+	<AlertDialog.Portal>
+		<AlertDialog.Overlay />
+		<AlertDialog.Content>
+			<AlertDialog.CloseButton />
+			<AlertDialog.Title />
+			<AlertDialog.Description />
+		</AlertDialog.Content>
+	</AlertDialog.Portal>
+</AlertDialog>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/alert-dialog.tsx#L4-L37"
+
+```
+
+```css title="style.css" tab file="../../../../examples/alert-dialog.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Default open
+
+An initial, uncontrolled open value can be provided using the `defaultOpen` prop.
+
+```tsx
+<AlertDialog defaultOpen>...</AlertDialog>
+```
+
+### Controlled open
+
+The `open` prop can be used to make the open state controlled. The `onOpenChange` event is fired when the user presses the trigger, close button or overlay, and receives the new value.
+
+```tsx {4,7}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [open, setOpen] = createSignal(false);
+
+	return (
+		<AlertDialog open={open()} onOpenChange={setOpen}>
+			...
+		</AlertDialog>
+	);
+}
+```
+
+## API Reference
+
+### AlertDialog
+
+`AlertDialog` is equivalent to the `Root` import from `@kobalte/core/alert-dialog` (and deprecated `AlertDialog.Root`).
+
+| Prop          | Description                                                                                                                                                                                                                                                                                                                                          |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| open          | `boolean` <br/> The controlled open state of the dialog.                                                                                                                                                                                                                                                                                             |
+| defaultOpen   | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                                                                                                                                                                                               |
+| onOpenChange  | `(open: boolean) => void` <br/> Event handler called when the open state of the dialog changes.                                                                                                                                                                                                                                                      |
+| id            | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used.                                                                                                                                                                        |
+| modal         | `boolean` <br/> Whether the dialog should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the dialog content. <br/> - elements outside the dialog content will not be visible for screen readers. |
+| preventScroll | `boolean` <br/> Whether the scroll should be locked even if the alert dialog is not modal.                                                                                                                                                                                                                                                           |
+| forceMount    | `boolean` <br/> Used to force mounting the dialog (portal, overlay and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                     |
+
+### AlertDialog.Trigger
+
+`AlertDialog.Trigger` consists of [Button](/docs/core/components/button).
+
+| Data attribute | Description                       |
+| :------------- | :-------------------------------- |
+| data-expanded  | Present when the dialog is open.  |
+| data-closed    | Present when the dialog is close. |
+
+`AlertDialog.Content` and `AlertDialog.Overlay` shares the same data-attributes.
+
+### AlertDialog.Content
+
+| Prop                 | Description                                                                                                                                                                                                         |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| onOpenAutoFocus      | `(event: Event) => void` <br/> Event handler called when focus moves into the component after opening. It can be prevented by calling `event.preventDefault`.                                                       |
+| onCloseAutoFocus     | `(event: Event) => void` <br/> Event handler called when focus moves to the trigger after closing. It can be prevented by calling `event.preventDefault`.                                                           |
+| onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
+| onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
+| onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
+
+## Rendered elements
+
+| Component                 | Default rendered element |
+| :------------------------ | :----------------------- |
+| `AlertDialog`             | none                     |
+| `AlertDialog.Trigger`     | `button`                 |
+| `AlertDialog.Portal`      | `Portal`                 |
+| `AlertDialog.Overlay`     | `div`                    |
+| `AlertDialog.Content`     | `div`                    |
+| `AlertDialog.CloseButton` | `button`                 |
+| `AlertDialog.Title`       | `h2`                     |
+| `AlertDialog.Description` | `p`                      |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                               | Description                                            |
+| :-------------------------------- | :----------------------------------------------------- |
+| <kbd>Space</kbd>                  | When focus is on the trigger, opens/closes the dialog. |
+| <kbd>Enter</kbd>                  | When focus is on the trigger, opens/closes the dialog. |
+| <kbd>Tab</kbd>                    | Moves focus to the next focusable element.             |
+| <kbd>Shift</kbd> + <kbd>Tab</kbd> | Moves focus to the previous focusable element.         |
+| <kbd>Esc</kbd>                    | Closes the dialog and moves focus to the trigger.      |

@@ -1,0 +1,34 @@
+{
+	"workspace": [
+		"packages/core",
+		"packages/utils",
+		"packages/tailwindcss",
+		"packages/vanilla-extract"
+	],
+	"nodeModulesDir": "auto",
+	"preferPackageJson": true,
+	"lock": true,
+	"minimumDependencyAge": "0",
+	"compilerOptions": {
+		"strict": true,
+		"jsx": "preserve",
+		"jsxImportSource": "@solidjs/web",
+		"lib": ["DOM", "DOM.Iterable", "ESNext"]
+	},
+	"tasks": {
+		"jsr:check": "deno check packages/core/src/index.tsx packages/utils/src/index.ts packages/tailwindcss/src/index.ts packages/vanilla-extract/src/index.ts",
+		"jsr:fmt": "deno fmt --check deno.jsonc packages/*/deno.jsonc",
+		"jsr:list": "deno list -r"
+	},
+	"exclude": [
+		"apps",
+		"packages/tests",
+		"**/dev",
+		"**/dist",
+		"**/stories",
+		"**/*.test.ts",
+		"**/*.test.tsx",
+		"**/node_modules",
+		"scripts"
+	]
+}

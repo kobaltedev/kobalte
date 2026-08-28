@@ -1,17 +1,19 @@
-import { isFunction, mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, children, omit } from "solid-js";
+import { type Accessor, children, omit, type Ref } from "solid-js";
 
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
+} from "../polymorphic/index.tsx";
+import {
+	type ComboboxDataSet,
+	useComboboxContext,
+} from "./combobox-context.tsx";
 
 export interface ComboboxControlState<Option> {
 	/** The selected options. */
@@ -37,7 +39,7 @@ export interface ComboboxControlOptions<Option> {
 export interface ComboboxControlCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface ComboboxControlRenderProps
@@ -69,10 +71,9 @@ export function ComboboxControl<Option, T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<ComboboxControlRenderProps>
 			as="div"
-			ref={mergeRefs(
-				context.setControlRef,
-				props.ref as (el: HTMLElement) => void,
-			)}
+			ref={
+				[context.setControlRef, props.ref as (el: HTMLElement) => void] as any
+			}
 			{...context.dataset()}
 			{...formControlContext.dataset()}
 			{...others}
@@ -100,7 +101,7 @@ function ComboboxControlChild<Option>(
 ) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

@@ -6,38 +6,36 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import {
-	callHandler,
-	composeEventHandlers,
-	createGenerateId,
-	focusWithoutScrolling,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { callHandler, composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
+	type Ref,
 } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type CollectionItemWithRef, createRegisterId } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { createSelectableItem } from "../selection";
-import { useMenuContext } from "./menu-context";
+} from "../polymorphic/index.tsx";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import {
+	type CollectionItemWithRef,
+	createRegisterId,
+} from "../primitives/index.ts";
+import { createSelectableItem } from "../selection/index.ts";
+import { useMenuContext } from "./menu-context.tsx";
 import {
 	MenuItemContext,
 	type MenuItemContextValue,
 	type MenuItemDataSet,
-} from "./menu-item.context";
-import { useMenuRootContext } from "./menu-root-context";
+} from "./menu-item.context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuItemBaseOptions {
 	/**
@@ -70,7 +68,7 @@ export interface MenuItemBaseOptions {
 
 export interface MenuItemBaseCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -102,12 +100,14 @@ export type MenuItemBaseProps<
 export function MenuItemBase<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuItemBaseProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const rootContext = useMenuRootContext();
 	const menuContext = useMenuContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId(`item-${createUniqueId()}`),
 		},
@@ -168,13 +168,13 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
-			ref: () => ref,
+			ref,
 			type: "item",
 			key: key(),
 			textValue:
 				mergedProps.textValue ??
 				labelRef()?.textContent ??
-				ref?.textContent ??
+				ref()?.textContent ??
 				"",
 			disabled: mergedProps.disabled ?? false,
 		}),
@@ -188,7 +188,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			allowsDifferentPressOrigin: true,
 			disabled: () => mergedProps.disabled,
 		},
-		() => ref,
+		ref,
 	);
 
 	/**
@@ -217,7 +217,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			menuContext.onItemEnter(e);
 
 			if (!e.defaultPrevented) {
-				focusWithoutScrolling(e.currentTarget);
+				e.currentTarget.focus({ preventScroll: true });
 				menuContext.listState().selectionManager().setFocused(true);
 				menuContext.listState().selectionManager().setFocusedKey(key());
 			}
@@ -290,7 +290,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		isChecked: () => mergedProps.checked,
 		dataset,
 		setLabelRef,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerLabel: createRegisterId(setLabelId),
 		registerDescription: createRegisterId(setDescriptionId),
 	};
@@ -299,7 +299,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 		<MenuItemContext value={context}>
 			<Polymorphic<MenuItemBaseRenderProps>
 				as="div"
-				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				tabindex={selectableItem.tabIndex()}
 				aria-checked={ariaChecked()}
 				aria-disabled={mergedProps.disabled ? "true" : undefined}

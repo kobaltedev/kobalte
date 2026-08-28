@@ -4,25 +4,25 @@ import {
 	type ComboboxContentProps,
 	type ComboboxContentRenderProps,
 	ComboboxContent as Content,
-} from "../combobox/combobox-content";
+} from "../combobox/combobox-content.tsx";
 import {
 	type ComboboxInputCommonProps,
 	type ComboboxInputOptions,
 	type ComboboxInputProps,
 	type ComboboxInputRenderProps,
 	ComboboxInput as Input,
-} from "../combobox/combobox-input";
+} from "../combobox/combobox-input.tsx";
 import {
 	type ComboboxListboxCommonProps,
 	type ComboboxListboxOptions,
 	type ComboboxListboxProps,
 	type ComboboxListboxRenderProps,
 	ComboboxListbox as Listbox,
-} from "../combobox/combobox-listbox";
+} from "../combobox/combobox-listbox.tsx";
 import {
 	type ComboboxPortalProps,
 	ComboboxPortal as Portal,
-} from "../combobox/combobox-portal";
+} from "../combobox/combobox-portal.tsx";
 import {
 	type FormControlDescriptionCommonProps as ComboboxDescriptionCommonProps,
 	type FormControlDescriptionOptions as ComboboxDescriptionOptions,
@@ -39,7 +39,7 @@ import {
 	FormControlDescription as Description,
 	FormControlErrorMessage as ErrorMessage,
 	FormControlLabel as Label,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ListboxItemCommonProps as ComboboxItemCommonProps,
 	type ListboxItemDescriptionCommonProps as ComboboxItemDescriptionCommonProps,
@@ -66,28 +66,31 @@ import {
 	ItemIndicator,
 	ItemLabel,
 	Section,
-} from "../listbox";
+} from "../listbox/index.tsx";
 import {
 	Arrow,
 	type PopperArrowOptions as ComboboxArrowOptions,
 	type PopperArrowProps as ComboboxArrowProps,
-} from "../popper";
+} from "../popper/index.tsx";
 import type {
 	ComboboxBaseItemComponentProps as ComboboxRootItemComponentProps,
 	ComboboxBaseSectionComponentProps as ComboboxRootSectionComponentProps,
-} from "./combobox-base";
+} from "./combobox-base.tsx";
 import {
 	type ComboboxControlCommonProps,
 	type ComboboxControlOptions,
 	type ComboboxControlProps,
 	type ComboboxControlRenderProps,
 	ComboboxControl as Control,
-} from "./combobox-control";
+} from "./combobox-control.tsx";
 import {
 	type ComboboxHiddenSelectProps,
 	ComboboxHiddenSelect as HiddenSelect,
-} from "./combobox-hidden-select";
-import { type ComboboxIconProps, ComboboxIcon as Icon } from "./combobox-icon";
+} from "./combobox-hidden-select.tsx";
+import {
+	type ComboboxIconProps,
+	ComboboxIcon as Icon,
+} from "./combobox-icon.tsx";
 import {
 	type ComboboxMultipleSelectionOptions,
 	type ComboboxRootCommonProps,
@@ -96,15 +99,15 @@ import {
 	type ComboboxRootRenderProps,
 	type ComboboxSingleSelectionOptions,
 	ComboboxRoot as Root,
-} from "./combobox-root";
+} from "./combobox-root.tsx";
 import {
 	type ComboboxTriggerCommonProps,
 	type ComboboxTriggerOptions,
 	type ComboboxTriggerProps,
 	type ComboboxTriggerRenderProps,
 	ComboboxTrigger as Trigger,
-} from "./combobox-trigger";
-import type { ComboboxTriggerMode } from "./types";
+} from "./combobox-trigger.tsx";
+import type { ComboboxTriggerMode } from "./types.ts";
 
 export type {
 	ComboboxArrowOptions,
@@ -217,9 +220,9 @@ export const Combobox = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type ComboboxContextValue,
 	useComboboxContext,
-} from "./combobox-context";
+} from "./combobox-context.tsx";

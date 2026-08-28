@@ -1,6 +1,5 @@
 import { Menubar } from "@kobalte/core/menubar";
 import { createSignal } from "solid-js";
-
 import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "../components";
 import style from "./menubar.module.css";
 

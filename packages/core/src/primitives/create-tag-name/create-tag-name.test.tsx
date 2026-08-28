@@ -9,7 +9,7 @@
 import { render } from "@solidjs/testing-library";
 import { type Accessor, createSignal } from "solid-js";
 
-import { createTagName } from "./create-tag-name";
+import { createTagName } from "./create-tag-name.ts";
 
 describe("createTagName", () => {
 	it("should use 'tagName' from ref", () => {

@@ -1,0 +1,389 @@
+---
+title: Time Field
+badges:
+  - icon: npm
+    label: "Since v0.13.12"
+  - label: "@kobalte/core/time-field"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/time-field"
+status: new
+---
+
+import {
+	BasicExample,
+	DefaultValueExample,
+	ControlledValueExample,
+	GranularityExample,
+	MinMaxExample,
+	PlaceholderValueExample,
+	HourCycleExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	HTMLFormExample,
+} from "../../../../examples/time-field";
+
+# {frontmatter.title}
+
+A time field allows users to enter and edit time values using a keyboard. Each part of a time value is displayed in an individually editable segment.
+
+## Import
+
+```ts
+import { TimeField } from "@kobalte/core/time-field";
+// or
+import { Root, Label, ... } from "@kobalte/core/time-field";
+```
+
+## Features
+
+- Times can optionally include a time zone. All modifications follow time zone rules such as daylight saving time.
+- Support for locale-specific formatting, number systems, hour cycles, and right-to-left layout.
+- Each time unit is displayed as an individually focusable and editable segment, which allows users an easy way to edit times using the keyboard, in any format and locale.
+- Time segments are editable using an easy to use numeric keypad, and all interactions are accessible using touch-based screen readers.
+- Can be controlled or uncontrolled.
+- Integrates with HTML forms.
+
+## Anatomy
+
+The time field consists of:
+
+- **TimeField**: The root container for the time field.
+- **TimeField.Label**: The label that gives the user information on the time field.
+- **TimeField.Input**: The container for the segments.
+- **TimeField.Segment**: The component that represents a unit of a time.
+- **TimeField.Description**: The description that gives the user more information on the time field.
+- **TimeField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the time field.
+- **TimeField.HiddenInput**: The native html input that is visually hidden in the time field.
+
+```tsx
+<TimeField>
+	<TimeField.Label />
+	<TimeField.Input>
+		<TimeField.Segment />
+	</TimeField.Input>
+	<TimeField.Description />
+	<TimeField.ErrorMessage />
+	<TimeField.HiddenInput />
+</TimeField>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/time-field.tsx#L4-L22"
+
+```
+
+```css title="style.css" tab file="../../../../examples/time-field.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Default Value
+
+A TimeField displays a placeholder by default. An initial, uncontrolled value can be provided to the TimeField using the `defaultValue` prop.
+
+Time values are objects: `{ hour?: number; minute?: number; second?: number; }`.
+
+:::preview
+
+<DefaultValueExample />
+
+---
+
+```tsx {3}
+<TimeField defaultValue={{ hour: 11, minute: 45 }}>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
+</TimeField>
+```
+
+:::
+
+### Controlled Value
+
+The `value` prop can be used to make the value controlled. The `onChange` event is fired when the time value changes.
+
+:::preview
+
+<ControlledValueExample />
+
+---
+
+```tsx {6,15}
+import { createSignal, Show } from "solid-js";
+
+function ControlledValueExample() {
+	const [value, setValue] = createSignal({ hour: 9, minute: 45 });
+
+	return (
+		<>
+			<TimeField value={value()} onChange={setValue}>
+				<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
+			</TimeField>
+			<p>
+				Selected time:{" "}
+				<Show when={value()} fallback={"--"}>
+					{value()}
+				</Show>
+			</p>
+		</>
+	);
+}
+```
+
+:::
+
+### Granularity
+
+The `granularity` prop allows you to control the smallest unit that is displayed by a TimeField. By default, times are displayed with "minute" granularity. More granular time values can be displayed by setting the `granularity` prop to "second" or an object with time slots as keys and boolean values.
+
+:::preview
+
+<GranularityExample />
+
+---
+
+```tsx {1}
+<TimeField granularity="second">
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
+</TimeField>
+```
+
+:::
+
+### Minimum and Maximum Values
+
+The `min` and `max` props can be used to perform builtin validation. This marks the time field as invalid using ARIA if the user enters an invalid time.
+
+:::preview
+
+<MinMaxExample />
+
+---
+
+```tsx {3,4}
+<TimeField
+	defaultValue={{ hour: 9, minute: 45 }}
+	min={{ hour: 9 }}
+	max={{ hour: 17 }}
+	hourCycle={12}
+>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
+	<TimeField.ErrorMessage>Select time between 9 AM and 5 PM.</TimeField.ErrorMessage>
+</TimeField>
+```
+
+:::
+
+### Placeholder Value
+
+A placeholder time can be shown instead of dashes, also influences the starting time.
+
+:::preview
+
+<PlaceholderValueExample />
+
+---
+
+```tsx {1}
+<TimeField placeholder={{ hour: 9 }}>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
+</TimeField>
+```
+
+:::
+
+### Hour Cycle
+
+By default, TimeField displays times in either 12 or 24 hour format depending on the user's locale. This can be overridden using the `hourCycle` prop.
+
+:::preview
+
+<HourCycleExample />
+
+---
+
+```tsx {1}
+<TimeField hourCycle={12}>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
+</TimeField>
+```
+
+:::
+
+### Description
+
+The `TimeField.Description` component can be used to associate additional help text with a time field.
+
+:::preview
+
+<DescriptionExample />
+
+---
+
+```tsx {4}
+<TimeField>
+	<TimeField.Label>Time</TimeField.Label>
+	<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
+	<TimeField.Description>Select a meeting time.</TimeField.Description>
+</TimeField>
+```
+
+:::
+
+### Error message
+
+The `TimeField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the time field as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+:::preview
+
+<ErrorMessageExample />
+
+---
+
+```tsx {10,14}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [value, setValue] = createSignal(undefined);
+
+	return (
+		<TimeField
+			value={value()}
+			onChange={setValue}
+			validationState={value() === undefined ? "invalid" : "valid"}
+		>
+			<TimeField.Label>Time</TimeField.Label>
+			<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
+			<TimeField.ErrorMessage>Please select a time.</TimeField.ErrorMessage>
+		</TimeField>
+	);
+}
+```
+
+:::
+
+### HTML forms
+
+The `name` prop can be used for integration with HTML forms.
+
+:::preview
+
+<HTMLFormExample />
+
+---
+
+```tsx {8,10}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<TimeField name="time">
+				<TimeField.Input>{segment => <TimeField.Segment segment={segment()} />}</TimeField.Input>
+				<TimeField.HiddenInput />
+			</TimeField>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+:::
+
+## API Reference
+
+### TimeField
+
+`TimeField` is equivalent to the `Root` import from `@kobalte/core/time-field`.
+
+| Prop              | Description                                                                                                                                                                              |
+| :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value             | `Time` (`{ hour?: number; minute?: number; second?: number; }`) <br/> The current value (controlled).                                                                                    |
+| defaultValue      | `Time` <br/> The default value (uncontrolled).                                                                                                                                           |
+| onChange          | `(value: Time) => void` <br/> Handler that is called when the value changes.                                                                                                             |
+| hourCycle         | `12 \| 24` <br/> Whether to display the time in 12 or 24-hour format. By default, this is determined by the user's locale.                                                               |
+| granularity       | `'hour' \| 'minute' \| 'second' \| { hour: boolean; minute: boolean; second: boolean; }` <br/> Determines the smallest unit that is displayed in the time field. Defaults to `"minute"`. |
+| forceLeadingZeros | `boolean` <br/> Whether to always show leading zeros in the hour field.                                                                                                                  |
+| placeholder       | `Time` <br/> A placeholder time shown when no value is selected, and acts as the starting point for interactions.                                                                        |
+| min               | `Time` <br/> The minimum allowed time that a user may select.                                                                                                                            |
+| max               | `Time` <br/> The maximum allowed time that a user may select.                                                                                                                            |
+| name              | `string` <br/> The name of the time field. Submitted with its owning form as part of a name/value pair.                                                                                  |
+| validationState   | `'valid' \| 'invalid'` <br/> Whether the time field should display its "valid" or "invalid" visual styling.                                                                              |
+| required          | `boolean` <br/> Whether the time field is required.                                                                                                                                      |
+| disabled          | `boolean` <br/> Whether the time field is disabled.                                                                                                                                      |
+| readOnly          | `boolean` <br/> Whether the time field is read only.                                                                                                                                     |
+| translations      | `TimeFieldIntlTranslations` <br/> The localized strings of the component.                                                                                                                |
+
+| Data attribute | Description                                                               |
+| :------------- | :------------------------------------------------------------------------ |
+| data-valid     | Present when the time field is valid according to the validation rules.   |
+| data-invalid   | Present when the time field is invalid according to the validation rules. |
+| data-required  | Present when the time field is required.                                  |
+| data-disabled  | Present when the time field is disabled.                                  |
+| data-readonly  | Present when the time field is read only.                                 |
+
+`TimeField.Label`, `TimeField.Input`, `TimeField.Segment`, `TimeField.Description` and `TimeField.ErrorMessage` share the same data-attributes.
+
+### TimeField.Segment
+
+| Prop    | Description                                      |
+| :------ | :----------------------------------------------- |
+| segment | `TimeSegment` <br/> A segment of the time field. |
+
+| Data attribute   | Description                                        |
+| :--------------- | :------------------------------------------------- |
+| data-separator   | Present when the segment is a separator.           |
+| data-type        | Always present.                                    |
+| data-placeholder | Present when the segment's value is a placeholder. |
+
+### TimeField.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                | Default rendered element |
+| :----------------------- | :----------------------- |
+| `TimeField`              | `div`                    |
+| `TimeField.Label`        | `span`                   |
+| `TimeField.Input`        | `div`                    |
+| `TimeField.Segment`      | `div`                    |
+| `TimeField.Description`  | `div`                    |
+| `TimeField.ErrorMessage` | `div`                    |
+| `TimeField.HiddenInput`  | `input`                  |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                                                                                                                                                                                                                                          |
+| :-------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <kbd>Backspace</kbd>  | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                         |
+| <kbd>Delete</kbd>     | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                         |
+| <kbd>ArrowRight</kbd> | Moves focus to the next segment.                                                                                                                                                                                                                                                     |
+| <kbd>ArrowLeft</kbd>  | Moves focus to the previous segment.                                                                                                                                                                                                                                                 |
+| <kbd>ArrowUp</kbd>    | Increments the given segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                                              |
+| <kbd>ArrowDown</kbd>  | Decrements the given segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                                              |
+| <kbd>PageUp</kbd>     | Increments the given segment by a larger amount, rounding it to the nearest increment. The amount to increment by depends on the segment, for example 2 hours, 15 minutes, and 15 seconds. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
+| <kbd>PageDown</kbd>   | Decrements the given segment by a larger amount, rounding it to the nearest decrement. The amount to decrement by depends on the segment, for example 2 hours, 15 minutes, and 15 seconds. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
+| <kbd>Home</kbd>       | Decrements the given segment by the segment's minimum value.                                                                                                                                                                                                                         |
+| <kbd>End</kbd>        | Increments the given segment by the segment's maximum value.                                                                                                                                                                                                                         |

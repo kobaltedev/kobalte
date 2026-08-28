@@ -1,15 +1,20 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createSignal, omit } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+} from "solid-js";
 
-import { useMenubarContext } from "../menubar/menubar-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { useMenubarContext } from "../menubar/menubar-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import type {
 	PopperArrowCommonProps,
 	PopperArrowOptions,
 	PopperArrowRenderProps,
-} from "../popper";
-import { PopperArrow } from "../popper/popper-arrow";
+} from "../popper/index.tsx";
+import { PopperArrow } from "../popper/popper-arrow.tsx";
 
 export interface NavigationMenuArrowOptions extends PopperArrowOptions {}
 
@@ -33,11 +38,13 @@ export type NavigationMenuArrowProps<
 export function NavigationMenuArrow<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, NavigationMenuArrowProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const menubarContext = useMenubarContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			size: 15,
 		},
@@ -58,7 +65,9 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 				const triggerRef = document.querySelector(
 					`[data-kb-menu-value-trigger="${value}"]`,
 				);
-				if (!triggerRef || !ref) return;
+				if (!triggerRef || !ref()) return;
+
+				const arrowRef = ref()!;
 
 				const middle =
 					triggerRef.getBoundingClientRect()[horizontal() ? "x" : "y"] +
@@ -67,11 +76,12 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 					] /
 						2;
 
-				const computed = window.getComputedStyle(ref);
+				const computed = window.getComputedStyle(arrowRef);
 
 				const initalArrowPos =
-					ref.getBoundingClientRect()[horizontal() ? "x" : "y"] +
-					ref.getBoundingClientRect()[horizontal() ? "width" : "height"] / 2 -
+					arrowRef.getBoundingClientRect()[horizontal() ? "x" : "y"] +
+					arrowRef.getBoundingClientRect()[horizontal() ? "width" : "height"] /
+						2 -
 					Number.parseFloat(
 						computed.transform.split(",")[horizontal() ? 4 : 5],
 					);
@@ -87,7 +97,7 @@ export function NavigationMenuArrow<T extends ValidComponent = "div">(
 				Omit<NavigationMenuArrowRenderProps, keyof PopperArrowRenderProps>
 			>
 		>
-			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+			ref={[setRef, mergedProps.ref]}
 			style={{
 				transform: `translate${horizontal() ? "X" : "Y"}(${offset()}px)`,
 				color: "red",

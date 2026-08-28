@@ -1,17 +1,17 @@
-import { callHandler, EventKey, mergeDefaultProps } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { merge, omit } from "solid-js";
 
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type SwitchDataSet, useSwitchContext } from "./switch-context";
+} from "../polymorphic/index.tsx";
+import { type SwitchDataSet, useSwitchContext } from "./switch-context.tsx";
 
 export interface SwitchControlOptions {}
 
@@ -39,7 +39,7 @@ export function SwitchControl<T extends ValidComponent = "div">(
 	const formControlContext = useFormControlContext();
 	const context = useSwitchContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("control"),
 		},
@@ -58,7 +58,7 @@ export function SwitchControl<T extends ValidComponent = "div">(
 	const onKeyDown: JSX.EventHandlerUnion<any, KeyboardEvent> = (e) => {
 		callHandler(e, mergedProps.onKeyDown);
 
-		if (e.key === EventKey.Space) {
+		if (e.key === " ") {
 			context.toggle();
 			context.inputRef()?.focus({ preventScroll: true });
 		}

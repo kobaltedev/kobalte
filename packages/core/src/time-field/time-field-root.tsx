@@ -1,12 +1,7 @@
-import {
-	access,
-	createFocusManager,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
+import { createFocusGroup } from "@solid-primitives/focus";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createMemo,
@@ -14,34 +9,38 @@ import {
 	createUniqueId,
 	merge,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal, createRegisterId } from "../primitives";
+} from "../polymorphic/index.tsx";
+import {
+	createControllableSignal,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	TIME_FIELD_INTL_MESSAGES,
 	type TimeFieldIntlTranslations,
-} from "./time-field.intl";
+} from "./time-field.intl.ts";
 import {
 	TimeFieldContext,
 	type TimeFieldContextValue,
-} from "./time-field-context";
-import { TimeFieldValueDescription } from "./time-field-value-description";
+} from "./time-field-context.tsx";
+import { TimeFieldValueDescription } from "./time-field-value-description.tsx";
 import type {
 	SegmentType,
 	Time,
 	TimeFieldGranularity,
 	TimeFieldHourCycle,
-} from "./types";
+} from "./types.ts";
 
 export interface TimeFieldRootOptions {
 	/** The current value (controlled). */
@@ -113,7 +112,7 @@ export interface TimeFieldRootOptions {
 
 export interface TimeFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	"aria-label"?: string;
@@ -141,7 +140,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 	const defaultId = `time-field-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			granularity: "minute",
@@ -196,14 +195,17 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 	const [fieldAriaDescribedBy, setFieldAriaDescribedBy] =
 		createSignal<string>();
 
-	const focusManager = createFocusManager(inputRef);
+	// Segment navigation is driven manually (see `time-field-segment.tsx`), so
+	// disable `createFocusGroup`'s automatic arrow-key/Home/End/Tab handling.
+	const focusManager = createFocusGroup(inputRef, () => ({
+		keyboardNavigation: false,
+	}));
 
 	const [value, _setValue] = createControllableSignal<
 		Partial<Time> | undefined
 	>({
 		value: () => mergedProps.value,
 		defaultValue: () => mergedProps.defaultValue,
-		// @ts-ignore
 		onChange: (value) => mergedProps.onChange?.(value!),
 	});
 
@@ -233,12 +235,15 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 
 		const minTime = Number.parseInt(
 			`${(mergedProps.min?.hour ?? "00").toString().padStart(2, "0")}${(mergedProps.min?.minute ?? "00").toString().padStart(2, "0")}${(mergedProps.min?.second ?? "00").toString().padStart(2, "0")}`,
+			10,
 		);
 		const maxTime = Number.parseInt(
 			`${(mergedProps.max?.hour ?? "23").toString().padStart(2, "0")}${(mergedProps.max?.minute ?? "59").toString().padStart(2, "0")}${(mergedProps.max?.second ?? "59").toString().padStart(2, "0")}`,
+			10,
 		);
 		const val = Number.parseInt(
 			`${(value()?.hour ?? "00").toString().padStart(2, "0")}${(value()?.minute ?? "00").toString().padStart(2, "0")}${(value()?.second ?? "00").toString().padStart(2, "0")}`,
+			10,
 		);
 
 		if (val > maxTime || val < minTime) return "invalid";
@@ -345,7 +350,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 		setInputRef,
 		valueDescriptionId,
 		registerValueDescriptionId: createRegisterId(setValueDescriptionId),
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		segments,
 		fieldAriaLabel,
 		fieldAriaLabelledBy,
@@ -360,7 +365,7 @@ export function TimeFieldRoot<T extends ValidComponent = "div">(
 			<TimeFieldContext value={context}>
 				<Polymorphic<TimeFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs(setRef, mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)!}
 					aria-invalid={

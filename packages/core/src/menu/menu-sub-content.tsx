@@ -6,26 +6,20 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import {
-	callHandler,
-	contains,
-	focusWithoutScrolling,
-	type Orientation,
-	OverrideComponentProps,
-} from "@kobalte/utils";
+import { callHandler, type Orientation } from "@kobalte/utils";
 import type { FocusOutsideEvent } from "@solid-primitives/interaction";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
-import { type Direction, useLocale } from "../i18n";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { type Direction, useLocale } from "../i18n/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	MenuContentBase,
 	type MenuContentBaseCommonProps,
 	type MenuContentBaseOptions,
 	type MenuContentBaseRenderProps,
-} from "./menu-content-base";
-import { useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
+} from "./menu-content-base.tsx";
+import { useMenuContext } from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuSubContentOptions
 	extends Omit<
@@ -90,7 +84,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 
 		// We prevent closing when the trigger is focused to avoid triggering a re-open animation
 		// on pointer interaction.
-		if (!contains(context.triggerRef(), target)) {
+		if (!context.triggerRef()?.contains(target)) {
 			context.close();
 		}
 	};
@@ -104,7 +98,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 		);
 
 		// Submenu key events bubble through portals. We only care about keys in this menu.
-		const isKeyDownInside = contains(e.currentTarget, e.target);
+		const isKeyDownInside = e.currentTarget.contains(e.target);
 		const isCloseKey = SUB_CLOSE_KEYS.close(
 			direction(),
 			rootContext.orientation(),
@@ -112,10 +106,18 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 		const isSubMenu = context.parentMenuContext() != null;
 
 		if (isKeyDownInside && isCloseKey && isSubMenu) {
+			// Mark this key as handled so `MenuContentBase`'s own `onKeyDown`
+			// (composed on the same element) doesn't also treat it as a
+			// menubar "previous menu" key. It can't rely on `context.isOpen()`
+			// or the `data-closed` attribute for this, since `context.close()`
+			// only queues a signal write that isn't reflected until the next
+			// microtask flush.
+			e.preventDefault();
+
 			context.close();
 
 			// We focus manually because we prevented it in `onCloseAutoFocus`.
-			focusWithoutScrolling(context.triggerRef());
+			context.triggerRef()?.focus({ preventScroll: true });
 		}
 	};
 

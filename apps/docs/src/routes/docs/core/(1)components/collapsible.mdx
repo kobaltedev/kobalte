@@ -1,0 +1,142 @@
+---
+title: Collapsible
+badges:
+  - icon: npm
+    label: "Since v0.5.0"
+  - label: "@kobalte/core/collapsible"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/collapsible"
+  - icon: aria
+    label: "Disclosure"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/"
+---
+
+import { BasicExample } from "../../../../examples/collapsible";
+
+# {frontmatter.title}
+
+An interactive component which expands/collapses a content.
+
+## Import
+
+```ts
+import { Collapsible } from "@kobalte/core/collapsible";
+// or
+import { Root, Trigger, ... } from "@kobalte/core/collapsible";
+// or (deprecated)
+import { Collapsible } from "@kobalte/core";
+```
+
+## Features
+
+- Follow the [WAI ARIA Disclosure](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/) design pattern.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The collapsible consists of:
+
+- **Collapsible:** The root container for a collapsible.
+- **Collapsible.Trigger:** The button that expands/collapses the collapsible content.
+- **Collapsible.Content:** Contains the content to be rendered when the collapsible is expanded.
+
+```tsx
+<Collapsible>
+	<Collapsible.Trigger />
+	<Collapsible.Content />
+</Collapsible>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/collapsible.tsx#L4-L23"
+
+```
+
+```css title="style.css" tab file="../../../../examples/collapsible.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Animating content size
+
+We expose the CSS custom properties `--kb-collapsible-content-width` and `--kb-collapsible-content-height` which you can use to animate the size of the content when it opens/closes.
+
+```css {15,21}
+/* style.css */
+.collapsible__content {
+	overflow: hidden;
+	animation: slideUp 300ms ease-out;
+}
+
+.collapsible__content[data-expanded] {
+	animation: slideDown 300ms ease-out;
+}
+
+@keyframes slideDown {
+	from {
+		height: 0;
+	}
+	to {
+		height: var(--kb-collapsible-content-height);
+	}
+}
+
+@keyframes slideUp {
+	from {
+		height: var(--kb-collapsible-content-height);
+	}
+	to {
+		height: 0;
+	}
+}
+```
+
+## API Reference
+
+### Collapsible
+
+`Collapsible` is equivalent to the `Root` import from `@kobalte/core/collapsible` (and deprecated `Collapsible.Root`).
+
+| Prop         | Description                                                                                                                                                     |
+| :----------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| open         | `boolean` <br/> The controlled open state of the collapsible.                                                                                                   |
+| defaultOpen  | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                          |
+| onOpenChange | `(open: boolean) => void` <br/> Event handler called when the open state of the collapsible changes.                                                            |
+| disabled     | `boolean` <br/> Whether the collapsible is disabled.                                                                                                            |
+| forceMount   | `boolean` <br/> Used to force mounting the collapsible content when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+| Data attribute | Description                                |
+| :------------- | :----------------------------------------- |
+| data-expanded  | Present when the collapsible is expanded.  |
+| data-closed    | Present when the collapsible is collapsed. |
+| data-disabled  | Present when the collapsible is disabled.  |
+
+`Collapsible.Trigger` and `Collapsible.Content` share the same data-attributes.
+
+## Rendered elements
+
+| Component             | Default rendered element |
+| :-------------------- | :----------------------- |
+| `Collapsible`         | `div`                    |
+| `Collapsible.Trigger` | `button`                 |
+| `Collapsible.Content` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description                                                 |
+| :--------------- | :---------------------------------------------------------- |
+| <kbd>Space</kbd> | When focus is on the trigger, opens/closes the collapsible. |
+| <kbd>Enter</kbd> | When focus is on the trigger, opens/closes the collapsible. |

@@ -1,6 +1,6 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, omit } from "solid-js";
+import { createMemo, createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -17,7 +17,7 @@ export interface ChipRootOptions {
 }
 
 export interface ChipRootCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	/** Whether the chip is disabled. */
 	disabled: boolean | undefined;
 	onClick?: JSX.EventHandlerUnion<T, MouseEvent>;
@@ -47,7 +47,7 @@ export function ChipRoot<T extends ValidComponent = "span">(
 		ownedWrite: true,
 	});
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{ translations: CHIP_INTL_TRANSLATIONS },
 		props as ChipRootProps,
 	);
@@ -109,7 +109,7 @@ export function ChipRoot<T extends ValidComponent = "span">(
 		<ChipContext value={context}>
 			<Polymorphic<ChipRootRenderProps>
 				as="span"
-				ref={mergeRefs(setRef, mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				disabled={isNativeButton() ? disabled() : undefined}
 				role={!isNativeInteractive() && isClickable() ? "button" : undefined}
 				tabindex={

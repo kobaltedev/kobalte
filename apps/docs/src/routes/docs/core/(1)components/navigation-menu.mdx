@@ -1,0 +1,713 @@
+---
+title: Navigation Menu
+badges:
+  - icon: npm
+    label: "Since v0.13.3"
+  - label: "@kobalte/core/navigation-menu"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/navigation-menu"
+  - icon: aria
+    label: "Menubar"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/menubar/"
+---
+
+import { BasicExample, AnimationExample } from "../../../../examples/navigation-menu";
+
+# {frontmatter.title}
+
+A collection of links for navigating websites.
+
+## Import
+
+```ts
+import { NavigationMenu } from "@kobalte/core/navigation-menu";
+// or
+import { Root, Menu, ... } from "@kobalte/core/navigation-menu";
+```
+
+## Features
+
+- Follows the [WAI-ARIA Menu and Menubar](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/) design pattern.
+- Supports modal and non-modal modes.
+- Supports submenus.
+- Supports items, labels, groups of items.
+- Supports checkable items (single or multiple) with optional indeterminate state.
+- Support disabled items.
+- Complex item labeling support for accessibility.
+- Keyboard opening and navigation support.
+- Automatic scrolling support during keyboard navigation.
+- Typeahead to allow focusing items by typing text.
+- Optionally render a pointing arrow.
+- Focus is fully managed.
+
+## Anatomy
+
+The navigation menu consists of:
+
+- **NavigationMenu:** The root container for a NavigationMenu.
+- **NavigationMenu.Viewport:** Contains the menu rendered by the open menu.
+- **NavigationMenu.Arrow:** An optional arrow element to render alongside the viewport.
+
+The menu consists of:
+
+- **NavigationMenu.Menu:** The container of each menu.
+- **NavigationMenu.Trigger:** The button that toggles the menu.
+- **NavigationMenu.Icon:** A small icon that can be displayed inside the menu trigger as a visual affordance for the fact it can be open.
+- **NavigationMenu.Portal:** Portals its children into the `NavigationMenu.Viewport` when the menu is open.
+- **NavigationMenu.Content:** Contains the content to be rendered when the menu is open.
+- **NavigationMenu.Separator:** Used to visually separate items in the menu.
+- **NavigationMenu.Group:** Used to group multiple items. Use in conjunction with `NavigationMenu.GroupLabel` to ensure good accessibility via automatic labelling.
+- **NavigationMenu.GroupLabel:** Used to render the label of a group. It won't be focusable using arrow keys.
+- **NavigationMenu.Sub:** Contains all the parts of a submenu.
+- **NavigationMenu.SubTrigger:** An item that opens a submenu. Must be rendered inside `NavigationMenu.Sub`.
+- **NavigationMenu.SubContent:** The component that pops out when a submenu is open. Must be rendered inside `NavigationMenu.Sub`.
+
+The menu item consists of:
+
+- **NavigationMenu.Item:** An item of the select.
+- **NavigationMenu.ItemLabel:** An accessible label to be announced for the item.
+- **NavigationMenu.ItemDescription:** An optional accessible description to be announced for the item.
+- **NavigationMenu.ItemIndicator:** The visual indicator rendered when the item is checked.
+
+The checkable menu item consists of:
+
+- **NavigationMenu.RadioGroup:** Used to group multiple `NavigationMenu.RadioItem`s and manage the selection.
+- **NavigationMenu.RadioItem:** An item that can be controlled and rendered like a radio.
+- **NavigationMenu.CheckboxItem:** An item that can be controlled and rendered like a checkbox.
+
+```tsx
+<NavigationMenu>
+	<NavigationMenu.Menu>
+		<NavigationMenu.Trigger>
+			<NavigationMenu.Icon />
+		</NavigationMenu.Trigger>
+
+		<NavigationMenu.Portal>
+			<NavigationMenu.Content>
+				<NavigationMenu.Item>
+					<NavigationMenu.ItemLabel />
+					<NavigationMenu.ItemDescription />
+				</NavigationMenu.Item>
+
+				<NavigationMenu.Group>
+					<NavigationMenu.GroupLabel />
+					<NavigationMenu.Item />
+				</NavigationMenu.Group>
+
+				<NavigationMenu.CheckboxItem>
+					<NavigationMenu.ItemIndicator />
+				</NavigationMenu.CheckboxItem>
+
+				<NavigationMenu.RadioGroup>
+					<NavigationMenu.RadioItem>
+						<NavigationMenu.ItemIndicator />
+					</NavigationMenu.RadioItem>
+				</NavigationMenu.RadioGroup>
+
+				<NavigationMenu.Sub>
+					<NavigationMenu.SubTrigger />
+					<NavigationMenu.Portal>
+						<NavigationMenu.SubContent />
+					</NavigationMenu.Portal>
+				</NavigationMenu.Sub>
+
+				<NavigationMenu.Separator />
+			</NavigationMenu.Content>
+		</NavigationMenu.Portal>
+	</NavigationMenu.Menu>
+
+	<NavigationMenu.Viewport>
+		<NavigationMenu.Arrow />
+	</NavigationMenu.Viewport>
+</NavigationMenu>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/navigation-menu.tsx#L8-L259"
+
+```
+
+```css title="style.css" tab file="../../../../examples/navigation-menu.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Viewport size
+
+Since the viewport content has a position of `absolute` to allow animating, Kobalte exports a custom CSS variable `--kb-navigation-menu-viewport-height` and `--kb-navigation-menu-viewport-width`.
+The height and width will be copied from the active `NavigationMenu.Content`, which can either be set using CSS or automatically calculated based on it's content.
+Combined with a transition CSS rule the size can be animated.
+
+```css {3-4}
+/* style.css */
+.navigation-menu__viewport {
+	width: var(--kb-navigation-menu-viewport-width);
+	height: var(--kb-navigation-menu-viewport-height);
+	transition:
+		width,
+		height,
+		250ms ease;
+}
+```
+
+### Link trigger
+
+To make one of the navigation menu triggers a link instead of opening a menu, omit the `NavigationMenu.Menu` and set `as="a"` on the `NavigationMenu.Trigger`.
+
+```tsx {9}
+<NavigationMenu>
+	<NavigationMenu.Menu>
+		<NavigationMenu.Trigger>Opens a regular menu</NavigationMenu.Trigger>
+		<NavigationMenu.Portal>
+			<NavigationMenu.Content>...</NavigationMenu.Content>
+		</NavigationMenu.Portal>
+	</NavigationMenu.Menu>
+
+	<NavigationMenu.Trigger as="a" href="https://kobalte.dev">
+		Opens a link on click and enter
+	</NavigationMenu.Trigger>
+
+	<NavigationMenu.Viewport>
+		<NavigationMenu.Arrow />
+	</NavigationMenu.Viewport>
+</NavigationMenu>
+```
+
+### Origin-aware animations
+
+We expose a CSS custom property `--kb-menu-content-transform-origin` which can be used to animate the viewport from its computed origin.
+
+```css {3}
+/* style.css */
+.navigation-menu__viewport {
+	transform-origin: var(--kb-menu-content-transform-origin);
+	animation: viewportHide 250ms ease-in forwards;
+}
+
+.navigation-menu__viewport[data-expanded] {
+	animation: viewportShow 250ms ease-out;
+}
+
+@keyframes viewportShow {
+	from {
+		opacity: 0;
+		transform: rotateX(-20deg) scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: rotateX(0deg) scale(1);
+	}
+}
+@keyframes viewportHide {
+	from {
+		opacity: 1;
+		transform: rotateX(0deg) scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: rotateX(-10deg) scale(0.96);
+	}
+}
+```
+
+### Content animations
+
+For animating the content of the viewport we apply the attribute `data-motion` of type `"to-start" | "to-end" | "from-start" | "from-end"` on the `NavigationMenu.Content`.
+
+```css
+/* style.css */
+.navigation-menu__content[data-motion="from-start"] {
+	animation-name: enterFromLeft;
+}
+.navigation-menu__content[data-motion="from-end"] {
+	animation-name: enterFromRight;
+}
+.navigation-menu__content[data-motion="to-start"] {
+	animation-name: exitToLeft;
+}
+.navigation-menu__content[data-motion="to-end"] {
+	animation-name: exitToRight;
+}
+
+@keyframes enterFromRight {
+	from {
+		opacity: 0;
+		transform: translateX(200px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes enterFromLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-200px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes exitToRight {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateX(200px);
+	}
+}
+
+@keyframes exitToLeft {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateX(-200px);
+	}
+}
+```
+
+:::preview
+
+<AnimationExample />
+
+---
+
+```tsx title="index.tsx" tab
+import { NavigationMenu } from "@kobalte/core/navigation-menu";
+
+import "./style.css";
+
+export function App() {
+	return (
+		<NavigationMenu class="navigation-menu__root" orientation={orientation()}>
+			<NavigationMenu.Menu>
+				<NavigationMenu.Trigger class="navigation-menu__trigger">
+					Learn{" "}
+					<NavigationMenu.Icon class="navigation-menu__trigger-indicator">
+						<ChevronDownIcon />
+					</NavigationMenu.Icon>
+				</NavigationMenu.Trigger>
+				<NavigationMenu.Portal>
+					<NavigationMenu.Content class="navigation-menu__content">
+						Learn Content
+					</NavigationMenu.Content>
+				</NavigationMenu.Portal>
+			</NavigationMenu.Menu>
+
+			<NavigationMenu.Menu>
+				<NavigationMenu.Trigger class="navigation-menu__trigger">
+					Overview{" "}
+					<NavigationMenu.Icon class="navigation-menu__trigger-indicator">
+						<ChevronDownIcon />
+					</NavigationMenu.Icon>
+				</NavigationMenu.Trigger>
+				<NavigationMenu.Portal>
+					<NavigationMenu.Content class="navigation-menu__content">
+						Overview Content
+					</NavigationMenu.Content>
+				</NavigationMenu.Portal>
+			</NavigationMenu.Menu>
+
+			<NavigationMenu.Trigger
+				class="navigation-menu__trigger"
+				as="a"
+				href="https://github.com/kobaltedev/kobalte"
+				target="_blank"
+			>
+				GitHub
+			</NavigationMenu.Trigger>
+
+			<NavigationMenu.Viewport class="navigation-menu__viewport">
+				<NavigationMenu.Arrow class="navigation-menu__arrow" />
+			</NavigationMenu.Viewport>
+		</NavigationMenu>
+	);
+}
+```
+
+```css title="style.css" tab
+/* This snippet only includes the minimum to get the behavior working */
+
+.navigation-menu__viewport {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: var(--kb-navigation-menu__viewport-width);
+	height: var(--kb-navigation-menu__viewport-height);
+	z-index: 1000;
+	opacity: 0;
+	overflow-x: clip;
+	overflow-y: visible;
+	transform-origin: var(--kb-menu-content-transform-origin);
+	transition:
+		width,
+		height,
+		250ms ease;
+	animation: viewportHide 250ms ease-in forwards;
+	pointer-events: none;
+}
+
+.navigation-menu__viewport[data-expanded] {
+	animation: viewportShow 250ms ease-out;
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.navigation-menu__content {
+	position: absolute;
+	top: 0;
+	left: 0;
+	box-sizing: border-box;
+	animation-duration: 250ms;
+	animation-timing-function: ease;
+	animation-fill-mode: forwards;
+	pointer-events: none;
+}
+
+.navigation-menu__content[data-expanded] {
+	pointer-events: auto;
+}
+
+.navigation-menu__content[data-motion="from-start"] {
+	animation-name: enterFromLeft;
+}
+.navigation-menu__content[data-motion="from-end"] {
+	animation-name: enterFromRight;
+}
+.navigation-menu__content[data-motion="to-start"] {
+	animation-name: exitToLeft;
+}
+.navigation-menu__content[data-motion="to-end"] {
+	animation-name: exitToRight;
+}
+
+.navigation-menu__arrow {
+	transition: transform 250ms;
+}
+
+@keyframes viewportShow {
+	from {
+		opacity: 0;
+		transform: rotateX(-20deg) scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: rotateX(0deg) scale(1);
+	}
+}
+@keyframes viewportHide {
+	from {
+		opacity: 1;
+		transform: rotateX(0deg) scale(1);
+	}
+	to {
+		opacity: 0;
+		transform: rotateX(-10deg) scale(0.96);
+	}
+}
+
+@keyframes enterFromRight {
+	from {
+		opacity: 0;
+		transform: translateX(200px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes enterFromLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-200px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes exitToRight {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateX(200px);
+	}
+}
+
+@keyframes exitToLeft {
+	from {
+		opacity: 1;
+		transform: translateX(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateX(-200px);
+	}
+}
+```
+
+:::
+
+## API Reference
+
+### NavigationMenu
+
+`NavigationMenu` is equivalent to the `Root` import from `@kobalte/core/NavigationMenu`.
+
+| Prop              | Description                                                                                                                                                           |
+| :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| defaultValue      | `string` <br/> The value of the menu that should be open when initially rendered. Use when you do not need to control the value state.                                |
+| value             | `string` <br/> The controlled value of the menu to open. Should be used in conjunction with onValueChange.                                                            |
+| onValueChange     | `(value: string \| undefined \| null) => void` <br/> Event handler called when the value changes.                                                                     |
+| loop              | `boolean` <br/> When true, keyboard navigation will loop from last item to first, and vice versa.                                                                     |
+| delayDuration     | `number` <br/> Delay before the menu opens on hover (default 200).                                                                                                    |
+| skipDelayDuration | `boolean` <br/> Open immediately if hovered again within delay (default 300).                                                                                         |
+| loop              | `boolean` <br/> When true, keyboard navigation will loop from last item to first, and vice versa.                                                                     |
+| focusOnAlt        | `boolean` <br/> When true, click on alt by itself will focus this NavigationMenu (some browsers interfere).                                                           |
+| forceMount        | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### NavigationMenu.Viewport
+
+| Prop                 | Description                                                                                                                                                                                                         |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
+| onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
+| onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
+
+### NavigationMenu.Arrow
+
+| Prop | Description                           |
+| :--- | :------------------------------------ |
+| size | `number` <br/> The size of the arrow. |
+
+### NavigationMenu.Menu
+
+| Prop          | Description                                                                                                                                                                                                                                                                                                                                    |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| onOpenChange  | `(open: boolean) => void` <br/> Event handler called when the open state of the menu changes.                                                                                                                                                                                                                                                  |
+| id            | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used.                                                                                                                                                                  |
+| modal         | `boolean` <br/> Whether the menu should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the menu content. <br/> - elements outside the menu content will not be visible for screen readers. |
+| preventScroll | `boolean` <br/> Whether the scroll should be locked even if the menu is not modal.                                                                                                                                                                                                                                                             |
+| forceMount    | `boolean` <br/> Used to force mounting the menu (portal and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                                          |
+| value         | `string` <br/> A unique value that associates the item with an active value when the navigation menu is controlled. This prop is managed automatically when uncontrolled.                                                                                                                                                                      |
+
+`NavigationMenu.Menu` also accepts the following props to customize the placement of the `NavigationMenu.Content`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                                                                                                          |
+| :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| placement        | `Placement` <br/> The placement of the menu content.                                                                                                                                                                                                                                                                                                                 |
+| gutter           | `number` <br/> The distance between the menu content and the trigger element. By default, it's 0 plus half of the arrow offset, if it exists.                                                                                                                                                                                                                        |
+| shift            | `number` <br/> The skidding of the menu content along the trigger element.                                                                                                                                                                                                                                                                                           |
+| flip             | `boolean \| string` <br/> Controls the behavior of the menu content when it overflows the viewport:<br/> - If a `boolean`, specifies whether the menu content should flip to the opposite side when it overflows.<br/> - If a `string`, indicates the preferred fallback placements when it overflows.<br/>The placements must be spaced-delimited, e.g. "top left". |
+| slide            | `boolean` <br/> Whether the menu content should slide when it overflows.                                                                                                                                                                                                                                                                                             |
+| overlap          | `boolean` <br/> Whether the menu content can overlap the trigger element when it overflows.                                                                                                                                                                                                                                                                          |
+| sameWidth        | `boolean` <br/> Whether the menu content should have the same width as the trigger element. This will be exposed to CSS as `--kb-popper-anchor-width`.                                                                                                                                                                                                               |
+| fitViewport      | `boolean` <br/> Whether the menu content should fit the viewport. If this is set to true, the menu content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.                                                                                           |
+| hideWhenDetached | `boolean` <br/> Whether to hide the menu content when the trigger element becomes occluded.                                                                                                                                                                                                                                                                          |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                                |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the menu content corner.                                                                                                                                                                                                                                                                                    |
+| overflowPadding  | `number` <br/> The minimum padding between the menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                    |
+
+### NavigationMenu.Trigger
+
+| Prop     | Description                                                          |
+| :------- | :------------------------------------------------------------------- |
+| disabled | `boolean` <br/> Whether the context menu trigger is disabled or not. |
+
+| Data attribute | Description                           |
+| :------------- | :------------------------------------ |
+| data-expanded  | Present when the menu is open.        |
+| data-closed    | Present when the menu is close.       |
+| data-disabled  | Present when the trigger is disabled. |
+
+`NavigationMenu.Icon`, `NavigationMenu.Content`, `NavigationMenu.SubTrigger` and `NavigationMenu.SubContent` share the same `data-expanded` attribute.
+
+### NavigationMenu.Content
+
+| Prop                 | Description                                                                                                                                                                                                         |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| onOpenAutoFocus      | `(event: Event) => void` <br/> Event handler called when focus moves into the component after opening. It can be prevented by calling `event.preventDefault`.                                                       |
+| onCloseAutoFocus     | `(event: Event) => void` <br/> Event handler called when focus moves to the trigger after closing. It can be prevented by calling `event.preventDefault`.                                                           |
+| onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
+| onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
+| onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
+
+### NavigationMenu.Item
+
+| Prop          | Description                                                                                                                                                                                                                                                                                                            |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `NavigationMenu.ItemLabel` part if provided, or fallback to the .textContent of the `NavigationMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| disabled      | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                                   |
+| closeOnSelect | `boolean` <br/> Whether the menu should close when the item is activated.                                                                                                                                                                                                                                              |
+| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                         |
+
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-highlighted | Present when the item is highlighted. |
+
+`NavigationMenu.ItemLabel`, `NavigationMenu.ItemDescription` and `NavigationMenu.ItemIndicator` shares the same data-attributes.
+
+### NavigationMenu.ItemIndicator
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### NavigationMenu.RadioGroup
+
+| Prop         | Description                                                                                                                                                          |
+| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value        | `string` <br/> The controlled value of the menu radio item to check.                                                                                                 |
+| defaultValue | `string` <br/> The value of the menu radio item that should be checked when initially rendered. Useful when you do not need to control the state of the radio group. |
+| onChange     | `(value: string) => void` <br/> Event handler called when the value changes.                                                                                         |
+| disabled     | `boolean` <br/> Whether the radio group is disabled or not.                                                                                                          |
+
+### NavigationMenu.RadioItem
+
+| Prop          | Description                                                                                                                                                                                                                                                                                                            |
+| :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value         | `string` <br/> The value of the menu item radio.                                                                                                                                                                                                                                                                       |
+| textValue     | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `NavigationMenu.ItemLabel` part if provided, or fallback to the .textContent of the `NavigationMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| disabled      | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                                   |
+| closeOnSelect | `boolean` <br/> Whether the menu should close when the item is checked.                                                                                                                                                                                                                                                |
+| onSelect      | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                         |
+
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-checked     | Present when the item is checked.     |
+| data-highlighted | Present when the item is highlighted. |
+
+### NavigationMenu.CheckboxItem
+
+| Prop           | Description                                                                                                                                                                                                                                                                                                            |
+| :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| checked        | `boolean` <br/> The controlled checked state of the item.                                                                                                                                                                                                                                                              |
+| defaultChecked | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                                                                                                                                                           |
+| onChange       | `(checked: boolean) => void` <br/> Event handler called when the checked state of the item changes.                                                                                                                                                                                                                    |
+| textValue      | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `NavigationMenu.ItemLabel` part if provided, or fallback to the .textContent of the `NavigationMenu.Item`. Use this when the content is complex, or you have non-textual content inside. |
+| indeterminate  | `boolean` <br/> Whether the item is in an indeterminate state.                                                                                                                                                                                                                                                         |
+| disabled       | `boolean` <br/> Whether the item is disabled or not.                                                                                                                                                                                                                                                                   |
+| closeOnSelect  | `boolean` <br/> Whether the menu should close when the item is checked/unchecked.                                                                                                                                                                                                                                      |
+| onSelect       | `() => void` <br/> Event handler called when the user selects an item (via mouse or keyboard).                                                                                                                                                                                                                         |
+
+| Data attribute     | Description                                         |
+| :----------------- | :-------------------------------------------------- |
+| data-disabled      | Present when the item is disabled.                  |
+| data-indeterminate | Present when the item is in an indeterminate state. |
+| data-checked       | Present when the item is checked.                   |
+| data-highlighted   | Present when the item is highlighted.               |
+
+### NavigationMenu.Sub
+
+| Prop         | Description                                                                                                            |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------- |
+| open         | `boolean` <br/> The controlled open state of the sub menu.                                                             |
+| defaultOpen  | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state. |
+| onOpenChange | `(open: boolean) => void` <br/> Event handler called when the open state of the sub menu changes.                      |
+
+`NavigationMenu.Sub` also accepts the following props to customize the placement of the `NavigationMenu.SubContent`.
+
+| Prop             | Description                                                                                                                                                                                                                                                                        |
+| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| getAnchorRect    | `(anchor?: HTMLElement) => AnchorRect  \| undefined` <br/> Function that returns the trigger element's DOMRect.                                                                                                                                                                    |
+| gutter           | `number` <br/> The distance between the sub menu content and the trigger element. By default, it's 0 plus half of the arrow offset, if it exists.                                                                                                                                  |
+| shift            | `number` <br/> The skidding of the sub menu content along the trigger element.                                                                                                                                                                                                     |
+| slide            | `boolean` <br/> Whether the sub menu content should slide when it overflows.                                                                                                                                                                                                       |
+| overlap          | `boolean` <br/> Whether the sub menu content can overlap the trigger element when it overflows.                                                                                                                                                                                    |
+| fitViewport      | `boolean` <br/> Whether the sub menu content should fit the viewport. If this is set to true, the sub menu content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`. |
+| hideWhenDetached | `boolean` <br/> Whether to hide the sub menu content when the trigger element becomes occluded.                                                                                                                                                                                    |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                              |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the sub menu content corner.                                                                                                                                                                                              |
+| overflowPadding  | `number` <br/> The minimum padding between the sub menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                              |
+
+### NavigationMenu.SubTrigger
+
+| Prop      | Description                                                                                                                                                                                                                              |
+| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| textValue | `string` <br/> Optional text used for typeahead purposes. By default, the typeahead behavior will use the .textContent of the `NavigationMenu.SubTrigger`. Use this when the content is complex, or you have non-textual content inside. |
+| disabled  | `boolean` <br/> Whether the sub menu trigger is disabled or not.                                                                                                                                                                         |
+
+| Data attribute   | Description                           |
+| :--------------- | :------------------------------------ |
+| data-disabled    | Present when the item is disabled.    |
+| data-highlighted | Present when the item is highlighted. |
+
+### NavigationMenu.SubContent
+
+| Prop                 | Description                                                                                                                                                                                                         |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
+| onPointerDownOutside | `(event: PointerDownOutsideEvent) => void` <br/> Event handler called when a pointer event occurs outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                       |
+| onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
+| onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
+
+## Rendered elements
+
+| Component                        | Default rendered element |
+| :------------------------------- | :----------------------- |
+| `NavigationMenu`                 | `ul`                     |
+| `NavigationMenu.Viewport`        | `li`                     |
+| `NavigationMenu.Arrow`           | `div`                    |
+| `NavigationMenu.Menu`            | none                     |
+| `NavigationMenu.Trigger`         | `div`                    |
+| `NavigationMenu.Icon`            | `div`                    |
+| `NavigationMenu.Portal`          | `Portal`                 |
+| `NavigationMenu.Content`         | `ul`                     |
+| `NavigationMenu.Separator`       | `hr`                     |
+| `NavigationMenu.Group`           | `div`                    |
+| `NavigationMenu.GroupLabel`      | `span`                   |
+| `NavigationMenu.Sub`             | none                     |
+| `NavigationMenu.SubTrigger`      | `div`                    |
+| `NavigationMenu.SubContent`      | `div`                    |
+| `NavigationMenu.Item`            | `a`                      |
+| `NavigationMenu.ItemLabel`       | `div`                    |
+| `NavigationMenu.ItemDescription` | `div`                    |
+| `NavigationMenu.ItemIndicator`   | `div`                    |
+| `NavigationMenu.RadioGroup`      | `div`                    |
+| `NavigationMenu.RadioItem`       | `div`                    |
+| `NavigationMenu.CheckboxItem`    | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                                          | Description                                                                                      |
+| :------------------------------------------- | :----------------------------------------------------------------------------------------------- |
+| <kbd>Space</kbd>                             | When focus is on an item, activates the item.                                                    |
+| <kbd>Enter</kbd>                             | When focus is on an item, activates the item.                                                    |
+| <kbd>ArrowDown</kbd>                         | When focus is on an item, moves focus to the next item.                                          |
+| <kbd>ArrowUp</kbd>                           | When focus is on an item, moves focus to the previous item.                                      |
+| <kbd>ArrowRight</kbd>                        | When focus is on an item (not sub menu trigger), moves focus to the next menu.                   |
+| <kbd>ArrowLeft</kbd>                         | When focus is on an item (not sub menu item), moves focus to the previous menu.                  |
+| <kbd>ArrowRight</kbd> / <kbd>ArrowLeft</kbd> | When focus is on a sub menu trigger, opens or closes the submenu depending on reading direction. |
+| <kbd>Home</kbd>                              | When focus is on an item, moves focus to first item.                                             |
+| <kbd>End</kbd>                               | When focus is on an item, moves focus to last item.                                              |
+| <kbd>Esc</kbd>                               | Closes the menu.                                                                                 |

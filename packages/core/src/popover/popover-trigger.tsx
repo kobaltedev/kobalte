@@ -6,20 +6,20 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/src/useOverlayTrigger.ts
  */
 
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit } from "solid-js";
+import { type Component, omit, type Ref } from "solid-js";
 
-import * as Button from "../button";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type PopoverDataSet, usePopoverContext } from "./popover-context";
+import * as Button from "../button/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { type PopoverDataSet, usePopoverContext } from "./popover-context.tsx";
 
 export interface PopoverTriggerOptions {}
 
 export interface PopoverTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
@@ -68,7 +68,7 @@ export function PopoverTrigger<T extends ValidComponent = "button">(
 				Omit<PopoverTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, p.ref)}
+			ref={[context.setTriggerRef, p.ref]}
 			aria-haspopup="dialog"
 			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}

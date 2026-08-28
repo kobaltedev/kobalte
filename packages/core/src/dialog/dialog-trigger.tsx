@@ -6,13 +6,13 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-aria/overlays/src/useOverlayTrigger.ts
  */
 
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
 
-import * as Button from "../button";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useDialogContext } from "./dialog-context";
+import * as Button from "../button/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useDialogContext } from "./dialog-context.tsx";
 
 export interface DialogTriggerOptions {}
 
@@ -57,7 +57,7 @@ export function DialogTrigger<T extends ValidComponent = "button">(
 				Omit<DialogTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, p.ref)}
+			ref={[context.setTriggerRef, p.ref]}
 			aria-haspopup="dialog"
 			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}

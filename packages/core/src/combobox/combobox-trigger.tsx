@@ -7,26 +7,24 @@
  * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-	OverrideComponentProps,
-} from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit } from "solid-js";
+import { type Component, merge, omit, type Ref } from "solid-js";
 
-import * as Button from "../button";
-import { useFormControlContext } from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
+import * as Button from "../button/index.tsx";
+import { useFormControlContext } from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import {
+	type ComboboxDataSet,
+	useComboboxContext,
+} from "./combobox-context.tsx";
 
 export interface ComboboxTriggerOptions {}
 
 export interface ComboboxTriggerCommonProps<T extends HTMLElement = HTMLElement>
 	extends Button.ButtonRootCommonProps<T> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	"aria-labelledby": string | undefined;
@@ -52,7 +50,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("trigger"),
 		},
@@ -120,7 +118,7 @@ export function ComboboxTrigger<T extends ValidComponent = "button">(
 				Omit<ComboboxTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
+			ref={[context.setTriggerRef, mergedProps.ref]}
 			disabled={isDisabled()}
 			tabindex={-1}
 			aria-haspopup="listbox"

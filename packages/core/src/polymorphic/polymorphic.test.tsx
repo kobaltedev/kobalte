@@ -9,7 +9,7 @@
 import { render } from "@solidjs/testing-library";
 import { expect } from "vitest";
 
-import { Polymorphic } from "./polymorphic";
+import { Polymorphic } from "./polymorphic.tsx";
 
 describe("Polymorphic", () => {
 	it("should render the 'as' string prop", () => {

@@ -6,12 +6,6 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/dialog/src/Dialog.tsx
  */
 
-import {
-	contains,
-	focusWithoutScrolling,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -22,14 +16,21 @@ import {
 
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, Show } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useDialogContext } from "./dialog-context";
+} from "../dismissable-layer/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useDialogContext } from "./dialog-context.tsx";
 
 export interface DialogContentOptions {
 	/**
@@ -91,11 +92,13 @@ export type DialogContentProps<
 export function DialogContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, DialogContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useDialogContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("content"),
 		},
@@ -155,7 +158,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 		// Prevent dismissing when clicking the trigger.
 		// As the trigger is already setup to close, without doing so would
 		// cause it to close and immediately open.
-		if (contains(context.triggerRef(), e.target as HTMLElement)) {
+		if (context.triggerRef()?.contains(e.target as HTMLElement)) {
 			e.preventDefault();
 		}
 
@@ -173,11 +176,11 @@ export function DialogContent<T extends ValidComponent = "div">(
 
 		if (context.modal()) {
 			e.preventDefault();
-			focusWithoutScrolling(context.triggerRef());
+			context.triggerRef()?.focus({ preventScroll: true });
 		} else {
 			if (!e.defaultPrevented) {
 				if (!hasInteractedOutside) {
-					focusWithoutScrolling(context.triggerRef());
+					context.triggerRef()?.focus({ preventScroll: true });
 				}
 
 				// Always prevent autofocus because we either focus manually or want user agent focus
@@ -201,12 +204,12 @@ export function DialogContent<T extends ValidComponent = "div">(
 	});
 
 	createPreventScroll({
-		element: () => ref ?? undefined,
+		element: ref,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => context.isOpen() && context.modal(),
 		onInitialFocus: mergedProps.onOpenAutoFocus,
 		onFinalFocus: onCloseAutoFocus,
@@ -224,10 +227,13 @@ export function DialogContent<T extends ValidComponent = "div">(
 					Omit<DialogContentRenderProps, keyof DismissableLayerRenderProps>
 				>
 			>
-				ref={mergeRefs((el) => {
-					context.setContentRef(el);
-					ref = el;
-				}, mergedProps.ref)}
+				ref={[
+					(el: HTMLElement) => {
+						context.setContentRef(el);
+						setRef(el);
+					},
+					mergedProps.ref,
+				]}
 				role="dialog"
 				tabindex={-1}
 				disableOutsidePointerEvents={context.modal() && context.isOpen()}

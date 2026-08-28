@@ -45,6 +45,7 @@
 .hovercard__avatar {
 	height: 56px;
 	width: 56px;
+	border-radius: 0.5rem;
 }
 
 @keyframes contentShow {
@@ -69,20 +70,20 @@
 	}
 }
 
-[data-kb-theme="dark"] .hovercard__trigger {
+[data-theme*="dark"] .hovercard__trigger {
 	color: hsl(198 93% 60%);
 }
 
-[data-kb-theme="dark"] .hovercard__content {
+[data-theme*="dark"] .hovercard__content {
 	border: 1px solid hsl(240 5% 26%);
 	background-color: hsl(240 4% 16%);
 	box-shadow: none;
 }
 
-[data-kb-theme="dark"] .hovercard__title {
+[data-theme*="dark"] .hovercard__title {
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .hovercard__description {
+[data-theme*="dark"] .hovercard__description {
 	color: hsl(0 100% 100% / 0.7);
 }

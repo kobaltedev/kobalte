@@ -5,16 +5,16 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useFileFieldContext } from "./file-field-context";
-import { FileFieldItemContext } from "./file-field-item-context";
+} from "../polymorphic/index.tsx";
+import { useFileFieldContext } from "./file-field-context.tsx";
+import { FileFieldItemContext } from "./file-field-item-context.tsx";
 
 export interface FileFieldItemListOptions {
 	children: (file: UploadFile) => JSX.Element;
 }
 
 export interface FileFieldItemListCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface FileFieldItemListRenderProps

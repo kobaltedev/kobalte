@@ -1,6 +1,5 @@
-import { createSignal } from "solid-js";
-
 import { Drawer } from "@kobalte/core/drawer";
+import { createSignal } from "solid-js";
 import { CrossIcon } from "../components";
 import style from "./drawer.module.css";
 
@@ -81,6 +80,7 @@ export function ControlledExample() {
 						</Drawer.Description>
 						<div class={style.controlled__actions}>
 							<button
+								type="button"
 								class={style.drawer__action}
 								onClick={() => setOpen(false)}
 							>
@@ -91,6 +91,7 @@ export function ControlledExample() {
 				</Drawer.Portal>
 			</Drawer>
 			<button
+				type="button"
 				class={style.drawer__trigger}
 				onClick={() => setOpen((o) => !o)}
 			>

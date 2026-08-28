@@ -7,21 +7,24 @@
  * https://github.com/adobe/react-spectrum/blob/0af91c08c745f4bb35b6ad4932ca17a0d85dd02c/packages/@react-spectrum/textfield/src/TextArea.tsx
  */
 
-import {
-	composeEventHandlers,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+	type Ref,
+} from "solid-js";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
-import { useTextFieldContext } from "./text-field-context";
+import { useTextFieldContext } from "./text-field-context.tsx";
 import {
 	TextFieldInputBase,
 	type TextFieldInputCommonProps,
 	type TextFieldInputRenderProps,
-} from "./text-field-input";
+} from "./text-field-input.tsx";
 
 export interface TextFieldTextAreaOptions {
 	/** Whether the textarea should adjust its height when the value changes. */
@@ -34,7 +37,7 @@ export interface TextFieldTextAreaOptions {
 export interface TextFieldTextAreaCommonProps<
 	T extends HTMLElement = HTMLElement,
 > extends TextFieldInputCommonProps<T> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyPress: JSX.EventHandlerUnion<T, KeyboardEvent>;
 }
 
@@ -55,11 +58,14 @@ export type TextFieldTextAreaProps<
 export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 	props: PolymorphicProps<T, TextFieldTextAreaProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLTextAreaElement | undefined>(
+		undefined,
+		{ ownedWrite: true },
+	);
 
 	const context = useTextFieldContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("textarea"),
 		},
@@ -77,20 +83,22 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 	createEffect(
 		() => ({ autoResize: mergedProps.autoResize, value: context.value() }),
 		({ autoResize }) => {
-			if (!ref || !autoResize) return;
-			adjustHeight(ref);
+			const el = ref();
+			if (!el || !autoResize) return;
+			adjustHeight(el);
 		},
 	);
 
 	const onKeyPress = (event: KeyboardEvent) => {
+		const el = ref();
 		if (
-			ref &&
+			el &&
 			mergedProps.submitOnEnter &&
 			event.key === "Enter" &&
 			!event.shiftKey
 		) {
-			if ((ref as HTMLTextAreaElement).form) {
-				(ref as HTMLTextAreaElement).form!.requestSubmit();
+			if (el.form) {
+				el.form.requestSubmit();
 				event.preventDefault();
 			}
 		}
@@ -105,7 +113,7 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 			as="textarea"
 			aria-multiline={mergedProps.submitOnEnter ? "false" : undefined}
 			onKeyPress={composeEventHandlers([mergedProps.onKeyPress, onKeyPress])}
-			ref={mergeRefs((el) => (ref = el), mergedProps.ref) as any}
+			ref={[setRef, mergedProps.ref]}
 			{...others}
 		/>
 	);

@@ -1,4 +1,4 @@
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import {
 	type Color,
@@ -10,15 +10,15 @@ import { createMemo, createSignal, omit } from "solid-js";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
-import { useLocale } from "../i18n";
+} from "../form-control/index.ts";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { linearScale } from "../slider/utils";
-import { useColorAreaContext } from "./color-area-context";
+} from "../polymorphic/index.tsx";
+import { linearScale } from "../slider/utils.ts";
+import { useColorAreaContext } from "./color-area-context.tsx";
 
 export interface ColorAreaBackgroundOptions {}
 
@@ -213,7 +213,7 @@ export function ColorAreaBackground<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<ColorAreaBackgroundRenderProps>
 			as="div"
-			ref={mergeRefs(context.setBackgroundRef, props.ref)}
+			ref={[context.setBackgroundRef, props.ref]}
 			style={combineStyle(
 				{
 					"touch-action": "none",

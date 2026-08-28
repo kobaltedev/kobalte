@@ -1,12 +1,19 @@
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
-import { createSignal, createUniqueId, type ParentProps } from "solid-js";
-import { createDisclosureState, createRegisterId } from "../primitives";
+import {
+	createSignal,
+	createUniqueId,
+	merge,
+	type ParentProps,
+} from "solid-js";
+import {
+	createDisclosureState,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	DIALOG_INTL_TRANSLATIONS,
 	type DialogIntlTranslations,
-} from "./dialog.intl";
-import { DialogContext, type DialogContextValue } from "./dialog-context";
+} from "./dialog.intl.ts";
+import { DialogContext, type DialogContextValue } from "./dialog-context.tsx";
 
 export interface DialogRootOptions {
 	/** The localized strings of the component. */
@@ -59,7 +66,7 @@ export interface DialogRootProps extends ParentProps<DialogRootOptions> {}
 export function DialogRoot(props: DialogRootProps) {
 	const defaultId = `dialog-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			modal: true,
@@ -129,7 +136,7 @@ export function DialogRoot(props: DialogRootProps) {
 		close: disclosureState.close,
 		toggle: disclosureState.toggle,
 		setTriggerRef,
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 		registerContentId: createRegisterId(setContentId),
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),

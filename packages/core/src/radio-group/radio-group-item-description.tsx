@@ -1,21 +1,20 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, onCleanup } from "solid-js";
+import { createEffect, merge } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type RadioGroupItemDataSet,
 	useRadioGroupItemContext,
-} from "./radio-group-item-context";
+} from "./radio-group-item-context.tsx";
 
 export interface RadioGroupItemDescriptionOptions {}
 
 export interface RadioGroupItemDescriptionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
@@ -37,7 +36,7 @@ export function RadioGroupItemDescription<T extends ValidComponent = "div">(
 ) {
 	const context = useRadioGroupItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("description"),
 		},
@@ -46,9 +45,7 @@ export function RadioGroupItemDescription<T extends ValidComponent = "div">(
 
 	createEffect(
 		() => mergedProps.id,
-		(id) => {
-			onCleanup(context.registerDescription(id));
-		},
+		(id) => context.registerDescription(id),
 	);
 
 	return (

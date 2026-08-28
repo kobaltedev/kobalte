@@ -1,5 +1,4 @@
 import { FileField } from "@kobalte/core/file-field";
-
 import style from "./file-field.module.css";
 
 export function BasicExample() {
@@ -23,7 +22,7 @@ export function BasicExample() {
 			</FileField.Dropzone>
 			<FileField.HiddenInput />
 			<FileField.ItemList class={style.FileField__itemGroup}>
-				{(file) => (
+				{(_file) => (
 					<FileField.Item class={style.FileField__item}>
 						<FileField.ItemPreviewImage
 							class={style.FileField__itemPreviewImage}
@@ -79,7 +78,7 @@ export function HTMLFormExample() {
 				</FileField.Dropzone>
 				<FileField.HiddenInput name="uploaded-files" />
 				<FileField.ItemList class={style.FileField__itemGroup}>
-					{(file) => (
+					{(_file) => (
 						<FileField.Item class={style.FileField__item}>
 							<FileField.ItemPreviewImage
 								class={style.FileField__itemPreviewImage}

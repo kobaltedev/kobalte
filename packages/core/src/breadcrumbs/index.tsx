@@ -4,19 +4,19 @@ import {
 	type BreadcrumbsLinkProps,
 	type BreadcrumbsLinkRenderProps,
 	BreadcrumbsLink as Link,
-} from "./breadcrumbs-link";
+} from "./breadcrumbs-link.tsx";
 import {
 	type BreadcrumbsRootOptions,
 	type BreadcrumbsRootProps,
 	BreadcrumbsRoot as Root,
-} from "./breadcrumbs-root";
+} from "./breadcrumbs-root.tsx";
 import {
 	type BreadcrumbsSeparatorCommonProps,
 	type BreadcrumbsSeparatorOptions,
 	type BreadcrumbsSeparatorProps,
 	type BreadcrumbsSeparatorRenderProps,
 	BreadcrumbsSeparator as Separator,
-} from "./breadcrumbs-separator";
+} from "./breadcrumbs-separator.tsx";
 
 export type {
 	BreadcrumbsLinkCommonProps,
@@ -38,9 +38,9 @@ export const Breadcrumbs = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type BreadcrumbsContextValue,
 	useBreadcrumbsContext,
-} from "./breadcrumbs-context";
+} from "./breadcrumbs-context.tsx";

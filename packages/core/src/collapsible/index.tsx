@@ -4,21 +4,21 @@ import {
 	type CollapsibleContentProps,
 	type CollapsibleContentRenderProps,
 	CollapsibleContent as Content,
-} from "./collapsible-content";
+} from "./collapsible-content.tsx";
 import {
 	type CollapsibleRootCommonProps,
 	type CollapsibleRootOptions,
 	type CollapsibleRootProps,
 	type CollapsibleRootRenderProps,
 	CollapsibleRoot as Root,
-} from "./collapsible-root";
+} from "./collapsible-root.tsx";
 import {
 	type CollapsibleTriggerCommonProps,
 	type CollapsibleTriggerOptions,
 	type CollapsibleTriggerProps,
 	type CollapsibleTriggerRenderProps,
 	CollapsibleTrigger as Trigger,
-} from "./collapsible-trigger";
+} from "./collapsible-trigger.tsx";
 
 export type {
 	CollapsibleContentCommonProps,
@@ -42,9 +42,9 @@ export const Collapsible = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type CollapsibleContextValue,
 	useCollapsibleContext,
-} from "./collapsible-context";
+} from "./collapsible-context.tsx";

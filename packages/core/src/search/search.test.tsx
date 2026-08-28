@@ -11,7 +11,7 @@ import { fireEvent, render, within } from "@solidjs/testing-library";
 import { vi } from "vitest";
 
 import * as Search from ".";
-import { DebouncerTimeout } from "./utils";
+import { DebouncerTimeout } from "./utils.ts";
 
 interface DataSourceItem {
 	key: string;
@@ -210,11 +210,11 @@ describe("Search", () => {
 
 			expect(options.length).toBe(4);
 
-			options.forEach(
-				(option, index) =>
-					index > 0 &&
-					expect(option).toHaveTextContent(dataSource[index - 1].label),
-			);
+			options.forEach((option, index) => {
+				if (index > 0) {
+					expect(option).toHaveTextContent(dataSource[index - 1].label);
+				}
+			});
 
 			fireEvent.change(hiddenSelectBase, { target: { value: "FR" } });
 			await Promise.resolve();

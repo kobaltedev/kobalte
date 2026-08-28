@@ -6,28 +6,29 @@
  * https://github.com/adobe/react-spectrum/blob/main/packages/%40react-aria/meter/src/useMeter.ts
  */
 
-import { clamp, createGenerateId, mergeDefaultProps } from "@kobalte/utils";
+import { clamp } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 
-import { createNumberFormatter } from "../i18n";
+import { createNumberFormatter } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createRegisterId } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createRegisterId } from "../primitives/index.ts";
 import {
 	MeterContext,
 	type MeterContextValue,
 	type MeterDataSet,
-} from "./meter-context";
+} from "./meter-context.tsx";
 
 interface GetValueLabelParams {
 	value: number;
@@ -60,7 +61,7 @@ export interface MeterRootOptions {
 	getValueLabel?: (params: GetValueLabelParams) => string;
 }
 
-export interface MeterRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface MeterRootCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 	role: string;
 	"aria-valuenow": number | undefined;
@@ -86,7 +87,7 @@ export function MeterRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `meter-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			value: 0,
@@ -163,7 +164,7 @@ export function MeterRoot<T extends ValidComponent = "div">(
 		valueLabel,
 		labelId,
 		meterFillWidth,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerLabelId: createRegisterId(setLabelId),
 	};
 

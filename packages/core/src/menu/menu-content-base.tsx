@@ -9,9 +9,6 @@
 import {
 	callHandler,
 	composeEventHandlers,
-	contains,
-	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
@@ -26,29 +23,31 @@ import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Component,
 	createEffect,
+	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onCleanup,
-	onSettled,
+	type Ref,
 	Show,
 } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import { useLocale } from "../i18n/i18n-provider";
-import { createSelectableList } from "../list";
-import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
+} from "../dismissable-layer/index.ts";
+import { useLocale } from "../i18n/i18n-provider.tsx";
+import { createSelectableList } from "../list/index.ts";
+import { useOptionalMenubarContext } from "../menubar/menubar-context.tsx";
+import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { Popper } from "../popper";
-import { type MenuDataSet, useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
-import { MENUBAR_KEYS } from "./menu-trigger";
+} from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
+import { type MenuDataSet, useMenuContext } from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
+import { MENUBAR_KEYS } from "./menu-trigger.tsx";
 
 export interface MenuContentBaseOptions {
 	/**
@@ -92,7 +91,7 @@ export interface MenuContentBaseCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
@@ -119,7 +118,9 @@ export type MenuContentBaseProps<
 export function MenuContentBase<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuContentBaseProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
@@ -128,7 +129,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	const { direction } = useLocale();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId(`content-${createUniqueId()}`),
 		},
@@ -175,11 +176,11 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 			orientation: () =>
 				rootContext.orientation() === "horizontal" ? "vertical" : "horizontal",
 		},
-		() => ref,
+		ref,
 	);
 
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => isRootModalContent() && context.isOpen(),
 		onInitialFocus: (event) => {
 			if (optionalMenubarContext === undefined)
@@ -190,7 +191,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		// Submenu key events bubble through portals. We only care about keys in this menu.
-		if (!contains(e.currentTarget, e.target)) {
+		if (!e.currentTarget.contains(e.target)) {
 			return;
 		}
 
@@ -211,7 +212,16 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 						break;
 					case MENUBAR_KEYS.previous(direction(), rootContext.orientation()):
-						if (e.currentTarget.hasAttribute("data-closed")) break;
+						// Skip if a nested handler (e.g. `MenuSubContent`'s own
+						// "close submenu" key handling) already handled this key.
+						// `context.isOpen()`/`data-closed` can't be used here because
+						// they reflect a signal write queued by that same handler,
+						// which isn't visible until the next microtask flush.
+						if (
+							e.currentTarget.hasAttribute("data-closed") ||
+							e.defaultPrevented
+						)
+							break;
 
 						e.stopPropagation();
 						e.preventDefault();
@@ -280,7 +290,7 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 		// We don't use `event.movementX` for this check because Safari will
 		// always return `0` on a pointer event.
-		if (contains(e.currentTarget, target) && pointerXHasChanged) {
+		if (e.currentTarget.contains(target) && pointerXHasChanged) {
 			context.setPointerDir(e.clientX > lastPointerX ? "right" : "left");
 			lastPointerX = e.clientX;
 		}
@@ -295,10 +305,13 @@ export function MenuContentBase<T extends ValidComponent = "div">(
 
 	const commonAttributes: Omit<MenuContentBaseRenderProps, keyof MenuDataSet> =
 		{
-			ref: mergeRefs((el) => {
-				context.setContentRef(el);
-				ref = el;
-			}, mergedProps.ref),
+			ref: [
+				(el) => {
+					context.setContentRef(el);
+					setRef(el);
+				},
+				mergedProps.ref,
+			],
 			role: "menu",
 			get id() {
 				return mergedProps.id;

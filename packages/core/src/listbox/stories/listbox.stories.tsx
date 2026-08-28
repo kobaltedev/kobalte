@@ -7,7 +7,8 @@ import {
 	ItemLabel,
 	Root,
 	Section,
-} from "../index";
+} from "../index.tsx";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Listbox",
@@ -15,18 +16,6 @@ const meta = preview.meta({
 });
 
 export default meta;
-
-const listboxClass =
-	"w-64 rounded-md border border-slate-200 bg-white p-1 focus:outline-none font-sans";
-
-const itemClass =
-	"relative flex cursor-default select-none items-center gap-2 rounded-sm px-8 py-2 text-sm text-slate-900 outline-none data-[highlighted]:bg-blue-50 data-[highlighted]:text-blue-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50";
-
-const itemIndicatorClass =
-	"absolute left-2 flex h-4 w-4 items-center justify-center text-blue-600";
-
-const sectionLabelClass =
-	"px-2 py-1 text-xs font-semibold uppercase tracking-wide text-slate-400";
 
 const fruits = [
 	"Apple",
@@ -63,11 +52,11 @@ export const Default = meta.story({
 	name: "Default",
 	render: () => (
 		<Root
-			class={listboxClass}
+			class={style.root}
 			options={fruits}
 			renderItem={(item) => (
-				<Item item={item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{item.rawValue as string}</ItemLabel>
@@ -82,12 +71,12 @@ export const DefaultValue = meta.story({
 	name: "Default Value",
 	render: () => (
 		<Root
-			class={listboxClass}
+			class={style.root}
 			options={fruits}
 			defaultValue={["Cherry"]}
 			renderItem={(item) => (
-				<Item item={item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{item.rawValue as string}</ItemLabel>
@@ -101,22 +90,22 @@ function ControlledDemo() {
 	const [value, setValue] = createSignal<Set<string>>(new Set());
 
 	return (
-		<div class="flex flex-col gap-3 font-sans">
+		<div class={style.wrapper}>
 			<Root
-				class={listboxClass}
+				class={style.root}
 				options={fruits}
 				value={value()}
 				onChange={setValue}
 				renderItem={(item) => (
-					<Item item={item} class={itemClass}>
-						<ItemIndicator class={itemIndicatorClass}>
+					<Item item={item} class={style.item}>
+						<ItemIndicator class={style.itemIndicator}>
 							<CheckIcon />
 						</ItemIndicator>
 						<ItemLabel>{item.rawValue as string}</ItemLabel>
 					</Item>
 				)}
 			/>
-			<p class="text-xs text-slate-500">
+			<p class={style.meta}>
 				Selected: <strong>{[...value()].join(", ") || "none"}</strong>
 			</p>
 		</div>
@@ -133,23 +122,23 @@ function MultipleDemo() {
 	const [value, setValue] = createSignal<Set<string>>(new Set());
 
 	return (
-		<div class="flex flex-col gap-3 font-sans">
+		<div class={style.wrapper}>
 			<Root
-				class={listboxClass}
+				class={style.root}
 				options={fruits}
 				selectionMode="multiple"
 				value={value()}
 				onChange={setValue}
 				renderItem={(item) => (
-					<Item item={item} class={itemClass}>
-						<ItemIndicator class={itemIndicatorClass}>
+					<Item item={item} class={style.item}>
+						<ItemIndicator class={style.itemIndicator}>
 							<CheckIcon />
 						</ItemIndicator>
 						<ItemLabel>{item.rawValue as string}</ItemLabel>
 					</Item>
 				)}
 			/>
-			<p class="text-xs text-slate-500">
+			<p class={style.meta}>
 				Selected: <strong>{[...value()].join(", ") || "none"}</strong>
 			</p>
 		</div>
@@ -176,13 +165,13 @@ export const ObjectOptions = meta.story({
 	name: "Object Options",
 	render: () => (
 		<Root<Person>
-			class={listboxClass}
+			class={style.root}
 			options={people}
 			optionValue="id"
 			optionTextValue="name"
 			renderItem={(item) => (
-				<Item item={item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{(item.rawValue as Person).name}</ItemLabel>
@@ -197,18 +186,18 @@ export const WithDescriptions = meta.story({
 	name: "With Descriptions",
 	render: () => (
 		<Root<Person>
-			class={listboxClass}
+			class={style.root}
 			options={people}
 			optionValue="id"
 			optionTextValue="name"
 			renderItem={(item) => (
-				<Item item={item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
-					<div class="flex flex-col">
+					<div class={style.itemText}>
 						<ItemLabel>{(item.rawValue as Person).name}</ItemLabel>
-						<ItemDescription class="text-xs text-slate-500">
+						<ItemDescription class={style.itemDescription}>
 							{(item.rawValue as Person).role}
 						</ItemDescription>
 					</div>
@@ -231,19 +220,19 @@ export const WithGroups = meta.story({
 	name: "With Groups",
 	render: () => (
 		<Root<string, FruitGroup>
-			class={listboxClass}
+			class={style.root}
 			options={fruitGroups}
 			optionGroupChildren="fruits"
 			renderSection={(section) => (
 				<Section>
-					<span class={sectionLabelClass}>
+					<span class={style.sectionLabel}>
 						{(section.rawValue as FruitGroup).label}
 					</span>
 				</Section>
 			)}
 			renderItem={(item) => (
-				<Item item={item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{item.rawValue as string}</ItemLabel>
@@ -258,12 +247,12 @@ export const WithDisabledItems = meta.story({
 	name: "With Disabled Items",
 	render: () => (
 		<Root
-			class={listboxClass}
+			class={style.root}
 			options={fruits}
 			optionDisabled={(f) => f === "Banana" || f === "Grape"}
 			renderItem={(item) => (
-				<Item item={item} class={itemClass}>
-					<ItemIndicator class={itemIndicatorClass}>
+				<Item item={item} class={style.item}>
+					<ItemIndicator class={style.itemIndicator}>
 						<CheckIcon />
 					</ItemIndicator>
 					<ItemLabel>{item.rawValue as string}</ItemLabel>

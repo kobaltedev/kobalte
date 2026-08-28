@@ -1,16 +1,15 @@
-import { callHandler, isFunction, mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { children, omit } from "solid-js";
+import { children, merge, omit } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type RatingItemState,
 	useRatingItemContext,
-} from "./rating-item-context";
+} from "./rating-item-context.tsx";
 
 export interface RatingItemControlOptions {
 	/**
@@ -21,7 +20,7 @@ export interface RatingItemControlOptions {
 }
 
 export interface RatingItemControlCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
@@ -44,7 +43,7 @@ export function RatingItemControl<T extends ValidComponent = "div">(
 
 	const defaultId = `${context.generateId("control")}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},
@@ -79,7 +78,7 @@ interface RatingItemControlChildProps
 function RatingItemControlChild(props: RatingItemControlChildProps) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

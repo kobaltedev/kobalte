@@ -7,33 +7,28 @@
  */
 
 import { NumberParser } from "@internationalized/number";
-import {
-	callHandler,
-	getActiveElement,
-	getScrollParent,
-	getWindow,
-	isIOS,
-	isMac,
-	mergeDefaultProps,
-	mergeRefs,
-	scrollIntoViewport,
-} from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
+import { createFocusSignal } from "@solid-primitives/focus";
+import { isIOS, isMac } from "@solid-primitives/platform";
 import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
 import {
 	children,
 	createEffect,
 	createMemo,
+	createSignal,
 	createUniqueId,
+	merge,
 	omit,
+	type Ref,
 	Show,
 } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { createFilter, useLocale } from "../i18n";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import * as SpinButton from "../spin-button";
-import { useTimeFieldContext } from "./time-field-context";
-import type { SegmentType, Time } from "./types";
+import { useFormControlContext } from "../form-control/index.ts";
+import { createFilter, useLocale } from "../i18n/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import * as SpinButton from "../spin-button/index.tsx";
+import { useTimeFieldContext } from "./time-field-context.tsx";
+import type { SegmentType, Time } from "./types.ts";
 
 const PAGE_STEP = {
 	hour: 2,
@@ -49,7 +44,7 @@ export interface TimeFieldSegmentCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onBeforeInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
@@ -82,12 +77,14 @@ export type TimeFieldSegmentProps<
 export function TimeFieldSegment<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, TimeFieldSegmentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const formControlContext = useFormControlContext();
 	const context = useTimeFieldContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: `${context.generateId("segment")}-${createUniqueId()}`,
 		},
@@ -115,7 +112,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	// spin buttons cannot be focused with VoiceOver on iOS.
 	const touchPropOverrides = createMemo(() => {
 		return (
-			isIOS()
+			isIOS
 				? {
 						role: "textbox",
 						"aria-valuemax": undefined,
@@ -215,7 +212,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		// Firefox does not fire selectstart for Ctrl/Cmd + A
 		// https://bugzilla.mozilla.org/show_bug.cgi?id=1742153
-		if (e.key === "a" && (isMac() ? e.metaKey : e.ctrlKey)) {
+		if (e.key === "a" && (isMac ? e.metaKey : e.ctrlKey)) {
 			e.preventDefault();
 		}
 
@@ -321,14 +318,15 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				}
 				break;
 			case "insertCompositionText":
-				if (ref) {
+				if (ref()) {
+					const el = ref()!;
 					// insertCompositionText cannot be canceled.
 					// Record the current state of the element, so we can restore it in the `input` event below.
-					composition = ref.textContent;
+					composition = el.textContent;
 
 					// Safari gets stuck in a composition state unless we also assign to the value here.
 					// biome-ignore lint/correctness/noSelfAssign: comment above
-					ref.textContent = ref.textContent;
+					el.textContent = el.textContent;
 				}
 				break;
 			default:
@@ -344,10 +342,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 
 		const { inputType, data } = e;
 
-		if (ref && data != null) {
+		if (ref() && data != null) {
 			switch (inputType) {
 				case "insertCompositionText":
-					ref.textContent = composition;
+					ref()!.textContent = composition;
 
 					// Android sometimes fires key presses of letters as composition events. Need to handle am/pm keys here too.
 					// Can also happen e.g. with Pinyin keyboard on iOS.
@@ -365,15 +363,15 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, mergedProps.onFocus);
 
-		if (ref) {
+		if (ref()) {
 			enteredKeys = "";
-			scrollIntoViewport(ref, {
-				containingElement: getScrollParent(ref),
-			});
+			ref()!.scrollIntoView({ block: "nearest" });
 
 			// Collapse selection to start or Chrome won't fire input events.
-			const selection = getWindow(ref).getSelection();
-			selection?.collapse(ref);
+			const selection = (
+				ref()!.ownerDocument.defaultView ?? window
+			).getSelection();
+			selection?.collapse(ref()!);
 		}
 	};
 
@@ -478,9 +476,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	createEffect(
 		() => context.focusManager(),
 		(focusManager) => {
-			const element = ref;
+			const element = ref();
+			const isFocused = createFocusSignal(() => element as Element);
 			return () => {
-				if (getActiveElement(element) === element) {
+				if (isFocused()) {
 					const prev = focusManager.focusPrevious();
 					if (!prev) {
 						focusManager.focusNext();
@@ -524,7 +523,7 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	return (
 		<>
 			<SpinButton.Root
-				ref={mergeRefs((el: HTMLElement) => (ref = el), mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				tabindex={formControlContext.isDisabled() ? undefined : 0}
 				value={getValue()}
 				textValue={textValue()}

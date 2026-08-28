@@ -1,6 +1,10 @@
 export * from "@solid-primitives/controlled-signal";
-export * from "./create-collection";
-export * from "./create-disclosure-state";
-export * from "./create-register-id";
-export * from "./create-tag-name";
-export * from "./create-toggle-state";
+export * from "./create-collection/index.ts";
+export * from "./create-disclosure-state/index.ts";
+export * from "./create-register-id/index.ts";
+export * from "./create-tag-name/index.ts";
+export {
+	type CreateToggleStateProps,
+	createToggleState,
+	type ToggleState,
+} from "./create-toggle-state/index.ts";

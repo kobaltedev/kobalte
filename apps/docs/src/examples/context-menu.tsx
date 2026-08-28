@@ -1,6 +1,5 @@
 import { ContextMenu } from "@kobalte/core/context-menu";
 import { createSignal } from "solid-js";
-
 import { CheckIcon, ChevronRightIcon, DotFilledIcon } from "../components";
 import style from "./context-menu.module.css";
 
