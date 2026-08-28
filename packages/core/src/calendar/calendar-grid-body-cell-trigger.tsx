@@ -53,6 +53,7 @@ export interface CalendarGridBodyCellTriggerCommonProps<
 	children?: JSX.Element;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
+	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
 }
 
 export interface CalendarGridBodyCellTriggerRenderProps
@@ -101,7 +102,7 @@ export function CalendarGridBodyCellTrigger<T extends ValidComponent = "div">(
 
 	const p = props as CalendarGridBodyCellTriggerProps;
 
-	const others = omit(p, "disabled", "onClick", "onKeyDown");
+	const others = omit(p, "disabled", "onClick", "onKeyDown", "onFocus");
 
 	const isDisabled = () => p.disabled || context.isDisabled();
 
@@ -255,6 +256,19 @@ export function CalendarGridBodyCellTrigger<T extends ValidComponent = "div">(
 		}
 	};
 
+	// Sync `focusedDate` to whichever cell actually receives native DOM focus
+	// (e.g. via mousedown, which moves focus before `onClick` runs). Without this,
+	// clicking a cell other than the currently-focused one briefly leaves
+	// `focusedDate` pointing at the old cell while native focus has already
+	// moved, causing its highlight to flash before `onClick` catches up.
+	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
+		callHandler(e, p.onFocus);
+
+		if (e.target === untrack(ref)) {
+			rootContext.focusCell(context.date());
+		}
+	};
+
 	// Focus the button in the DOM when the date become the focused/highlighted one.
 	createEffect(
 		() => context.isFocused(),
@@ -292,6 +306,7 @@ export function CalendarGridBodyCellTrigger<T extends ValidComponent = "div">(
 			disabled={isDisabled()}
 			onClick={onClick}
 			onKeyDown={onKeyDown}
+			onFocus={onFocus}
 		>
 			{formattedDate()}
 		</Polymorphic>
