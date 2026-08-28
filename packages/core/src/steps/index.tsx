@@ -55,11 +55,11 @@ import {
 	type StepsProgressRenderProps,
 } from "./steps-progress";
 import {
+	StepsRoot as Root,
 	type StepsRootCommonProps,
 	type StepsRootOptions,
 	type StepsRootProps,
 	type StepsRootRenderProps,
-	StepsRoot as Root,
 } from "./steps-root";
 import {
 	StepsSeparator as Separator,
@@ -69,11 +69,11 @@ import {
 	type StepsSeparatorRenderProps,
 } from "./steps-separator";
 import {
-	StepsTrigger as Trigger,
 	type StepsTriggerCommonProps,
 	type StepsTriggerOptions,
 	type StepsTriggerProps,
 	type StepsTriggerRenderProps,
+	StepsTrigger as Trigger,
 } from "./steps-trigger";
 
 export type {

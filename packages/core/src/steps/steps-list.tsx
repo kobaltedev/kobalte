@@ -1,12 +1,12 @@
 import type { Orientation } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component } from "solid-js";
+import type { Component } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { Tabs, type TabsListRenderProps } from "../tabs";
 
 export interface StepsListOptions {}
 
-export interface StepsListCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface StepsListCommonProps<_T extends HTMLElement = HTMLElement> {}
 
 export interface StepsListRenderProps extends StepsListCommonProps {
 	"data-orientation": Orientation;

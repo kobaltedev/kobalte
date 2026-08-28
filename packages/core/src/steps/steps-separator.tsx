@@ -10,7 +10,7 @@ import { useStepsItemContext } from "./steps-item-context";
 export interface StepsSeparatorOptions {}
 
 export interface StepsSeparatorCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface StepsSeparatorRenderProps extends StepsSeparatorCommonProps {

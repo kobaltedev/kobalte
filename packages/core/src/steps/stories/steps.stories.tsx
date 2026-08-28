@@ -28,9 +28,11 @@ const labelClass = "text-sm font-medium text-slate-700";
 const separatorClass =
 	"h-0.5 flex-1 bg-slate-200 data-[complete]:bg-blue-500 mx-2";
 
-const separatorVerticalClass = "w-0.5 h-6 bg-slate-200 data-[complete]:bg-blue-500 ml-4";
+const separatorVerticalClass =
+	"w-0.5 h-6 bg-slate-200 data-[complete]:bg-blue-500 ml-4";
 
-const contentClass = "mt-6 rounded-md border border-slate-200 p-4 text-sm text-slate-700";
+const contentClass =
+	"mt-6 rounded-md border border-slate-200 p-4 text-sm text-slate-700";
 
 const buttonClass =
 	"rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 " +
@@ -39,7 +41,9 @@ const buttonClass =
 const STEP_TITLES = ["Account", "Profile", "Confirmation"];
 
 function StepIndicator(props: { index: number }) {
-	return <Steps.Indicator class={indicatorClass}>{props.index + 1}</Steps.Indicator>;
+	return (
+		<Steps.Indicator class={indicatorClass}>{props.index + 1}</Steps.Indicator>
+	);
 }
 
 /** A basic horizontal 3-step wizard. */
@@ -319,7 +323,11 @@ export const Controlled = meta.story({
 
 					<div class="mt-4 flex justify-between">
 						<Steps.PrevTrigger class={buttonClass}>Back</Steps.PrevTrigger>
-						<button class={buttonClass} onClick={() => setValue(0)}>
+						<button
+							type="button"
+							class={buttonClass}
+							onClick={() => setValue(0)}
+						>
 							Reset
 						</button>
 						<Steps.NextTrigger class={buttonClass}>Next</Steps.NextTrigger>

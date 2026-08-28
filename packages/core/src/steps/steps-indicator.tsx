@@ -10,7 +10,7 @@ import { useStepsItemContext } from "./steps-item-context";
 export interface StepsIndicatorOptions {}
 
 export interface StepsIndicatorCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface StepsIndicatorRenderProps extends StepsIndicatorCommonProps {

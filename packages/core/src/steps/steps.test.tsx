@@ -145,7 +145,7 @@ describe("Steps", () => {
 
 	it("linear mode blocks jumping ahead past the next step", () => {
 		const onStepInvalid = vi.fn();
-		const { getAllByTestId, getByTestId } = render(() => (
+		const { getAllByTestId } = render(() => (
 			<StepsExample linear onStepInvalid={onStepInvalid} />
 		));
 

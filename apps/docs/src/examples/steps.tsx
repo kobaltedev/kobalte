@@ -7,7 +7,7 @@ const STEP_TITLES = ["Account", "Profile", "Confirmation"];
 
 function StepIndicator(props: { index: number }) {
 	return (
-		<Steps.Indicator class={style["steps__indicator"]}>
+		<Steps.Indicator class={style.steps__indicator}>
 			{props.index + 1}
 		</Steps.Indicator>
 	);
@@ -16,32 +16,32 @@ function StepIndicator(props: { index: number }) {
 export function BasicExample() {
 	return (
 		<Steps count={3}>
-			<Steps.List class={style["steps__list"]}>
+			<Steps.List class={style.steps__list}>
 				<For each={STEP_TITLES}>
 					{(title, index) => (
-						<Steps.Item index={index()} class={style["steps__item"]}>
-							<Steps.Trigger class={style["steps__trigger"]}>
+						<Steps.Item index={index()} class={style.steps__item}>
+							<Steps.Trigger class={style.steps__trigger}>
 								<StepIndicator index={index()} />
-								<span class={style["steps__label"]}>{title}</span>
+								<span class={style.steps__label}>{title}</span>
 							</Steps.Trigger>
 							{index() < STEP_TITLES.length - 1 && (
-								<Steps.Separator class={style["steps__separator"]} />
+								<Steps.Separator class={style.steps__separator} />
 							)}
 						</Steps.Item>
 					)}
 				</For>
 			</Steps.List>
 
-			<Steps.Content index={0} class={style["steps__content"]}>
+			<Steps.Content index={0} class={style.steps__content}>
 				Create your account by choosing a username and password.
 			</Steps.Content>
-			<Steps.Content index={1} class={style["steps__content"]}>
+			<Steps.Content index={1} class={style.steps__content}>
 				Tell us a bit about yourself.
 			</Steps.Content>
-			<Steps.Content index={2} class={style["steps__content"]}>
+			<Steps.Content index={2} class={style.steps__content}>
 				Review your details and confirm.
 			</Steps.Content>
-			<Steps.CompletedContent class={style["steps__content"]}>
+			<Steps.CompletedContent class={style.steps__content}>
 				🎉 All steps completed — you're all set!
 			</Steps.CompletedContent>
 
@@ -59,16 +59,16 @@ export function ControlledExample() {
 	return (
 		<div class="flex flex-col gap-2">
 			<Steps count={3} value={value()} onChange={setValue}>
-				<Steps.List class={style["steps__list"]}>
+				<Steps.List class={style.steps__list}>
 					<For each={STEP_TITLES}>
 						{(title, index) => (
-							<Steps.Item index={index()} class={style["steps__item"]}>
-								<Steps.Trigger class={style["steps__trigger"]}>
+							<Steps.Item index={index()} class={style.steps__item}>
+								<Steps.Trigger class={style.steps__trigger}>
 									<StepIndicator index={index()} />
-									<span class={style["steps__label"]}>{title}</span>
+									<span class={style.steps__label}>{title}</span>
 								</Steps.Trigger>
 								{index() < STEP_TITLES.length - 1 && (
-									<Steps.Separator class={style["steps__separator"]} />
+									<Steps.Separator class={style.steps__separator} />
 								)}
 							</Steps.Item>
 						)}
@@ -92,15 +92,15 @@ export function ProgressExample() {
 				<Steps.Progress class={style["steps__progress-fill"]} />
 			</div>
 
-			<Steps.List class={`${style["steps__list"]} mt-4`}>
+			<Steps.List class={`${style.steps__list} mt-4`}>
 				<For each={Array.from({ length: 4 })}>
 					{(_, index) => (
-						<Steps.Item index={index()} class={style["steps__item"]}>
-							<Steps.Trigger class={style["steps__trigger"]}>
+						<Steps.Item index={index()} class={style.steps__item}>
+							<Steps.Trigger class={style.steps__trigger}>
 								<StepIndicator index={index()} />
 							</Steps.Trigger>
 							{index() < 3 && (
-								<Steps.Separator class={style["steps__separator"]} />
+								<Steps.Separator class={style.steps__separator} />
 							)}
 						</Steps.Item>
 					)}
@@ -117,9 +117,7 @@ export function ProgressExample() {
 
 export function LinearExample() {
 	const [email, setEmail] = createSignal("");
-	const [invalidMessage, setInvalidMessage] = createSignal<string | null>(
-		null,
-	);
+	const [invalidMessage, setInvalidMessage] = createSignal<string | null>(null);
 
 	const isStepValid = (index: number) => index !== 0 || email().includes("@");
 
@@ -131,23 +129,23 @@ export function LinearExample() {
 			onStepInvalid={() => setInvalidMessage("Enter a valid email first.")}
 			onChange={() => setInvalidMessage(null)}
 		>
-			<Steps.List class={style["steps__list"]}>
+			<Steps.List class={style.steps__list}>
 				<For each={STEP_TITLES}>
 					{(title, index) => (
-						<Steps.Item index={index()} class={style["steps__item"]}>
-							<Steps.Trigger class={style["steps__trigger"]}>
+						<Steps.Item index={index()} class={style.steps__item}>
+							<Steps.Trigger class={style.steps__trigger}>
 								<StepIndicator index={index()} />
-								<span class={style["steps__label"]}>{title}</span>
+								<span class={style.steps__label}>{title}</span>
 							</Steps.Trigger>
 							{index() < STEP_TITLES.length - 1 && (
-								<Steps.Separator class={style["steps__separator"]} />
+								<Steps.Separator class={style.steps__separator} />
 							)}
 						</Steps.Item>
 					)}
 				</For>
 			</Steps.List>
 
-			<Steps.Content index={0} class={style["steps__content"]}>
+			<Steps.Content index={0} class={style.steps__content}>
 				<label class="not-prose flex flex-col gap-1 text-sm">
 					Email address
 					<input
@@ -159,13 +157,13 @@ export function LinearExample() {
 					/>
 				</label>
 			</Steps.Content>
-			<Steps.Content index={1} class={style["steps__content"]}>
+			<Steps.Content index={1} class={style.steps__content}>
 				Tell us a bit about yourself.
 			</Steps.Content>
-			<Steps.Content index={2} class={style["steps__content"]}>
+			<Steps.Content index={2} class={style.steps__content}>
 				Review your details and confirm.
 			</Steps.Content>
-			<Steps.CompletedContent class={style["steps__content"]}>
+			<Steps.CompletedContent class={style.steps__content}>
 				🎉 All steps completed — you're all set!
 			</Steps.CompletedContent>
 
@@ -184,34 +182,34 @@ export function LinearExample() {
 export function SkippableExample() {
 	return (
 		<Steps count={4} isStepSkippable={(index) => index === 2}>
-			<Steps.List class={style["steps__list"]}>
+			<Steps.List class={style.steps__list}>
 				<For each={Array.from({ length: 4 })}>
 					{(_, index) => (
-						<Steps.Item index={index()} class={style["steps__item"]}>
-							<Steps.Trigger class={style["steps__trigger"]}>
+						<Steps.Item index={index()} class={style.steps__item}>
+							<Steps.Trigger class={style.steps__trigger}>
 								<StepIndicator index={index()} />
 							</Steps.Trigger>
 							{index() < 3 && (
-								<Steps.Separator class={style["steps__separator"]} />
+								<Steps.Separator class={style.steps__separator} />
 							)}
 						</Steps.Item>
 					)}
 				</For>
 			</Steps.List>
 
-			<Steps.Content index={0} class={style["steps__content"]}>
+			<Steps.Content index={0} class={style.steps__content}>
 				Step 1 (normal)
 			</Steps.Content>
-			<Steps.Content index={1} class={style["steps__content"]}>
+			<Steps.Content index={1} class={style.steps__content}>
 				Step 2 (normal)
 			</Steps.Content>
-			<Steps.Content index={2} class={style["steps__content"]}>
+			<Steps.Content index={2} class={style.steps__content}>
 				Step 3 — skippable, only reachable by clicking its trigger directly.
 			</Steps.Content>
-			<Steps.Content index={3} class={style["steps__content"]}>
+			<Steps.Content index={3} class={style.steps__content}>
 				Step 4 (normal)
 			</Steps.Content>
-			<Steps.CompletedContent class={style["steps__content"]}>
+			<Steps.CompletedContent class={style.steps__content}>
 				All done!
 			</Steps.CompletedContent>
 

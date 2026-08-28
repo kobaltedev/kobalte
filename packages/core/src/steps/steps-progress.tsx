@@ -10,7 +10,7 @@ import { useStepsContext } from "./steps-context";
 export interface StepsProgressOptions {}
 
 export interface StepsProgressCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	style: JSX.CSSProperties | string;
 }
@@ -39,7 +39,9 @@ export function StepsProgress<T extends ValidComponent = "div">(
 	const others = omit(props as StepsProgressProps, "style");
 
 	const resolvedStyle = (): JSX.CSSProperties => {
-		const percentStyle = { width: `${context.percent()}%` } as JSX.CSSProperties;
+		const percentStyle = {
+			width: `${context.percent()}%`,
+		} as JSX.CSSProperties;
 		const userStyle = (props as StepsProgressProps).style;
 
 		if (!userStyle || typeof userStyle === "string") {

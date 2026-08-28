@@ -15,7 +15,7 @@ export interface StepsItemOptions {
 	index: number;
 }
 
-export interface StepsItemCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface StepsItemCommonProps<_T extends HTMLElement = HTMLElement> {}
 
 export interface StepsItemRenderProps extends StepsItemCommonProps {
 	"data-orientation": Orientation;
@@ -39,7 +39,8 @@ export function StepsItem<T extends ValidComponent = "div">(
 
 	const others = omit(props as StepsItemProps, "index");
 
-	const state = (): StepState => context.getItemState((props as StepsItemProps).index);
+	const state = (): StepState =>
+		context.getItemState((props as StepsItemProps).index);
 
 	return (
 		<StepsItemContext value={{ index: () => (props as StepsItemProps).index }}>

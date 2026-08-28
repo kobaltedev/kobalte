@@ -56,9 +56,7 @@ export function StepsCompletedContent<T extends ValidComponent = "div">(
 				as="div"
 				role="status"
 				ref={
-					(props as StepsCompletedContentProps).ref as (
-						el: HTMLElement,
-					) => void
+					(props as StepsCompletedContentProps).ref as (el: HTMLElement) => void
 				}
 				{...others}
 			/>
