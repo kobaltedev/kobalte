@@ -11,7 +11,7 @@ import { useTagsInputItemContext } from "./tags-input-item-context";
 export interface TagsInputItemPreviewOptions {}
 
 export interface TagsInputItemPreviewCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface TagsInputItemPreviewRenderProps

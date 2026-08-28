@@ -9,10 +9,16 @@ function Tags() {
 	return (
 		<For each={context.value()} keyed={false}>
 			{(value, index) => (
-				<TagsInput.Item value={value()} index={index} class={style["tags-input__tag"]}>
+				<TagsInput.Item
+					value={value()}
+					index={index}
+					class={style["tags-input__tag"]}
+				>
 					<TagsInput.ItemPreview>
 						<TagsInput.ItemText />
-						<TagsInput.ItemDeleteTrigger class={style["tags-input__tag-delete"]}>
+						<TagsInput.ItemDeleteTrigger
+							class={style["tags-input__tag-delete"]}
+						>
 							✕
 						</TagsInput.ItemDeleteTrigger>
 					</TagsInput.ItemPreview>

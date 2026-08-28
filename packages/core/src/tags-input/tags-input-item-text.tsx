@@ -9,7 +9,7 @@ import { useTagsInputItemContext } from "./tags-input-item-context";
 export interface TagsInputItemTextOptions {}
 
 export interface TagsInputItemTextCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface TagsInputItemTextRenderProps

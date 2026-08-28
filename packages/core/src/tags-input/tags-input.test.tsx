@@ -1,10 +1,9 @@
 import { installPointerEvent } from "@kobalte/tests";
-import { cleanup, fireEvent, render, within } from "@solidjs/testing-library";
-import { createSignal, flush, For } from "solid-js";
+import { cleanup, fireEvent, render } from "@solidjs/testing-library";
+import { createSignal, For, flush } from "solid-js";
 import { vi } from "vitest";
-
-import * as TagsInput from ".";
 import type { TagsInputRootProps } from ".";
+import * as TagsInput from ".";
 import { useTagsInputContext } from "./tags-input-context";
 
 function TagsExampleItems() {

@@ -44,7 +44,10 @@ export function TagsInputClearTrigger<T extends ValidComponent = "button">(
 	return (
 		<Button.Root<
 			Component<
-				Omit<TagsInputClearTriggerRenderProps, keyof Button.ButtonRootRenderProps>
+				Omit<
+					TagsInputClearTriggerRenderProps,
+					keyof Button.ButtonRootRenderProps
+				>
 			>
 		>
 			onClick={composeEventHandlers([props.onClick, () => context.clearTags()])}

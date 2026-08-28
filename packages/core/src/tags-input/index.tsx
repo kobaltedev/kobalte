@@ -78,11 +78,11 @@ import {
 	type TagsInputLabelRenderProps,
 } from "./tags-input-label";
 import {
+	TagsInputRoot as Root,
 	type TagsInputRootCommonProps,
 	type TagsInputRootOptions,
 	type TagsInputRootProps,
 	type TagsInputRootRenderProps,
-	TagsInputRoot as Root,
 	type TagsInputValidateDetails,
 } from "./tags-input-root";
 

@@ -74,10 +74,7 @@ export function TagsInputInput<T extends ValidComponent = "input">(
 		"onKeyDown",
 		"onPaste",
 		"onBlur",
-		"id",
-		"aria-label",
-		"aria-labelledby",
-		"aria-describedby",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
 	);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
