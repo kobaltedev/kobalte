@@ -10,7 +10,8 @@ export interface ComboboxControlContextValue {
 	focusItemAt: (key: string) => void;
 }
 
-export const ComboboxControlContext = createContext<ComboboxControlContextValue>();
+export const ComboboxControlContext =
+	createContext<ComboboxControlContextValue>();
 
 export function useComboboxControlContext() {
 	const context = useContext(ComboboxControlContext);

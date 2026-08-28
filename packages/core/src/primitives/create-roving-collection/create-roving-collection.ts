@@ -1,6 +1,6 @@
 import type { Accessor, FlowComponent } from "solid-js";
 
-import { type ListState, createListState } from "../../list";
+import { createListState, type ListState } from "../../list";
 import type { CollectionItemWithRef } from "../create-collection";
 import { createDomCollection } from "../create-dom-collection";
 

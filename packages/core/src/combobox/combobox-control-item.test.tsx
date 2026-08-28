@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render } from "@solidjs/testing-library";
-import { createSignal, flush, For } from "solid-js";
+import { createSignal, For, flush } from "solid-js";
 import * as Combobox from ".";
 
 interface DataSourceItem {
@@ -95,10 +95,7 @@ describe("Combobox.ControlItem", () => {
 		flush();
 
 		chips = getAllByTestId("chip");
-		expect(chips.map((chip) => chip.textContent)).toEqual([
-			"Apple",
-			"Cherry",
-		]);
+		expect(chips.map((chip) => chip.textContent)).toEqual(["Apple", "Cherry"]);
 		expect(document.activeElement).toBe(chips[1]);
 	});
 
