@@ -3,9 +3,9 @@ import { create } from "storybook/theming/create";
 
 addons.setConfig({
 	theme: create({
-		base: "light",
+		base: "dark",
 		brandTitle: "Kobalte",
-		brandImage: "/kobalte-logo.svg",
+		brandImage: "/kobalte.svg",
 		brandUrl: "https://kobalte.dev",
 		brandTarget: "_blank",
 	}),

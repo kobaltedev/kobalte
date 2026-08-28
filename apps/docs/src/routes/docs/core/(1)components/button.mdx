@@ -1,0 +1,92 @@
+---
+title: Button
+badges:
+  - icon: npm
+    label: "Since v0.1.0"
+  - label: "@kobalte/core/button"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/button"
+  - icon: aria
+    label: "Button"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+---
+
+import { BasicExample } from "../../../../examples/button";
+
+# {frontmatter.title}
+
+Enables users to trigger an action or event, such as submitting a form, opening a dialog, canceling an action, or performing a delete operation.
+
+## Import
+
+```ts
+import { Button } from "@kobalte/core/button";
+// or
+import { Root } from "@kobalte/core/button";
+// or (deprecated)
+import { Button } from "@kobalte/core";
+```
+
+## Features
+
+- Native HTML `<button>` element support.
+- `<a>` and custom element type support via the [WAI ARIA Button](https://www.w3.org/WAI/ARIA/apg/patterns/button/) design pattern.
+- Keyboard event support for <kbd>Space</kbd> and <kbd>Enter</kbd> keys.
+
+## Anatomy
+
+The button consists of:
+
+- **Button:** The root container for a button.
+
+```tsx
+<Button />
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/button.tsx#L3-L7"
+
+```
+
+```css title="style.css" tab file="../../../../examples/button.module.css"
+
+```
+
+:::
+
+## API Reference
+
+### Button
+
+`Button` is equivalent to the `Root` import from `@kobalte/core/button` (and deprecated `Button.Root`).
+
+| Prop     | Description                                     |
+| :------- | :---------------------------------------------- |
+| disabled | `boolean` <br/> Whether the button is disabled. |
+
+| Data attribute | Description                          |
+| :------------- | :----------------------------------- |
+| data-disabled  | Present when the button is disabled. |
+
+## Rendered elements
+
+| Component | Default rendered element |
+| :-------- | :----------------------- |
+| `Button`  | `button`                 |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description           |
+| :--------------- | :-------------------- |
+| <kbd>Space</kbd> | Activates the button. |
+| <kbd>Enter</kbd> | Activates the button. |

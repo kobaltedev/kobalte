@@ -1,13 +1,13 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, merge, omit } from "solid-js";
 import type {
 	ListboxRootCommonProps,
 	ListboxRootRenderProps,
-} from "../listbox";
-import * as Listbox from "../listbox";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useSelectContext } from "./select-context";
+} from "../listbox/index.tsx";
+import * as Listbox from "../listbox/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useSelectContext } from "./select-context.tsx";
 
 export interface SelectListboxOptions<Option, OptGroup = never>
 	extends Pick<
@@ -41,7 +41,7 @@ export function SelectListbox<
 >(props: PolymorphicProps<T, SelectListboxProps<Option, OptGroup, T>>) {
 	const context = useSelectContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("listbox"),
 		},
@@ -70,7 +70,7 @@ export function SelectListbox<
 			OptGroup,
 			Component<Omit<SelectListboxRenderProps, keyof ListboxRootRenderProps>>
 		>
-			ref={mergeRefs(context.setListboxRef, mergedProps.ref)}
+			ref={[context.setListboxRef, mergedProps.ref]}
 			id={mergedProps.id}
 			state={context.listState()}
 			virtualized={context.isVirtualized()}

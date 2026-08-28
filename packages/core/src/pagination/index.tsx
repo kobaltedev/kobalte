@@ -4,39 +4,39 @@ import {
 	type PaginationEllipsisOptions,
 	type PaginationEllipsisProps,
 	type PaginationEllipsisRenderProps,
-} from "./pagination-ellipsis";
+} from "./pagination-ellipsis.tsx";
 import {
 	PaginationItem as Item,
 	type PaginationItemCommonProps,
 	type PaginationItemOptions,
 	type PaginationItemProps,
 	type PaginationItemRenderProps,
-} from "./pagination-item";
+} from "./pagination-item.tsx";
 import {
 	PaginationItems as Items,
 	type PaginationItemsProps,
-} from "./pagination-items";
+} from "./pagination-items.tsx";
 import {
 	PaginationNext as Next,
 	type PaginationNextCommonProps,
 	type PaginationNextOptions,
 	type PaginationNextProps,
 	type PaginationNextRenderProps,
-} from "./pagination-next";
+} from "./pagination-next.tsx";
 import {
 	type PaginationPreviousCommonProps,
 	type PaginationPreviousOptions,
 	type PaginationPreviousProps,
 	type PaginationPreviousRenderProps,
 	PaginationPrevious as Previous,
-} from "./pagination-previous";
+} from "./pagination-previous.tsx";
 import {
 	type PaginationRootCommonProps,
 	type PaginationRootOptions,
 	type PaginationRootProps,
 	type PaginationRootRenderProps,
 	PaginationRoot as Root,
-} from "./pagination-root";
+} from "./pagination-root.tsx";
 
 export type {
 	PaginationEllipsisCommonProps,
@@ -72,9 +72,9 @@ export const Pagination = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type PaginationContextValue,
 	usePaginationContext,
-} from "./pagination-context";
+} from "./pagination-context.tsx";

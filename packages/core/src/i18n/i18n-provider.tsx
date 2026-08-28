@@ -13,8 +13,11 @@ import {
 	useContext,
 } from "solid-js";
 
-import { createDefaultLocale, getDefaultLocale } from "./create-default-locale";
-import { type Direction, getReadingDirection } from "./utils";
+import {
+	createDefaultLocale,
+	getDefaultLocale,
+} from "./create-default-locale.ts";
+import { type Direction, getReadingDirection } from "./utils.ts";
 
 interface I18nProviderProps {
 	/** Contents that should have the locale applied. */

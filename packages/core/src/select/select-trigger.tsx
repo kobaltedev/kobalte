@@ -7,26 +7,26 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuTrigger.ts
  */
 
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, merge, omit, type Ref } from "solid-js";
 
-import * as Button from "../button";
+import * as Button from "../button/index.tsx";
 import {
 	createFormControlField,
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createTypeSelect } from "../selection";
-import { type SelectDataSet, useSelectContext } from "./select-context";
+} from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createTypeSelect } from "../selection/index.ts";
+import { type SelectDataSet, useSelectContext } from "./select-context.tsx";
 
 export interface SelectTriggerOptions {}
 
 export interface SelectTriggerCommonProps<T extends HTMLElement = HTMLElement>
 	extends Button.ButtonRootCommonProps<T> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
@@ -57,7 +57,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("trigger"),
 		},
@@ -237,7 +237,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 				Omit<SelectTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
+			ref={[context.setTriggerRef, mergedProps.ref]}
 			id={fieldProps.id()}
 			disabled={isDisabled()}
 			aria-haspopup="listbox"

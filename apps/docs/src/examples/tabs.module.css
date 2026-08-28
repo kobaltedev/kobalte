@@ -40,6 +40,8 @@
 
 .tabs__trigger {
 	display: inline-block;
+	border: none;
+	background: none;
 	padding: 8px 16px;
 	outline: none;
 }
@@ -63,18 +65,18 @@
 	padding: 16px;
 }
 
-[data-kb-theme="dark"] .tabs__list {
+[data-theme*="dark"] .tabs__list {
 	border-color: hsl(240 5% 26%);
 }
 
-[data-kb-theme="dark"] .tabs__trigger {
+[data-theme*="dark"] .tabs__trigger {
 	color: rgb(255 255 255 / 0.9);
 }
 
-[data-kb-theme="dark"] .tabs__trigger:hover {
+[data-theme*="dark"] .tabs__trigger:hover {
 	background-color: hsl(240 4% 16%);
 }
 
-[data-kb-theme="dark"] .tabs__trigger:focus-visible {
+[data-theme*="dark"] .tabs__trigger:focus-visible {
 	background-color: hsl(240 4% 16%);
 }

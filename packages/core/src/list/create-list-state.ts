@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/bfce84fee12a027d9cbc38b43e1747e3e4b4b169/packages/@react-stately/list/src/useListState.ts
  */
 
-import { access } from "@kobalte/utils";
+import { access } from "@solid-primitives/utils";
 import { type Accessor, createEffect } from "solid-js";
 
 import {
@@ -14,13 +14,13 @@ import {
 	type CollectionBase,
 	type CollectionNode,
 	createCollection,
-} from "../primitives";
+} from "../primitives/index.ts";
 import {
 	type CreateMultipleSelectionStateProps,
 	createMultipleSelectionState,
 	SelectionManager,
-} from "../selection";
-import { ListCollection } from "./list-collection";
+} from "../selection/index.ts";
+import { ListCollection } from "./list-collection.ts";
 
 export interface CreateListStateProps
 	extends CollectionBase,

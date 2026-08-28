@@ -8,7 +8,6 @@
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, within } from "@solidjs/testing-library";
-import { createSignal, Show } from "solid-js";
 import { vi } from "vitest";
 import * as Combobox from ".";
 
@@ -25,8 +24,7 @@ const DATA_SOURCE: DataSourceItem[] = [
 	{ key: "3", label: "Three", textValue: "Three", disabled: false },
 ];
 
-// Skipped: jsdom stub for pointerEvent issue with vitest
-describe.skip("Combobox", () => {
+describe("Combobox", () => {
 	installPointerEvent();
 
 	// structuredClone polyfill, kind of ^^'
@@ -160,7 +158,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -197,6 +195,10 @@ describe.skip("Combobox", () => {
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(
 				CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2],
 			);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -261,7 +263,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -298,6 +300,10 @@ describe.skip("Combobox", () => {
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(
 				CUSTOM_DATA_SOURCE_WITH_STRING_KEY[0].items[2],
 			);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -373,7 +379,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -410,6 +416,10 @@ describe.skip("Combobox", () => {
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(
 				CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2],
 			);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -464,15 +474,17 @@ describe.skip("Combobox", () => {
 					pointerType: "mouse",
 				}),
 			);
+			await Promise.resolve();
 
 			fireEvent(
 				trigger,
 				createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
 			);
+			await Promise.resolve();
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -509,6 +521,10 @@ describe.skip("Combobox", () => {
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(
 				CUSTOM_DATA_SOURCE_WITH_NUMBER_KEY[0].items[2],
 			);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -565,7 +581,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -600,6 +616,10 @@ describe.skip("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe("Three");
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -660,7 +680,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -695,6 +715,10 @@ describe.skip("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe("Three");
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -751,7 +775,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -786,6 +810,10 @@ describe.skip("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(3);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -846,7 +874,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			const items = within(listbox).getAllByRole("option");
 
@@ -882,6 +910,10 @@ describe.skip("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toBe(3);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -896,7 +928,7 @@ describe.skip("Combobox", () => {
 		it("can be opened on mouse down", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -924,7 +956,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 			const input = getByRole("combobox");
@@ -949,7 +981,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -970,7 +1002,7 @@ describe.skip("Combobox", () => {
 		it("can be opened on touch up", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -998,7 +1030,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 			const input = getByRole("combobox");
@@ -1012,7 +1044,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			fireEvent(
 				trigger,
@@ -1030,7 +1062,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1051,7 +1083,7 @@ describe.skip("Combobox", () => {
 		it("can be opened on ArrowDown key down and virtual focuses the first item", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1079,7 +1111,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const input = getByRole("combobox");
 
@@ -1091,7 +1123,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1112,7 +1144,7 @@ describe.skip("Combobox", () => {
 		it("can be opened on ArrowUp key down and virtual focuses the last item", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1140,7 +1172,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const input = getByRole("combobox");
 
@@ -1148,7 +1180,7 @@ describe.skip("Combobox", () => {
 			fireEvent.keyUp(input, { key: "ArrowUp" });
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1169,7 +1201,7 @@ describe.skip("Combobox", () => {
 		it("can change item focus with arrow keys", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1197,7 +1229,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const input = getByRole("combobox");
 
@@ -1205,7 +1237,7 @@ describe.skip("Combobox", () => {
 			fireEvent.keyUp(input, { key: "ArrowDown" });
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1275,7 +1307,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
@@ -1327,7 +1359,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
@@ -1350,7 +1382,7 @@ describe.skip("Combobox", () => {
 		it("can be closed by clicking on the button", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1378,7 +1410,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -1393,7 +1425,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1412,6 +1444,10 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveAttribute("aria-expanded", "false");
 			expect(trigger).not.toHaveAttribute("aria-controls");
@@ -1422,7 +1458,7 @@ describe.skip("Combobox", () => {
 		it("can be closed by clicking outside", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1450,7 +1486,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -1474,7 +1510,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1499,6 +1535,10 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 			expect(trigger).toHaveAttribute("aria-expanded", "false");
 			expect(trigger).not.toHaveAttribute("aria-controls");
@@ -1509,7 +1549,7 @@ describe.skip("Combobox", () => {
 		it("can be closed by pressing the Escape key", async () => {
 			const onOpenChange = vi.fn();
 
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -1537,7 +1577,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 			const input = getByRole("combobox");
@@ -1551,7 +1591,16 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			fireEvent(
+				trigger,
+				createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
+			);
+			await Promise.resolve();
+
+			fireEvent.click(trigger);
+			await Promise.resolve();
+
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).toBeCalledTimes(1);
@@ -1560,6 +1609,10 @@ describe.skip("Combobox", () => {
 			expect(input).toHaveAttribute("aria-controls", listbox.id);
 
 			fireEvent.keyDown(input, { key: "Escape" });
+			await Promise.resolve();
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
 			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
@@ -1605,7 +1658,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
@@ -1656,7 +1709,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(onOpenChange).not.toBeCalled();
@@ -1668,6 +1721,10 @@ describe.skip("Combobox", () => {
 
 			fireEvent.keyDown(input, { key: "Escape" });
 			fireEvent.keyUp(input, { key: "Escape" });
+			await Promise.resolve();
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
 			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
@@ -1727,7 +1784,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 			expect(listbox).toHaveAttribute(
@@ -1778,7 +1835,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 		});
@@ -1826,7 +1883,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			expect(listbox).toBeVisible();
 		});
 	});
@@ -1966,7 +2023,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -1993,6 +2050,10 @@ describe.skip("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[2]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -2045,7 +2106,7 @@ describe.skip("Combobox", () => {
 			fireEvent.keyUp(input, { key: "ArrowUp" });
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2071,6 +2132,10 @@ describe.skip("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[1]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 			expect(input).toHaveValue("Two");
@@ -2127,7 +2192,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2164,6 +2229,10 @@ describe.skip("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[2]);
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2175,7 +2244,7 @@ describe.skip("Combobox", () => {
 
 		it("does not clear selection on escape closing the listbox", async () => {
 			const onOpenChangeSpy = vi.fn();
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2224,7 +2293,7 @@ describe.skip("Combobox", () => {
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 
@@ -2254,7 +2323,12 @@ describe.skip("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(2);
-			expect(queryByRole("listbox")).toBeNull();
+
+			// run presence exit timer
+			vi.runAllTimers();
+			await Promise.resolve();
+
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			fireEvent(
 				trigger,
@@ -2273,7 +2347,12 @@ describe.skip("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1); // still expecting it to have only been called once
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(4);
-			expect(queryByRole("listbox")).toBeNull();
+
+			// run presence exit timer
+			vi.runAllTimers();
+			await Promise.resolve();
+
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			// run restore focus rAF
 			vi.runAllTimers();
@@ -2284,7 +2363,7 @@ describe.skip("Combobox", () => {
 
 		it("clear selection on escape when listbox is not visible", async () => {
 			const onOpenChangeSpy = vi.fn();
-			const { getByRole, queryByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2333,7 +2412,7 @@ describe.skip("Combobox", () => {
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(1);
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 
 			expect(listbox).toBeVisible();
 
@@ -2363,7 +2442,12 @@ describe.skip("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(2);
-			expect(queryByRole("listbox")).toBeNull();
+
+			// run presence exit timer
+			vi.runAllTimers();
+			await Promise.resolve();
+
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			fireEvent(
 				trigger,
@@ -2382,7 +2466,12 @@ describe.skip("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1); // still expecting it to have only been called once
 
 			expect(onOpenChangeSpy).toHaveBeenCalledTimes(4);
-			expect(queryByRole("listbox")).toBeNull();
+
+			// run presence exit timer
+			vi.runAllTimers();
+			await Promise.resolve();
+
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			// run restore focus rAF
 			vi.runAllTimers();
@@ -2400,7 +2489,7 @@ describe.skip("Combobox", () => {
 		});
 
 		it("supports controlled selection", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2443,7 +2532,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2471,6 +2560,10 @@ describe.skip("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[0]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -2525,7 +2618,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2552,6 +2645,10 @@ describe.skip("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[0]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -2613,7 +2710,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items.length).toBe(3);
@@ -2646,6 +2743,10 @@ describe.skip("Combobox", () => {
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(dataSource[2]);
 
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
+
 			expect(listbox).not.toBeVisible();
 
 			// run restore focus rAF
@@ -2656,7 +2757,7 @@ describe.skip("Combobox", () => {
 		});
 
 		it("does not deselect when pressing an already selected item when 'disallowEmptySelection' is true", async () => {
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -2700,7 +2801,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(input).toHaveAttribute("aria-activedescendant", items[1].id);
@@ -2713,6 +2814,10 @@ describe.skip("Combobox", () => {
 
 			expect(onValueChange).toHaveBeenCalledTimes(1);
 			expect(onValueChange.mock.calls[0][0]).toStrictEqual(DATA_SOURCE[1]);
+
+			// flush the exit transition timer and Solid's microtask scheduler
+			vi.runAllTimers();
+			await Promise.resolve();
 
 			expect(listbox).not.toBeVisible();
 
@@ -2790,7 +2895,7 @@ describe.skip("Combobox", () => {
 
 			vi.runAllTimers();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(listbox).toHaveAttribute("aria-multiselectable", "true");
@@ -2904,7 +3009,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -2949,7 +3054,7 @@ describe.skip("Combobox", () => {
 		it("supports multiple value (controlled)", async () => {
 			const value = [DATA_SOURCE[0], DATA_SOURCE[1]];
 
-			render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root<DataSourceItem>
 					multiple
 					options={DATA_SOURCE}
@@ -2999,7 +3104,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -3084,7 +3189,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			const listbox = getByRole("listbox");
+			const listbox = within(document.body).getByRole("listbox");
 			const items = within(listbox).getAllByRole("option");
 
 			expect(items[0]).toHaveAttribute("aria-selected", "true");
@@ -3179,11 +3284,11 @@ describe.skip("Combobox", () => {
 
 			expect(options.length).toBe(4);
 
-			options.forEach(
-				(option, index) =>
-					index > 0 &&
-					expect(option).toHaveTextContent(dataSource[index - 1].label),
-			);
+			options.forEach((option, index) => {
+				if (index > 0) {
+					expect(option).toHaveTextContent(dataSource[index - 1].label);
+				}
+			});
 
 			fireEvent.change(hiddenSelectBase, { target: { value: "FR" } });
 			await Promise.resolve();
@@ -3226,7 +3331,7 @@ describe.skip("Combobox", () => {
 			const hiddenInput = getByRole("textbox", { hidden: true }); // get the hidden ones
 
 			expect(hiddenInput).toHaveAttribute("tabIndex", "0");
-			expect(hiddenInput).toHaveAttribute("style", "font-size: 16px;");
+			expect(hiddenInput).toHaveAttribute("style", "font-size:16px");
 			expect(hiddenInput.parentElement).toHaveAttribute("aria-hidden", "true");
 
 			hiddenInput.focus();
@@ -3284,7 +3389,7 @@ describe.skip("Combobox", () => {
 		it("does not open on mouse down when disabled is true", async () => {
 			const onOpenChange = vi.fn();
 
-			const { queryByRole, getByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -3313,7 +3418,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -3326,7 +3431,7 @@ describe.skip("Combobox", () => {
 			);
 			await Promise.resolve();
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			expect(onOpenChange).toBeCalledTimes(0);
 
@@ -3335,7 +3440,7 @@ describe.skip("Combobox", () => {
 
 		it("does not open on Space key press when disabled is true", async () => {
 			const onOpenChange = vi.fn();
-			const { queryByRole, getByRole } = render(() => (
+			const { getByRole } = render(() => (
 				<Combobox.Root
 					options={DATA_SOURCE}
 					optionValue="key"
@@ -3364,7 +3469,7 @@ describe.skip("Combobox", () => {
 				</Combobox.Root>
 			));
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			const trigger = getByRole("button");
 
@@ -3374,7 +3479,7 @@ describe.skip("Combobox", () => {
 			fireEvent.keyUp(trigger, { key: " " });
 			await Promise.resolve();
 
-			expect(queryByRole("listbox")).toBeNull();
+			expect(within(document.body).queryByRole("listbox")).toBeNull();
 
 			expect(onOpenChange).toBeCalledTimes(0);
 

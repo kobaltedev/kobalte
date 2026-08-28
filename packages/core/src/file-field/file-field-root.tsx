@@ -1,10 +1,11 @@
-import { mergeDefaultProps, type ValidationState } from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import type { UploadFile } from "@solid-primitives/upload";
 import type { ValidComponent } from "@solidjs/web";
 import {
 	createSignal,
 	createStore,
 	createUniqueId,
+	merge,
 	omit,
 	snapshot,
 } from "solid-js";
@@ -13,22 +14,22 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	FILE_FIELD_INTL_TRANSLATIONS,
 	type FileFieldIntlTranslations,
-} from "./file-field.intl";
+} from "./file-field.intl.ts";
 import {
 	FileFieldContext,
 	type FileFieldContextValue,
-} from "./file-field-context";
-import type { Accept, Details, FileError, FileRejection } from "./types";
-import { getFiles, parseAcceptedTypes } from "./util";
+} from "./file-field-context.tsx";
+import type { Accept, Details, FileError, FileRejection } from "./types.ts";
+import { getFiles, parseAcceptedTypes } from "./util.ts";
 
 export interface FileFieldRootOptions {
 	/** The localized strings of the component. */
@@ -66,7 +67,9 @@ export interface FileFieldRootOptions {
 	readOnly?: boolean;
 }
 
-export interface FileFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface FileFieldRootCommonProps<
+	_T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 
@@ -102,7 +105,7 @@ export function FileField<T extends ValidComponent = "div">(
 		FileRejection[]
 	>([]);
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			allowDragAndDrop: true,

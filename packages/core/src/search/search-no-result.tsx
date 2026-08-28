@@ -4,13 +4,13 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useSearchContext } from "./search-context";
+} from "../polymorphic/index.tsx";
+import { useSearchContext } from "./search-context.tsx";
 
 export interface SearchNoResultOptions {}
 
 export interface SearchNoResultCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface SearchNoResultRenderProps extends SearchNoResultCommonProps {}

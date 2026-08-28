@@ -1,8 +1,3 @@
-import {
-	focusWithoutScrolling,
-	mergeRefs,
-	OverrideComponentProps,
-} from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -14,15 +9,21 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, Show } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	omit,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
-import { type SelectDataSet, useSelectContext } from "./select-context";
+} from "../dismissable-layer/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
+import { type SelectDataSet, useSelectContext } from "./select-context.tsx";
 
 export interface SelectContentOptions {
 	/**
@@ -70,7 +71,9 @@ export type SelectContentProps<
 export function SelectContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, SelectContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useSelectContext();
 
@@ -82,7 +85,7 @@ export function SelectContent<T extends ValidComponent = "div">(
 		"onFocusOutside",
 	);
 
-	const onEscapeKeyDown = (e: KeyboardEvent) => {
+	const onEscapeKeyDown = (_e: KeyboardEvent) => {
 		// `createSelectableList` prevent escape key down,
 		// which prevent our `onDismiss` in `DismissableLayer` to run,
 		// so we force "close on escape" here.
@@ -102,31 +105,58 @@ export function SelectContent<T extends ValidComponent = "div">(
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	createHideOutside({
 		disabled: () => !(context.isOpen() && context.isModal()),
-		targets: () => (ref ? [ref] : []),
+		targets: () => {
+			const el = ref();
+			return el ? [el] : [];
+		},
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
 
 	createPreventScroll({
-		element: () => ref ?? undefined,
+		element: ref,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
+	const onFinalFocus = (e: Event) => {
+		props.onCloseAutoFocus?.(e);
+
+		if (!e.defaultPrevented) {
+			context.triggerRef()?.focus({ preventScroll: true });
+			e.preventDefault();
+		}
+	};
+
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => context.isOpen() && context.isModal(),
 		onInitialFocus: (e) => {
 			// We prevent open autofocus because it's handled by the `Listbox`.
 			e.preventDefault();
 		},
-		onFinalFocus: (e) => {
-			props.onCloseAutoFocus?.(e);
-
-			if (!e.defaultPrevented) {
-				focusWithoutScrolling(context.triggerRef());
-				e.preventDefault();
-			}
-		},
+		onFinalFocus,
 	});
+
+	// `createFocusTrap`'s `enabled` flag gates both Tab-trapping AND focus
+	// restoration behind modal mode, so a non-modal select (Select's default)
+	// never gets `onFinalFocus`. Restore focus to the trigger ourselves when
+	// content closes while non-modal.
+	createEffect(
+		() => context.contentPresent() && !context.isModal(),
+		(isNonModalAndPresent) => {
+			if (!isNonModalAndPresent) {
+				return;
+			}
+
+			return () => {
+				onFinalFocus(
+					new CustomEvent("selectCloseAutoFocus", {
+						bubbles: false,
+						cancelable: true,
+					}),
+				);
+			};
+		},
+	);
 
 	return (
 		<Show when={context.contentPresent()}>
@@ -136,10 +166,13 @@ export function SelectContent<T extends ValidComponent = "div">(
 						Omit<SelectContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={mergeRefs((el) => {
-						context.setContentRef(el);
-						ref = el;
-					}, props.ref)}
+					ref={[
+						(el: HTMLElement) => {
+							context.setContentRef(el);
+							setRef(el);
+						},
+						props.ref,
+					]}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.triggerRef]}
 					style={combineStyle(

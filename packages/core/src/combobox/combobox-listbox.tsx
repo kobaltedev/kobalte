@@ -1,11 +1,10 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit, onCleanup } from "solid-js";
+import { type Component, createEffect, merge, omit, type Ref } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import * as Listbox from "../listbox";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useComboboxContext } from "./combobox-context";
+import { useFormControlContext } from "../form-control/index.ts";
+import * as Listbox from "../listbox/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useComboboxContext } from "./combobox-context.tsx";
 
 export interface ComboboxListboxOptions<Option, OptGroup = never>
 	extends Pick<
@@ -17,7 +16,7 @@ export interface ComboboxListboxCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface ComboboxListboxRenderProps
@@ -45,7 +44,7 @@ export function ComboboxListbox<
 	const formControlContext = useFormControlContext();
 	const context = useComboboxContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("listbox"),
 		},
@@ -75,7 +74,7 @@ export function ComboboxListbox<
 				Omit<ComboboxListboxRenderProps, keyof Listbox.ListboxRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setListboxRef, mergedProps.ref)}
+			ref={[context.setListboxRef, mergedProps.ref]}
 			state={context.listState()}
 			autoFocus={context.autoFocus()}
 			shouldUseVirtualFocus

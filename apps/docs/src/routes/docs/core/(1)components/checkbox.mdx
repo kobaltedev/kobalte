@@ -1,0 +1,298 @@
+---
+title: Checkbox
+badges:
+  - icon: npm
+    label: "Since v0.1.0"
+  - label: "@kobalte/core/checkbox"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/checkbox"
+  - icon: aria
+    label: "Checkbox"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/"
+---
+
+import {
+	BasicExample,
+	ControlledExample,
+	DefaultCheckedExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	HTMLFormExample,
+} from "../../../../examples/checkbox";
+
+# {frontmatter.title}
+
+A control that allows the user to toggle between checked and not checked.
+
+## Import
+
+```ts
+import { Checkbox } from "@kobalte/core/checkbox";
+// or
+import { Root, Input, ... } from "@kobalte/core/checkbox";
+// or (deprecated)
+import { Checkbox } from "@kobalte/core";
+```
+
+## Features
+
+- Built with a native HTML `<input>` element, which is visually hidden to allow custom styling.
+- Syncs with form reset events.
+- Labeling support for assistive technology.
+- Support for description and error message help text linked to the input via ARIA.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The checkbox consists of:
+
+- **Checkbox:** The root container for a checkbox.
+- **Checkbox.Input:** The native html input that is visually hidden in the checkbox.
+- **Checkbox.Control:** The element that visually represents a checkbox.
+- **Checkbox.Indicator:** The visual indicator rendered when the checkbox is in a checked or indeterminate state.
+- **Checkbox.Label:** The label that gives the user information on the checkbox.
+- **Checkbox.Description**: The description that gives the user more information on the checkbox.
+- **Checkbox.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the checkbox.
+
+```tsx
+<Checkbox>
+	<Checkbox.Input />
+	<Checkbox.Control>
+		<Checkbox.Indicator />
+	</Checkbox.Control>
+	<Checkbox.Label />
+	<Checkbox.Description />
+	<Checkbox.ErrorMessage />
+</Checkbox>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/checkbox.tsx#L6-L20"
+
+```
+
+```css title="style.css" tab file="../../../../examples/checkbox.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Default checked
+
+An initial, uncontrolled value can be provided using the `defaultChecked` prop.
+
+:::preview
+
+<DefaultCheckedExample />
+
+---
+
+```tsx
+<Checkbox defaultChecked>...</Checkbox>
+```
+
+:::
+
+### Controlled checked
+
+The `checked` prop can be used to make the checked state controlled. The `onChange` event is fired when the user presses the checkbox, and receives the new value.
+
+:::preview
+
+<ControlledExample />
+
+---
+
+```tsx {4,8}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [checked, setChecked] = createSignal(false);
+
+	return (
+		<>
+			<Checkbox checked={checked()} onChange={setChecked}>
+				...
+			</Checkbox>
+			<p>You are {checked() ? "subscribed" : "unsubscribed"}.</p>
+		</>
+	);
+}
+```
+
+:::
+
+### Description
+
+The `Checkbox.Description` component can be used to associate additional help text with a checkbox.
+
+:::preview
+
+<DescriptionExample />
+
+---
+
+```tsx {9}
+<Checkbox>
+	<Checkbox.Input />
+	<Checkbox.Control>
+		<Checkbox.Indicator>
+			<CheckIcon />
+		</Checkbox.Indicator>
+	</Checkbox.Control>
+	<Checkbox.Label>Subscribe</Checkbox.Label>
+	<Checkbox.Description>You will receive our weekly newsletter.</Checkbox.Description>
+</Checkbox>
+```
+
+:::
+
+### Error message
+
+The `Checkbox.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the checkbox as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+:::preview
+
+<ErrorMessageExample />
+
+---
+
+```tsx {10,18}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [checked, setChecked] = createSignal(false);
+
+	return (
+		<Checkbox
+			checked={checked()}
+			onChange={setChecked}
+			validationState={!checked() ? "invalid" : "valid"}
+		>
+			<Checkbox.Input />
+			<Checkbox.Control>
+				<Checkbox.Indicator>
+					<CheckIcon />
+				</Checkbox.Indicator>
+			</Checkbox.Control>
+			<Checkbox.Label>Agree</Checkbox.Label>
+			<Checkbox.ErrorMessage>You must agree to our Terms and Conditions.</Checkbox.ErrorMessage>
+		</Checkbox>
+	);
+}
+```
+
+:::
+
+### HTML forms
+
+The `name` and `value` props can be used for integration with HTML forms.
+
+:::preview
+
+<HTMLFormExample />
+
+---
+
+```tsx {8}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<Checkbox name="newsletter" value="subscribe">
+				...
+			</Checkbox>
+			<div>
+				<button type="reset">Reset</button>
+				<button type="submit">Submit</button>
+			</div>
+		</form>
+	);
+}
+```
+
+:::
+
+## API Reference
+
+### Checkbox
+
+`Checkbox` is equivalent to the `Root` import from `@kobalte/core/checkbox` (and deprecated `Checkbox.Root`).
+
+| Prop            | Description                                                                                                                                                                   |
+| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| checked         | `boolean` <br/> The controlled checked state of the checkbox.                                                                                                                 |
+| defaultChecked  | `boolean` <br/> The default checked state when initially rendered. Useful when you do not need to control the checked state.                                                  |
+| onChange        | `(checked: boolean) => void` <br/> Event handler called when the checked state of the checkbox changes.                                                                       |
+| indeterminate   | `boolean` <br/> Whether the checkbox is in an indeterminate state.                                                                                                            |
+| name            | `string` <br/> The name of the checkbox, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname).       |
+| value           | `string` <br/> The value of the checkbox, used when submitting an HTML form. See [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefvalue).     |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the checkbox should display its "valid" or "invalid" visual styling.                                                                     |
+| required        | `boolean` <br/> Whether the user must check the checkbox before the owning form can be submitted.                                                                             |
+| disabled        | `boolean` <br/> Whether the checkbox is disabled.                                                                                                                             |
+| readOnly        | `boolean` <br/> Whether the checkbox can be checked but not changed by the user.                                                                                              |
+| children        | `JSX.Element \| (state: CheckboxState) => JSX.Element` <br/> The children of the checkbox. Can be a `JSX.Element` or a _render prop_ for having access to the internal state. |
+
+| Render Prop   | Description                                                                  |
+| :------------ | :--------------------------------------------------------------------------- |
+| checked       | `Accessor<boolean>` <br/> Whether the checkbox is checked or not.            |
+| indeterminate | `Accessor<boolean>` <br/> Whether the checkbox is in an indeterminate state. |
+
+| Data attribute     | Description                                                             |
+| :----------------- | :---------------------------------------------------------------------- |
+| data-valid         | Present when the checkbox is valid according to the validation rules.   |
+| data-invalid       | Present when the checkbox is invalid according to the validation rules. |
+| data-required      | Present when the checkbox is required.                                  |
+| data-disabled      | Present when the checkbox is disabled.                                  |
+| data-readonly      | Present when the checkbox is read only.                                 |
+| data-checked       | Present when the checkbox is checked.                                   |
+| data-indeterminate | Present when the checkbox is in an indeterminate state.                 |
+
+`Checkbox.Input`, `Checkbox.Control`, `Checkbox.Indicator`, `Checkbox.Label`, `Checkbox.Description` and `Checkbox.ErrorMessage` share the same data-attributes.
+
+### Checkbox.Indicator
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### Checkbox.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component               | Default rendered element |
+| :---------------------- | :----------------------- |
+| `Checkbox`              | `div`                    |
+| `Checkbox.Input`        | `input`                  |
+| `Checkbox.Control`      | `div`                    |
+| `Checkbox.Indicator`    | `div`                    |
+| `Checkbox.Label`        | `label`                  |
+| `Checkbox.Description`  | `div`                    |
+| `Checkbox.ErrorMessage` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description                      |
+| :--------------- | :------------------------------- |
+| <kbd>Space</kbd> | Toggles the checkbox on and off. |

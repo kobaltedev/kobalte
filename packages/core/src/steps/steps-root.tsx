@@ -1,12 +1,13 @@
-import {
-	access,
-	clamp,
-	createGenerateId,
-	mergeDefaultProps,
-	type Orientation,
-} from "@kobalte/utils";
+import { clamp, type Orientation } from "@kobalte/utils";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createUniqueId, omit } from "solid-js";
+import {
+	type Component,
+	createUniqueId,
+	merge,
+	omit,
+	type Ref,
+} from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
 import { Tabs, type TabsRootRenderProps } from "../tabs";
@@ -73,7 +74,7 @@ export interface StepsRootOptions {
 
 export interface StepsRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 }
 
@@ -90,20 +91,21 @@ export function StepsRoot<T extends ValidComponent = "div">(
 ) {
 	const defaultId = `steps-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			orientation: "horizontal",
 			linear: false,
 			isStepValid: () => true,
 			isStepSkippable: () => false,
-		},
+		} as const,
 		props as StepsRootProps,
 	);
 
 	const others = omit(
 		mergedProps,
 		"ref",
+		"id",
 		"style",
 		"count",
 		"value",
@@ -139,10 +141,10 @@ export function StepsRoot<T extends ValidComponent = "div">(
 		}
 	};
 
-	// `mergeDefaultProps`'s underlying `merge()` treats an explicitly passed
-	// `undefined` (e.g. `isStepValid={someCondition ? fn : undefined}`) as an
-	// override, not a fall-through to the default — so don't rely on the
-	// default here, guard directly against a missing function instead.
+	// `merge()` treats an explicitly passed `undefined` (e.g.
+	// `isStepValid={someCondition ? fn : undefined}`) as an override, not a
+	// fall-through to the default — so don't rely on the default here, guard
+	// directly against a missing function instead.
 	const isStepValid = (index: number) =>
 		mergedProps.isStepValid?.(index) ?? true;
 	const isStepSkippable = (index: number) =>
@@ -268,7 +270,7 @@ export function StepsRoot<T extends ValidComponent = "div">(
 		goToNextStep,
 		goToPrevStep,
 		resetStep,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 	};
 
 	// Composes on top of `Tabs` (per maintainer guidance on kobaltedev/kobalte#523)
@@ -291,9 +293,7 @@ export function StepsRoot<T extends ValidComponent = "div">(
 	return (
 		<StepsContext value={context}>
 			<Tabs<Component<Omit<StepsRootRenderProps, keyof TabsRootRenderProps>>>
-				ref={
-					mergedProps.ref as HTMLElement | ((el: HTMLElement) => void)
-				}
+				ref={mergedProps.ref}
 				id={access(mergedProps.id)}
 				// Tabs has no notion of Steps' "completed" state (`value ===
 				// count`, one past the last real trigger) — if fed a value

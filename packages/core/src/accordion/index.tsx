@@ -4,35 +4,35 @@ import {
 	type AccordionContentProps,
 	type AccordionContentRenderProps,
 	AccordionContent as Content,
-} from "./accordion-content";
+} from "./accordion-content.tsx";
 import {
 	type AccordionHeaderCommonProps,
 	type AccordionHeaderOptions,
 	type AccordionHeaderProps,
 	type AccordionHeaderRenderProps,
 	AccordionHeader as Header,
-} from "./accordion-header";
+} from "./accordion-header.tsx";
 import {
 	type AccordionItemCommonProps,
 	type AccordionItemOptions,
 	type AccordionItemProps,
 	type AccordionItemRenderProps,
 	AccordionItem as Item,
-} from "./accordion-item";
+} from "./accordion-item.tsx";
 import {
 	type AccordionRootCommonProps,
 	type AccordionRootOptions,
 	type AccordionRootProps,
 	type AccordionRootRenderProps,
 	AccordionRoot as Root,
-} from "./accordion-root";
+} from "./accordion-root.tsx";
 import {
 	type AccordionTriggerCommonProps,
 	type AccordionTriggerOptions,
 	type AccordionTriggerProps,
 	type AccordionTriggerRenderProps,
 	AccordionTrigger as Trigger,
-} from "./accordion-trigger";
+} from "./accordion-trigger.tsx";
 
 export type {
 	AccordionContentCommonProps,
@@ -66,9 +66,9 @@ export const Accordion = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type AccordionContextValue,
 	useAccordionContext,
-} from "./accordion-context";
+} from "./accordion-context.tsx";

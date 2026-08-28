@@ -4,7 +4,7 @@ import {
 	type SkeletonRootOptions,
 	type SkeletonRootProps,
 	type SkeletonRootRenderProps,
-} from "./skeleton-root";
+} from "./skeleton-root.tsx";
 
 export type {
 	SkeletonRootCommonProps,

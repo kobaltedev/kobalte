@@ -12,28 +12,28 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import {
-	callHandler,
-	contains,
-	focusWithoutScrolling,
-	getDocument,
-	getWindow,
-	mergeRefs,
-} from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
-import { createEffect, For, omit, untrack } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	For,
+	omit,
+	type Ref,
+	untrack,
+} from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
-import { useToastRegionContext } from "./toast-region-context";
+import { useToastRegionContext } from "./toast-region-context.tsx";
 
 export interface ToastListOptions {}
 
 export interface ToastListCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
 	onFocusOut: JSX.EventHandlerUnion<T, FocusEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -56,7 +56,9 @@ export type ToastListProps<
 export function ToastList<T extends ValidComponent = "ol">(
 	props: PolymorphicProps<T, ToastListProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useToastRegionContext();
 
@@ -91,7 +93,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		);
 
 		// The newly focused element isn't inside the toast list.
-		if (!contains(ref, e.relatedTarget as HTMLElement)) {
+		if (!ref()?.contains(e.relatedTarget as HTMLElement)) {
 			context.resumeAllTimer();
 		}
 	};
@@ -122,7 +124,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		);
 
 		// The current active element isn't inside the toast list.
-		if (!contains(ref, getDocument(ref).activeElement)) {
+		if (!ref()?.contains((ref()?.ownerDocument ?? document).activeElement)) {
 			context.resumeAllTimer();
 		}
 	};
@@ -130,9 +132,9 @@ export function ToastList<T extends ValidComponent = "ol">(
 	createEffect(
 		() => context.hotkey(),
 		(hotkey) => {
-			if (isServer || !ref) return;
+			if (isServer || !ref()) return;
 
-			const doc = getDocument(ref);
+			const doc = ref()?.ownerDocument ?? document;
 
 			const onKeyDown = (event: KeyboardEvent) => {
 				const isHotkeyPressed = hotkey.every(
@@ -140,7 +142,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 				);
 
 				if (isHotkeyPressed) {
-					focusWithoutScrolling(ref);
+					ref()?.focus({ preventScroll: true });
 				}
 			};
 
@@ -155,7 +157,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		(pauseOnPageIdle) => {
 			if (!pauseOnPageIdle) return;
 
-			const win = getWindow(ref);
+			const win = ref()?.ownerDocument?.defaultView ?? window;
 
 			win.addEventListener("blur", context.pauseAllTimer);
 			win.addEventListener("focus", context.resumeAllTimer);
@@ -170,7 +172,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 	return (
 		<Polymorphic<ToastListRenderProps>
 			as="ol"
-			ref={mergeRefs((el) => (ref = el), props.ref as any)}
+			ref={[setRef, (props as ToastListProps).ref]}
 			tabindex={-1}
 			onFocusIn={onFocusIn}
 			onFocusOut={onFocusOut}

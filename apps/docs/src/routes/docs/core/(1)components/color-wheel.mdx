@@ -1,0 +1,298 @@
+---
+title: Color Wheel
+badges:
+  - icon: npm
+    label: "Since v0.13.9"
+  - label: "@kobalte/core/color-wheel"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/color-wheel"
+---
+
+import {
+	BasicExample,
+	DefaultValueExample,
+	ThicknessExample,
+	ControlledValueExample,
+	CustomValueLabelExample,
+	HTMLFormExample,
+} from "../../../../examples/color-wheel";
+
+# {frontmatter.title}
+
+Allows users to adjust the hue of an HSL or HSB color value on a circular track.
+
+## Import
+
+```ts
+import { ColorWheel } from "@kobalte/core/color-wheel";
+// or
+import { Root, Track, ... } from "@kobalte/core/color-wheel";
+```
+
+## Features
+
+- Support for adjusting the hue of an HSL or HSB color value.
+- Support click or touch on track to change value.
+- Support right or left direction.
+- Support for custom value label.
+- Localized color descriptions for screen reader users.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The color wheel consists of:
+
+- **ColorWheel:** The root container for the color wheel.
+- **ColorWheel.Track:** The component that visually represents the color wheel track.
+- **ColorWheel.Thumb:** The thumb that is used to visually indicate a value in the color wheel.
+- **ColorWheel.Input:** The native html input that is visually hidden in the color wheel thumb.
+- **ColorWheel.Label:** The label that gives the user information on the color wheel.
+- **ColorWheel.ValueLabel:** The accessible label text representing the current value in a human-readable format.
+
+```tsx
+<ColorWheel>
+	<ColorWheel.Label />
+	<ColorWheel.ValueLabel />
+	<ColorWheel.Track>
+		<ColorWheel.Thumb>
+			<ColorWheel.Input />
+		</ColorWheel.Thumb>
+	</ColorWheel.Track>
+</ColorWheel>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/color-wheel.tsx#L5-L18"
+
+```
+
+```css title="style.css" tab file="../../../../examples/color-wheel.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Default value
+
+By default, `ColorWheel` is uncontrolled with a default value of red (hue = 0). You can change the default value using the `defaultValue` prop.
+
+:::preview
+
+<DefaultValueExample />
+
+---
+
+```tsx {7}
+import { ColorWheel } from "@kobalte/core/color-wheel";
+import { parseColor } from "@kobalte/core/colors";
+
+function App() {
+	return (
+		<ColorWheel defaultValue={parseColor("hsl(80, 100%, 50%)")}>
+			<ColorWheel.Label>Label</ColorWheel.Label>
+			<ColorWheel.Track>
+				<ColorWheel.Thumb>
+					<ColorWheel.Input />
+				</ColorWheel.Thumb>
+			</ColorWheel.Track>
+		</ColorWheel>
+	);
+}
+```
+
+:::
+
+### Controlled value
+
+A `ColorWheel` can be made controlled using the `value` prop. The `onChange` event is fired when the user drags the thumb and receive the new value.
+
+:::preview
+
+<ControlledValueExample />
+
+---
+
+```tsx {4,9-10}
+import { createSignal } from "solid-js";
+
+function ControlledValueExample() {
+	const [value, setValue] = createSignal(parseColor("hsl(0, 100%, 50%)"));
+
+	return (
+		<>
+			<ColorWheel value={value()} onChange={setValue}>
+				<ColorWheel.Label>Label</ColorWheel.Label>
+				<ColorWheel.Track>
+					<ColorWheel.Thumb>
+						<ColorWheel.Input />
+					</ColorWheel.Thumb>
+				</ColorWheel.Track>
+			</ColorWheel>
+			<p>Current color value: {value().toString("hsl")}</p>
+		</>
+	);
+}
+```
+
+:::
+
+### Thickness
+
+The `thickness` prop controls the width of the `ColorWheel`'s circular track. This prop is required.
+
+:::preview
+
+<ThicknessExample />
+
+---
+
+```tsx {1}
+<ColorWheel thickness={60}>
+	<ColorWheel.Label>Label</ColorWheel.Label>
+	<ColorWheel.Track>
+		<ColorWheel.Thumb>
+			<ColorWheel.Input />
+		</ColorWheel.Thumb>
+	</ColorWheel.Track>
+</ColorWheel>
+```
+
+:::
+
+### Custom Value Label
+
+:::preview
+
+<CustomValueLabelExample />
+
+---
+
+```tsx {3-9}
+<ColorWheel
+	getValueLabel={color =>
+		color
+			.toFormat("hsl")
+			.withChannelValue("saturation", 100)
+			.withChannelValue("lightness", 50)
+			.withChannelValue("alpha", 1)
+			.toString()
+	}
+>
+	<ColorWheel.Label>Label</ColorWheel.Label>
+	<ColorWheel.Track>
+		<ColorWheel.Thumb>
+			<ColorWheel.Input />
+		</ColorWheel.Thumb>
+	</ColorWheel.Track>
+	<div>
+		<ColorWheel.ValueLabel />
+	</div>
+</ColorWheel>
+```
+
+:::
+
+### HTML forms
+
+`ColorWheel` supports the `name` prop for integration with HTML forms.
+
+:::preview
+
+<HTMLFormExample />
+
+---
+
+```tsx {8}
+function HTMLFormExample() {
+	const onSubmit = (e: SubmitEvent) => {
+		// handle form submission.
+	};
+
+	return (
+		<form onSubmit={onSubmit}>
+			<ColorWheel name="hue">
+				<ColorWheel.Track>
+					<ColorWheel.Thumb>
+						<ColorWheel.Input />
+					</ColorWheel.Thumb>
+				</ColorWheel.Track>
+			</ColorWheel>
+		</form>
+	);
+}
+```
+
+:::
+
+## API Reference
+
+### ColorWheel
+
+`ColorWheel` is equivalent to the `Root` import from `@kobalte/core/color-wheel`.
+
+| Prop            | Description                                                                                                                             |
+| :-------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| value           | `Color` <br/> The controlled value of the color wheel. Must be used in conjunction with `onChange`.                                     |
+| defaultValue    | `Color` <br/> The value of the color wheel when initially rendered. Use when you do not need to control the state of the color wheel.   |
+| thickness       | `number` <br/> The thickness of the track `0-100`.                                                                                      |
+| onChange        | `(value: Color) => void` <br/> Event handler called when the value changes.                                                             |
+| onChangeEnd     | `(value: Color) => void` <br/> Event handler called when the value changes at the end of an interaction.                                |
+| getValueLabel   | `(param: Color) => string` <br/> A function to get the accessible label text representing the current value in a human-readable format. |
+| name            | `string` <br/> The name of the color wheel, used when submitting an HTML form.                                                          |
+| validationState | `'valid' \| 'invalid'` <br/> Whether the color wheel should display its "valid" or "invalid" visual styling.                            |
+| required        | `boolean` <br/> Whether the user must check a radio group item before the owning form can be submitted.                                 |
+| disabled        | `boolean` <br/> Whether the color wheel is disabled.                                                                                    |
+| readOnly        | `boolean` <br/> Whether the color wheel items can be selected but not changed by the user.                                              |
+| translations    | `ColorIntlTranslations` <br/> Localization strings.                                                                                     |
+
+| Data attribute | Description                                                                |
+| :------------- | :------------------------------------------------------------------------- |
+| data-valid     | Present when the color wheel is valid according to the validation rules.   |
+| data-invalid   | Present when the color wheel is invalid according to the validation rules. |
+| data-required  | Present when the color wheel is required.                                  |
+| data-disabled  | Present when the color wheel is disabled.                                  |
+| data-readonly  | Present when the color wheel is read only.                                 |
+
+`ColorWheel.ValueLabel`, `ColorWheel.Input`, `ColorWheel.Thumb` and `ColorWheel.Track` share the same data-attributes.
+
+### ColorWheel.Thumb
+
+The current color is available on the thumb using the custom css property `--kb-color-current`.
+
+## Rendered elements
+
+| Component                 | Default rendered element |
+| :------------------------ | :----------------------- |
+| `ColorWheel`              | `div`                    |
+| `ColorWheel.Track`        | `div`                    |
+| `ColorWheel.Thumb`        | `span`                   |
+| `ColorWheel.Input`        | `input`                  |
+| `ColorWheel.ValueLabel`   | `div`                    |
+| `ColorWheel.Label`        | `label`                  |
+| `ColorWheel.Description`  | `div`                    |
+| `ColorWheel.ErrorMessage` | `div`                    |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                           |
+| :-------------------- | :---------------------------------------------------- |
+| <kbd>PageUp</kbd>     | Increments the value of the thumb by a larger step.   |
+| <kbd>PageDown</kbd>   | Decrements the value of the thumb by a larger step.   |
+| <kbd>ArrowDown</kbd>  | Decrements the value of the thumb by the step amount. |
+| <kbd>ArrowUp</kbd>    | Increments the value of the thumb by the step amount. |
+| <kbd>ArrowRight</kbd> | Increments the value of the thumb by the step value.  |
+| <kbd>ArrowLeft</kbd>  | Decrements the value of the thumb by the step value.  |
+| <kbd>Home</kbd>       | Sets the value of the thumb to the minimum value.     |
+| <kbd>End</kbd>        | Sets the value of the thumb to the maximum value.     |

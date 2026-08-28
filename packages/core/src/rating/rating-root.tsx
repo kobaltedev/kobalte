@@ -1,30 +1,25 @@
-import {
-	access,
-	mergeDefaultProps,
-	mergeRefs,
-	type Orientation,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { Orientation, ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
+import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
 import {
 	type CollectionItemWithRef,
 	createControllableSignal,
-} from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
-import { RatingContext, type RatingContextValue } from "./rating-context";
+} from "../primitives/index.ts";
+import { RatingContext, type RatingContextValue } from "./rating-context.tsx";
 
 export interface RatingRootOptions {
 	/** The current rating value. */
@@ -73,7 +68,7 @@ export interface RatingRootOptions {
 
 export interface RatingRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	"aria-label"?: string;
@@ -97,15 +92,17 @@ export type RatingRootProps<
 export function RatingRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, RatingRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `Rating-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			orientation: "horizontal",
-		},
+		} as const,
 		props as RatingRootProps,
 	);
 
@@ -149,10 +146,7 @@ export function RatingRoot<T extends ValidComponent = "div">(
 
 	const { formControlContext } = createFormControl(formControlProps);
 
-	createFormResetListener(
-		() => ref,
-		() => setValue(mergedProps.defaultValue!),
-	);
+	createFormResetListener(ref, () => setValue(mergedProps.defaultValue!));
 
 	const ariaLabelledBy = () => {
 		return formControlContext.getAriaLabelledBy(
@@ -193,7 +187,7 @@ export function RatingRoot<T extends ValidComponent = "div">(
 				<RatingContext value={context}>
 					<Polymorphic<RatingRootRenderProps>
 						as="div"
-						ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+						ref={[setRef, mergedProps.ref]}
 						role="radiogroup"
 						id={access(mergedProps.id)!}
 						aria-invalid={

@@ -1,4 +1,3 @@
-import { focusWithoutScrolling, mergeRefs } from "@kobalte/utils";
 import { createFocusTrap } from "@solid-primitives/focus";
 import {
 	createHideOutside,
@@ -10,15 +9,18 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, Show } from "solid-js";
+import { type Component, createSignal, omit, Show } from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
 	type DismissableLayerRenderProps,
-} from "../dismissable-layer";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper } from "../popper";
-import { type ComboboxDataSet, useComboboxContext } from "./combobox-context";
+} from "../dismissable-layer/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper } from "../popper/index.tsx";
+import {
+	type ComboboxDataSet,
+	useComboboxContext,
+} from "./combobox-context.tsx";
 
 export interface ComboboxContentOptions {
 	/**
@@ -66,7 +68,9 @@ export type ComboboxContentProps<
 export function ComboboxContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ComboboxContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useComboboxContext();
 
@@ -104,8 +108,8 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 		targets: () => {
 			const excludedElements = [];
 
-			if (ref) {
-				excludedElements.push(ref);
+			if (ref()) {
+				excludedElements.push(ref()!);
 			}
 
 			const controlEl = context.controlRef();
@@ -119,12 +123,12 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 	});
 
 	createPreventScroll({
-		element: () => ref ?? undefined,
+		element: ref,
 		enabled: () => context.contentPresent() && context.preventScroll(),
 	});
 
 	createFocusTrap({
-		element: () => ref,
+		element: ref,
 		enabled: () => context.isOpen() && context.isModal(),
 		onInitialFocus: (e) => {
 			// We prevent open autofocus because it's handled by the `Listbox`.
@@ -134,7 +138,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 			props.onCloseAutoFocus?.(e);
 
 			if (!e.defaultPrevented) {
-				focusWithoutScrolling(context.inputRef());
+				context.inputRef()?.focus({ preventScroll: true });
 				e.preventDefault();
 			}
 		},
@@ -148,10 +152,13 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 						Omit<ComboboxContentRenderProps, keyof DismissableLayerRenderProps>
 					>
 				>
-					ref={mergeRefs((el) => {
-						context.setContentRef(el);
-						ref = el;
-					}, props.ref)}
+					ref={[
+						(el: HTMLElement) => {
+							context.setContentRef(el);
+							setRef(el);
+						},
+						props.ref,
+					]}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.controlRef]}
 					style={combineStyle(

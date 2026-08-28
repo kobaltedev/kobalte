@@ -1,10 +1,10 @@
 import { composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
-import * as Button from "../button";
+import * as Button from "../button/index.tsx";
 
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { usePaginationContext } from "./pagination-context";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { usePaginationContext } from "./pagination-context.tsx";
 
 export interface PaginationPreviousOptions {}
 
@@ -30,7 +30,7 @@ export function PaginationPrevious<T extends ValidComponent = "button">(
 
 	const others = omit(props as PaginationPreviousProps, "onClick");
 
-	const onClick: JSX.EventHandlerUnion<HTMLButtonElement, MouseEvent> = () => {
+	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = () => {
 		context.setPage(context.page() - 1);
 	};
 

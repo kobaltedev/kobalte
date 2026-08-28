@@ -6,10 +6,9 @@
  * https://github.com/ariakit/ariakit/blob/da142672eddefa99365773ced72171facc06fdcb/packages/ariakit/src/collection/collection-state.ts
  */
 
-import { getDocument } from "@kobalte/utils";
 import { type Accessor, createEffect } from "solid-js";
 
-import type { DomCollectionItem } from "./types";
+import type { DomCollectionItem } from "./types.ts";
 
 function isElementPreceding(a: Element, b: Element) {
 	return Boolean(
@@ -113,7 +112,7 @@ function getCommonParent(items: DomCollectionItem[]) {
 		parentEl = parentEl.parentElement;
 	}
 
-	return getDocument(parentEl).body;
+	return document.body;
 }
 
 function createTimeoutObserver<T extends DomCollectionItem = DomCollectionItem>(

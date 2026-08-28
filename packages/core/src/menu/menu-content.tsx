@@ -1,16 +1,15 @@
-import { mergeRefs, OverrideComponentProps } from "@kobalte/utils";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, omit } from "solid-js";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import { type Component, createSignal, omit } from "solid-js";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	MenuContentBase,
 	type MenuContentBaseCommonProps,
 	type MenuContentBaseOptions,
 	type MenuContentBaseRenderProps,
-} from "./menu-content-base";
-import { useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
+} from "./menu-content-base.tsx";
+import { useMenuContext } from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuContentOptions extends MenuContentBaseOptions {}
 
@@ -28,7 +27,9 @@ export type MenuContentProps<
 export function MenuContent<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuContentProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
@@ -36,7 +37,7 @@ export function MenuContent<T extends ValidComponent = "div">(
 	const others = omit(props as MenuContentProps, "ref");
 
 	createPreventScroll({
-		element: () => ref ?? undefined,
+		element: ref,
 		enabled: () => context.contentPresent() && rootContext.preventScroll(),
 	});
 
@@ -44,9 +45,7 @@ export function MenuContent<T extends ValidComponent = "div">(
 		<MenuContentBase<
 			Component<Omit<MenuContentRenderProps, keyof MenuContentBaseRenderProps>>
 		>
-			ref={mergeRefs((el) => {
-				ref = el;
-			}, props.ref)}
+			ref={[setRef, props.ref]}
 			{...others}
 		/>
 	);

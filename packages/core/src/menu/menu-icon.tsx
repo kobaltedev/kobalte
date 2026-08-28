@@ -1,17 +1,16 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import type { Element } from "solid-js";
+import { type Element, merge } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type MenuDataSet, useMenuContext } from "./menu-context";
+} from "../polymorphic/index.tsx";
+import { type MenuDataSet, useMenuContext } from "./menu-context.tsx";
 
 export interface MenuIconOptions {}
 
-export interface MenuIconCommonProps<T extends HTMLElement = HTMLElement> {
+export interface MenuIconCommonProps<_T extends HTMLElement = HTMLElement> {
 	children: Element;
 }
 
@@ -32,10 +31,7 @@ export function MenuIcon<T extends ValidComponent = "span">(
 ) {
 	const context = useMenuContext();
 
-	const mergedProps = mergeDefaultProps(
-		{ children: "▼" },
-		props as MenuIconProps,
-	);
+	const mergedProps = merge({ children: "▼" }, props as MenuIconProps);
 
 	return (
 		<Polymorphic<MenuIconRenderProps>

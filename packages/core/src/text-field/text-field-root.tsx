@@ -1,29 +1,24 @@
-import {
-	access,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createControllableSignal } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createControllableSignal } from "../primitives/index.ts";
 import {
 	TextFieldContext,
 	type TextFieldContextValue,
-} from "./text-field-context";
+} from "./text-field-context.tsx";
 
 export interface TextFieldRootOptions {
 	/** The controlled value of the text field. */
@@ -66,7 +61,7 @@ export interface TextFieldRootOptions {
 
 export interface TextFieldRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface TextFieldRootRenderProps
@@ -85,14 +80,13 @@ export type TextFieldRootProps<
 export function TextFieldRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, TextFieldRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `textfield-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
-		{ id: defaultId },
-		props as TextFieldRootProps,
-	);
+	const mergedProps = merge({ id: defaultId }, props as TextFieldRootProps);
 
 	const others = omit(
 		mergedProps,
@@ -116,10 +110,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 
 	const { formControlContext } = createFormControl(mergedProps);
 
-	createFormResetListener(
-		() => ref,
-		() => setValue(mergedProps.defaultValue ?? ""),
-	);
+	createFormResetListener(ref, () => setValue(mergedProps.defaultValue ?? ""));
 
 	const onInput: JSX.EventHandlerUnion<
 		HTMLInputElement | HTMLTextAreaElement,
@@ -143,7 +134,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 
 	const context: TextFieldContextValue = {
 		value,
-		generateId: createGenerateId(() => access(mergedProps.id)!),
+		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		onInput,
 	};
 
@@ -152,7 +143,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 			<TextFieldContext value={context}>
 				<Polymorphic<TextFieldRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(mergedProps.id)}
 					{...formControlContext.dataset()}

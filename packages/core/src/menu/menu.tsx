@@ -6,11 +6,6 @@
  * https://github.com/radix-ui/primitives/blob/81b25f4b40c54f72aeb106ca0e64e1e09655153e/packages/react/menu/src/Menu.tsx
  */
 
-import {
-	focusWithoutScrolling,
-	mergeDefaultProps,
-	removeItemFromArray,
-} from "@kobalte/utils";
 import { createHideOutside } from "@solid-primitives/interaction";
 
 import { createPresence } from "@solid-primitives/presence";
@@ -19,34 +14,35 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
+	merge,
 	omit,
 	onCleanup,
 	type ParentProps,
 	Show,
 } from "solid-js";
-import { createListState } from "../list";
-import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context";
-import { Popper, type PopperRootOptions } from "../popper";
-import type { Placement } from "../popper/utils";
+import { createListState } from "../list/index.ts";
+import { useOptionalMenubarContext } from "../menubar/menubar-context.tsx";
+import { useOptionalNavigationMenuContext } from "../navigation-menu/navigation-menu-context.tsx";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
+import type { Placement } from "../popper/utils.ts";
+import {
+	createDomCollection,
+	useOptionalDomCollectionContext,
+} from "../primitives/create-dom-collection/index.ts";
 import {
 	type CollectionItemWithRef,
 	createDisclosureState,
 	createRegisterId,
-} from "../primitives";
-import {
-	createDomCollection,
-	useOptionalDomCollectionContext,
-} from "../primitives/create-dom-collection";
-import type { FocusStrategy } from "../selection";
+} from "../primitives/index.ts";
+import type { FocusStrategy } from "../selection/index.ts";
 import {
 	MenuContext,
 	type MenuContextValue,
 	type MenuDataSet,
 	useOptionalMenuContext,
-} from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
-import { type GraceIntent, isPointerInGraceArea, type Side } from "./utils";
+} from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
+import { type GraceIntent, isPointerInGraceArea, type Side } from "./utils.ts";
 
 export interface MenuOptions
 	extends Omit<
@@ -78,13 +74,13 @@ export function Menu(props: MenuProps) {
 	const optionalMenubarContext = useOptionalMenubarContext();
 	const optionalNavigationMenuContext = useOptionalNavigationMenuContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			placement:
 				rootContext.orientation() === "horizontal"
 					? "bottom-start"
 					: "right-start",
-		},
+		} as const,
 		props,
 	);
 
@@ -165,7 +161,7 @@ export function Menu(props: MenuProps) {
 		const content = contentRef();
 
 		if (content) {
-			focusWithoutScrolling(content);
+			content.focus({ preventScroll: true });
 			listState.selectionManager().setFocused(true);
 			listState.selectionManager().setFocusedKey(undefined);
 		}
@@ -183,7 +179,7 @@ export function Menu(props: MenuProps) {
 		const parentUnregister = parentMenuContext?.registerNestedMenu(element);
 
 		return () => {
-			setNestedMenus((prev) => removeItemFromArray(prev, element));
+			setNestedMenus((prev) => prev.filter((item) => item !== element));
 			parentUnregister?.();
 		};
 	};
@@ -261,7 +257,7 @@ export function Menu(props: MenuProps) {
 			if (!state) return;
 			if (state.menubarValue === state.rootValue) {
 				state.trigger?.focus();
-				if (state.autoFocus) open(true);
+				if (state.autoFocus) open("first");
 			} else {
 				close();
 			}

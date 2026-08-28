@@ -1,16 +1,15 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit, Show } from "solid-js";
+import { createSignal, merge, omit, type Ref, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type RadioGroupItemDataSet,
 	useRadioGroupItemContext,
-} from "./radio-group-item-context";
+} from "./radio-group-item-context.tsx";
 
 export interface RadioGroupItemIndicatorOptions {
 	/**
@@ -24,7 +23,7 @@ export interface RadioGroupItemIndicatorCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface RadioGroupItemIndicatorRenderProps
@@ -45,7 +44,7 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 ) {
 	const context = useRadioGroupItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("indicator"),
 		},
@@ -54,7 +53,7 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "ref", "forceMount");
 
-	const [ref, setRef] = createSignal<HTMLElement>();
+	const [_ref, setRef] = createSignal<HTMLElement>();
 
 	const { isMounted: present } = createPresence(
 		() => mergedProps.forceMount || context.isSelected() || undefined,
@@ -65,7 +64,7 @@ export function RadioGroupItemIndicator<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<RadioGroupItemIndicatorRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				{...context.dataset()}
 				{...others}
 			/>

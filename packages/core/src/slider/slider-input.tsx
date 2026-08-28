@@ -1,18 +1,14 @@
-import {
-	callHandler,
-	mergeDefaultProps,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { createEffect, createSignal, omit } from "solid-js";
+import { createEffect, createSignal, merge, omit } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
 	useFormControlContext,
-} from "../form-control";
-import { useSliderContext } from "./slider-context";
-import { useThumbContext } from "./slider-thumb";
+} from "../form-control/index.ts";
+import { useSliderContext } from "./slider-context.tsx";
+import { useThumbContext } from "./slider-thumb.tsx";
 
 export interface SliderInputProps extends ComponentProps<"input"> {
 	style?: JSX.CSSProperties | string;
@@ -26,7 +22,7 @@ export function SliderInput(props: SliderInputProps) {
 	const context = useSliderContext();
 	const thumb = useThumbContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("input"),
 		},
@@ -99,7 +95,6 @@ export function SliderInput(props: SliderInputProps) {
 			aria-invalid={
 				formControlContext.validationState() === "invalid" ? "true" : undefined
 			}
-			aria-required={formControlContext.isRequired() ? "true" : undefined}
 			aria-disabled={formControlContext.isDisabled() ? "true" : undefined}
 			aria-readonly={formControlContext.isReadOnly() ? "true" : undefined}
 			onChange={onChange}

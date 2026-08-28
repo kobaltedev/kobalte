@@ -1,5 +1,4 @@
 import { Progress } from "@kobalte/core/progress";
-
 import style from "./progress.module.css";
 
 export function BasicExample() {

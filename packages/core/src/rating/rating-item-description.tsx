@@ -1,21 +1,20 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect } from "solid-js";
+import { createEffect, merge } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type RatingItemDataSet,
 	useRatingItemContext,
-} from "./rating-item-context";
+} from "./rating-item-context.tsx";
 
 export interface RatingItemDescriptionOptions {}
 
 export interface RatingItemDescriptionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
@@ -34,7 +33,7 @@ export function RatingItemDescription<T extends ValidComponent = "div">(
 ) {
 	const context = useRatingItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("description"),
 		},

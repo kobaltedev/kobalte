@@ -12,6 +12,7 @@
 	padding: 0.5rem;
 	border-radius: 0.5rem;
 	appearance: none;
+	border: none;
 	user-select: none;
 	outline: none;
 	display: flex;
@@ -27,7 +28,7 @@
 	color: hsla(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .toggle-group__item:hover {
+[data-theme*="dark"] .toggle-group__item:hover {
 	background-color: hsl(200 98% 39% / 0.5);
 }
 

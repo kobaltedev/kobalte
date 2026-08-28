@@ -1,17 +1,16 @@
-import { mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, onCleanup } from "solid-js";
+import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createTagName } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createTagName } from "../primitives/index.ts";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "./form-control-context";
+} from "./form-control-context.tsx";
 
 export interface FormControlLabelOptions {}
 
@@ -19,7 +18,7 @@ export interface FormControlLabelCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface FormControlLabelRenderProps
@@ -45,7 +44,7 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 
 	const context = useFormControlContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("label"),
 		},
@@ -58,15 +57,13 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 
 	createEffect(
 		() => others.id,
-		(id) => {
-			onCleanup(context.registerLabel(id));
-		},
+		(id) => context.registerLabel(id),
 	);
 
 	return (
 		<Polymorphic<FormControlLabelRenderProps>
 			as="label"
-			ref={mergeRefs(setRef, mergedProps.ref)}
+			ref={[setRef, mergedProps.ref]}
 			for={tagName() === "label" ? context.fieldId() : undefined}
 			{...context.dataset()}
 			{...others}

@@ -6,28 +6,24 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabList.ts
  */
 
-import {
-	composeEventHandlers,
-	mergeRefs,
-	type Orientation,
-} from "@kobalte/utils";
+import { composeEventHandlers, type Orientation } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, createSignal, omit, type Ref } from "solid-js";
 
-import { useLocale } from "../i18n";
+import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createSelectableCollection } from "../selection";
-import { useTabsContext } from "./tabs-context";
-import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate";
+} from "../polymorphic/index.tsx";
+import { createSelectableCollection } from "../selection/index.ts";
+import { useTabsContext } from "./tabs-context.tsx";
+import { TabsKeyboardDelegate } from "./tabs-keyboard-delegate.ts";
 
 export interface TabsListOptions {}
 
 export interface TabsListCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -50,7 +46,9 @@ export type TabsListProps<
 export function TabsList<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, TabsListProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useTabsContext();
 
@@ -79,13 +77,13 @@ export function TabsList<T extends ValidComponent = "div">(
 			shouldFocusWrap: false, // handled by the keyboard delegate
 			disallowEmptySelection: true,
 		},
-		() => ref,
+		ref,
 	);
 
 	createEffect(
 		() => {
-			if (ref == null) return null;
-			return ref.querySelector(
+			if (ref() == null) return null;
+			return ref()!.querySelector(
 				`[data-key="${context.listState().selectedKey()}"]`,
 			) as HTMLElement | null;
 		},
@@ -99,7 +97,7 @@ export function TabsList<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<TabsListRenderProps>
 			as="div"
-			ref={mergeRefs((el) => (ref = el), (props as TabsListProps).ref)}
+			ref={[setRef, (props as TabsListProps).ref] as any}
 			role="tablist"
 			aria-orientation={context.orientation()}
 			data-orientation={context.orientation()}

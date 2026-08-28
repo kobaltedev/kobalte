@@ -1,12 +1,11 @@
-import { mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { createEffect, createSignal, merge, omit } from "solid-js";
-import type { PolymorphicProps } from "../polymorphic";
-import { RadioGroup, type RadioGroupRootProps } from "../radio-group";
+import type { PolymorphicProps } from "../polymorphic/index.tsx";
+import { RadioGroup, type RadioGroupRootProps } from "../radio-group/index.tsx";
 import {
 	SegmentedControlContext,
 	type SegmentedControlContextValue,
-} from "./segmented-control-context";
+} from "./segmented-control-context.tsx";
 
 export type SegmentedControlRootProps = RadioGroupRootProps;
 
@@ -47,7 +46,7 @@ export const SegmentedControlRoot = <T extends ValidComponent = "div">(
 
 	return (
 		<SegmentedControlContext value={context}>
-			<RadioGroup ref={mergeRefs(setRef, mergedProps.ref)} {...otherProps} />
+			<RadioGroup ref={[setRef, mergedProps.ref]} {...otherProps} />
 		</SegmentedControlContext>
 	);
 };

@@ -6,17 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/3155e4db7eba07cf06525747ce0adb54c1e2a086/packages/@react-aria/checkbox/src/useCheckbox.ts
  */
 
-import {
-	access,
-	callHandler,
-	createGenerateId,
-	isFunction,
-	mergeDefaultProps,
-	mergeRefs,
-	OverrideComponentProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import { callHandler, type ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -24,25 +16,26 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
+	type Ref,
 } from "solid-js";
 import {
 	createFormControl,
-	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createToggleState } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createToggleState } from "../primitives/index.ts";
 import {
 	CheckboxContext,
 	type CheckboxContextValue,
 	type CheckboxDataSet,
-} from "./checkbox-context";
+} from "./checkbox-context.tsx";
 
 interface CheckboxRootState {
 	/** Whether the checkbox is checked or not. */
@@ -105,7 +98,7 @@ export interface CheckboxRootOptions {
 
 export interface CheckboxRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 }
 
@@ -127,11 +120,13 @@ export type CheckboxRootProps<
 export function CheckboxRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, CheckboxRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `checkbox-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			value: "on",
 			id: defaultId,
@@ -184,9 +179,8 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		isReadOnly: () => formControlContext.isReadOnly(),
 	});
 
-	createFormResetListener(
-		() => ref,
-		() => state.setIsSelected(mergedProps.defaultChecked ?? false),
+	createFormResetListener(ref, () =>
+		state.setIsSelected(mergedProps.defaultChecked ?? false),
 	);
 
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
@@ -211,7 +205,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 		checked: () => state.isSelected(),
 		indeterminate: () => mergedProps.indeterminate ?? false,
 		inputRef,
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 		toggle: () => state.toggle(),
 		setIsChecked: (isChecked) => state.setIsSelected(isChecked),
 		setIsFocused,
@@ -223,7 +217,7 @@ export function CheckboxRoot<T extends ValidComponent = "div">(
 			<CheckboxContext value={context}>
 				<Polymorphic<CheckboxRootRenderProps>
 					as="div"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="group"
 					id={access(formControlProps.id)}
 					onPointerDown={onPointerDown}
@@ -247,7 +241,7 @@ interface CheckboxRootChildProps extends Pick<CheckboxRootOptions, "children"> {
 function CheckboxRootChild(props: CheckboxRootChildProps) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

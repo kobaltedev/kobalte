@@ -4,7 +4,6 @@ import {
 } from "@kobalte/core/navigation-menu";
 import { RadioGroup } from "@kobalte/core/radio-group";
 import { createSignal, For } from "solid-js";
-
 import { ChevronDownIcon } from "../components";
 import style from "./navigation-menu.module.css";
 import radioStyle from "./radio-group.module.css";
@@ -224,10 +223,10 @@ export function BasicExample() {
 
 			<div style="height: 2rem;" />
 
-			<RadioGroup<Orientation>
+			<RadioGroup
 				class={radioStyle["radio-group"]}
 				value={orientation()}
-				onChange={(value) => setOrientation(value)}
+				onChange={(value) => setOrientation(value as Orientation)}
 			>
 				<RadioGroup.Label class={radioStyle["radio-group__label"]}>
 					Orientation
@@ -259,58 +258,56 @@ export function BasicExample() {
 
 export function AnimationExample() {
 	return (
-		<>
-			<NavigationMenu class={style["navigation-menu__root"]}>
-				<NavigationMenu.Menu>
-					<NavigationMenu.Trigger class={style["navigation-menu__trigger"]}>
-						Learn{" "}
-						<NavigationMenu.Icon
-							aria-hidden="true"
-							class={style["navigation-menu__trigger-indicator"]}
-						>
-							<ChevronDownIcon />
-						</NavigationMenu.Icon>
-					</NavigationMenu.Trigger>
-					<NavigationMenu.Portal>
-						<NavigationMenu.Content
-							class={`${style["navigation-menu__content"]} ${style["content-1"]} ${style["content-empty"]}`}
-						>
-							Learn Content
-						</NavigationMenu.Content>
-					</NavigationMenu.Portal>
-				</NavigationMenu.Menu>
-
-				<NavigationMenu.Menu>
-					<NavigationMenu.Trigger class={style["navigation-menu__trigger"]}>
-						Overview{" "}
-						<NavigationMenu.Icon
-							class={style["navigation-menu__trigger-indicator"]}
-						>
-							<ChevronDownIcon />
-						</NavigationMenu.Icon>
-					</NavigationMenu.Trigger>
-					<NavigationMenu.Portal>
-						<NavigationMenu.Content
-							class={`${style["navigation-menu__content"]} ${style["content-2"]} ${style["content-empty"]}`}
-						>
-							Overview Content
-						</NavigationMenu.Content>
-					</NavigationMenu.Portal>
-				</NavigationMenu.Menu>
-
-				<NavigationMenu.Trigger
-					class={style["navigation-menu__trigger"]}
-					as="a"
-					href="https://github.com/kobaltedev/kobalte"
-					target="_blank"
-				>
-					GitHub
+		<NavigationMenu class={style["navigation-menu__root"]}>
+			<NavigationMenu.Menu>
+				<NavigationMenu.Trigger class={style["navigation-menu__trigger"]}>
+					Learn{" "}
+					<NavigationMenu.Icon
+						aria-hidden="true"
+						class={style["navigation-menu__trigger-indicator"]}
+					>
+						<ChevronDownIcon />
+					</NavigationMenu.Icon>
 				</NavigationMenu.Trigger>
+				<NavigationMenu.Portal>
+					<NavigationMenu.Content
+						class={`${style["navigation-menu__content"]} ${style["content-1"]} ${style["content-empty"]}`}
+					>
+						Learn Content
+					</NavigationMenu.Content>
+				</NavigationMenu.Portal>
+			</NavigationMenu.Menu>
 
-				<NavigationMenu.Viewport class={style["navigation-menu__viewport"]}>
-					<NavigationMenu.Arrow class={style["navigation-menu__arrow"]} />
-				</NavigationMenu.Viewport>
-			</NavigationMenu>
-		</>
+			<NavigationMenu.Menu>
+				<NavigationMenu.Trigger class={style["navigation-menu__trigger"]}>
+					Overview{" "}
+					<NavigationMenu.Icon
+						class={style["navigation-menu__trigger-indicator"]}
+					>
+						<ChevronDownIcon />
+					</NavigationMenu.Icon>
+				</NavigationMenu.Trigger>
+				<NavigationMenu.Portal>
+					<NavigationMenu.Content
+						class={`${style["navigation-menu__content"]} ${style["content-2"]} ${style["content-empty"]}`}
+					>
+						Overview Content
+					</NavigationMenu.Content>
+				</NavigationMenu.Portal>
+			</NavigationMenu.Menu>
+
+			<NavigationMenu.Trigger
+				class={style["navigation-menu__trigger"]}
+				as="a"
+				href="https://github.com/kobaltedev/kobalte"
+				target="_blank"
+			>
+				GitHub
+			</NavigationMenu.Trigger>
+
+			<NavigationMenu.Viewport class={style["navigation-menu__viewport"]}>
+				<NavigationMenu.Arrow class={style["navigation-menu__arrow"]} />
+			</NavigationMenu.Viewport>
+		</NavigationMenu>
 	);
 }

@@ -1,21 +1,23 @@
-import {
-	isFunction,
-	mergeDefaultProps,
-	OverrideComponentProps,
-} from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, children, createEffect, omit, Show } from "solid-js";
+import {
+	type Accessor,
+	children,
+	createEffect,
+	merge,
+	omit,
+	Show,
+} from "solid-js";
 
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useSelectContext } from "./select-context";
+} from "../polymorphic/index.tsx";
+import { useSelectContext } from "./select-context.tsx";
 
 export interface SelectValueState<Option> {
 	/** The first (or only, in case of single select) selected option. */
@@ -39,7 +41,7 @@ export interface SelectValueOptions<Option> {
 	children?: JSX.Element | ((state: SelectValueState<Option>) => JSX.Element);
 }
 
-export interface SelectValueCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SelectValueCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -64,7 +66,7 @@ export function SelectValue<Option, T extends ValidComponent = "span">(
 	const formControlContext = useFormControlContext();
 	const context = useSelectContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("value"),
 		},
@@ -124,7 +126,7 @@ interface SelectValueChildProps<T>
 function SelectValueChild<T>(props: SelectValueChildProps<T>) {
 	const resolvedChildren = children(() => {
 		const body = props.children;
-		return isFunction(body) ? body(props.state) : body;
+		return typeof body === "function" ? body(props.state) : body;
 	});
 
 	return <>{resolvedChildren()}</>;

@@ -1,7 +1,7 @@
 import type {
 	ComboboxBaseItemComponentProps as SearchRootItemComponentProps,
 	ComboboxBaseSectionComponentProps as SearchRootSectionComponentProps,
-} from "../combobox/combobox-base";
+} from "../combobox/combobox-base.tsx";
 // Search implements combobox without filter, hence the import alias
 import {
 	ComboboxContent as Content,
@@ -9,41 +9,41 @@ import {
 	type ComboboxContentOptions as SearchContentOptions,
 	type ComboboxContentProps as SearchContentProps,
 	type ComboboxContentRenderProps as SearchContentRenderProps,
-} from "../combobox/combobox-content";
+} from "../combobox/combobox-content.tsx";
 import {
 	ComboboxControl as Control,
 	type ComboboxControlCommonProps as SearchControlCommonProps,
 	type ComboboxControlOptions as SearchControlOptions,
 	type ComboboxControlProps as SearchControlProps,
 	type ComboboxControlRenderProps as SearchControlRenderProps,
-} from "../combobox/combobox-control";
+} from "../combobox/combobox-control.tsx";
 import {
 	ComboboxHiddenSelect as HiddenSelect,
 	type ComboboxHiddenSelectProps as SearchHiddenSelectProps,
-} from "../combobox/combobox-hidden-select";
+} from "../combobox/combobox-hidden-select.tsx";
 import {
 	ComboboxIcon as Icon,
 	type ComboboxIconProps as SearchIconProps,
-} from "../combobox/combobox-icon";
+} from "../combobox/combobox-icon.tsx";
 import {
 	ComboboxInput as Input,
 	type ComboboxInputCommonProps as SearchInputCommonProps,
 	type ComboboxInputOptions as SearchInputOptions,
 	type ComboboxInputProps as SearchInputProps,
 	type ComboboxInputRenderProps as SearchInputRenderProps,
-} from "../combobox/combobox-input";
+} from "../combobox/combobox-input.tsx";
 import {
 	ComboboxListbox as Listbox,
 	type ComboboxListboxCommonProps as SearchListboxCommonProps,
 	type ComboboxListboxOptions as SearchListboxOptions,
 	type ComboboxListboxProps as SearchListboxProps,
 	type ComboboxListboxRenderProps as SearchListboxRenderProps,
-} from "../combobox/combobox-listbox";
+} from "../combobox/combobox-listbox.tsx";
 import {
 	ComboboxPortal as Portal,
 	type ComboboxPortalProps as SearchPortalProps,
-} from "../combobox/combobox-portal";
-import type { ComboboxTriggerMode as SearchTriggerMode } from "../combobox/types";
+} from "../combobox/combobox-portal.tsx";
+import type { ComboboxTriggerMode as SearchTriggerMode } from "../combobox/types.ts";
 import {
 	FormControlDescription as Description,
 	FormControlLabel as Label,
@@ -55,7 +55,7 @@ import {
 	type FormControlLabelOptions as SearchLabelOptions,
 	type FormControlLabelProps as SearchLabelProps,
 	type FormControlLabelRenderProps as SearchLabelRenderProps,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	Item,
 	ItemDescription,
@@ -77,25 +77,25 @@ import {
 	type ListboxSectionProps as SearchSectionProps,
 	type ListboxSectionRenderProps as SearchSectionRenderProps,
 	Section,
-} from "../listbox";
+} from "../listbox/index.tsx";
 import {
 	Arrow,
 	type PopperArrowOptions as SearchArrowOptions,
 	type PopperArrowProps as SearchArrowProps,
-} from "../popper";
+} from "../popper/index.tsx";
 
 import {
 	SearchIndicator as Indicator,
 	type SearchIndicatorCommonProps,
 	type SearchIndicatorOptions,
 	type SearchIndicatorProps,
-} from "./search-indicator";
+} from "./search-indicator.tsx";
 import {
 	SearchNoResult as NoResult,
 	type SearchNoResultCommonProps,
 	type SearchNoResultOptions,
 	type SearchNoResultProps,
-} from "./search-no-result";
+} from "./search-no-result.tsx";
 
 // Wrappers over Combobox need to redefine prop types
 import {
@@ -106,7 +106,7 @@ import {
 	type SearchRootProps,
 	type SearchRootRenderProps,
 	type SearchSingleSelectionOptions,
-} from "./search-root";
+} from "./search-root.tsx";
 
 export type {
 	SearchArrowOptions,
@@ -211,6 +211,9 @@ export const Search = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
-export { type SearchContextValue, useSearchContext } from "./search-context";
+export {
+	type SearchContextValue,
+	useSearchContext,
+} from "./search-context.tsx";

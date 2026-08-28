@@ -6,24 +6,25 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-aria/menu/src/useMenuTrigger.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-	type Orientation,
-	scrollIntoViewport,
-} from "@kobalte/utils";
+import { callHandler, type Orientation } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createMemo, omit, untrack } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createMemo,
+	merge,
+	omit,
+	untrack,
+} from "solid-js";
 
-import * as Button from "../button";
-import { useLocale } from "../i18n/i18n-provider";
-import type { Direction } from "../i18n/utils";
-import { useOptionalMenubarContext } from "../menubar/menubar-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { createTagName } from "../primitives/create-tag-name";
-import { type MenuDataSet, useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
+import * as Button from "../button/index.tsx";
+import { useLocale } from "../i18n/i18n-provider.tsx";
+import type { Direction } from "../i18n/utils.ts";
+import { useOptionalMenubarContext } from "../menubar/menubar-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { createTagName } from "../primitives/create-tag-name/index.ts";
+import { type MenuDataSet, useMenuContext } from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
 
 export interface MenuTriggerOptions {}
 
@@ -81,7 +82,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 
 	const { direction } = useLocale();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId("trigger"),
 		},
@@ -186,7 +187,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 			case MENU_KEYS.first(rootContext.orientation()):
 				e.stopPropagation();
 				e.preventDefault();
-				scrollIntoViewport(e.currentTarget);
+				e.currentTarget.scrollIntoView({ block: "nearest" });
 				context.open("first");
 				optionalMenubarContext?.setAutoFocusMenu(true);
 				optionalMenubarContext?.setValue(key);
@@ -251,7 +252,7 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, mergedProps.ref)}
+			ref={[context.setTriggerRef, mergedProps.ref]}
 			data-kb-menu-value-trigger={rootContext.value()}
 			id={mergedProps.id}
 			disabled={mergedProps.disabled}
