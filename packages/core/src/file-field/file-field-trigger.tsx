@@ -1,13 +1,13 @@
 import { composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { type Component, omit } from "solid-js";
-import * as Button from "../button";
+import * as Button from "../button/index.tsx";
 import {
 	type FormControlDataSet,
 	useFormControlContext,
-} from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useFileFieldContext } from "./file-field-context";
+} from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useFileFieldContext } from "./file-field-context.tsx";
 
 export interface FileFieldTriggerOptions {}
 

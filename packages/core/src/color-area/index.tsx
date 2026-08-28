@@ -14,7 +14,7 @@ import {
 	FormControlDescription as Description,
 	FormControlErrorMessage as ErrorMessage,
 	FormControlLabel as Label,
-} from "../form-control";
+} from "../form-control/index.ts";
 
 import {
 	ColorAreaBackground as Background,
@@ -22,29 +22,29 @@ import {
 	type ColorAreaBackgroundOptions,
 	type ColorAreaBackgroundProps,
 	type ColorAreaBackgroundRenderProps,
-} from "./color-area-background";
+} from "./color-area-background.tsx";
 import {
 	type ColorAreaHiddenInputXProps,
 	ColorAreaHiddenInputX as HiddenInputX,
-} from "./color-area-hidden-input-x";
+} from "./color-area-hidden-input-x.tsx";
 import {
 	type ColorAreaHiddenInputYProps,
 	ColorAreaHiddenInputY as HiddenInputY,
-} from "./color-area-hidden-input-y";
+} from "./color-area-hidden-input-y.tsx";
 import {
 	type ColorAreaRootCommonProps,
 	type ColorAreaRootOptions,
 	type ColorAreaRootProps,
 	type ColorAreaRootRenderProps,
 	ColorAreaRoot as Root,
-} from "./color-area-root";
+} from "./color-area-root.tsx";
 import {
 	type ColorAreaThumbCommonProps,
 	type ColorAreaThumbOptions,
 	type ColorAreaThumbProps,
 	type ColorAreaThumbRenderProps,
 	ColorAreaThumb as Thumb,
-} from "./color-area-thumb";
+} from "./color-area-thumb.tsx";
 
 export type {
 	ColorAreaBackgroundCommonProps,
@@ -96,9 +96,9 @@ export const ColorArea = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type ColorAreaContextValue,
 	useColorAreaContext,
-} from "./color-area-context";
+} from "./color-area-context.tsx";

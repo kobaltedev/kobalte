@@ -12,12 +12,7 @@
  * https://github.com/emilkowalski/sonner/blob/0d027fd3a41013fada9d8a3ef807bcc87053bde8/src/index.tsx
  */
 
-import {
-	callHandler,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
@@ -26,8 +21,10 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onSettled,
+	type Ref,
 	Show,
 	untrack,
 } from "solid-js";
@@ -35,16 +32,16 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createRegisterId } from "../primitives";
+} from "../polymorphic/index.tsx";
+import { createRegisterId } from "../primitives/index.ts";
 import {
 	TOAST_INTL_TRANSLATIONS,
 	type ToastIntlTranslations,
-} from "./toast.intl";
-import { ToastContext, type ToastContextValue } from "./toast-context";
-import { useToastRegionContext } from "./toast-region-context";
-import { toastStore } from "./toast-store";
-import type { ToastSwipeDirection } from "./types";
+} from "./toast.intl.ts";
+import { ToastContext, type ToastContextValue } from "./toast-context.tsx";
+import { useToastRegionContext } from "./toast-region-context.tsx";
+import { toastStore } from "./toast-store.ts";
+import type { ToastSwipeDirection } from "./types.ts";
 
 const TOAST_SWIPE_START_EVENT = "toast.swipeStart";
 const TOAST_SWIPE_MOVE_EVENT = "toast.swipeMove";
@@ -113,7 +110,7 @@ export interface ToastRootOptions {
 export interface ToastRootCommonProps<T extends HTMLElement = HTMLElement> {
 	style?: JSX.CSSProperties | string;
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -134,7 +131,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 ) {
 	const rootContext = useToastRegionContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: `toast-${createUniqueId()}`,
 			priority: "high",
@@ -174,7 +171,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		{ ownedWrite: true },
 	);
 	const [isAnimationEnabled, setIsAnimationEnabled] = createSignal(true);
-	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+	const [_ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
 		ownedWrite: true,
 	});
 
@@ -211,7 +208,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 
 		window.clearTimeout(closeTimerId);
 
-		closeTimerStartTime = new Date().getTime();
+		closeTimerStartTime = Date.now();
 		closeTimerId = window.setTimeout(close, duration);
 	};
 
@@ -222,7 +219,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 	};
 
 	const pauseTimer = () => {
-		const elapsedTime = new Date().getTime() - closeTimerStartTime;
+		const elapsedTime = Date.now() - closeTimerStartTime;
 		closeTimerRemainingTime = closeTimerRemainingTime - elapsedTime;
 
 		window.clearTimeout(closeTimerId);
@@ -433,7 +430,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 		duration,
 		isPersistent: () => mergedProps.persistent ?? false,
 		closeTimerStartTime: () => closeTimerStartTime,
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),
 	};
@@ -443,7 +440,7 @@ export function ToastRoot<T extends ValidComponent = "li">(
 			<ToastContext value={context}>
 				<Polymorphic<ToastRootRenderProps>
 					as="li"
-					ref={mergeRefs(setRef, mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					role="status"
 					tabindex={0}
 					style={combineStyle(

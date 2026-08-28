@@ -1,0 +1,188 @@
+---
+title: Styling
+---
+
+# {frontmatter.title}
+
+Kobalte components are unstyled, allowing you to completely customize the look and feel. Bring your preferred styling solution (vanilla CSS, Tailwind, CSS-in-JS libraries, etc...).
+
+## Styling a component part
+
+All components and their parts accept a `class` prop. This class will be passed through to the DOM element. You can style a component part by targeting the `class` that you provide.
+
+```tsx title="index.tsx" tab
+import { Popover as KPopover } from "@kobalte/core/popover";
+import "./style.css";
+
+export const Popover = () => {
+	return (
+		<KPopover>
+			<KPopover.Trigger class="popover__trigger">Open</KPopover.Trigger>
+			<KPopover.Content class="popover__content">...</KPopover.Content>
+		</KPopover>
+	);
+};
+```
+
+```css title="style.css" tab
+.popover__trigger {
+	/* The popover trigger style. */
+}
+
+.popover__content {
+	/* The popover content style. */
+}
+```
+
+## Styling a state
+
+When a component or its parts can have multiple states, we automatically attach `data-*` attributes that represents the specific state. For example, a popover's trigger can have:
+
+- `data-expanded` — When the popover is expanded.
+- `data-disabled` — When the popover is disabled.
+
+You can style a component state by targeting the `data-*` attributes added by Kobalte.
+
+```css title="style.css"
+.popover__trigger[data-disabled] {
+	/* The popover trigger style when disabled. */
+}
+```
+
+## Using the TailwindCSS plugin
+
+If you are using [TailwindCSS v3](https://v3.tailwindcss.com/), you can use the `@kobalte/tailwindcss` plugin to target Kobalte's `data-*` attributes with modifiers like `ui-expanded:*`. From Tailwind v4 the plugin is no longer required as data attributes are natively supported, use them directly instead.
+
+### Installation
+
+```package-install
+@kobalte/tailwindcss
+```
+
+### Usage
+
+Add the plugin to your `tailwind.config.js` :
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+	content: [],
+	theme: {
+		extend: {},
+	},
+	plugins: [
+		// default prefix is "ui"
+		require("@kobalte/tailwindcss"),
+
+		// or with a custom prefix:
+		require("@kobalte/tailwindcss")({ prefix: "kb" }),
+	],
+};
+```
+
+Style your component:
+
+```tsx
+import { Popover as KPopover } from "@kobalte/core/popover";
+
+export const Popover = () => (
+	<KPopover>
+		<KPopover.Trigger class="inline-flex px-4 py-2 rounded ui-disabled:bg-slate-100">
+			Open
+		</KPopover.Trigger>
+		<KPopover.Content class="flex p-4 rounded bg-white">...</KPopover.Content>
+	</KPopover>
+);
+```
+
+You can use the following modifiers:
+
+| Modifier           | CSS Selector            |
+| :----------------- | :---------------------- |
+| `ui-valid`         | `&[data-valid]`         |
+| `ui-invalid`       | `&[data-invalid]`       |
+| `ui-required`      | `&[data-required]`      |
+| `ui-disabled`      | `&[data-disabled]`      |
+| `ui-readonly`      | `&[data-readonly]`      |
+| `ui-checked`       | `&[data-checked]`       |
+| `ui-indeterminate` | `&[data-indeterminate]` |
+| `ui-selected`      | `&[data-selected]`      |
+| `ui-pressed`       | `&[data-pressed]`       |
+| `ui-expanded`      | `&[data-expanded]`      |
+| `ui-highlighted`   | `&[data-highlighted]`   |
+| `ui-current`       | `&[data-current]`       |
+
+It's also possible to use _inverse modifiers_ in the form of `ui-not-*`, _group and peer modifiers_ in the form of `ui-group-*` and `ui-peer-*`.
+
+## Using the Vanilla Extract plugin
+
+If you are using [Vanilla Extract](https://vanilla-extract.style/), you can use the `@kobalte/vanilla-extract` plugin to target Kobalte's `data-*` attributes.
+
+### Installation
+
+```package-install
+@kobalte/vanilla-extract
+```
+
+### Usage
+
+Use the `componentStateStyles` utility function to create vanilla-extract styles that target `data-*` attributes of Kobalte components.
+
+```ts title="style.css.ts"
+import { componentStateStyles } from "@kobalte/vanilla-extract";
+import { style } from "@vanilla-extract/css";
+
+const button = style([
+	{
+		background: "blue",
+		padding: "2px 6px",
+	},
+	componentStateStyles({
+		disabled: {
+			opacity: 0.4,
+		},
+		invalid: {
+			backgroundColor: "red",
+			not: {
+				backgroundColor: "yellow",
+			},
+		},
+	}),
+	componentStateStyles(
+		{
+			invalid: {
+				backgroundColor: "red",
+			},
+		},
+		{ parentSelector: "[data-theme=dark]" },
+	),
+]);
+```
+
+Then apply your styles to the component:
+
+```tsx title="MyButton.tsx"
+import { Button } from "@kobalte/core/button";
+import { button } from "./styles.css.ts";
+
+export const MyButton = () => <Button class={button}>...</Button>;
+```
+
+## Usage with UnoCSS
+
+The [UnoCSS preset](https://github.com/zirbest/unocss-preset-primitives#kobalte) made by the community can be used to achieve the same behavior of the TailwindCSS plugin.
+
+## Extending a component
+
+Extending a component is done the same way you extend any SolidJS component.
+
+```tsx
+import { Popover as KPopover } from "@kobalte/core/popover";
+import { ComponentProps } from "solid-js";
+
+export const PopoverTrigger = (props: ComponentProps<typeof KPopover.Trigger>) => {
+	return <KPopover.Trigger {...props} />;
+};
+```
+
+Follow the [Polymorphism Guide](./polymorphism) for more advanced type control and additional props.

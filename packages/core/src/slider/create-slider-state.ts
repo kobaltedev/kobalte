@@ -6,11 +6,11 @@
  * https://github.com/adobe/react-spectrum/blob/1ddcde7b4fef9af7f08e11bb78d71fe60bbcc64b/packages/@react-stately/slider/src/useSliderState.ts
  */
 
-import { clamp, mergeDefaultProps, snapValueToStep } from "@kobalte/utils";
-import { type Accessor, createMemo, createSignal } from "solid-js";
+import { clamp, snapValueToStep } from "@kobalte/utils";
+import { type Accessor, createMemo, createSignal, merge } from "solid-js";
 
-import { createControllableArraySignal } from "../primitives";
-import { getNextSortedValues, hasMinStepsBetweenValues } from "./utils";
+import { createControllableArraySignal } from "../primitives/index.ts";
+import { getNextSortedValues, hasMinStepsBetweenValues } from "./utils.ts";
 
 export interface SliderState {
 	readonly values: Accessor<number[]>;
@@ -81,7 +81,7 @@ interface StateOpts {
 export function createSliderState(props: StateOpts): SliderState {
 	let dirty = false;
 
-	const mergedProps: StateOpts = mergeDefaultProps(
+	const mergedProps: StateOpts = merge(
 		{
 			minValue: () => 0,
 			maxValue: () => 100,

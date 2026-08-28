@@ -8,8 +8,9 @@
 
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, within } from "@solidjs/testing-library";
+import type { ComponentProps } from "@solidjs/web";
 import userEvent from "@testing-library/user-event";
-import { type ComponentProps, For } from "solid-js";
+import { For } from "solid-js";
 import { vi } from "vitest";
 
 import * as Accordion from ".";
@@ -98,8 +99,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		expect(secondItem).toHaveAttribute("aria-expanded", "false");
 	});
 
-	// TODO: use solid-list
-	it.skip("allows users to navigate accordion headers through arrow keys", async () => {
+	it("allows users to navigate accordion headers through arrow keys", async () => {
 		const { getAllByRole } = render(() => <AccordionTest />);
 
 		const buttons = getAllByRole("button");
@@ -129,8 +129,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		expect(document.activeElement).toBe(secondItem);
 	});
 
-	// TODO: use solid-list
-	it.skip("should not wrap focus when navigating accordion headers through arrow keys if 'shouldFocusWrap=false'", async () => {
+	it("should not wrap focus when navigating accordion headers through arrow keys if 'shouldFocusWrap=false'", async () => {
 		const { getAllByRole } = render(() => (
 			<AccordionTest shouldFocusWrap={false} />
 		));
@@ -162,8 +161,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		expect(document.activeElement).toBe(secondItem);
 	});
 
-	// TODO: use solid-list
-	it.skip("allows users to navigate to first/last accordion headers through 'Home/End' keys", async () => {
+	it("allows users to navigate to first/last accordion headers through 'Home/End' keys", async () => {
 		const { getAllByRole } = render(() => <AccordionTest />);
 
 		const buttons = getAllByRole("button");
@@ -274,7 +272,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 
 	describe("collapsible", () => {
 		it("should toggle the same accordion item when clicking its trigger if collapsible", async () => {
-			const { getAllByRole, getByText, queryByText } = render(() => (
+			const { getAllByRole, getByText } = render(() => (
 				<AccordionTest collapsible defaultValue={["one"]} />
 			));
 
@@ -294,7 +292,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		});
 
 		it("should allows users to open and close accordion item with enter / space key when collapsible", async () => {
-			const { getAllByRole, getByText, queryByText } = render(() => (
+			const { getAllByRole, getByText } = render(() => (
 				<AccordionTest collapsible defaultValue={["one"]} />
 			));
 
@@ -348,7 +346,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		});
 
 		it("should toggle the same accordion item when clicking its trigger if multiple", async () => {
-			const { getAllByRole, getByText, queryByText } = render(() => (
+			const { getAllByRole, getByText } = render(() => (
 				<AccordionTest multiple defaultValue={["one"]} />
 			));
 
@@ -368,7 +366,7 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		});
 
 		it("should allows users to open and close accordion item with enter / space key when multiple", async () => {
-			const { getAllByRole, getByText, queryByText } = render(() => (
+			const { getAllByRole, getByText } = render(() => (
 				<AccordionTest multiple defaultValue={["one"]} />
 			));
 

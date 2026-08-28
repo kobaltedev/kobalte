@@ -1,17 +1,16 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, merge, omit } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type MeterDataSet, useMeterContext } from "./meter-context";
+} from "../polymorphic/index.tsx";
+import { type MeterDataSet, useMeterContext } from "./meter-context.tsx";
 
 export interface MeterLabelOptions {}
 
-export interface MeterLabelCommonProps<T extends HTMLElement = HTMLElement> {
+export interface MeterLabelCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -31,7 +30,7 @@ export function MeterLabel<T extends ValidComponent = "span">(
 ) {
 	const context = useMeterContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("label"),
 		},

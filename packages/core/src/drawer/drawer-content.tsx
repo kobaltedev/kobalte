@@ -6,35 +6,37 @@
  * https://github.com/corvudev/corvu/tree/main/packages/drawer
  */
 
-import {
-	callHandler,
-	createGlobalListeners,
-	getScrollParent,
-	mergeRefs,
-} from "@kobalte/utils";
+import { callHandler, getScrollParent } from "@kobalte/utils";
+import { createEventListener } from "@solid-primitives/event-listener";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createMemo, omit } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createMemo,
+	omit,
+	type Ref,
+} from "solid-js";
 import {
 	DialogContent,
 	type DialogContentCommonProps,
 	type DialogContentOptions,
 	type DialogContentRenderProps,
-} from "../dialog/dialog-content";
-import { useDialogContext } from "../dialog/dialog-context";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useDrawerInternalContext } from "./drawer-context";
+} from "../dialog/dialog-content.tsx";
+import { useDialogContext } from "../dialog/dialog-context.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useDrawerInternalContext } from "./drawer-context.tsx";
 import {
 	type DrawerSide,
 	findClosestSnapPoint,
 	locationIsDraggable,
-} from "./drawer-lib";
+} from "./drawer-lib.ts";
 
 export interface DrawerContentOptions extends DialogContentOptions {}
 
 export interface DrawerContentCommonProps<T extends HTMLElement = HTMLElement>
 	extends DialogContentCommonProps<T> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style: JSX.CSSProperties | string;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onTouchStart: JSX.EventHandlerUnion<T, TouchEvent>;
@@ -116,26 +118,21 @@ export function DrawerContent<T extends ValidComponent = "div">(
 	);
 
 	// --- Global pointer/touch listeners (active while dialog is open) ---
-	// createGlobalListeners uses onCleanup internally for the outer component lifetime.
-	// We manage add/remove ourselves based on isOpen so the listeners are only
-	// attached while the drawer is visible.
-	const { addGlobalListener, removeAllGlobalListeners } =
-		createGlobalListeners();
-
+	// createEventListener scopes the listeners to this effect: they're only
+	// attached while the drawer is visible and removed when it closes or the
+	// component unmounts.
 	createEffect(
 		() => dialogCtx.isOpen(),
 		(isOpen) => {
-			if (isOpen) {
-				addGlobalListener(document, "pointermove", onPointerMove);
-				addGlobalListener(document, "touchmove", onTouchMove, {
-					passive: false,
-				});
-				addGlobalListener(document, "pointerup", onPointerUp);
-				addGlobalListener(document, "touchend", onTouchEnd);
-				addGlobalListener(document, "contextmenu", onUp);
-			} else {
-				removeAllGlobalListeners();
-			}
+			if (!isOpen) return;
+
+			createEventListener(document, "pointermove", onPointerMove);
+			createEventListener(document, "touchmove", onTouchMove, {
+				passive: false,
+			});
+			createEventListener(document, "pointerup", onPointerUp);
+			createEventListener(document, "touchend", onTouchEnd);
+			createEventListener(document, "contextmenu", onUp);
 		},
 	);
 
@@ -420,7 +417,7 @@ export function DrawerContent<T extends ValidComponent = "div">(
 				>
 			>
 		>
-			ref={mergeRefs(p.ref as any)}
+			ref={p.ref}
 			style={combineStyle(
 				{
 					transform: transformValue(),

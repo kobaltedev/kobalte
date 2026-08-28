@@ -6,20 +6,17 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTabPanel.ts
  */
 
-import {
-	getFocusableTreeWalker,
-	mergeRefs,
-	type Orientation,
-} from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
+import { getFocusableTreeWalker } from "@solid-primitives/focus";
 import { createPresence } from "@solid-primitives/presence";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, Show } from "solid-js";
+import { createEffect, createSignal, omit, type Ref, Show } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useTabsContext } from "./tabs-context";
+} from "../polymorphic/index.tsx";
+import { useTabsContext } from "./tabs-context.tsx";
 
 export interface TabsContentOptions {
 	/** The unique key that associates the tab panel with a tab. */
@@ -34,7 +31,7 @@ export interface TabsContentOptions {
 
 export interface TabsContentCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface TabsContentRenderProps extends TabsContentCommonProps {
@@ -118,7 +115,7 @@ export function TabsContent<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<TabsContentRenderProps>
 				as="div"
-				ref={mergeRefs(setRef, (props as TabsContentProps).ref)}
+				ref={[setRef, (props as TabsContentProps).ref]}
 				id={id()}
 				role="tabpanel"
 				tabindex={tabIndex()}

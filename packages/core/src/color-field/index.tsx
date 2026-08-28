@@ -14,21 +14,21 @@ import {
 	FormControlDescription as Description,
 	FormControlErrorMessage as ErrorMessage,
 	FormControlLabel as Label,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ColorFieldInputCommonProps,
 	type ColorFieldInputOptions,
 	type ColorFieldInputProps,
 	type ColorFieldInputRenderProps,
 	ColorFieldInput as Input,
-} from "./color-field-input";
+} from "./color-field-input.tsx";
 import {
 	type ColorFieldRootCommonProps,
 	type ColorFieldRootOptions,
 	type ColorFieldRootProps,
 	type ColorFieldRootRenderProps,
 	ColorFieldRoot as Root,
-} from "./color-field-root";
+} from "./color-field-root.tsx";
 
 export type {
 	ColorFieldDescriptionCommonProps,
@@ -62,9 +62,9 @@ export const ColorField = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type ColorFieldContextValue,
 	useColorFieldContext,
-} from "./color-field-context";
+} from "./color-field-context.tsx";

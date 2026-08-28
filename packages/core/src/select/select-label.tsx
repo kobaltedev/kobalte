@@ -6,9 +6,9 @@ import {
 	FormControlLabel,
 	type FormControlLabelCommonProps,
 	type FormControlLabelRenderProps,
-} from "../form-control";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { useSelectContext } from "./select-context";
+} from "../form-control/index.ts";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { useSelectContext } from "./select-context.tsx";
 
 export interface SelectLabelOptions {}
 

@@ -14,39 +14,39 @@ import {
 	type FormControlLabelOptions as NumberFieldLabelOptions,
 	type FormControlLabelProps as NumberFieldLabelProps,
 	type FormControlLabelRenderProps as NumberFieldLabelRenderProps,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	NumberFieldDecrementTrigger as DecrementTrigger,
 	type NumberFieldDecrementTriggerCommonProps,
 	type NumberFieldDecrementTriggerOptions,
 	type NumberFieldDecrementTriggerProps,
 	type NumberFieldDecrementTriggerRenderProps,
-} from "./number-field-decrement-trigger";
+} from "./number-field-decrement-trigger.tsx";
 import {
 	NumberFieldHiddenInput as HiddenInput,
 	type NumberFieldHiddenInputProps,
-} from "./number-field-hidden-input";
+} from "./number-field-hidden-input.tsx";
 import {
 	NumberFieldIncrementTrigger as IncrementTrigger,
 	type NumberFieldIncrementTriggerCommonProps,
 	type NumberFieldIncrementTriggerOptions,
 	type NumberFieldIncrementTriggerProps,
 	type NumberFieldIncrementTriggerRenderProps,
-} from "./number-field-increment-trigger";
+} from "./number-field-increment-trigger.tsx";
 import {
 	NumberFieldInput as Input,
 	type NumberFieldInputCommonProps,
 	type NumberFieldInputOptions,
 	type NumberFieldInputProps,
 	type NumberFieldInputRenderProps,
-} from "./number-field-input";
+} from "./number-field-input.tsx";
 import {
 	type NumberFieldRootCommonProps,
 	type NumberFieldRootOptions,
 	type NumberFieldRootProps,
 	type NumberFieldRootRenderProps,
 	NumberFieldRoot as Root,
-} from "./number-field-root";
+} from "./number-field-root.tsx";
 
 export type {
 	NumberFieldDecrementTriggerCommonProps,
@@ -101,9 +101,9 @@ export const NumberField = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type NumberFieldContextValue,
 	useNumberFieldContext,
-} from "./number-field-context";
+} from "./number-field-context.tsx";

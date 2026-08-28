@@ -6,7 +6,6 @@
  * https://github.com/radix-ui/primitives/blob/21a7c97dc8efa79fecca36428eec49f187294085/packages/react/avatar/src/Avatar.tsx
  */
 
-import { OverrideComponentProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
 import { createSignal, omit } from "solid-js";
 
@@ -14,9 +13,9 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { ImageContext, type ImageContextValue } from "./image-context";
-import type { ImageLoadingStatus } from "./types";
+} from "../polymorphic/index.tsx";
+import { ImageContext, type ImageContextValue } from "./image-context.tsx";
+import type { ImageLoadingStatus } from "./types.ts";
 
 export interface ImageRootOptions {
 	/**
@@ -33,7 +32,7 @@ export interface ImageRootOptions {
 	onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
 }
 
-export interface ImageRootCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface ImageRootCommonProps<_T extends HTMLElement = HTMLElement> {}
 
 export interface ImageRootRenderProps extends ImageRootCommonProps {}
 

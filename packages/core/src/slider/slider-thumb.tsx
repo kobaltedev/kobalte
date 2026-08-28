@@ -12,40 +12,38 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/slider/src/useSliderThumb.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-	type Orientation,
-} from "@kobalte/utils";
+import { callHandler, type Orientation } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createContext,
+	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	onSettled,
+	type Ref,
 	useContext,
 } from "solid-js";
 import {
 	createFormControlField,
 	FORM_CONTROL_FIELD_PROP_NAMES,
-} from "../form-control";
+} from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { type SliderDataSet, useSliderContext } from "./slider-context";
+} from "../polymorphic/index.tsx";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import { type SliderDataSet, useSliderContext } from "./slider-context.tsx";
 
 export interface SliderThumbOptions {}
 
 export interface SliderThumbCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style?: JSX.CSSProperties | string;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -77,11 +75,13 @@ export type SliderThumbProps<
 export function SliderThumb<T extends ValidComponent = "span">(
 	props: PolymorphicProps<T, SliderThumbProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useSliderContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId(`thumb-${createUniqueId()}`),
 		},
@@ -105,7 +105,7 @@ export function SliderThumb<T extends ValidComponent = "span">(
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
-			ref: () => ref,
+			ref,
 			disabled: context.state.isDisabled(),
 			key: fieldProps.id()!,
 			textValue: "",
@@ -114,7 +114,7 @@ export function SliderThumb<T extends ValidComponent = "span">(
 	});
 
 	const index = () =>
-		ref ? context.thumbs().findIndex((v) => v.ref() === ref) : -1;
+		ref() ? context.thumbs().findIndex((v) => v.ref() === ref()) : -1;
 	const value = () =>
 		context.state.getThumbValue(index()) as number | undefined;
 
@@ -216,7 +216,7 @@ export function SliderThumb<T extends ValidComponent = "span">(
 		<ThumbContext value={{ index }}>
 			<Polymorphic<SliderThumbRenderProps>
 				as="span"
-				ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+				ref={[setRef, mergedProps.ref]}
 				role="slider"
 				id={fieldProps.id()}
 				tabindex={context.state.isDisabled() ? undefined : 0}

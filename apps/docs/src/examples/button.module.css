@@ -1,5 +1,6 @@
 .button {
 	appearance: none;
+	border: none;
 	display: inline-flex;
 	justify-content: center;
 	align-items: center;
@@ -28,15 +29,15 @@
 	background-color: hsl(201 90% 27%);
 }
 
-[data-kb-theme="dark"] .button {
+[data-theme*="dark"] .button {
 	background-color: hsl(201 96% 32%);
 	color: hsla(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .button:hover {
+[data-theme*="dark"] .button:hover {
 	background-color: hsl(200 98% 39%);
 }
 
-[data-kb-theme="dark"] .button:active {
+[data-theme*="dark"] .button:active {
 	background-color: hsl(199 89% 48%);
 }

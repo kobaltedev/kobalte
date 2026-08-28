@@ -6,27 +6,22 @@
  * https://github.com/adobe/react-spectrum/blob/c183944ce6a8ca1cf280a1c7b88d2ba393dd0252/packages/@react-aria/accordion/src/useAccordion.ts
  */
 
-import {
-	composeEventHandlers,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-} from "@kobalte/utils";
+import { composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createUniqueId, omit } from "solid-js";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
 
-import { createListState, createSelectableList } from "../list";
+import { createListState, createSelectableList } from "../list/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
+} from "../polymorphic/index.tsx";
+import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
 import {
 	AccordionContext,
 	type AccordionContextValue,
-} from "./accordion-context";
+} from "./accordion-context.tsx";
 
 export interface AccordionRootOptions {
 	/** The controlled value of the accordion item(s) to expand. */
@@ -53,7 +48,7 @@ export interface AccordionRootOptions {
 
 export interface AccordionRootCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>; // TODO: remove next breaking
@@ -72,11 +67,13 @@ export type AccordionRootProps<
 export function AccordionRoot<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, AccordionRootProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `accordion-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			multiple: false,
@@ -125,12 +122,12 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 			disallowTypeAhead: true,
 			allowsTabNavigation: true,
 		},
-		() => ref,
+		ref,
 	);
 
 	const context: AccordionContextValue = {
 		listState: () => listState,
-		generateId: createGenerateId(() => mergedProps.id),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 	};
 
 	return (
@@ -139,7 +136,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 				<Polymorphic<AccordionRootRenderProps>
 					as="div"
 					id={mergedProps.id}
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					onKeyDown={composeEventHandlers([
 						mergedProps.onKeyDown,
 						selectableList.onKeyDown,
@@ -150,6 +147,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 					])}
 					onFocusIn={composeEventHandlers([
 						mergedProps.onFocusIn, // TODO: remove next breaking
+						selectableList.onFocusIn,
 					])}
 					onFocusOut={composeEventHandlers([
 						mergedProps.onFocusOut,

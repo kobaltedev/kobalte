@@ -1,0 +1,75 @@
+---
+title: Alert
+badges:
+  - icon: npm
+    label: "Since v0.1.0"
+  - label: "@kobalte/core/alert"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/alert"
+  - icon: aria
+    label: "Alert"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/alert/"
+---
+
+import { BasicExample } from "../../../../examples/alert";
+
+# {frontmatter.title}
+
+Display a brief, important message in a way that attracts the user's attention without interrupting the user's task.
+
+## Import
+
+```ts
+import { Alert } from "@kobalte/core/alert";
+// or
+import { Root } from "@kobalte/core/alert";
+// or (deprecated)
+import { Alert } from "@kobalte/core";
+```
+
+## Features
+
+- Adhere to the [WAI ARIA Alert](https://www.w3.org/WAI/ARIA/apg/patterns/alert/) design pattern.
+
+## Anatomy
+
+The alert consists of :
+
+- **Alert:** The root container for an alert.
+
+```tsx
+<Alert />
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/alert.tsx#L3-L9"
+
+```
+
+```css title="style.css" tab file="../../../../examples/alert.module.css"
+
+```
+
+:::
+
+## API reference
+
+### Alert
+
+`Alert` is equivalent to the `Root` import from `@kobalte/core/alert` (and deprecated `Alert.Root`).
+
+Renders a `div` by default and support all its props.
+
+## Rendered elements
+
+| Component | Default rendered element |
+| :-------- | :----------------------- |
+| `Alert`   | `div`                    |

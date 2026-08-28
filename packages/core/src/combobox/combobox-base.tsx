@@ -7,17 +7,11 @@
  * https://github.com/adobe/react-spectrum/blob/ba727bdc0c4a57626131e84d9c9b661d0b65b754/packages/@react-aria/combobox/src/useComboBox.ts
  */
 
-import {
-	access,
-	createGenerateId,
-	focusWithoutScrolling,
-	isAppleDevice,
-	isFunction,
-	mergeDefaultProps,
-	type ValidationState,
-} from "@kobalte/utils";
+import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
+import { isAppleDevice } from "@solid-primitives/platform";
 import { createPresence } from "@solid-primitives/presence";
+import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
@@ -26,6 +20,7 @@ import {
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 import {
@@ -33,23 +28,23 @@ import {
 	FORM_CONTROL_PROP_NAMES,
 	FormControlContext,
 	type FormControlDataSet,
-} from "../form-control";
-import { createFilter } from "../i18n";
-import { createListState, ListKeyboardDelegate } from "../list";
-import { announce } from "../live-announcer";
+} from "../form-control/index.ts";
+import { createFilter } from "../i18n/index.tsx";
+import { createListState, ListKeyboardDelegate } from "../list/index.ts";
+import { announce } from "../live-announcer/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { Popper, type PopperRootOptions } from "../popper";
+} from "../polymorphic/index.tsx";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
 import {
 	type CollectionNode,
 	createControllableSignal,
 	createDisclosureState,
 	createRegisterId,
 	getItemCount,
-} from "../primitives";
+} from "../primitives/index.ts";
 import {
 	createSelectableCollection,
 	type FocusStrategy,
@@ -57,17 +52,17 @@ import {
 	Selection,
 	type SelectionBehavior,
 	type SelectionMode,
-} from "../selection";
+} from "../selection/index.ts";
 import {
 	COMBOBOX_INTL_TRANSLATIONS,
 	type ComboboxIntlTranslations,
-} from "./combobox.intl";
+} from "./combobox.intl.ts";
 import {
 	ComboboxContext,
 	type ComboboxContextValue,
 	type ComboboxDataSet,
-} from "./combobox-context";
-import type { ComboboxTriggerMode } from "./types";
+} from "./combobox-context.tsx";
+import type { ComboboxTriggerMode } from "./types.ts";
 
 export interface ComboboxBaseItemComponentProps<Option> {
 	/** The item to render. */
@@ -249,7 +244,7 @@ export interface ComboboxBaseOptions<Option, OptGroup = never>
 	readOnly?: boolean;
 }
 
-export interface ComboboxBaseCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ComboboxBaseCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -279,7 +274,7 @@ export function ComboboxBase<
 
 	const filter = createFilter({ sensitivity: "base" });
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			selectionMode: "single",
@@ -294,7 +289,7 @@ export function ComboboxBase<
 			defaultFilter: "contains",
 			triggerMode: "input",
 			translations: COMBOBOX_INTL_TRANSLATIONS,
-		},
+		} as const,
 		props as ComboboxBaseProps<Option, OptGroup>,
 	);
 
@@ -446,7 +441,7 @@ export function ComboboxBase<
 
 		// Get the value from the option object as a string.
 		return String(
-			isFunction(optionValue)
+			typeof optionValue === "function"
 				? optionValue(option as any)
 				: (option as any)[optionValue],
 		);
@@ -462,7 +457,7 @@ export function ComboboxBase<
 
 		// Get the label from the option object as a string.
 		return String(
-			isFunction(optionLabel)
+			typeof optionLabel === "function"
 				? optionLabel(option as any)
 				: (option as any)[optionLabel],
 		);
@@ -478,7 +473,7 @@ export function ComboboxBase<
 
 		// Get the label from the option object as a string.
 		return String(
-			isFunction(optionTextValue)
+			typeof optionTextValue === "function"
 				? optionTextValue(option as any)
 				: (option as any)[optionTextValue],
 		);
@@ -508,7 +503,7 @@ export function ComboboxBase<
 		const optionGroupChildren = mergedProps.optionGroupChildren;
 
 		const filterFn = (option: Option): boolean => {
-			if (isFunction(defaultFilter)) {
+			if (typeof defaultFilter === "function") {
 				return defaultFilter(option as any, inputVal) ?? false;
 			}
 
@@ -601,7 +596,7 @@ export function ComboboxBase<
 				// Move cursor to the end of the input.
 				inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
 
-				focusWithoutScrolling(inputEl);
+				inputEl.focus({ preventScroll: true });
 			}
 		},
 		allowDuplicateSelectionEvents: () =>
@@ -816,7 +811,7 @@ export function ComboboxBase<
 		},
 		({ focusedKey, focusedItem, isSelected }) => {
 			if (
-				isAppleDevice() &&
+				isAppleDevice &&
 				focusedItem != null &&
 				focusedKey !== lastAnnouncedFocusedKey
 			) {
@@ -849,7 +844,7 @@ export function ComboboxBase<
 			// focused item, otherwise screen readers will typically read e.g. "1 of 6".
 			// The exception is VoiceOver since this isn't included in the message above.
 			const didOpenWithoutFocusedItem =
-				isOpen !== lastOpen && (focusedKey == null || isAppleDevice());
+				isOpen !== lastOpen && (focusedKey == null || isAppleDevice);
 
 			if (
 				isOpen &&
@@ -878,7 +873,7 @@ export function ComboboxBase<
 		},
 		({ lastSelectedKey, lastSelectedItem }) => {
 			if (
-				isAppleDevice() &&
+				isAppleDevice &&
 				isInputFocused() &&
 				lastSelectedItem &&
 				lastSelectedKey !== lastAnnouncedSelectedKey
@@ -943,7 +938,7 @@ export function ComboboxBase<
 		renderSection,
 		removeOptionFromSelection,
 		onInputKeyDown: (e) => selectableCollection.onKeyDown(e),
-		generateId: createGenerateId(() => access(formControlProps.id)!),
+		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 		registerListboxId: createRegisterId(setListboxId),
 	};
 

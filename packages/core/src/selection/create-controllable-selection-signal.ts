@@ -3,8 +3,8 @@ import type { Accessor } from "solid-js";
 import {
 	type CreateControllableSignalProps,
 	createControllableSignal,
-} from "../primitives";
-import { Selection } from "./types";
+} from "../primitives/index.ts";
+import { Selection } from "./types.ts";
 
 /**
  * Creates a simple reactive `Selection` state with a getter, setter and a fallback value of an empty selection,

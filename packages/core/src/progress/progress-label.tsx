@@ -1,19 +1,21 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, omit } from "solid-js";
+import { type Component, createEffect, merge, omit } from "solid-js";
 
 import {
 	Meter,
 	type MeterLabelCommonProps,
 	type MeterLabelOptions,
 	type MeterLabelRenderProps,
-} from "../meter";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { type ProgressDataSet, useProgressContext } from "./progress-context";
+} from "../meter/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import {
+	type ProgressDataSet,
+	useProgressContext,
+} from "./progress-context.tsx";
 
 export interface ProgressLabelOptions extends MeterLabelOptions {}
 
-export interface ProgressLabelCommonProps<T extends HTMLElement = HTMLElement>
+export interface ProgressLabelCommonProps<_T extends HTMLElement = HTMLElement>
 	extends MeterLabelCommonProps {}
 
 export interface ProgressLabelRenderProps
@@ -33,7 +35,7 @@ export function ProgressLabel<T extends ValidComponent = "span">(
 ) {
 	const context = useProgressContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("label"),
 		},

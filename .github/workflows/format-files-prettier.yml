@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - solid2
     paths:
       - "**.md"
       - "**.mdx"
@@ -15,6 +16,7 @@ on:
   push:
     branches:
       - main
+      - solid2
 
 jobs:
   prettier:

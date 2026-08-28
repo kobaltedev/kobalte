@@ -1,17 +1,16 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, merge, omit } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useToastContext } from "./toast-context";
+} from "../polymorphic/index.tsx";
+import { useToastContext } from "./toast-context.tsx";
 
 export interface ToastTitleOptions {}
 
-export interface ToastTitleCommonProps<T extends HTMLElement = HTMLElement> {
+export interface ToastTitleCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -29,7 +28,7 @@ export function ToastTitle<T extends ValidComponent = "div">(
 ) {
 	const context = useToastContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("title"),
 		},

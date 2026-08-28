@@ -1,16 +1,15 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { omit, Show } from "solid-js";
+import { merge, omit, Show } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 import {
 	type ListboxItemDataSet,
 	useListboxItemContext,
-} from "./listbox-item-context";
+} from "./listbox-item-context.tsx";
 
 export interface ListboxItemIndicatorOptions {
 	/**
@@ -21,7 +20,7 @@ export interface ListboxItemIndicatorOptions {
 }
 
 export interface ListboxItemIndicatorCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
@@ -46,7 +45,7 @@ export function ListboxItemIndicator<T extends ValidComponent = "div">(
 ) {
 	const context = useListboxItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("indicator"),
 		},

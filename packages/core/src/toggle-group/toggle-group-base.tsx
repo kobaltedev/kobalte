@@ -1,27 +1,24 @@
-import {
-	composeEventHandlers,
-	createGenerateId,
-	mergeDefaultProps,
-	mergeRefs,
-	type Orientation,
-} from "@kobalte/utils";
+import { composeEventHandlers, type Orientation } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, omit } from "solid-js";
-import { useLocale } from "../i18n";
-import { createListState } from "../list";
+import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
+import { useLocale } from "../i18n/index.tsx";
+import { createListState } from "../list/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollection } from "../primitives/create-dom-collection";
-import { createSelectableCollection, type SelectionMode } from "../selection";
-import { TabsKeyboardDelegate } from "../tabs/tabs-keyboard-delegate";
+} from "../polymorphic/index.tsx";
+import { createDomCollection } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import {
+	createSelectableCollection,
+	type SelectionMode,
+} from "../selection/index.ts";
+import { TabsKeyboardDelegate } from "../tabs/tabs-keyboard-delegate.ts";
 import {
 	ToggleGroupContext,
 	type ToggleGroupContextValue,
-} from "./toggle-group-context";
+} from "./toggle-group-context.tsx";
 
 export interface ToggleGroupBaseOptions {
 	/** The controlled value of the toggle group. */
@@ -50,7 +47,7 @@ export interface ToggleGroupBaseCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onMouseDown: JSX.EventHandlerUnion<T, MouseEvent>;
 	onFocusIn: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -70,16 +67,18 @@ export type ToggleGroupBaseProps<
 export function ToggleGroupBase<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, ToggleGroupBaseProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const defaultId = `group-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			selectionMode: "single",
 			orientation: "horizontal",
-		},
+		} as const,
 		props as ToggleGroupBaseProps,
 	);
 
@@ -130,14 +129,14 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 				listState.selectionManager().disallowEmptySelection(),
 			disallowTypeAhead: true,
 		},
-		() => ref,
+		ref,
 	);
 
 	const context: ToggleGroupContextValue = {
 		listState: () => listState,
 		isDisabled: () => mergedProps.disabled ?? false,
 		isMultiple: () => mergedProps.selectionMode === "multiple",
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		orientation: () => mergedProps.orientation!,
 	};
 
@@ -147,7 +146,7 @@ export function ToggleGroupBase<T extends ValidComponent = "div">(
 				<Polymorphic<ToggleGroupBaseRenderProps>
 					as="div"
 					role="group"
-					ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+					ref={[setRef, mergedProps.ref]}
 					tabindex={
 						!mergedProps.disabled ? selectableList.tabIndex() : undefined
 					}

@@ -1,18 +1,17 @@
-import { mergeRefs } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { omit } from "solid-js";
+import { omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type PopoverDataSet, usePopoverContext } from "./popover-context";
+} from "../polymorphic/index.tsx";
+import { type PopoverDataSet, usePopoverContext } from "./popover-context.tsx";
 
 export interface PopoverAnchorOptions {}
 
 export interface PopoverAnchorCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface PopoverAnchorRenderProps
@@ -37,10 +36,9 @@ export function PopoverAnchor<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<PopoverAnchorRenderProps>
 			as="div"
-			ref={mergeRefs(
-				context.setDefaultAnchorRef,
-				(props as PopoverAnchorProps).ref,
-			)}
+			ref={
+				[context.setDefaultAnchorRef, (props as PopoverAnchorProps).ref] as any
+			}
 			{...context.dataset()}
 			{...others}
 		/>

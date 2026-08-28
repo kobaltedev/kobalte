@@ -1,14 +1,15 @@
-import { callHandler, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { createControllableSignal } from "@solid-primitives/controlled-signal";
 import { createPresence } from "@solid-primitives/presence";
-import type { JSX, ValidComponent } from "@solidjs/web";
+import type { ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	type Component,
 	createEffect,
 	createMemo,
 	createSignal,
+	merge,
 	omit,
+	type Ref,
 	type Setter,
 	untrack,
 } from "solid-js";
@@ -16,16 +17,16 @@ import type {
 	MenubarRootCommonProps,
 	MenubarRootOptions,
 	MenubarRootRenderProps,
-} from "../menubar";
-import { MenubarRoot } from "../menubar/menubar-root";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
-import { Popper, type PopperRootOptions } from "../popper";
-import type { Placement } from "../popper/utils";
+} from "../menubar/index.tsx";
+import { MenubarRoot } from "../menubar/menubar-root.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
+import type { Placement } from "../popper/utils.ts";
 import {
 	NavigationMenuContext,
 	type NavigationMenuContextValue,
 	type NavigationMenuDataSet,
-} from "./navigation-menu-context";
+} from "./navigation-menu-context.tsx";
 
 export interface NavigationMenuRootOptions
 	extends MenubarRootOptions,
@@ -56,7 +57,7 @@ export interface NavigationMenuRootOptions
 export interface NavigationMenuRootCommonProps<
 	T extends HTMLElement = HTMLElement,
 > extends MenubarRootCommonProps<T> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface NavigationMenuRootRenderProps
@@ -74,7 +75,7 @@ export type NavigationMenuRootProps<
 export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 	props: PolymorphicProps<T, NavigationMenuRootProps<T>>,
 ) {
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			delayDuration: 200,
 			skipDelayDuration: 300,
@@ -188,7 +189,7 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 		delayDuration: () => mergedProps.delayDuration!,
 		skipDelayDuration: () => mergedProps.skipDelayDuration!,
 		autoFocusMenu: autoFocusMenu as Accessor<boolean>,
-		setAutoFocusMenu,
+		setAutoFocusMenu: setAutoFocusMenu as Setter<boolean>,
 		startLeaveTimer: () => {
 			timeoutId = window.setTimeout(() => {
 				context.setAutoFocusMenu(false);
@@ -224,11 +225,11 @@ export function NavigationMenuRoot<T extends ValidComponent = "ul">(
 						>
 					>
 						as="ul"
-						ref={mergeRefs(context.setRootRef, mergedProps.ref)}
+						ref={[context.setRootRef, mergedProps.ref]}
 						value={value() ?? null}
 						onValueChange={setValue}
 						autoFocusMenu={autoFocusMenu()}
-						onAutoFocusMenuChange={setAutoFocusMenu}
+						onAutoFocusMenuChange={setAutoFocusMenu as Setter<boolean>}
 						{...others}
 					/>
 				</nav>

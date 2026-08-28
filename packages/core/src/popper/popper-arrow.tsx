@@ -7,17 +7,23 @@
  * https://github.com/ariakit/ariakit/blob/a178c2f2dcc6571ba338fd74c79e3b0eab2a27c5/packages/ariakit/src/popover/__popover-arrow-path.ts
  */
 
-import { getWindow, mergeDefaultProps, mergeRefs } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Accessor, createEffect, createSignal, omit } from "solid-js";
+import {
+	type Accessor,
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+	type Ref,
+} from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { usePopperContext } from "./popper-context";
-import type { BasePlacement } from "./utils";
+} from "../polymorphic/index.tsx";
+import { usePopperContext } from "./popper-context.tsx";
+import type { BasePlacement } from "./utils.ts";
 
 const DEFAULT_SIZE = 30;
 const HALF_DEFAULT_SIZE = DEFAULT_SIZE / 2;
@@ -38,7 +44,7 @@ export interface PopperArrowOptions {
 }
 
 export interface PopperArrowCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	style?: JSX.CSSProperties | string;
 }
 
@@ -60,7 +66,7 @@ export function PopperArrow<T extends ValidComponent = "div">(
 ) {
 	const context = usePopperContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			size: DEFAULT_SIZE,
 		},
@@ -79,7 +85,9 @@ export function PopperArrow<T extends ValidComponent = "div">(
 		contentStyle()?.getPropertyValue(`border-${dir()}-width`) || "0px";
 	const strokeWidth = () => {
 		return (
-			Number.parseInt(borderWidth()) * 2 * (DEFAULT_SIZE / mergedProps.size!)
+			Number.parseInt(borderWidth(), 10) *
+			2 *
+			(DEFAULT_SIZE / mergedProps.size!)
 		);
 	};
 	const rotate = () => {
@@ -91,7 +99,7 @@ export function PopperArrow<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<PopperArrowRenderProps>
 			as="div"
-			ref={mergeRefs(context.setArrowRef, mergedProps.ref)}
+			ref={[context.setArrowRef, mergedProps.ref]}
 			aria-hidden="true"
 			style={combineStyle(
 				{
@@ -109,7 +117,6 @@ export function PopperArrow<T extends ValidComponent = "div">(
 			)}
 			{...others}
 		>
-			{/* biome-ignore lint/a11y/noSvgWithoutTitle: aria hidden */}
 			<svg
 				display="block"
 				viewBox={`0 0 ${DEFAULT_SIZE} ${DEFAULT_SIZE}`}
@@ -130,7 +137,8 @@ function createComputedStyle(element: Accessor<Element | undefined>) {
 	createEffect(
 		() => element(),
 		(el) => {
-			if (el) setStyle(getWindow(el).getComputedStyle(el));
+			if (el)
+				setStyle((el.ownerDocument.defaultView ?? window).getComputedStyle(el));
 		},
 	);
 

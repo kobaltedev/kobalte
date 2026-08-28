@@ -4,35 +4,35 @@ import {
 	type ProgressFillOptions,
 	type ProgressFillProps,
 	type ProgressFillRenderProps,
-} from "./progress-fill";
+} from "./progress-fill.tsx";
 import {
 	ProgressLabel as Label,
 	type ProgressLabelCommonProps,
 	type ProgressLabelOptions,
 	type ProgressLabelProps,
 	type ProgressLabelRenderProps,
-} from "./progress-label";
+} from "./progress-label.tsx";
 import {
 	type ProgressRootCommonProps,
 	type ProgressRootOptions,
 	type ProgressRootProps,
 	type ProgressRootRenderProps,
 	ProgressRoot as Root,
-} from "./progress-root";
+} from "./progress-root.tsx";
 import {
 	type ProgressTrackCommonProps,
 	type ProgressTrackOptions,
 	type ProgressTrackProps,
 	type ProgressTrackRenderProps,
 	ProgressTrack as Track,
-} from "./progress-track";
+} from "./progress-track.tsx";
 import {
 	type ProgressValueLabelCommonProps,
 	type ProgressValueLabelOptions,
 	type ProgressValueLabelProps,
 	type ProgressValueLabelRenderProps,
 	ProgressValueLabel as ValueLabel,
-} from "./progress-value-label";
+} from "./progress-value-label.tsx";
 
 export type {
 	ProgressFillCommonProps,
@@ -66,9 +66,9 @@ export const Progress = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
 export {
 	type ProgressContextValue,
 	useProgressContext,
-} from "./progress-context";
+} from "./progress-context.tsx";

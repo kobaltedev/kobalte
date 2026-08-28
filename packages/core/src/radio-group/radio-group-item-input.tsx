@@ -6,26 +6,21 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import {
-	callHandler,
-	mergeDefaultProps,
-	mergeRefs,
-	visuallyHiddenStyles,
-} from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, onCleanup } from "solid-js";
-import { useFormControlContext } from "../form-control";
+import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
+import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useRadioGroupContext } from "./radio-group-context";
+} from "../polymorphic/index.tsx";
+import { useRadioGroupContext } from "./radio-group-context.tsx";
 import {
 	type RadioGroupItemDataSet,
 	useRadioGroupItemContext,
-} from "./radio-group-item-context";
+} from "./radio-group-item-context.tsx";
 
 export interface RadioGroupItemInputOptions {}
 
@@ -33,7 +28,7 @@ export interface RadioGroupItemInputCommonProps<
 	T extends HTMLElement = HTMLInputElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	"aria-labelledby": string | undefined;
 	"aria-describedby": string | undefined;
 	onChange: JSX.EventHandlerUnion<T, Event>;
@@ -70,7 +65,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	const radioGroupContext = useRadioGroupContext();
 	const radioContext = useRadioGroupItemContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: radioContext.generateId("input"),
 		},
@@ -167,15 +162,13 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 	);
 	createEffect(
 		() => others.id,
-		(id) => {
-			onCleanup(radioContext.registerInput(id!));
-		},
+		(id) => radioContext.registerInput(id!),
 	);
 
 	return (
 		<Polymorphic<RadioGroupItemInputRenderProps>
 			as="input"
-			ref={mergeRefs(radioContext.setInputRef, mergedProps.ref)}
+			ref={[radioContext.setInputRef, mergedProps.ref]}
 			type="radio"
 			name={formControlContext.name()}
 			value={radioContext.value()}

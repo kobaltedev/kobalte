@@ -15,24 +15,29 @@
 import {
 	callHandler,
 	composeEventHandlers,
-	focusWithoutScrolling,
-	mergeDefaultProps,
-	mergeRefs,
 	type Orientation,
 } from "@kobalte/utils";
 import { isServer, type JSX, type ValidComponent } from "@solidjs/web";
-import { createEffect, createUniqueId, omit, onCleanup } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	createUniqueId,
+	merge,
+	omit,
+	onCleanup,
+	type Ref,
+} from "solid-js";
 
-import { type Direction, useLocale } from "../i18n";
+import { type Direction, useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createSelectableItem } from "../selection";
-import { type MenuDataSet, useMenuContext } from "./menu-context";
-import { useMenuRootContext } from "./menu-root-context";
-import { getPointerGraceArea, type Side } from "./utils";
+} from "../polymorphic/index.tsx";
+import { createSelectableItem } from "../selection/index.ts";
+import { type MenuDataSet, useMenuContext } from "./menu-context.tsx";
+import { useMenuRootContext } from "./menu-root-context.tsx";
+import { getPointerGraceArea, type Side } from "./utils.ts";
 
 export interface MenuSubTriggerOptions {
 	/**
@@ -50,7 +55,7 @@ export interface MenuSubTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerMove: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -101,12 +106,14 @@ const SUB_OPEN_KEYS = {
 export function MenuSubTrigger<T extends ValidComponent = "div">(
 	props: PolymorphicProps<T, MenuSubTriggerProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const rootContext = useMenuRootContext();
 	const context = useMenuContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: rootContext.generateId(`sub-trigger-${createUniqueId()}`),
 		},
@@ -171,7 +178,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			allowsDifferentPressOrigin: true,
 			disabled: () => mergedProps.disabled,
 		},
-		() => ref,
+		ref,
 	);
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
@@ -223,7 +230,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			}
 
 			// Restore visual focus to parent menu content.
-			focusWithoutScrolling(e.currentTarget);
+			e.currentTarget.focus({ preventScroll: true });
 			parentMenuContext?.listState().selectionManager().setFocused(true);
 			parentMenuContext?.listState().selectionManager().setFocusedKey(key());
 		}
@@ -312,7 +319,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 
 	createEffect(
 		() => ({
-			textValue: mergedProps.textValue ?? ref?.textContent ?? "",
+			textValue: mergedProps.textValue ?? ref()?.textContent ?? "",
 			disabled: mergedProps.disabled ?? false,
 			key: key(),
 		}),
@@ -326,7 +333,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			}
 			// Register the item trigger on the parent menu that contains it.
 			return context.registerItemToParentDomCollection({
-				ref: () => ref,
+				ref,
 				type: "item",
 				...data,
 			});
@@ -355,10 +362,15 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<MenuSubTriggerRenderProps>
 			as="div"
-			ref={mergeRefs((el) => {
-				context.setTriggerRef(el);
-				ref = el;
-			}, mergedProps.ref)}
+			ref={
+				[
+					(el: HTMLElement) => {
+						context.setTriggerRef(el);
+						setRef(el);
+					},
+					mergedProps.ref,
+				] as any
+			}
 			id={mergedProps.id}
 			role="menuitem"
 			tabindex={selectableItem.tabIndex()}

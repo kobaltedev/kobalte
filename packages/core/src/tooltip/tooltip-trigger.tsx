@@ -18,24 +18,24 @@
  * https://github.com/radix-ui/primitives/blob/1b05a8e35cf35f3020484979086d70aefbaf4095/packages/react/tooltip/src/Tooltip.tsx
  */
 
-import { callHandler, getDocument, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import { isServer } from "@solidjs/web";
-import { omit, onCleanup } from "solid-js";
+import { createSignal, omit, onCleanup, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useTooltipContext } from "./tooltip-context";
+} from "../polymorphic/index.tsx";
+import { useTooltipContext } from "./tooltip-context.tsx";
 
 export interface TooltipTriggerOptions {}
 
 export interface TooltipTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -58,7 +58,9 @@ export type TooltipTriggerProps<
 export function TooltipTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, TooltipTriggerProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useTooltipContext();
 
@@ -139,9 +141,13 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 		callHandler(e, p.onPointerDown);
 
 		isPointerDown = true;
-		getDocument(ref).addEventListener("pointerup", handlePointerUp, {
-			once: true,
-		});
+		(ref()?.ownerDocument ?? document).addEventListener(
+			"pointerup",
+			handlePointerUp,
+			{
+				once: true,
+			},
+		);
 	};
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
@@ -187,7 +193,10 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 			return;
 		}
 
-		getDocument(ref).removeEventListener("pointerup", handlePointerUp);
+		(ref()?.ownerDocument ?? document).removeEventListener(
+			"pointerup",
+			handlePointerUp,
+		);
 	});
 
 	// We purposefully avoid using Kobalte `Button` here because tooltip triggers can be any element
@@ -195,10 +204,15 @@ export function TooltipTrigger<T extends ValidComponent = "button">(
 	return (
 		<Polymorphic<TooltipTriggerRenderProps>
 			as="button"
-			ref={mergeRefs((el) => {
-				context.setTriggerRef(el);
-				ref = el;
-			}, p.ref)}
+			ref={
+				[
+					(el: HTMLElement) => {
+						context.setTriggerRef(el);
+						setRef(el);
+					},
+					p.ref,
+				] as any
+			}
 			aria-describedby={context.isOpen() ? context.contentId() : undefined}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}

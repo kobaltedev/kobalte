@@ -1,16 +1,16 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
+import { merge } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { type SelectDataSet, useSelectContext } from "./select-context";
+} from "../polymorphic/index.tsx";
+import { type SelectDataSet, useSelectContext } from "./select-context.tsx";
 
 export interface SelectIconOptions {}
 
-export interface SelectIconCommonProps<T extends HTMLElement = HTMLElement> {
+export interface SelectIconCommonProps<_T extends HTMLElement = HTMLElement> {
 	children: JSX.Element;
 }
 
@@ -33,10 +33,7 @@ export function SelectIcon<T extends ValidComponent = "span">(
 ) {
 	const context = useSelectContext();
 
-	const mergedProps = mergeDefaultProps(
-		{ children: "▼" },
-		props as SelectIconProps,
-	);
+	const mergedProps = merge({ children: "▼" }, props as SelectIconProps);
 
 	return (
 		<Polymorphic<SelectIconRenderProps>

@@ -1,0 +1,156 @@
+---
+title: Toggle Button
+badges:
+  - icon: npm
+    label: "Since v0.1.0"
+  - label: "@kobalte/core/toggle-button"
+  - icon: source
+    label: "Source"
+    url: "https://github.com/kobaltedev/kobalte/tree/main/packages/core/src/toggle-button"
+  - icon: aria
+    label: "Button"
+    url: "https://www.w3.org/WAI/ARIA/apg/patterns/button/"
+---
+
+import { Show } from "solid-js";
+
+import {
+	BasicExample,
+	ControlledExample,
+	DefaultPressedExample,
+} from "../../../../examples/toggle-button";
+
+# {frontmatter.title}
+
+A two-state button that can be either on (pressed) or off (not pressed).
+
+## Import
+
+```ts
+import { ToggleButton } from "@kobalte/core/toggle-button";
+// or
+import { Root } from "@kobalte/core/toggle-button";
+// or (deprecated)
+import { ToggleButton } from "@kobalte/core";
+```
+
+## Features
+
+- Native HTML `<button>`, `<a>`, and custom element type support.
+- Exposed as a toggle button via the [WAI ARIA Button](https://www.w3.org/WAI/ARIA/apg/patterns/button/) design pattern.
+- Mouse and touch event handling, and press state management.
+- Keyboard event support for <kbd>Space</kbd> and <kbd>Enter</kbd> keys.
+- Can be controlled or uncontrolled.
+
+## Anatomy
+
+The toggle button consists of:
+
+- **ToggleButton:** the root container for a toggle button.
+
+```tsx
+<ToggleButton />
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/toggle-button.tsx#L6-L21"
+
+```
+
+```css title="style.css" tab file="../../../../examples/toggle-button.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Default pressed
+
+An initial, uncontrolled value can be provided using the `defaultPressed` prop.
+
+:::preview
+
+<DefaultPressedExample />
+
+---
+
+```tsx
+<ToggleButton defaultPressed>...</ToggleButton>
+```
+
+:::
+
+### Controlled pressed
+
+The `pressed` prop can be used to make the pressed state controlled. The `onChange` event is fired when the user toggle the button, and receives the new value.
+
+:::preview
+
+<ControlledExample />
+
+---
+
+```tsx {4,8}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [pressed, setPressed] = createSignal(false);
+
+	return (
+		<>
+			<ToggleButton pressed={pressed()} onChange={setPressed}>
+				...
+			</ToggleButton>
+			<p>The microphone is {pressed() ? "muted" : "active"}.</p>
+		</>
+	);
+}
+```
+
+:::
+
+## API Reference
+
+### ToggleButton
+
+`ToggleButton` is equivalent to the `Root` import from `@kobalte/core/toggle-button` (and deprecated `ToggleButton.Root`).
+
+`ToggleButton` consists of [Button](/docs/core/components/button) and additional props.
+
+| Prop           | Description                                                                                                                                                                            |
+| :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| pressed        | `boolean` <br/> The controlled pressed state of the toggle button.                                                                                                                     |
+| defaultPressed | `boolean` <br/> The default pressed state when initially rendered. Useful when you do not need to control the pressed state.                                                           |
+| onChange       | `(pressed: boolean) => void` <br/> Event handler called when the pressed state of the toggle button changes.                                                                           |
+| children       | `JSX.Element \| (state: ToggleButtonState) => JSX.Element` <br/> The children of the toggle button. Can be a `JSX.Element` or a _render prop_ for having access to the internal state. |
+
+| Render Prop | Description                                                                               |
+| :---------- | :---------------------------------------------------------------------------------------- |
+| pressed     | `Accessor<boolean>` <br/> Whether the toggle button is on (pressed) or off (not pressed). |
+
+| Data attribute | Description                                     |
+| :------------- | :---------------------------------------------- |
+| data-pressed   | Present when the toggle button is on (pressed). |
+
+## Rendered elements
+
+| Component      | Default rendered element |
+| :------------- | :----------------------- |
+| `ToggleButton` | `button`                 |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key              | Description                              |
+| :--------------- | :--------------------------------------- |
+| <kbd>Space</kbd> | Activates/deactivates the toggle button. |
+| <kbd>Enter</kbd> | Activates/deactivates the toggle button. |

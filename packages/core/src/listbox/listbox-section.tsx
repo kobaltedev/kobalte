@@ -4,12 +4,12 @@ import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
+} from "../polymorphic/index.tsx";
 
 export interface ListboxSectionOptions {}
 
 export interface ListboxSectionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface ListboxSectionRenderProps extends ListboxSectionCommonProps {

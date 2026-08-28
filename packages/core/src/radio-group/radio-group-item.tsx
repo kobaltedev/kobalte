@@ -6,33 +6,30 @@
  * https://github.com/adobe/react-spectrum/blob/70e7caf1946c423bc9aa9cb0e50dbdbe953d239b/packages/@react-aria/radio/src/useRadio.ts
  */
 
-import {
-	callHandler,
-	createGenerateId,
-	mergeDefaultProps,
-} from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
+import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { createRegisterId } from "../primitives";
-import { useRadioGroupContext } from "./radio-group-context";
+} from "../polymorphic/index.tsx";
+import { createRegisterId } from "../primitives/index.ts";
+import { useRadioGroupContext } from "./radio-group-context.tsx";
 import {
 	RadioGroupItemContext,
 	type RadioGroupItemContextValue,
 	type RadioGroupItemDataSet,
-} from "./radio-group-item-context";
+} from "./radio-group-item-context.tsx";
 
 export interface RadioGroupItemOptions {
 	/**
@@ -75,7 +72,7 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 		"item",
 	)}-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 		},
@@ -139,7 +136,7 @@ export function RadioGroupItem<T extends ValidComponent = "div">(
 		descriptionId,
 		inputRef,
 		select: () => radioGroupContext.setSelectedValue(mergedProps.value),
-		generateId: createGenerateId(() => others.id!),
+		generateId: (suffix: string) => `${others.id}-${suffix}`,
 		registerInput: createRegisterId(setInputId),
 		registerLabel: createRegisterId(setLabelId),
 		registerDescription: createRegisterId(setDescriptionId),

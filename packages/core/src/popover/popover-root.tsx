@@ -6,27 +6,30 @@
  * https://github.com/ariakit/ariakit/blob/232bc79018ec20967fec1e097a9474aba3bb5be7/packages/ariakit/src/popover/popover-state.ts
  */
 
-import { createGenerateId, mergeDefaultProps } from "@kobalte/utils";
 import { createPresence } from "@solid-primitives/presence";
 import {
 	type Accessor,
 	createMemo,
 	createSignal,
 	createUniqueId,
+	merge,
 	omit,
 	type ParentProps,
 } from "solid-js";
-import { Popper, type PopperRootOptions } from "../popper";
-import { createDisclosureState, createRegisterId } from "../primitives";
+import { Popper, type PopperRootOptions } from "../popper/index.tsx";
+import {
+	createDisclosureState,
+	createRegisterId,
+} from "../primitives/index.ts";
 import {
 	POPOVER_INTL_TRANSLATIONS,
 	type PopoverIntlTranslations,
-} from "./popover.intl";
+} from "./popover.intl.ts";
 import {
 	PopoverContext,
 	type PopoverContextValue,
 	type PopoverDataSet,
-} from "./popover-context";
+} from "./popover-context.tsx";
 
 export interface PopoverRootOptions
 	extends Omit<
@@ -89,7 +92,7 @@ export interface PopoverRootProps extends ParentProps<PopoverRootOptions> {}
 export function PopoverRoot(props: PopoverRootProps) {
 	const defaultId = `popover-${createUniqueId()}`;
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: defaultId,
 			modal: false,
@@ -171,7 +174,7 @@ export function PopoverRoot(props: PopoverRootProps) {
 		setContentRef,
 		close: disclosureState.close,
 		toggle: disclosureState.toggle,
-		generateId: createGenerateId(() => mergedProps.id!),
+		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
 		registerContentId: createRegisterId(setContentId),
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),

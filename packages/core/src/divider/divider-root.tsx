@@ -6,9 +6,9 @@
  * https://github.com/mui/material-ui/blob/master/packages/mui-joy/src/Divider/Divider.tsx
  */
 
-import { mergeDefaultProps, mergeRefs, type Orientation } from "@kobalte/utils";
+import type { Orientation } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
@@ -30,7 +30,7 @@ export interface DividerRootOptions {
 }
 
 export interface DividerRootCommonProps<T extends HTMLElement = HTMLElement> {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 }
 
 export interface DividerRootRenderProps extends DividerRootCommonProps {
@@ -55,10 +55,10 @@ export function DividerRoot<T extends ValidComponent = "div">(
 		ownedWrite: true,
 	});
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			orientation: "horizontal",
-		},
+		} as const,
 		props as DividerRootProps,
 	);
 
@@ -69,7 +69,7 @@ export function DividerRoot<T extends ValidComponent = "div">(
 	return (
 		<Polymorphic<DividerRootRenderProps>
 			as="div"
-			ref={mergeRefs(setRef, mergedProps.ref)}
+			ref={[setRef, mergedProps.ref]}
 			role={tagName() !== "hr" ? "separator" : undefined}
 			aria-orientation={
 				mergedProps.orientation === "vertical" ? "vertical" : undefined

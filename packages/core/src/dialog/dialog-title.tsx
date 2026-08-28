@@ -1,17 +1,16 @@
-import { mergeDefaultProps } from "@kobalte/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, merge, omit } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useDialogContext } from "./dialog-context";
+} from "../polymorphic/index.tsx";
+import { useDialogContext } from "./dialog-context.tsx";
 
 export interface DialogTitleOptions {}
 
-export interface DialogTitleCommonProps<T extends HTMLElement = HTMLElement> {
+export interface DialogTitleCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
@@ -29,7 +28,7 @@ export function DialogTitle<T extends ValidComponent = "h2">(
 ) {
 	const context = useDialogContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			id: context.generateId("title"),
 		},

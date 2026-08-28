@@ -1,9 +1,9 @@
-import { callHandler, mergeRefs, visuallyHiddenStyles } from "@kobalte/utils";
+import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps } from "@solidjs/web";
 import { omit } from "solid-js";
 
-import { useFormControlContext } from "../form-control";
-import { useNumberFieldContext } from "./number-field-context";
+import { useFormControlContext } from "../form-control/index.ts";
+import { useNumberFieldContext } from "./number-field-context.tsx";
 
 export interface NumberFieldHiddenInputProps extends ComponentProps<"input"> {}
 

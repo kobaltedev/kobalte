@@ -6,16 +6,16 @@
  * https://github.com/ariakit/ariakit/blob/84e97943ad637a582c01c9b56d880cd95f595737/packages/ariakit/src/hovercard/hovercard-anchor.ts
  */
 
-import { callHandler, mergeRefs } from "@kobalte/utils";
+import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, onCleanup } from "solid-js";
+import { type Component, omit, onCleanup, type Ref } from "solid-js";
 
-import * as Link from "../link";
-import type { ElementOf, PolymorphicProps } from "../polymorphic";
+import * as Link from "../link/index.tsx";
+import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
 	type HoverCardDataSet,
 	useHoverCardContext,
-} from "./hover-card-context";
+} from "./hover-card-context.tsx";
 
 export interface HoverCardTriggerOptions {}
 
@@ -23,7 +23,7 @@ export interface HoverCardTriggerCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	disabled: boolean;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onPointerEnter: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerLeave: JSX.EventHandlerUnion<T, PointerEvent>;
 	onFocus: JSX.EventHandlerUnion<T, FocusEvent>;
@@ -122,7 +122,7 @@ export function HoverCardTrigger<T extends ValidComponent = "a">(
 				Omit<HoverCardTriggerRenderProps, keyof Link.LinkRootRenderProps>
 			>
 		>
-			ref={mergeRefs(context.setTriggerRef, p.ref)}
+			ref={[context.setTriggerRef, p.ref]}
 			onPointerEnter={onPointerEnter}
 			onPointerLeave={onPointerLeave}
 			onFocus={onFocus}

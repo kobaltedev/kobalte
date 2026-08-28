@@ -6,26 +6,20 @@
  * https://github.com/adobe/react-spectrum/blob/6b51339cca0b8344507d3c8e81e7ad05d6e75f9b/packages/@react-aria/tabs/src/useTab.ts
  */
 
-import {
-	composeEventHandlers,
-	focusWithoutScrolling,
-	isWebKit,
-	mergeDefaultProps,
-	mergeRefs,
-	type Orientation,
-} from "@kobalte/utils";
+import { composeEventHandlers, type Orientation } from "@kobalte/utils";
+import { isWebKit } from "@solid-primitives/platform";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, omit } from "solid-js";
+import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
 
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import type { CollectionItemWithRef } from "../primitives";
-import { createDomCollectionItem } from "../primitives/create-dom-collection";
-import { createSelectableItem } from "../selection";
-import { useTabsContext } from "./tabs-context";
+} from "../polymorphic/index.tsx";
+import { createDomCollectionItem } from "../primitives/create-dom-collection/index.ts";
+import type { CollectionItemWithRef } from "../primitives/index.ts";
+import { createSelectableItem } from "../selection/index.ts";
+import { useTabsContext } from "./tabs-context.tsx";
 
 export interface TabsTriggerOptions {
 	/** The unique key that associates the tab with a tab panel. */
@@ -37,7 +31,7 @@ export interface TabsTriggerOptions {
 
 export interface TabsTriggerCommonProps<T extends HTMLElement = HTMLElement> {
 	id: string;
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	type: "button";
 	onPointerDown: JSX.EventHandlerUnion<T, PointerEvent>;
 	onPointerUp: JSX.EventHandlerUnion<T, PointerEvent>;
@@ -71,11 +65,13 @@ export type TabsTriggerProps<
 export function TabsTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, TabsTriggerProps<T>>,
 ) {
-	let ref: HTMLElement | undefined;
+	const [ref, setRef] = createSignal<HTMLElement | undefined>(undefined, {
+		ownedWrite: true,
+	});
 
 	const context = useTabsContext();
 
-	const mergedProps = mergeDefaultProps(
+	const mergedProps = merge(
 		{
 			type: "button",
 		} as const,
@@ -108,7 +104,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
-			ref: () => ref,
+			ref,
 			type: "item",
 			key: mergedProps.value,
 			textValue: "", // not applicable here
@@ -122,13 +118,13 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 			selectionManager: () => context.listState().selectionManager(),
 			disabled: isDisabled,
 		},
-		() => ref,
+		ref,
 	);
 
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// Force focusing the trigger on click on safari.
-		if (isWebKit()) {
-			focusWithoutScrolling(e.currentTarget);
+		if (isWebKit) {
+			e.currentTarget.focus({ preventScroll: true });
 		}
 	};
 
@@ -142,7 +138,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 	return (
 		<Polymorphic<TabsTriggerRenderProps>
 			as="button"
-			ref={mergeRefs((el) => (ref = el), mergedProps.ref)}
+			ref={[setRef, mergedProps.ref]}
 			id={id()}
 			role="tab"
 			tabindex={!isDisabled() ? selectableItem.tabIndex() : undefined}

@@ -1,20 +1,20 @@
-import { composeEventHandlers, mergeRefs } from "@kobalte/utils";
+import { composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, omit } from "solid-js";
+import { createSignal, omit, type Ref } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
 	type PolymorphicProps,
-} from "../polymorphic";
-import { useFileFieldContext } from "./file-field-context";
-import { isDragEventWithFiles } from "./util";
+} from "../polymorphic/index.tsx";
+import { useFileFieldContext } from "./file-field-context.tsx";
+import { isDragEventWithFiles } from "./util.ts";
 
 export interface FileFieldDropzoneOptions {}
 
 export interface FileFieldDropzoneCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
-	ref: T | ((el: T) => void);
+	ref: Ref<T>;
 	onClick: JSX.EventHandlerUnion<T, MouseEvent>;
 	onKeyDown: JSX.EventHandlerUnion<T, KeyboardEvent>;
 	onDragOver: JSX.EventHandlerUnion<T, DragEvent>;
@@ -84,13 +84,13 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 				e.dataTransfer.dropEffect = "copy";
 			}
 		} catch {}
-		const isFilesEvent = isDragEventWithFiles(e);
+		const _isFilesEvent = isDragEventWithFiles(e);
 		if ((e.dataTransfer?.items ?? []).length > 0) {
 			setIsDragging(true);
 		}
 	};
 
-	const onDragLeave: JSX.EventHandlerUnion<HTMLElement, DragEvent> = (e) => {
+	const onDragLeave: JSX.EventHandlerUnion<HTMLElement, DragEvent> = (_e) => {
 		if (!context.allowDragAndDrop || context.disabled()) {
 			return;
 		}
@@ -120,10 +120,12 @@ export function FileFieldDropzone<T extends ValidComponent = "div">(
 			tabindex="0"
 			aria-disabled={context.disabled() ? "true" : undefined}
 			data-dragging={isDragging()}
-			ref={mergeRefs(
-				(el: HTMLElement) => context.setDropzoneRef(el),
-				props.ref as (el: HTMLElement) => void,
-			)}
+			ref={
+				[
+					(el: HTMLElement) => context.setDropzoneRef(el),
+					props.ref as (el: HTMLElement) => void,
+				] as any
+			}
 			onClick={composeEventHandlers([props.onClick, onClick])}
 			onKeyDown={composeEventHandlers([props.onKeyDown, onKeyDown])}
 			onDragOver={composeEventHandlers([props.onDragOver, onDragOver])}

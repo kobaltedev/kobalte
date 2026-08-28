@@ -6,10 +6,10 @@
  * https://github.com/adobe/react-spectrum/blob/8f2f2acb3d5850382ebe631f055f88c704aa7d17/packages/@react-aria/selection/src/useTypeSelect.ts
  */
 
-import { access, type MaybeAccessor } from "@kobalte/utils";
+import { access, type MaybeAccessor } from "@solid-primitives/utils";
 import { createSignal } from "solid-js";
 
-import type { KeyboardDelegate, MultipleSelectionManager } from "./types";
+import type { KeyboardDelegate, MultipleSelectionManager } from "./types.ts";
 
 interface CreateTypeSelectProps {
 	/** Whether the type to select should be disabled. */

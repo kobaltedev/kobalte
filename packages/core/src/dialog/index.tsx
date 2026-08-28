@@ -4,51 +4,51 @@ import {
 	type DialogCloseButtonOptions,
 	type DialogCloseButtonProps,
 	type DialogCloseButtonRenderProps,
-} from "./dialog-close-button";
+} from "./dialog-close-button.tsx";
 import {
 	DialogContent as Content,
 	type DialogContentCommonProps,
 	type DialogContentOptions,
 	type DialogContentProps,
 	type DialogContentRenderProps,
-} from "./dialog-content";
+} from "./dialog-content.tsx";
 import {
 	DialogDescription as Description,
 	type DialogDescriptionCommonProps,
 	type DialogDescriptionOptions,
 	type DialogDescriptionProps,
 	type DialogDescriptionRenderProps,
-} from "./dialog-description";
+} from "./dialog-description.tsx";
 import {
 	type DialogOverlayCommonProps,
 	type DialogOverlayOptions,
 	type DialogOverlayProps,
 	type DialogOverlayRenderProps,
 	DialogOverlay as Overlay,
-} from "./dialog-overlay";
+} from "./dialog-overlay.tsx";
 import {
 	type DialogPortalProps,
 	DialogPortal as Portal,
-} from "./dialog-portal";
+} from "./dialog-portal.tsx";
 import {
 	type DialogRootOptions,
 	type DialogRootProps,
 	DialogRoot as Root,
-} from "./dialog-root";
+} from "./dialog-root.tsx";
 import {
 	type DialogTitleCommonProps,
 	type DialogTitleOptions,
 	type DialogTitleProps,
 	type DialogTitleRenderProps,
 	DialogTitle as Title,
-} from "./dialog-title";
+} from "./dialog-title.tsx";
 import {
 	type DialogTriggerCommonProps,
 	type DialogTriggerOptions,
 	type DialogTriggerProps,
 	type DialogTriggerRenderProps,
 	DialogTrigger as Trigger,
-} from "./dialog-trigger";
+} from "./dialog-trigger.tsx";
 
 export type {
 	DialogCloseButtonCommonProps,
@@ -102,6 +102,9 @@ export const Dialog = Object.assign(Root, {
 });
 
 /**
- * API will most probably change
+ * API will most change
  */
-export { type DialogContextValue, useDialogContext } from "./dialog-context";
+export {
+	type DialogContextValue,
+	useDialogContext,
+} from "./dialog-context.tsx";

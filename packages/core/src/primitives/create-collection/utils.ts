@@ -1,6 +1,4 @@
-import { isNumber, isString } from "@kobalte/utils";
-
-import type { CollectionNode } from "./types";
+import type { CollectionNode } from "./types.ts";
 
 interface BuildNodesParams {
 	dataSource: any[];
@@ -27,7 +25,7 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
 		}
 
 		const _getKey = params.getKey ?? "key";
-		const dataKey = isString(_getKey) ? data[_getKey] : _getKey(data);
+		const dataKey = typeof _getKey === "string" ? data[_getKey] : _getKey(data);
 		return dataKey != null ? String(dataKey) : "";
 	};
 
@@ -37,9 +35,10 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
 		}
 
 		const _getTextValue = params.getTextValue ?? "textValue";
-		const dataTextValue = isString(_getTextValue)
-			? data[_getTextValue]
-			: _getTextValue(data);
+		const dataTextValue =
+			typeof _getTextValue === "string"
+				? data[_getTextValue]
+				: _getTextValue(data);
 		return dataTextValue != null ? String(dataTextValue) : "";
 	};
 
@@ -50,8 +49,9 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
 
 		const _getDisabled = params.getDisabled ?? "disabled";
 		return (
-			(isString(_getDisabled) ? data[_getDisabled] : _getDisabled(data)) ??
-			false
+			(typeof _getDisabled === "string"
+				? data[_getDisabled]
+				: _getDisabled(data)) ?? false
 		);
 	};
 
@@ -60,7 +60,7 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
 			return undefined;
 		}
 
-		if (isString(params.getSectionChildren)) {
+		if (typeof params.getSectionChildren === "string") {
 			return data[params.getSectionChildren];
 		}
 
@@ -69,7 +69,7 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
 
 	for (const data of params.dataSource) {
 		// If it's not an object assume it's an item.
-		if (isString(data) || isNumber(data)) {
+		if (typeof data === "string" || typeof data === "number") {
 			nodes.push({
 				type: "item",
 				rawValue: data,
