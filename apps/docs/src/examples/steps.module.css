@@ -95,24 +95,90 @@
 	transition: width 200ms;
 }
 
-[data-kb-theme="dark"] .steps__indicator {
+.steps__list--progress {
+	margin-top: 16px;
+}
+
+.steps__wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.steps__actions {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 16px;
+}
+
+.steps__status {
+	font-size: 14px;
+	color: hsl(240 4% 46%);
+	margin-top: 8px;
+}
+
+.steps__email-label {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	font-size: 14px;
+	color: hsl(240 4% 16%);
+}
+
+.steps__email-input {
+	border-radius: 6px;
+	padding: 6px 12px;
+	font-size: 14px;
+	outline: none;
+	background-color: white;
+	border: 1px solid hsl(240 6% 90%);
+	color: hsl(240 4% 16%);
+	transition: border-color 250ms;
+}
+
+.steps__email-input:focus-visible {
+	outline: 2px solid hsl(200 98% 39%);
+	outline-offset: 2px;
+}
+
+.steps__error {
+	font-size: 14px;
+	color: hsl(0 72% 51%);
+	margin-top: 8px;
+}
+
+[data-theme*="dark"] .steps__indicator {
 	border-color: hsl(240 5% 34%);
 	color: hsl(0 100% 100% / 0.6);
 }
 
-[data-kb-theme="dark"] .steps__label {
+[data-theme*="dark"] .steps__label {
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .steps__separator {
+[data-theme*="dark"] .steps__separator {
 	background-color: hsl(240 5% 34%);
 }
 
-[data-kb-theme="dark"] .steps__content {
+[data-theme*="dark"] .steps__content {
 	border-color: hsl(240 5% 34%);
 	color: hsl(0 100% 100% / 0.9);
 }
 
-[data-kb-theme="dark"] .steps__progress-track {
+[data-theme*="dark"] .steps__progress-track {
 	background-color: hsl(240 4% 24%);
+}
+
+[data-theme*="dark"] .steps__status {
+	color: hsl(240 5% 65%);
+}
+
+[data-theme*="dark"] .steps__email-label {
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-theme*="dark"] .steps__email-input {
+	background-color: hsl(240 4% 16%);
+	border-color: hsl(240 5% 34%);
+	color: hsl(0 100% 100% / 0.9);
 }

@@ -45,7 +45,7 @@ export function BasicExample() {
 				🎉 All steps completed — you're all set!
 			</Steps.CompletedContent>
 
-			<div class="not-prose flex justify-between mt-4">
+			<div class={style.steps__actions}>
 				<Steps.PrevTrigger class="kb-button">Back</Steps.PrevTrigger>
 				<Steps.NextTrigger class="kb-button-primary">Next</Steps.NextTrigger>
 			</div>
@@ -57,7 +57,7 @@ export function ControlledExample() {
 	const [value, setValue] = createSignal(0);
 
 	return (
-		<div class="flex flex-col gap-2">
+		<div class={style.steps__wrapper}>
 			<Steps count={3} value={value()} onChange={setValue}>
 				<Steps.List class={style.steps__list}>
 					<For each={STEP_TITLES}>
@@ -75,12 +75,12 @@ export function ControlledExample() {
 					</For>
 				</Steps.List>
 
-				<div class="not-prose flex justify-between mt-4">
+				<div class={style.steps__actions}>
 					<Steps.PrevTrigger class="kb-button">Back</Steps.PrevTrigger>
 					<Steps.NextTrigger class="kb-button-primary">Next</Steps.NextTrigger>
 				</div>
 			</Steps>
-			<p class="not-prose text-sm mt-2">Current step index: {value()}</p>
+			<p class={style.steps__status}>Current step index: {value()}</p>
 		</div>
 	);
 }
@@ -92,7 +92,9 @@ export function ProgressExample() {
 				<Steps.Progress class={style["steps__progress-fill"]} />
 			</div>
 
-			<Steps.List class={`${style.steps__list} mt-4`}>
+			<Steps.List
+				class={`${style.steps__list} ${style["steps__list--progress"]}`}
+			>
 				<For each={Array.from({ length: 4 })}>
 					{(_, index) => (
 						<Steps.Item index={index()} class={style.steps__item}>
@@ -107,7 +109,7 @@ export function ProgressExample() {
 				</For>
 			</Steps.List>
 
-			<div class="not-prose flex justify-between mt-4">
+			<div class={style.steps__actions}>
 				<Steps.PrevTrigger class="kb-button">Back</Steps.PrevTrigger>
 				<Steps.NextTrigger class="kb-button-primary">Next</Steps.NextTrigger>
 			</div>
@@ -146,14 +148,14 @@ export function LinearExample() {
 			</Steps.List>
 
 			<Steps.Content index={0} class={style.steps__content}>
-				<label class="not-prose flex flex-col gap-1 text-sm">
+				<label class={style["steps__email-label"]}>
 					Email address
 					<input
 						type="email"
 						value={email()}
 						onInput={(e) => setEmail(e.currentTarget.value)}
 						placeholder="you@example.com"
-						class="rounded border border-slate-300 px-2 py-1"
+						class={style["steps__email-input"]}
 					/>
 				</label>
 			</Steps.Content>
@@ -167,11 +169,9 @@ export function LinearExample() {
 				🎉 All steps completed — you're all set!
 			</Steps.CompletedContent>
 
-			{invalidMessage() && (
-				<p class="not-prose text-sm text-red-600 mt-2">{invalidMessage()}</p>
-			)}
+			{invalidMessage() && <p class={style.steps__error}>{invalidMessage()}</p>}
 
-			<div class="not-prose flex justify-between mt-4">
+			<div class={style.steps__actions}>
 				<Steps.PrevTrigger class="kb-button">Back</Steps.PrevTrigger>
 				<Steps.NextTrigger class="kb-button-primary">Next</Steps.NextTrigger>
 			</div>
@@ -213,7 +213,7 @@ export function SkippableExample() {
 				All done!
 			</Steps.CompletedContent>
 
-			<div class="not-prose flex justify-between mt-4">
+			<div class={style.steps__actions}>
 				<Steps.PrevTrigger class="kb-button">Back</Steps.PrevTrigger>
 				<Steps.NextTrigger class="kb-button-primary">Next</Steps.NextTrigger>
 			</div>

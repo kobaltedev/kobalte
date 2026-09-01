@@ -1,6 +1,7 @@
 import { createSignal, For } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import * as Steps from "../index";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Steps",
@@ -9,40 +10,11 @@ const meta = preview.meta({
 
 export default meta;
 
-const listClass = "flex items-center";
-const listVerticalClass = "flex flex-col items-start gap-1";
-
-const itemClass = "flex items-center gap-2 flex-1 last:flex-none";
-const itemVerticalClass = "flex flex-col gap-1";
-
-const indicatorClass =
-	"flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 text-sm font-medium " +
-	"border-slate-300 text-slate-500 " +
-	"data-[current]:border-blue-500 data-[current]:bg-blue-500 data-[current]:text-white " +
-	"data-[complete]:border-blue-500 data-[complete]:bg-blue-500 data-[complete]:text-white";
-
-const triggerClass = "flex items-center gap-2 outline-none rounded-full";
-
-const labelClass = "text-sm font-medium text-slate-700";
-
-const separatorClass =
-	"h-0.5 flex-1 bg-slate-200 data-[complete]:bg-blue-500 mx-2";
-
-const separatorVerticalClass =
-	"w-0.5 h-6 bg-slate-200 data-[complete]:bg-blue-500 ml-4";
-
-const contentClass =
-	"mt-6 rounded-md border border-slate-200 p-4 text-sm text-slate-700";
-
-const buttonClass =
-	"rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 " +
-	"hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none";
-
 const STEP_TITLES = ["Account", "Profile", "Confirmation"];
 
 function StepIndicator(props: { index: number }) {
 	return (
-		<Steps.Indicator class={indicatorClass}>{props.index + 1}</Steps.Indicator>
+		<Steps.Indicator class={style.indicator}>{props.index + 1}</Steps.Indicator>
 	);
 }
 
@@ -50,40 +22,40 @@ function StepIndicator(props: { index: number }) {
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<div class="w-[480px] font-sans">
+		<div class={style.wrapper}>
 			<Steps.Root count={3}>
-				<Steps.List class={listClass}>
+				<Steps.List class={style.list}>
 					<For each={STEP_TITLES}>
 						{(title, index) => (
-							<Steps.Item index={index()} class={itemClass}>
-								<Steps.Trigger class={triggerClass}>
+							<Steps.Item index={index()} class={style.item}>
+								<Steps.Trigger class={style.trigger}>
 									<StepIndicator index={index()} />
-									<span class={labelClass}>{title}</span>
+									<span class={style.label}>{title}</span>
 								</Steps.Trigger>
 								{index() < STEP_TITLES.length - 1 && (
-									<Steps.Separator class={separatorClass} />
+									<Steps.Separator class={style.separator} />
 								)}
 							</Steps.Item>
 						)}
 					</For>
 				</Steps.List>
 
-				<Steps.Content index={0} class={contentClass}>
+				<Steps.Content index={0} class={style.content}>
 					Create your account by choosing a username and password.
 				</Steps.Content>
-				<Steps.Content index={1} class={contentClass}>
+				<Steps.Content index={1} class={style.content}>
 					Tell us a bit about yourself.
 				</Steps.Content>
-				<Steps.Content index={2} class={contentClass}>
+				<Steps.Content index={2} class={style.content}>
 					Review your details and confirm.
 				</Steps.Content>
-				<Steps.CompletedContent class={contentClass}>
+				<Steps.CompletedContent class={style.content}>
 					🎉 All steps completed — you're all set!
 				</Steps.CompletedContent>
 
-				<div class="mt-4 flex justify-between">
-					<Steps.PrevTrigger class={buttonClass}>Back</Steps.PrevTrigger>
-					<Steps.NextTrigger class={buttonClass}>Next</Steps.NextTrigger>
+				<div class={style.actions}>
+					<Steps.PrevTrigger class={style.button}>Back</Steps.PrevTrigger>
+					<Steps.NextTrigger class={style.button}>Next</Steps.NextTrigger>
 				</div>
 			</Steps.Root>
 		</div>
@@ -94,41 +66,41 @@ export const Default = meta.story({
 export const Vertical = meta.story({
 	name: "Vertical",
 	render: () => (
-		<div class="flex w-[480px] gap-8 font-sans">
+		<div class={style.wrapperVertical}>
 			<Steps.Root count={3} orientation="vertical">
-				<Steps.List class={listVerticalClass}>
+				<Steps.List class={style.listVertical}>
 					<For each={STEP_TITLES}>
 						{(title, index) => (
-							<Steps.Item index={index()} class={itemVerticalClass}>
-								<Steps.Trigger class={triggerClass}>
+							<Steps.Item index={index()} class={style.itemVertical}>
+								<Steps.Trigger class={style.trigger}>
 									<StepIndicator index={index()} />
-									<span class={labelClass}>{title}</span>
+									<span class={style.label}>{title}</span>
 								</Steps.Trigger>
 								{index() < STEP_TITLES.length - 1 && (
-									<Steps.Separator class={separatorVerticalClass} />
+									<Steps.Separator class={style.separatorVertical} />
 								)}
 							</Steps.Item>
 						)}
 					</For>
 				</Steps.List>
 
-				<div class="flex-1">
-					<Steps.Content index={0} class={contentClass}>
+				<div class={style.verticalContent}>
+					<Steps.Content index={0} class={style.content}>
 						Create your account by choosing a username and password.
 					</Steps.Content>
-					<Steps.Content index={1} class={contentClass}>
+					<Steps.Content index={1} class={style.content}>
 						Tell us a bit about yourself.
 					</Steps.Content>
-					<Steps.Content index={2} class={contentClass}>
+					<Steps.Content index={2} class={style.content}>
 						Review your details and confirm.
 					</Steps.Content>
-					<Steps.CompletedContent class={contentClass}>
+					<Steps.CompletedContent class={style.content}>
 						🎉 All steps completed — you're all set!
 					</Steps.CompletedContent>
 
-					<div class="mt-4 flex justify-between">
-						<Steps.PrevTrigger class={buttonClass}>Back</Steps.PrevTrigger>
-						<Steps.NextTrigger class={buttonClass}>Next</Steps.NextTrigger>
+					<div class={style.actions}>
+						<Steps.PrevTrigger class={style.button}>Back</Steps.PrevTrigger>
+						<Steps.NextTrigger class={style.button}>Next</Steps.NextTrigger>
 					</div>
 				</div>
 			</Steps.Root>
@@ -143,29 +115,29 @@ export const WithProgress = meta.story({
 		const [value, setValue] = createSignal(0);
 
 		return (
-			<div class="w-[480px] font-sans">
+			<div class={style.wrapper}>
 				<Steps.Root count={4} value={value()} onChange={setValue}>
-					<div class="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-						<Steps.Progress class="h-full bg-blue-500 transition-[width]" />
+					<div class={style.progressTrack}>
+						<Steps.Progress class={style.progressFill} />
 					</div>
 
-					<Steps.List class={`${listClass} mt-4`}>
+					<Steps.List class={`${style.list} ${style.listProgress}`}>
 						<For each={Array.from({ length: 4 })}>
 							{(_, index) => (
-								<Steps.Item index={index()} class={itemClass}>
-									<Steps.Trigger class={triggerClass}>
+								<Steps.Item index={index()} class={style.item}>
+									<Steps.Trigger class={style.trigger}>
 										<StepIndicator index={index()} />
 									</Steps.Trigger>
-									{index() < 3 && <Steps.Separator class={separatorClass} />}
+									{index() < 3 && <Steps.Separator class={style.separator} />}
 								</Steps.Item>
 							)}
 						</For>
 					</Steps.List>
 
-					<div class="mt-4 flex items-center justify-between">
-						<Steps.PrevTrigger class={buttonClass}>Back</Steps.PrevTrigger>
-						<p class="text-sm text-slate-500">Step {value() + 1} of 4</p>
-						<Steps.NextTrigger class={buttonClass}>Next</Steps.NextTrigger>
+					<div class={style.progressActions}>
+						<Steps.PrevTrigger class={style.button}>Back</Steps.PrevTrigger>
+						<p class={style.stepStatus}>Step {value() + 1} of 4</p>
+						<Steps.NextTrigger class={style.button}>Next</Steps.NextTrigger>
 					</div>
 				</Steps.Root>
 			</div>
@@ -188,7 +160,7 @@ export const Linear = meta.story({
 		const isStepValid = (index: number) => index !== 0 || email().includes("@");
 
 		return (
-			<div class="w-[480px] font-sans">
+			<div class={style.wrapper}>
 				<Steps.Root
 					count={3}
 					linear
@@ -196,51 +168,51 @@ export const Linear = meta.story({
 					onStepInvalid={() => setInvalidMessage("Enter a valid email first.")}
 					onChange={() => setInvalidMessage(null)}
 				>
-					<Steps.List class={listClass}>
+					<Steps.List class={style.list}>
 						<For each={STEP_TITLES}>
 							{(title, index) => (
-								<Steps.Item index={index()} class={itemClass}>
-									<Steps.Trigger class={triggerClass}>
+								<Steps.Item index={index()} class={style.item}>
+									<Steps.Trigger class={style.trigger}>
 										<StepIndicator index={index()} />
-										<span class={labelClass}>{title}</span>
+										<span class={style.label}>{title}</span>
 									</Steps.Trigger>
 									{index() < STEP_TITLES.length - 1 && (
-										<Steps.Separator class={separatorClass} />
+										<Steps.Separator class={style.separator} />
 									)}
 								</Steps.Item>
 							)}
 						</For>
 					</Steps.List>
 
-					<Steps.Content index={0} class={contentClass}>
-						<label class="flex flex-col gap-1">
+					<Steps.Content index={0} class={style.content}>
+						<label class={style.emailLabel}>
 							Email address
 							<input
 								type="email"
 								value={email()}
 								onInput={(e) => setEmail(e.currentTarget.value)}
-								class="rounded border border-slate-300 px-2 py-1"
+								class={style.emailInput}
 								placeholder="you@example.com"
 							/>
 						</label>
 					</Steps.Content>
-					<Steps.Content index={1} class={contentClass}>
+					<Steps.Content index={1} class={style.content}>
 						Tell us a bit about yourself.
 					</Steps.Content>
-					<Steps.Content index={2} class={contentClass}>
+					<Steps.Content index={2} class={style.content}>
 						Review your details and confirm.
 					</Steps.Content>
-					<Steps.CompletedContent class={contentClass}>
+					<Steps.CompletedContent class={style.content}>
 						🎉 All steps completed — you're all set!
 					</Steps.CompletedContent>
 
 					{invalidMessage() && (
-						<p class="mt-2 text-sm text-red-600">{invalidMessage()}</p>
+						<p class={style.errorMessage}>{invalidMessage()}</p>
 					)}
 
-					<div class="mt-4 flex justify-between">
-						<Steps.PrevTrigger class={buttonClass}>Back</Steps.PrevTrigger>
-						<Steps.NextTrigger class={buttonClass}>Next</Steps.NextTrigger>
+					<div class={style.actions}>
+						<Steps.PrevTrigger class={style.button}>Back</Steps.PrevTrigger>
+						<Steps.NextTrigger class={style.button}>Next</Steps.NextTrigger>
 					</div>
 				</Steps.Root>
 			</div>
@@ -252,88 +224,88 @@ export const Linear = meta.story({
 export const Skippable = meta.story({
 	name: "Skippable",
 	render: () => (
-		<div class="w-[480px] font-sans">
+		<div class={style.wrapper}>
 			<Steps.Root count={4} isStepSkippable={(index) => index === 2}>
-				<Steps.List class={listClass}>
+				<Steps.List class={style.list}>
 					<For each={Array.from({ length: 4 })}>
 						{(_, index) => (
-							<Steps.Item index={index()} class={itemClass}>
-								<Steps.Trigger class={triggerClass}>
+							<Steps.Item index={index()} class={style.item}>
+								<Steps.Trigger class={style.trigger}>
 									<StepIndicator index={index()} />
 								</Steps.Trigger>
-								{index() < 3 && <Steps.Separator class={separatorClass} />}
+								{index() < 3 && <Steps.Separator class={style.separator} />}
 							</Steps.Item>
 						)}
 					</For>
 				</Steps.List>
 
-				<Steps.Content index={0} class={contentClass}>
+				<Steps.Content index={0} class={style.content}>
 					Step 1 (normal)
 				</Steps.Content>
-				<Steps.Content index={1} class={contentClass}>
+				<Steps.Content index={1} class={style.content}>
 					Step 2 (normal)
 				</Steps.Content>
-				<Steps.Content index={2} class={contentClass}>
+				<Steps.Content index={2} class={style.content}>
 					Step 3 — skippable, only reachable by clicking its trigger directly.
 				</Steps.Content>
-				<Steps.Content index={3} class={contentClass}>
+				<Steps.Content index={3} class={style.content}>
 					Step 4 (normal)
 				</Steps.Content>
-				<Steps.CompletedContent class={contentClass}>
+				<Steps.CompletedContent class={style.content}>
 					All done!
 				</Steps.CompletedContent>
 
-				<div class="mt-4 flex justify-between">
-					<Steps.PrevTrigger class={buttonClass}>Back</Steps.PrevTrigger>
-					<Steps.NextTrigger class={buttonClass}>Next</Steps.NextTrigger>
+				<div class={style.actions}>
+					<Steps.PrevTrigger class={style.button}>Back</Steps.PrevTrigger>
+					<Steps.NextTrigger class={style.button}>Next</Steps.NextTrigger>
 				</div>
 			</Steps.Root>
 		</div>
 	),
 });
 
-/** Controlled `value`/`onChange`, with a reset button using `useStepsContext`. */
+/** Controlled `value`/`onChange`, with a reset button. */
 export const Controlled = meta.story({
 	name: "Controlled",
 	render: () => {
 		const [value, setValue] = createSignal(0);
 
 		return (
-			<div class="flex w-[480px] flex-col gap-2 font-sans">
+			<div class={style.wrapperControlled}>
 				<Steps.Root count={3} value={value()} onChange={setValue}>
-					<Steps.List class={listClass}>
+					<Steps.List class={style.list}>
 						<For each={STEP_TITLES}>
 							{(title, index) => (
-								<Steps.Item index={index()} class={itemClass}>
-									<Steps.Trigger class={triggerClass}>
+								<Steps.Item index={index()} class={style.item}>
+									<Steps.Trigger class={style.trigger}>
 										<StepIndicator index={index()} />
-										<span class={labelClass}>{title}</span>
+										<span class={style.label}>{title}</span>
 									</Steps.Trigger>
 									{index() < STEP_TITLES.length - 1 && (
-										<Steps.Separator class={separatorClass} />
+										<Steps.Separator class={style.separator} />
 									)}
 								</Steps.Item>
 							)}
 						</For>
 					</Steps.List>
 
-					<Steps.CompletedContent class={contentClass}>
+					<Steps.CompletedContent class={style.content}>
 						All done!
 					</Steps.CompletedContent>
 
-					<div class="mt-4 flex justify-between">
-						<Steps.PrevTrigger class={buttonClass}>Back</Steps.PrevTrigger>
+					<div class={style.actions}>
+						<Steps.PrevTrigger class={style.button}>Back</Steps.PrevTrigger>
 						<button
 							type="button"
-							class={buttonClass}
+							class={style.button}
 							onClick={() => setValue(0)}
 						>
 							Reset
 						</button>
-						<Steps.NextTrigger class={buttonClass}>Next</Steps.NextTrigger>
+						<Steps.NextTrigger class={style.button}>Next</Steps.NextTrigger>
 					</div>
 				</Steps.Root>
-				<p class="text-sm text-slate-500">Current step index: {value()}</p>
+				<p class={style.stepStatus}>Current step index: {value()}</p>
 			</div>
 		);
 	},
