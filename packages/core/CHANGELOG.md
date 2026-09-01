@@ -1,5 +1,12 @@
 # @kobalte/core
 
+## 2.0.0-alpha.1
+
+### Patch Changes
+
+- Solid 2 effect fixes
+  New alpha Calendar, DatePicker, DateField, Card, Statistic and Divider component
+
 ## 2.0.0-alpha.0
 
 ### Major Changes

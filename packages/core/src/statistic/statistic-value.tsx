@@ -20,7 +20,7 @@ export interface StatisticValueOptions {
 }
 
 export interface StatisticValueCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	"aria-live": "polite";
 	"aria-atomic": "true";

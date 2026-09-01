@@ -22,7 +22,9 @@ export interface StatisticRootOptions {
 	id?: string;
 }
 
-export interface StatisticRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface StatisticRootCommonProps<
+	_T extends HTMLElement = HTMLElement,
+> {
 	id: string;
 }
 

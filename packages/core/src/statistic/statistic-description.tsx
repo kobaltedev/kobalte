@@ -11,7 +11,7 @@ import { useStatisticContext } from "./statistic-context";
 export interface StatisticDescriptionOptions {}
 
 export interface StatisticDescriptionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }

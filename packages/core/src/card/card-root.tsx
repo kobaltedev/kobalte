@@ -19,7 +19,7 @@ export interface CardRootOptions {
 	id?: string;
 }
 
-export interface CardRootCommonProps<T extends HTMLElement = HTMLElement> {
+export interface CardRootCommonProps<_T extends HTMLElement = HTMLElement> {
 	id: string;
 }
 
