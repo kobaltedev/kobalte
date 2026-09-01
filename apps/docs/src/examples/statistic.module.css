@@ -1,0 +1,68 @@
+.label {
+	display: block;
+	font-size: 12px;
+	color: hsl(240 4% 46%);
+	margin-bottom: 2px;
+}
+
+.value {
+	display: block;
+	font-size: 28px;
+	font-weight: 600;
+	color: hsl(240 6% 20%);
+}
+
+.description {
+	display: block;
+	font-size: 12px;
+	color: hsl(240 4% 60%);
+	margin-top: 2px;
+}
+
+.trend--increase,
+.trend--decrease {
+	margin-left: 8px;
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.trend--increase {
+	color: hsl(142 71% 35%);
+}
+
+.trend--decrease {
+	color: hsl(0 72% 51%);
+}
+
+.row {
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+}
+
+.button {
+	border-radius: 6px;
+	border: 1px solid hsl(240 5% 84%);
+	background-color: white;
+	padding: 6px 12px;
+	font-size: 13px;
+	color: hsl(240 6% 20%);
+	cursor: pointer;
+}
+
+.button:hover {
+	background-color: hsl(240 5% 96%);
+}
+
+[data-kb-theme="dark"] .value {
+	color: hsl(240 5% 96%);
+}
+
+[data-kb-theme="dark"] .button {
+	background-color: hsl(240 6% 10%);
+	border-color: hsl(240 5% 20%);
+	color: hsl(240 5% 96%);
+}

@@ -1,0 +1,45 @@
+.divider {
+	border: none;
+	background-color: hsl(240 5% 84%);
+}
+
+.divider[data-orientation="horizontal"] {
+	height: 1px;
+	width: 100%;
+}
+
+.divider[data-orientation="vertical"] {
+	width: 1px;
+	height: 16px;
+}
+
+[data-theme*="dark"] .divider {
+	background-color: hsl(240 5% 26%);
+}
+
+.divider-with-text {
+	display: flex;
+	align-items: center;
+	color: hsl(240 4% 46%);
+	font-size: 14px;
+}
+
+.divider-with-text::before,
+.divider-with-text::after {
+	content: "";
+	flex: 1;
+	border-top: 1px solid hsl(240 5% 84%);
+}
+
+.divider-with-text::before {
+	margin-right: 12px;
+}
+
+.divider-with-text::after {
+	margin-left: 12px;
+}
+
+[data-theme*="dark"] .divider-with-text::before,
+[data-theme*="dark"] .divider-with-text::after {
+	border-top-color: hsl(240 5% 26%);
+}
