@@ -240,10 +240,10 @@ export function SpinButtonRoot<T extends ValidComponent = "div">(
 			aria-invalid={
 				mergedProps.validationState === "invalid" ? "true" : undefined
 			}
+			{...others}
 			onKeyDown={onKeyDown}
 			onFocus={onFocus}
 			onBlur={onBlur}
-			{...others}
 		/>
 	);
 }

@@ -24,6 +24,7 @@ import {
 	createTrackedEffect,
 	merge,
 	type ParentProps,
+	untrack,
 } from "solid-js";
 
 import { useLocale } from "../i18n/index.tsx";
@@ -142,7 +143,7 @@ export function PopperRoot(props: PopperRootProps) {
 	const [arrowRef, setArrowRef] = createSignal<HTMLElement>();
 
 	const [currentPlacement, setCurrentPlacement] = createSignal(
-		mergedProps.placement!,
+		untrack(() => mergedProps.placement!),
 	);
 
 	// Floating UI - reference element.
