@@ -10,7 +10,7 @@ import type { Orientation } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import { createResizeObserver } from "@solid-primitives/resize-observer";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit, onSettled } from "solid-js";
+import { createEffect, createSignal, omit, onSettled, untrack } from "solid-js";
 import { useLocale } from "../i18n/index.tsx";
 import {
 	type ElementOf,
@@ -95,7 +95,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 	// before computing the style.
 	onSettled(() => {
 		queueMicrotask(() => {
-			computeStyle();
+			untrack(() => computeStyle());
 		});
 	});
 
@@ -103,7 +103,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 	createEffect(
 		() => [context.selectedTab(), context.orientation(), direction()] as const,
 		() => {
-			computeStyle();
+			untrack(() => computeStyle());
 		},
 		{ defer: true },
 	);
@@ -115,6 +115,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 	createResizeObserver(context.selectedTab, (_, t) => {
 		if (prevTarget !== t) {
 			prevTarget = t;
+			untrack(() => computeStyle());
 			return;
 		}
 
@@ -128,7 +129,7 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 			setResizing(false);
 		}, 1);
 
-		computeStyle();
+		untrack(() => computeStyle());
 	});
 
 	return (
