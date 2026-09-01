@@ -1,0 +1,460 @@
+import {
+	BasicExample,
+	ControlledExample,
+	DisabledExample,
+	MinMaxExample,
+	MultipleExample,
+	RangeExample,
+	UnavailableDatesExample,
+} from "../../../../examples/calendar";
+
+# Calendar
+
+A date grid that lets users select a single date, multiple dates, or a date range by clicking (or navigating with the keyboard to) cells in a month view.
+
+Date math, formatting, and keyboard navigation are ported from Adobe's [`@react-stately/calendar`](https://react-spectrum.adobe.com/react-stately/useCalendarState.html) and [`@react-aria/calendar`](https://react-spectrum.adobe.com/react-aria/useCalendar.html) (Apache-2.0). Range selection follows [corvu](https://corvu.dev/)'s click-only model instead — the first click sets the start of the range and the second click commits the end, with no pointer-drag selection — adapted from [corvu/calendar](https://github.com/corvudev/corvu/tree/main/packages/calendar)'s `CellTrigger` by Jasmin Noetzli (MIT).
+
+## Import
+
+```ts
+import { Calendar } from "@kobalte/core/calendar";
+// or
+import {
+	Root,
+	Body,
+	Grid,
+	GridBody,
+	GridBodyCell,
+	GridBodyCellTrigger,
+	GridBodyRow,
+	GridHeader,
+	GridHeaderCell,
+	GridHeaderRow,
+	Header,
+	Heading,
+	NextTrigger,
+	PrevTrigger,
+} from "@kobalte/core/calendar";
+```
+
+## Features
+
+- Single, multiple, or range date selection via the `selectionMode` prop.
+- Values are native JS `Date` objects (Gregorian calendar only) rather than a separate date library's types.
+- Click-only range selection — no pointer-drag tracking — see the corvu credit above.
+- Can be controlled (`value` / `onChange`) or uncontrolled (`defaultValue`).
+- `minValue`, `maxValue`, and `isDateUnavailable` to constrain selectable dates.
+- `allowsNonContiguousRanges` to allow a range to skip over unavailable dates.
+- Independently controllable focused date (`focusedValue` / `defaultFocusedValue` / `onFocusChange`).
+- Full internationalization (locale-aware month/weekday names, first day of week, RTL) via `translations` and Kobalte's i18n context.
+- Full keyboard navigation between cells, months, and years.
+- `disabled` and `readOnly` states.
+- Automatic live-region announcements when the visible range or selection changes.
+- Date arithmetic (day/week/month navigation) runs in the browser's local time zone; there's no explicit per-value time zone tracking, so operations that cross a daylight-saving transition follow the local system clock.
+
+## Anatomy
+
+The calendar consists of:
+
+- **Calendar**: The root container that manages selection, focus, and pagination state.
+- **Calendar.Header**: Contains the heading and the previous/next navigation triggers.
+- **Calendar.PrevTrigger**: A button that navigates to the previous page (month/year).
+- **Calendar.Heading**: Displays the current visible date range (e.g. the month and year).
+- **Calendar.NextTrigger**: A button that navigates to the next page.
+- **Calendar.Body**: Contains one or more calendar grids.
+- **Calendar.Grid**: A single grid of days for a month, keyboard navigable and selectable.
+- **Calendar.GridHeader**: The row of weekday names at the top of a grid.
+- **Calendar.GridHeaderRow**: A row rendering each weekday name.
+- **Calendar.GridHeaderCell**: A single weekday name cell.
+- **Calendar.GridBody**: The rows of day cells for a month.
+- **Calendar.GridBodyRow**: A single week row of day cells.
+- **Calendar.GridBodyCell**: A single day cell, tracking selected/disabled/unavailable state for the date it represents.
+- **Calendar.GridBodyCellTrigger**: The clickable/focusable element inside a cell that performs the actual selection.
+
+```tsx
+<Calendar>
+	<Calendar.Header>
+		<Calendar.PrevTrigger />
+		<Calendar.Heading />
+		<Calendar.NextTrigger />
+	</Calendar.Header>
+	<Calendar.Body>
+		<Calendar.Grid>
+			<Calendar.GridHeader>
+				<Calendar.GridHeaderRow>
+					{weekDay => <Calendar.GridHeaderCell>{weekDay()}</Calendar.GridHeaderCell>}
+				</Calendar.GridHeaderRow>
+			</Calendar.GridHeader>
+			<Calendar.GridBody>
+				{weekIndex => (
+					<Calendar.GridBodyRow weekIndex={weekIndex()}>
+						{date => (
+							<Calendar.GridBodyCell date={date()!}>
+								<Calendar.GridBodyCellTrigger />
+							</Calendar.GridBodyCell>
+						)}
+					</Calendar.GridBodyRow>
+				)}
+			</Calendar.GridBody>
+		</Calendar.Grid>
+	</Calendar.Body>
+</Calendar>
+```
+
+<!-- Note: `Calendar.GridBodyRow`'s children render prop type still allows a `null` date
+     accessor for backward compatibility, but since dates are native `Date` objects there's
+     no calendar-system boundary that can produce one in practice. The example still guards
+     with a `<Show>`/fallback `<td>` defensively — omitted above for anatomy brevity. See the
+     Example section for the guarded version. -->
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/calendar.tsx#L5-L55"
+
+```
+
+```css title="style.css" tab file="../../../../examples/calendar.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Multiple selection
+
+Set `selectionMode="multiple"` to let the user toggle any number of individual dates. `value` / `defaultValue` become a `DateValue[] | null`, and clicking an already-selected date removes it.
+
+:::preview
+
+<MultipleExample />
+
+---
+
+```tsx
+<Calendar selectionMode="multiple">{/* ...anatomy... */}</Calendar>
+```
+
+:::
+
+### Range selection
+
+Set `selectionMode="range"` to select a contiguous range of dates. `value` / `defaultValue` become a `RangeValue<DateValue> | null` (an object with `start` and `end`).
+
+Selection is click-only, following corvu's model: the first click on a cell sets the range's start and becomes the "anchor" — `Calendar.GridBodyCellTrigger` exposes this cell via `data-selection-start`/`data-selection-end`, and every date between the anchor and the currently focused/hovered date is highlighted via `data-selected`. The second click commits the range's end and clears the anchor. Pressing <kbd>Escape</kbd> while an anchor is set cancels the in-progress range. There is no pointer-drag selection.
+
+:::preview
+
+<RangeExample />
+
+---
+
+```tsx
+<Calendar selectionMode="range">{/* ...anatomy... */}</Calendar>
+```
+
+:::
+
+### Controlled value
+
+Use `value` and `onChange` to control the selected date yourself. Values are native `Date` objects, so any native `Date` method or formatter (e.g. `toLocaleDateString()`, `Intl.DateTimeFormat`) works directly — no separate date library is involved.
+
+:::preview
+
+<ControlledExample />
+
+---
+
+```tsx {5}
+import { Calendar, type DateValue } from "@kobalte/core/calendar";
+import { createSignal, Show } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal<DateValue | null>(new Date(2024, 0, 15));
+
+	return (
+		<>
+			<Calendar selectionMode="single" value={value()} onChange={setValue}>
+				{/* ...anatomy... */}
+			</Calendar>
+			<p>
+				Selected date: <Show when={value()} fallback="--">{value()!.toLocaleDateString()}</Show>
+			</p>
+		</>
+	);
+}
+```
+
+:::
+
+### Min and max dates
+
+Use `minValue` and `maxValue` to constrain the selectable range. Cells outside the range become disabled and `Calendar.PrevTrigger` / `Calendar.NextTrigger` disable themselves once no further page contains a selectable date. `defaultFocusedValue` sets which date is initially focused.
+
+:::preview
+
+<MinMaxExample />
+
+---
+
+```tsx
+<Calendar
+	selectionMode="single"
+	defaultFocusedValue={new Date(2024, 0, 15)}
+	minValue={new Date(2024, 0, 5)}
+	maxValue={new Date(2024, 0, 25)}
+>
+	{/* ...anatomy... */}
+</Calendar>
+```
+
+:::
+
+### Disabled
+
+Set `disabled` on the root to disable the whole calendar. Every cell becomes non-selectable, the root exposes `data-disabled` for styling, and the calendar remains focusable/navigable for assistive technology unless you also remove it from the tab order.
+
+:::preview
+
+<DisabledExample />
+
+---
+
+```tsx
+<Calendar selectionMode="single" disabled>
+	{/* ...anatomy... */}
+</Calendar>
+```
+
+:::
+
+### Unavailable dates
+
+Use `isDateUnavailable` to mark specific dates as unavailable without disabling the whole calendar. Unavailable cells expose `data-unavailable` and cannot be selected, but they're still visible (unlike dates outside `minValue`/`maxValue`, which are simply disabled).
+
+:::preview
+
+<UnavailableDatesExample />
+
+---
+
+```tsx {1-3}
+function isDateUnavailable(date: DateValue) {
+	return date.getDate() % 7 === 0;
+}
+
+<Calendar selectionMode="single" isDateUnavailable={isDateUnavailable}>
+	{/* ...anatomy... */}
+</Calendar>;
+```
+
+:::
+
+In `"range"` mode, combine this with `allowsNonContiguousRanges` to control whether a selected range is allowed to skip over unavailable dates (defaults to requiring a contiguous, fully-available range).
+
+## API Reference
+
+### Calendar
+
+`Calendar` is equivalent to the `Root` import from `@kobalte/core/calendar`.
+
+Its props are a discriminated union keyed by the required `selectionMode` prop.
+
+#### Common props
+
+| Prop                      | Description                                                                                                                                                                    |
+| :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| translations              | `CalendarIntlTranslations` <br/> The localized strings of the component.                                                                                                       |
+| locale                    | `string` <br/> The locale to display and edit the value according to. Defaults to the ambient Kobalte i18n locale.                                                            |
+| visibleDuration           | `DateDuration` <br/> The amount of days/months/years visible at once. Affects pagination. **Default:** `{ months: 1 }`                                                        |
+| selectionAlignment        | `"start" \| "center" \| "end"` <br/> How to align the initial selection relative to the visible date range.                                                                    |
+| minValue                  | `DateValue` <br/> The minimum allowed date that a user may select.                                                                                                             |
+| maxValue                  | `DateValue` <br/> The maximum allowed date that a user may select.                                                                                                             |
+| isDateUnavailable         | `(date: DateValue) => boolean` <br/> Called for each date; returning `true` marks it unavailable.                                                                              |
+| allowsNonContiguousRanges | `boolean` <br/> In `"range"` mode, combined with `isDateUnavailable`, whether a range may contain unavailable dates.                                                          |
+| autoFocus                 | `boolean` <br/> Whether to automatically focus the calendar when it mounts.                                                                                                    |
+| focusedValue              | `DateValue` <br/> Controls the currently focused date.                                                                                                                         |
+| defaultFocusedValue       | `DateValue` <br/> The date focused when the calendar first mounts.                                                                                                             |
+| onFocusChange             | `(date: DateValue) => void` <br/> Called when the focused date changes.                                                                                                        |
+| validationState           | `"valid" \| "invalid"` <br/> Whether the current selection is valid or invalid according to application logic.                                                                |
+| disabled                  | `boolean` <br/> Whether the calendar is disabled.                                                                                                                              |
+| readOnly                  | `boolean` <br/> Whether the calendar value is read only.                                                                                                                       |
+
+#### `selectionMode="single"`
+
+| Prop         | Description                                                                                     |
+| :----------- | :------------------------------------------------------------------------------------------------ |
+| selectionMode | `"single"` <br/> _(required)_                                                                    |
+| value        | `DateValue \| null` <br/> The controlled selected date.                                          |
+| defaultValue | `DateValue \| null` <br/> The date selected when initially rendered (uncontrolled).               |
+| onChange     | `(value: DateValue) => void` <br/> Called when the selected date changes.                        |
+
+#### `selectionMode="multiple"`
+
+| Prop         | Description                                                                                     |
+| :----------- | :------------------------------------------------------------------------------------------------ |
+| selectionMode | `"multiple"` <br/> _(required)_                                                                  |
+| value        | `DateValue[] \| null` <br/> The controlled selected dates.                                       |
+| defaultValue | `DateValue[] \| null` <br/> The dates selected when initially rendered (uncontrolled).            |
+| onChange     | `(value: DateValue[]) => void` <br/> Called when the selected dates change.                      |
+
+#### `selectionMode="range"`
+
+| Prop         | Description                                                                                        |
+| :----------- | :-------------------------------------------------------------------------------------------------- |
+| selectionMode | `"range"` <br/> _(required)_                                                                       |
+| value        | `RangeValue<DateValue> \| null` <br/> The controlled selected date range (`{ start, end }`).       |
+| defaultValue | `RangeValue<DateValue> \| null` <br/> The range selected when initially rendered (uncontrolled).    |
+| onChange     | `(value: RangeValue<DateValue>) => void` <br/> Called when the selected date range changes.        |
+
+| Data attribute | Description                                    |
+| :------------- | :---------------------------------------------- |
+| data-disabled  | Present when the calendar is disabled.          |
+| data-readonly  | Present when the calendar value is read only.   |
+
+`Calendar` is the root of a picker widget rather than a form field, so it has no `data-valid`/`data-invalid`/`data-required` — `validationState` is instead surfaced on individual `Calendar.GridBodyCellTrigger` elements (see below).
+
+### Calendar.Header
+
+No additional props. Contains the heading and navigation triggers.
+
+### Calendar.Heading
+
+No additional props. Displays a formatted label of the current visible range (e.g. `"January 2024"`), derived from the calendar's locale and translations.
+
+### Calendar.PrevTrigger / Calendar.NextTrigger
+
+Both extend [`Button.Root`](/docs/core/components/button)'s props/behavior and are automatically disabled — moving focus to the calendar body — when navigating further would go past `minValue` / `maxValue`.
+
+| Prop     | Description                             |
+| :------- | :--------------------------------------- |
+| disabled | `boolean` <br/> Whether the trigger is disabled, in addition to the automatic min/max-based disabling. |
+
+### Calendar.Body
+
+No additional props. Contains one or more `Calendar.Grid`s.
+
+### Calendar.Grid
+
+| Prop          | Description                                                                                                             |
+| :------------ | :------------------------------------------------------------------------------------------------------------------------ |
+| offset        | `DateDuration` <br/> An offset from the beginning of the visible range this grid should display. Useful when rendering more than one month at a time. |
+| weekDayFormat | `"narrow" \| "short" \| "long"` <br/> The format of weekday names in `Calendar.GridHeader`. **Default:** `"short"`      |
+
+| Data attribute        | Description                                          |
+| :--------------------- | :---------------------------------------------------- |
+| `role="grid"`          | ARIA role.                                            |
+| aria-readonly          | `"true"` when the calendar is read only.              |
+| aria-disabled          | `"true"` when the calendar is disabled.               |
+| aria-multiselectable   | `"true"` unless `selectionMode` is `"single"`.        |
+
+### Calendar.GridHeader
+
+No additional props. Renders as `<thead aria-hidden="true">` — weekday names are decorative; the accessible label comes from each cell's own `aria-label`.
+
+### Calendar.GridHeaderRow
+
+| Prop     | Description                                                                                                        |
+| :------- | :------------------------------------------------------------------------------------------------------------------ |
+| children | `(weekDay: Accessor<string>) => JSX.Element` <br/> Render prop called once per weekday, receiving its localized name. |
+
+### Calendar.GridHeaderCell
+
+No additional props. Renders a single weekday name cell (`<th>`).
+
+### Calendar.GridBody
+
+| Prop     | Description                                                                                       |
+| :------- | :--------------------------------------------------------------------------------------------------- |
+| children | `(weekIndex: Accessor<number>) => JSX.Element` <br/> Render prop called once per week row in the month. |
+
+### Calendar.GridBodyRow
+
+| Prop      | Description                                                                                                          |
+| :-------- | :--------------------------------------------------------------------------------------------------------------------- |
+| weekIndex | `number` <br/> The index of the week to render.                                                                       |
+| children  | `(date: Accessor<DateValue \| null>) => JSX.Element` <br/> Render prop called once per day in the week. The date accessor type still allows `null`, kept for backward compatibility, but never returns it in practice. |
+
+### Calendar.GridBodyCell
+
+| Prop     | Description                                                                                                             |
+| :------- | :---------------------------------------------------------------------------------------------------------------------- |
+| date     | `DateValue` <br/> _(required)_ The date this cell represents.                                                          |
+| disabled | `boolean` <br/> Whether the cell is disabled, in addition to the automatic `minValue`/`maxValue`/`disabled`-based disabling. |
+
+| Data attribute | Description                                          |
+| :-------------- | :---------------------------------------------------- |
+| `role="gridcell"` | ARIA role.                                          |
+| aria-disabled    | `"true"` when the cell isn't selectable.             |
+| aria-selected    | `"true"` when the cell's date is selected.           |
+| aria-invalid     | `"true"` when the cell's date is selected and invalid. |
+| aria-current     | `"date"` when the cell's date is today.              |
+| data-value       | The ISO 8601 string of the cell's date.              |
+
+### Calendar.GridBodyCellTrigger
+
+The interactive element inside a `Calendar.GridBodyCell`; selects its date on click or on <kbd>Enter</kbd>/<kbd>Space</kbd>.
+
+| Prop     | Description                                                                        |
+| :------- | :----------------------------------------------------------------------------------- |
+| disabled | `boolean` <br/> Whether the cell trigger is disabled, in addition to the cell's own disabled state. |
+
+| Data attribute             | Description                                                                 |
+| :--------------------------- | :----------------------------------------------------------------------------- |
+| data-disabled                | Present when the cell is disabled.                                          |
+| data-invalid                  | Present when the cell's date is selected and invalid.                      |
+| data-selected                 | Present when the cell's date is selected (or inside the highlighted range in `"range"` mode). |
+| data-value                    | The ISO 8601 string of the cell's date.                                    |
+| data-type                     | Always `"day"`.                                                             |
+| data-today                    | Present when the cell's date is today.                                     |
+| data-weekend                  | Present when the cell's date falls on a weekend (locale-aware).            |
+| data-highlighted              | Present when the cell's date is the currently focused date.                |
+| data-unavailable              | Present when the cell's date was marked unavailable by `isDateUnavailable`. |
+| data-selection-start          | In `"range"` mode, present on the cell that starts the selected/highlighted range. |
+| data-selection-end            | In `"range"` mode, present on the cell that ends the selected/highlighted range. |
+| data-outside-visible-range    | Present when the cell's date falls outside the grid's visible date range.  |
+| data-outside-month            | Present when the cell's date falls outside the grid's current month.       |
+
+## Rendered elements
+
+| Component                       | Default rendered element |
+| :------------------------------- | :------------------------ |
+| `Calendar`                       | `div`                     |
+| `Calendar.Header`                | `header`                  |
+| `Calendar.Heading`               | `h2`                      |
+| `Calendar.PrevTrigger`           | `button`                  |
+| `Calendar.NextTrigger`           | `button`                  |
+| `Calendar.Body`                  | `div`                     |
+| `Calendar.Grid`                  | `table`                   |
+| `Calendar.GridHeader`            | `thead`                   |
+| `Calendar.GridHeaderRow`         | `tr`                      |
+| `Calendar.GridHeaderCell`        | `th`                      |
+| `Calendar.GridBody`              | `tbody`                   |
+| `Calendar.GridBodyRow`           | `tr`                      |
+| `Calendar.GridBodyCell`          | `td`                      |
+| `Calendar.GridBodyCellTrigger`   | `div`                     |
+
+## Accessibility
+
+### Keyboard Interactions
+
+Keyboard interactions are handled by `Calendar.Grid`, which must be focused (e.g. via the currently highlighted cell) for the following to apply.
+
+| Key                                          | Description                                                                                     |
+| :-------------------------------------------- | :------------------------------------------------------------------------------------------------ |
+| <kbd>Enter</kbd> / <kbd>Space</kbd>           | Selects the focused date.                                                                        |
+| <kbd>ArrowLeft</kbd> / <kbd>ArrowRight</kbd>  | Moves focus to the previous/next day (flipped in RTL locales).                                   |
+| <kbd>ArrowUp</kbd> / <kbd>ArrowDown</kbd>     | Moves focus to the same day in the previous/next week.                                           |
+| <kbd>PageUp</kbd> / <kbd>PageDown</kbd>       | Moves focus to the same day in the previous/next month.                                          |
+| <kbd>Shift</kbd> + <kbd>PageUp</kbd> / <kbd>PageDown</kbd> | Moves focus to the same day in the previous/next year.                              |
+| <kbd>Home</kbd>                               | Moves focus to the first day of the current month.                                               |
+| <kbd>End</kbd>                                | Moves focus to the last day of the current month.                                                |
+| <kbd>Escape</kbd>                             | In `"range"` mode, cancels an in-progress range selection (clears the anchor date).               |
+
+> Range selection's click-only interaction model — first click sets the start, second click commits the end — is adapted from [corvu/calendar](https://github.com/corvudev/corvu/tree/main/packages/calendar) by Jasmin Noetzli (MIT).

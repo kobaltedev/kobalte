@@ -42,3 +42,4 @@ packages/core/NOTICE.txt
 Thumbs.db
 .vercel
 /storybook-static
+*.tgz
