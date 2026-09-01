@@ -7,6 +7,7 @@ import {
 	Root,
 	Title,
 } from "../index";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Card",
@@ -15,28 +16,25 @@ const meta = preview.meta({
 
 export default meta;
 
-const cardClass =
-	"rounded-xl border border-slate-200 bg-white shadow-sm font-sans w-72";
-
 /** A basic card with a header (title + description) and content. */
 export const Default = meta.story({
 	name: "Default",
 	render: () => (
-		<Root class={`${cardClass} p-4`}>
-			<Header class="mb-3">
-				<Title class="text-sm font-semibold text-slate-800">Security</Title>
-				<Description class="text-xs text-slate-500">
+		<Root class={`${style.panel} ${style.panelNarrow}`}>
+			<Header class={style.header}>
+				<Title class={style.title}>Security</Title>
+				<Description class={style.description}>
 					Security insights and blocked logins
 				</Description>
 			</Header>
-			<Content class="flex gap-6">
+			<Content class={style.statsRow}>
 				<div>
-					<div class="text-xs text-slate-500">Security insights</div>
-					<div class="text-2xl font-semibold text-slate-900">40</div>
+					<div class={style.description}>Security insights</div>
+					<div class={style.statValue}>40</div>
 				</div>
 				<div>
-					<div class="text-xs text-slate-500">Logins blocked</div>
-					<div class="text-2xl font-semibold text-slate-900">0</div>
+					<div class={style.description}>Logins blocked</div>
+					<div class={style.statValue}>0</div>
 				</div>
 			</Content>
 		</Root>
@@ -51,24 +49,18 @@ export const Default = meta.story({
 export const WithHeaderAction = meta.story({
 	name: "With Header Action",
 	render: () => (
-		<Root class={`${cardClass} p-4`}>
-			<Header class="grid grid-cols-[1fr_auto] items-start gap-2 mb-3">
+		<Root class={`${style.panel} ${style.panelNarrow}`}>
+			<Header class={style.headerGrid}>
 				<div>
-					<Title class="text-sm font-semibold text-slate-800">
-						Workers and Pages
-					</Title>
+					<Title class={style.title}>Workers and Pages</Title>
 				</div>
 				<HeaderAction>
-					<button
-						type="button"
-						class="flex h-6 w-6 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100"
-						aria-label="Add"
-					>
+					<button type="button" class={style.iconButton} aria-label="Add">
 						+
 					</button>
 				</HeaderAction>
 			</Header>
-			<Content class="text-sm text-slate-600">8 deployed services</Content>
+			<Content class={style.bodyText}>8 deployed services</Content>
 		</Root>
 	),
 });
@@ -82,13 +74,11 @@ export const WithHeaderAction = meta.story({
 export const Region = meta.story({
 	name: "Region",
 	render: () => (
-		<Root role="region" class={`${cardClass} p-4`}>
-			<Header class="mb-3">
-				<Title class="text-sm font-semibold text-slate-800">
-					Zero Trust security
-				</Title>
+		<Root role="region" class={`${style.panel} ${style.panelNarrow}`}>
+			<Header class={style.header}>
+				<Title class={style.title}>Zero Trust security</Title>
 			</Header>
-			<Content class="text-sm text-slate-600">
+			<Content class={style.bodyText}>
 				This card is announced as a landmark region named "Zero Trust security"
 				to screen reader users.
 			</Content>
@@ -112,23 +102,21 @@ const rows = [
 export const ListContent = meta.story({
 	name: "List Content",
 	render: () => (
-		<Root class={`${cardClass} p-4`}>
-			<Header class="mb-2">
-				<Title class="text-sm font-semibold text-slate-800">Domains</Title>
+		<Root class={`${style.panel} ${style.panelNarrow}`}>
+			<Header class={style.headerCompact}>
+				<Title class={style.title}>Domains</Title>
 			</Header>
 			<Content>
-				<ul class="m-0 list-none p-0">
+				<ul class={style.list}>
 					{rows.map((row, i) => (
 						<li
-							class={`flex items-center justify-between gap-3 py-2 text-sm ${
-								i > 0 ? "border-t border-slate-100" : ""
-							}`}
+							class={`${style.listRow} ${i > 0 ? style.listRowBordered : ""}`}
 						>
-							<span class="flex items-center gap-2 text-slate-700">
+							<span class={style.listRowLabel}>
 								<span aria-hidden="true">{row.icon}</span>
 								{row.label}
 							</span>
-							<span class="text-slate-400">{row.meta}</span>
+							<span class={style.listRowMeta}>{row.meta}</span>
 						</li>
 					))}
 				</ul>
@@ -147,40 +135,36 @@ export const ListContent = meta.story({
 export const DashboardGrid = meta.story({
 	name: "Dashboard Grid",
 	render: () => (
-		<div class="grid grid-cols-3 grid-rows-2 gap-4 font-sans w-184">
-			<Root class="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
-				<Header class="mb-2">
-					<Title class="text-sm font-semibold text-slate-800">Security</Title>
+		<div class={style.dashboardGrid}>
+			<Root class={style.panel}>
+				<Header class={style.headerCompact}>
+					<Title class={style.title}>Security</Title>
 				</Header>
-				<Content class="text-2xl font-semibold text-slate-900">40</Content>
+				<Content class={style.statValue}>40</Content>
 			</Root>
-			<Root class="rounded-xl border border-slate-200 bg-white shadow-sm p-4">
-				<Header class="mb-2">
-					<Title class="text-sm font-semibold text-slate-800">
-						Performance
-					</Title>
+			<Root class={style.panel}>
+				<Header class={style.headerCompact}>
+					<Title class={style.title}>Performance</Title>
 				</Header>
-				<Content class="text-2xl font-semibold text-slate-900">16.2%</Content>
+				<Content class={style.statValue}>16.2%</Content>
 			</Root>
-			<Root class="row-span-2 rounded-xl border border-slate-200 bg-white shadow-sm p-4">
-				<Header class="mb-2">
-					<Title class="text-sm font-semibold text-slate-800">
-						Zero Trust security
-					</Title>
+			<Root class={`${style.panel} ${style.tallCard}`}>
+				<Header class={style.headerCompact}>
+					<Title class={style.title}>Zero Trust security</Title>
 				</Header>
 				<Content>
-					<ul class="m-0 list-none p-0 text-sm text-slate-600">
-						<li class="py-1">Used / total seats — 0/50</li>
-						<li class="py-1">Access controls — 0</li>
-						<li class="py-1">DNS policies — 0</li>
+					<ul class={`${style.list} ${style.bodyText}`}>
+						<li class={style.simpleListItem}>Used / total seats — 0/50</li>
+						<li class={style.simpleListItem}>Access controls — 0</li>
+						<li class={style.simpleListItem}>DNS policies — 0</li>
 					</ul>
 				</Content>
 			</Root>
-			<Root class="col-span-2 rounded-xl border border-slate-200 bg-white shadow-sm p-4">
-				<Header class="mb-2">
-					<Title class="text-sm font-semibold text-slate-800">Audit logs</Title>
+			<Root class={`${style.panel} ${style.wideCard}`}>
+				<Header class={style.headerCompact}>
+					<Title class={style.title}>Audit logs</Title>
 				</Header>
-				<Content class="text-sm text-slate-600">
+				<Content class={style.bodyText}>
 					Update project · Delete deployment · Delete deployment
 				</Content>
 			</Root>

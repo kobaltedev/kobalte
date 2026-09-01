@@ -1,4 +1,3 @@
-import { Preview, TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	LiveUpdatingExample,
@@ -46,54 +45,21 @@ The statistic consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Statistic } from "@kobalte/core/statistic";
-    import "./style.css";
+<BasicExample />
 
-    function App() {
-      return (
-        <Statistic>
-          <Statistic.Label class="label">Web traffic</Statistic.Label>
-          <Statistic.Value
-            class="value"
-            value={255650}
-            formatOptions={{ notation: "compact" }}
-          />
-        </Statistic>
-      );
-    }
-    ```
+---
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .label {
-      display: block;
-      font-size: 12px;
-      color: hsl(240 4% 46%);
-    }
+```tsx title="index.tsx" tab file="../../../../examples/statistic.tsx#L6-L17"
 
-    .value {
-      display: block;
-      font-size: 28px;
-      font-weight: 600;
-    }
-    ```
+```
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+```css title="style.css" tab file="../../../../examples/statistic.module.css"
+
+```
+
+:::
 
 ## Usage
 
@@ -102,35 +68,29 @@ The statistic consists of:
 `Statistic.Description` adds supplementary text (e.g. a breakdown), wired
 to `Statistic.Root` via `aria-describedby`.
 
-<Preview>
-	<WithDescriptionExample />
-</Preview>
+:::preview
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Statistic } from "@kobalte/core/statistic";
+<WithDescriptionExample />
 
-    function App() {
-      return (
-        <Statistic>
-          <Statistic.Label class="label">Security insights</Statistic.Label>
-          <Statistic.Value class="value" value={40} />
-          <Statistic.Description class="description">
-            12 high, 28 low
-          </Statistic.Description>
-        </Statistic>
-      );
-    }
-    ```
+---
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+```tsx
+import { Statistic } from "@kobalte/core/statistic";
+
+function App() {
+	return (
+		<Statistic>
+			<Statistic.Label class="label">Security insights</Statistic.Label>
+			<Statistic.Value class="value" value={40} />
+			<Statistic.Description class="description">
+				12 high, 28 low
+			</Statistic.Description>
+		</Statistic>
+	);
+}
+```
+
+:::
 
 ### With trend
 
@@ -139,55 +99,46 @@ glyph, an icon, colored text — Kobalte has no opinion), marks it
 `aria-hidden`, and separately generates its own accessible sentence from
 the signed `value` prop.
 
-<Preview>
-	<WithTrendExample />
-</Preview>
+:::preview
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Statistic } from "@kobalte/core/statistic";
-    import "./style.css";
+<WithTrendExample />
 
-    function App() {
-      return (
-        <Statistic>
-          <Statistic.Label class="label">Cache rate</Statistic.Label>
-          <Statistic.Value
-            class="value"
-            value={0.162}
-            formatOptions={{ style: "percent", maximumFractionDigits: 1 }}
-          />
-          <Statistic.Trend
-            value={-0.025}
-            formatOptions={{ style: "percent", maximumFractionDigits: 1 }}
-            class="trend--decrease"
-          >
-            ▼ 2.5%
-          </Statistic.Trend>
-        </Statistic>
-      );
-    }
-    ```
+---
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .trend--decrease {
-      margin-left: 8px;
-      color: hsl(0 72% 51%);
-      font-weight: 500;
-    }
-    ```
+```tsx title="index.tsx" tab
+import { Statistic } from "@kobalte/core/statistic";
+import "./style.css";
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+function App() {
+	return (
+		<Statistic>
+			<Statistic.Label class="label">Cache rate</Statistic.Label>
+			<Statistic.Value
+				class="value"
+				value={0.162}
+				formatOptions={{ style: "percent", maximumFractionDigits: 1 }}
+			/>
+			<Statistic.Trend
+				value={-0.025}
+				formatOptions={{ style: "percent", maximumFractionDigits: 1 }}
+				class="trend--decrease"
+			>
+				▼ 2.5%
+			</Statistic.Trend>
+		</Statistic>
+	);
+}
+```
+
+```css title="style.css" tab
+.trend--decrease {
+	margin-left: 8px;
+	color: hsl(0 72% 51%);
+	font-weight: 500;
+}
+```
+
+:::
 
 ### Live updating value
 
@@ -196,9 +147,11 @@ the signed `value` prop.
 focus, which matters for dashboards where metrics refresh in the
 background.
 
-<Preview>
-	<LiveUpdatingExample />
-</Preview>
+:::preview
+
+<LiveUpdatingExample />
+
+:::
 
 ## API Reference
 

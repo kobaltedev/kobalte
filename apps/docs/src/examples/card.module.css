@@ -108,19 +108,19 @@
 	grid-column: span 2;
 }
 
-[data-kb-theme="dark"] .card {
+[data-theme*="dark"] .card {
 	background-color: hsl(240 6% 10%);
 	border-color: hsl(240 5% 20%);
 }
 
-[data-kb-theme="dark"] .card__title {
+[data-theme*="dark"] .card__title {
 	color: hsl(240 5% 96%);
 }
 
-[data-kb-theme="dark"] .card__stat {
+[data-theme*="dark"] .card__stat {
 	color: hsl(240 5% 96%);
 }
 
-[data-kb-theme="dark"] .list__item {
+[data-theme*="dark"] .list__item {
 	border-top-color: hsl(240 5% 20%);
 }

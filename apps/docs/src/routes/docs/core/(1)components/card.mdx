@@ -1,4 +1,3 @@
-import { Preview, TabsSnippets } from "../../../../components";
 import {
 	BasicExample,
 	DashboardGridExample,
@@ -58,63 +57,21 @@ The card consists of:
 
 ## Example
 
-<Preview>
-	<BasicExample />
-</Preview>
+:::preview
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Card } from "@kobalte/core/card";
-    import "./style.css";
+<BasicExample />
 
-    function App() {
-      return (
-        <Card class="card">
-          <Card.Header>
-            <Card.Title class="card__title">Security</Card.Title>
-            <Card.Description class="card__description">
-              Security insights and blocked logins
-            </Card.Description>
-          </Card.Header>
-          <Card.Content class="card__content">
-            <p>Security insights: 40 (12 high, 28 low)</p>
-            <p>Logins blocked: 0</p>
-          </Card.Content>
-        </Card>
-      );
-    }
-    ```
+---
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .card {
-      border-radius: 12px;
-      border: 1px solid hsl(240 5% 90%);
-      padding: 16px;
-    }
+```tsx title="index.tsx" tab file="../../../../examples/card.tsx#L5-L20"
 
-    .card__title {
-      display: block;
-      font-weight: 600;
-    }
+```
 
-    .card__description {
-      display: block;
-      font-size: 12px;
-      color: hsl(240 4% 46%);
-    }
-    ```
+```css title="style.css" tab file="../../../../examples/card.module.css"
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+```
+
+:::
 
 ## Usage
 
@@ -124,63 +81,54 @@ The card consists of:
 (title/description on the left, action on the right) is a plain CSS grid
 recipe applied to `Card.Header`, not something `Card` renders for you.
 
-<Preview>
-	<WithHeaderActionExample />
-</Preview>
+:::preview
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Card } from "@kobalte/core/card";
-    import "./style.css";
+<WithHeaderActionExample />
 
-    function App() {
-      return (
-        <Card class="card">
-          <Card.Header class="card__header">
-            <Card.Title class="card__title">Workers and Pages</Card.Title>
-            <Card.HeaderAction>
-              <button type="button" class="icon-button" aria-label="Add">
-                +
-              </button>
-            </Card.HeaderAction>
-          </Card.Header>
-          <Card.Content>8 deployed services</Card.Content>
-        </Card>
-      );
-    }
-    ```
+---
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .card__header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: start;
-      gap: 8px;
-    }
+```tsx title="index.tsx" tab
+import { Card } from "@kobalte/core/card";
+import "./style.css";
 
-    .icon-button {
-      display: flex;
-      height: 24px;
-      width: 24px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 6px;
-      border: none;
-      background: transparent;
-    }
-    ```
+function App() {
+	return (
+		<Card class="card">
+			<Card.Header class="card__header">
+				<Card.Title class="card__title">Workers and Pages</Card.Title>
+				<Card.HeaderAction>
+					<button type="button" class="icon-button" aria-label="Add">
+						+
+					</button>
+				</Card.HeaderAction>
+			</Card.Header>
+			<Card.Content>8 deployed services</Card.Content>
+		</Card>
+	);
+}
+```
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+```css title="style.css" tab
+.card__header {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	align-items: start;
+	gap: 8px;
+}
+
+.icon-button {
+	display: flex;
+	height: 24px;
+	width: 24px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	border: none;
+	background: transparent;
+}
+```
+
+:::
 
 ### List content
 
@@ -191,78 +139,69 @@ ARIA roles meant for selectable widgets, which is the wrong semantics for a
 read-only list of rows; native list semantics are already correct here for
 free.
 
-<Preview>
-	<ListContentExample />
-</Preview>
+:::preview
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Card } from "@kobalte/core/card";
-    import "./style.css";
+<ListContentExample />
 
-    const domains = [
-      { name: "solidjs.com", visits: "140K" },
-      { name: "solid-movies.app", visits: "39K" },
-    ];
+---
 
-    function App() {
-      return (
-        <Card class="card">
-          <Card.Header>
-            <Card.Title class="card__title">Domains</Card.Title>
-          </Card.Header>
-          <Card.Content>
-            <ul class="list">
-              {domains.map((domain) => (
-                <li class="list__item">
-                  <span>{domain.name}</span>
-                  <span class="list__meta">{domain.visits}</span>
-                </li>
-              ))}
-            </ul>
-          </Card.Content>
-        </Card>
-      );
-    }
-    ```
+```tsx title="index.tsx" tab
+import { Card } from "@kobalte/core/card";
+import "./style.css";
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
+const domains = [
+	{ name: "solidjs.com", visits: "140K" },
+	{ name: "solid-movies.app", visits: "39K" },
+];
 
-    .list__item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 8px 0;
-      border-top: 1px solid hsl(240 5% 94%);
-    }
+function App() {
+	return (
+		<Card class="card">
+			<Card.Header>
+				<Card.Title class="card__title">Domains</Card.Title>
+			</Card.Header>
+			<Card.Content>
+				<ul class="list">
+					{domains.map((domain) => (
+						<li class="list__item">
+							<span>{domain.name}</span>
+							<span class="list__meta">{domain.visits}</span>
+						</li>
+					))}
+				</ul>
+			</Card.Content>
+		</Card>
+	);
+}
+```
 
-    .list__item:first-child {
-      border-top: none;
-      padding-top: 0;
-    }
+```css title="style.css" tab
+.list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
 
-    .list__meta {
-      color: hsl(240 4% 60%);
-    }
-    ```
+.list__item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 8px 0;
+	border-top: 1px solid hsl(240 5% 94%);
+}
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+.list__item:first-child {
+	border-top: none;
+	padding-top: 0;
+}
+
+.list__meta {
+	color: hsl(240 4% 60%);
+}
+```
+
+:::
 
 ### Grid layout
 
@@ -272,75 +211,66 @@ is always left to your own CSS. The "bento grid" look (narrow cards on top,
 a taller card spanning two rows, wide cards on the bottom) below is a plain
 CSS grid recipe using `grid-column`/`grid-row` spans.
 
-<Preview>
-	<DashboardGridExample />
-</Preview>
+:::preview
 
-<TabsSnippets>
-  <TabsSnippets.List>
-    <TabsSnippets.Trigger value="index.tsx">index.tsx</TabsSnippets.Trigger>
-    <TabsSnippets.Trigger value="style.css">style.css</TabsSnippets.Trigger>
-  </TabsSnippets.List>
-  {/* <!-- prettier-ignore-start -->*/}
-  <TabsSnippets.Content value="index.tsx">
-    ```tsx
-    import { Card } from "@kobalte/core/card";
-    import "./style.css";
+<DashboardGridExample />
 
-    function App() {
-      return (
-        <div class="grid">
-          <Card class="card">
-            <Card.Header>
-              <Card.Title class="card__title">Security</Card.Title>
-            </Card.Header>
-            <Card.Content class="card__stat">40</Card.Content>
-          </Card>
-          <Card class="card">
-            <Card.Header>
-              <Card.Title class="card__title">Performance</Card.Title>
-            </Card.Header>
-            <Card.Content class="card__stat">16.2%</Card.Content>
-          </Card>
-          <Card class="card grid__tall-card">
-            <Card.Header>
-              <Card.Title class="card__title">Zero Trust security</Card.Title>
-            </Card.Header>
-            <Card.Content>...</Card.Content>
-          </Card>
-          <Card class="card grid__wide-card">
-            <Card.Header>
-              <Card.Title class="card__title">Audit logs</Card.Title>
-            </Card.Header>
-            <Card.Content>...</Card.Content>
-          </Card>
-        </div>
-      );
-    }
-    ```
+---
 
-  </TabsSnippets.Content>
-  <TabsSnippets.Content value="style.css">
-    ```css
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(2, auto);
-      gap: 16px;
-    }
+```tsx title="index.tsx" tab
+import { Card } from "@kobalte/core/card";
+import "./style.css";
 
-    .grid__tall-card {
-      grid-row: span 2;
-    }
+function App() {
+	return (
+		<div class="grid">
+			<Card class="card">
+				<Card.Header>
+					<Card.Title class="card__title">Security</Card.Title>
+				</Card.Header>
+				<Card.Content class="card__stat">40</Card.Content>
+			</Card>
+			<Card class="card">
+				<Card.Header>
+					<Card.Title class="card__title">Performance</Card.Title>
+				</Card.Header>
+				<Card.Content class="card__stat">16.2%</Card.Content>
+			</Card>
+			<Card class="card grid__tall-card">
+				<Card.Header>
+					<Card.Title class="card__title">Zero Trust security</Card.Title>
+				</Card.Header>
+				<Card.Content>...</Card.Content>
+			</Card>
+			<Card class="card grid__wide-card">
+				<Card.Header>
+					<Card.Title class="card__title">Audit logs</Card.Title>
+				</Card.Header>
+				<Card.Content>...</Card.Content>
+			</Card>
+		</div>
+	);
+}
+```
 
-    .grid__wide-card {
-      grid-column: span 2;
-    }
-    ```
+```css title="style.css" tab
+.grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(2, auto);
+	gap: 16px;
+}
 
-  </TabsSnippets.Content>
-  {/* <!-- prettier-ignore-end -->*/}
-</TabsSnippets>
+.grid__tall-card {
+	grid-row: span 2;
+}
+
+.grid__wide-card {
+	grid-column: span 2;
+}
+```
+
+:::
 
 ## API Reference
 
