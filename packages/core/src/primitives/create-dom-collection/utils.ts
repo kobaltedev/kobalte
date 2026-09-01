@@ -123,7 +123,10 @@ function createTimeoutObserver<T extends DomCollectionItem = DomCollectionItem>(
 		() => {},
 		() => {
 			const timeout = setTimeout(() => {
-				setItemsBasedOnDOMPosition(untrack(() => items()), setItems);
+				setItemsBasedOnDOMPosition(
+					untrack(() => items()),
+					setItems,
+				);
 			});
 			return () => clearTimeout(timeout);
 		},
@@ -153,7 +156,10 @@ export function createSortBasedOnDOMPosition<
 					return;
 				}
 
-				setItemsBasedOnDOMPosition(untrack(() => items()), setItems);
+				setItemsBasedOnDOMPosition(
+					untrack(() => items()),
+					setItems,
+				);
 			};
 
 			const root = getCommonParent(currentItems);
