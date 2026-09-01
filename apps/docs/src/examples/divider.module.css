@@ -13,7 +13,7 @@
 	height: 16px;
 }
 
-[data-kb-theme="dark"] .divider {
+[data-theme*="dark"] .divider {
 	background-color: hsl(240 5% 26%);
 }
 
@@ -39,7 +39,7 @@
 	margin-left: 12px;
 }
 
-[data-kb-theme="dark"] .divider-with-text::before,
-[data-kb-theme="dark"] .divider-with-text::after {
+[data-theme*="dark"] .divider-with-text::before,
+[data-theme*="dark"] .divider-with-text::after {
 	border-top-color: hsl(240 5% 26%);
 }

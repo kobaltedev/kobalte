@@ -1,5 +1,6 @@
 import preview from "../../../../../.storybook/preview.js";
 import { Root } from "../index";
+import style from "./stories.module.css";
 
 const meta = preview.meta({
 	title: "Components/Divider",
@@ -12,9 +13,9 @@ export default meta;
 export const Horizontal = meta.story({
 	name: "Horizontal",
 	render: () => (
-		<div class="flex flex-col gap-3 font-sans text-sm text-slate-700 w-64">
+		<div class={style.wrapper}>
 			<p>Above the line</p>
-			<Root class="border-t border-slate-200" />
+			<Root class={style.horizontalDivider} />
 			<p>Below the line</p>
 		</div>
 	),
@@ -24,17 +25,11 @@ export const Horizontal = meta.story({
 export const Vertical = meta.story({
 	name: "Vertical",
 	render: () => (
-		<div class="flex items-center h-4 gap-3 font-sans text-sm text-slate-700">
+		<div class={style.verticalWrapper}>
 			<span>Home</span>
-			<Root
-				orientation="vertical"
-				class="self-stretch border-l border-slate-300"
-			/>
+			<Root orientation="vertical" class={style.verticalDivider} />
 			<span>About</span>
-			<Root
-				orientation="vertical"
-				class="self-stretch border-l border-slate-300"
-			/>
+			<Root orientation="vertical" class={style.verticalDivider} />
 			<span>Contact</span>
 		</div>
 	),
@@ -48,11 +43,9 @@ export const Vertical = meta.story({
 export const WithText = meta.story({
 	name: "With Text",
 	render: () => (
-		<div class="flex flex-col gap-3 font-sans text-sm text-slate-700 w-64">
+		<div class={style.wrapper}>
 			<p>Sign in with your email</p>
-			<Root class="flex items-center text-xs text-slate-400 before:content-[''] before:flex-1 before:border-t before:border-slate-200 before:mr-3 after:content-[''] after:flex-1 after:border-t after:border-slate-200 after:ml-3">
-				OR
-			</Root>
+			<Root class={style.withTextRoot}>OR</Root>
 			<p>Continue as guest</p>
 		</div>
 	),
@@ -62,15 +55,12 @@ export const WithText = meta.story({
 export const WithIcon = meta.story({
 	name: "With Icon",
 	render: () => (
-		<div class="flex items-center h-16 gap-0 font-sans text-sm text-slate-700">
-			<div class="w-24 text-center">Panel A</div>
-			<Root
-				orientation="vertical"
-				class="flex flex-col items-center self-stretch text-slate-400 before:content-[''] before:flex-1 before:border-l before:border-slate-300 before:mb-2 after:content-[''] after:flex-1 after:border-l after:border-slate-300 after:mt-2"
-			>
+		<div class={style.iconWrapper}>
+			<div class={style.panel}>Panel A</div>
+			<Root orientation="vertical" class={style.iconDivider}>
 				＋
 			</Root>
-			<div class="w-24 text-center">Panel B</div>
+			<div class={style.panel}>Panel B</div>
 		</div>
 	),
 });
@@ -83,15 +73,12 @@ export const WithIcon = meta.story({
 export const Inset = meta.story({
 	name: "Inset",
 	render: () => (
-		<ul class="flex flex-col w-64 font-sans text-sm text-slate-700 p-0 m-0 list-none">
-			<li class="px-4 py-2">Profile</li>
-			<Root
-				class="border-t border-slate-200 data-[inset=context]:ml-4"
-				inset="context"
-			/>
-			<li class="px-4 py-2">Settings</li>
-			<Root class="border-t border-slate-200" />
-			<li class="px-4 py-2">Log out</li>
+		<ul class={style.insetList}>
+			<li class={style.insetItem}>Profile</li>
+			<Root class={style.insetDivider} inset="context" />
+			<li class={style.insetItem}>Settings</li>
+			<Root class={style.insetDivider} />
+			<li class={style.insetItem}>Log out</li>
 		</ul>
 	),
 });
@@ -100,9 +87,9 @@ export const Inset = meta.story({
 export const AsHr = meta.story({
 	name: "As Hr",
 	render: () => (
-		<div class="flex flex-col gap-3 font-sans text-sm text-slate-700 w-64">
+		<div class={style.wrapper}>
 			<p>Section A</p>
-			<Root as="hr" class="border-t border-slate-200 m-0" />
+			<Root as="hr" class={style.hrDivider} />
 			<p>Section B</p>
 		</div>
 	),
