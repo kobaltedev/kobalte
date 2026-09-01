@@ -1,0 +1,368 @@
+import {
+	BasicExample,
+	DefaultValueExample,
+	ControlledValueExample,
+	GranularityExample,
+	MinMaxExample,
+	PlaceholderValueExample,
+	HourCycleExample,
+	DescriptionExample,
+	ErrorMessageExample,
+	HTMLFormExample,
+} from "../../../../examples/date-field";
+
+# Date Field
+
+A date field allows users to enter and edit date values using a keyboard. Each part of a date value is displayed in an individually editable segment.
+
+## Import
+
+```ts
+import { DateField } from "@kobalte/core/date-field";
+// or
+import { Root, Label, Input, Segment, Description, ErrorMessage, HiddenInput } from "@kobalte/core/date-field";
+```
+
+## Features
+
+- Values are native JS `Date` objects — no external date library required.
+- Dates can optionally include a time, down to the minute or second, via the `granularity` prop.
+- Support for locale-specific formatting, number systems, hour cycles, and right-to-left layout.
+- Each date/time unit is displayed as an individually focusable and editable segment, which allows users an easy way to edit dates using the keyboard, in any format and locale.
+- Segments are editable using an easy to use numeric keypad, and all interactions are accessible using touch-based screen readers.
+- Can be controlled or uncontrolled.
+- Integrates with HTML forms via a hidden native input serialized as a local (non-UTC) ISO 8601-style string.
+
+## Anatomy
+
+The date field consists of:
+
+- **DateField**: The root container for the date field.
+- **DateField.Label**: The label that gives the user information on the date field.
+- **DateField.Input**: The container for the segments.
+- **DateField.Segment**: The component that represents a unit of a date/time (year, month, day, hour, etc.).
+- **DateField.Description**: The description that gives the user more information on the date field.
+- **DateField.ErrorMessage**: The error message that gives the user information about how to fix a validation error on the date field.
+- **DateField.HiddenInput**: The native html input that is visually hidden in the date field, used for HTML form submission.
+
+```tsx
+<DateField>
+	<DateField.Label />
+	<DateField.Input>
+		{segment => <DateField.Segment segment={segment()} />}
+	</DateField.Input>
+	<DateField.Description />
+	<DateField.ErrorMessage />
+	<DateField.HiddenInput />
+</DateField>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/date-field.tsx#L5-L21"
+
+```
+
+```css title="style.css" tab file="../../../../examples/date-field.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Default value
+
+A DateField displays a placeholder by default. An initial, uncontrolled value can be provided to the DateField using the `defaultValue` prop.
+
+Date values are native JS `Date` objects.
+
+:::preview
+
+<DefaultValueExample />
+
+---
+
+```tsx {0}
+<DateField defaultValue={new Date(2024, 0, 15)}>
+	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
+</DateField>
+```
+
+:::
+
+### Controlled value
+
+The `value` prop can be used to make the value controlled. The `onChange` event is fired when the date value changes.
+
+:::preview
+
+<ControlledValueExample />
+
+---
+
+```tsx {4,13}
+import { createSignal, Show } from "solid-js";
+
+function ControlledValueExample() {
+	const [value, setValue] = createSignal(new Date(2024, 0, 15));
+
+	return (
+		<>
+			<DateField value={value()} onChange={setValue}>
+				<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
+			</DateField>
+			<p>
+				Selected date:{" "}
+				<Show when={value()} fallback={"--"}>
+					{value().toLocaleDateString()}
+				</Show>
+			</p>
+		</>
+	);
+}
+```
+
+:::
+
+### Granularity
+
+The `granularity` prop allows you to control the smallest unit that is displayed by a DateField. By default, dates are displayed with `"day"` granularity (no time). More granular values can be displayed by setting `granularity` to `"hour"`, `"minute"`, or `"second"`.
+
+:::preview
+
+<GranularityExample />
+
+---
+
+```tsx {0}
+<DateField granularity="second">
+	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
+</DateField>
+```
+
+:::
+
+### Minimum and maximum values
+
+The `minValue` and `maxValue` props can be used to perform builtin validation. This marks the date field as invalid using ARIA if the user enters a date outside the allowed range.
+
+:::preview
+
+<MinMaxExample />
+
+---
+
+```tsx {0}
+<DateField
+	defaultValue={new Date(2024, 5, 15)}
+	minValue={new Date(2024, 0, 1)}
+	maxValue={new Date(2024, 11, 31)}
+>
+	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
+	<DateField.ErrorMessage>Select a date in 2024.</DateField.ErrorMessage>
+</DateField>
+```
+
+:::
+
+### Placeholder value
+
+A `placeholderValue` can be provided to influence the format of the placeholder shown when no value is selected, and acts as the starting point for interactions.
+
+:::preview
+
+<PlaceholderValueExample />
+
+---
+
+```tsx {0}
+<DateField placeholderValue={new Date(2030, 0, 1)}>
+	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
+</DateField>
+```
+
+:::
+
+### Hour cycle
+
+By default, DateField displays times in either 12 or 24-hour format depending on the user's locale. This can be overridden using the `hourCycle` prop.
+
+:::preview
+
+<HourCycleExample />
+
+---
+
+```tsx {0}
+<DateField granularity="minute" hourCycle={12}>
+	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
+</DateField>
+```
+
+:::
+
+### Description
+
+The `DateField.Description` component can be used to associate additional help text with a date field.
+
+:::preview
+
+<DescriptionExample />
+
+---
+
+```tsx {4}
+<DateField>
+	<DateField.Label>Date</DateField.Label>
+	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
+	<DateField.Description>Select a meeting date.</DateField.Description>
+</DateField>
+```
+
+:::
+
+### Error message
+
+The `DateField.ErrorMessage` component can be used to help the user fix a validation error. It should be combined with the `validationState` prop to semantically mark the date field as invalid for assistive technologies.
+
+By default, it will render only when the `validationState` prop is set to `invalid`, use the `forceMount` prop to always render the error message (ex: for usage with animation libraries).
+
+:::preview
+
+<ErrorMessageExample />
+
+---
+
+```tsx {10,14}
+import { createSignal } from "solid-js";
+
+function ErrorMessageExample() {
+	const [value, setValue] = createSignal(undefined);
+
+	return (
+		<DateField
+			value={value()}
+			onChange={setValue}
+			validationState={value() === undefined ? "invalid" : "valid"}
+		>
+			<DateField.Label>Date</DateField.Label>
+			<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
+			<DateField.ErrorMessage>Please select a date.</DateField.ErrorMessage>
+		</DateField>
+	);
+}
+```
+
+:::
+
+### HTML forms
+
+Add a `name` prop to `DateField` and render `DateField.HiddenInput` to include the value in form submissions. The hidden input's value is the date serialized as a local ISO 8601-style string (`YYYY-MM-DD`, `YYYY-MM-DDTHH:mm`, or `YYYY-MM-DDTHH:mm:ss`, depending on `granularity`) — it deliberately omits a `Z`/UTC offset, since there's no explicit time zone to make that claim about.
+
+:::preview
+
+<HTMLFormExample />
+
+---
+
+```tsx {0,5}
+<DateField name="date">
+	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
+	<DateField.HiddenInput />
+</DateField>
+```
+
+:::
+
+## API Reference
+
+### DateField
+
+`DateField` is equivalent to the `Root` import from `@kobalte/core/date-field`.
+
+| Prop                    | Description                                                                                                                                                                                                            |
+| :---------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value                   | `DateValue` (a native `Date` object) <br/> The current value (controlled).                                                                                                                                           |
+| defaultValue            | `DateValue` <br/> The default value (uncontrolled).                                                                                                                                                                  |
+| onChange                | `(value: DateValue) => void` <br/> Handler that is called when the value changes.                                                                                                                                    |
+| placeholderValue        | `DateValue` <br/> A placeholder date that influences the format of the placeholder shown when no value is selected. Defaults to today's date at midnight.                                                           |
+| minValue                | `DateValue` <br/> The minimum allowed date that a user may select.                                                                                                                                                   |
+| maxValue                | `DateValue` <br/> The maximum allowed date that a user may select.                                                                                                                                                   |
+| hourCycle               | `12 \| 24` <br/> Whether to display the time in 12 or 24-hour format. By default, this is determined by the user's locale.                                                                                          |
+| granularity             | `'day' \| 'hour' \| 'minute' \| 'second'` <br/> Determines the smallest unit that is displayed in the date field. Defaults to `"day"`.                                                                               |
+| maxGranularity          | `'year' \| 'month' \| 'day' \| 'hour' \| 'minute' \| 'second'` <br/> Determines the largest unit that is displayed in the date field. Defaults to `"year"`.                                                          |
+| shouldForceLeadingZeros | `boolean` <br/> Whether to always show leading zeros in the day/month/hour fields. By default, this is determined by the user's locale.                                                                             |
+| id                      | `string` <br/> A unique identifier for the component. Used to generate ids for nested components. Auto-generated if not provided.                                                                                   |
+| name                    | `string` <br/> The name of the date field. Submitted with its owning form as part of a name/value pair.                                                                                                             |
+| validationState         | `'valid' \| 'invalid'` <br/> Whether the date field should display its "valid" or "invalid" visual styling.                                                                                                          |
+| required                | `boolean` <br/> Whether the date field is required.                                                                                                                                                                  |
+| disabled                | `boolean` <br/> Whether the date field is disabled.                                                                                                                                                                  |
+| readOnly                | `boolean` <br/> Whether the date field is read only.                                                                                                                                                                 |
+| translations            | `DateFieldIntlTranslations` <br/> The localized strings of the component.                                                                                                                                            |
+
+| Data attribute | Description                                                               |
+| :-------------- | :------------------------------------------------------------------------ |
+| data-valid      | Present when the date field is valid according to the validation rules.   |
+| data-invalid    | Present when the date field is invalid according to the validation rules. |
+| data-required   | Present when the date field is required.                                  |
+| data-disabled   | Present when the date field is disabled.                                  |
+| data-readonly   | Present when the date field is read only.                                 |
+
+`DateField.Label`, `DateField.Input`, `DateField.Segment`, `DateField.Description` and `DateField.ErrorMessage` share the same data-attributes.
+
+### DateField.Segment
+
+`DateField.Segment` represents an individually focusable and editable unit of the date/time value (year, month, day, hour, minute, second, day period, or a literal separator).
+
+| Prop    | Description                                          |
+| :------ | :---------------------------------------------------- |
+| segment | `DateSegment` <br/> A segment of the date field, obtained from the render-prop child of `DateField.Input`. |
+
+| Data attribute   | Description                                        |
+| :--------------- | :-------------------------------------------------- |
+| data-separator   | Present when the segment is a literal separator.    |
+| data-type        | The segment's type (e.g. `year`, `month`, `day`, `hour`, `dayPeriod`, `literal`). Always present. |
+| data-placeholder | Present when the segment's value is a placeholder.  |
+
+### DateField.ErrorMessage
+
+| Prop       | Description                                                                                                                             |
+| :--------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| forceMount | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+## Rendered elements
+
+| Component                | Default rendered element |
+| :------------------------ | :----------------------- |
+| `DateField`                | `div`                    |
+| `DateField.Label`          | `span`                   |
+| `DateField.Input`          | `div`                    |
+| `DateField.Segment`        | `div`                    |
+| `DateField.Description`    | `div`                    |
+| `DateField.ErrorMessage`   | `div`                    |
+| `DateField.HiddenInput`    | `input`                  |
+
+## Accessibility
+
+### Keyboard Interactions
+
+| Key                   | Description                                                                                                                                                                                                                                                                          |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <kbd>Backspace</kbd>  | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                        |
+| <kbd>Delete</kbd>     | Deletes the value in the current segment and moves focus to the previous segment when empty.                                                                                                                                                                                        |
+| <kbd>ArrowRight</kbd> | Moves focus to the next segment.                                                                                                                                                                                                                                                     |
+| <kbd>ArrowLeft</kbd>  | Moves focus to the previous segment.                                                                                                                                                                                                                                                 |
+| <kbd>ArrowUp</kbd>    | Increments the value of the current segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                              |
+| <kbd>ArrowDown</kbd>  | Decrements the value of the current segment. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit.                                                                                                                                              |
+| <kbd>PageUp</kbd>     | Increments the value of the current segment by a larger amount, rounding it to the nearest increment. The amount to increment by depends on the segment, for example 5 years, 2 months, 7 days, or 15 minutes. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
+| <kbd>PageDown</kbd>   | Decrements the value of the current segment by a larger amount, rounding it to the nearest decrement. The amount to decrement by depends on the segment, for example 5 years, 2 months, 7 days, or 15 minutes. Upon reaching the minimum or maximum value, the value wraps around to the opposite limit. |
+| <kbd>Home</kbd>       | Sets the current segment to its minimum value.                                                                                                                                                                                                                                       |
+| <kbd>End</kbd>        | Sets the current segment to its maximum value.                                                                                                                                                                                                                                       |
+| <kbd>0-9</kbd>        | Numeric segments (year, month, day, hour, minute, second) are typed directly. Focus automatically advances to the next segment once the segment is filled. The dayPeriod segment supports typeahead of its formatted name (e.g. "A" for AM).                                        |
