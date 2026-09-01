@@ -1,0 +1,199 @@
+import {
+	BasicExample,
+	LiveUpdatingExample,
+	WithDescriptionExample,
+	WithTrendExample,
+} from "../../../../examples/statistic";
+
+# Statistic
+
+Displays a labeled numeric value, such as a KPI or dashboard metric.
+
+## Import
+
+```ts
+import { Statistic } from "@kobalte/core/statistic";
+// or
+import { Root, Label, Value, Description, Trend } from "@kobalte/core/statistic";
+```
+
+## Features
+
+- Auto-wires `aria-labelledby`/`aria-describedby` from `Statistic.Label`/`Statistic.Description` onto `Statistic.Root`.
+- `Statistic.Value` formats its `value` for the current locale via `Intl.NumberFormat`, or accepts pre-formatted children directly for units `Intl.NumberFormat` can't express.
+- `Statistic.Value` is a `polite` live region, so value changes (e.g. a real-time metric refreshing) are announced to screen reader users without moving focus.
+- `Statistic.Trend` generates its own accessible sentence (e.g. "increased by 2.5%") from a signed `value` — the meaning never depends on an arrow's color or shape alone.
+
+## Anatomy
+
+The statistic consists of:
+
+- **Statistic:** Contains all the parts of a statistic.
+- **Statistic.Label:** An accessible label describing the statistic.
+- **Statistic.Value:** The statistic's value.
+- **Statistic.Description:** Optional supplementary text (e.g. a breakdown).
+- **Statistic.Trend:** Indicates the direction and magnitude of change.
+
+```tsx
+<Statistic>
+	<Statistic.Label />
+	<Statistic.Value />
+	<Statistic.Description />
+	<Statistic.Trend />
+</Statistic>
+```
+
+## Example
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/statistic.tsx#L6-L17"
+
+```
+
+```css title="style.css" tab file="../../../../examples/statistic.module.css"
+
+```
+
+:::
+
+## Usage
+
+### With description
+
+`Statistic.Description` adds supplementary text (e.g. a breakdown), wired
+to `Statistic.Root` via `aria-describedby`.
+
+:::preview
+
+<WithDescriptionExample />
+
+---
+
+```tsx
+import { Statistic } from "@kobalte/core/statistic";
+
+function App() {
+	return (
+		<Statistic>
+			<Statistic.Label class="label">Security insights</Statistic.Label>
+			<Statistic.Value class="value" value={40} />
+			<Statistic.Description class="description">
+				12 high, 28 low
+			</Statistic.Description>
+		</Statistic>
+	);
+}
+```
+
+:::
+
+### With trend
+
+`Statistic.Trend` renders whatever visual you pass as `children` (an arrow
+glyph, an icon, colored text — Kobalte has no opinion), marks it
+`aria-hidden`, and separately generates its own accessible sentence from
+the signed `value` prop.
+
+:::preview
+
+<WithTrendExample />
+
+---
+
+```tsx title="index.tsx" tab
+import { Statistic } from "@kobalte/core/statistic";
+import "./style.css";
+
+function App() {
+	return (
+		<Statistic>
+			<Statistic.Label class="label">Cache rate</Statistic.Label>
+			<Statistic.Value
+				class="value"
+				value={0.162}
+				formatOptions={{ style: "percent", maximumFractionDigits: 1 }}
+			/>
+			<Statistic.Trend
+				value={-0.025}
+				formatOptions={{ style: "percent", maximumFractionDigits: 1 }}
+				class="trend--decrease"
+			>
+				▼ 2.5%
+			</Statistic.Trend>
+		</Statistic>
+	);
+}
+```
+
+```css title="style.css" tab
+.trend--decrease {
+	margin-left: 8px;
+	color: hsl(0 72% 51%);
+	font-weight: 500;
+}
+```
+
+:::
+
+### Live updating value
+
+`Statistic.Value` renders `aria-live="polite" aria-atomic="true"` — when
+`value` changes, screen readers announce the new value without moving
+focus, which matters for dashboards where metrics refresh in the
+background.
+
+:::preview
+
+<LiveUpdatingExample />
+
+:::
+
+## API Reference
+
+### Statistic
+
+`Statistic` is equivalent to the `Root` import from `@kobalte/core/statistic`.
+
+| Prop | Description                                                                                                                                                                   |
+| :--- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| id   | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used. |
+
+### Statistic.Value
+
+| Prop          | Description                                                                                                      |
+| :------------ | :--------------------------------------------------------------------------------------------------------------- |
+| value         | `number` <br/> The numeric value to display, formatted for the current locale.                                   |
+| formatOptions | `Intl.NumberFormatOptions` <br/> Options for formatting `value`. Defaults to `{}`.                               |
+| children      | `JSX.Element` <br/> Pass a pre-formatted value directly instead — takes precedence over `value`/`formatOptions`. |
+
+`Statistic.Value`'s `id` is wired to `Statistic`'s `aria-labelledby` when used in place of `Statistic.Label`.
+
+### Statistic.Trend
+
+| Prop          | Description                                                                                                                                                                   |
+| :------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| value         | `number` <br/> The signed change represented by the trend, e.g. `0.025` for a 2.5% increase or `-0.025` for a 2.5% decrease. Drives `data-direction` and the accessible text. |
+| formatOptions | `Intl.NumberFormatOptions` <br/> Options for formatting the absolute value of `value`. Defaults to `{ style: "percent" }`.                                                    |
+| translations  | [`StatisticIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/statistic/statistic.intl.ts) <br/> Localization strings.                      |
+| children      | `JSX.Element` <br/> The visual representation of the trend (e.g. an arrow + formatted value). Rendered with `aria-hidden="true"`.                                             |
+
+| Data attribute            | Description                       |
+| :------------------------ | :-------------------------------- |
+| data-direction='increase' | Present when `value` is positive. |
+| data-direction='decrease' | Present when `value` is negative. |
+| data-direction='noChange' | Present when `value` is `0`.      |
+
+## Rendered elements
+
+| Component               | Default rendered element |
+| :---------------------- | :----------------------- |
+| `Statistic`             | `div`                    |
+| `Statistic.Label`       | `span`                   |
+| `Statistic.Value`       | `div`                    |
+| `Statistic.Description` | `span`                   |
+| `Statistic.Trend`       | `div`                    |
