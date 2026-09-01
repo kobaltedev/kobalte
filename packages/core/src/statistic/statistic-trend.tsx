@@ -32,7 +32,7 @@ export interface StatisticTrendOptions {
 }
 
 export interface StatisticTrendCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {}
 
 export interface StatisticTrendRenderProps extends StatisticTrendCommonProps {

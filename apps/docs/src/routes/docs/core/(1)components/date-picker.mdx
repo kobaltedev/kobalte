@@ -141,7 +141,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 ```tsx
 <DatePicker selectionMode="single" defaultValue={new Date(2024, 5, 15)}>
 	...
-</DatePicker>;
+</DatePicker>
 ```
 
 ### Controlled value
@@ -328,59 +328,59 @@ Since `DatePicker.Content` is Kobalte's `Popover.Content` under the hood, the sa
 
 `DatePicker` is equivalent to the `Root` import from `@kobalte/core/date-picker`.
 
-| Prop                      | Description                                                                                                                                                                                                                                                    |
-| :------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| selectionMode             | `'single' \| 'multiple' \| 'range'` <br/> The type of selection that is allowed. Determines the shape of `value`/`defaultValue`/`onChange`. **Default:** `'single'`                                                                                          |
-| value                     | `DateValue \| DateValue[] \| RangeValue<DateValue> \| null` <br/> The controlled value of the date picker, shaped according to `selectionMode`.                                                                                                              |
-| defaultValue              | Same as `value` <br/> The value when initially rendered. Useful when you do not need to control the value.                                                                                                                                                   |
-| onChange                  | `(value) => void` <br/> Event handler called when the value changes.                                                                                                                                                                                          |
-| translations              | [`DatePickerIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/date-picker/date-picker.intl.ts) <br/> Localization strings.                                                                                                |
-| locale                    | `string` <br/> The locale to display and select the date(s) according to. Defaults to the current i18n locale.                                                                                                                                               |
-| visibleDuration           | `DateDuration` <br/> The amount of days/weeks/months displayed at once in the calendar. Affects how pagination works. **Default:** `{ months: 1 }`                                                                                                          |
-| minValue                  | `DateValue` <br/> The minimum allowed date that a user may select.                                                                                                                                                                                           |
-| maxValue                  | `DateValue` <br/> The maximum allowed date that a user may select.                                                                                                                                                                                           |
-| isDateUnavailable         | `(date: DateValue) => boolean` <br/> Callback called for each date of the calendar. If it returns `true`, the date is unavailable.                                                                                                                           |
-| allowsNonContiguousRanges | `boolean` <br/> In `"range"` selection mode, when combined with `isDateUnavailable`, whether non-contiguous ranges (ranges containing unavailable dates) may be selected.                                                                                    |
-| closeOnSelect             | `boolean` <br/> Whether the date picker should close automatically when a selection is made. **Default:** `true` for `"single"` and `"range"`, `false` for `"multiple"`.                                                                                     |
-| placeholderValue          | `DateValue` <br/> A placeholder date used to center the calendar when no value is selected yet. Defaults to today.                                                                                                                                           |
-| open                      | `boolean` <br/> The controlled open state of the date picker's popover.                                                                                                                                                                                       |
-| defaultOpen               | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                                                                                                       |
-| onOpenChange              | `(open: boolean) => void` <br/> Event handler called when the open state of the date picker changes.                                                                                                                                                          |
+| Prop                      | Description                                                                                                                                                                                                                                                                                                                                           |
+| :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| selectionMode             | `'single' \| 'multiple' \| 'range'` <br/> The type of selection that is allowed. Determines the shape of `value`/`defaultValue`/`onChange`. **Default:** `'single'`                                                                                                                                                                                   |
+| value                     | `DateValue \| DateValue[] \| RangeValue<DateValue> \| null` <br/> The controlled value of the date picker, shaped according to `selectionMode`.                                                                                                                                                                                                       |
+| defaultValue              | Same as `value` <br/> The value when initially rendered. Useful when you do not need to control the value.                                                                                                                                                                                                                                            |
+| onChange                  | `(value) => void` <br/> Event handler called when the value changes.                                                                                                                                                                                                                                                                                  |
+| translations              | [`DatePickerIntlTranslations`](https://github.com/kobaltedev/kobalte/blob/main/packages/core/src/date-picker/date-picker.intl.ts) <br/> Localization strings.                                                                                                                                                                                         |
+| locale                    | `string` <br/> The locale to display and select the date(s) according to. Defaults to the current i18n locale.                                                                                                                                                                                                                                        |
+| visibleDuration           | `DateDuration` <br/> The amount of days/weeks/months displayed at once in the calendar. Affects how pagination works. **Default:** `{ months: 1 }`                                                                                                                                                                                                    |
+| minValue                  | `DateValue` <br/> The minimum allowed date that a user may select.                                                                                                                                                                                                                                                                                    |
+| maxValue                  | `DateValue` <br/> The maximum allowed date that a user may select.                                                                                                                                                                                                                                                                                    |
+| isDateUnavailable         | `(date: DateValue) => boolean` <br/> Callback called for each date of the calendar. If it returns `true`, the date is unavailable.                                                                                                                                                                                                                    |
+| allowsNonContiguousRanges | `boolean` <br/> In `"range"` selection mode, when combined with `isDateUnavailable`, whether non-contiguous ranges (ranges containing unavailable dates) may be selected.                                                                                                                                                                             |
+| closeOnSelect             | `boolean` <br/> Whether the date picker should close automatically when a selection is made. **Default:** `true` for `"single"` and `"range"`, `false` for `"multiple"`.                                                                                                                                                                              |
+| placeholderValue          | `DateValue` <br/> A placeholder date used to center the calendar when no value is selected yet. Defaults to today.                                                                                                                                                                                                                                    |
+| open                      | `boolean` <br/> The controlled open state of the date picker's popover.                                                                                                                                                                                                                                                                               |
+| defaultOpen               | `boolean` <br/> The default open state when initially rendered. Useful when you do not need to control the open state.                                                                                                                                                                                                                                |
+| onOpenChange              | `(open: boolean) => void` <br/> Event handler called when the open state of the date picker changes.                                                                                                                                                                                                                                                  |
 | modal                     | `boolean` <br/> Whether the date picker's popover should be the only visible content for screen readers, when set to `true`: <br/> - interaction with outside elements will be disabled. <br/> - scroll will be locked. <br/> - focus will be locked inside the content. <br/> - elements outside the content will not be visible for screen readers. |
-| preventScroll             | `boolean` <br/> Whether the scroll should be locked even if the date picker is not modal.                                                                                                                                                                     |
-| forceMount                | `boolean` <br/> Used to force mounting the date picker (portal, positioner and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                     |
-| id                        | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used.                                                                                |
-| name                      | `string` <br/> The name of the date picker. Submitted with its owning form as part of a name/value pair via a hidden native `<input>`.                                                                                                                        |
-| validationState           | `'valid' \| 'invalid'` <br/> Whether the date picker should display its "valid" or "invalid" visual styling.                                                                                                                                                  |
-| required                  | `boolean` <br/> Whether the user must select a date before the owning form can be submitted.                                                                                                                                                                  |
-| disabled                  | `boolean` <br/> Whether the date picker is disabled.                                                                                                                                                                                                          |
-| readOnly                  | `boolean` <br/> Whether the date picker's calendar can be viewed but not changed by the user.                                                                                                                                                                 |
+| preventScroll             | `boolean` <br/> Whether the scroll should be locked even if the date picker is not modal.                                                                                                                                                                                                                                                             |
+| forceMount                | `boolean` <br/> Used to force mounting the date picker (portal, positioner and content) when more control is needed. Useful when controlling animation with SolidJS animation libraries.                                                                                                                                                              |
+| id                        | `string` <br/> A unique identifier for the component. The id is used to generate id attributes for nested components. If no id prop is provided, a generated id will be used.                                                                                                                                                                         |
+| name                      | `string` <br/> The name of the date picker. Submitted with its owning form as part of a name/value pair via a hidden native `<input>`.                                                                                                                                                                                                                |
+| validationState           | `'valid' \| 'invalid'` <br/> Whether the date picker should display its "valid" or "invalid" visual styling.                                                                                                                                                                                                                                          |
+| required                  | `boolean` <br/> Whether the user must select a date before the owning form can be submitted.                                                                                                                                                                                                                                                          |
+| disabled                  | `boolean` <br/> Whether the date picker is disabled.                                                                                                                                                                                                                                                                                                  |
+| readOnly                  | `boolean` <br/> Whether the date picker's calendar can be viewed but not changed by the user.                                                                                                                                                                                                                                                         |
 
 `DatePicker` also accepts the following props to customize the placement of the `DatePicker.Content`, forwarded to its internal [Popover](/docs/core/components/popover).
 
-| Prop             | Description                                                                                                                                                                                                                                                                                                                                                     |
-| :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| getAnchorRect    | `(anchor?: HTMLElement) => AnchorRect \| undefined` <br/> Function that returns the anchor element's DOMRect.                                                                                                                                                                                                                                                    |
-| placement        | `Placement` <br/> The placement of the date picker content. **Default:** `"bottom-start"`                                                                                                                                                                                                                                                                       |
-| gutter           | `number` <br/> The distance between the content and the trigger element. **Default:** `8`                                                                                                                                                                                                                                                                       |
-| shift            | `number` <br/> The skidding of the content along the trigger element.                                                                                                                                                                                                                                                                                            |
-| flip             | `boolean \| string` <br/> Controls the behavior of the content when it overflows the viewport: <br/> - If a `boolean`, specifies whether the content should flip to the opposite side when it overflows.<br/> - If a `string`, indicates the preferred fallback placements when it overflows. The placements must be spaced-delimited, e.g. "top left".        |
-| slide            | `boolean` <br/> Whether the content should slide when it overflows.                                                                                                                                                                                                                                                                                              |
-| overlap          | `boolean` <br/> Whether the content can overlap the trigger element when it overflows.                                                                                                                                                                                                                                                                           |
-| sameWidth        | `boolean` <br/> Whether the content should have the same width as the trigger element. This will be exposed to CSS as `--kb-popper-anchor-width`. **Default:** `false`                                                                                                                                                                                          |
-| fitViewport      | `boolean` <br/> Whether the content should fit the viewport. If set to `true`, the content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.                                                                                                      |
-| hideWhenDetached | `boolean` <br/> Whether to hide the content when the trigger element becomes occluded.                                                                                                                                                                                                                                                                           |
-| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                            |
-| arrowPadding     | `number` <br/> The minimum padding between the arrow and the content corner.                                                                                                                                                                                                                                                                                     |
-| overflowPadding  | `number` <br/> The minimum padding between the content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                    |
+| Prop             | Description                                                                                                                                                                                                                                                                                                                                             |
+| :--------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| getAnchorRect    | `(anchor?: HTMLElement) => AnchorRect \| undefined` <br/> Function that returns the anchor element's DOMRect.                                                                                                                                                                                                                                           |
+| placement        | `Placement` <br/> The placement of the date picker content. **Default:** `"bottom-start"`                                                                                                                                                                                                                                                               |
+| gutter           | `number` <br/> The distance between the content and the trigger element. **Default:** `8`                                                                                                                                                                                                                                                               |
+| shift            | `number` <br/> The skidding of the content along the trigger element.                                                                                                                                                                                                                                                                                   |
+| flip             | `boolean \| string` <br/> Controls the behavior of the content when it overflows the viewport: <br/> - If a `boolean`, specifies whether the content should flip to the opposite side when it overflows.<br/> - If a `string`, indicates the preferred fallback placements when it overflows. The placements must be spaced-delimited, e.g. "top left". |
+| slide            | `boolean` <br/> Whether the content should slide when it overflows.                                                                                                                                                                                                                                                                                     |
+| overlap          | `boolean` <br/> Whether the content can overlap the trigger element when it overflows.                                                                                                                                                                                                                                                                  |
+| sameWidth        | `boolean` <br/> Whether the content should have the same width as the trigger element. This will be exposed to CSS as `--kb-popper-anchor-width`. **Default:** `false`                                                                                                                                                                                  |
+| fitViewport      | `boolean` <br/> Whether the content should fit the viewport. If set to `true`, the content will have `maxWidth` and `maxHeight` set to the viewport size. This will be exposed to CSS as `--kb-popper-available-width` and `--kb-popper-available-height`.                                                                                              |
+| hideWhenDetached | `boolean` <br/> Whether to hide the content when the trigger element becomes occluded.                                                                                                                                                                                                                                                                  |
+| detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                   |
+| arrowPadding     | `number` <br/> The minimum padding between the arrow and the content corner.                                                                                                                                                                                                                                                                            |
+| overflowPadding  | `number` <br/> The minimum padding between the content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                            |
 
-| Data attribute | Description                                                                          |
-| :------------- | :------------------------------------------------------------------------------------ |
-| data-valid     | Present when the date picker is valid according to the validation rules.              |
-| data-invalid   | Present when the date picker is invalid according to the validation rules.            |
-| data-required  | Present when the user must select a date before the owning form can be submitted.     |
-| data-disabled  | Present when the date picker is disabled.                                             |
-| data-readonly  | Present when the date picker is read only.                                            |
+| Data attribute | Description                                                                       |
+| :------------- | :-------------------------------------------------------------------------------- |
+| data-valid     | Present when the date picker is valid according to the validation rules.          |
+| data-invalid   | Present when the date picker is invalid according to the validation rules.        |
+| data-required  | Present when the user must select a date before the owning form can be submitted. |
+| data-disabled  | Present when the date picker is disabled.                                         |
+| data-readonly  | Present when the date picker is read only.                                        |
 
 `DatePicker.Label`, `DatePicker.Trigger`, `DatePicker.Value`, `DatePicker.Description` and `DatePicker.ErrorMessage` share the same form-control data-attributes.
 
@@ -388,17 +388,17 @@ Since `DatePicker.Content` is Kobalte's `Popover.Content` under the hood, the sa
 
 `DatePicker.Trigger` consists of [Popover.Trigger](/docs/core/components/popover), itself built on [Button](/docs/core/components/button).
 
-| Data attribute | Description                              |
-| :------------- | :---------------------------------------- |
-| data-expanded  | Present when the date picker is open.     |
-| data-closed    | Present when the date picker is closed.   |
+| Data attribute | Description                             |
+| :------------- | :-------------------------------------- |
+| data-expanded  | Present when the date picker is open.   |
+| data-closed    | Present when the date picker is closed. |
 
 ### DatePicker.Value
 
 Displays the formatted selected value; renders its `children` as placeholder content when nothing is selected yet.
 
-| Data attribute         | Description                                                              |
-| :--------------------- | :------------------------------------------------------------------------ |
+| Data attribute         | Description                                                                |
+| :--------------------- | :------------------------------------------------------------------------- |
 | data-placeholder-shown | Present when the date picker's placeholder is visible (no value selected). |
 
 ### DatePicker.Portal
@@ -409,8 +409,8 @@ Portals `DatePicker.Content` into the `body` when the date picker is open. Consi
 
 Consists of [Popover.Content](/docs/core/components/popover). The popper positioner will copy the same `z-index` as `DatePicker.Content`.
 
-| Prop                 | Description                                                                                                                                                                                                          |
-| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Prop                 | Description                                                                                                                                                                                                         |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | onOpenAutoFocus      | `(event: Event) => void` <br/> Event handler called when focus moves into the component after opening. It can be prevented by calling `event.preventDefault`.                                                       |
 | onCloseAutoFocus     | `(event: Event) => void` <br/> Event handler called when focus moves to the trigger after closing. It can be prevented by calling `event.preventDefault`.                                                           |
 | onEscapeKeyDown      | `(event: KeyboardEvent) => void` <br/> Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.                                                                     |
@@ -418,17 +418,17 @@ Consists of [Popover.Content](/docs/core/components/popover). The popper positio
 | onFocusOutside       | `(event: FocusOutsideEvent) => void` <br/> Event handler called when the focus moves outside the bounds of the component. It can be prevented by calling `event.preventDefault`.                                    |
 | onInteractOutside    | `(event: InteractOutsideEvent) => void` <br/> Event handler called when an interaction (pointer or focus event) happens outside the bounds of the component. It can be prevented by calling `event.preventDefault`. |
 
-| Data attribute | Description                              |
-| :------------- | :---------------------------------------- |
-| data-expanded  | Present when the date picker is open.     |
-| data-closed    | Present when the date picker is closed.   |
+| Data attribute | Description                             |
+| :------------- | :-------------------------------------- |
+| data-expanded  | Present when the date picker is open.   |
+| data-closed    | Present when the date picker is closed. |
 
 ### DatePicker.Arrow
 
 Consists of [Popover.Arrow](/docs/core/components/popover).
 
 | Prop | Description                           |
-| :--- | :------------------------------------- |
+| :--- | :------------------------------------ |
 | size | `number` <br/> The size of the arrow. |
 
 ### DatePicker.Calendar
@@ -439,30 +439,30 @@ All `DatePicker.Calendar*` sub-parts (`DatePicker.CalendarHeader`, `DatePicker.C
 
 ## Rendered elements
 
-| Component                               | Default rendered element                          |
-| :--------------------------------------- | :-------------------------------------------------- |
-| `DatePicker`                              | `div`                                               |
-| `DatePicker.Label`                        | `label`                                             |
-| `DatePicker.Description`                  | `div`                                               |
-| `DatePicker.ErrorMessage`                 | `div`                                               |
-| `DatePicker.Trigger`                      | `button`                                            |
-| `DatePicker.Value`                        | `span`                                              |
-| `DatePicker.Portal`                       | `Portal`                                            |
-| `DatePicker.Content`                      | `div`                                               |
-| `DatePicker.Arrow`                        | `div`                                               |
-| `DatePicker.Calendar` and sub-parts       | same as the equivalent [Calendar](/docs/core/components/calendar) component |
+| Component                           | Default rendered element                                                    |
+| :---------------------------------- | :-------------------------------------------------------------------------- |
+| `DatePicker`                        | `div`                                                                       |
+| `DatePicker.Label`                  | `label`                                                                     |
+| `DatePicker.Description`            | `div`                                                                       |
+| `DatePicker.ErrorMessage`           | `div`                                                                       |
+| `DatePicker.Trigger`                | `button`                                                                    |
+| `DatePicker.Value`                  | `span`                                                                      |
+| `DatePicker.Portal`                 | `Portal`                                                                    |
+| `DatePicker.Content`                | `div`                                                                       |
+| `DatePicker.Arrow`                  | `div`                                                                       |
+| `DatePicker.Calendar` and sub-parts | same as the equivalent [Calendar](/docs/core/components/calendar) component |
 
 ## Accessibility
 
 ### Keyboard Interactions
 
-| Key                                | Description                                                                     |
-| :---------------------------------- | :-------------------------------------------------------------------------------- |
-| <kbd>Space</kbd>                    | When focus is on the trigger, opens the date picker's calendar popover.          |
-| <kbd>Enter</kbd>                    | When focus is on the trigger, opens the date picker's calendar popover.          |
-| <kbd>Tab</kbd>                      | Moves focus to the next focusable element.                                       |
-| <kbd>Shift</kbd> + <kbd>Tab</kbd>   | Moves focus to the previous focusable element.                                   |
-| <kbd>Esc</kbd>                      | Closes the date picker's calendar popover and moves focus back to the trigger.    |
+| Key                               | Description                                                                    |
+| :-------------------------------- | :----------------------------------------------------------------------------- |
+| <kbd>Space</kbd>                  | When focus is on the trigger, opens the date picker's calendar popover.        |
+| <kbd>Enter</kbd>                  | When focus is on the trigger, opens the date picker's calendar popover.        |
+| <kbd>Tab</kbd>                    | Moves focus to the next focusable element.                                     |
+| <kbd>Shift</kbd> + <kbd>Tab</kbd> | Moves focus to the previous focusable element.                                 |
+| <kbd>Esc</kbd>                    | Closes the date picker's calendar popover and moves focus back to the trigger. |
 
 Once open, keyboard navigation inside the calendar grid (arrow keys to move between dates, <kbd>PageUp</kbd>/<kbd>PageDown</kbd> to change month, <kbd>Enter</kbd>/<kbd>Space</kbd> to select, etc.) is identical to the standalone [Calendar](/docs/core/components/calendar) component — refer to its Keyboard Interactions section for the full table.
 

@@ -8,7 +8,7 @@ import {
 
 export interface CardFooterOptions {}
 
-export interface CardFooterCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface CardFooterCommonProps<_T extends HTMLElement = HTMLElement> {}
 
 export interface CardFooterRenderProps extends CardFooterCommonProps {}
 

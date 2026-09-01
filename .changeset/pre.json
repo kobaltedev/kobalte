@@ -8,5 +8,5 @@
 		"@kobalte/utils": "2.0.0",
 		"@kobalte/vanilla-extract": "0.5.0"
 	},
-	"changesets": ["full-suns-grow"]
+	"changesets": ["five-spies-obey", "full-suns-grow"]
 }

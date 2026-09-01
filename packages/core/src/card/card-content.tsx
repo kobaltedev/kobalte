@@ -8,7 +8,7 @@ import {
 
 export interface CardContentOptions {}
 
-export interface CardContentCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface CardContentCommonProps<_T extends HTMLElement = HTMLElement> {}
 
 export interface CardContentRenderProps extends CardContentCommonProps {}
 

@@ -8,7 +8,7 @@ import {
 
 export interface CardHeaderOptions {}
 
-export interface CardHeaderCommonProps<T extends HTMLElement = HTMLElement> {}
+export interface CardHeaderCommonProps<_T extends HTMLElement = HTMLElement> {}
 
 export interface CardHeaderRenderProps extends CardHeaderCommonProps {}
 

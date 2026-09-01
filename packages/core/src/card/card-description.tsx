@@ -11,7 +11,7 @@ import { useCardContext } from "./card-context";
 export interface CardDescriptionOptions {}
 
 export interface CardDescriptionCommonProps<
-	T extends HTMLElement = HTMLElement,
+	_T extends HTMLElement = HTMLElement,
 > {
 	id: string;
 }
