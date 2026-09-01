@@ -13,7 +13,14 @@
  */
 
 import type { ValidComponent } from "@solidjs/web";
-import { createMemo, createSignal, merge, omit, type Ref } from "solid-js";
+import {
+	createMemo,
+	createSignal,
+	merge,
+	omit,
+	type Ref,
+	untrack,
+} from "solid-js";
 
 import {
 	type ElementOf,
@@ -82,7 +89,7 @@ export function ButtonRoot<T extends ValidComponent = "button">(
 	return (
 		<Polymorphic<ButtonRootRenderProps>
 			as="button"
-			ref={[setRef, mergedProps.ref]}
+			ref={[setRef, untrack(() => mergedProps.ref)]}
 			type={isNativeButton() || isNativeInput() ? mergedProps.type : undefined}
 			role={!isNativeButton() && !isNativeLink() ? "button" : undefined}
 			tabindex={
