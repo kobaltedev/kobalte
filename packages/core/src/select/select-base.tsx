@@ -567,7 +567,9 @@ export function SelectBase<
 		() => flattenOptionKeys(),
 		(keys) => {
 			const selectionManager = untrack(() => listState.selectionManager());
-			const currentSelectedKeys = [...untrack(() => selectionManager.selectedKeys())];
+			const currentSelectedKeys = [
+				...untrack(() => selectionManager.selectedKeys()),
+			];
 
 			const keysToKeep = currentSelectedKeys.filter((key) =>
 				keys.includes(key),

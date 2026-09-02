@@ -69,7 +69,8 @@ export function createDomCollection<
 		return () => {
 			setItems((prevItems) => {
 				const nextItems = prevItems.filter(
-					(prevItem) => untrack(() => prevItem.ref()) !== untrack(() => item.ref()),
+					(prevItem) =>
+						untrack(() => prevItem.ref()) !== untrack(() => item.ref()),
 				);
 
 				if (prevItems.length === nextItems.length) {
