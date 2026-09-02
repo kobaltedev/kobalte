@@ -43,7 +43,11 @@ export function createDomCollection<
 	// Solid 2.0 microtask flush. createControllableArraySignal eagerly resolved
 	// the prev-value, causing each concurrent registerItem call to see the stale
 	// empty array — the last write won and earlier items were lost.
-	const [items, setItems] = createSignal<T[]>([]);
+	// `ownedWrite: true` because `registerItem`'s cleanup (below) unregisters
+	// the item by writing to this signal from inside Solid's disposal phase
+	// when a `<For>`-rendered item is removed — an owned-scope write Solid 2.0
+	// otherwise rejects.
+	const [items, setItems] = createSignal<T[]>([], { ownedWrite: true });
 
 	createSortBasedOnDOMPosition(items, setItems);
 

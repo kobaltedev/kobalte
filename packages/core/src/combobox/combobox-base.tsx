@@ -563,6 +563,11 @@ export function ComboboxBase<
 			.filter((option) => option != null) as Option[];
 	};
 
+	// Set by `removeOptionFromSelection(option, false)` to skip the "focus the
+	// input" side effect below for that one selection change — used when the
+	// caller is managing focus itself (e.g. roving focus between chips).
+	let suppressInputFocusOnSelectionChange = false;
+
 	const listState = createListState({
 		selectedKeys: () => {
 			if (mergedProps.value != null) {
@@ -588,6 +593,14 @@ export function ComboboxBase<
 					close();
 					setTimeout(close);
 				}
+			}
+
+			// A caller removing a selected option while managing focus itself
+			// (e.g. arrow-key navigation between already-selected chips) opts
+			// out of this via `removeOptionFromSelection(option, false)`.
+			if (suppressInputFocusOnSelectionChange) {
+				suppressInputFocusOnSelectionChange = false;
+				return;
 			}
 
 			const inputEl = inputRef();
@@ -617,7 +630,11 @@ export function ComboboxBase<
 		return getOptionsFromValues(listState.selectionManager().selectedKeys());
 	});
 
-	const removeOptionFromSelection = (option: Option) => {
+	const removeOptionFromSelection = (option: Option, focusInput = true) => {
+		if (!focusInput) {
+			suppressInputFocusOnSelectionChange = true;
+		}
+
 		listState.selectionManager().toggleSelection(getOptionValue(option));
 	};
 
