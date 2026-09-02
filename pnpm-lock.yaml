@@ -35,7 +35,7 @@ overrides:
   '@solid-primitives/controlled-signal': 1.0.0-next.3
   '@solid-primitives/event-listener': 3.0.0-next.3
   '@solid-primitives/focus': 1.0.0-next.4
-  '@solid-primitives/form': 1.0.0-next.2
+  '@solid-primitives/form': 1.0.0-next.3
   '@solid-primitives/i18n': 3.0.0-next.4
   '@solid-primitives/interaction': 1.0.0-next.4
   '@solid-primitives/keyboard': 2.0.0-next.5
@@ -51,7 +51,7 @@ overrides:
   '@solid-primitives/scroll': 3.0.0-next.4
   '@solid-primitives/static-store': 1.0.0-next.2
   '@solid-primitives/trigger': 3.0.0-next.2
-  '@solid-primitives/upload': 1.0.0-next.3
+  '@solid-primitives/upload': 1.0.0-next.4
   '@solid-primitives/utils': 7.0.0-next.4
   '@storybook/builder-vite': 10.5.0
 
@@ -211,8 +211,8 @@ importers:
         specifier: 1.0.0-next.4
         version: 1.0.0-next.4(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
       '@solid-primitives/form':
-        specifier: 1.0.0-next.2
-        version: 1.0.0-next.2(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
+        specifier: 1.0.0-next.3
+        version: 1.0.0-next.3(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
       '@solid-primitives/i18n':
         specifier: 3.0.0-next.4
         version: 3.0.0-next.4(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
@@ -241,8 +241,8 @@ importers:
         specifier: 3.0.0-next.4
         version: 3.0.0-next.4(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
       '@solid-primitives/upload':
-        specifier: 1.0.0-next.3
-        version: 1.0.0-next.3(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
+        specifier: 1.0.0-next.4
+        version: 1.0.0-next.4(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
       '@solid-primitives/utils':
         specifier: 7.0.0-next.4
         version: 7.0.0-next.4(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
@@ -1835,6 +1835,12 @@ packages:
     peerDependencies:
       solid-js: ^2.0.0-rc.0
 
+  '@solid-primitives/drag-drop@0.1.0-next.0':
+    resolution: {integrity: sha512-1OOKH+QHItwDmZNdKCqajhuoL8uSmZMPIyCI6qC+qDSafkH0q3NljEvblBQLskcBBZrq6FIbLs6ct1AYUDKbig==}
+    peerDependencies:
+      '@solidjs/web': ^2.0.0-rc.0
+      solid-js: ^2.0.0-rc.0
+
   '@solid-primitives/event-listener@3.0.0-next.3':
     resolution: {integrity: sha512-DU89Vh/z7F1RTvL69RDDOyIoZ0TeYc/Mrdf+pSIGL5WORjL8TxKc91weBRJUrbeA4Co9bHJs+buSd3NPWbxWAg==}
     peerDependencies:
@@ -1847,8 +1853,8 @@ packages:
       '@solidjs/web': ^2.0.0-rc.0
       solid-js: ^2.0.0-rc.0
 
-  '@solid-primitives/form@1.0.0-next.2':
-    resolution: {integrity: sha512-Ivo5cSMYfmlPutbjRsbxgm5ChxQhC/+SYqk21yibiOXFs8PbpMoZB3whNNxg2fSNPu9AqAXHQ78dRVyVq60TYQ==}
+  '@solid-primitives/form@1.0.0-next.3':
+    resolution: {integrity: sha512-EdR9Vqtdge1V3YoxhvqWNYpDf0eVrK9z5qNnm8laYvMp2DnoCy244VwqKxhSbS2+U0AhhKROX8cDJqXmdGCp+A==}
     peerDependencies:
       '@solidjs/web': ^2.0.0-rc.0
       solid-js: ^2.0.0-rc.0
@@ -1954,8 +1960,8 @@ packages:
       '@solidjs/web': ^2.0.0-rc.0
       solid-js: ^2.0.0-rc.0
 
-  '@solid-primitives/upload@1.0.0-next.3':
-    resolution: {integrity: sha512-BgU34rRA5cnf2+MPpjTsajilYBn7477NbqZpl4lej05eYy8taFU7JDuJop+39mIjPUQuwGVybzeMZ/PzwqJI2g==}
+  '@solid-primitives/upload@1.0.0-next.4':
+    resolution: {integrity: sha512-txKL0cGGsEsd/WZqga8xxsKEr0YNTLH4sd71wRtJa0/mJIRn8l/MMuVIzV3R8jBNP68WxFm/jUMf8Aef2Rd4Gw==}
     peerDependencies:
       '@solidjs/web': ^2.0.0-rc.0
       solid-js: ^2.0.0-rc.0
@@ -7392,6 +7398,12 @@ snapshots:
     transitivePeerDependencies:
       - '@solidjs/web'
 
+  '@solid-primitives/drag-drop@0.1.0-next.0(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)':
+    dependencies:
+      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
+      '@solidjs/web': 2.0.0-rc.3(solid-js@2.0.0-rc.3)
+      solid-js: 2.0.0-rc.3
+
   '@solid-primitives/event-listener@3.0.0-next.3(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)':
     dependencies:
       '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
@@ -7405,7 +7417,7 @@ snapshots:
       '@solidjs/web': 2.0.0-rc.3(solid-js@2.0.0-rc.3)
       solid-js: 2.0.0-rc.3
 
-  '@solid-primitives/form@1.0.0-next.2(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)':
+  '@solid-primitives/form@1.0.0-next.3(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)':
     dependencies:
       '@solid-primitives/a11y': 1.0.0-next.3(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
       '@solid-primitives/event-listener': 3.0.0-next.3(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
@@ -7519,9 +7531,9 @@ snapshots:
       '@solidjs/web': 2.0.0-rc.3(solid-js@2.0.0-rc.3)
       solid-js: 2.0.0-rc.3
 
-  '@solid-primitives/upload@1.0.0-next.3(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)':
+  '@solid-primitives/upload@1.0.0-next.4(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)':
     dependencies:
-      '@solid-primitives/event-listener': 3.0.0-next.3(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
+      '@solid-primitives/drag-drop': 0.1.0-next.0(@solidjs/web@2.0.0-rc.3(solid-js@2.0.0-rc.3))(solid-js@2.0.0-rc.3)
       '@solidjs/web': 2.0.0-rc.3(solid-js@2.0.0-rc.3)
       solid-js: 2.0.0-rc.3
 
