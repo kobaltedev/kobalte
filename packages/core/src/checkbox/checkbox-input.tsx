@@ -10,7 +10,14 @@
 import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+	type Ref,
+	untrack,
+} from "solid-js";
 
 import {
 	createFormControlField,
@@ -146,10 +153,10 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 		() => {
 			setIsInternalChangeEvent(true);
 
-			ref()?.dispatchEvent(
+			untrack(ref)?.dispatchEvent(
 				new Event("input", { bubbles: true, cancelable: true }),
 			);
-			ref()?.dispatchEvent(
+			untrack(ref)?.dispatchEvent(
 				new Event("change", { bubbles: true, cancelable: true }),
 			);
 		},

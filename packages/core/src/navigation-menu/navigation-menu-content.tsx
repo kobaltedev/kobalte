@@ -1,6 +1,12 @@
 import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, createSignal, omit } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	createSignal,
+	omit,
+	untrack,
+} from "solid-js";
 
 import {
 	MenuContent,
@@ -79,35 +85,37 @@ export function NavigationMenuContent<T extends ValidComponent = "ul">(
 	createEffect(
 		() => menubarContext.value(),
 		(contextValue) => {
-			// When no menu open (or trigger) reset
-			if (!contextValue || contextValue.includes("link-trigger-")) {
-				context.setPreviousMenu(undefined);
-				return;
-			}
-
-			// When currently active menu set `from-*` motion if there is a previous then upate previous menu
-			if (contextValue === menuRootContext.value()) {
-				if (context.previousMenu() != null) {
-					const menus = [...menubarContext.menus()];
-					const prevIndex = menus.indexOf(context.previousMenu()!);
-					const nextIndex = menus.indexOf(contextValue);
-
-					if (prevIndex < nextIndex) setMotion("from-end");
-					else setMotion("from-start");
-				} else {
-					setMotion(undefined);
+			untrack(() => {
+				// When no menu open (or trigger) reset
+				if (!contextValue || contextValue.includes("link-trigger-")) {
+					context.setPreviousMenu(undefined);
+					return;
 				}
 
-				context.setPreviousMenu(contextValue);
-				return;
-			}
+				// When currently active menu set `from-*` motion if there is a previous then upate previous menu
+				if (contextValue === menuRootContext.value()) {
+					if (context.previousMenu() != null) {
+						const menus = [...menubarContext.menus()];
+						const prevIndex = menus.indexOf(context.previousMenu()!);
+						const nextIndex = menus.indexOf(contextValue);
 
-			const menus = [...menubarContext.menus()];
-			const prevIndex = menus.indexOf(context.previousMenu()!);
-			const nextIndex = menus.indexOf(contextValue);
+						if (prevIndex < nextIndex) setMotion("from-end");
+						else setMotion("from-start");
+					} else {
+						setMotion(undefined);
+					}
 
-			if (prevIndex > nextIndex) setMotion("to-end");
-			else setMotion("to-start");
+					context.setPreviousMenu(contextValue);
+					return;
+				}
+
+				const menus = [...menubarContext.menus()];
+				const prevIndex = menus.indexOf(context.previousMenu()!);
+				const nextIndex = menus.indexOf(contextValue);
+
+				if (prevIndex > nextIndex) setMotion("to-end");
+				else setMotion("to-start");
+			});
 		},
 	);
 

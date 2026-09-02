@@ -17,6 +17,7 @@ import {
 	onSettled,
 	type Ref,
 	Show,
+	untrack,
 } from "solid-js";
 import {
 	type ElementOf,
@@ -95,23 +96,24 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 		 */
 		() => present(),
 		() => {
-			if (!ref()) {
+			const el = untrack(ref);
+			if (!el) {
 				return;
 			}
 
 			// block any animations/transitions so the element renders at its full dimensions
-			ref()!.style.transitionDuration = "0s";
-			ref()!.style.animationName = "none";
+			el.style.transitionDuration = "0s";
+			el.style.animationName = "none";
 
 			// get width and height from full dimensions
-			const rect = ref()!.getBoundingClientRect();
+			const rect = el.getBoundingClientRect();
 			setHeight(rect.height);
 			setWidth(rect.width);
 
 			// kick off any animations/transitions that were originally set up if it isn't the initial mount
 			if (!isMountAnimationPrevented) {
-				ref()!.style.transitionDuration = "";
-				ref()!.style.animationName = "";
+				el.style.transitionDuration = "";
+				el.style.animationName = "";
 			}
 		},
 	);
@@ -119,9 +121,10 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 	createEffect(
 		() => context.isOpen(),
 		(open) => {
-			if (!open && ref()) {
-				ref()!.style.transitionDuration = "";
-				ref()!.style.animationName = "";
+			const el = untrack(ref);
+			if (!open && el) {
+				el.style.transitionDuration = "";
+				el.style.animationName = "";
 			}
 		},
 	);
