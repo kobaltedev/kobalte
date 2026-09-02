@@ -132,9 +132,9 @@ export function ToastList<T extends ValidComponent = "ol">(
 	createEffect(
 		() => context.hotkey(),
 		(hotkey) => {
-			if (isServer || !ref()) return;
+			if (isServer || !untrack(ref)) return;
 
-			const doc = ref()?.ownerDocument ?? document;
+			const doc = untrack(ref)?.ownerDocument ?? document;
 
 			const onKeyDown = (event: KeyboardEvent) => {
 				const isHotkeyPressed = hotkey.every(
@@ -142,7 +142,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 				);
 
 				if (isHotkeyPressed) {
-					ref()?.focus({ preventScroll: true });
+					untrack(ref)?.focus({ preventScroll: true });
 				}
 			};
 
@@ -157,7 +157,7 @@ export function ToastList<T extends ValidComponent = "ol">(
 		(pauseOnPageIdle) => {
 			if (!pauseOnPageIdle) return;
 
-			const win = ref()?.ownerDocument?.defaultView ?? window;
+			const win = untrack(ref)?.ownerDocument?.defaultView ?? window;
 
 			win.addEventListener("blur", context.pauseAllTimer);
 			win.addEventListener("focus", context.resumeAllTimer);
