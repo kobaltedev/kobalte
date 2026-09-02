@@ -136,7 +136,7 @@ export const WithProgress = meta.story({
 
 					<div class={style.progressActions}>
 						<Steps.PrevTrigger class={style.button}>Back</Steps.PrevTrigger>
-						<p class={style.stepStatus}>Step {value() + 1} of 4</p>
+						<p class={style.stepStatus}>Step {Math.min(value() + 1, 4)} of 4</p>
 						<Steps.NextTrigger class={style.button}>Next</Steps.NextTrigger>
 					</div>
 				</Steps.Root>
