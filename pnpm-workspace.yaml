@@ -11,9 +11,9 @@ catalog:
   babel-preset-solid: 2.0.0-rc.2
   # Build tooling shared across root + published packages
   typescript: 7.0.2
-  tsdown: 0.22.7
-  unplugin-solid: 1.0.0
-  vitest: 4.1.10
+  tsdown: 0.23.0
+  unplugin-solid: 2.0.0
+  vitest: 5.0.0
   # solid-primitives — versions mirrored in the overrides block below
   "@solid-primitives/a11y": 1.0.0-next.3
   "@solid-primitives/controlled-signal": 1.0.0-next.3
@@ -94,7 +94,7 @@ minimumReleaseAgeExclude:
   - "@solid-primitives/upload@1.0.0-next.4"
   - "@solid-primitives/utils@7.0.0-next.4"
   - rolldown-plugin-dts@0.27.8
-  - tsdown@0.22.7
+  - tsdown@0.23.0
   - "@dom-expressions/babel-plugin-jsx@0.50.0-next.21"
   - "@solidjs/signals@2.0.0-rc.3"
   - "@solidjs/web@2.0.0-rc.3"
