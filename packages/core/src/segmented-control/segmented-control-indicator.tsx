@@ -1,7 +1,7 @@
 import { combineStyle } from "@solid-primitives/props";
 import { createResizeObserver } from "@solid-primitives/resize-observer";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit } from "solid-js";
+import { createEffect, createSignal, omit, untrack } from "solid-js";
 import { Polymorphic, type PolymorphicProps } from "../polymorphic/index.tsx";
 import { useSegmentedControlContext } from "./segmented-control-context.tsx";
 
@@ -63,7 +63,7 @@ export function SegmentedControlIndicator<T extends ValidComponent = "div">(
 	createEffect(
 		() => context.selectedItem(),
 		(element) => {
-			setResizing(!style());
+			setResizing(!untrack(style));
 			computeStyle(element);
 			setResizing(false);
 		},

@@ -14,6 +14,7 @@ import {
 	createEffect,
 	createSignal,
 	type FlowComponent,
+	untrack,
 } from "solid-js";
 
 import {
@@ -68,7 +69,8 @@ export function createDomCollection<
 		return () => {
 			setItems((prevItems) => {
 				const nextItems = prevItems.filter(
-					(prevItem) => prevItem.ref() !== item.ref(),
+					(prevItem) =>
+						untrack(() => prevItem.ref()) !== untrack(() => item.ref()),
 				);
 
 				if (prevItems.length === nextItems.length) {

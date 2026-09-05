@@ -11,15 +11,15 @@ catalog:
   babel-preset-solid: 2.0.0-rc.2
   # Build tooling shared across root + published packages
   typescript: 7.0.2
-  tsdown: 0.22.7
-  unplugin-solid: 1.0.0
-  vitest: 4.1.10
+  tsdown: 0.23.0
+  unplugin-solid: 2.0.0
+  vitest: 5.0.0
   # solid-primitives — versions mirrored in the overrides block below
   "@solid-primitives/a11y": 1.0.0-next.3
   "@solid-primitives/controlled-signal": 1.0.0-next.3
-  "@solid-primitives/event-listener": 3.0.0-next.3
+  "@solid-primitives/event-listener": 3.0.0-next.5
   "@solid-primitives/focus": 1.0.0-next.4
-  "@solid-primitives/form": 1.0.0-next.2
+  "@solid-primitives/form": 1.0.0-next.3
   "@solid-primitives/i18n": 3.0.0-next.4
   "@solid-primitives/interaction": 1.0.0-next.4
   "@solid-primitives/keyboard": 2.0.0-next.5
@@ -32,7 +32,7 @@ catalog:
   "@solid-primitives/refs": 3.0.0-next.2
   "@solid-primitives/resize-observer": 4.0.0-next.3
   "@solid-primitives/scroll": 3.0.0-next.4
-  "@solid-primitives/upload": 1.0.0-next.3
+  "@solid-primitives/upload": 1.0.0-next.4
   "@solid-primitives/utils": 7.0.0-next.4
 overrides:
   # unplugin-solid@1.0.0's own babel-preset-solid dependency (^1.9.9) predates
@@ -42,9 +42,9 @@ overrides:
   "@solidjs/testing-library": "1.0.0-beta.2"
   "@solid-primitives/a11y": "1.0.0-next.3"
   "@solid-primitives/controlled-signal": "1.0.0-next.3"
-  "@solid-primitives/event-listener": "3.0.0-next.3"
+  "@solid-primitives/event-listener": "3.0.0-next.5"
   "@solid-primitives/focus": "1.0.0-next.4"
-  "@solid-primitives/form": "1.0.0-next.2"
+  "@solid-primitives/form": "1.0.0-next.3"
   "@solid-primitives/i18n": "3.0.0-next.4"
   "@solid-primitives/interaction": "1.0.0-next.4"
   "@solid-primitives/keyboard": "2.0.0-next.5"
@@ -60,7 +60,7 @@ overrides:
   "@solid-primitives/scroll": "3.0.0-next.4"
   "@solid-primitives/static-store": "1.0.0-next.2"
   "@solid-primitives/trigger": "3.0.0-next.2"
-  "@solid-primitives/upload": "1.0.0-next.3"
+  "@solid-primitives/upload": "1.0.0-next.4"
   "@solid-primitives/utils": "7.0.0-next.4"
   "@storybook/builder-vite": "10.5.0"
 allowBuilds:
@@ -73,9 +73,9 @@ minimumReleaseAgeExclude:
   - "@solidjs/start@2.0.0-beta.0"
   - "@solid-primitives/a11y@1.0.0-next.3"
   - "@solid-primitives/controlled-signal@1.0.0-next.3"
-  - "@solid-primitives/event-listener@3.0.0-next.3"
+  - "@solid-primitives/event-listener@3.0.0-next.5"
   - "@solid-primitives/focus@1.0.0-next.4"
-  - "@solid-primitives/form@1.0.0-next.2"
+  - "@solid-primitives/form@1.0.0-next.3"
   - "@solid-primitives/i18n@3.0.0-next.4"
   - "@solid-primitives/interaction@1.0.0-next.4"
   - "@solid-primitives/keyboard@2.0.0-next.5"
@@ -91,10 +91,10 @@ minimumReleaseAgeExclude:
   - "@solid-primitives/scroll@3.0.0-next.4"
   - "@solid-primitives/static-store@1.0.0-next.2"
   - "@solid-primitives/trigger@3.0.0-next.2"
-  - "@solid-primitives/upload@1.0.0-next.3"
+  - "@solid-primitives/upload@1.0.0-next.4"
   - "@solid-primitives/utils@7.0.0-next.4"
   - rolldown-plugin-dts@0.27.8
-  - tsdown@0.22.7
+  - tsdown@0.23.0
   - "@dom-expressions/babel-plugin-jsx@0.50.0-next.21"
   - "@solidjs/signals@2.0.0-rc.3"
   - "@solidjs/web@2.0.0-rc.3"

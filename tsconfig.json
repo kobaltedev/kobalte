@@ -28,7 +28,7 @@
 		"types": [
 			"vite/client",
 			"node",
-			"@testing-library/jest-dom",
+			"@testing-library/jest-dom/vitest",
 			"vitest/globals"
 		]
 	},

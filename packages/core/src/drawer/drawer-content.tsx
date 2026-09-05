@@ -16,6 +16,7 @@ import {
 	createMemo,
 	omit,
 	type Ref,
+	untrack,
 } from "solid-js";
 import {
 	DialogContent,
@@ -104,8 +105,9 @@ export function DrawerContent<T extends ValidComponent = "div">(
 		(el) => {
 			if (!el) return;
 			const measure = () => {
+				const side = untrack(ctx.side);
 				const size =
-					ctx.side() === "left" || ctx.side() === "right"
+					side === "left" || side === "right"
 						? el.offsetWidth
 						: el.offsetHeight;
 				ctx.setDrawerSize(size);

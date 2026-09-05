@@ -16,6 +16,7 @@ import {
 	merge,
 	omit,
 	type Ref,
+	untrack,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 
@@ -83,7 +84,7 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 	createEffect(
 		() => ({ autoResize: mergedProps.autoResize, value: context.value() }),
 		({ autoResize }) => {
-			const el = ref();
+			const el = untrack(ref);
 			if (!el || !autoResize) return;
 			adjustHeight(el);
 		},

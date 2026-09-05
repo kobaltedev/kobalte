@@ -4,6 +4,7 @@ import {
 	createUniqueId,
 	merge,
 	omit,
+	untrack,
 } from "solid-js";
 import type {
 	MenubarMenuOptions,
@@ -50,10 +51,10 @@ export function NavigationMenuMenu(props: NavigationMenuMenuProps) {
 	createEffect(
 		() => menubarContext.value(),
 		(contextValue) => {
-			if (contextValue === value()) {
+			if (contextValue === untrack(value)) {
 				setForceMount(true);
 			} else {
-				const viewportRef = context.viewportRef();
+				const viewportRef = untrack(() => context.viewportRef());
 
 				if (
 					!viewportRef ||
