@@ -15,6 +15,7 @@ import {
 	merge,
 	omit,
 	type Ref,
+	untrack,
 } from "solid-js";
 import {
 	createFormControl,
@@ -363,7 +364,7 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 	createEffect(
 		() => mergedProps.rawValue,
 		(rawValue) => {
-			if (rawValue !== context.rawValue()) {
+			if (rawValue !== untrack(context.rawValue)) {
 				if (Number.isNaN(rawValue)) return;
 				setValue(rawValue ?? "");
 				context.format();

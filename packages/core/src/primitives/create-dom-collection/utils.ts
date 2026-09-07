@@ -20,7 +20,7 @@ export function findDOMIndex(
 	items: DomCollectionItem[],
 	item: DomCollectionItem,
 ) {
-	const itemEl = item.ref();
+	const itemEl = untrack(() => item.ref());
 
 	if (!itemEl) {
 		return -1;
@@ -36,7 +36,7 @@ export function findDOMIndex(
 	// do a findIndex in reverse order, instead of wasting time searching the
 	// index from the beginning.
 	while (length--) {
-		const currentItemEl = items[length]?.ref();
+		const currentItemEl = untrack(() => items[length]?.ref());
 
 		if (!currentItemEl) {
 			continue;
@@ -54,8 +54,8 @@ function sortBasedOnDOMPosition<T extends DomCollectionItem>(items: T[]) {
 	let isOrderDifferent = false;
 
 	pairs.sort(([indexA, a], [indexB, b]) => {
-		const elementA = a.ref();
-		const elementB = b.ref();
+		const elementA = untrack(() => a.ref());
+		const elementB = untrack(() => b.ref());
 
 		if (elementA === elementB) {
 			return 0;
@@ -101,8 +101,8 @@ function setItemsBasedOnDOMPosition<T extends DomCollectionItem>(
 
 function getCommonParent(items: DomCollectionItem[]) {
 	const firstItem = items[0];
-	const lastItemEl = items[items.length - 1]?.ref();
-	let parentEl = firstItem?.ref()?.parentElement;
+	const lastItemEl = untrack(() => items[items.length - 1]?.ref());
+	let parentEl = untrack(() => firstItem?.ref()?.parentElement);
 
 	while (parentEl) {
 		if (lastItemEl && parentEl.contains(lastItemEl)) {

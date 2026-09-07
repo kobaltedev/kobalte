@@ -124,8 +124,8 @@ export function MenuTrigger<T extends ValidComponent = "button">(
 	createEffect(
 		() => optionalMenubarContext?.value(),
 		(value) => {
-			if (!isNativeLink()) return;
-			if (value === key()) context.triggerRef()?.focus();
+			if (!untrack(isNativeLink)) return;
+			if (value === untrack(key)) untrack(() => context.triggerRef())?.focus();
 		},
 	);
 

@@ -1,6 +1,6 @@
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, omit } from "solid-js";
+import { createEffect, createSignal, omit, untrack } from "solid-js";
 import {
 	type ElementOf,
 	Polymorphic,
@@ -47,14 +47,16 @@ export function ToastProgressFill<T extends ValidComponent = "div">(
 
 			const intervalId = setInterval(() => {
 				const elapsedTime =
-					Date.now() - context.closeTimerStartTime() + totalElapsedTime;
+					Date.now() - untrack(context.closeTimerStartTime) + totalElapsedTime;
 
-				const life = Math.trunc(100 - (elapsedTime / context.duration()) * 100);
+				const life = Math.trunc(
+					100 - (elapsedTime / untrack(context.duration)) * 100,
+				);
 				setLifeTime(life < 0 ? 0 : life);
 			});
 
 			return () => {
-				totalElapsedTime += Date.now() - context.closeTimerStartTime();
+				totalElapsedTime += Date.now() - untrack(context.closeTimerStartTime);
 				clearInterval(intervalId);
 			};
 		},

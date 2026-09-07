@@ -17,6 +17,7 @@ import {
 	omit,
 	type Ref,
 	Show,
+	untrack,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import { useResizableInternalContext } from "./resizable-context.tsx";
@@ -194,7 +195,7 @@ export function ResizableHandle<T extends ValidComponent = "button">(
 
 			const globalHandle: ResizableHandleInstance = {
 				element: el,
-				orientation: context.orientation(),
+				orientation: untrack(() => context.orientation()),
 				handleCursorStyle: context.handleCursorStyle,
 				altKey: p.altKey,
 				startIntersection: {

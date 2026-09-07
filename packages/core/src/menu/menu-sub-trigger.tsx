@@ -26,6 +26,7 @@ import {
 	omit,
 	onCleanup,
 	type Ref,
+	untrack,
 } from "solid-js";
 
 import { type Direction, useLocale } from "../i18n/index.tsx";
@@ -345,7 +346,7 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		(pointerGraceTimer) => {
 			return () => {
 				window.clearTimeout(pointerGraceTimer);
-				context.parentMenuContext()?.setPointerGraceIntent(null);
+				untrack(() => context.parentMenuContext())?.setPointerGraceIntent(null);
 			};
 		},
 	);

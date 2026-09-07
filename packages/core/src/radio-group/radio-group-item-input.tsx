@@ -9,7 +9,14 @@
 import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+	type Ref,
+	untrack,
+} from "solid-js";
 import { useFormControlContext } from "../form-control/index.ts";
 import {
 	type ElementOf,
@@ -150,7 +157,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 			if (!isSelected) return;
 			setIsInternalChangeEvent(true);
 
-			const ref = radioContext.inputRef();
+			const ref = untrack(() => radioContext.inputRef());
 			ref?.dispatchEvent(
 				new Event("input", { bubbles: true, cancelable: true }),
 			);

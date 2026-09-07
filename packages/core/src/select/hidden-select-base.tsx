@@ -8,7 +8,7 @@
 
 import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { createEffect, createSignal, For, omit, Show } from "solid-js";
+import { createEffect, createSignal, For, omit, Show, untrack } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import type { Collection, CollectionNode } from "../primitives/index.ts";
@@ -90,10 +90,10 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 
 			isInternalChangeEvent = true;
 
-			ref()?.dispatchEvent(
+			untrack(ref)?.dispatchEvent(
 				new Event("input", { bubbles: true, cancelable: true }),
 			);
-			ref()?.dispatchEvent(
+			untrack(ref)?.dispatchEvent(
 				new Event("change", { bubbles: true, cancelable: true }),
 			);
 		},

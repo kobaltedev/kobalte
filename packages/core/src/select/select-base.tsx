@@ -20,6 +20,7 @@ import {
 	createUniqueId,
 	merge,
 	omit,
+	untrack,
 } from "solid-js";
 import {
 	createFormControl,
@@ -565,15 +566,16 @@ export function SelectBase<
 	createEffect(
 		() => flattenOptionKeys(),
 		(keys) => {
+			const selectionManager = untrack(() => listState.selectionManager());
 			const currentSelectedKeys = [
-				...listState.selectionManager().selectedKeys(),
+				...untrack(() => selectionManager.selectedKeys()),
 			];
 
 			const keysToKeep = currentSelectedKeys.filter((key) =>
 				keys.includes(key),
 			);
 
-			listState.selectionManager().setSelectedKeys(keysToKeep);
+			selectionManager.setSelectedKeys(keysToKeep);
 		},
 		{ defer: true },
 	);

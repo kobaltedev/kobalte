@@ -21,6 +21,7 @@ import {
 	omit,
 	type Ref,
 	Show,
+	untrack,
 } from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
@@ -476,10 +477,10 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 	createEffect(
 		() => context.focusManager(),
 		(focusManager) => {
-			const element = ref();
+			const element = untrack(ref);
 			const isFocused = createFocusSignal(() => element as Element);
 			return () => {
-				if (isFocused()) {
+				if (untrack(isFocused)) {
 					const prev = focusManager.focusPrevious();
 					if (!prev) {
 						focusManager.focusNext();

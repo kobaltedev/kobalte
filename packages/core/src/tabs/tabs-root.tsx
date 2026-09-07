@@ -15,6 +15,7 @@ import {
 	createUniqueId,
 	merge,
 	omit,
+	untrack,
 } from "solid-js";
 
 import { createSingleSelectListState } from "../list/index.ts";
@@ -106,7 +107,7 @@ export function TabsRoot<T extends ValidComponent = "div">(
 		dataSource: items,
 	});
 
-	let lastSelectedKey = listState.selectedKey();
+	let lastSelectedKey = untrack(() => listState.selectedKey());
 
 	createEffect(
 		() => ({
@@ -119,7 +120,7 @@ export function TabsRoot<T extends ValidComponent = "div">(
 
 			// Ensure a tab is always selected (in case no selected key was specified or if selected item was deleted from collection)
 			if (
-				selectionManager.isEmpty() ||
+				untrack(() => selectionManager.isEmpty()) ||
 				selectedKey == null ||
 				!collection.getItem(selectedKey)
 			) {
@@ -152,10 +153,11 @@ export function TabsRoot<T extends ValidComponent = "div">(
 			// If there isn't a focused key yet or the tabs doesn't have focus and the selected key changes,
 			// change focused key to the selected key if it exists.
 			if (
-				selectionManager.focusedKey() == null ||
-				(!selectionManager.isFocused() && selectedKey !== lastSelectedKey)
+				untrack(() => selectionManager.focusedKey()) == null ||
+				(!untrack(() => selectionManager.isFocused()) &&
+					selectedKey !== lastSelectedKey)
 			) {
-				selectionManager.setFocusedKey(selectedKey);
+				untrack(() => selectionManager.setFocusedKey(selectedKey));
 			}
 
 			lastSelectedKey = selectedKey;

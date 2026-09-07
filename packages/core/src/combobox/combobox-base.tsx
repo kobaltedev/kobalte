@@ -22,6 +22,7 @@ import {
 	createUniqueId,
 	merge,
 	omit,
+	untrack,
 } from "solid-js";
 import {
 	createFormControl,
@@ -769,7 +770,7 @@ export function ComboboxBase<
 	createEffect(
 		() => [filteredOptions(), showAllOptions()] as const,
 		(input, prevInput) => {
-			if (disclosureState.isOpen() && prevInput != null) {
+			if (untrack(() => disclosureState.isOpen()) && prevInput != null) {
 				const [prevFilteredOptions, prevShowAllOptions] = prevInput;
 				setLastDisplayedOptions(
 					prevShowAllOptions ? mergedProps.options! : prevFilteredOptions,
@@ -874,7 +875,7 @@ export function ComboboxBase<
 		({ lastSelectedKey, lastSelectedItem }) => {
 			if (
 				isAppleDevice &&
-				isInputFocused() &&
+				untrack(isInputFocused) &&
 				lastSelectedItem &&
 				lastSelectedKey !== lastAnnouncedSelectedKey
 			) {
