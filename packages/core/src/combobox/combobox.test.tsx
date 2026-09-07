@@ -3486,3 +3486,94 @@ describe.skip("Combobox", () => {
 		});
 	});
 });
+
+describe("Combobox filter then click", () => {
+	const onValueChange = vi.fn();
+
+	beforeEach(() => {
+		vi.useFakeTimers();
+	});
+
+	afterEach(() => {
+		vi.clearAllMocks();
+		vi.clearAllTimers();
+		vi.useRealTimers();
+	});
+
+	it("selects the clicked option after filtering with a mouse", async () => {
+		const options = ["Apple", "Banana", "Blueberry", "Grapes", "Pineapple"];
+
+		const { getByRole } = render(() => (
+			<Combobox.Root
+				options={options}
+				defaultFilter="contains"
+				onChange={onValueChange}
+				itemComponent={(props) => (
+					<Combobox.Item item={props.item}>{props.item.rawValue}</Combobox.Item>
+				)}
+			>
+				<Combobox.Label>Label</Combobox.Label>
+				<Combobox.Control>
+					<Combobox.Input />
+					<Combobox.Trigger />
+				</Combobox.Control>
+				<Combobox.Portal>
+					<Combobox.Content>
+						<Combobox.Listbox />
+					</Combobox.Content>
+				</Combobox.Portal>
+			</Combobox.Root>
+		));
+
+		const input = getByRole("combobox") as HTMLInputElement;
+
+		// Type to filter the options.
+		fireEvent.focus(input);
+		fireEvent.input(input, { target: { value: "ap" } });
+		await Promise.resolve();
+		await Promise.resolve();
+		vi.runAllTimers();
+
+		const listbox = within(document.body).getByRole("listbox");
+		const items = within(listbox).getAllByRole("option");
+
+		expect(items).toHaveLength(3);
+		expect(items[0]).toHaveTextContent("Apple");
+		expect(items[1]).toHaveTextContent("Grapes");
+		expect(items[2]).toHaveTextContent("Pineapple");
+
+		// Simulate a mouse click (pointerdown, then blur, then pointerup + click)
+		// on the "Grapes" option.
+		fireEvent(
+			items[1],
+			createPointerEvent("pointerdown", {
+				pointerId: 1,
+				pointerType: "mouse",
+			}),
+		);
+		await Promise.resolve();
+
+		// The input blurs because the listbox items use virtual focus and are not
+		// focusable; the focus moves to the body and `relatedTarget` is null.
+		fireEvent.blur(input);
+		await Promise.resolve();
+
+		// The blur must not reset the input value while a pointer press is in progress
+		// over the content, otherwise the filtered collection is rebuilt (with all
+		// options) and the item under the pointer is replaced before the press ends.
+		expect(input.value).toBe("ap");
+
+		fireEvent(
+			items[1],
+			createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
+		);
+		await Promise.resolve();
+
+		fireEvent.click(items[1]);
+		await Promise.resolve();
+
+		expect(onValueChange).toHaveBeenCalledTimes(1);
+		expect(onValueChange.mock.calls[0][0]).toStrictEqual("Grapes");
+		expect(input.value).toBe("Grapes");
+	});
+});
