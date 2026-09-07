@@ -184,11 +184,11 @@ function LinearExample() {
 		<Steps
 			count={3}
 			linear
-			isStepValid={(index) => index !== 0 || email().includes("@")}
+			isStepValid={index => index !== 0 || email().includes("@")}
 			onStepInvalid={() => alert("Enter a valid email first.")}
 		>
 			<Steps.Content index={0}>
-				<input value={email()} onInput={(e) => setEmail(e.currentTarget.value)} />
+				<input value={email()} onInput={e => setEmail(e.currentTarget.value)} />
 			</Steps.Content>
 			{/* ...remaining steps... */}
 		</Steps>
@@ -209,7 +209,7 @@ Provide `isStepSkippable` to bypass certain steps when navigating with `Steps.Ne
 ---
 
 ```tsx {0}
-<Steps count={4} isStepSkippable={(index) => index === 2}>
+<Steps count={4} isStepSkippable={index => index === 2}>
 	{/* ...list, content... */}
 </Steps>
 ```
@@ -222,22 +222,22 @@ Provide `isStepSkippable` to bypass certain steps when navigating with `Steps.Ne
 
 `Steps` is equivalent to the `Root` import from `@kobalte/core/steps` (and deprecated `Steps.Root`).
 
-| Prop            | Description                                                                                                                    |
-| :--------------- | :------------------------------------------------------------------------------------------------------------------------------ |
-| count            | `number` <br/> The total number of steps. **Required.**                                                                        |
-| value            | `number` <br/> The controlled index of the current step.                                                                       |
-| defaultValue     | `number` <br/> The index of the current step when initially rendered. Useful when you do not need to control the state.        |
-| onChange         | `(value: number) => void` <br/> Event handler called when the current step changes.                                            |
-| orientation      | `'horizontal' \| 'vertical'` <br/> The orientation of the steps. Defaults to `'horizontal'`.                                     |
-| linear           | `boolean` <br/> Whether the user must complete the steps in order. Defaults to `false`.                                        |
-| isStepValid      | `(index: number) => boolean` <br/> Returns whether the step at `index` is valid, used to gate forward navigation when `linear` is `true`. Defaults to always `true`. |
-| isStepSkippable  | `(index: number) => boolean` <br/> Returns whether the step at `index` should be skipped over by next/prev navigation. Defaults to always `false`. |
-| onStepComplete   | `() => void` <br/> Event handler called once when every step has been completed.                                               |
-| onStepInvalid    | `(details: { step: number }) => void` <br/> Event handler called when navigation is blocked by an invalid step in `linear` mode. |
-| id               | `string` <br/> A unique identifier. Auto-generated if not provided.                                                            |
+| Prop            | Description                                                                                                                                                          |
+| :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| count           | `number` <br/> The total number of steps. **Required.**                                                                                                              |
+| value           | `number` <br/> The controlled index of the current step.                                                                                                             |
+| defaultValue    | `number` <br/> The index of the current step when initially rendered. Useful when you do not need to control the state.                                              |
+| onChange        | `(value: number) => void` <br/> Event handler called when the current step changes.                                                                                  |
+| orientation     | `'horizontal' \| 'vertical'` <br/> The orientation of the steps. Defaults to `'horizontal'`.                                                                         |
+| linear          | `boolean` <br/> Whether the user must complete the steps in order. Defaults to `false`.                                                                              |
+| isStepValid     | `(index: number) => boolean` <br/> Returns whether the step at `index` is valid, used to gate forward navigation when `linear` is `true`. Defaults to always `true`. |
+| isStepSkippable | `(index: number) => boolean` <br/> Returns whether the step at `index` should be skipped over by next/prev navigation. Defaults to always `false`.                   |
+| onStepComplete  | `() => void` <br/> Event handler called once when every step has been completed.                                                                                     |
+| onStepInvalid   | `(details: { step: number }) => void` <br/> Event handler called when navigation is blocked by an invalid step in `linear` mode.                                     |
+| id              | `string` <br/> A unique identifier. Auto-generated if not provided.                                                                                                  |
 
-| Data attribute | Description |
-| :--- | :--- |
+| Data attribute     | Description                      |
+| :----------------- | :------------------------------- |
 | `data-orientation` | Reflects the `orientation` prop. |
 
 ### Steps.List
@@ -246,18 +246,18 @@ Wraps the step items. Internally wraps `Tabs.List`, which is what gives roving-t
 
 No props beyond the common polymorphic/HTML ones.
 
-| Data attribute | Description |
-| :--- | :--- |
+| Data attribute     | Description                      |
+| :----------------- | :------------------------------- |
 | `data-orientation` | Reflects the `orientation` prop. |
 
 ### Steps.Item
 
-| Prop  | Description                                                             |
-| :---- | :------------------------------------------------------------------------ |
-| index | `number` <br/> The index of this step. **Required.**                    |
+| Prop  | Description                                          |
+| :---- | :--------------------------------------------------- |
+| index | `number` <br/> The index of this step. **Required.** |
 
-| Data attribute | Description |
-| :--- | :--- |
+| Data attribute                                       | Description                                              |
+| :--------------------------------------------------- | :------------------------------------------------------- |
 | `data-complete` / `data-current` / `data-incomplete` | Reflects the step's status relative to the current step. |
 
 `Steps.Trigger`, `Steps.Indicator`, and `Steps.Separator` read this status from context — `Steps.Separator` should be rendered as a child of `Steps.Item`, alongside `Steps.Trigger`.
@@ -270,11 +270,11 @@ No props beyond the common polymorphic/HTML ones.
 
 `Steps.Trigger` and `Steps.Content` for the same `index` are automatically cross-referenced for assistive technology: `Steps.Trigger` gets `aria-controls` pointing at its `Steps.Content`'s `id`, and `Steps.Content` gets `aria-labelledby` pointing back at the trigger — an `id` is generated for both if you don't provide one yourself. `Steps.Trigger` also sets `aria-current="step"` while it's the current step.
 
-| Data attribute | Description |
-| :--- | :--- |
-| `data-orientation` | Reflects the `orientation` prop. |
-| `data-state` | `"open"` while it's the current step, `"closed"` otherwise. |
-| `data-complete` / `data-current` / `data-incomplete` | Reflects the step's status relative to the current step. |
+| Data attribute                                       | Description                                                 |
+| :--------------------------------------------------- | :---------------------------------------------------------- |
+| `data-orientation`                                   | Reflects the `orientation` prop.                            |
+| `data-state`                                         | `"open"` while it's the current step, `"closed"` otherwise. |
+| `data-complete` / `data-current` / `data-incomplete` | Reflects the step's status relative to the current step.    |
 
 ### Steps.Indicator
 
@@ -282,8 +282,8 @@ A visual marker for a step's status (e.g. its number or a checkmark), typically 
 
 No props beyond the common polymorphic/HTML ones.
 
-| Data attribute | Description |
-| :--- | :--- |
+| Data attribute                                       | Description                                              |
+| :--------------------------------------------------- | :------------------------------------------------------- |
 | `data-complete` / `data-current` / `data-incomplete` | Reflects the step's status relative to the current step. |
 
 ### Steps.Separator
@@ -292,19 +292,19 @@ A purely decorative divider between two steps, rendered as a child of `Steps.Ite
 
 No props beyond the common polymorphic/HTML ones.
 
-| Data attribute | Description |
-| :--- | :--- |
+| Data attribute                                       | Description                                              |
+| :--------------------------------------------------- | :------------------------------------------------------- |
 | `data-complete` / `data-current` / `data-incomplete` | Reflects the step's status relative to the current step. |
 
 ### Steps.Content / Steps.CompletedContent
 
-| Prop         | Description                                                                                                                              |
-| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| index        | `number` <br/> (`Steps.Content` only) The index of the step this content belongs to. **Required.**                                       |
+| Prop         | Description                                                                                                                             |
+| :----------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| index        | `number` <br/> (`Steps.Content` only) The index of the step this content belongs to. **Required.**                                      |
 | `forceMount` | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
 
-| Data attribute | Description |
-| :--- | :--- |
+| Data attribute | Description                                                                  |
+| :------------- | :--------------------------------------------------------------------------- |
 | `data-current` | (`Steps.Content` only) Present while its associated step is the current one. |
 
 `Steps.CompletedContent` renders with `role="status"` (a polite live region) — completing a wizard is a positive, non-urgent update rather than an error, so `status` is used instead of the more disruptive `alert`.
@@ -323,8 +323,8 @@ A progress bar reflecting how many steps have been completed. Renders as the fil
 
 No props beyond the common polymorphic/HTML ones.
 
-| Data attribute | Description |
-| :--- | :--- |
+| Data attribute  | Description                                 |
+| :-------------- | :------------------------------------------ |
 | `data-complete` | Present once every step has been completed. |
 
 `Steps.Progress` renders with `role="progressbar"`, `aria-valuenow` (the current step index), `aria-valuemin={0}`, and `aria-valuemax` (the step count).
@@ -333,23 +333,23 @@ No props beyond the common polymorphic/HTML ones.
 
 Returns the `StepsContextValue` object. Must be called inside a `Steps`. Used to build custom sub-components, or to drive navigation programmatically.
 
-| Property        | Type                                        | Description                                                    |
-| :-------------- | :------------------------------------------- | :--------------------------------------------------------------- |
-| value           | `Accessor<number>`                           | The index of the current step (equals `count` once completed).  |
-| count           | `Accessor<number>`                           | The total number of steps.                                       |
-| percent         | `Accessor<number>`                           | The completion percentage, between 0 and 100.                    |
-| hasNextStep     | `Accessor<boolean>`                          | Whether there is a step after the current one.                   |
-| hasPrevStep     | `Accessor<boolean>`                          | Whether there is a step before the current one.                  |
-| isCompleted     | `Accessor<boolean>`                          | Whether every step has been completed.                            |
-| isStepValid     | `(index: number) => boolean`                 | Returns whether the step at `index` is valid.                     |
-| isStepSkippable | `(index: number) => boolean`                 | Returns whether the step at `index` should be skipped over by next/prev navigation. |
-| getItemState    | `(index: number) => "complete" \| "current" \| "incomplete"` | Returns the current status of the step at `index`. |
-| canChangeStep   | `(index: number) => boolean`                 | Returns whether navigating directly to `index` is currently allowed. |
-| changeStep      | `(index: number) => void`                    | Navigates to `index` if `canChangeStep(index)`, otherwise fires `onStepInvalid`. |
-| setStep         | `(index: number) => void`                    | Directly sets the current step, clamped to `[0, count]`. Not subject to `linear` validation. |
-| goToNextStep    | `() => void`                                 | Advances to the next (non-skipped) step, subject to `linear` validation. |
-| goToPrevStep    | `() => void`                                 | Returns to the previous (non-skipped) step.                       |
-| resetStep       | `() => void`                                 | Resets to the first step.                                         |
+| Property        | Type                                                         | Description                                                                                  |
+| :-------------- | :----------------------------------------------------------- | :------------------------------------------------------------------------------------------- |
+| value           | `Accessor<number>`                                           | The index of the current step (equals `count` once completed).                               |
+| count           | `Accessor<number>`                                           | The total number of steps.                                                                   |
+| percent         | `Accessor<number>`                                           | The completion percentage, between 0 and 100.                                                |
+| hasNextStep     | `Accessor<boolean>`                                          | Whether there is a step after the current one.                                               |
+| hasPrevStep     | `Accessor<boolean>`                                          | Whether there is a step before the current one.                                              |
+| isCompleted     | `Accessor<boolean>`                                          | Whether every step has been completed.                                                       |
+| isStepValid     | `(index: number) => boolean`                                 | Returns whether the step at `index` is valid.                                                |
+| isStepSkippable | `(index: number) => boolean`                                 | Returns whether the step at `index` should be skipped over by next/prev navigation.          |
+| getItemState    | `(index: number) => "complete" \| "current" \| "incomplete"` | Returns the current status of the step at `index`.                                           |
+| canChangeStep   | `(index: number) => boolean`                                 | Returns whether navigating directly to `index` is currently allowed.                         |
+| changeStep      | `(index: number) => void`                                    | Navigates to `index` if `canChangeStep(index)`, otherwise fires `onStepInvalid`.             |
+| setStep         | `(index: number) => void`                                    | Directly sets the current step, clamped to `[0, count]`. Not subject to `linear` validation. |
+| goToNextStep    | `() => void`                                                 | Advances to the next (non-skipped) step, subject to `linear` validation.                     |
+| goToPrevStep    | `() => void`                                                 | Returns to the previous (non-skipped) step.                                                  |
+| resetStep       | `() => void`                                                 | Resets to the first step.                                                                    |
 
 ## Rendered elements
 
@@ -357,7 +357,7 @@ Returns the `StepsContextValue` object. Must be called inside a `Steps`. Used to
 | :----------------------- | :----------------------- |
 | `Steps`                  | `div`                    |
 | `Steps.List`             | `div`                    |
-| `Steps.Item`              | `div`                    |
+| `Steps.Item`             | `div`                    |
 | `Steps.Trigger`          | `button`                 |
 | `Steps.Indicator`        | `div`                    |
 | `Steps.Separator`        | `div`                    |
@@ -373,14 +373,14 @@ Returns the `StepsContextValue` object. Must be called inside a `Steps`. Used to
 
 `Steps.Trigger` always uses manual activation: the arrow keys (and <kbd>Home</kbd>/<kbd>End</kbd>) only move roving focus between triggers, they never change the current step on their own — appropriate for a step wizard, where focusing the next trigger to "just look" at it shouldn't silently advance the stepper. <kbd>Enter</kbd>/<kbd>Space</kbd> commits the navigation, subject to `linear`/`isStepValid` validation.
 
-| Key                   | Description                                                                                                                   |
-| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
-| <kbd>Tab</kbd>        | Moves focus to the first (or last active) trigger. Once focused, arrow keys navigate the remaining triggers.                  |
-| <kbd>ArrowDown</kbd>  | Moves focus to the next trigger in vertical orientation.                                                                       |
-| <kbd>ArrowRight</kbd> | Moves focus to the next trigger in horizontal orientation.                                                                     |
-| <kbd>ArrowUp</kbd>    | Moves focus to the previous trigger in vertical orientation.                                                                   |
-| <kbd>ArrowLeft</kbd>  | Moves focus to the previous trigger in horizontal orientation.                                                                 |
-| <kbd>Home</kbd>       | Moves focus to the first trigger.                                                                                              |
-| <kbd>End</kbd>        | Moves focus to the last trigger.                                                                                               |
-| <kbd>Enter</kbd>      | Navigates to the focused trigger's step, subject to `linear`/`isStepValid` validation.                                         |
-| <kbd>Space</kbd>      | Navigates to the focused trigger's step, subject to `linear`/`isStepValid` validation.                                         |
+| Key                   | Description                                                                                                  |
+| :-------------------- | :----------------------------------------------------------------------------------------------------------- |
+| <kbd>Tab</kbd>        | Moves focus to the first (or last active) trigger. Once focused, arrow keys navigate the remaining triggers. |
+| <kbd>ArrowDown</kbd>  | Moves focus to the next trigger in vertical orientation.                                                     |
+| <kbd>ArrowRight</kbd> | Moves focus to the next trigger in horizontal orientation.                                                   |
+| <kbd>ArrowUp</kbd>    | Moves focus to the previous trigger in vertical orientation.                                                 |
+| <kbd>ArrowLeft</kbd>  | Moves focus to the previous trigger in horizontal orientation.                                               |
+| <kbd>Home</kbd>       | Moves focus to the first trigger.                                                                            |
+| <kbd>End</kbd>        | Moves focus to the last trigger.                                                                             |
+| <kbd>Enter</kbd>      | Navigates to the focused trigger's step, subject to `linear`/`isStepValid` validation.                       |
+| <kbd>Space</kbd>      | Navigates to the focused trigger's step, subject to `linear`/`isStepValid` validation.                       |
