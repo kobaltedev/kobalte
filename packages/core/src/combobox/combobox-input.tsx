@@ -248,9 +248,15 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 		callHandler(e, local.onBlur);
 
 		// Ignore blur if focused moved into the control or menu.
+		// When clicking inside the content, the input blurs (listbox items use
+		// virtual focus and are not focusable) before the press ends. The combobox
+		// is still open in that case because a pointerdown outside the layer would
+		// have already dismissed it synchronously. So we only proceed with the reset
+		// if the combobox has been closed/dismissed (i.e. the pointer was outside).
 		if (
 			contains(context.controlRef(), e.relatedTarget as any) ||
-			contains(context.contentRef(), e.relatedTarget as any)
+			contains(context.contentRef(), e.relatedTarget as any) ||
+			context.isOpen()
 		) {
 			return;
 		}
