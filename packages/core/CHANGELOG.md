@@ -1,5 +1,11 @@
 # @kobalte/core
 
+## 2.0.0-alpha.2
+
+### Patch Changes
+
+- fix: solid 2 read untracked calls
+
 ## 2.0.0-alpha.1
 
 ### Patch Changes
