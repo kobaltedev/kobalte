@@ -1,5 +1,17 @@
 # @kobalte/core
 
+## 0.13.14
+
+### Patch Changes
+
+- 3d326634: ## v0.13.14 (September 7, 2026)
+
+  **Bug fixes**
+
+  - Preserve aria-hidden during modal handoff ([#721](https://github.com/kobaltedev/kobalte/pull/721))
+  - Resolve interact-outside targets across shadow boundaries ([#722](https://github.com/kobaltedev/kobalte/pull/722))
+  - Combobox: Prevent filter reset on blur ([#731](https://github.com/kobaltedev/kobalte/pull/731))
+
 ## 0.13.13
 
 ### Patch Changes
