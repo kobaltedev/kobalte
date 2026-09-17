@@ -73,6 +73,90 @@ describe("Tabs", () => {
 		}
 	});
 
+	describe("indicator", () => {
+		let notifyResize: (entries: ResizeObserverEntry[]) => void;
+		let tabs: HTMLElement[];
+		let indicator: HTMLElement;
+		let selectedTabOffset: number;
+
+		beforeEach(() => {
+			const observedTabs = new Set<Element>();
+
+			class MockResizeObserver implements ResizeObserver {
+				constructor(callback: ResizeObserverCallback) {
+					notifyResize = (entries) => {
+						const observedEntries = entries.filter((entry) =>
+							observedTabs.has(entry.target),
+						);
+						if (observedEntries.length > 0) {
+							callback(observedEntries, this);
+						}
+					};
+				}
+
+				observe(target: Element) {
+					observedTabs.add(target);
+				}
+
+				unobserve(target: Element) {
+					observedTabs.delete(target);
+				}
+
+				disconnect() {
+					observedTabs.clear();
+				}
+			}
+
+			vi.stubGlobal("ResizeObserver", MockResizeObserver);
+
+			const { getAllByRole, getByRole } = render(() => (
+				<Tabs.Root defaultValue="two">
+					<Tabs.List>
+						<Tabs.Trigger value="one">One</Tabs.Trigger>
+						<Tabs.Trigger value="two">Two</Tabs.Trigger>
+						<Tabs.Indicator />
+					</Tabs.List>
+				</Tabs.Root>
+			));
+
+			tabs = getAllByRole("tab");
+			indicator = getByRole("presentation", { hidden: true });
+			selectedTabOffset = 40;
+
+			Object.defineProperties(tabs[1], {
+				offsetLeft: { get: () => selectedTabOffset },
+				offsetWidth: { value: 40 },
+			});
+			vi.spyOn(tabs[1], "getClientRects").mockReturnValue({
+				length: 1,
+			} as DOMRectList);
+		});
+
+		afterEach(vi.unstubAllGlobals);
+
+		const resizeEntry = (target: Element, width: number) =>
+			({
+				target,
+				contentRect: { width, height: 20 },
+			}) as ResizeObserverEntry;
+
+		it("repositions when an unselected tab resizes", () => {
+			notifyResize(tabs.map((tab) => resizeEntry(tab, 40)));
+			expect(indicator.style.transform).toBe("translateX(40px)");
+
+			selectedTabOffset = 80;
+			notifyResize([resizeEntry(tabs[0], 80)]);
+
+			expect(indicator.style.transform).toBe("translateX(80px)");
+		});
+
+		it("disables the initial transition when multiple tabs report their sizes simultaneously", () => {
+			notifyResize(tabs.map((tab) => resizeEntry(tab, 40)));
+
+			expect(indicator.style.transition).toBe("none");
+		});
+	});
+
 	it("allows user to change tab item select via left/right arrow keys with horizontal tabs", async () => {
 		const { getByRole } = render(() => (
 			<Tabs.Root>
