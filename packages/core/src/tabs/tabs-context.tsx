@@ -7,6 +7,7 @@ import {
 } from "solid-js";
 
 import type { SingleSelectListState } from "../list";
+import type { CollectionItemWithRef } from "../primitives";
 import type { TabsActivationMode } from "./types";
 
 export interface TabsContextValue {
@@ -15,6 +16,7 @@ export interface TabsContextValue {
 	activationMode: Accessor<TabsActivationMode>;
 	triggerIdsMap: Accessor<Map<string, string>>;
 	contentIdsMap: Accessor<Map<string, string>>;
+	items: Accessor<CollectionItemWithRef[]>;
 	listState: Accessor<SingleSelectListState>;
 	selectedTab: Accessor<HTMLElement | undefined>;
 	setSelectedTab: Setter<HTMLElement | undefined>;
