@@ -178,6 +178,7 @@ export function TabsRoot<T extends ValidComponent = "div">(
 		activationMode: () => local.activationMode!,
 		triggerIdsMap: () => triggerIdsMap,
 		contentIdsMap: () => contentIdsMap,
+		items,
 		listState: () => listState,
 		selectedTab,
 		setSelectedTab,
