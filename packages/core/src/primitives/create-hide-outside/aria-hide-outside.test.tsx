@@ -462,4 +462,68 @@ describe("ariaHideOutside", () => {
 		expect(rows[1]).not.toHaveAttribute("aria-hidden", "true");
 		expect(cells[1]).not.toHaveAttribute("aria-hidden", "true");
 	});
+
+	describe("Shadow DOM", () => {
+		/**
+		 * A layer portalled into a shadow root, with the rest of the page beside it:
+		 *
+		 *   body > main                  (the page behind the layer)
+		 *   body > host{shadow} > layer  (the portal mount)
+		 *
+		 * `Node.contains` does not cross shadow boundaries, so `body.contains(layer)` is false.
+		 * The walk used to accept `root` itself and hide `body`, taking the open layer with it.
+		 */
+		const setupShadowTest = () => {
+			const main = document.createElement("main");
+			const host = document.createElement("div");
+			const shadowRoot = host.attachShadow({ mode: "open" });
+			const layer = document.createElement("div");
+			shadowRoot.appendChild(layer);
+			document.body.append(main, host);
+
+			onTestFinished(() => {
+				main.remove();
+				host.remove();
+			});
+
+			return { main, host, layer };
+		};
+
+		it("should not hide the root when the target is inside a shadow root", async () => {
+			const { main, host, layer } = setupShadowTest();
+
+			const revert = ariaHideOutside([layer]);
+			await flush();
+
+			expect(document.body).not.toHaveAttribute("aria-hidden");
+			expect(host).not.toHaveAttribute("aria-hidden");
+			expect(main).toHaveAttribute("aria-hidden", "true");
+
+			revert();
+			await flush();
+
+			expect(main).not.toHaveAttribute("aria-hidden");
+		});
+
+		it("should hide elements added outside the shadow host after the call", async () => {
+			const { layer } = setupShadowTest();
+
+			const revert = ariaHideOutside([layer]);
+			await flush();
+
+			const late = document.createElement("div");
+			document.body.appendChild(late);
+			onTestFinished(() => late.remove());
+
+			// Let the MutationObserver run, then the deferred aria-hidden frame.
+			await flush();
+			await flush();
+
+			expect(document.body).not.toHaveAttribute("aria-hidden");
+			expect(late).toHaveAttribute("aria-hidden", "true");
+
+			revert();
+			await flush();
+		});
+	});
 });

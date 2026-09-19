@@ -11,6 +11,7 @@ import { createEffect, onCleanup } from "solid-js";
 
 import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
 import { DATA_LIVE_ANNOUNCER_ATTR } from "../../live-announcer";
+import { containsComposed } from "../create-interact-outside/utils";
 
 export interface CreateHideOutsideProps {
 	/** The elements that should remain visible. */
@@ -85,8 +86,11 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
 			}
 
 			// Skip this node but continue to children if one of the targets is inside the node.
+			// Containment is composed: a target rendered inside a shadow root is not a DOM
+			// descendant of the host's ancestors, so `node.contains` would miss it and `root`
+			// itself would be hidden, taking the target with it.
 			for (const target of visibleNodes) {
-				if (node.contains(target)) {
+				if (containsComposed(node, target)) {
 					return NodeFilter.FILTER_SKIP;
 				}
 			}
@@ -157,7 +161,7 @@ export function ariaHideOutside(targets: Element[], root = document.body) {
 			// and not already inside a hidden node, hide all of the new children.
 			if (
 				![...visibleNodes, ...hiddenNodes].some((node) =>
-					node.contains(change.target),
+					containsComposed(node, change.target),
 				)
 			) {
 				for (const node of change.removedNodes) {
