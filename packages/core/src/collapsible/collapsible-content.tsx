@@ -76,7 +76,7 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 	// When opening we want it to immediately open to retrieve dimensions.
 	// When closing we delay `present` to retrieve dimensions before closing.
 	const isOpen = () => context.isOpen() || present();
-	let isMountAnimationPrevented = isOpen();
+	let isMountAnimationPrevented = untrack(isOpen);
 
 	onSettled(() => {
 		const raf = requestAnimationFrame(() => {
