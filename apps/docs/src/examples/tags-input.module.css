@@ -1,0 +1,120 @@
+.tags-input__control {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	min-width: 280px;
+	padding: 6px 8px;
+	border-radius: 8px;
+	border: 1.5px solid hsl(240 6% 90%);
+	transition:
+		border-color 150ms,
+		box-shadow 150ms;
+}
+
+.tags-input__control[data-focus] {
+	border-color: hsl(200 98% 39%);
+	box-shadow: 0 0 0 3px hsl(200 98% 39% / 0.15);
+}
+
+.tags-input__control[data-invalid] {
+	border-color: hsl(0 72% 51%);
+}
+
+.tags-input__control[data-disabled] {
+	background-color: hsl(240 5% 96%);
+	opacity: 0.6;
+}
+
+.tags-input__tag {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 4px 2px 10px;
+	border-radius: 999px;
+	background-color: hsl(240 5% 94%);
+	color: hsl(240 4% 16%);
+	font-size: 14px;
+	line-height: 1.4;
+	outline: none;
+}
+
+.tags-input__tag[data-highlighted] {
+	box-shadow: 0 0 0 2px hsl(200 98% 39%);
+}
+
+.tags-input__tag[data-disabled] {
+	opacity: 0.5;
+}
+
+.tags-input__tag-delete {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 18px;
+	height: 18px;
+	padding: 0;
+	border: none;
+	border-radius: 999px;
+	background: transparent;
+	color: hsl(240 4% 46%);
+	cursor: pointer;
+}
+
+.tags-input__tag-delete:hover {
+	background-color: hsl(240 5% 88%);
+	color: hsl(240 4% 16%);
+}
+
+.tags-input__tag-delete:disabled {
+	pointer-events: none;
+}
+
+.tags-input__tag-edit-input {
+	width: 4ch;
+	border: none;
+	background: transparent;
+	font: inherit;
+	color: inherit;
+	outline: none;
+}
+
+.tags-input__input {
+	flex: 1;
+	min-width: 120px;
+	border: none;
+	background: transparent;
+	font-size: 14px;
+	color: hsl(240 4% 16%);
+	outline: none;
+}
+
+.tags-input__input::placeholder {
+	color: hsl(240 4% 60%);
+}
+
+[data-kb-theme="dark"] .tags-input__control {
+	border-color: hsl(240 5% 34%);
+}
+
+[data-kb-theme="dark"] .tags-input__control[data-disabled] {
+	background-color: hsl(240 4% 20%);
+}
+
+[data-kb-theme="dark"] .tags-input__tag {
+	background-color: hsl(240 4% 24%);
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .tags-input__tag-delete {
+	color: hsl(0 100% 100% / 0.6);
+}
+
+[data-kb-theme="dark"] .tags-input__tag-delete:hover {
+	background-color: hsl(240 4% 32%);
+	color: hsl(0 100% 100% / 0.9);
+}
+
+[data-kb-theme="dark"] .tags-input__input {
+	color: hsl(0 100% 100% / 0.9);
+}

@@ -84,6 +84,17 @@ import {
 	ComboboxControl as Control,
 } from "./combobox-control.tsx";
 import {
+	type ComboboxControlItemCommonProps,
+	type ComboboxControlItemOptions,
+	type ComboboxControlItemProps,
+	type ComboboxControlItemRenderProps,
+	ComboboxControlItem as ControlItem,
+} from "./combobox-control-item";
+import {
+	type ComboboxHiddenInputsProps,
+	ComboboxHiddenInputs as HiddenInputs,
+} from "./combobox-hidden-inputs";
+import {
 	type ComboboxHiddenSelectProps,
 	ComboboxHiddenSelect as HiddenSelect,
 } from "./combobox-hidden-select.tsx";
@@ -117,6 +128,10 @@ export type {
 	ComboboxContentProps,
 	ComboboxContentRenderProps,
 	ComboboxControlCommonProps,
+	ComboboxControlItemCommonProps,
+	ComboboxControlItemOptions,
+	ComboboxControlItemProps,
+	ComboboxControlItemRenderProps,
 	ComboboxControlOptions,
 	ComboboxControlProps,
 	ComboboxControlRenderProps,
@@ -128,6 +143,7 @@ export type {
 	ComboboxErrorMessageOptions,
 	ComboboxErrorMessageProps,
 	ComboboxErrorMessageRenderProps,
+	ComboboxHiddenInputsProps,
 	ComboboxHiddenSelectProps,
 	ComboboxIconProps,
 	ComboboxInputCommonProps,
@@ -182,8 +198,10 @@ export {
 	Arrow,
 	Content,
 	Control,
+	ControlItem,
 	Description,
 	ErrorMessage,
+	HiddenInputs,
 	HiddenSelect,
 	Icon,
 	Input,
@@ -203,8 +221,10 @@ export const Combobox = Object.assign(Root, {
 	Arrow,
 	Content,
 	Control,
+	ControlItem,
 	Description,
 	ErrorMessage,
+	HiddenInputs,
 	HiddenSelect,
 	Icon,
 	Input,
