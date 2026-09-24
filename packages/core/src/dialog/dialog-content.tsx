@@ -23,7 +23,7 @@ import {
 	merge,
 	omit,
 	Show,
-    untrack,
+	untrack,
 } from "solid-js";
 import {
 	DismissableLayer,
@@ -228,11 +228,7 @@ export function DialogContent<T extends ValidComponent = "div">(
 					Omit<DialogContentRenderProps, keyof DismissableLayerRenderProps>
 				>
 			>
-				ref={[
-					context.setContentRef,
-					setRef,
-					untrack(() => mergedProps.ref),
-				]}
+				ref={[context.setContentRef, setRef, untrack(() => mergedProps.ref)]}
 				role="dialog"
 				tabindex={-1}
 				disableOutsidePointerEvents={context.modal() && context.isOpen()}

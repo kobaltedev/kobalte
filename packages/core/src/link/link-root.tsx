@@ -7,7 +7,7 @@
  */
 
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, omit, untrack, type Ref } from "solid-js";
+import { createSignal, omit, type Ref, untrack } from "solid-js";
 
 import {
 	type ElementOf,
