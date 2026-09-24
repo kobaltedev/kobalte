@@ -138,7 +138,7 @@ export function CollapsibleContent<T extends ValidComponent = "div">(
 		<Show when={present()}>
 			<Polymorphic<CollapsibleContentRenderProps>
 				as="div"
-				ref={[setRef, mergedProps.ref]}
+				ref={[setRef, untrack(() => mergedProps.ref)]}
 				id={mergedProps.id}
 				style={combineStyle(
 					{

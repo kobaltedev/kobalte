@@ -23,6 +23,7 @@ import {
 	merge,
 	omit,
 	Show,
+    untrack,
 } from "solid-js";
 import {
 	DismissableLayer,
@@ -228,11 +229,9 @@ export function DialogContent<T extends ValidComponent = "div">(
 				>
 			>
 				ref={[
-					(el: HTMLElement) => {
-						context.setContentRef(el);
-						setRef(el);
-					},
-					mergedProps.ref,
+					context.setContentRef,
+					setRef,
+					untrack(() => mergedProps.ref),
 				]}
 				role="dialog"
 				tabindex={-1}
