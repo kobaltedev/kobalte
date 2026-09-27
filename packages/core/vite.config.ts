@@ -5,6 +5,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
 	plugins: [
 		solidPlugin({
+			compiler: "babel",
 			hot: false,
 			solid: {
 				generate: "dom",
