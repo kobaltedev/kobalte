@@ -121,7 +121,7 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 
 		e.stopPropagation();
 
-		if (!isInternalChangeEvent()) {
+		if (!untrack(isInternalChangeEvent)) {
 			const target = e.target as HTMLInputElement;
 
 			context.setIsChecked(target.checked);
@@ -133,7 +133,7 @@ export function CheckboxInput<T extends ValidComponent = "input">(
 			// clicking on the input will change its internal `checked` state.
 			//
 			// To prevent this, we need to force the input `checked` state to be in sync with the toggle state.
-			target.checked = context.checked();
+			target.checked = untrack(() => context.checked());
 		}
 		setIsInternalChangeEvent(false);
 	};

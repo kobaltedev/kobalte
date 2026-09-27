@@ -746,7 +746,7 @@ export function ComboboxBase<
 		if (mergedProps.selectionMode === "single") {
 			const selectedKey = [...selectedKeys][0];
 
-			const selectedOption = allOptions().find(
+			const selectedOption = untrack(allOptions).find(
 				(option) => getOptionValue(option) === selectedKey,
 			);
 			if (mergedProps.noResetInputOnBlur && !selectedOption) return;
@@ -786,7 +786,7 @@ export function ComboboxBase<
 
 	// Display filtered collection again when input value changes.
 	createEffect(inputValue, () => {
-		if (showAllOptions()) {
+		if (untrack(showAllOptions)) {
 			setShowAllOptions(false);
 		}
 	});
@@ -830,8 +830,8 @@ export function ComboboxBase<
 	);
 
 	// Announce the number of available suggestions when it changes.
-	let lastOptionCount = getItemCount(listState.collection());
-	let lastOpen = disclosureState.isOpen();
+	let lastOptionCount = untrack(() => getItemCount(listState.collection()));
+	let lastOpen = untrack(() => disclosureState.isOpen());
 
 	createEffect(
 		() => {

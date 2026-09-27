@@ -225,8 +225,10 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		},
 	});
 
-	if (value() !== undefined)
-		mergedProps.onRawValueChange?.(parseRawValue(value()));
+	untrack(() => {
+		if (value() !== undefined)
+			mergedProps.onRawValueChange?.(parseRawValue(value()));
+	});
 
 	function isAllowedInput(char: string): boolean {
 		if (mergedProps.allowedInput !== undefined)

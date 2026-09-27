@@ -531,11 +531,13 @@ export function createCalendarState(
 	};
 
 	const focusCell = (date: DateValue) => {
-		setFocusedDate(constrainValue(date, min(), max()));
+		untrack(() => {
+			setFocusedDate(constrainValue(date, min(), max()));
 
-		if (!isFocused()) {
-			setIsFocused(true);
-		}
+			if (!isFocused()) {
+				setIsFocused(true);
+			}
+		});
 	};
 
 	const focusNextDay = () => {

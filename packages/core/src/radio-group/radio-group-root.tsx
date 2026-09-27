@@ -11,7 +11,14 @@ import type { Orientation, ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { access } from "@solid-primitives/utils";
 import type { ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
+import {
+	createSignal,
+	createUniqueId,
+	merge,
+	omit,
+	type Ref,
+	untrack,
+} from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -183,11 +190,11 @@ export function RadioGroupRoot<T extends ValidComponent = "div">(
 		// Sync all radio input checked state in the group with the selected value.
 		// This is necessary because checked state might be out of sync
 		// (ex: when using controlled radio-group).
-		if (ref()) {
-			const rootEl = ref()!;
+		const rootEl = untrack(ref);
+		if (rootEl) {
 			for (const el of rootEl.querySelectorAll("[type='radio']")) {
 				const radio = el as HTMLInputElement;
-				radio.checked = isSelectedValue(radio.value);
+				radio.checked = untrack(() => isSelectedValue(radio.value));
 			}
 		}
 	};

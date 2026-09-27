@@ -124,7 +124,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 
 		e.stopPropagation();
 
-		if (!isInternalChangeEvent()) {
+		if (!untrack(isInternalChangeEvent)) {
 			radioGroupContext.setSelectedValue(radioContext.value());
 
 			const target = e.target as HTMLInputElement;
@@ -136,7 +136,7 @@ export function RadioGroupItemInput<T extends ValidComponent = "input">(
 			// clicking on the input will change its internal `checked` state.
 			//
 			// To prevent this, we need to force the input `checked` state to be in sync with our state.
-			target.checked = radioContext.isSelected();
+			target.checked = untrack(() => radioContext.isSelected());
 		}
 		setIsInternalChangeEvent(false);
 	};

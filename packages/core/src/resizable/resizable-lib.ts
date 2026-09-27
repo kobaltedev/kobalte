@@ -6,7 +6,7 @@
  * https://github.com/corvudev/corvu/tree/main/packages/resizable
  */
 
-import type { Accessor, Setter } from "solid-js";
+import { type Accessor, type Setter, untrack } from "solid-js";
 
 /** A size value: a fraction (0–1) or a CSS pixel string like `"200px"`. */
 export type ResizableSize = number | `${number}px`;
@@ -837,8 +837,8 @@ export const registerHandle = (
 
 			switch (state) {
 				case "handle": {
-					const startHandle = handle.startIntersection.handle();
-					const endHandle = handle.endIntersection.handle();
+					const startHandle = untrack(() => handle.startIntersection.handle());
+					const endHandle = untrack(() => handle.endIntersection.handle());
 					if (!dragging) {
 						handle.setActive(true);
 						startHandle?.setActive(false);
@@ -850,23 +850,23 @@ export const registerHandle = (
 					break;
 				}
 				case "startIntersection": {
-					const startHandle = handle.startIntersection.handle();
+					const startHandle = untrack(() => handle.startIntersection.handle());
 					if (!dragging) startHandle?.setActive(true);
 					startHandle?.setHoveredAsIntersection(true);
 					cursorStyle = "both";
 					break;
 				}
 				case "endIntersection": {
-					const endHandle = handle.endIntersection.handle();
+					const endHandle = untrack(() => handle.endIntersection.handle());
 					if (!dragging) endHandle?.setActive(true);
 					endHandle?.setHoveredAsIntersection(true);
 					cursorStyle = "both";
 					break;
 				}
 				case null: {
-					const startHandle = handle.startIntersection.handle();
-					const endHandle = handle.endIntersection.handle();
-					if (!dragging && !handle.focused()) {
+					const startHandle = untrack(() => handle.startIntersection.handle());
+					const endHandle = untrack(() => handle.endIntersection.handle());
+					if (!dragging && !untrack(() => handle.focused())) {
 						handle.setActive(false);
 						startHandle?.setActive(false);
 						endHandle?.setActive(false);
@@ -878,7 +878,7 @@ export const registerHandle = (
 				}
 			}
 
-			if (!dragging && handle.handleCursorStyle()) {
+			if (!dragging && untrack(() => handle.handleCursorStyle())) {
 				setGlobalCursorStyle(cursorStyle);
 			}
 		},

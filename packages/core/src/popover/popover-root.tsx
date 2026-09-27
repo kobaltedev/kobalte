@@ -15,6 +15,7 @@ import {
 	merge,
 	omit,
 	type ParentProps,
+	untrack,
 } from "solid-js";
 import { Popper, type PopperRootOptions } from "../popper/index.tsx";
 import {
@@ -174,7 +175,8 @@ export function PopoverRoot(props: PopoverRootProps) {
 		setContentRef,
 		close: disclosureState.close,
 		toggle: disclosureState.toggle,
-		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
+		generateId: (suffix: string) =>
+			`${untrack(() => mergedProps.id)}-${suffix}`,
 		registerContentId: createRegisterId(setContentId),
 		registerTitleId: createRegisterId(setTitleId),
 		registerDescriptionId: createRegisterId(setDescriptionId),

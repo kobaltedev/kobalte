@@ -8,7 +8,7 @@
 
 import { access, type MaybeAccessor } from "@solid-primitives/utils";
 import type { JSX } from "@solidjs/web";
-import { type Accessor, createEffect, createMemo } from "solid-js";
+import { type Accessor, createEffect, createMemo, untrack } from "solid-js";
 
 import type { MultipleSelectionManager } from "./types.ts";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils.ts";
@@ -169,7 +169,7 @@ export function createSelectableItem<T extends HTMLElement>(
 	};
 
 	const onFocus = (e: FocusEvent) => {
-		const refEl = ref();
+		const refEl = untrack(ref);
 
 		if (shouldUseVirtualFocus() || isDisabled() || !refEl) {
 			return;

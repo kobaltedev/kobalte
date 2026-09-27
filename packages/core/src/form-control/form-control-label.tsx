@@ -1,5 +1,12 @@
 import type { ValidComponent } from "@solidjs/web";
-import { createEffect, createSignal, merge, omit, type Ref } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	merge,
+	omit,
+	type Ref,
+	untrack,
+} from "solid-js";
 
 import {
 	type ElementOf,
@@ -63,7 +70,7 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 	return (
 		<Polymorphic<FormControlLabelRenderProps>
 			as="label"
-			ref={[setRef, mergedProps.ref]}
+			ref={[setRef, untrack(() => mergedProps.ref)]}
 			for={tagName() === "label" ? context.fieldId() : undefined}
 			{...context.dataset()}
 			{...others}
