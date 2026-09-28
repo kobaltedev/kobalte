@@ -8,6 +8,8 @@ export interface NumberFieldContextValue {
 	rawValue: Accessor<number>;
 	generateId: (part: string) => string;
 	formatNumber: (number: number) => string;
+	/** The text the input shows: the formatted value, empty when there is none. */
+	displayValue: Accessor<string>;
 	format: () => void;
 	onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
 	textValue: Accessor<string | undefined>;

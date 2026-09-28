@@ -2,7 +2,14 @@ import type { ValidationState } from "@kobalte/utils";
 import { createFormResetListener } from "@solid-primitives/form";
 import { access } from "@solid-primitives/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { createSignal, createUniqueId, merge, omit, type Ref } from "solid-js";
+import {
+	createEffect,
+	createSignal,
+	createUniqueId,
+	merge,
+	omit,
+	type Ref,
+} from "solid-js";
 import {
 	createFormControl,
 	FORM_CONTROL_PROP_NAMES,
@@ -112,6 +119,18 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 
 	createFormResetListener(ref, () => setValue(mergedProps.defaultValue ?? ""));
 
+	const [inputRef, setInputRef] = createSignal<
+		HTMLInputElement | HTMLTextAreaElement | undefined
+	>(undefined, { ownedWrite: true });
+
+	// Bumped by every input event so the normalization below also runs when the
+	// change was rejected, in which case the value signal never changes.
+	const [inputEventCount, setInputEventCount] = createSignal(0, {
+		ownedWrite: true,
+	});
+
+	let caretPosition: number | null | undefined;
+
 	const onInput: JSX.EventHandlerUnion<
 		HTMLInputElement | HTMLTextAreaElement,
 		InputEvent
@@ -122,18 +141,47 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 
 		const target = e.target as HTMLInputElement | HTMLTextAreaElement;
 
-		setValue(target.value);
+		// cache the cursor position in case we need to update the input's value.
+		caretPosition = target.selectionStart;
 
-		// Unlike in React, inputs `value` can be out of sync with our value state.
-		// even if an input is controlled (ex: `<input value="foo" />`,
-		// typing on the input will change its internal `value`.
-		//
-		// To prevent this, we need to force the input `value` to be in sync with the text field value state.
-		target.value = value() ?? "";
+		setValue(target.value);
+		setInputEventCount((count) => count + 1);
 	};
+
+	// Unlike in React, inputs `value` can be out of sync with our value state.
+	// even if an input is controlled (ex: `<input value="foo" />`,
+	// typing on the input will change its internal `value`.
+	//
+	// To prevent this, we need to force the input `value` to be in sync with the text field value state.
+	// This has to happen once the batch has been flushed: reading `value()` in
+	// the input handler returns the value from before the write, which would put
+	// the previous text back for the rest of the task.
+	createEffect(
+		() => ({
+			input: inputRef(),
+			inputEventCount: inputEventCount(),
+			text: value(),
+		}),
+		({ input, text }) => {
+			if (!input) return;
+
+			const nextText = text ?? "";
+			if (input.value === nextText) return;
+
+			input.value = nextText;
+
+			const position = Math.min(
+				caretPosition ?? nextText.length,
+				nextText.length,
+			);
+			input.setSelectionRange?.(position, position);
+		},
+	);
 
 	const context: TextFieldContextValue = {
 		value,
+		inputRef,
+		setInputRef,
 		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
 		onInput,
 	};

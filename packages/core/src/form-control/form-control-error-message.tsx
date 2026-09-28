@@ -1,5 +1,5 @@
-import type { ValidComponent } from "@solidjs/web";
-import { createEffect, merge, omit, Show } from "solid-js";
+import { isServer, type ValidComponent } from "@solidjs/web";
+import { createEffect, merge, omit, Show, untrack } from "solid-js";
 
 import {
 	type ElementOf,
@@ -27,7 +27,9 @@ export interface FormControlErrorMessageCommonProps<
 
 export interface FormControlErrorMessageRenderProps
 	extends FormControlErrorMessageCommonProps,
-		FormControlDataSet {}
+		FormControlDataSet {
+	role: "alert";
+}
 
 export type FormControlErrorMessageProps<
 	T extends ValidComponent | HTMLElement = HTMLElement,
@@ -53,6 +55,14 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 
 	const isInvalid = () => context.validationState() === "invalid";
 
+	// Register while rendering, so a field rendered after the error message can
+	// read the id in the same pass. The effect keeps the registration in sync
+	// when the id changes and unregisters it on unmount. Registration is a
+	// signal write, so it stays client-side: on the server the association
+	// falls back to the part's deterministic id (`${rootId}-error-message`).
+	if (isInvalid() && !isServer)
+		untrack(() => context.registerErrorMessage(others.id!));
+
 	createEffect(
 		() => (isInvalid() ? others.id! : undefined),
 		(id) => {
@@ -65,6 +75,9 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 		<Show when={mergedProps.forceMount || isInvalid()}>
 			<Polymorphic<FormControlErrorMessageRenderProps>
 				as="div"
+				// Errors are usually rendered after hydration, when the field has
+				// already been read, so they need to be announced.
+				role="alert"
 				{...context.dataset()}
 				{...others}
 			/>

@@ -242,4 +242,28 @@ describe("createFormControl", () => {
 			expect(error).toHaveAttribute("data-readonly");
 		});
 	});
+
+	describe("error message live region", () => {
+		it("renders the error message as an alert", () => {
+			const { getByText } = render(() => (
+				<FormControl validationState="invalid">
+					<FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
+				</FormControl>
+			));
+
+			expect(getByText("ErrorMessage")).toHaveAttribute("role", "alert");
+		});
+
+		it("lets a custom role override the alert role", () => {
+			const { getByText } = render(() => (
+				<FormControl validationState="invalid">
+					<FormControlErrorMessage role="status">
+						ErrorMessage
+					</FormControlErrorMessage>
+				</FormControl>
+			));
+
+			expect(getByText("ErrorMessage")).toHaveAttribute("role", "status");
+		});
+	});
 });

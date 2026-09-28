@@ -1,4 +1,4 @@
-import type { ValidComponent } from "@solidjs/web";
+import { isServer, type ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
 	createSignal,
@@ -61,6 +61,13 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 	const others = omit(mergedProps, "ref");
 
 	const tagName = createTagName(ref, () => "label");
+
+	// Register while rendering, so the field rendered after the label can read
+	// the id in the same pass. The effect keeps the registration in sync when
+	// the id changes and unregisters it on unmount. Registration is a signal
+	// write, so it stays client-side: on the server the association falls back
+	// to the part's deterministic id (`${rootId}-label`).
+	if (!isServer) untrack(() => context.registerLabel(others.id));
 
 	createEffect(
 		() => others.id,

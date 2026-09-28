@@ -55,6 +55,8 @@
 		"clean": "rm -rf node_modules && rm -rf dist",
 		"dev": "vite serve dev --host",
 		"test": "vitest run",
+		"test:ssr": "vitest run --config vite.ssr.config.ts",
+		"test:all": "pnpm run test && pnpm run test:ssr",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {

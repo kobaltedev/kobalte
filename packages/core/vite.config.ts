@@ -19,6 +19,7 @@ export default defineConfig({
 		globals: true,
 		setupFiles: ["@testing-library/jest-dom/vitest", "./test-setup.ts"],
 		isolate: false,
+		exclude: ["src/**/*.ssr.test.{ts,tsx}", "node_modules", "dist"],
 		transformMode: {
 			web: [/\.[jt]sx$/],
 		},

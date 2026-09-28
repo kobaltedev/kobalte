@@ -149,6 +149,31 @@ Not emitted by rc.3 (the code did not exist then); the effects themselves are pr
 - Testing storybook was not required: the unit suite already exercises the affected components. The same warnings would appear in any dev-mode consumer (docs/playground/storybook dev, browser console).
 - The previous fixes in `#724`, `#728` and `89506863` targeted a subset of these same patterns (`create-dom-collection`, `tabs-indicator`, `collapsible-content`, `dialog`, `link`); the sites above are the remaining occurrences on the current branch.
 
+## Addendum — 2026-09-28 (issues #1–#6 fix pass)
+
+The `number-field/number-field-root.tsx:228-229` read site above (44 occurrences) no
+longer exists: the render-body raw-value sync it wrapped was the `onRawValueChange`
+call that fired during render (issue #2 in `issues.md`). It was replaced with a
+two-argument `createEffect` whose compute reads `value()` and runs
+`parseRawValue(...)`, so the report stays in the effect's tracked phase instead of
+reading inside an `untrack(…)` window. The original site is gone rather than
+re-styled, so the "remaining 534" total should be read as 534 − the former 44 at
+that site, plus whatever the removed call no longer emits.
+
+The new effects added in this pass (both issue-1 display-normalization effects in
+`text-field-root.tsx` / `number-field-root.tsx`, and the `number-field-root.tsx`
+raw-value report effect) keep every reactive read inside their compute functions;
+their side-effect callbacks touch only the DOM and `mergedProps.onRawValueChange`.
+Re-running the full suite after the changes (680 client tests + 3 SSR tests) shows
+no `STRICT_READ_UNTRACKED`, `REACTIVE_WRITE_IN_OWNED_SCOPE`, or `SERVER_WRITE`
+warnings from the touched components, and `tsc --noEmit` is clean.
+
+SSR note: the registered-id fallbacks and per-part sync registration introduced in
+this pass are client-only (`isServer`-gated writes) specifically so SSR rendering
+does not emit `[SERVER_WRITE]` deprecations; on the server the association derives
+from the deterministic `${rootId}-label` / `${rootId}-input` / `${rootId}-description`
+ids the parts generate at creation time.
+
 ## Suggested fix shape for the remaining cases
 
 - `selection-manager` + `listbox` getters: add a dedicated untracked accessor for the handler path (e.g. `() => untrack(() => listState().selectionManager())`) and pass *that* into `createSelectableItem`/`createSelectableList`, leaving the tracked accessor for JSX/memos. This avoids changing reactivity for render paths.

@@ -1,5 +1,6 @@
 import { fireEvent, render } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
+import { createSignal, flush } from "solid-js";
 import { expect, vi } from "vitest";
 import { I18nProvider } from "../i18n/index.tsx";
 import * as NumberField from ".";
@@ -727,5 +728,135 @@ describe("NumberField", () => {
 		await Promise.resolve();
 
 		expect(input.value).toBe("1");
+	});
+
+	it("does not revert a keystroke within the same task", () => {
+		const { getByTestId } = render(() => (
+			<NumberField.Root format={false}>
+				<NumberField.Label>Favorite Number</NumberField.Label>
+				<NumberField.Input data-testId="number-input" />
+			</NumberField.Root>
+		));
+
+		const input = getByTestId("number-input") as HTMLInputElement;
+
+		fireEvent.input(input, { target: { value: "1" } });
+
+		// A same-task read sees the new text instead of the previous "".
+		expect(input.value).toBe("1");
+	});
+
+	it("reports raw values from outside the render body so consumers can store them", () => {
+		const rawValues: number[] = [];
+
+		const { getByRole } = render(() => {
+			const [raw, setRaw] = createSignal(2);
+
+			return (
+				<NumberField.Root
+					rawValue={raw()}
+					onRawValueChange={(value) => {
+						rawValues.push(value);
+						setRaw(value);
+					}}
+				>
+					<NumberField.Label>Favorite Number</NumberField.Label>
+					<NumberField.Input />
+				</NumberField.Root>
+			);
+		});
+
+		const input = getByRole("spinbutton") as HTMLInputElement;
+
+		// The initial value is reported without writing to reactive state from
+		// inside the field's own scope (which throws `REACTIVE_WRITE_IN_OWNED_SCOPE`).
+		flush();
+		expect(rawValues).toEqual([2]);
+
+		fireEvent.input(input, { target: { value: "7" } });
+		flush();
+
+		expect(rawValues).toEqual([2, 7]);
+		expect(input.value).toBe("7");
+	});
+
+	it("hands back a number from onChange when `format` is false", async () => {
+		const seen: (number | string)[] = [];
+
+		const { getByRole } = render(() => {
+			const [servings, setServings] = createSignal(2);
+
+			return (
+				<NumberField.Root
+					format={false}
+					value={servings()}
+					onChange={(value) => {
+						seen.push(value);
+						setServings(value as number);
+					}}
+				>
+					<NumberField.Label>Servings</NumberField.Label>
+					<NumberField.Input />
+					<NumberField.IncrementTrigger>Increment</NumberField.IncrementTrigger>
+				</NumberField.Root>
+			);
+		});
+
+		fireEvent.click(getByRole("button"));
+		await Promise.resolve();
+
+		// The round-trip hands a number back, so `servings()` stays a number.
+		expect(seen).toEqual([3]);
+		expect(seen[0]).toBeTypeOf("number");
+	});
+
+	it("reports the edited text as a string while the user is typing", () => {
+		const seen: (number | string)[] = [];
+
+		const { getByRole } = render(() => (
+			<NumberField.Root
+				format={false}
+				defaultValue={2}
+				onChange={(value) => seen.push(value)}
+			>
+				<NumberField.Label>Favorite Number</NumberField.Label>
+				<NumberField.Input />
+			</NumberField.Root>
+		));
+
+		const input = getByRole("spinbutton") as HTMLInputElement;
+
+		fireEvent.input(input, { target: { value: "23" } });
+
+		expect(seen).toEqual(["23"]);
+		expect(seen[0]).toBeTypeOf("string");
+	});
+
+	it("keeps an empty field empty instead of committing a zero", () => {
+		const onChangeSpy = vi.fn();
+
+		const { getByRole } = render(() => (
+			<NumberField.Root
+				minValue={1}
+				maxValue={24}
+				defaultValue={2}
+				onChange={onChangeSpy}
+			>
+				<NumberField.Label>Favorite Number</NumberField.Label>
+				<NumberField.Input />
+			</NumberField.Root>
+		));
+
+		const input = getByRole("spinbutton") as HTMLInputElement;
+
+		fireEvent.input(input, { target: { value: "" } });
+
+		// The empty state is reported as-is, not clamped to `minValue` (0).
+		expect(onChangeSpy).toHaveBeenLastCalledWith("");
+		expect(input.value).toBe("");
+
+		// Once the batch completes, `aria-valuenow` is dropped with the value.
+		flush();
+		expect(input).not.toHaveAttribute("aria-valuenow");
 	});
 });
