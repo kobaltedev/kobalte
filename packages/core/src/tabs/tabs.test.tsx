@@ -9,6 +9,12 @@
 import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
+import {
+	Suspense,
+	createResource,
+	createSignal,
+	startTransition,
+} from "solid-js";
 import { vi } from "vitest";
 
 import * as Tabs from ".";
@@ -607,5 +613,76 @@ describe("Tabs", () => {
 
 		expect(onValueChangeSpy).toBeCalledTimes(1);
 		expect(onValueChangeSpy).toHaveBeenCalledWith("one");
+	});
+
+	it("selects the pressed trigger when a controlled value changes in a transition that is pending while the trigger gets focus", async () => {
+		vi.useRealTimers();
+		const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
+		let release = () => {};
+
+		const App = () => {
+			const [value, setValue] = createSignal("one");
+			// A read that depends on the value, under a Suspense boundary that
+			// has already resolved: a new value keeps the transition pending
+			// until `release` is called.
+			const [data] = createResource(value, (key) =>
+				key === "one"
+					? Promise.resolve(key)
+					: new Promise<string>((resolve) => {
+							release = () => resolve(key);
+						}),
+			);
+
+			return (
+				<>
+					<Tabs.Root
+						value={value()}
+						onChange={(next) => startTransition(() => setValue(next))}
+					>
+						<Tabs.List>
+							<Tabs.Trigger value="one">One</Tabs.Trigger>
+							<Tabs.Trigger value="two">Two</Tabs.Trigger>
+						</Tabs.List>
+						<Tabs.Content value="one">Body 1</Tabs.Content>
+						<Tabs.Content value="two">Body 2</Tabs.Content>
+					</Tabs.Root>
+					<Suspense>
+						<p>{data()}</p>
+					</Suspense>
+				</>
+			);
+		};
+
+		const { getByRole, getByText } = render(() => <App />);
+		await tick();
+		expect(getByText("one")).toBeTruthy();
+
+		const tabs = within(getByRole("tablist")).getAllByRole("tab");
+		const [firstItem, secondItem] = tabs;
+
+		// A mouse press in the order a browser runs it: the trigger selects on
+		// pointerdown, the transition starts at the next microtask checkpoint,
+		// and mousedown then focuses the trigger while the read is pending.
+		fireEvent(
+			secondItem,
+			createPointerEvent("pointerdown", { pointerId: 1, pointerType: "mouse" }),
+		);
+		await tick();
+		secondItem.focus();
+		fireEvent(
+			secondItem,
+			createPointerEvent("pointerup", { pointerId: 1, pointerType: "mouse" }),
+		);
+
+		release();
+		await tick();
+		await tick();
+
+		expect(getByText("two")).toBeTruthy();
+		expect(getByRole("tabpanel")).toHaveTextContent("Body 2");
+		expect(secondItem).toHaveAttribute("aria-selected", "true");
+		expect(secondItem).toHaveAttribute("data-selected");
+		expect(firstItem).toHaveAttribute("aria-selected", "false");
+		expect(firstItem).not.toHaveAttribute("data-selected");
 	});
 });
