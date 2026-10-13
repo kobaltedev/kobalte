@@ -11,10 +11,13 @@ import type { JSX, ValidComponent } from "@solidjs/web";
 import {
 	createEffect,
 	createMemo,
+	createRoot,
 	createSignal,
+	getOwner,
 	merge,
 	omit,
 	type Ref,
+	runWithOwner,
 	type Setter,
 	untrack,
 } from "solid-js";
@@ -193,6 +196,12 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 		},
 	);
 
+	// registerPanel runs inside the panel's effect callback, which has no
+	// owner in Solid 2.0, so per-panel computations are parented to the root
+	// explicitly and disposed in unregisterPanel.
+	const rootOwner = getOwner();
+	const panelDisposers = new Map<string, () => void>();
+
 	const registerPanel = (
 		panelData: ResizablePanelData,
 	): ResizablePanelInstance => {
@@ -241,18 +250,25 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 		liveSizes = newSizes;
 		setSizes([...newSizes]);
 
-		const panelSizeMemo = createMemo(() => {
-			const index = sizesToIds.indexOf(panelData.id);
-			// Guard against transitional undefined during batched flush.
-			return sizes()[index] ?? 0;
-		});
+		const panelSizeMemo = runWithOwner(rootOwner, () =>
+			createRoot((dispose) => {
+				panelDisposers.set(panelData.id, dispose);
+				const memo = createMemo(() => {
+					const index = sizesToIds.indexOf(panelData.id);
+					// Guard against transitional undefined during batched flush.
+					return sizes()[index] ?? 0;
+				});
 
-		createEffect(
-			() => panelSizeMemo(),
-			(size) => {
-				panelData.onResize?.(size);
-			},
-		);
+				createEffect(
+					() => memo(),
+					(size) => {
+						panelData.onResize?.(size);
+					},
+				);
+
+				return memo;
+			}),
+		)!;
 
 		const panel: ResizablePanelInstance = {
 			data: panelData,
@@ -285,6 +301,8 @@ export function ResizableRoot<T extends ValidComponent = "div">(
 	};
 
 	const unregisterPanel = (id: string) => {
+		panelDisposers.get(id)?.();
+		panelDisposers.delete(id);
 		livePanels = livePanels.filter((panel) => panel.data.id !== id);
 		setPanels((prev) => prev.filter((panel) => panel.data.id !== id));
 		const idx = sizesToIds.indexOf(id);

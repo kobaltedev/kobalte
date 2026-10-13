@@ -3,17 +3,15 @@ packages:
   - packages/*
 catalog:
   # Solid 2.0 core — keep these three in lockstep on the same rc number
-  solid-js: 2.0.0-rc.3
-  "@solidjs/web": 2.0.0-rc.3
-  "@solidjs/signals": 2.0.0-rc.3
-  "@solidjs/testing-library": 1.0.0-beta.2
-  # Mirrored in the "babel-preset-solid" override below (overrides can't use catalog:)
-  babel-preset-solid: 2.0.0-rc.2
+  solid-js: 2.0.0-rc.15
+  "@solidjs/web": 2.0.0-rc.15
+  "@solidjs/signals": 2.0.0-rc.15
+  "@solidjs/testing-library": 1.0.0-beta.3
   # Build tooling shared across root + published packages
   typescript: 7.0.2
   tsdown: 0.23.0
-  unplugin-solid: 2.0.0
-  vitest: 5.0.0
+  unplugin-solid: 3.0.0
+  vitest: 5.0.3
   # solid-primitives — versions mirrored in the overrides block below
   "@solid-primitives/a11y": 1.0.0-next.3
   "@solid-primitives/controlled-signal": 1.0.0-next.3
@@ -35,11 +33,12 @@ catalog:
   "@solid-primitives/upload": 1.0.0-next.4
   "@solid-primitives/utils": 7.0.0-next.4
 overrides:
-  # unplugin-solid@1.0.0's own babel-preset-solid dependency (^1.9.9) predates
-  # Solid 2.0's rename of the `use:` directive runtime helper (`use` ->
-  # `ref`/`applyRef`), which crashes at runtime against @solidjs/web@2.x.
-  "babel-preset-solid": "2.0.0-rc.2"
-  "@solidjs/testing-library": "1.0.0-beta.2"
+  # solid-js@2.0.0-rc.x declares a caret range on signals, which would otherwise
+  # resolve to the newest rc; keep it in lockstep with the catalog (overrides can't use catalog:)
+  "@solidjs/signals": "2.0.0-rc.15"
+  "@solidjs/testing-library": "1.0.0-beta.3"
+  "@solidjs/compiler": "2.0.0-rc.15"
+  "@solidjs/babel-plugin": "2.0.0-rc.15"
   "@solid-primitives/a11y": "1.0.0-next.3"
   "@solid-primitives/controlled-signal": "1.0.0-next.3"
   "@solid-primitives/event-listener": "3.0.0-next.5"
@@ -96,10 +95,16 @@ minimumReleaseAgeExclude:
   - rolldown-plugin-dts@0.27.8
   - tsdown@0.23.0
   - "@dom-expressions/babel-plugin-jsx@0.50.0-next.21"
-  - "@solidjs/signals@2.0.0-rc.3"
-  - "@solidjs/web@2.0.0-rc.3"
-  - babel-preset-solid@2.0.0-rc.2
-  - solid-js@2.0.0-rc.3
+  - "@solidjs/signals@2.0.0-rc.15"
+  - "@solidjs/web@2.0.0-rc.15"
+  - "@solidjs/babel-plugin@2.0.0-rc.15"
+  - "@solidjs/compiler@2.0.0-rc.15"
+  - "@solidjs/vite-plugin@3.0.0-next.50"
+  - solid-js@2.0.0-rc.15
+  - '@solidjs/compiler-darwin-arm64@2.0.0-rc.15'
+  - '@solidjs/compiler-darwin-x64@2.0.0-rc.15'
+  - '@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.15'
+  - '@solidjs/compiler-linux-x64-gnu@2.0.0-rc.15'
+  - '@solidjs/compiler-wasm32-wasi@2.0.0-rc.15'
+  - '@solidjs/compiler-win32-x64-msvc@2.0.0-rc.15'
 dedupePeerDependents: true
-patchedDependencies:
-  storybook-solidjs-vite@10.6.0: patches/storybook-solidjs-vite@10.6.0.patch
