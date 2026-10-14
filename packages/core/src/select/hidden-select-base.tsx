@@ -80,9 +80,7 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 		// The `<For>` child factory runs untracked, but these reads must react to
 		// collection/selection changes, so wrap them in memos (tracked scopes).
 		const item = createMemo(() => props.collection.getItem(key));
-		const isSelected = createMemo(() =>
-			props.selectionManager.isSelected(key),
-		);
+		const isSelected = createMemo(() => props.selectionManager.isSelected(key));
 
 		return (
 			<Show when={item()?.type === "item"}>

@@ -145,9 +145,11 @@ export function TabsRoot<T extends ValidComponent = "div">(
 				}
 
 				// directly set selection because replace/toggle selection won't consider disabled keys
-					if (selectedKey != null) {
-						untrack(() => selectionManager.setSelectedKeys([selectedKey] as Iterable<string>));
-					}
+				if (selectedKey != null) {
+					untrack(() =>
+						selectionManager.setSelectedKeys([selectedKey] as Iterable<string>),
+					);
+				}
 			}
 
 			// If there isn't a focused key yet or the tabs doesn't have focus and the selected key changes,
