@@ -275,7 +275,11 @@ export function CalendarGridBodyCellTrigger<T extends ValidComponent = "div">(
 		(focused) => {
 			if (focused) {
 				const el = untrack(ref);
-				el?.focus({ preventScroll: true });
+				// Focusing dispatches focus events synchronously; their handlers read
+				// cell state in this (already untracked) effect callback. Run the
+				// focus action untracked so those one-shot handler reads don't warn
+				// under Solid 2's strict-read diagnostics.
+				untrack(() => el?.focus({ preventScroll: true }));
 			}
 		},
 	);
