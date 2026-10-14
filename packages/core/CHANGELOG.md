@@ -1,5 +1,14 @@
 # @kobalte/core
 
+## 2.0.0-alpha.3
+
+### Patch Changes
+
+- Update Solid RC
+  STRICT_READ_UNTRACKED Fixes
+- Updated dependencies
+  - @kobalte/utils@2.0.0-alpha.1
+
 ## 2.0.0-alpha.2
 
 ### Patch Changes

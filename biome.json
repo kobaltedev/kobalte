@@ -38,7 +38,8 @@
 				"noDocumentCookie": "off"
 			},
 			"style": {
-				"noNonNullAssertion": "off"
+				"noNonNullAssertion": "off",
+				"noDescendingSpecificity": "off"
 			},
 			"complexity": {
 				"noBannedTypes": "off"
