@@ -34,7 +34,7 @@ jobs:
         id: changesets
         uses: changesets/action@v2
         with:
-          publish: pnpm ci:release
+          publish-script: pnpm ci:release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_OPTIONS: "--max_old_space_size=4096"
