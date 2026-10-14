@@ -32,7 +32,7 @@ jobs:
 
       - name: Publish to npm
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
           publish: pnpm ci:release
         env:
