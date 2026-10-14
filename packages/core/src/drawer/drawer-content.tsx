@@ -119,25 +119,6 @@ export function DrawerContent<T extends ValidComponent = "div">(
 		},
 	);
 
-	// --- Global pointer/touch listeners (active while dialog is open) ---
-	// createEventListener scopes the listeners to this effect: they're only
-	// attached while the drawer is visible and removed when it closes or the
-	// component unmounts.
-	createEffect(
-		() => dialogCtx.isOpen(),
-		(isOpen) => {
-			if (!isOpen) return;
-
-			createEventListener(document, "pointermove", onPointerMove);
-			createEventListener(document, "touchmove", onTouchMove, {
-				passive: false,
-			});
-			createEventListener(document, "pointerup", onPointerUp);
-			createEventListener(document, "touchend", onTouchEnd);
-			createEventListener(document, "contextmenu", onUp);
-		},
-	);
-
 	// --- Transform value for the CSS translate ---
 	const transformValue = createMemo(() => {
 		const size = ctx.drawerSize();
@@ -402,6 +383,15 @@ export function DrawerContent<T extends ValidComponent = "div">(
 			};
 		},
 	);
+
+	// Global pointer/touch listeners. Registered unconditionally (they are
+	// scoped to this component) since creating them inside an effect callback
+	// has no owner in Solid 2.0; the handlers are no-ops unless a drag started.
+	createEventListener(document, "pointermove", onPointerMove);
+	createEventListener(document, "touchmove", onTouchMove, { passive: false });
+	createEventListener(document, "pointerup", onPointerUp);
+	createEventListener(document, "touchend", onTouchEnd);
+	createEventListener(document, "contextmenu", onUp);
 
 	return (
 		<DialogContent<

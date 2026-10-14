@@ -35,16 +35,16 @@
 	},
 	"dependencies": {
 		"@kobalte/core": "workspace:*",
-		"@kobalte/solidbase": "0.6.11",
+		"@kobalte/solidbase": "0.6.13",
 		"@solidjs/meta": "0.29.4",
-		"@solidjs/router": "0.16.2",
-		"@solidjs/start": "2.0.0-beta.0",
+		"@solidjs/router": "1.0.0",
+		"@solidjs/start": "2.0.6",
 		"@solidjs/web": "catalog:",
-		"@tanstack/solid-virtual": "3.0.0-beta.6",
-		"minisearch": "7.1.0",
-		"nitro": "3.0.260610-beta",
+		"@tanstack/solid-virtual": "3.13.40",
+		"minisearch": "7.2.0",
+		"nitro": "3.0.260903-beta",
 		"solid-js": "catalog:",
-		"vite": "8.1.3"
+		"vite": "8.3.4"
 	},
 	"devDependencies": {
 		"@iconify-json/ri": "^1.2.10"
