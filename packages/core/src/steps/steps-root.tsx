@@ -7,6 +7,7 @@ import {
 	merge,
 	omit,
 	type Ref,
+	untrack,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic";
 import { createControllableSignal } from "../primitives";
@@ -119,7 +120,9 @@ export function StepsRoot<T extends ValidComponent = "div">(
 		"onStepInvalid",
 	);
 
-	const initialValueIsControlled = mergedProps.value !== undefined;
+	const initialValueIsControlled = untrack(
+		() => mergedProps.value !== undefined,
+	);
 
 	const [value, setValueRaw] = createControllableSignal<number>({
 		value: () =>

@@ -8,7 +8,7 @@
 
 import { access, type MaybeAccessor } from "@solid-primitives/utils";
 import type { JSX } from "@solidjs/web";
-import { type Accessor, createEffect, createMemo } from "solid-js";
+import { type Accessor, createEffect, createMemo, untrack } from "solid-js";
 
 import type { MultipleSelectionManager } from "./types.ts";
 import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils.ts";
@@ -169,7 +169,7 @@ export function createSelectableItem<T extends HTMLElement>(
 	};
 
 	const onFocus = (e: FocusEvent) => {
-		const refEl = ref();
+		const refEl = untrack(ref);
 
 		if (shouldUseVirtualFocus() || isDisabled() || !refEl) {
 			return;
@@ -215,11 +215,17 @@ export function createSelectableItem<T extends HTMLElement>(
 				!virtualFocus &&
 				document.activeElement !== refEl
 			) {
-				if (props.focus) {
-					props.focus();
-				} else {
-					refEl.focus({ preventScroll: true });
-				}
+				// Focusing dispatches focus events synchronously; their handlers read
+				// selection state in this (already untracked) effect callback. Run the
+				// focus action untracked so those one-shot handler reads don't warn
+				// under Solid 2's strict-read diagnostics.
+				untrack(() => {
+					if (props.focus) {
+						props.focus();
+					} else {
+						refEl.focus({ preventScroll: true });
+					}
+				});
 			}
 		},
 	);

@@ -146,7 +146,9 @@ export function TabsRoot<T extends ValidComponent = "div">(
 
 				// directly set selection because replace/toggle selection won't consider disabled keys
 				if (selectedKey != null) {
-					selectionManager.setSelectedKeys([selectedKey]);
+					untrack(() =>
+						selectionManager.setSelectedKeys([selectedKey] as Iterable<string>),
+					);
 				}
 			}
 

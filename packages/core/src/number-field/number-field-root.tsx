@@ -38,22 +38,31 @@ import {
 
 export interface NumberFieldRootOptions
 	extends Pick<SpinButtonRootOptions, "textValue" | "translations"> {
-	/** The controlled formatted value of the number field. */
+	/** The controlled value of the number field. */
 	value?: string | number;
 
 	/**
-	 * The default formatted value when initially rendered.
+	 * The default value when initially rendered.
 	 * Useful when you do not need to control the value.
 	 */
 	defaultValue?: string | number;
 
-	/** Event handler called when the formatted value of the number field changes. */
-	onChange?: (value: string) => void;
+	/**
+	 * Event handler called when the value of the number field changes.
+	 * Hands back the formatted string when `format` is `true`, and the raw
+	 * number when it is `false`, so that a controlled round-trip
+	 * (`value={count()}` paired with `onChange={setCount}`) keeps the type it
+	 * was given. An empty field is reported as an empty string.
+	 */
+	onChange?: (value: string | number) => void;
 
 	/** The controlled raw value of the number field. */
 	rawValue?: number;
 
-	/** Event handler called when the raw value of the number field changes. */
+	/**
+	 * Event handler called when the raw value of the number field changes.
+	 * `NaN` is reported when the field is empty.
+	 */
 	onRawValueChange?: (value: number) => void;
 
 	/** The smallest value allowed, defaults to `Number.MIN_SAFE_INTEGER`. */
@@ -200,10 +209,17 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 	const formatNumber = (number: number) =>
 		mergedProps.format ? numberFormatter().format(number) : number.toString();
 
-	const parseRawValue = (value: string | number | undefined) =>
-		mergedProps.format && typeof value !== "number"
-			? numberParser().parse(value ?? "")
-			: Number(value ?? "");
+	const parseRawValue = (value: string | number | undefined) => {
+		// An empty field is a state of its own: `Number("")` would report a zero,
+		// which is below `minValue` and indistinguishable from a real one.
+		if (value === undefined || (typeof value === "string" && value === "")) {
+			return Number.NaN;
+		}
+
+		return mergedProps.format && typeof value !== "number"
+			? numberParser().parse(value)
+			: Number(value);
+	};
 
 	const isValidPartialValue = (value: string | number | undefined) =>
 		mergedProps.format && typeof value !== "number"
@@ -218,15 +234,25 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		value: () => mergedProps.value,
 		defaultValue: () => mergedProps.defaultValue ?? mergedProps.rawValue,
 		onChange: (value) => {
+			// Only a formatted value is reported as a string: an unformatted
+			// field hands back the number, so feeding the result back into
+			// `value` keeps the type the consumer gave it.
 			mergedProps.onChange?.(
-				typeof value === "number" ? formatNumber(value) : value,
+				typeof value === "number" && mergedProps.format
+					? formatNumber(value)
+					: value,
 			);
-			mergedProps.onRawValueChange?.(parseRawValue(value));
 		},
 	});
 
-	if (value() !== undefined)
-		mergedProps.onRawValueChange?.(parseRawValue(value()));
+	// The text the input shows.
+	const displayValue = (): string => {
+		const rawValue = parseRawValue(value());
+
+		return value() === undefined || Number.isNaN(rawValue)
+			? ""
+			: formatNumber(rawValue);
+	};
 
 	function isAllowedInput(char: string): boolean {
 		if (mergedProps.allowedInput !== undefined)
@@ -247,6 +273,15 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 	const [hiddenInputRef, setHiddenInputRef] = createSignal<
 		HTMLInputElement | undefined
 	>(undefined, { ownedWrite: true });
+
+	// Bumped by every input event so the normalization below also runs when the
+	// change was rejected, in which case the value signal never changes.
+	const [inputEventCount, setInputEventCount] = createSignal(0, {
+		ownedWrite: true,
+	});
+
+	let caretPosition: number | null | undefined;
+
 	const onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (e) => {
 		if (formControlContext.isReadOnly() || formControlContext.isDisabled()) {
 			return;
@@ -266,20 +301,33 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			}
 		}
 
-		// Unlike in React, inputs `value` can be out of sync with our value state.
-		// even if an input is controlled (ex: `<input value="foo" />`,
-		// typing on the input will change its internal `value`.
-		//
-		// To prevent this, we need to force the input `value` to be in sync with the text field value state.
-		const v = value();
-		if (v !== target.value) {
-			target.value = String(v ?? "");
-			if (cursorPosition !== null) {
-				target.selectionStart = cursorPosition;
-				target.selectionEnd = cursorPosition;
-			}
-		}
+		caretPosition = cursorPosition;
+		setInputEventCount((count) => count + 1);
 	};
+
+	// Unlike in React, inputs `value` can be out of sync with our value state.
+	// even if an input is controlled (ex: `<input value="foo" />`,
+	// typing on the input will change its internal `value`.
+	//
+	// To prevent this, we need to force the input `value` to be in sync with the text field value state.
+	// This has to happen once the batch has been flushed: reading `value()` in
+	// the input handler returns the value from before the write, which would put
+	// the previous text back for the rest of the task.
+	createEffect(
+		() => ({
+			input: inputRef(),
+			inputEventCount: inputEventCount(),
+			text: displayValue(),
+		}),
+		({ input, text }) => {
+			if (!input || input.value === text) return;
+
+			input.value = text;
+
+			const position = Math.min(caretPosition ?? text.length, text.length);
+			input.setSelectionRange?.(position, position);
+		},
+	);
 
 	const context: NumberFieldContextValue = {
 		value,
@@ -287,13 +335,13 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 		rawValue: () => parseRawValue(value()),
 		generateId: (suffix: string) => `${access(formControlProps.id)}-${suffix}`,
 		formatNumber,
+		displayValue,
 		format: () => {
 			if (!mergedProps.format) return;
 			let rawValue = context.rawValue();
 
 			if (Number.isNaN(rawValue)) {
 				if (hiddenInputRef()) hiddenInputRef()!.value = "";
-				mergedProps.onRawValueChange?.(rawValue);
 				return;
 			}
 
@@ -371,6 +419,20 @@ export function NumberFieldRoot<T extends ValidComponent = "div">(
 			}
 		},
 		{ defer: true },
+	);
+
+	// Reported from an effect, not from the render body: the consumer's
+	// callback is owned by `<NumberField>`'s scope there, and writing state
+	// from it throws `REACTIVE_WRITE_IN_OWNED_SCOPE` and halts reactivity.
+	createEffect(
+		() => {
+			const text = value();
+			return text === undefined ? undefined : parseRawValue(text);
+		},
+		(rawValue) => {
+			if (rawValue === undefined) return;
+			mergedProps.onRawValueChange?.(rawValue);
+		},
 	);
 
 	return (

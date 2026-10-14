@@ -1,6 +1,7 @@
 import { installPointerEvent } from "@kobalte/tests";
-import { render } from "@solidjs/testing-library";
+import { fireEvent, render } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
+import { flush } from "solid-js";
 import { vi } from "vitest";
 
 import * as TextField from ".";
@@ -471,5 +472,65 @@ describe("TextField", () => {
 		const input = getByRole("textbox") as HTMLInputElement;
 		await userEvent.type(input, "{enter}");
 		expect(onSubmit).not.toHaveBeenCalled();
+	});
+
+	it("does not revert a keystroke within the same task", () => {
+		const { getByTestId } = render(() => (
+			<TextField.Root>
+				<TextField.Label>Email</TextField.Label>
+				<TextField.Input data-testid="email-input" />
+			</TextField.Root>
+		));
+
+		const input = getByTestId("email-input") as HTMLInputElement;
+
+		fireEvent.input(input, { target: { value: "a" } });
+
+		// A same-task read sees the new text instead of the previous "".
+		expect(input.value).toBe("a");
+
+		fireEvent.input(input, { target: { value: "ab" } });
+
+		expect(input.value).toBe("ab");
+	});
+
+	it("keeps an append when the field has a seed value", () => {
+		const { getByTestId } = render(() => (
+			<TextField.Root defaultValue="seed">
+				<TextField.Label>Email</TextField.Label>
+				<TextField.Input data-testid="email-input" />
+			</TextField.Root>
+		));
+
+		const input = getByTestId("email-input") as HTMLInputElement;
+
+		fireEvent.input(input, { target: { value: "seedX" } });
+
+		// The append is visible for the rest of the task, not "seed".
+		expect(input.value).toBe("seedX");
+	});
+
+	it("reverts a refused controlled change after the task", () => {
+		const onChangeSpy = vi.fn();
+
+		const { getByTestId } = render(() => (
+			<TextField.Root value="cat" onChange={onChangeSpy}>
+				<TextField.Label>Email</TextField.Label>
+				<TextField.Input data-testid="email-input" />
+			</TextField.Root>
+		));
+
+		const input = getByTestId("email-input") as HTMLInputElement;
+
+		fireEvent.input(input, { target: { value: "cats" } });
+
+		// Still WHILE nothing re-rendered, the keystroke is the source of truth…
+		expect(input.value).toBe("cats");
+		expect(onChangeSpy).toHaveBeenCalledWith("cats");
+
+		// …and the existing value binding normalizes it back to the controlled
+		// value once the batch completes.
+		flush();
+		expect(input.value).toBe("cat");
 	});
 });

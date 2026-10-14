@@ -1,8 +1,15 @@
 import type { JSX } from "@solidjs/web";
-import { type Accessor, createContext, useContext } from "solid-js";
+import {
+	type Accessor,
+	createContext,
+	type Setter,
+	useContext,
+} from "solid-js";
 
 export interface TextFieldContextValue {
 	value: Accessor<string | undefined>;
+	inputRef: Accessor<HTMLInputElement | HTMLTextAreaElement | undefined>;
+	setInputRef: Setter<HTMLInputElement | HTMLTextAreaElement | undefined>;
 	generateId: (part: string) => string;
 	onInput: JSX.EventHandlerUnion<
 		HTMLInputElement | HTMLTextAreaElement,

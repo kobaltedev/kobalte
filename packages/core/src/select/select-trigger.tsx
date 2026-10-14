@@ -9,7 +9,14 @@
 
 import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createEffect, merge, omit, type Ref } from "solid-js";
+import {
+	type Component,
+	createEffect,
+	merge,
+	omit,
+	type Ref,
+	untrack,
+} from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import {
@@ -194,7 +201,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	const onFocus: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, mergedProps.onFocus);
 
-		if (selectionManager().isFocused()) {
+		if (untrack(() => selectionManager().isFocused())) {
 			return;
 		}
 
@@ -204,7 +211,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	const onBlur: JSX.EventHandlerUnion<HTMLElement, FocusEvent> = (e) => {
 		callHandler(e, mergedProps.onBlur);
 
-		if (context.isOpen()) {
+		if (untrack(() => context.isOpen())) {
 			return;
 		}
 

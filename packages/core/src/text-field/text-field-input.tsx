@@ -8,7 +8,7 @@
 
 import { composeEventHandlers } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { merge, omit } from "solid-js";
+import { merge, omit, type Ref } from "solid-js";
 
 import {
 	createFormControlField,
@@ -29,6 +29,7 @@ export interface TextFieldInputCommonProps<
 	T extends HTMLElement = HTMLElement,
 > {
 	id: string;
+	ref: Ref<T>;
 	onInput: JSX.EventHandlerUnion<T, InputEvent>;
 	"aria-label": string | undefined;
 	"aria-labelledby": string | undefined;
@@ -73,7 +74,12 @@ export function TextFieldInputBase<T extends ValidComponent = "input">(
 	);
 
 	const formControlFieldProps = omit(mergedProps, "onInput");
-	const others = omit(mergedProps, "onInput", ...FORM_CONTROL_FIELD_PROP_NAMES);
+	const others = omit(
+		mergedProps,
+		"ref",
+		"onInput",
+		...FORM_CONTROL_FIELD_PROP_NAMES,
+	);
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
@@ -81,6 +87,7 @@ export function TextFieldInputBase<T extends ValidComponent = "input">(
 		<Polymorphic<TextFieldInputRenderProps>
 			as="input"
 			id={fieldProps.id()}
+			ref={[context.setInputRef, mergedProps.ref]}
 			name={formControlContext.name()}
 			value={context.value() ?? ""}
 			required={formControlContext.isRequired()}

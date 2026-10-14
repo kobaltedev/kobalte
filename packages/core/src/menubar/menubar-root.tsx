@@ -19,6 +19,7 @@ import {
 	omit,
 	type Ref,
 	type Setter,
+	untrack,
 } from "solid-js";
 import {
 	type ElementOf,
@@ -217,7 +218,7 @@ export function MenubarRoot<T extends ValidComponent = "div">(
 			setTimeout(() => context.closeMenu());
 		},
 		shouldExcludeElement: (element) => {
-			return [ref(), ...menuRefs().values()]
+			return untrack(() => [ref(), ...menuRefs().values()])
 				.flat()
 				.some((ref) => ref?.contains(element));
 		},

@@ -8,7 +8,15 @@
 
 import { callHandler, visuallyHiddenStyles } from "@kobalte/utils";
 import type { ComponentProps, JSX } from "@solidjs/web";
-import { createEffect, createSignal, For, omit, Show, untrack } from "solid-js";
+import {
+	createEffect,
+	createMemo,
+	createSignal,
+	For,
+	omit,
+	Show,
+	untrack,
+} from "solid-js";
 
 import { useFormControlContext } from "../form-control/index.ts";
 import type { Collection, CollectionNode } from "../primitives/index.ts";
@@ -69,12 +77,15 @@ export function HiddenSelectBase(props: HiddenSelectBaseProps) {
 	let isInternalChangeEvent = false;
 
 	const renderOption = (key: string) => {
-		const item = props.collection.getItem(key);
+		// The `<For>` child factory runs untracked, but these reads must react to
+		// collection/selection changes, so wrap them in memos (tracked scopes).
+		const item = createMemo(() => props.collection.getItem(key));
+		const isSelected = createMemo(() => props.selectionManager.isSelected(key));
 
 		return (
-			<Show when={item?.type === "item"}>
-				<option value={key} selected={props.selectionManager.isSelected(key)}>
-					{item?.textValue}
+			<Show when={item()?.type === "item"}>
+				<option value={key} selected={isSelected()}>
+					{item()?.textValue}
 				</option>
 			</Show>
 		);

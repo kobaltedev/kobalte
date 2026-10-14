@@ -207,11 +207,7 @@ export function NumberFieldInput<T extends ValidComponent = "input">(
 			type="text"
 			id={fieldProps.id()}
 			ref={[context.setInputRef, mergedProps.ref]}
-			value={
-				Number.isNaN(context.rawValue()) || context.value() === undefined
-					? ""
-					: context.formatNumber(context.rawValue())
-			}
+			value={context.displayValue()}
 			required={formControlContext.isRequired()}
 			disabled={formControlContext.isDisabled()}
 			readonly={formControlContext.isReadOnly()}

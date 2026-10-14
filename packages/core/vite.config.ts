@@ -5,6 +5,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
 	plugins: [
 		solidPlugin({
+			compiler: "babel",
 			hot: false,
 			solid: {
 				generate: "dom",
@@ -18,6 +19,7 @@ export default defineConfig({
 		globals: true,
 		setupFiles: ["@testing-library/jest-dom/vitest", "./test-setup.ts"],
 		isolate: false,
+		exclude: ["src/**/*.ssr.test.{ts,tsx}", "node_modules", "dist"],
 		transformMode: {
 			web: [/\.[jt]sx$/],
 		},

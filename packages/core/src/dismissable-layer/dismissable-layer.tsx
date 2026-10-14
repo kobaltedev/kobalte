@@ -28,6 +28,7 @@ import {
 	omit,
 	onSettled,
 	type Ref,
+	untrack,
 } from "solid-js";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
@@ -129,40 +130,49 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	};
 
 	const shouldExcludeElement = (element: Element) => {
-		if (!ref()) {
-			return false;
-		}
+		return untrack(() => {
+			if (!ref()) {
+				return false;
+			}
 
-		return (
-			props.excludedElements?.some((node) => node()?.contains(element)) ||
-			[...nestedLayers].some((layer) => layer.contains(element))
-		);
+			return (
+				props.excludedElements?.some((node) => node()?.contains(element)) ||
+				[...nestedLayers].some((layer) => layer.contains(element))
+			);
+		});
 	};
 
 	const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
-		if (!ref() || layerStack.isBelowPointerBlockingLayer(ref()!)) {
-			return;
-		}
+		untrack(() => {
+			if (!ref() || layerStack.isBelowPointerBlockingLayer(ref()!)) {
+				return;
+			}
 
-		if (!props.bypassTopMostLayerCheck && !layerStack.isTopMostLayer(ref()!)) {
-			return;
-		}
+			if (
+				!props.bypassTopMostLayerCheck &&
+				!layerStack.isTopMostLayer(ref()!)
+			) {
+				return;
+			}
 
-		props.onPointerDownOutside?.(e);
-		props.onInteractOutside?.(e);
+			props.onPointerDownOutside?.(e);
+			props.onInteractOutside?.(e);
 
-		if (!e.defaultPrevented) {
-			props.onDismiss?.();
-		}
+			if (!e.defaultPrevented) {
+				props.onDismiss?.();
+			}
+		});
 	};
 
 	const onFocusOutside = (e: FocusOutsideEvent) => {
-		props.onFocusOutside?.(e);
-		props.onInteractOutside?.(e);
+		untrack(() => {
+			props.onFocusOutside?.(e);
+			props.onInteractOutside?.(e);
 
-		if (!e.defaultPrevented) {
-			props.onDismiss?.();
-		}
+			if (!e.defaultPrevented) {
+				props.onDismiss?.();
+			}
+		});
 	};
 
 	const interactOutsideRef = interactOutside({
@@ -173,16 +183,18 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 	createShortcut(
 		["Escape"],
 		(e) => {
-			if (!e || !ref() || !layerStack.isTopMostLayer(ref()!)) {
-				return;
-			}
+			untrack(() => {
+				if (!e || !ref() || !layerStack.isTopMostLayer(ref()!)) {
+					return;
+				}
 
-			props.onEscapeKeyDown?.(e);
+				props.onEscapeKeyDown?.(e);
 
-			if (!e.defaultPrevented && props.onDismiss) {
-				e.preventDefault();
-				props.onDismiss();
-			}
+				if (!e.defaultPrevented && props.onDismiss) {
+					e.preventDefault();
+					props.onDismiss();
+				}
+			});
 		},
 		{ preventDefault: false },
 	);

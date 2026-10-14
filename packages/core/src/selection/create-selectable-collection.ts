@@ -18,6 +18,7 @@ import {
 	flush,
 	merge,
 	onSettled,
+	untrack,
 } from "solid-js";
 
 import { useLocale } from "../i18n/index.tsx";
@@ -363,9 +364,9 @@ export function createSelectableCollection<
 			return;
 		}
 
-		const manager = access(mergedProps.selectionManager);
-		const delegate = access(mergedProps.keyboardDelegate);
-		const selectOnFocus = access(mergedProps.selectOnFocus);
+		const manager = untrack(() => access(mergedProps.selectionManager));
+		const delegate = untrack(() => access(mergedProps.keyboardDelegate));
+		const selectOnFocus = untrack(() => access(mergedProps.selectOnFocus));
 
 		if (manager.isFocused()) {
 			// If a focus event bubbled through a portal, reset focus state.

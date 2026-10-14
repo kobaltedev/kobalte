@@ -9,7 +9,7 @@
 import { callHandler, type Orientation } from "@kobalte/utils";
 import type { FocusOutsideEvent } from "@solid-primitives/interaction";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit } from "solid-js";
+import { type Component, omit, untrack } from "solid-js";
 import { type Direction, useLocale } from "../i18n/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
 import {
@@ -84,7 +84,7 @@ export function MenuSubContent<T extends ValidComponent = "div">(
 
 		// We prevent closing when the trigger is focused to avoid triggering a re-open animation
 		// on pointer interaction.
-		if (!context.triggerRef()?.contains(target)) {
+		if (!untrack(() => context.triggerRef())?.contains(target)) {
 			context.close();
 		}
 	};

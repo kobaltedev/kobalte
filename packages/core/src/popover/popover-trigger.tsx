@@ -8,7 +8,7 @@
 
 import { callHandler } from "@kobalte/utils";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, omit, type Ref } from "solid-js";
+import { type Component, omit, type Ref, untrack } from "solid-js";
 
 import * as Button from "../button/index.tsx";
 import type { ElementOf, PolymorphicProps } from "../polymorphic/index.tsx";
@@ -68,7 +68,7 @@ export function PopoverTrigger<T extends ValidComponent = "button">(
 				Omit<PopoverTriggerRenderProps, keyof Button.ButtonRootRenderProps>
 			>
 		>
-			ref={[context.setTriggerRef, p.ref]}
+			ref={[context.setTriggerRef, untrack(() => p.ref)]}
 			aria-haspopup="dialog"
 			aria-expanded={context.isOpen() ? "true" : "false"}
 			aria-controls={context.isOpen() ? context.contentId() : undefined}
