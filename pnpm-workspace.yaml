@@ -15,23 +15,23 @@ catalog:
   # solid-primitives — versions mirrored in the overrides block below
   "@solid-primitives/a11y": 1.0.0-next.3
   "@solid-primitives/controlled-signal": 1.0.0-next.3
-  "@solid-primitives/event-listener": 3.0.0-next.5
+  "@solid-primitives/event-listener": 3.0.0-next.9
   "@solid-primitives/focus": 1.0.0-next.4
   "@solid-primitives/form": 1.0.0-next.3
   "@solid-primitives/i18n": 3.0.0-next.4
-  "@solid-primitives/interaction": 1.0.0-next.4
-  "@solid-primitives/keyboard": 2.0.0-next.5
+  "@solid-primitives/interaction": 1.0.0-next.7
+  "@solid-primitives/keyboard": 2.0.0-next.8
   "@solid-primitives/keyed": 3.0.0-next.2
   "@solid-primitives/map": 1.0.0-next.2
-  "@solid-primitives/media": 4.0.0-next.2
+  "@solid-primitives/media": 4.0.0-next.5
   "@solid-primitives/platform": 1.0.0-next.2
   "@solid-primitives/presence": 1.0.0-next.2
   "@solid-primitives/props": 4.0.0-next.3
   "@solid-primitives/refs": 3.0.0-next.2
-  "@solid-primitives/resize-observer": 4.0.0-next.3
-  "@solid-primitives/scroll": 3.0.0-next.4
+  "@solid-primitives/resize-observer": 4.0.0-next.7
+  "@solid-primitives/scroll": 3.0.0-next.7
   "@solid-primitives/upload": 1.0.0-next.4
-  "@solid-primitives/utils": 7.0.0-next.4
+  "@solid-primitives/utils": 7.0.0-next.7
 overrides:
   # solid-js@2.0.0-rc.x declares a caret range on signals, which would otherwise
   # resolve to the newest rc; keep it in lockstep with the catalog (overrides can't use catalog:)
@@ -41,26 +41,26 @@ overrides:
   "@solidjs/babel-plugin": "2.0.0-rc.15"
   "@solid-primitives/a11y": "1.0.0-next.3"
   "@solid-primitives/controlled-signal": "1.0.0-next.3"
-  "@solid-primitives/event-listener": "3.0.0-next.5"
+  "@solid-primitives/event-listener": "3.0.0-next.9"
   "@solid-primitives/focus": "1.0.0-next.4"
   "@solid-primitives/form": "1.0.0-next.3"
   "@solid-primitives/i18n": "3.0.0-next.4"
-  "@solid-primitives/interaction": "1.0.0-next.4"
-  "@solid-primitives/keyboard": "2.0.0-next.5"
+  "@solid-primitives/interaction": "1.0.0-next.7"
+  "@solid-primitives/keyboard": "2.0.0-next.8"
   "@solid-primitives/keyed": "3.0.0-next.2"
   "@solid-primitives/map": "1.0.0-next.2"
-  "@solid-primitives/media": "4.0.0-next.2"
+  "@solid-primitives/media": "4.0.0-next.5"
   "@solid-primitives/platform": "1.0.0-next.2"
   "@solid-primitives/presence": "1.0.0-next.2"
   "@solid-primitives/props": "4.0.0-next.3"
   "@solid-primitives/refs": "3.0.0-next.2"
-  "@solid-primitives/resize-observer": "4.0.0-next.3"
+  "@solid-primitives/resize-observer": "4.0.0-next.7"
   "@solid-primitives/rootless": "2.0.0-next.2"
-  "@solid-primitives/scroll": "3.0.0-next.4"
-  "@solid-primitives/static-store": "1.0.0-next.2"
+  "@solid-primitives/scroll": "3.0.0-next.7"
+  "@solid-primitives/static-store": "1.0.0-next.5"
   "@solid-primitives/trigger": "3.0.0-next.2"
   "@solid-primitives/upload": "1.0.0-next.4"
-  "@solid-primitives/utils": "7.0.0-next.4"
+  "@solid-primitives/utils": "7.0.0-next.7"
   "@storybook/builder-vite": "10.5.0"
 allowBuilds:
   "@biomejs/biome": false
@@ -72,26 +72,26 @@ minimumReleaseAgeExclude:
   - "@solidjs/start@2.0.0-beta.0"
   - "@solid-primitives/a11y@1.0.0-next.3"
   - "@solid-primitives/controlled-signal@1.0.0-next.3"
-  - "@solid-primitives/event-listener@3.0.0-next.5"
+  - "@solid-primitives/event-listener@3.0.0-next.9"
   - "@solid-primitives/focus@1.0.0-next.4"
   - "@solid-primitives/form@1.0.0-next.3"
   - "@solid-primitives/i18n@3.0.0-next.4"
-  - "@solid-primitives/interaction@1.0.0-next.4"
-  - "@solid-primitives/keyboard@2.0.0-next.5"
+  - "@solid-primitives/interaction@1.0.0-next.7"
+  - "@solid-primitives/keyboard@2.0.0-next.8"
   - "@solid-primitives/keyed@3.0.0-next.2"
   - "@solid-primitives/map@1.0.0-next.2"
-  - "@solid-primitives/media@4.0.0-next.2"
+  - "@solid-primitives/media@4.0.0-next.5"
   - "@solid-primitives/platform@1.0.0-next.2"
   - "@solid-primitives/presence@1.0.0-next.2"
   - "@solid-primitives/props@4.0.0-next.3"
   - "@solid-primitives/refs@3.0.0-next.2"
-  - "@solid-primitives/resize-observer@4.0.0-next.3"
+  - "@solid-primitives/resize-observer@4.0.0-next.7"
   - "@solid-primitives/rootless@2.0.0-next.2"
-  - "@solid-primitives/scroll@3.0.0-next.4"
-  - "@solid-primitives/static-store@1.0.0-next.2"
+  - "@solid-primitives/scroll@3.0.0-next.7"
+  - "@solid-primitives/static-store@1.0.0-next.5"
   - "@solid-primitives/trigger@3.0.0-next.2"
   - "@solid-primitives/upload@1.0.0-next.4"
-  - "@solid-primitives/utils@7.0.0-next.4"
+  - "@solid-primitives/utils@7.0.0-next.7"
   - rolldown-plugin-dts@0.27.8
   - tsdown@0.23.0
   - "@dom-expressions/babel-plugin-jsx@0.50.0-next.21"
