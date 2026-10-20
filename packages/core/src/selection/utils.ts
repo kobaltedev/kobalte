@@ -47,3 +47,23 @@ export function isSameSelection(setA: Set<string>, setB: Set<string>): boolean {
 
 	return true;
 }
+
+/** Whether the element accepts text input (the user can type into it). */
+export function isTextEntryTarget(element: Element | null): boolean {
+	return (
+		element instanceof HTMLInputElement ||
+		element instanceof HTMLTextAreaElement ||
+		(element instanceof HTMLElement && element.isContentEditable)
+	);
+}
+
+/** Whether an editable (e.g. a search input) inside the menu containing `element` holds DOM focus — hover must not steal it. */
+export function hasFocusedTextEntryInMenu(element: HTMLElement): boolean {
+	const active = document.activeElement;
+
+	if (!isTextEntryTarget(active)) {
+		return false;
+	}
+
+	return element.closest('[role="menu"]')?.contains(active) ?? false;
+}
