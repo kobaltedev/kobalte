@@ -122,7 +122,8 @@ export function scrollIntoViewport(
 				);
 				// biome-ignore lint/style/noParameterAssign: used in loop
 				targetElement = scrollParent;
-				scrollParent = getScrollParent(targetElement);
+				// `getScrollParent` returns the element itself when it is scrollable, so start from its parent.
+				scrollParent = getScrollParent(targetElement.parentElement);
 			}
 		}
 	}
