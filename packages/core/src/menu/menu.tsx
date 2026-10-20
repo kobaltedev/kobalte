@@ -46,7 +46,12 @@ import {
 	useOptionalMenuContext,
 } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { type GraceIntent, type Side, isPointerInGraceArea } from "./utils";
+import {
+	type GraceIntent,
+	type Side,
+	isPointerInGraceArea,
+	isTextEntryTarget,
+} from "./utils";
 
 export interface MenuOptions
 	extends Omit<
@@ -157,7 +162,13 @@ export function Menu(props: MenuProps) {
 		const content = contentRef();
 
 		if (content) {
-			focusWithoutScrolling(content);
+			const active = document.activeElement;
+
+			// Skip only the DOM focus: a focused in-menu search field must keep it (the selection manager still updates).
+			if (!(isTextEntryTarget(active) && content.contains(active))) {
+				focusWithoutScrolling(content);
+			}
+
 			listState.selectionManager().setFocused(true);
 			listState.selectionManager().setFocusedKey(undefined);
 		}

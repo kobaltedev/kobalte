@@ -39,6 +39,7 @@ import {
 	type MenuItemDataSet,
 } from "./menu-item.context";
 import { useMenuRootContext } from "./menu-root-context";
+import { hasFocusedTextEntryInMenu } from "./utils";
 
 export interface MenuItemBaseOptions {
 	/**
@@ -206,7 +207,11 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 			menuContext.onItemEnter(e);
 
 			if (!e.defaultPrevented) {
-				focusWithoutScrolling(e.currentTarget);
+				// Skip only the DOM focus: a focused in-menu search field must keep it (the selection manager still updates).
+				if (!hasFocusedTextEntryInMenu(e.currentTarget)) {
+					focusWithoutScrolling(e.currentTarget);
+				}
+
 				menuContext.listState().selectionManager().setFocused(true);
 				menuContext.listState().selectionManager().setFocusedKey(key());
 			}
