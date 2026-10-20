@@ -1,5 +1,11 @@
 # @kobalte/utils
 
+## 2.0.0-alpha.1
+
+### Patch Changes
+
+- 3716445: Update Solid 2 primitive dependencies to preserve hydration owner IDs for client-only effects and settled callbacks. This fixes hydration mismatches in components including Tabs with Indicator, expanded Accordion, and open Popover.
+
 ## 2.0.0-alpha.0
 
 ### Major Changes
