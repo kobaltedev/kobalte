@@ -32,26 +32,26 @@ overrides:
   '@solidjs/babel-plugin': 2.0.0-rc.15
   '@solid-primitives/a11y': 1.0.0-next.3
   '@solid-primitives/controlled-signal': 1.0.0-next.3
-  '@solid-primitives/event-listener': 3.0.0-next.5
+  '@solid-primitives/event-listener': 3.0.0-next.9
   '@solid-primitives/focus': 1.0.0-next.4
   '@solid-primitives/form': 1.0.0-next.3
   '@solid-primitives/i18n': 3.0.0-next.4
-  '@solid-primitives/interaction': 1.0.0-next.4
-  '@solid-primitives/keyboard': 2.0.0-next.5
+  '@solid-primitives/interaction': 1.0.0-next.7
+  '@solid-primitives/keyboard': 2.0.0-next.8
   '@solid-primitives/keyed': 3.0.0-next.2
   '@solid-primitives/map': 1.0.0-next.2
-  '@solid-primitives/media': 4.0.0-next.2
+  '@solid-primitives/media': 4.0.0-next.5
   '@solid-primitives/platform': 1.0.0-next.2
   '@solid-primitives/presence': 1.0.0-next.2
   '@solid-primitives/props': 4.0.0-next.3
   '@solid-primitives/refs': 3.0.0-next.2
-  '@solid-primitives/resize-observer': 4.0.0-next.3
+  '@solid-primitives/resize-observer': 4.0.0-next.7
   '@solid-primitives/rootless': 2.0.0-next.2
-  '@solid-primitives/scroll': 3.0.0-next.4
-  '@solid-primitives/static-store': 1.0.0-next.2
+  '@solid-primitives/scroll': 3.0.0-next.7
+  '@solid-primitives/static-store': 1.0.0-next.5
   '@solid-primitives/trigger': 3.0.0-next.2
   '@solid-primitives/upload': 1.0.0-next.4
-  '@solid-primitives/utils': 7.0.0-next.4
+  '@solid-primitives/utils': 7.0.0-next.7
   '@storybook/builder-vite': 10.5.0
 
 importers:
@@ -198,8 +198,8 @@ importers:
         specifier: 1.0.0-next.3
         version: 1.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/event-listener':
-        specifier: 3.0.0-next.5
-        version: 3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+        specifier: 3.0.0-next.9
+        version: 3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/focus':
         specifier: 1.0.0-next.4
         version: 1.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
@@ -210,11 +210,11 @@ importers:
         specifier: 3.0.0-next.4
         version: 3.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/interaction':
-        specifier: 1.0.0-next.4
-        version: 1.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+        specifier: 1.0.0-next.7
+        version: 1.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/keyboard':
-        specifier: 2.0.0-next.5
-        version: 2.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+        specifier: 2.0.0-next.8
+        version: 2.0.0-next.8(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/platform':
         specifier: 1.0.0-next.2
         version: 1.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
@@ -228,17 +228,17 @@ importers:
         specifier: 3.0.0-next.2
         version: 3.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/resize-observer':
-        specifier: 4.0.0-next.3
-        version: 4.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+        specifier: 4.0.0-next.7
+        version: 4.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/scroll':
-        specifier: 3.0.0-next.4
-        version: 3.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+        specifier: 3.0.0-next.7
+        version: 3.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/upload':
         specifier: 1.0.0-next.4
         version: 1.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/utils':
-        specifier: 7.0.0-next.4
-        version: 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+        specifier: 7.0.0-next.7
+        version: 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web':
         specifier: 'catalog:'
         version: 2.0.0-rc.15(solid-js@2.0.0-rc.15)
@@ -280,8 +280,8 @@ importers:
   packages/utils:
     dependencies:
       '@solid-primitives/event-listener':
-        specifier: 3.0.0-next.5
-        version: 3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+        specifier: 3.0.0-next.9
+        version: 3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/keyed':
         specifier: 3.0.0-next.2
         version: 3.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
@@ -289,8 +289,8 @@ importers:
         specifier: 1.0.0-next.2
         version: 1.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/media':
-        specifier: 4.0.0-next.2
-        version: 4.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+        specifier: 4.0.0-next.5
+        version: 4.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/props':
         specifier: 4.0.0-next.3
         version: 4.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
@@ -298,8 +298,8 @@ importers:
         specifier: 3.0.0-next.2
         version: 3.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/utils':
-        specifier: 7.0.0-next.4
-        version: 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+        specifier: 7.0.0-next.7
+        version: 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
     devDependencies:
       '@solidjs/web':
         specifier: 'catalog:'
@@ -2079,11 +2079,11 @@ packages:
       '@solidjs/web': ^2.0.0-rc.0
       solid-js: ^2.0.0-rc.0
 
-  '@solid-primitives/event-listener@3.0.0-next.5':
-    resolution: {integrity: sha512-P8GdbTwt422PHkWeKIEQVMB3Yz2agE49bfN8ChXVNQBD0fzKQF8FfmAh8y33la5k+Ap7oshNJ0Db001dJhCqTw==}
+  '@solid-primitives/event-listener@3.0.0-next.9':
+    resolution: {integrity: sha512-7o9rHPwQFkO+pi/AQX57+cN0FXzuntzuwpLOgY6gK8IabEGh6sVwHQy/6AJzz5rS3K2eilRQPi3EuRA2RuxKLQ==}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-rc.0
-      solid-js: ^2.0.0-rc.0
+      '@solidjs/web': ^2.0.0-rc.14
+      solid-js: ^2.0.0-rc.14
 
   '@solid-primitives/focus@1.0.0-next.4':
     resolution: {integrity: sha512-OPi75QpOJ3L/Ea9oT1MYrpsGz5z0nyeR40MAjAzcP6lKxPSrpN/3UbFL2I/oLKbPM+7fgIBfW0iwyvzSjVxtsg==}
@@ -2103,17 +2103,17 @@ packages:
       '@solidjs/web': ^2.0.0-rc.0
       solid-js: ^2.0.0-rc.0
 
-  '@solid-primitives/interaction@1.0.0-next.4':
-    resolution: {integrity: sha512-V+kos+abAkAJLNAvj3A7iitNcSvbosFsjBoXh7K8GdWoABWEfPEf3DZsN+01UQOAf+4G0XLXPN4Y/IRe2EOBZQ==}
+  '@solid-primitives/interaction@1.0.0-next.7':
+    resolution: {integrity: sha512-hhGwmUDSrdOdWwwuI3KbSBkCPJSh0GFbrL/FaXMHwxEd5KUz4no88FU4f75JtasMFPT5tzy8waEZJ5pLiH6KnQ==}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-rc.0
-      solid-js: ^2.0.0-rc.0
+      '@solidjs/web': ^2.0.0-rc.14
+      solid-js: ^2.0.0-rc.14
 
-  '@solid-primitives/keyboard@2.0.0-next.5':
-    resolution: {integrity: sha512-kTdYQNMqVBzsZdSxzxlVPRAfuR3ENmkPw04WIEoIeV5rNDJYFRQQw7LaD4YWum4tLPtquzBWvYG3maPduSCc5g==}
+  '@solid-primitives/keyboard@2.0.0-next.8':
+    resolution: {integrity: sha512-SP4BIIu+q0PvdHCPMGlq5Vz+T1aDsXktV+AKoa/xxH9x33QqEj/2dJEGB/mNxSzrgevglnHPsCO342O1HDNP3w==}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-rc.0
-      solid-js: ^2.0.0-rc.0
+      '@solidjs/web': ^2.0.0-rc.14
+      solid-js: ^2.0.0-rc.14
 
   '@solid-primitives/keyed@3.0.0-next.2':
     resolution: {integrity: sha512-FvEYVbX0PpeCTKyL3x7e2wnbb8muIKMgU+cQue+UrkhRkg1HLrBbimymvMuyQgPeBSEdgMYaaMnQI/uCUHS4NQ==}
@@ -2127,11 +2127,11 @@ packages:
       '@solidjs/web': ^2.0.0-rc.0
       solid-js: ^2.0.0-rc.0
 
-  '@solid-primitives/media@4.0.0-next.2':
-    resolution: {integrity: sha512-jTua+YRSAe2u3z1kZRPIunANI+JSQl0U2pOsDVqCzKgp/nzZC1WsodyFluiSARD9SICgFnzHqlD+EmXzKgp/Mg==}
+  '@solid-primitives/media@4.0.0-next.5':
+    resolution: {integrity: sha512-V47RZ39K5NY7n81RrdvTyixDZxGKfIoDNhm+QRHR1OwG1UCwA0IWws4fGLJvGsWSQVjCNrcx0Gml+X0QZUK0TA==}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-rc.0
-      solid-js: ^2.0.0-rc.0
+      '@solidjs/web': ^2.0.0-rc.14
+      solid-js: ^2.0.0-rc.14
 
   '@solid-primitives/platform@1.0.0-next.2':
     resolution: {integrity: sha512-LzV2/ZFKU3uMIFMvVhj6iH2Bjf60QnVDCwK3lXbFhZIzBbb002k4ZNhqXVPRMQRkWlpjq1Otxe9p2qBIKfIyXQ==}
@@ -2156,11 +2156,11 @@ packages:
       '@solidjs/web': ^2.0.0-rc.0
       solid-js: ^2.0.0-rc.0
 
-  '@solid-primitives/resize-observer@4.0.0-next.3':
-    resolution: {integrity: sha512-g7aKa5xgXd2wXC2EtJzYdx5k9pZCPRDuG+m5Kndfmi9f6yLhe1g1d0y4L6jE6Zxjwxz7a+wRnjpnTLbsP3JvRw==}
+  '@solid-primitives/resize-observer@4.0.0-next.7':
+    resolution: {integrity: sha512-2Jpj2fh70Qq61+ndSlxYVxnobq9Eu220nS3OQax8P/BWGH9msSv7Xsc6sL4Vk076No4IBcegsDw76Li4982jyQ==}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-rc.0
-      solid-js: ^2.0.0-rc.0
+      '@solidjs/web': ^2.0.0-rc.14
+      solid-js: ^2.0.0-rc.14
 
   '@solid-primitives/rootless@2.0.0-next.2':
     resolution: {integrity: sha512-QGoy8R+8v+9I8mET50wMwu0uawkQvFFcv67S+vKJ8xP5jPrQXdxuNMckUTKUy2shR3rIRpR0oLzss0Vy0oLkPg==}
@@ -2168,17 +2168,17 @@ packages:
       '@solidjs/web': ^2.0.0-rc.0
       solid-js: ^2.0.0-rc.0
 
-  '@solid-primitives/scroll@3.0.0-next.4':
-    resolution: {integrity: sha512-6Zod2Q2YPnkZhijVMSOhU2e1ip5hzOSQNhZIaKh7Kx7HcocYrzhn1NqYJlaUr464o1hFZweEQVkhALi9EHvt/Q==}
+  '@solid-primitives/scroll@3.0.0-next.7':
+    resolution: {integrity: sha512-liPnzqwthLrzMZSR2DcEjS/h7BgAo2XxRFgWOLXYHB+QqPYFihpb099/Md5EWbL9mcpSIL7rgQyDzrQFu2b8Rw==}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-rc.0
-      solid-js: ^2.0.0-rc.0
+      '@solidjs/web': ^2.0.0-rc.14
+      solid-js: ^2.0.0-rc.14
 
-  '@solid-primitives/static-store@1.0.0-next.2':
-    resolution: {integrity: sha512-cyMzFe39VMVF9zVYgZEck1TESbIB4Tnpp00vNQlaOYuhOr4nstRBSS3zsBqZMuF+a5qWlKqS0RHO48FwLScX9w==}
+  '@solid-primitives/static-store@1.0.0-next.5':
+    resolution: {integrity: sha512-EFLhRoTmVh9qqFI6fdlHWq1h8/fVGx9vsblFedTp96McrtJlaknTnSQ4inWIu7jTZFXRmShLFw6/0NoNRvtZvg==}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-rc.0
-      solid-js: ^2.0.0-rc.0
+      '@solidjs/web': ^2.0.0-rc.14
+      solid-js: ^2.0.0-rc.14
 
   '@solid-primitives/storage@4.4.0':
     resolution: {integrity: sha512-+u0dpTqrUG7h+IMfmGLCx7vx2Q0Eon6paBgzcWhEP/dauElpGU3ElpZZOZgw8YKR1+J4X4ENiAL0na3VH8RWMg==}
@@ -2204,11 +2204,11 @@ packages:
       '@solidjs/web': ^2.0.0-rc.0
       solid-js: ^2.0.0-rc.0
 
-  '@solid-primitives/utils@7.0.0-next.4':
-    resolution: {integrity: sha512-9KyRe6eu4hdhxxGOyS9vAa2s/T8FZ1sMJtk3UuV3W1Gi0f4if+o1n7S1M6l/MMjn8+m3+I3VB1KzFa9gNDkDsg==}
+  '@solid-primitives/utils@7.0.0-next.7':
+    resolution: {integrity: sha512-t1ZYgNililGfuHBJ34iT/m3b75MxNOSyjmPrm2MVhNnUM76hBziULCteA6YQ0laIb6THBv8gRvssHK2BxMYw3Q==}
     peerDependencies:
-      '@solidjs/web': ^2.0.0-rc.0
-      solid-js: ^2.0.0-rc.0
+      '@solidjs/web': ^2.0.0-rc.14
+      solid-js: ^2.0.0-rc.14
 
   '@solidjs/babel-plugin@2.0.0-rc.15':
     resolution: {integrity: sha512-jsz08IPwxue2qQ6Nol2hnRN2M2z/Fymp7ka8L7XoV129L5N8l31s9tEWF/JXw+hbdGrrXTI3KM4kYvZdtma13A==}
@@ -2676,133 +2676,157 @@ packages:
     resolution: {integrity: sha512-viote6xAyL5cKLquV2X2wRfopSckH+msDYbaI8Hh8JAaogYs8MJZVRUbSrbsY29TaPrIFZwNRwQ8+YSxs0dkGw==}
     cpu: [arm64]
     os: [android]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-darwin-arm64@0.9.3':
     resolution: {integrity: sha512-y2PGOLyxc724EJ+Et/5PxGfutQuV1Z2J9cxHo6W1I5CR3nk0i03J4yPrnw6rNJOfrtlISzcc7q0RrSyfPndpIg==}
     cpu: [arm64]
     os: [darwin]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-darwin-x64@0.9.3':
     resolution: {integrity: sha512-xZ9UpXUOLmsrKVUp7MRXxWU3drNiilRC42OLpjWEhnOehIGVF1bZgzHcqRYJxVyU53RMrkRMsaxplkGd6Qo/ow==}
     cpu: [x64]
     os: [darwin]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-freebsd-x64@0.9.3':
     resolution: {integrity: sha512-RGCYSZw3VonreVTpur9iOfnbMngR2/f7UOE7gwcDx5WoHjIhtmTK9EIq9qs78ARdMFAPzKp5OzHljl5QMaGJ7g==}
     cpu: [x64]
     os: [freebsd]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm-gnu@0.9.3':
     resolution: {integrity: sha512-kjIJIw39GSPTF0hnq+jnM0tR+J5WlariAAWetxMtawNskITDT1ZigaK3YF5hMhDz2mAofaM1t+63qtx+7aXjeg==}
     cpu: [arm]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm-musl@0.9.3':
     resolution: {integrity: sha512-TVHeVdzaS4ub86URrQufiy4t01ZtdyKDZ5sTPqWFKAUbQJ7rQ0o5vIT+/jCeHQbP+Yf9p5peRdmPbcZewoDNiA==}
     cpu: [arm]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm64-gnu@0.9.3':
     resolution: {integrity: sha512-9aQeeLh1qaCa2GcyzHnwLKGfFrsI+KOyhnh4+fICSq5kyhzCWQfXVCCK4RTEZPLcyuVwfN5Id0JEYavRN4oNTQ==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-arm64-musl@0.9.3':
     resolution: {integrity: sha512-TLXA5Hd1nr8VSP2MtxcFddsBIHj+DPpyG5eberEGMATndgG7STlKQmle51MV0MZ8UgsdYM6CybIVpzlCPQwP9w==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-x64-gnu@0.9.3':
     resolution: {integrity: sha512-tk0BFbF3Clb9k9biPH3qmr+Qwk24rRM26+HY91hYXmZlzlepZG0scQ6OffZFWtzwKE5JjlZpMdcWj1lTiHbEjA==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-linux-x64-musl@0.9.3':
     resolution: {integrity: sha512-xo+pXshsCXruEEkDMbwHqkeTyC4XHb6A6oXr6x2YK3jOMcS5kZz0e26BmTCr40J0nY/K3ysmwG9R1xHygtiuwQ==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-win32-arm64@0.9.3':
     resolution: {integrity: sha512-70gAQo6HZzMgIJTjeMZOEO2XaRj4GcNGP/n81R9tXQv0x8d4ZHnZDv+ygeWfHo+xchAUPwpnrVZA4p6RhJa3GQ==}
     cpu: [arm64]
     os: [win32]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-codegen/binding-win32-x64@0.9.3':
     resolution: {integrity: sha512-7Hz3NGlq6qBBR8zMEk6GMZivofNjnYZpMXSoUwUgz9Ur2LaivuP23HQh0ern+T6HVkTJEvilw4VJrg1rX1Ugcg==}
     cpu: [x64]
     os: [win32]
+    deprecated: yuku-codegen is pure JavaScript since 0.14
 
   '@yuku-parser/binding-android-arm64@0.9.3':
     resolution: {integrity: sha512-z3tDGTaUXD5Q4IuebFOY/QHxhR/SqujMhkMv9C5bh25upyFEXdafp0MsXQIIheWhVZzn5VMOniyxFni/7s9LgQ==}
     cpu: [arm64]
     os: [android]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-darwin-arm64@0.9.3':
     resolution: {integrity: sha512-hzKvKSKS7z3ufnu1VkQYEoxmS6A5uNnkwukKnc2atxpWdq648nLVOqut4h1jUXjbM2WcoTfuZLF6AHAGFf8cmg==}
     cpu: [arm64]
     os: [darwin]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-darwin-x64@0.9.3':
     resolution: {integrity: sha512-OM2PiVlPATvzlj/KGHNlu+t8FC3YzM5joVNjhsz/EaigQ8x2UUQ1Q0agQLiv5GZ2L8TSzrLUwBCZ7YOvP8q+tw==}
     cpu: [x64]
     os: [darwin]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-freebsd-x64@0.9.3':
     resolution: {integrity: sha512-WMn9M4LHNVysGNwsAJ9gpRPqQIW2lcPrDNGcyk0agx3IYqCJq1MQugh6Be8Otc5U08eGdE39o8Kx9YWJmXz7GA==}
     cpu: [x64]
     os: [freebsd]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm-gnu@0.9.3':
     resolution: {integrity: sha512-vqKjwiyW1FWvbykYMEQIcAJwA17WxK3rxxqDuyCvQwcNVaLEUxI4BXiUdlF3kHucc7MnoFQhoRPkySgOzlLM+Q==}
     cpu: [arm]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm-musl@0.9.3':
     resolution: {integrity: sha512-qohilhYOT+zkt2gYzym4F1T6BzRdvPqS9/sFB03pmnVV8LrvjOXVsGwEBAa3CEvzJKhAZjdTmVz7zsVdjyHWLg==}
     cpu: [arm]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm64-gnu@0.9.3':
     resolution: {integrity: sha512-tvTIyUvTGkeee68i4JIo9o27As+Ug6LXOZvElGgFbTs6+KBdb5LGhvugaIQljdfIsm2XnIbOLG6OnQSXHMLB9w==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-arm64-musl@0.9.3':
     resolution: {integrity: sha512-OWZBHW1wuChBpFlrF+On1yiBcFPMRrj2g0VKsM/PCBGffu1OM0ORkS+vLS3Snu6wYwndM5Dd9Ctvux6eUlrQjA==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-x64-gnu@0.9.3':
     resolution: {integrity: sha512-/tbk1h0dlADOCngbiQO9V3SHwBIJkoGBq8BDEraSw2CC3nGxPEPTCCYUDp5738Ij2FxVwy1FWVuhFkHvpMrPbQ==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-linux-x64-musl@0.9.3':
     resolution: {integrity: sha512-u3+0sCso/mcjDvtc3866D2giV7l34PDyDVBkMesAWa3DWbIWPlybehi2SSnmScgArV22ctqSSgUzdBBVJ6zYAg==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-win32-arm64@0.9.3':
     resolution: {integrity: sha512-xnGEvdhyjRkXozHtpXVpEEkyGZWAxJ3RoILv7XRV5SvTEztaTCk5GQyfcOzI9An/EJtcL4ERCI8QmS0TpDPJiA==}
     cpu: [arm64]
     os: [win32]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-parser/binding-win32-x64@0.9.3':
     resolution: {integrity: sha512-N5eShGcuwnrXEprePFmEjtng6acZmtnC4zgazK9xxkavcx1q1uX8Nz8lU5RS973EMlNr902cIc6Cd2D4tqZDBg==}
     cpu: [x64]
     os: [win32]
+    deprecated: yuku-parser runs on yuku-core since 0.14
 
   '@yuku-toolchain/types@0.9.3':
     resolution: {integrity: sha512-rFE+5P4g2wxko5C85MugJOlVjBHEQq87dIkhLkniLXLp63PEtgaFjD954i5HXlfnyzLxPcZHsSOVDVgmo1HToA==}
@@ -6638,7 +6662,7 @@ snapshots:
       '@internationalized/number': 3.5.3
       '@kobalte/utils': 0.9.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/props': 4.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/resize-observer': 4.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/resize-observer': 4.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
       solid-presence: 0.1.8(solid-js@2.0.0-rc.15)
       solid-prevent-scroll: 0.1.7(solid-js@2.0.0-rc.15)
@@ -6662,11 +6686,11 @@ snapshots:
       '@mdx-js/mdx': 3.1.1(supports-color@7.2.0)
       '@solid-primitives/clipboard': 1.6.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/context': 0.2.3(solid-js@2.0.0-rc.15)
-      '@solid-primitives/event-listener': 3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/keyboard': 2.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/media': 4.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/event-listener': 3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/keyboard': 2.0.0-next.8(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/media': 4.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/platform': 1.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/scroll': 3.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/scroll': 3.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/storage': 4.4.0(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/meta': 0.29.4(solid-js@2.0.0-rc.15)
       '@solidjs/router': 0.15.3(solid-js@2.0.0-rc.15)
@@ -6725,13 +6749,13 @@ snapshots:
 
   '@kobalte/utils@0.9.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/event-listener': 3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/event-listener': 3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/keyed': 3.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/map': 1.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/media': 4.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/media': 4.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/props': 4.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/refs': 3.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
     transitivePeerDependencies:
       - '@solidjs/web'
@@ -7365,13 +7389,13 @@ snapshots:
 
   '@solid-primitives/a11y@1.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
   '@solid-primitives/clipboard@1.6.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
     transitivePeerDependencies:
       - '@solidjs/web'
@@ -7382,35 +7406,35 @@ snapshots:
 
   '@solid-primitives/controlled-signal@1.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
     transitivePeerDependencies:
       - '@solidjs/web'
 
   '@solid-primitives/drag-drop@0.1.0-next.0(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
-  '@solid-primitives/event-listener@3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
+  '@solid-primitives/event-listener@3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
   '@solid-primitives/focus@1.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/event-listener': 3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/event-listener': 3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
   '@solid-primitives/form@1.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
       '@solid-primitives/a11y': 1.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/event-listener': 3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/event-listener': 3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
@@ -7419,17 +7443,17 @@ snapshots:
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
-  '@solid-primitives/interaction@1.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
+  '@solid-primitives/interaction@1.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
-  '@solid-primitives/keyboard@2.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
+  '@solid-primitives/keyboard@2.0.0-next.8(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/event-listener': 3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/event-listener': 3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/rootless': 2.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
@@ -7444,12 +7468,12 @@ snapshots:
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
-  '@solid-primitives/media@4.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
+  '@solid-primitives/media@4.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/event-listener': 3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/event-listener': 3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/rootless': 2.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/static-store': 1.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/static-store': 1.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
@@ -7460,63 +7484,63 @@ snapshots:
 
   '@solid-primitives/presence@1.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
     transitivePeerDependencies:
       - '@solidjs/web'
 
   '@solid-primitives/props@4.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
   '@solid-primitives/refs@3.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
-  '@solid-primitives/resize-observer@4.0.0-next.3(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
+  '@solid-primitives/resize-observer@4.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/event-listener': 3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/event-listener': 3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/rootless': 2.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/static-store': 1.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/static-store': 1.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
   '@solid-primitives/rootless@2.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
-  '@solid-primitives/scroll@3.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
+  '@solid-primitives/scroll@3.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/event-listener': 3.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/event-listener': 3.0.0-next.9(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solid-primitives/rootless': 2.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/static-store': 1.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/static-store': 1.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
-  '@solid-primitives/static-store@1.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
+  '@solid-primitives/static-store@1.0.0-next.5(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
   '@solid-primitives/storage@4.4.0(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
     transitivePeerDependencies:
       - '@solidjs/web'
 
   '@solid-primitives/trigger@3.0.0-next.2(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
-      '@solid-primitives/utils': 7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
+      '@solid-primitives/utils': 7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
@@ -7526,7 +7550,7 @@ snapshots:
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
 
-  '@solid-primitives/utils@7.0.0-next.4(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
+  '@solid-primitives/utils@7.0.0-next.7(@solidjs/web@2.0.0-rc.15(solid-js@2.0.0-rc.15))(solid-js@2.0.0-rc.15)':
     dependencies:
       '@solidjs/web': 2.0.0-rc.15(solid-js@2.0.0-rc.15)
       solid-js: 2.0.0-rc.15
