@@ -3,9 +3,9 @@ packages:
   - packages/*
 catalog:
   # Solid 2.0 core — keep these three in lockstep on the same rc number
-  solid-js: 2.0.0-rc.15
-  "@solidjs/web": 2.0.0-rc.15
-  "@solidjs/signals": 2.0.0-rc.15
+  solid-js: 2.0.0-rc.16
+  "@solidjs/web": 2.0.0-rc.16
+  "@solidjs/signals": 2.0.0-rc.16
   "@solidjs/testing-library": 1.0.0-beta.3
   # Build tooling shared across root + published packages
   typescript: 7.0.2
@@ -35,10 +35,10 @@ catalog:
 overrides:
   # solid-js@2.0.0-rc.x declares a caret range on signals, which would otherwise
   # resolve to the newest rc; keep it in lockstep with the catalog (overrides can't use catalog:)
-  "@solidjs/signals": "2.0.0-rc.15"
+  "@solidjs/signals": "2.0.0-rc.16"
   "@solidjs/testing-library": "1.0.0-beta.3"
-  "@solidjs/compiler": "2.0.0-rc.15"
-  "@solidjs/babel-plugin": "2.0.0-rc.15"
+  "@solidjs/compiler": "2.0.0-rc.16"
+  "@solidjs/babel-plugin": "2.0.0-rc.16"
   "@solid-primitives/a11y": "1.0.0-next.3"
   "@solid-primitives/controlled-signal": "1.0.0-next.3"
   "@solid-primitives/event-listener": "3.0.0-next.9"
@@ -95,16 +95,16 @@ minimumReleaseAgeExclude:
   - rolldown-plugin-dts@0.27.8
   - tsdown@0.23.0
   - "@dom-expressions/babel-plugin-jsx@0.50.0-next.21"
-  - "@solidjs/signals@2.0.0-rc.15"
-  - "@solidjs/web@2.0.0-rc.15"
-  - "@solidjs/babel-plugin@2.0.0-rc.15"
-  - "@solidjs/compiler@2.0.0-rc.15"
+  - "@solidjs/signals@2.0.0-rc.16"
+  - "@solidjs/web@2.0.0-rc.16"
+  - "@solidjs/babel-plugin@2.0.0-rc.16"
+  - "@solidjs/compiler@2.0.0-rc.16"
   - "@solidjs/vite-plugin@3.0.0-next.50"
-  - solid-js@2.0.0-rc.15
-  - "@solidjs/compiler-darwin-arm64@2.0.0-rc.15"
-  - "@solidjs/compiler-darwin-x64@2.0.0-rc.15"
-  - "@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.15"
-  - "@solidjs/compiler-linux-x64-gnu@2.0.0-rc.15"
-  - "@solidjs/compiler-wasm32-wasi@2.0.0-rc.15"
-  - "@solidjs/compiler-win32-x64-msvc@2.0.0-rc.15"
+  - solid-js@2.0.0-rc.16
+  - "@solidjs/compiler-darwin-arm64@2.0.0-rc.16"
+  - "@solidjs/compiler-darwin-x64@2.0.0-rc.16"
+  - "@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.16"
+  - "@solidjs/compiler-linux-x64-gnu@2.0.0-rc.16"
+  - "@solidjs/compiler-wasm32-wasi@2.0.0-rc.16"
+  - "@solidjs/compiler-win32-x64-msvc@2.0.0-rc.16"
 dedupePeerDependents: true
