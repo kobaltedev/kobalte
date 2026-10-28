@@ -82,13 +82,15 @@
 	},
 	"devDependencies": {
 		"@kobalte/tests": "workspace:*",
+		"@solidjs/web": "catalog:",
+		"solid-js": "catalog:",
 		"tsdown": "catalog:",
 		"typescript": "catalog:",
 		"unplugin-solid": "catalog:"
 	},
 	"peerDependencies": {
-		"@solidjs/web": "catalog:",
-		"solid-js": "catalog:"
+		"@solidjs/web": "^2.0.0-rc.16",
+		"solid-js": "^2.0.0-rc.16"
 	},
 	"publishConfig": {
 		"access": "public"
