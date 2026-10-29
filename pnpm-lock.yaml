@@ -239,16 +239,16 @@ importers:
       '@solid-primitives/utils':
         specifier: 7.0.0-next.7
         version: 7.0.0-next.7(@solidjs/web@2.0.0-rc.16(solid-js@2.0.0-rc.16))(solid-js@2.0.0-rc.16)
+    devDependencies:
+      '@kobalte/tests':
+        specifier: workspace:*
+        version: link:../tests
       '@solidjs/web':
         specifier: 'catalog:'
         version: 2.0.0-rc.16(solid-js@2.0.0-rc.16)
       solid-js:
         specifier: 'catalog:'
         version: 2.0.0-rc.16
-    devDependencies:
-      '@kobalte/tests':
-        specifier: workspace:*
-        version: link:../tests
       tsdown:
         specifier: 'catalog:'
         version: 0.23.0(@volar/typescript@2.4.28(typescript@7.0.2))(oxc-resolver@11.24.2)(typescript@7.0.2)

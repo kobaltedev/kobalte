@@ -64,8 +64,8 @@
 		"@solid-primitives/utils": "catalog:"
 	},
 	"peerDependencies": {
-		"@solidjs/web": "catalog:",
-		"solid-js": "catalog:"
+		"@solidjs/web": "^2.0.0-rc.16",
+		"solid-js": "^2.0.0-rc.16"
 	},
 	"devDependencies": {
 		"@solidjs/web": "catalog:",
