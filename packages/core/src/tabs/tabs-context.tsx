@@ -15,6 +15,8 @@ export interface TabsContextValue {
 	activationMode: Accessor<TabsActivationMode>;
 	triggerIdsMap: Accessor<Map<string, string>>;
 	contentIdsMap: Accessor<Map<string, string>>;
+	registerTriggerId: (value: string, id: string) => void;
+	registerContentId: (value: string, id: string) => void;
 	listState: Accessor<SingleSelectListState>;
 	selectedTab: Accessor<HTMLElement | undefined>;
 	setSelectedTab: Setter<HTMLElement | undefined>;
