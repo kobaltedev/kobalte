@@ -89,6 +89,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	const keyboardDelegate = () => context.keyboardDelegate();
 
 	const isDisabled = () => local.disabled || context.isDisabled();
+	const isReadOnly = () => formControlContext.isReadOnly();
 
 	const { fieldProps } = createFormControlField(formControlFieldProps);
 
@@ -114,7 +115,12 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 		e.currentTarget.dataset.pointerType = e.pointerType;
 
 		// For consistency with native, open the select on mouse down (main button), but touch up.
-		if (!isDisabled() && e.pointerType !== "touch" && e.button === 0) {
+		if (
+			!isDisabled() &&
+			!isReadOnly() &&
+			e.pointerType !== "touch" &&
+			e.button === 0
+		) {
 			// prevent trigger from stealing focus from the active item after opening.
 			e.preventDefault();
 
@@ -125,7 +131,11 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		callHandler(e, local.onClick);
 
-		if (!isDisabled() && e.currentTarget.dataset.pointerType === "touch") {
+		if (
+			!isDisabled() &&
+			!isReadOnly() &&
+			e.currentTarget.dataset.pointerType === "touch"
+		) {
 			context.toggle(true);
 		}
 	};
@@ -133,7 +143,7 @@ export function SelectTrigger<T extends ValidComponent = "button">(
 	const onKeyDown: JSX.EventHandlerUnion<HTMLElement, KeyboardEvent> = (e) => {
 		callHandler(e, local.onKeyDown);
 
-		if (isDisabled()) {
+		if (isDisabled() || isReadOnly()) {
 			return;
 		}
 
