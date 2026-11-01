@@ -196,7 +196,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	) => {
 		callHandler(e, local.onPointerMove);
 
-		if (e.pointerType !== "mouse") {
+		if (e.pointerType !== "mouse" || !menuContext.isOpen()) {
 			return;
 		}
 
@@ -218,7 +218,7 @@ export function MenuItemBase<T extends ValidComponent = "div">(
 	) => {
 		callHandler(e, local.onPointerLeave);
 
-		if (e.pointerType !== "mouse") {
+		if (e.pointerType !== "mouse" || !menuContext.isOpen()) {
 			return;
 		}
 
