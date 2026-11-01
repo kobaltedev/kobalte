@@ -194,7 +194,10 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 	) => {
 		callHandler(e, local.onPointerMove);
 
-		if (e.pointerType !== "mouse") {
+		if (
+			e.pointerType !== "mouse" ||
+			context.parentMenuContext()?.isOpen() === false
+		) {
 			return;
 		}
 
@@ -248,6 +251,10 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 		clearOpenTimeout();
 
 		const parentMenuContext = context.parentMenuContext();
+
+		if (parentMenuContext?.isOpen() === false) {
+			return;
+		}
 
 		const contentEl = context.contentRef();
 
