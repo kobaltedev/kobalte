@@ -68,6 +68,12 @@ export function TabsContent<T extends ValidComponent = "div">(
 
 	const id = () => props.id ?? context.generateContentId(props.value);
 
+	// Triggers register their id in an effect, which doesn't run on the server or before
+	// the first render, so fall back to the id a trigger generates by default.
+	const triggerId = () =>
+		context.triggerIdsMap().get(props.value) ??
+		context.generateTriggerId(props.value);
+
 	const isSelected = () => context.listState().selectedKey() === props.value;
 
 	const { isMounted: present } = createPresence(
@@ -107,7 +113,7 @@ export function TabsContent<T extends ValidComponent = "div">(
 	createEffect(
 		() => [props.value, id()] as const,
 		([value, contentId]) => {
-			context.contentIdsMap().set(value, contentId);
+			context.registerContentId(value, contentId);
 		},
 	);
 
@@ -119,7 +125,7 @@ export function TabsContent<T extends ValidComponent = "div">(
 				id={id()}
 				role="tabpanel"
 				tabindex={tabIndex()}
-				aria-labelledby={context.triggerIdsMap().get(props.value)}
+				aria-labelledby={triggerId()}
 				data-orientation={context.orientation()}
 				data-selected={isSelected() ? "" : undefined}
 				{...others}
