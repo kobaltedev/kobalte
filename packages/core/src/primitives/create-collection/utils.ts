@@ -90,7 +90,10 @@ export function buildNodes(params: BuildNodesParams): Array<CollectionNode> {
 			nodes.push({
 				type: "section",
 				rawValue: data,
-				key: "", // not applicable here
+				// Sections can't be selected, but they still need a unique key:
+				// keyed rendering and the collection key map would otherwise
+				// treat every section as the same node.
+				key: `__kb-section-${index}`,
 				textValue: "", // not applicable here
 				disabled: false, // not applicable here
 				level: level,
