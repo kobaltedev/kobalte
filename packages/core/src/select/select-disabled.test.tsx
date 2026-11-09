@@ -24,7 +24,9 @@ describe("Select disabled while open", () => {
 					)}
 				>
 					<Select.Trigger>
-						<Select.Value>{(state) => state.selectedOption()}</Select.Value>
+						<Select.Value<string>>
+							{(state) => state.selectedOption()}
+						</Select.Value>
 					</Select.Trigger>
 					<Select.Content>
 						<Select.Listbox />
