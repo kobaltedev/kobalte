@@ -361,6 +361,8 @@ export function SelectBase<
 		onOpenChange: (isOpen) => local.onOpenChange?.(isOpen),
 	});
 
+	const { formControlContext } = createFormControl(formControlProps);
+
 	const listState = createListState({
 		selectedKeys: () => {
 			if (local.value != null) {
@@ -391,7 +393,18 @@ export function SelectBase<
 		dataSource: () => local.options ?? [],
 		getKey: () => local.optionValue as any,
 		getTextValue: () => local.optionTextValue as any,
-		getDisabled: () => local.optionDisabled as any,
+		getDisabled: () => (option: Option) => {
+			if (formControlContext.isDisabled()) {
+				return true;
+			}
+
+			const optionDisabled = local.optionDisabled;
+			return optionDisabled == null
+				? false
+				: !!(isFunction(optionDisabled)
+						? optionDisabled(option as any)
+						: (option as any)[optionDisabled]);
+		},
 		getSectionChildren: () => local.optionGroupChildren as any,
 	});
 
@@ -454,8 +467,6 @@ export function SelectBase<
 			open(focusStrategy);
 		}
 	};
-
-	const { formControlContext } = createFormControl(formControlProps);
 
 	createFormResetListener(triggerRef, () => {
 		const defaultSelectedKeys = local.defaultValue
