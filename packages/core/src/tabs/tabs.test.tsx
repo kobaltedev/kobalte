@@ -9,6 +9,7 @@
 import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render, within } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
+import { flush } from "solid-js";
 import { vi } from "vitest";
 
 import * as Tabs from ".";
@@ -609,5 +610,26 @@ describe("Tabs", () => {
 
 		expect(onValueChangeSpy).toBeCalledTimes(1);
 		expect(onValueChangeSpy).toHaveBeenCalledWith("one");
+	});
+
+	it("does not scroll the page to the selected tab when mounting", () => {
+		const scrollIntoViewSpy = vi.spyOn(
+			window.HTMLElement.prototype,
+			"scrollIntoView",
+		);
+
+		render(() => (
+			<Tabs.Root defaultValue="two">
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two">Two</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one">Body 1</Tabs.Content>
+				<Tabs.Content value="two">Body 2</Tabs.Content>
+			</Tabs.Root>
+		));
+		flush();
+
+		expect(scrollIntoViewSpy).not.toHaveBeenCalled();
 	});
 });
