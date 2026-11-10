@@ -1,4 +1,5 @@
-import { render } from "@solidjs/testing-library";
+import { fireEvent, render } from "@solidjs/testing-library";
+import { createSignal, flush } from "solid-js";
 import { vi } from "vitest";
 
 import * as Resizable from ".";
@@ -104,5 +105,42 @@ describe("Resizable", () => {
 			</Resizable.Root>
 		));
 		expect(getByTestId("root")).toBeInTheDocument();
+	});
+
+	it("lets onCollapse and onExpand update a signal", () => {
+		const [collapsed, setCollapsed] = createSignal(false);
+		const { getByRole } = render(() => (
+			<Resizable.Root>
+				<Resizable.Panel
+					initialSize={0.5}
+					minSize={0.2}
+					collapsible
+					collapsedSize={0}
+					onCollapse={() => setCollapsed(true)}
+					onExpand={() => setCollapsed(false)}
+				>
+					{(panel) => (
+						<>
+							<button type="button" onClick={() => panel.collapse()}>
+								collapse
+							</button>
+							<button type="button" onClick={() => panel.expand()}>
+								expand
+							</button>
+						</>
+					)}
+				</Resizable.Panel>
+				<Resizable.Handle />
+				<Resizable.Panel initialSize={0.5}>Panel 2</Resizable.Panel>
+			</Resizable.Root>
+		));
+
+		fireEvent.click(getByRole("button", { name: "collapse" }));
+		flush();
+		expect(collapsed()).toBe(true);
+
+		fireEvent.click(getByRole("button", { name: "expand" }));
+		flush();
+		expect(collapsed()).toBe(false);
 	});
 });
