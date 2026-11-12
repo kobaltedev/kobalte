@@ -207,6 +207,7 @@ We expose a CSS custom property `--kb-popper-content-transform-origin` which can
 | detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                                                                                                                |
 | arrowPadding     | `number` <br/> The minimum padding between the arrow and the menu content corner.                                                                                                                                                                                                                                                                                    |
 | overflowPadding  | `number` <br/> The minimum padding between the menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                                                                                                                    |
+| onPositionChange | `(position: ComputePositionReturn, positioner: HTMLElement) => void` <br/> Event handler called each time the position is computed, after it has been applied. It receives Floating UI's `computePosition` result and the positioner element.                                                                                                                        |
 
 ### ContextMenu.Trigger
 
@@ -330,6 +331,7 @@ The popper positioner will copy the same `z-index` as the `ContextMenu.Content`.
 | detachedPadding  | `number` <br/> The minimum padding in order to consider the trigger element occluded.                                                                                                                                                                                              |
 | arrowPadding     | `number` <br/> The minimum padding between the arrow and the sub menu content corner.                                                                                                                                                                                              |
 | overflowPadding  | `number` <br/> The minimum padding between the sub menu content and the viewport edge. This will be exposed to CSS as `--kb-popper-overflow-padding`.                                                                                                                              |
+| onPositionChange | `(position: ComputePositionReturn, positioner: HTMLElement) => void` <br/> Event handler called each time the position is computed, after it has been applied. It receives Floating UI's `computePosition` result and the positioner element.                                      |
 
 ### ContextMenu.SubTrigger
 
