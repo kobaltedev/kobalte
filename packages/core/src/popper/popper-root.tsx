@@ -7,6 +7,7 @@
  */
 
 import {
+	type ComputePositionReturn,
 	type Middleware,
 	arrow,
 	autoUpdate,
@@ -57,6 +58,17 @@ export interface PopperRootOptions {
 	 * This may be different from the `placement` prop if the popper has needed to update its position on the fly.
 	 */
 	onCurrentPlacementChange?: (currentPlacement: Placement) => void;
+
+	/**
+	 * Event handler called each time the position of the popper is computed.
+	 * It receives the result of Floating UI's `computePosition` (including `x`, `y`,
+	 * `placement` and `middlewareData`) and the positioner element,
+	 * after the new position has been applied.
+	 */
+	onPositionChange?: (
+		position: ComputePositionReturn,
+		positioner: HTMLElement,
+	) => void;
 
 	/** The placement of the popper. */
 	placement?: Placement;
@@ -326,6 +338,8 @@ export function PopperRoot(props: PopperRootProps) {
 				[dir]: "100%",
 			});
 		}
+
+		mergedProps.onPositionChange?.(pos, floatingEl);
 	}
 
 	createEffect(() => {
