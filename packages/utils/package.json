@@ -48,6 +48,7 @@
 	],
 	"scripts": {
 		"build": "tsup",
+		"test": "vitest run --environment jsdom",
 		"clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
 		"typecheck": "tsc --noEmit"
 	},
