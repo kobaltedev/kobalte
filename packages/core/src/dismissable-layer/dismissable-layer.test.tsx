@@ -99,5 +99,139 @@ describe("DismissableLayer", () => {
 
 			expect(onDismiss).toHaveBeenCalledTimes(1);
 		});
+
+		/**
+		 * On touch the outside check waits for the following `click`, after the pointerdown has
+		 * finished dispatching — so the target must be resolved while it is still dispatching.
+		 */
+		const touchDown = (target: Element) => {
+			fireEvent(
+				target,
+				createPointerEvent("pointerdown", {
+					bubbles: true,
+					composed: true,
+					pointerType: "touch",
+				}),
+			);
+			fireEvent(
+				target,
+				new MouseEvent("click", { bubbles: true, composed: true }),
+			);
+		};
+
+		it("should not dismiss on a touch on the layer's own content inside a shadow root", () => {
+			const { onDismiss, content } = setupShadowTest();
+
+			touchDown(content);
+
+			expect(onDismiss).not.toHaveBeenCalled();
+		});
+
+		it("should not dismiss on a touch on an excluded trigger inside a shadow root", () => {
+			const { onDismiss, trigger } = setupShadowTest();
+
+			touchDown(trigger);
+
+			expect(onDismiss).not.toHaveBeenCalled();
+		});
+
+		it("should still dismiss on a touch outside the layer inside a shadow root", () => {
+			const { onDismiss, outside } = setupShadowTest();
+
+			touchDown(outside);
+
+			expect(onDismiss).toHaveBeenCalledTimes(1);
+		});
+
+		it("should resolve touches across two shadow roots (trigger in one, portalled layer in another)", () => {
+			// An app rendered in one shadow root that portals its layers into a second
+			// one: a tap on the content retargets to the portal host, a tap on the
+			// trigger to the app host — neither is the element that was touched.
+			const onDismiss = vi.fn();
+			const appHost = document.createElement("div");
+			const portalHost = document.createElement("div");
+			document.body.append(appHost, portalHost);
+			const appRoot = appHost.attachShadow({ mode: "open" });
+			const portalRoot = portalHost.attachShadow({ mode: "open" });
+
+			const trigger = document.createElement("button");
+			const outside = document.createElement("button");
+			appRoot.append(trigger, outside);
+
+			let content!: HTMLSpanElement;
+			const dispose = render(
+				() => (
+					<DismissableLayer
+						excludedElements={[() => trigger]}
+						onDismiss={onDismiss}
+					>
+						<span ref={content}>Content</span>
+					</DismissableLayer>
+				),
+				portalRoot,
+			);
+			vi.runAllTimers();
+			onTestFinished(() => {
+				dispose();
+				appHost.remove();
+				portalHost.remove();
+			});
+
+			const mouseDown = (target: Element) =>
+				fireEvent(
+					target,
+					createPointerEvent("pointerdown", { bubbles: true, composed: true }),
+				);
+
+			mouseDown(content);
+			mouseDown(trigger);
+			touchDown(content);
+			touchDown(trigger);
+			expect(onDismiss).not.toHaveBeenCalled();
+
+			touchDown(outside);
+			expect(onDismiss).toHaveBeenCalledTimes(1);
+		});
+
+		it("should not dismiss when interacting with a web-component trigger in the light DOM", () => {
+			// The trigger is a custom element with its own shadow root (e.g. a design-system
+			// button), and the layer is in the light DOM. `excludedElements` is checked with
+			// `contains`, which can't see into the trigger's shadow root, so the layer must be
+			// handed the trigger's host — not its internal button — or it dismisses on the very
+			// interaction that is meant to toggle it.
+			const onDismiss = vi.fn();
+			const trigger = document.createElement("div");
+			const triggerInner = document.createElement("button");
+			trigger.attachShadow({ mode: "open" }).appendChild(triggerInner);
+			document.body.appendChild(trigger);
+
+			const container = document.createElement("div");
+			document.body.appendChild(container);
+			const dispose = render(
+				() => (
+					<DismissableLayer
+						excludedElements={[() => trigger]}
+						onDismiss={onDismiss}
+					>
+						<span>Content</span>
+					</DismissableLayer>
+				),
+				container,
+			);
+			vi.runAllTimers();
+			onTestFinished(() => {
+				dispose();
+				container.remove();
+				trigger.remove();
+			});
+
+			fireEvent(
+				triggerInner,
+				createPointerEvent("pointerdown", { bubbles: true, composed: true }),
+			);
+			touchDown(triggerInner);
+
+			expect(onDismiss).not.toHaveBeenCalled();
+		});
 	});
 });
