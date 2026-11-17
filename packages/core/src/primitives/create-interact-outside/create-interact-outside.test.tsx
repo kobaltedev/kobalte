@@ -208,7 +208,9 @@ describe("createInteractOutside", () => {
 		 * pointerdown, the content unmounted, and pointerup never landed on anything. The symptom is
 		 * a menu that closes when you click an item, without the item ever activating.
 		 */
-		const setupShadowTest = () => {
+		const setupShadowTest = (
+			extraProps: Partial<CreateInteractOutsideProps> = {},
+		) => {
 			const onFocusOutside = vi.fn();
 			const onPointerDownOutside = vi.fn();
 			const onInteractOutside = vi.fn();
@@ -230,7 +232,12 @@ describe("createInteractOutside", () => {
 
 			const dispose = createRoot((disposer) => {
 				createInteractOutside(
-					{ onFocusOutside, onPointerDownOutside, onInteractOutside },
+					{
+						onFocusOutside,
+						onPointerDownOutside,
+						onInteractOutside,
+						...extraProps,
+					},
 					() => inside,
 				);
 
@@ -281,6 +288,234 @@ describe("createInteractOutside", () => {
 
 			expect(mocks.onFocusOutside).not.toHaveBeenCalled();
 			expect(mocks.onInteractOutside).not.toHaveBeenCalled();
+		});
+
+		/**
+		 * A touch defers the outside check to the following `click` (see `onPointerDown`). By then
+		 * the pointerdown has finished dispatching and its `composedPath()` is empty, so only the
+		 * retargeted `event.target` — the shadow host — is left to resolve the target from.
+		 */
+		const touchDown = (target: Element) => {
+			fireEvent(
+				target,
+				createPointerEvent("pointerdown", {
+					bubbles: true,
+					composed: true,
+					pointerType: "touch",
+				}),
+			);
+			fireEvent(
+				target,
+				new MouseEvent("click", { bubbles: true, composed: true }),
+			);
+		};
+
+		const mouseDown = (target: Element) =>
+			fireEvent(
+				target,
+				createPointerEvent("pointerdown", { bubbles: true, composed: true }),
+			);
+
+		it("should NOT trigger on a touch on the layer's own content inside a shadow root", () => {
+			const { mocks, elements } = setupShadowTest();
+
+			touchDown(elements.insideChild);
+
+			expect(mocks.onPointerDownOutside).not.toHaveBeenCalled();
+			expect(mocks.onInteractOutside).not.toHaveBeenCalled();
+		});
+
+		it("should still trigger on a touch on a sibling inside the same shadow root", () => {
+			const seen: Element[] = [];
+			// Read during dispatch: an event dispatched inside a shadow tree has its `target`
+			// cleared once dispatch ends.
+			const dispatchedOn: (EventTarget | null)[] = [];
+			const { mocks, elements } = setupShadowTest({
+				shouldExcludeElement: (element) => {
+					seen.push(element);
+					return false;
+				},
+				onPointerDownOutside: (e) => dispatchedOn.push(e.target),
+			});
+
+			touchDown(elements.outside);
+
+			expect(seen).toEqual([elements.outside]);
+			expect(dispatchedOn).toEqual([elements.outside]);
+			expect(mocks.onInteractOutside).toHaveBeenCalledTimes(1);
+		});
+
+		it("should NOT trigger on content slotted into the layer", () => {
+			// Slotted nodes stay in the light tree, so no ancestor walk from them reaches the
+			// layer — but they render inside it, and the event's composed path says so.
+			const onPointerDownOutside = vi.fn();
+			const host = document.createElement("div");
+			const slotted = document.createElement("p");
+			host.appendChild(slotted);
+			document.body.appendChild(host);
+			const inside = document.createElement("div");
+			inside.appendChild(document.createElement("slot"));
+			host.attachShadow({ mode: "open" }).appendChild(inside);
+
+			const dispose = createRoot((disposer) => {
+				createInteractOutside({ onPointerDownOutside }, () => inside);
+				return disposer;
+			});
+			vi.runAllTimers();
+			onTestFinished(() => {
+				dispose();
+				host.remove();
+			});
+
+			mouseDown(slotted);
+			touchDown(slotted);
+
+			expect(onPointerDownOutside).not.toHaveBeenCalled();
+		});
+
+		/**
+		 * A layer in the light DOM next to a *foreign* web component — e.g. a trigger rendered by a
+		 * custom element with its own shadow root. Its internals are encapsulated: the layer must
+		 * see the component's host, exactly as it did before shadow-aware target resolution.
+		 */
+		const setupForeignComponentTest = (
+			extraProps: Partial<CreateInteractOutsideProps> = {},
+		) => {
+			const onPointerDownOutside = vi.fn();
+
+			const inside = document.createElement("div");
+			const component = document.createElement("div");
+			const componentInner = document.createElement("button");
+			component.attachShadow({ mode: "open" }).appendChild(componentInner);
+			document.body.append(inside, component);
+
+			const dispose = createRoot((disposer) => {
+				createInteractOutside(
+					{ onPointerDownOutside, ...extraProps },
+					() => inside,
+				);
+				return disposer;
+			});
+			vi.runAllTimers();
+			onTestFinished(() => {
+				dispose();
+				inside.remove();
+				component.remove();
+			});
+
+			return { onPointerDownOutside, component, componentInner };
+		};
+
+		it("should report an interaction inside a foreign component as that component's host", () => {
+			const seen: Element[] = [];
+			const dispatchedOn: (EventTarget | null)[] = [];
+			const { component, componentInner } = setupForeignComponentTest({
+				shouldExcludeElement: (element) => {
+					seen.push(element);
+					return false;
+				},
+				onPointerDownOutside: (e) => dispatchedOn.push(e.target),
+			});
+
+			mouseDown(componentInner);
+
+			// The host first — what the layer's tree sees — then the element itself.
+			expect(seen).toEqual([component, componentInner]);
+			expect(dispatchedOn).toEqual([component]);
+		});
+
+		it("should let shouldExcludeElement exempt a web-component trigger via contains", () => {
+			// `contains` can't see into a shadow root, so this stops matching if the callback is
+			// handed the component's internal element — the trigger then dismisses the layer and the
+			// same click reopens it.
+			const triggerRef: { current?: Element } = {};
+			const { onPointerDownOutside, component, componentInner } =
+				setupForeignComponentTest({
+					shouldExcludeElement: (element) =>
+						!!triggerRef.current?.contains(element),
+				});
+			triggerRef.current = component;
+
+			mouseDown(componentInner);
+			touchDown(componentInner);
+
+			expect(onPointerDownOutside).not.toHaveBeenCalled();
+		});
+
+		it("should report a component nested in the layer's shadow root as its host", () => {
+			// Retargeting is relative to the layer's own tree: siblings in its shadow root are
+			// themselves, but a component nested in that root stays encapsulated behind its host.
+			const seen: Element[] = [];
+			const host = document.createElement("div");
+			document.body.appendChild(host);
+			const shadowRoot = host.attachShadow({ mode: "open" });
+			const inside = document.createElement("div");
+			const nested = document.createElement("div");
+			const nestedInner = document.createElement("button");
+			nested.attachShadow({ mode: "open" }).appendChild(nestedInner);
+			shadowRoot.append(inside, nested);
+
+			const dispose = createRoot((disposer) => {
+				createInteractOutside(
+					{
+						shouldExcludeElement: (element) => {
+							seen.push(element);
+							return false;
+						},
+					},
+					() => inside,
+				);
+				return disposer;
+			});
+			vi.runAllTimers();
+			onTestFinished(() => {
+				dispose();
+				host.remove();
+			});
+
+			mouseDown(nestedInner);
+
+			expect(seen).toEqual([nested, nestedInner]);
+		});
+
+		it("should let shouldExcludeElement exempt a trigger in a different shadow root than the layer", () => {
+			// An app rendered in one shadow root that portals its layers into a second
+			// one. Seen from the layer's tree, the trigger is just the app root's host,
+			// so exclusion must also be asked of the trigger itself.
+			const appHost = document.createElement("div");
+			const portalHost = document.createElement("div");
+			document.body.append(appHost, portalHost);
+			const trigger = document.createElement("button");
+			const outside = document.createElement("button");
+			appHost.attachShadow({ mode: "open" }).append(trigger, outside);
+			const inside = document.createElement("div");
+			portalHost.attachShadow({ mode: "open" }).appendChild(inside);
+
+			const dispatchedOn: (EventTarget | null)[] = [];
+			const dispose = createRoot((disposer) => {
+				createInteractOutside(
+					{
+						shouldExcludeElement: (element) => trigger.contains(element),
+						onPointerDownOutside: (e) => dispatchedOn.push(e.target),
+					},
+					() => inside,
+				);
+				return disposer;
+			});
+			vi.runAllTimers();
+			onTestFinished(() => {
+				dispose();
+				appHost.remove();
+				portalHost.remove();
+			});
+
+			mouseDown(trigger);
+			touchDown(trigger);
+			expect(dispatchedOn).toEqual([]);
+
+			// Genuinely outside: reported as the layer's tree sees it, i.e. the app host.
+			mouseDown(outside);
+			expect(dispatchedOn).toEqual([appHost]);
 		});
 	});
 
