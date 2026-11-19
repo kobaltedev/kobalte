@@ -61,6 +61,59 @@ describe.skipIf(process.env.GITHUB_ACTIONS)("Accordion", () => {
 		}
 	});
 
+	describe("falls back to defaults when props are undefined", () => {
+		it("root 'id'", () => {
+			const { getByTestId } = render(() => <AccordionTest id={undefined} />);
+
+			expect(getByTestId("container").id).toMatch(/^accordion-/);
+		});
+
+		it("root 'shouldFocusWrap'", async () => {
+			const { getAllByRole } = render(() => (
+				<AccordionTest shouldFocusWrap={undefined} />
+			));
+
+			const [firstItem, , thirdItem] = getAllByRole("button");
+
+			firstItem.focus();
+			fireEvent.keyDown(firstItem, { key: "ArrowUp" });
+			await Promise.resolve();
+			expect(document.activeElement).toBe(thirdItem);
+		});
+
+		it("item, trigger and content 'id'", () => {
+			const { getAllByRole } = render(() => (
+				<Accordion.Root multiple defaultValue={["one", "two"]}>
+					<For each={["one", "two"]}>
+						{(val) => (
+							<Accordion.Item value={val} id={undefined}>
+								<Accordion.Header>
+									<Accordion.Trigger id={undefined}>
+										Trigger {val}
+									</Accordion.Trigger>
+								</Accordion.Header>
+								<Accordion.Content id={undefined}>
+									Content {val}
+								</Accordion.Content>
+							</Accordion.Item>
+						)}
+					</For>
+				</Accordion.Root>
+			));
+
+			const [first, second] = getAllByRole("button");
+
+			expect(first.id).toBeTruthy();
+			expect(first.id).not.toContain("undefined");
+			expect(first.id).not.toBe(second.id);
+
+			const region = document.getElementById(
+				first.getAttribute("aria-controls")!,
+			);
+			expect(region).toHaveAttribute("aria-labelledby", first.id);
+		});
+	});
+
 	it("can have default expanded value", async () => {
 		const { getAllByRole, getByText } = render(() => (
 			<AccordionTest defaultValue={["one"]} />

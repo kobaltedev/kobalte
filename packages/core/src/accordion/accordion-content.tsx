@@ -47,8 +47,9 @@ export function AccordionContent<T extends ValidComponent = "div">(
 
 	const others = omit(mergedProps, "id", "style");
 
+	// `merge` treats an explicit `undefined` as a value, so fall back to the default when reading.
 	createEffect(
-		() => mergedProps.id,
+		() => mergedProps.id ?? defaultId,
 		(id) => itemContext.registerContentId(id),
 	);
 

@@ -68,6 +68,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 
 	const others = omit(
 		mergedProps,
+		"id",
 		"ref",
 		"onPointerDown",
 		"onPointerUp",
@@ -76,6 +77,9 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 		"onMouseDown",
 		"onFocus",
 	);
+
+	// `merge` treats an explicit `undefined` as a value, so fall back to the default when reading.
+	const id = () => mergedProps.id ?? defaultId;
 
 	createDomCollectionItem<CollectionItemWithRef>({
 		getItem: () => ({
@@ -108,7 +112,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 	};
 
 	createEffect(
-		() => others.id!,
+		() => id(),
 		(id) => itemContext.registerTriggerId(id),
 	);
 
@@ -121,6 +125,7 @@ export function AccordionTrigger<T extends ValidComponent = "button">(
 				>
 			>
 		>
+			id={id()}
 			ref={[setRef, mergedProps.ref]}
 			data-key={selectableItem.dataKey()}
 			onPointerDown={composeEventHandlers([
