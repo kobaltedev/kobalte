@@ -6,7 +6,7 @@
  * https://github.com/adobe/react-spectrum/blob/810579b671791f1593108f62cdc1893de3a220e3/packages/@react-spectrum/dialog/test/Dialog.test.js
  */
 
-import { render } from "@solidjs/testing-library";
+import { fireEvent, render } from "@solidjs/testing-library";
 
 import * as Dialog from ".";
 
@@ -41,5 +41,43 @@ describe("Dialog", () => {
 		const description = getByTestId("description");
 
 		expect(panel).toHaveAttribute("aria-describedby", description.id);
+	});
+
+	it("should close on Escape when its content is in a portal", async () => {
+		const onOpenChange = vi.fn();
+
+		const { getByRole } = render(() => (
+			<Dialog.Root defaultOpen onOpenChange={onOpenChange}>
+				<Dialog.Portal>
+					<Dialog.Content>content</Dialog.Content>
+				</Dialog.Portal>
+			</Dialog.Root>
+		));
+
+		fireEvent.keyDown(getByRole("dialog"), { key: "Escape" });
+		await Promise.resolve();
+
+		expect(onOpenChange).toHaveBeenCalledWith(false);
+	});
+
+	it("should close on a pointer down outside when its content is in a portal", async () => {
+		vi.useFakeTimers();
+		const onOpenChange = vi.fn();
+
+		render(() => (
+			<Dialog.Root defaultOpen modal={false} onOpenChange={onOpenChange}>
+				<Dialog.Portal>
+					<Dialog.Content>content</Dialog.Content>
+				</Dialog.Portal>
+			</Dialog.Root>
+		));
+
+		// The outside listeners are attached on the next tick.
+		vi.runAllTimers();
+		fireEvent.pointerDown(document.body);
+		await Promise.resolve();
+
+		expect(onOpenChange).toHaveBeenCalledWith(false);
+		vi.useRealTimers();
 	});
 });
