@@ -19,6 +19,38 @@ describe("Breadcrumbs", () => {
 		expect(nav).toHaveAttribute("aria-label", "Breadcrumbs");
 	});
 
+	it("should fall back to default 'aria-label' when 'translations' is undefined", () => {
+		const { getByRole } = render(() => (
+			<Breadcrumbs.Root translations={undefined} />
+		));
+
+		const nav = getByRole("navigation");
+		expect(nav).toHaveAttribute("aria-label", "Breadcrumbs");
+	});
+
+	it("should fall back to default separator when 'separator' is undefined", () => {
+		const { getAllByText } = render(() => (
+			<Breadcrumbs.Root separator={undefined}>
+				<Breadcrumbs.Separator />
+				<Breadcrumbs.Separator />
+			</Breadcrumbs.Root>
+		));
+
+		const separators = getAllByText("/");
+		expect(separators.length).toBe(2);
+	});
+
+	it("should render separator children instead of the root separator", () => {
+		const { queryByText, getByText } = render(() => (
+			<Breadcrumbs.Root separator=">">
+				<Breadcrumbs.Separator>custom</Breadcrumbs.Separator>
+			</Breadcrumbs.Root>
+		));
+
+		expect(getByText("custom")).toHaveAttribute("aria-hidden", "true");
+		expect(queryByText(">")).toBeNull();
+	});
+
 	it("should have default separator", () => {
 		const { getAllByText } = render(() => (
 			<Breadcrumbs.Root>
