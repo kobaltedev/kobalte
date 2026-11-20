@@ -166,18 +166,27 @@ export function TabsRoot<T extends ValidComponent = "div">(
 		},
 	);
 
-	// associated value/trigger ids
-	const triggerIdsMap = new Map<string, string>();
-
-	// associated value/content ids
-	const contentIdsMap = new Map<string, string>();
+	// associated value/trigger ids and value/content ids, registered by the parts in an effect.
+	// Kept in signals so the parts that read them update once an id is registered.
+	const [triggerIdsMap, setTriggerIdsMap] = createSignal(
+		new Map<string, string>(),
+		{ equals: false },
+	);
+	const [contentIdsMap, setContentIdsMap] = createSignal(
+		new Map<string, string>(),
+		{ equals: false },
+	);
 
 	const context: TabsContextValue = {
 		isDisabled: () => mergedProps.disabled ?? false,
 		orientation: () => mergedProps.orientation!,
 		activationMode: () => mergedProps.activationMode!,
-		triggerIdsMap: () => triggerIdsMap,
-		contentIdsMap: () => contentIdsMap,
+		triggerIdsMap,
+		contentIdsMap,
+		registerTriggerId: (value, id) =>
+			setTriggerIdsMap((map) => map.set(value, id)),
+		registerContentId: (value, id) =>
+			setContentIdsMap((map) => map.set(value, id)),
 		listState: () => listState,
 		selectedTab,
 		setSelectedTab,

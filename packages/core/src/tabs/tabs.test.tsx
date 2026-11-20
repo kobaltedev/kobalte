@@ -368,6 +368,34 @@ describe("Tabs", () => {
 		expect(onValueChangeSpy).toBeCalledTimes(1);
 	});
 
+	it("links every panel to its trigger on the first render", async () => {
+		const { getByRole, getAllByRole } = render(() => (
+			<Tabs.Root defaultValue="one">
+				<Tabs.List>
+					<Tabs.Trigger value="one">One</Tabs.Trigger>
+					<Tabs.Trigger value="two" id="custom-trigger">
+						Two
+					</Tabs.Trigger>
+				</Tabs.List>
+				<Tabs.Content value="one" forceMount>
+					Body 1
+				</Tabs.Content>
+				<Tabs.Content value="two" forceMount>
+					Body 2
+				</Tabs.Content>
+			</Tabs.Root>
+		));
+		await Promise.resolve();
+
+		const tabs = within(getByRole("tablist")).getAllByRole("tab");
+		const tabpanels = getAllByRole("tabpanel", { hidden: true });
+
+		expect(
+			tabpanels.map((panel) => panel.getAttribute("aria-labelledby")),
+		).toEqual(tabs.map((tab) => tab.id));
+		expect(tabs[0]).toHaveAttribute("aria-controls", tabpanels[0].id);
+	});
+
 	it.skipIf(process.env.GITHUB_ACTIONS)(
 		"should focus the selected tab when tabbing in for the first time",
 		async () => {

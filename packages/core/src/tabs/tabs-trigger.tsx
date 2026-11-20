@@ -131,7 +131,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 	createEffect(
 		() => [mergedProps.value, id()] as const,
 		([value, triggerId]) => {
-			context.triggerIdsMap().set(value, triggerId);
+			context.registerTriggerId(value, triggerId);
 		},
 	);
 
