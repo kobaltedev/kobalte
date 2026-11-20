@@ -8,7 +8,8 @@
  */
 
 import { render } from "@solidjs/testing-library";
-import type { ParentProps } from "solid-js";
+import { createSignal, flush, type ParentProps } from "solid-js";
+import { vi } from "vitest";
 
 import {
 	type CreateFormControlProps,
@@ -87,6 +88,28 @@ describe("createFormControl", () => {
 			expect(label.id).toBe("custom-label-id");
 			expect(description.id).toBe("custom-description-id");
 			expect(error.id).toBe("custom-error-message-id");
+		});
+
+		it("should fall back to default ids when 'id' is undefined", () => {
+			const { getByText } = render(() => (
+				<FormControl id={undefined} validationState="invalid">
+					<FormControlLabel id={undefined}>Label</FormControlLabel>
+					<FormControlDescription id={undefined}>
+						Description
+					</FormControlDescription>
+					<FormControlErrorMessage id={undefined}>
+						ErrorMessage
+					</FormControlErrorMessage>
+				</FormControl>
+			));
+
+			const label = getByText("Label");
+			const description = getByText("Description");
+			const error = getByText("ErrorMessage");
+
+			expect(label.id).toMatch(/^.*-label$/);
+			expect(description.id).toMatch(/^.*-description$/);
+			expect(error.id).toMatch(/^.*-error-message$/);
 		});
 	});
 
@@ -264,6 +287,27 @@ describe("createFormControl", () => {
 			));
 
 			expect(getByText("ErrorMessage")).toHaveAttribute("role", "status");
+		});
+
+		it("does not log STRICT_READ_UNTRACKED when validationState is reactive", () => {
+			const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+			const [invalid, setInvalid] = createSignal(false);
+
+			render(() => (
+				<FormControl validationState={invalid() ? "invalid" : "valid"}>
+					<FormControlErrorMessage>ErrorMessage</FormControlErrorMessage>
+				</FormControl>
+			));
+
+			setInvalid(true);
+			flush();
+
+			const strict = warn.mock.calls
+				.map((c) => c.join(" "))
+				.filter((m) => m.includes("STRICT_READ_UNTRACKED"));
+
+			expect(strict).toEqual([]);
+			warn.mockRestore();
 		});
 	});
 });
