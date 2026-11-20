@@ -99,6 +99,9 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 		"onFocusOut",
 	);
 
+	// `merge` treats an explicit `undefined` as a value, so fall back to the defaults when reading.
+	const id = () => mergedProps.id ?? defaultId;
+
 	const { DomCollectionProvider, items } =
 		createDomCollection<CollectionItemWithRef>();
 
@@ -118,7 +121,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 			collection: () => listState.collection(),
 			disallowEmptySelection: () =>
 				listState.selectionManager().disallowEmptySelection(),
-			shouldFocusWrap: () => mergedProps.shouldFocusWrap,
+			shouldFocusWrap: () => mergedProps.shouldFocusWrap ?? true,
 			disallowTypeAhead: true,
 			allowsTabNavigation: true,
 		},
@@ -127,7 +130,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 
 	const context: AccordionContextValue = {
 		listState: () => listState,
-		generateId: (suffix: string) => `${mergedProps.id}-${suffix}`,
+		generateId: (suffix: string) => `${id()}-${suffix}`,
 	};
 
 	return (
@@ -135,7 +138,7 @@ export function AccordionRoot<T extends ValidComponent = "div">(
 			<AccordionContext value={context}>
 				<Polymorphic<AccordionRootRenderProps>
 					as="div"
-					id={mergedProps.id}
+					id={id()}
 					ref={[setRef, mergedProps.ref]}
 					onKeyDown={composeEventHandlers([
 						mergedProps.onKeyDown,

@@ -62,7 +62,10 @@ export function AccordionItem<T extends ValidComponent = "div">(
 
 	const mergedProps = merge({ id: defaultId }, props as AccordionItemProps);
 
-	const others = omit(mergedProps, "value", "disabled");
+	const others = omit(mergedProps, "id", "value", "disabled");
+
+	// `merge` treats an explicit `undefined` as a value, so fall back to the default when reading.
+	const id = () => mergedProps.id ?? defaultId;
 
 	const [triggerId, setTriggerId] = createSignal<string | undefined>(
 		undefined,
@@ -84,7 +87,7 @@ export function AccordionItem<T extends ValidComponent = "div">(
 		value: () => mergedProps.value,
 		triggerId,
 		contentId,
-		generateId: (suffix: string) => `${others.id}-${suffix}`,
+		generateId: (suffix: string) => `${id()}-${suffix}`,
 		registerTriggerId: createRegisterId(setTriggerId),
 		registerContentId: createRegisterId(setContentId),
 	};
@@ -99,6 +102,7 @@ export function AccordionItem<T extends ValidComponent = "div">(
 					>
 				>
 			>
+				id={id()}
 				open={isExpanded()}
 				disabled={mergedProps.disabled}
 				{...others}
