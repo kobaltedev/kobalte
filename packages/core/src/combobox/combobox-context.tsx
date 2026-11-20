@@ -58,7 +58,12 @@ export interface ComboboxContextValue {
 	placeholder: Accessor<JSX.Element>;
 	renderItem: (item: CollectionNode) => JSX.Element;
 	renderSection: (section: CollectionNode) => JSX.Element;
-	removeOptionFromSelection: (option: any) => void;
+	/**
+	 * Removes `option` from the selection. Pass `focusInput: false` when the
+	 * caller manages focus itself (e.g. roving focus between selected chips)
+	 * to skip Combobox's default "focus the input" side effect.
+	 */
+	removeOptionFromSelection: (option: any, focusInput?: boolean) => void;
 	onInputKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent>;
 	generateId: (part: string) => string;
 	registerListboxId: (id: string) => () => void;

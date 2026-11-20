@@ -1,0 +1,391 @@
+import {
+	BasicExample,
+	ControlledExample,
+	DelimiterExample,
+	HTMLFormExample,
+	MaxExample,
+	ValidateExample,
+	ValidationExample,
+} from "../../../../examples/tags-input";
+
+# Tags Input
+
+An accessible input for composing a list of string values ("tags"), each removable and optionally editable in place.
+
+## Import
+
+```ts
+import { TagsInput } from "@kobalte/core/tags-input";
+// or
+import {
+	Root,
+	Label,
+	Control,
+	Input,
+	Item,
+	ItemPreview,
+	ItemText,
+	ItemInput,
+	ItemDeleteTrigger,
+	ClearTrigger,
+	Description,
+	ErrorMessage,
+	HiddenInput,
+} from "@kobalte/core/tags-input";
+// or (deprecated)
+import { TagsInput } from "@kobalte/core";
+```
+
+## Features
+
+- Add tags by pressing <kbd>Enter</kbd>, or by typing a configurable delimiter character.
+- Remove the last tag with <kbd>Backspace</kbd> when the input is empty, or via each tag's delete trigger.
+- Optional paste-splitting: paste a delimiter-separated list and each value becomes its own tag.
+- Arrow-key roving-tabindex navigation between tags and the text input.
+- Existing tags can be edited in place (double-click, or focus + <kbd>Enter</kbd>); <kbd>Enter</kbd> commits, <kbd>Escape</kbd> cancels.
+- Duplicate tags rejected by default, configurable via `allowDuplicates`.
+- `max` tag count, `maxLength` per tag, and a custom `validate` function.
+- Can be controlled or uncontrolled, for both the tag list and the in-progress input text.
+- Integrates with Kobalte's form control system — supports `validationState`, `required`, `disabled`, `readOnly`, and associated Label, Description, and ErrorMessage sub-components.
+- Submits as part of a native HTML form via `TagsInput.HiddenInput` (one hidden input per tag).
+
+## Anatomy
+
+The tags input consists of:
+
+- **TagsInput**: The root container that manages tag state and provides form control context.
+- **TagsInput.Label**: A label that gives the user information on the tags input.
+- **TagsInput.Control**: The wrapper around the rendered tags and the text input.
+- **TagsInput.Input**: The text field used to type and commit new tags.
+- **TagsInput.Item**: The container for a single tag. Establishes the item context used by its children.
+- **TagsInput.ItemPreview**: Wraps a tag's text and delete trigger. Hidden while that tag is being edited.
+- **TagsInput.ItemText**: Displays a tag's current value.
+- **TagsInput.ItemInput**: The text field used to edit an existing tag. Only rendered while that tag is being edited.
+- **TagsInput.ItemDeleteTrigger**: A button that removes the tag it belongs to.
+- **TagsInput.ClearTrigger**: A button that removes every tag.
+- **TagsInput.Description**: A description that gives the user more information on the tags input.
+- **TagsInput.ErrorMessage**: An error message that gives the user information on how to fix a validation error.
+- **TagsInput.HiddenInput**: Renders one native hidden `<input>` per tag for native form submission.
+
+```tsx
+<TagsInput>
+	<TagsInput.Label />
+	<TagsInput.Control>
+		{/* one TagsInput.Item per tag, usually via <For> */}
+		<TagsInput.Item>
+			<TagsInput.ItemPreview>
+				<TagsInput.ItemText />
+				<TagsInput.ItemDeleteTrigger />
+			</TagsInput.ItemPreview>
+			<TagsInput.ItemInput />
+		</TagsInput.Item>
+		<TagsInput.Input />
+	</TagsInput.Control>
+	<TagsInput.ClearTrigger />
+	<TagsInput.Description />
+	<TagsInput.ErrorMessage />
+	<TagsInput.HiddenInput />
+</TagsInput>
+```
+
+## Example
+
+The list of tags isn't a fixed anatomy part — render one `TagsInput.Item` per tag yourself (usually with `<For>`), reading the current values from `useTagsInputContext`. Since removing a tag shifts the position of every tag after it, use `keyed={false}` so `<For>` matches items by position rather than by value.
+
+:::preview
+
+<BasicExample />
+
+---
+
+```tsx title="index.tsx" tab file="../../../../examples/tags-input.tsx#L6-L38"
+
+```
+
+```css title="style.css" tab file="../../../../examples/tags-input.module.css"
+
+```
+
+:::
+
+## Usage
+
+### Controlled value
+
+The `value` and `onChange` props can be used to make the tag list controlled.
+
+:::preview
+
+<ControlledExample />
+
+---
+
+```tsx {3,7-11}
+import { createSignal } from "solid-js";
+
+function ControlledExample() {
+	const [value, setValue] = createSignal(["red", "green"]);
+
+	return (
+		<>
+			<TagsInput value={value()} onChange={setValue}>
+				<TagsInput.Control class="tags-input__control">
+					<Tags />
+					<TagsInput.Input class="tags-input__input" placeholder="Add a color…" />
+				</TagsInput.Control>
+			</TagsInput>
+			<p>Value: {JSON.stringify(value())}</p>
+		</>
+	);
+}
+```
+
+:::
+
+### Delimiter and paste
+
+By default, pressing <kbd>Enter</kbd> commits the current input text as a tag. Set `delimiter` to also commit a tag whenever that character is typed — useful for a space- or comma-separated list. Set `addOnPaste` to split pasted text by the same delimiter, turning each resulting value into its own tag.
+
+:::preview
+
+<DelimiterExample />
+
+---
+
+```tsx {0}
+<TagsInput delimiter=" " addOnPaste>
+	<TagsInput.Control class="tags-input__control">
+		<Tags />
+		<TagsInput.Input
+			class="tags-input__input"
+			placeholder="Type a space, or paste a list…"
+		/>
+	</TagsInput.Control>
+</TagsInput>
+```
+
+:::
+
+### Max tags
+
+Use `max` to cap the number of tags. Once the limit is reached, further attempts to add a tag are rejected.
+
+:::preview
+
+<MaxExample />
+
+---
+
+```tsx {3,4}
+function MaxExample() {
+	const [value, setValue] = createSignal(["a", "b"]);
+
+	return (
+		<TagsInput value={value()} onChange={setValue} max={3}>
+			<TagsInput.Control class="tags-input__control">
+				<Tags />
+				<TagsInput.Input class="tags-input__input" placeholder="Add a tag…" />
+			</TagsInput.Control>
+		</TagsInput>
+	);
+}
+```
+
+:::
+
+### Custom validation
+
+Pass a `validate` function to reject specific tag values (in addition to the built-in duplicate check). Return `false` to reject the candidate.
+
+:::preview
+
+<ValidateExample />
+
+---
+
+```tsx {0-2}
+<TagsInput
+	validate={({ value }) => !["admin", "root"].includes(value.toLowerCase())}
+>
+	<TagsInput.Control class="tags-input__control">
+		<Tags />
+		<TagsInput.Input class="tags-input__input" placeholder="Try “admin”…" />
+	</TagsInput.Control>
+</TagsInput>
+```
+
+:::
+
+### Editing a tag
+
+By default (`editable` defaults to `true`), double-clicking a tag — or focusing it and pressing <kbd>Enter</kbd> — puts it into edit mode: `TagsInput.ItemPreview` hides and `TagsInput.ItemInput` is shown instead, pre-filled and pre-selected. Press <kbd>Enter</kbd> to commit the new value or <kbd>Escape</kbd> to cancel. Set `editable={false}` on the root to disable this and make existing tags removable but not editable.
+
+### Validation
+
+Use `validationState`, `TagsInput.Label`, `TagsInput.Description`, and `TagsInput.ErrorMessage` to integrate with Kobalte's form control system. `TagsInput.ErrorMessage` only renders when `validationState` is `"invalid"`.
+
+:::preview
+
+<ValidationExample />
+
+---
+
+```tsx
+function ValidationExample() {
+	const [value, setValue] = createSignal<string[]>([]);
+
+	const isInvalid = () => value().length === 0;
+
+	return (
+		<TagsInput
+			value={value()}
+			onChange={setValue}
+			required
+			validationState={isInvalid() ? "invalid" : "valid"}
+		>
+			<TagsInput.Label>Skills</TagsInput.Label>
+			<TagsInput.Control class="tags-input__control">
+				<Tags />
+				<TagsInput.Input class="tags-input__input" placeholder="Add a skill…" />
+			</TagsInput.Control>
+			<TagsInput.Description>Add at least one skill.</TagsInput.Description>
+			<TagsInput.ErrorMessage>
+				At least one skill is required.
+			</TagsInput.ErrorMessage>
+		</TagsInput>
+	);
+}
+```
+
+:::
+
+### HTML forms
+
+Add a `name` prop to `TagsInput` to include its tags in form submissions — one entry per tag, so read them with `formData.getAll(name)`. The tags reset automatically when the parent form is reset.
+
+:::preview
+
+<HTMLFormExample />
+
+---
+
+```tsx {2}
+<form onSubmit={handleSubmit}>
+	<TagsInput name="fruits" defaultValue={["apple", "banana"]}>
+		<TagsInput.Control class="tags-input__control">
+			<Tags />
+			<TagsInput.Input class="tags-input__input" placeholder="Add a fruit…" />
+		</TagsInput.Control>
+	</TagsInput>
+</form>
+```
+
+:::
+
+## API Reference
+
+### TagsInput
+
+`TagsInput` is equivalent to the `Root` import from `@kobalte/core/tags-input` (and deprecated `TagsInput.Root`).
+
+| Prop            | Description                                                                                                                    |
+| :--------------- | :------------------------------------------------------------------------------------------------------------------------------ |
+| value            | `string[]` <br/> The controlled value of the tags.                                                                              |
+| defaultValue     | `string[]` <br/> The value of the tags when initially rendered. Useful when you do not need to control the value.               |
+| onChange         | `(value: string[]) => void` <br/> Event handler called when the tags change.                                                    |
+| inputValue       | `string` <br/> The controlled value of the text input used to compose a new tag.                                                |
+| defaultInputValue | `string` <br/> The value of the text input when initially rendered.                                                            |
+| onInputChange    | `(value: string) => void` <br/> Event handler called when the text input value changes.                                        |
+| editable         | `boolean` <br/> Whether an existing tag can be edited (double-click, or focus + Enter). Defaults to `true`.                     |
+| addOnPaste       | `boolean` <br/> Whether pasting text should split it by `delimiter` into separate tags. Defaults to `false`.                    |
+| delimiter        | `string \| RegExp` <br/> The character (or pattern) used to split typed/pasted text into separate tags. Defaults to `","`.       |
+| blurBehavior     | `'add' \| 'clear'` <br/> What to do with any leftover input text when the input loses focus.                                    |
+| allowDuplicates  | `boolean` <br/> Whether the same tag value is allowed to appear more than once. Defaults to `false`.                            |
+| max              | `number` <br/> The maximum number of tags allowed.                                                                              |
+| maxLength        | `number` <br/> The maximum number of characters allowed in a single tag.                                                        |
+| validate         | `(details: { value: string; values: string[] }) => boolean` <br/> Validates a candidate tag value; return `false` to reject it. |
+| id               | `string` <br/> A unique identifier. Used to generate ids for nested Label, Description, and ErrorMessage. Auto-generated if not provided. |
+| name             | `string` <br/> The name used when submitting an HTML form.                                                                      |
+| validationState  | `'valid' \| 'invalid'` <br/> Whether the tags input should display its "valid" or "invalid" visual styling.                     |
+| required         | `boolean` <br/> Whether the user must add at least one tag before the form can be submitted.                                    |
+| disabled         | `boolean` <br/> Whether the tags input is disabled.                                                                             |
+| readOnly         | `boolean` <br/> Whether the tags input is read only.                                                                            |
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-empty` | Present when there are no tags. |
+| `data-invalid` | Present when `validationState="invalid"`. |
+| `data-disabled` | Present when disabled. |
+| `data-readonly` | Present when read only. |
+
+### TagsInput.Control
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-focus` | Present when the text input or a tag has focus. |
+| `data-invalid` / `data-disabled` / `data-readonly` | Mirror the root's form control state. |
+
+### TagsInput.Item
+
+| Prop  | Description                                                             |
+| :---- | :------------------------------------------------------------------------ |
+| value | `string` <br/> The current value of the tag. **Required.**              |
+| index | `number` <br/> The index of the tag within the list of tags. **Required.** |
+
+| Data attribute | Description |
+| :--- | :--- |
+| `data-value` | The tag's current value. |
+| `data-highlighted` | Present when the tag has roving keyboard focus. |
+| `data-disabled` | Present when the tags input is disabled. |
+
+### TagsInput.ItemDeleteTrigger
+
+| Prop | Description |
+| :--- | :--- |
+| `aria-label` | `string` <br/> Overrides the default `"Remove {value}"` label. |
+
+### TagsInput.Label / TagsInput.Description
+
+| Prop | Description |
+| :--- | :---------- |
+| `id` | `string` <br/> Auto-generated from the root id if not provided. |
+
+### TagsInput.ErrorMessage
+
+| Prop         | Description                                                                                                                              |
+| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| `forceMount` | `boolean` <br/> Used to force mounting when more control is needed. Useful when controlling animation with SolidJS animation libraries. |
+
+### useTagsInputContext
+
+Returns the `TagsInputContextValue` object. Must be called inside a `TagsInput`. Used to read the current tags when rendering `TagsInput.Item` yourself (see [Example](#example)), or to build custom sub-components.
+
+| Property        | Type                                        | Description                                                    |
+| :-------------- | :------------------------------------------- | :--------------------------------------------------------------- |
+| value           | `Accessor<string[]>`                         | The current tag values.                                          |
+| inputValue      | `Accessor<string>`                           | The current value of the text input.                             |
+| editingIndex    | `Accessor<number \| undefined>`              | The index of the tag currently being edited, if any.             |
+| addTagValue     | `(rawValue: string) => boolean`              | Attempts to add a tag, subject to validation. Returns whether it was added. |
+| removeTagAt     | `(index: number) => void`                    | Removes the tag at `index`.                                      |
+| editTagAt       | `(index: number, rawValue: string) => boolean` | Attempts to replace the tag at `index`. Returns whether it was applied. |
+| clearTags       | `() => void`                                 | Removes every tag.                                               |
+| focusInput      | `() => void`                                 | Moves DOM focus to the text input.                                |
+| focusItemAt     | `(index: number) => void`                    | Moves roving DOM focus to the tag at `index`.                     |
+
+## Rendered elements
+
+| Component                        | Default rendered element |
+| :-------------------------------- | :----------------------- |
+| `TagsInput`                       | `div`                    |
+| `TagsInput.Label`                 | `label`                  |
+| `TagsInput.Control`               | `div`                    |
+| `TagsInput.Input`                 | `input`                  |
+| `TagsInput.Item`                  | `div`                    |
+| `TagsInput.ItemPreview`           | `div`                    |
+| `TagsInput.ItemText`              | `span`                   |
+| `TagsInput.ItemInput`             | `input`                  |
+| `TagsInput.ItemDeleteTrigger`     | `button`                 |
+| `TagsInput.ClearTrigger`          | `button`                 |
+| `TagsInput.Description`          | `div`                    |
+| `TagsInput.ErrorMessage`          | `div`                    |
+| `TagsInput.HiddenInput`           | `input`                  |
