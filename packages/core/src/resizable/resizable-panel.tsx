@@ -209,21 +209,28 @@ export function ResizablePanel<T extends ValidComponent = "div">(
 		return instance.size();
 	};
 
-	const collapsed = createMemo<boolean>((prev = false) => {
+	const collapsed = createMemo<boolean>(() => {
 		const instance = panelInstance();
 		if (!p.collapsible) return false;
 
-		const isCollapsed = instance
+		return instance
 			? instance.size() === resolveSize(p.collapsedSize, context.rootSize())
 			: false;
-
-		if (instance && prev !== isCollapsed) {
-			if (isCollapsed) p.onCollapse?.(instance.size());
-			else p.onExpand?.(instance.size());
-		}
-
-		return isCollapsed;
 	});
+
+	// Call `onCollapse` / `onExpand` from an effect, not from the memo above:
+	// a memo is an owned scope, and Solid 2 rejects state writes there, which
+	// is what these callbacks usually do.
+	createEffect(
+		() => ({ isCollapsed: collapsed(), instance: panelInstance() }),
+		({ isCollapsed, instance }, prev) => {
+			if (!instance || isCollapsed === (prev?.isCollapsed ?? false)) return;
+			untrack(() => {
+				if (isCollapsed) p.onCollapse?.(instance.size());
+				else p.onExpand?.(instance.size());
+			});
+		},
+	);
 
 	const resize = (size: ResizableSize, strategy?: ResizeStrategy) => {
 		const instance = panelInstance();
