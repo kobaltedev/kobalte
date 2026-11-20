@@ -1,23 +1,23 @@
 {
-  "mode": "pre",
-  "tag": "alpha",
-  "initialVersions": {
-    "@kobalte/core": "2.0.0",
-    "@kobalte/tailwindcss": "0.9.0",
-    "@kobalte/tests": "0.6.0",
-    "@kobalte/utils": "2.0.0",
-    "@kobalte/vanilla-extract": "0.5.0"
-  },
-  "changesets": [
-    "accordion-undefined-defaults",
-    "breadcrumbs-undefined-defaults",
-    "five-spies-obey",
-    "full-suns-grow",
-    "jolly-aliens-shout",
-    "resizable-callbacks-outside-memo",
-    "silver-parrots-check",
-    "solid2-peer-ranges",
-    "solid2-primitives-hydration",
-    "tabs-aria-labelledby"
-  ]
+	"mode": "pre",
+	"tag": "alpha",
+	"initialVersions": {
+		"@kobalte/core": "2.0.0",
+		"@kobalte/tailwindcss": "0.9.0",
+		"@kobalte/tests": "0.6.0",
+		"@kobalte/utils": "2.0.0",
+		"@kobalte/vanilla-extract": "0.5.0"
+	},
+	"changesets": [
+		"accordion-undefined-defaults",
+		"breadcrumbs-undefined-defaults",
+		"five-spies-obey",
+		"full-suns-grow",
+		"jolly-aliens-shout",
+		"resizable-callbacks-outside-memo",
+		"silver-parrots-check",
+		"solid2-peer-ranges",
+		"solid2-primitives-hydration",
+		"tabs-aria-labelledby"
+	]
 }
