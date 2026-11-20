@@ -6,7 +6,7 @@ export default defineConfig({
 	plugins: [
 		solidPlugin({
 			compiler: "babel",
-			hot: false,
+			refresh: false,
 			solid: {
 				generate: "ssr",
 				omitNestedClosingTags: false,

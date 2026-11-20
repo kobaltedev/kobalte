@@ -1,5 +1,17 @@
 # @kobalte/core
 
+## 2.0.0-alpha.5
+
+### Patch Changes
+
+- cea6e54: Accordion: fall back to the default `id` and `shouldFocusWrap` when they are passed as `undefined`. Solid 2's `merge` keeps an explicit `undefined`, so `id={undefined}` on an item or trigger left the trigger without an id and broke `aria-labelledby`, and `shouldFocusWrap={undefined}` turned focus wrapping off.
+- ba72109: Breadcrumbs: fall back to the default `separator` and `translations` when they are passed as `undefined`. Solid 2's `merge` keeps an explicit `undefined`, so `translations={undefined}` threw and `separator={undefined}` rendered an empty separator.
+- fb335ce: Call `Resizable.Panel` `onCollapse` / `onExpand` from an effect instead of from inside a memo, so the callbacks can update signals without Solid 2 rejecting the write (`REACTIVE_WRITE_IN_OWNED_SCOPE`).
+- ba6b1df: Allow Solid 2 release candidates from rc.16 onward in the Solid peer dependencies instead of requiring exactly rc.16.
+- 317383e: Tabs: link panels to their trigger with `aria-labelledby` on the first render and in server-rendered HTML, and pick up custom trigger/content ids once they are registered.
+- Updated dependencies [ba6b1df]
+  - @kobalte/utils@2.0.0-alpha.2
+
 ## 2.0.0-alpha.4
 
 ### Patch Changes

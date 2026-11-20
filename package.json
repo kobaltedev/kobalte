@@ -45,7 +45,7 @@
 		"@commitlint/cz-commitlint": "21.2.3",
 		"@solidjs/signals": "catalog:",
 		"@solidjs/testing-library": "catalog:",
-		"@solidjs/vite-plugin": "3.0.0-next.50",
+		"@solidjs/vite-plugin": "3.0.1",
 		"@solidjs/web": "catalog:",
 		"@storybook/addon-docs": "^10.6.1",
 		"@testing-library/dom": "10.4.2",
