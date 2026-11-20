@@ -62,15 +62,19 @@ export function BreadcrumbsRoot<T extends ValidComponent = "nav">(
 
 	const others = omit(mergedProps, "separator", "translations");
 
+	// `merge` treats an explicit `undefined` as a value, so fall back to the defaults when reading.
 	const context: BreadcrumbsContextValue = {
-		separator: () => mergedProps.separator,
+		separator: () => mergedProps.separator ?? "/",
 	};
 
 	return (
 		<BreadcrumbsContext value={context}>
 			<Polymorphic<BreadcrumbsRootRenderProps>
 				as="nav"
-				aria-label={mergedProps.translations.breadcrumbs}
+				aria-label={
+					(mergedProps.translations ?? BREADCRUMBS_INTL_TRANSLATIONS)
+						.breadcrumbs
+				}
 				{...others}
 			/>
 		</BreadcrumbsContext>
