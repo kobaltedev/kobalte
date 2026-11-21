@@ -10,6 +10,7 @@ import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
+	type Accessor,
 	type Component,
 	createEffect,
 	createSignal,
@@ -120,14 +121,23 @@ export function PopoverContent<T extends ValidComponent = "div">(
 	let hasInteractedOutside = false;
 	let hasPointerDownOutside = false;
 
+	// Accumulates nested portalled layers (e.g. a Select inside this popover)
+	// so they can be included in createHideOutside targets. See: #766
+	let layerNestedLayers: Accessor<Element[]> = () => [];
+
 	const onCloseAutoFocus = (e: Event) => {
 		mergedProps.onCloseAutoFocus?.(e);
 
 		if (context.isModal()) {
-			e.preventDefault();
-
+			// Only take over focus-restore when a trigger exists and no right-click.
+			// When there is no trigger, leave the event un-prevented so createFocusTrap
+			// falls back to the element that was focused before opening. (#768)
 			if (!isRightClickOutside) {
-				context.triggerRef()?.focus({ preventScroll: true });
+				const trigger = context.triggerRef();
+				if (trigger) {
+					e.preventDefault();
+					trigger.focus({ preventScroll: true });
+				}
 			}
 		} else {
 			if (!e.defaultPrevented) {
@@ -196,11 +206,13 @@ export function PopoverContent<T extends ValidComponent = "div">(
 	};
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
+	// Also include nested portalled layers (e.g. Select.Content inside this popover)
+	// so they are not incorrectly hidden by ariaHideOutside. See: #766
 	createHideOutside({
 		disabled: () => !(context.isOpen() && context.isModal()),
 		targets: () => {
 			const el = ref();
-			return el ? [el] : [];
+			return el ? [el, ...layerNestedLayers()] : [];
 		},
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
@@ -241,6 +253,9 @@ export function PopoverContent<T extends ValidComponent = "div">(
 					tabindex={-1}
 					disableOutsidePointerEvents={context.isOpen() && context.isModal()}
 					excludedElements={[context.triggerRef]}
+					_onNestedLayersRef={(acc) => {
+						layerNestedLayers = acc;
+					}}
 					style={combineStyle(
 						{
 							"--kb-popover-content-transform-origin":

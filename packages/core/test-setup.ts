@@ -1,5 +1,5 @@
 import { cleanup } from "@solidjs/testing-library";
-import { afterEach, beforeEach } from "vitest";
+import { afterAll, afterEach, beforeEach } from "vitest";
 
 // `@solidjs/testing-library` registers its own `afterEach(cleanup)` as a
 // module-level side effect. With `isolate: false` (see vite.config.ts),
@@ -11,6 +11,11 @@ import { afterEach, beforeEach } from "vitest";
 // re-evaluated per test file even with isolate disabled) makes cleanup run
 // for every file regardless of import order.
 afterEach(() => cleanup());
+
+// If any test file in this worker called vi.useFakeTimers() without a
+// matching vi.useRealTimers(), subsequent files that use real async helpers
+// (waitFor, userEvent) will time out. Restore real timers after every file.
+afterAll(() => vi.useRealTimers());
 
 // jsdom does not implement element.scrollIntoView
 // https://github.com/jsdom/jsdom/issues/1695
