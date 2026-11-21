@@ -51,14 +51,19 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 
 	const context = useFormControlContext();
 
+	const defaultId = context.generateId("label");
+
 	const mergedProps = merge(
 		{
-			id: context.generateId("label"),
+			id: defaultId,
 		},
 		props as FormControlLabelProps,
 	);
 
-	const others = omit(mergedProps, "ref");
+	const others = omit(mergedProps, "id", "ref");
+
+	// `merge` treats an explicit `undefined` as a value, so fall back to the default when reading.
+	const id = () => mergedProps.id ?? defaultId;
 
 	const tagName = createTagName(ref, () => "label");
 
@@ -67,16 +72,17 @@ export function FormControlLabel<T extends ValidComponent = "label">(
 	// the id changes and unregisters it on unmount. Registration is a signal
 	// write, so it stays client-side: on the server the association falls back
 	// to the part's deterministic id (`${rootId}-label`).
-	if (!isServer) untrack(() => context.registerLabel(others.id));
+	if (!isServer) untrack(() => context.registerLabel(id()));
 
 	createEffect(
-		() => others.id,
+		() => id(),
 		(id) => context.registerLabel(id),
 	);
 
 	return (
 		<Polymorphic<FormControlLabelRenderProps>
 			as="label"
+			id={id()}
 			ref={[setRef, untrack(() => mergedProps.ref)]}
 			for={tagName() === "label" ? context.fieldId() : undefined}
 			{...context.dataset()}

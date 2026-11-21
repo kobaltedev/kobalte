@@ -4,6 +4,7 @@ import {
 } from "@solid-primitives/a11y";
 import { access } from "@solid-primitives/utils";
 import { isServer } from "@solidjs/web";
+import { untrack } from "solid-js";
 
 export type { CreateFormControlInputProps as CreateFormControlFieldProps } from "@solid-primitives/a11y";
 
@@ -27,7 +28,9 @@ export function createFormControlField(
 	// tracking (client) scope — on the server it is deprecated, so the
 	// association falls back to the part's deterministic id (`${rootId}-input`).
 	if (!isServer) {
-		context.registerField(access(props.id) ?? context.generateId("field"));
+		untrack(() =>
+			context.registerField(access(props.id) ?? context.generateId("field")),
+		);
 	}
 
 	return _createFormControlInput(props);

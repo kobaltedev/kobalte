@@ -104,18 +104,16 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 		...FORM_CONTROL_PROP_NAMES,
 	);
 
-	// Disable reactivity to only track controllability on first run
-	// Our current implementation breaks with undefined (stops tracking controlled value)
-	const initialValue = mergedProps.value;
+	// `merge` treats an explicit `undefined` as a value, so fall back to the default when reading.
+	const id = () => access(mergedProps.id) ?? defaultId;
 
 	const [value, setValue] = createControllableSignal({
-		value: () =>
-			initialValue === undefined ? undefined : (mergedProps.value ?? ""),
+		value: () => mergedProps.value,
 		defaultValue: () => mergedProps.defaultValue,
 		onChange: (value) => mergedProps.onChange?.(value),
 	});
 
-	const { formControlContext } = createFormControl(mergedProps);
+	const { formControlContext } = createFormControl(merge(mergedProps, { id }));
 
 	createFormResetListener(ref, () => setValue(mergedProps.defaultValue ?? ""));
 
@@ -182,7 +180,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 		value,
 		inputRef,
 		setInputRef,
-		generateId: (suffix: string) => `${access(mergedProps.id)}-${suffix}`,
+		generateId: (suffix: string) => `${id()}-${suffix}`,
 		onInput,
 	};
 
@@ -193,7 +191,7 @@ export function TextFieldRoot<T extends ValidComponent = "div">(
 					as="div"
 					ref={[setRef, mergedProps.ref]}
 					role="group"
-					id={access(mergedProps.id)}
+					id={id()}
 					{...formControlContext.dataset()}
 					{...others}
 				/>

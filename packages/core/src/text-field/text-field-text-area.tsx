@@ -66,20 +66,26 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 
 	const context = useTextFieldContext();
 
+	const defaultId = context.generateId("textarea");
+
 	const mergedProps = merge(
 		{
-			id: context.generateId("textarea"),
+			id: defaultId,
 		},
 		props as TextFieldTextAreaProps,
 	);
 
 	const others = omit(
 		mergedProps,
+		"id",
 		"ref",
 		"autoResize",
 		"submitOnEnter",
 		"onKeyPress",
 	);
+
+	// `merge` treats an explicit `undefined` as a value, so fall back to the default when reading.
+	const id = () => mergedProps.id ?? defaultId;
 
 	createEffect(
 		() => ({ autoResize: mergedProps.autoResize, value: context.value() }),
@@ -112,6 +118,7 @@ export function TextFieldTextArea<T extends ValidComponent = "textarea">(
 			>
 		>
 			as="textarea"
+			id={id()}
 			aria-multiline={mergedProps.submitOnEnter ? "false" : undefined}
 			onKeyPress={composeEventHandlers([mergedProps.onKeyPress, onKeyPress])}
 			ref={[setRef, mergedProps.ref]}
