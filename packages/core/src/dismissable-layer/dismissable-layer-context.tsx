@@ -1,7 +1,8 @@
-import { createContext, useContext } from "solid-js";
+import { type Accessor, createContext, useContext } from "solid-js";
 
 export interface DismissableLayerContextValue {
 	registerNestedLayer: (element: Element) => () => void;
+	nestedLayers: Accessor<Element[]>;
 }
 
 export const DismissableLayerContext =

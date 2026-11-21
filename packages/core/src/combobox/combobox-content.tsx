@@ -9,7 +9,13 @@ import {
 import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
-import { type Component, createSignal, omit, Show } from "solid-js";
+import {
+	type Accessor,
+	type Component,
+	createSignal,
+	omit,
+	Show,
+} from "solid-js";
 import {
 	DismissableLayer,
 	type DismissableLayerCommonProps,
@@ -74,6 +80,10 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 
 	const context = useComboboxContext();
 
+	// Accumulates nested portalled layers so they can be included in
+	// createHideOutside targets. See: #766
+	let layerNestedLayers: Accessor<Element[]> = () => [];
+
 	const others = omit(
 		props as ComboboxContentProps,
 		"ref",
@@ -102,7 +112,8 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 		}
 	};
 
-	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
+	// aria-hide everything except the content and control (better supported equivalent to setting aria-modal)
+	// Also include nested portalled layers. See: #766
 	createHideOutside({
 		disabled: () => !(context.isOpen() && context.isModal()),
 		targets: () => {
@@ -117,7 +128,7 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 				excludedElements.push(controlEl);
 			}
 
-			return excludedElements;
+			return [...excludedElements, ...layerNestedLayers()];
 		},
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
@@ -138,8 +149,12 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 			props.onCloseAutoFocus?.(e);
 
 			if (!e.defaultPrevented) {
-				context.inputRef()?.focus({ preventScroll: true });
-				e.preventDefault();
+				// Only take over focus-restore when input exists. (#768)
+				const input = context.inputRef();
+				if (input) {
+					input.focus({ preventScroll: true });
+					e.preventDefault();
+				}
 			}
 		},
 	});
@@ -161,6 +176,9 @@ export function ComboboxContent<T extends ValidComponent = "div">(
 					]}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.controlRef]}
+					_onNestedLayersRef={(acc) => {
+						layerNestedLayers = acc;
+					}}
 					style={combineStyle(
 						{
 							"--kb-combobox-content-transform-origin":
