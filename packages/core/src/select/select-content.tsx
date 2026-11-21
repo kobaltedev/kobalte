@@ -10,6 +10,7 @@ import { combineStyle } from "@solid-primitives/props";
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { JSX, ValidComponent } from "@solidjs/web";
 import {
+	type Accessor,
 	type Component,
 	createEffect,
 	createSignal,
@@ -78,6 +79,10 @@ export function SelectContent<T extends ValidComponent = "div">(
 
 	const context = useSelectContext();
 
+	// Accumulates nested portalled layers so they can be included in
+	// createHideOutside targets. See: #766
+	let layerNestedLayers: Accessor<Element[]> = () => [];
+
 	const others = omit(
 		props as SelectContentProps,
 		"ref",
@@ -104,11 +109,12 @@ export function SelectContent<T extends ValidComponent = "div">(
 	};
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
+	// Also include nested portalled layers. See: #766
 	createHideOutside({
 		disabled: () => !(context.isOpen() && context.isModal()),
 		targets: () => {
 			const el = ref();
-			return el ? [el] : [];
+			return el ? [el, ...layerNestedLayers()] : [];
 		},
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
@@ -123,8 +129,12 @@ export function SelectContent<T extends ValidComponent = "div">(
 
 		if (!e.defaultPrevented) {
 			// Also called from an effect cleanup, so read the ref untracked.
-			untrack(context.triggerRef)?.focus({ preventScroll: true });
-			e.preventDefault();
+			// Only take over focus-restore when a trigger exists. (#768)
+			const trigger = untrack(context.triggerRef);
+			if (trigger) {
+				trigger.focus({ preventScroll: true });
+				e.preventDefault();
+			}
 		}
 	};
 
@@ -177,6 +187,9 @@ export function SelectContent<T extends ValidComponent = "div">(
 					]}
 					disableOutsidePointerEvents={context.isModal() && context.isOpen()}
 					excludedElements={[context.triggerRef]}
+					_onNestedLayersRef={(acc) => {
+						layerNestedLayers = acc;
+					}}
 					style={combineStyle(
 						{
 							"--kb-select-content-transform-origin":

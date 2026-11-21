@@ -79,6 +79,13 @@ export interface DismissableLayerOptions {
 
 	/** Whether to ignore the "top most layer" check on interact outside. */
 	bypassTopMostLayerCheck?: boolean;
+
+	/**
+	 * Called synchronously during initialization with a reactive accessor to
+	 * this layer's registered nested layers. Use to include portalled child
+	 * overlays in `createHideOutside` targets. Internal use only.
+	 */
+	_onNestedLayersRef?: (nestedLayers: Accessor<Element[]>) => void;
 }
 
 export interface DismissableLayerCommonProps<
@@ -114,17 +121,24 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 		"onInteractOutside",
 		"onDismiss",
 		"bypassTopMostLayerCheck",
+		"_onNestedLayersRef",
 	);
 	const isPointerBlocking = createMemo(() => props.disableOutsidePointerEvents);
-	const nestedLayers = new Set<Element>([]);
+	const [nestedLayersSignal, setNestedLayersSignal] = createSignal<Element[]>(
+		[],
+	);
+
+	// Provide the nested-layers accessor synchronously so parent content
+	// components can include it in createHideOutside targets before effects run.
+	untrack(() => props._onNestedLayersRef)?.(nestedLayersSignal);
 
 	const registerNestedLayer = (element: Element) => {
-		nestedLayers.add(element);
+		setNestedLayersSignal((prev) => [...prev, element]);
 
 		const parentUnregister = parentContext?.registerNestedLayer(element);
 
 		return () => {
-			nestedLayers.delete(element);
+			setNestedLayersSignal((prev) => prev.filter((e) => e !== element));
 			parentUnregister?.();
 		};
 	};
@@ -137,7 +151,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 
 			return (
 				props.excludedElements?.some((node) => node()?.contains(element)) ||
-				[...nestedLayers].some((layer) => layer.contains(element))
+				nestedLayersSignal().some((layer) => layer.contains(element))
 			);
 		});
 	};
@@ -262,6 +276,7 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 
 	const context: DismissableLayerContextValue = {
 		registerNestedLayer,
+		nestedLayers: nestedLayersSignal,
 	};
 
 	// TODO: restore <Polymorphic> once @solidjs/web Dynamic/spread passes ref callbacks correctly

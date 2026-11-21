@@ -17,6 +17,7 @@ import {
 import { createPreventScroll } from "@solid-primitives/scroll";
 import type { ValidComponent } from "@solidjs/web";
 import {
+	type Accessor,
 	type Component,
 	createEffect,
 	createSignal,
@@ -119,6 +120,10 @@ export function DialogContent<T extends ValidComponent = "div">(
 	let hasInteractedOutside = false;
 	let hasPointerDownOutside = false;
 
+	// Accumulates nested portalled layers (e.g. a Select inside this dialog)
+	// so they can be included in createHideOutside targets. See: #766
+	let layerNestedLayers: Accessor<Element[]> = () => [];
+
 	const onPointerDownOutside = (e: PointerDownOutsideEvent) => {
 		mergedProps.onPointerDownOutside?.(e);
 
@@ -176,8 +181,14 @@ export function DialogContent<T extends ValidComponent = "div">(
 		mergedProps.onCloseAutoFocus?.(e);
 
 		if (context.modal()) {
-			e.preventDefault();
-			context.triggerRef()?.focus({ preventScroll: true });
+			// Only take over focus-restore when a trigger exists. When there is no
+			// Dialog.Trigger, leave the event un-prevented so createFocusTrap falls
+			// back to the element that was focused before the dialog opened. (#768)
+			const trigger = context.triggerRef();
+			if (trigger) {
+				e.preventDefault();
+				trigger.focus({ preventScroll: true });
+			}
 		} else {
 			if (!e.defaultPrevented) {
 				if (!hasInteractedOutside) {
@@ -195,11 +206,13 @@ export function DialogContent<T extends ValidComponent = "div">(
 
 	// aria-hide everything except the content (better supported equivalent to setting aria-modal)
 	// Use context.contentRef (a signal) so the effect re-runs when the element mounts.
+	// Also include nested portalled layers (e.g. Select.Content inside this dialog)
+	// so they are not incorrectly hidden by ariaHideOutside. See: #766
 	createHideOutside({
 		disabled: () => !(context.isOpen() && context.modal()),
 		targets: () => {
 			const el = context.contentRef();
-			return el ? [el] : [];
+			return el ? [el, ...layerNestedLayers()] : [];
 		},
 		alwaysVisibleSelector: "[data-kb-top-layer], [data-live-announcer]",
 	});
@@ -233,6 +246,9 @@ export function DialogContent<T extends ValidComponent = "div">(
 				tabindex={-1}
 				disableOutsidePointerEvents={context.modal() && context.isOpen()}
 				excludedElements={[context.triggerRef]}
+				_onNestedLayersRef={(acc) => {
+					layerNestedLayers = acc;
+				}}
 				aria-labelledby={context.titleId()}
 				aria-describedby={context.descriptionId()}
 				data-expanded={context.isOpen() ? "" : undefined}
