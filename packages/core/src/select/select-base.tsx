@@ -575,7 +575,8 @@ export function SelectBase<
 				keys.includes(key),
 			);
 
-			selectionManager.setSelectedKeys(keysToKeep);
+			// `setSelectedKeys` reads the collection to resolve keys.
+			untrack(() => selectionManager.setSelectedKeys(keysToKeep));
 		},
 		{ defer: true },
 	);

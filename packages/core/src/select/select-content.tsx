@@ -15,6 +15,7 @@ import {
 	createSignal,
 	omit,
 	Show,
+	untrack,
 } from "solid-js";
 import {
 	DismissableLayer,
@@ -121,7 +122,8 @@ export function SelectContent<T extends ValidComponent = "div">(
 		props.onCloseAutoFocus?.(e);
 
 		if (!e.defaultPrevented) {
-			context.triggerRef()?.focus({ preventScroll: true });
+			// Also called from an effect cleanup, so read the ref untracked.
+			untrack(context.triggerRef)?.focus({ preventScroll: true });
 			e.preventDefault();
 		}
 	};

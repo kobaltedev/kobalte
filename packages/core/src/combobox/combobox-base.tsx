@@ -399,8 +399,9 @@ export function ComboboxBase<
 
 	const [showAllOptions, setShowAllOptions] = createSignal(false);
 
+	// Initial value only; kept in sync by the effect below.
 	const [lastDisplayedOptions, setLastDisplayedOptions] = createSignal(
-		mergedProps.options!,
+		untrack(() => mergedProps.options!),
 	);
 
 	const disclosureState = createDisclosureState({
@@ -773,12 +774,16 @@ export function ComboboxBase<
 			if (untrack(() => disclosureState.isOpen()) && prevInput != null) {
 				const [prevFilteredOptions, prevShowAllOptions] = prevInput;
 				setLastDisplayedOptions(
-					prevShowAllOptions ? mergedProps.options! : prevFilteredOptions,
+					prevShowAllOptions
+						? untrack(() => mergedProps.options!)
+						: prevFilteredOptions,
 				);
 			} else {
 				const [curFilteredOptions, curShowAllOptions] = input;
 				setLastDisplayedOptions(
-					curShowAllOptions ? mergedProps.options! : curFilteredOptions,
+					curShowAllOptions
+						? untrack(() => mergedProps.options!)
+						: curFilteredOptions,
 				);
 			}
 		},

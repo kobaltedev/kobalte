@@ -7,7 +7,9 @@
  */
 
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, within } from "@solidjs/testing-library";
+import { fireEvent, render, screen, within } from "@solidjs/testing-library";
+import userEvent from "@testing-library/user-event";
+import { createMemo, createSignal, flush } from "solid-js";
 import { vi } from "vitest";
 import * as Combobox from ".";
 
@@ -3588,5 +3590,63 @@ describe("Combobox", () => {
 			// @ts-expect-error
 			expect(value).toEqual("1");
 		});
+	});
+});
+
+describe("Combobox reactive reads", () => {
+	const warnings: string[] = [];
+	// Returns the STRICT_READ_UNTRACKED warnings logged since the last call.
+	const strictReadWarnings = () =>
+		warnings
+			.splice(0)
+			.filter((message) => message.includes("STRICT_READ_UNTRACKED"));
+
+	beforeEach(() => {
+		// userEvent awaits real timers; earlier suites in this file install fake ones.
+		vi.useRealTimers();
+		warnings.length = 0;
+		vi.spyOn(console, "warn").mockImplementation((...args) => {
+			warnings.push(args.join(" "));
+		});
+	});
+
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
+	it("does not read options untracked when they are reactive", async () => {
+		const [items, setItems] = createSignal(["Apple", "Banana"]);
+		const options = createMemo(() => [...items()]);
+
+		render(() => (
+			<Combobox.Root<string>
+				options={options()}
+				itemComponent={(props) => (
+					<Combobox.Item item={props.item}>
+						<Combobox.ItemLabel>{props.item.rawValue}</Combobox.ItemLabel>
+					</Combobox.Item>
+				)}
+			>
+				<Combobox.Control>
+					<Combobox.Input />
+					<Combobox.Trigger aria-label="Show all" />
+				</Combobox.Control>
+				<Combobox.Portal>
+					<Combobox.Content>
+						<Combobox.Listbox />
+					</Combobox.Content>
+				</Combobox.Portal>
+			</Combobox.Root>
+		));
+		flush();
+
+		expect(strictReadWarnings()).toEqual([]);
+
+		await userEvent.click(screen.getByLabelText("Show all"));
+		setItems(["Apple", "Date"]);
+		flush();
+
+		expect(await screen.findByRole("option", { name: "Date" })).toBeVisible();
+		expect(strictReadWarnings()).toEqual([]);
 	});
 });

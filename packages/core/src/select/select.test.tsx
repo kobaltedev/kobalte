@@ -6,8 +6,9 @@
  * https://github.com/adobe/react-spectrum/blob/5c1920e50d4b2b80c826ca91aff55c97350bf9f9/packages/@react-spectrum/picker/test/Picker.test.js
  */
 import { createPointerEvent, installPointerEvent } from "@kobalte/tests";
-import { fireEvent, render, within } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { fireEvent, render, screen, within } from "@solidjs/testing-library";
+import userEvent from "@testing-library/user-event";
+import { createMemo, createSignal, flush } from "solid-js";
 import { vi } from "vitest";
 
 import * as Select from ".";
@@ -4289,5 +4290,81 @@ describe("Select", () => {
 			// @ts-expect-error
 			expect(value).toEqual("1");
 		});
+	});
+});
+
+describe("Select reactive reads", () => {
+	const warnings: string[] = [];
+	// Returns the STRICT_READ_UNTRACKED warnings logged since the last call.
+	const strictReadWarnings = () =>
+		warnings
+			.splice(0)
+			.filter((message) => message.includes("STRICT_READ_UNTRACKED"));
+
+	beforeEach(() => {
+		// userEvent awaits real timers; earlier suites in this file install fake ones.
+		vi.useRealTimers();
+		warnings.length = 0;
+		vi.spyOn(console, "warn").mockImplementation((...args) => {
+			warnings.push(args.join(" "));
+		});
+	});
+
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
+	it("does not read options or the trigger ref untracked", async () => {
+		const [items, setItems] = createSignal(["Alpha", "Beta"]);
+		const options = createMemo(() => [...items()]);
+		const [value, setValue] = createSignal<string | null>(null);
+
+		render(() => (
+			<Select.Root<string>
+				options={options()}
+				value={value()}
+				onChange={setValue}
+				itemComponent={(props) => (
+					<Select.Item item={props.item}>
+						<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+					</Select.Item>
+				)}
+			>
+				<Select.Trigger aria-label="Pick">
+					<Select.Value<string>>
+						{(state) => state.selectedOption()}
+					</Select.Value>
+				</Select.Trigger>
+				<Select.Content>
+					<Select.Listbox />
+				</Select.Content>
+			</Select.Root>
+		));
+
+		const trigger = screen.getByLabelText("Pick");
+
+		// Closing a non-modal Select after a selection restores focus to the trigger.
+		await userEvent.click(trigger);
+		await userEvent.click(await screen.findByRole("option", { name: "Beta" }));
+		flush();
+
+		expect(document.activeElement).toBe(trigger);
+		expect(strictReadWarnings()).toEqual([]);
+
+		// Changing options keeps selected keys that still exist.
+		setItems(["Beta", "Gamma"]);
+		flush();
+
+		expect(trigger).toHaveTextContent("Beta");
+		expect(strictReadWarnings()).toEqual([]);
+
+		// Closing with Escape also restores focus to the trigger.
+		await userEvent.click(trigger);
+		await screen.findByRole("option", { name: "Gamma" });
+		await userEvent.keyboard("{Escape}");
+		flush();
+
+		expect(document.activeElement).toBe(trigger);
+		expect(strictReadWarnings()).toEqual([]);
 	});
 });
