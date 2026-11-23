@@ -10,10 +10,15 @@ import {
 	Polymorphic,
 	type PolymorphicProps,
 } from "../polymorphic/index.tsx";
+import { createRovingCollection } from "../primitives/create-roving-collection";
 import {
 	type ComboboxDataSet,
 	useComboboxContext,
 } from "./combobox-context.tsx";
+import {
+	ComboboxControlContext,
+	type ComboboxControlContextValue,
+} from "./combobox-control-context.tsx";
 
 export interface ComboboxControlState<Option> {
 	/** The selected options. */
@@ -68,25 +73,41 @@ export function ComboboxControl<Option, T extends ValidComponent = "div">(
 
 	const selectionManager = () => context.listState().selectionManager();
 
+	// Backs the optional `Combobox.ControlItem` chips (roving focus between
+	// selected options). Unused, and effectively free, when the consumer
+	// renders `selectedOptions()` some other way instead.
+	const {
+		DomCollectionProvider,
+		listState: rovingListState,
+		focusItemAt,
+	} = createRovingCollection();
+
+	const controlContext: ComboboxControlContextValue = {
+		rovingListState,
+		focusItemAt,
+	};
+
 	return (
 		<Polymorphic<ComboboxControlRenderProps>
 			as="div"
-			ref={
-				[context.setControlRef, props.ref as (el: HTMLElement) => void] as any
-			}
+			ref={[context.setControlRef, props.ref as Ref<HTMLElement>]}
 			{...context.dataset()}
 			{...formControlContext.dataset()}
 			{...others}
 		>
-			<ComboboxControlChild
-				state={{
-					selectedOptions: () => context.selectedOptions(),
-					remove: (option) => context.removeOptionFromSelection(option),
-					clear: () => selectionManager().clearSelection(),
-				}}
-			>
-				{props.children}
-			</ComboboxControlChild>
+			<ComboboxControlContext value={controlContext}>
+				<DomCollectionProvider>
+					<ComboboxControlChild
+						state={{
+							selectedOptions: () => context.selectedOptions(),
+							remove: (option) => context.removeOptionFromSelection(option),
+							clear: () => selectionManager().clearSelection(),
+						}}
+					>
+						{props.children}
+					</ComboboxControlChild>
+				</DomCollectionProvider>
+			</ComboboxControlContext>
 		</Polymorphic>
 	);
 }
