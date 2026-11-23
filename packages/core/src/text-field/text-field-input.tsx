@@ -66,14 +66,19 @@ export function TextFieldInputBase<T extends ValidComponent = "input">(
 	const formControlContext = useFormControlContext();
 	const context = useTextFieldContext();
 
+	const defaultId = context.generateId("input");
+
 	const mergedProps = merge(
 		{
-			id: context.generateId("input"),
+			id: defaultId,
 		},
 		props as TextFieldInputProps,
 	);
 
-	const formControlFieldProps = omit(mergedProps, "onInput");
+	// `merge` treats an explicit `undefined` as a value, so fall back to the default when reading.
+	const formControlFieldProps = merge(omit(mergedProps, "onInput"), {
+		id: () => mergedProps.id ?? defaultId,
+	});
 	const others = omit(
 		mergedProps,
 		"ref",

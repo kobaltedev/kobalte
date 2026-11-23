@@ -44,14 +44,19 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 ) {
 	const context = useFormControlContext();
 
+	const defaultId = context.generateId("error-message");
+
 	const mergedProps = merge(
 		{
-			id: context.generateId("error-message"),
+			id: defaultId,
 		},
 		props as FormControlErrorMessageProps,
 	);
 
-	const others = omit(mergedProps, "forceMount");
+	const others = omit(mergedProps, "id", "forceMount");
+
+	// `merge` treats an explicit `undefined` as a value, so fall back to the default when reading.
+	const id = () => mergedProps.id ?? defaultId;
 
 	const isInvalid = () => context.validationState() === "invalid";
 
@@ -60,11 +65,14 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 	// when the id changes and unregisters it on unmount. Registration is a
 	// signal write, so it stays client-side: on the server the association
 	// falls back to the part's deterministic id (`${rootId}-error-message`).
-	if (isInvalid() && !isServer)
-		untrack(() => context.registerErrorMessage(others.id!));
+	if (!isServer) {
+		untrack(() => {
+			if (isInvalid()) context.registerErrorMessage(id());
+		});
+	}
 
 	createEffect(
-		() => (isInvalid() ? others.id! : undefined),
+		() => (isInvalid() ? id() : undefined),
 		(id) => {
 			if (!id) return;
 			return context.registerErrorMessage(id);
@@ -75,6 +83,7 @@ export function FormControlErrorMessage<T extends ValidComponent = "div">(
 		<Show when={mergedProps.forceMount || isInvalid()}>
 			<Polymorphic<FormControlErrorMessageRenderProps>
 				as="div"
+				id={id()}
 				// Errors are usually rendered after hydration, when the field has
 				// already been read, so they need to be announced.
 				role="alert"

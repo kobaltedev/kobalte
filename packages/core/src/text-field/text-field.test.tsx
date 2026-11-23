@@ -1,7 +1,7 @@
 import { installPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
 import userEvent from "@testing-library/user-event";
-import { flush } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { vi } from "vitest";
 
 import * as TextField from ".";
@@ -532,5 +532,125 @@ describe("TextField", () => {
 		// value once the batch completes.
 		flush();
 		expect(input.value).toBe("cat");
+	});
+
+	it("follows a programmatic value when controlled value starts as undefined", () => {
+		const [value, setValue] = createSignal<string | undefined>(undefined);
+
+		const { getByRole } = render(() => (
+			<TextField.Root value={value()} onChange={setValue}>
+				<TextField.Label>Name</TextField.Label>
+				<TextField.Input />
+			</TextField.Root>
+		));
+
+		const input = getByRole("textbox") as HTMLInputElement;
+		expect(input.value).toBe("");
+
+		setValue("b");
+		flush();
+		expect(input.value).toBe("b");
+	});
+
+	it("clears input when controlled value is set to undefined", () => {
+		const [value, setValue] = createSignal<string | undefined>("cat");
+
+		const { getByRole } = render(() => (
+			<TextField.Root value={value()} onChange={setValue}>
+				<TextField.Label>Name</TextField.Label>
+				<TextField.Input />
+			</TextField.Root>
+		));
+
+		const input = getByRole("textbox") as HTMLInputElement;
+		expect(input.value).toBe("cat");
+
+		setValue(undefined);
+		flush();
+		expect(input.value).toBe("");
+	});
+
+	it("does not log STRICT_READ_UNTRACKED for controlled value or reactive validationState", () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const [value, setValue] = createSignal<string | undefined>("a");
+		const [invalid, setInvalid] = createSignal(false);
+
+		const { getByRole, getByLabelText } = render(() => (
+			<TextField.Root
+				value={value()}
+				onChange={setValue}
+				validationState={invalid() ? "invalid" : "valid"}
+			>
+				<TextField.Label>Name</TextField.Label>
+				<TextField.Input />
+				<TextField.ErrorMessage>Required</TextField.ErrorMessage>
+			</TextField.Root>
+		));
+
+		setInvalid(true);
+		flush();
+
+		const alert = getByRole("alert");
+		expect(getByLabelText("Name").getAttribute("aria-describedby")).toContain(
+			alert.id,
+		);
+
+		const strict = warn.mock.calls
+			.map((c) => c.join(" "))
+			.filter((m) => m.includes("STRICT_READ_UNTRACKED"));
+
+		expect(strict).toEqual([]);
+		warn.mockRestore();
+	});
+
+	it("falls back to default ids when 'id' is undefined", () => {
+		const { getByTestId, getByRole, getByText } = render(() => (
+			<TextField.Root
+				id={undefined}
+				data-testid="textfield"
+				validationState="invalid"
+			>
+				<TextField.Label id={undefined}>Favorite Pet</TextField.Label>
+				<TextField.Input id={undefined} />
+				<TextField.Description id={undefined}>
+					Description
+				</TextField.Description>
+				<TextField.ErrorMessage id={undefined}>
+					ErrorMessage
+				</TextField.ErrorMessage>
+			</TextField.Root>
+		));
+
+		const root = getByTestId("textfield");
+		const label = getByText("Favorite Pet");
+		const input = getByRole("textbox");
+		const description = getByText("Description");
+		const error = getByText("ErrorMessage");
+
+		expect(root.id).toMatch(/^textfield-/);
+		expect(label.id).toBe(`${root.id}-label`);
+		expect(input.id).toBe(`${root.id}-input`);
+		expect(description.id).toBe(`${root.id}-description`);
+		expect(error.id).toBe(`${root.id}-error-message`);
+		expect(label).toHaveAttribute("for", input.id);
+		expect(input).toHaveAttribute("aria-labelledby", label.id);
+		expect(input).toHaveAttribute(
+			"aria-describedby",
+			`${description.id} ${error.id}`,
+		);
+	});
+
+	it("falls back to default id on TextArea when 'id' is undefined", () => {
+		const { getByTestId, getByRole } = render(() => (
+			<TextField.Root id={undefined} data-testid="textfield">
+				<TextField.TextArea id={undefined} />
+			</TextField.Root>
+		));
+
+		const root = getByTestId("textfield");
+		const textarea = getByRole("textbox");
+
+		expect(root.id).toMatch(/^textfield-/);
+		expect(textarea.id).toBe(`${root.id}-textarea`);
 	});
 });
