@@ -1,17 +1,13 @@
-import { Navigate, redirect } from "@solidjs/router";
+import { useNavigate } from "@solidjs/router";
+import { createEffect } from "solid-js";
 
 const target = "/docs/core/overview/introduction";
 
-export const route = {
-	preload() {
-		return redirect(target);
-	},
-};
-
-export function GET() {
-	throw redirect(target);
-}
-
-export default function () {
-	return <Navigate href={target} />;
+export default function Redirect() {
+	const navigate = useNavigate();
+	createEffect(
+		() => target,
+		() => navigate(target, { replace: true }),
+	);
+	return null;
 }

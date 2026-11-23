@@ -254,8 +254,8 @@ It's common in toast libraries to have method for displaying different type of t
 // toast.tsx
 
 import { Toast, toaster } from "@kobalte/core/toast";
-import { JSX } from "solid-js/jsx-runtime";
-import { Switch, Match } from "solid-js/web";
+import type { JSX } from "@solidjs/web";
+import { Switch, Match } from "@solidjs/web";
 
 function show(message: string) {
 	return toaster.show(props => (
@@ -292,7 +292,7 @@ function promise<T, U>(
 	return toaster.promise(promise, props => (
 		<Toast
 			toastId={props.toastId}
-			classList={{
+			class={{
 				toast: true,
 				"toast-loading": props.state === "pending",
 				"toast-success": props.state === "fulfilled",

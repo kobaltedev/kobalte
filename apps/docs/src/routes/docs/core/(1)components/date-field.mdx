@@ -95,7 +95,7 @@ Date values are native JS `Date` objects.
 
 ---
 
-```tsx {0}
+```tsx
 <DateField defaultValue={new Date(2024, 0, 15)}>
 	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
 </DateField>
@@ -147,7 +147,7 @@ The `granularity` prop allows you to control the smallest unit that is displayed
 
 ---
 
-```tsx {0}
+```tsx
 <DateField granularity="second">
 	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
 </DateField>
@@ -165,7 +165,7 @@ The `minValue` and `maxValue` props can be used to perform builtin validation. T
 
 ---
 
-```tsx {0}
+```tsx
 <DateField
 	defaultValue={new Date(2024, 5, 15)}
 	minValue={new Date(2024, 0, 1)}
@@ -188,7 +188,7 @@ A `placeholderValue` can be provided to influence the format of the placeholder 
 
 ---
 
-```tsx {0}
+```tsx
 <DateField placeholderValue={new Date(2030, 0, 1)}>
 	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
 </DateField>
@@ -206,7 +206,7 @@ By default, DateField displays times in either 12 or 24-hour format depending on
 
 ---
 
-```tsx {0}
+```tsx
 <DateField granularity="minute" hourCycle={12}>
 	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
 </DateField>
@@ -278,7 +278,7 @@ Add a `name` prop to `DateField` and render `DateField.HiddenInput` to include t
 
 ---
 
-```tsx {0,5}
+```tsx {5}
 <DateField name="date">
 	<DateField.Input>{segment => <DateField.Segment segment={segment()} />}</DateField.Input>
 	<DateField.HiddenInput />

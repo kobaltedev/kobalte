@@ -1,4 +1,4 @@
-import type { ComponentProps } from "solid-js";
+import type { ComponentProps } from "@solidjs/web";
 
 export function CheckIcon(props: ComponentProps<"svg">) {
 	return (

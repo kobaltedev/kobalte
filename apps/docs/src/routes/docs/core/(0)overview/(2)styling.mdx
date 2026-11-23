@@ -178,7 +178,7 @@ Extending a component is done the same way you extend any SolidJS component.
 
 ```tsx
 import { Popover as KPopover } from "@kobalte/core/popover";
-import { ComponentProps } from "solid-js";
+import { ComponentProps } from "@solidjs/web";
 
 export const PopoverTrigger = (props: ComponentProps<typeof KPopover.Trigger>) => {
 	return <KPopover.Trigger {...props} />;

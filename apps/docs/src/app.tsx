@@ -1,17 +1,24 @@
+import { pageRoutes } from "virtual:file-routes";
 import { Toast } from "@kobalte/core/toast";
 import { SolidBaseRoot } from "@kobalte/solidbase/client";
-import { Router } from "@solidjs/router";
-import { FileRoutes } from "@solidjs/start/router";
-import { Suspense } from "solid-js";
-import { Portal } from "solid-js/web";
+import { createRouter } from "@solidjs/router";
+import { fileRoutes } from "@solidjs/router/fs";
+import { Loading, Portal } from "@solidjs/web";
 import toastStyles from "./examples/toast.module.css";
+
+const Router = createRouter({
+	routes: fileRoutes(pageRoutes),
+	// Vite's base ends with a slash ("/docs/"), which the router would keep when
+	// resolving links ("/docs//guide"), so pass it without one.
+	base: import.meta.env.BASE_URL.replace(/\/$/, ""),
+});
 
 export default function App() {
 	return (
-		<Router
-			root={(props) => (
+		<Router>
+			{(props) => (
 				<SolidBaseRoot>
-					<Suspense>{props.children}</Suspense>
+					<Loading>{props.children}</Loading>
 
 					<Portal>
 						<Toast.Region>
@@ -23,8 +30,6 @@ export default function App() {
 					</Portal>
 				</SolidBaseRoot>
 			)}
-		>
-			<FileRoutes />
 		</Router>
 	);
 }

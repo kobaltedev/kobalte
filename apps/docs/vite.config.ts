@@ -3,8 +3,7 @@ import {
 	createDefaultThemeFilesystemSidebar,
 	default as defaultTheme,
 } from "@kobalte/solidbase/default-theme";
-import { solidStart } from "@solidjs/start/config";
-import { nitro } from "nitro/vite";
+import solid from "@solidjs/vite-plugin";
 import { defineConfig } from "vite";
 import { version as KBVersion } from "../../packages/core/package.json";
 
@@ -109,11 +108,9 @@ export default defineConfig({
 				},
 			},
 		}),
-		solidStart(solidBase.startConfig()),
-		nitro({
-			preset: "netlify",
-			prerender: { crawlLinks: true },
-		}),
+		// @solidjs/vite-plugin start mode (SSR) replaces SolidStart + Nitro.
+		// SolidBase prerenders the site into dist/client after the build.
+		solid(solidBase.startConfig()),
 	],
 	ssr: {
 		noExternal: ["@docsearch/css"],

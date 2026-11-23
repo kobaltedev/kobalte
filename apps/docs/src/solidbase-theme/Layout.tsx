@@ -1,7 +1,7 @@
 import Footer from "@kobalte/solidbase/default-theme/components/Footer.jsx";
 import { DefaultThemeComponentsProvider } from "@kobalte/solidbase/default-theme/context.jsx";
 import Layout from "@kobalte/solidbase/default-theme/Layout.jsx";
-import type { ComponentProps } from "solid-js";
+import type { ComponentProps } from "@solidjs/web";
 
 import styles from "./Layout.module.css";
 

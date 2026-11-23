@@ -7,7 +7,7 @@ export function BasicExample() {
 		<Rating class={style.rating}>
 			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
 			<Rating.Control class={style.rating__control}>
-				<Repeat each={Array(5)}>
+				<Repeat count={5}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
 							<Rating.ItemControl>
@@ -25,7 +25,7 @@ export function DefaultValueExample() {
 	return (
 		<Rating class={style.rating} defaultValue={3}>
 			<Rating.Control class={style.rating__control}>
-				<Repeat each={Array(5)}>
+				<Repeat count={5}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
 							<Rating.ItemControl>
@@ -46,7 +46,7 @@ export function ControlledExample() {
 		<>
 			<Rating class={style.rating} value={value()} onChange={setValue}>
 				<Rating.Control class={style.rating__control}>
-					<Repeat each={Array(5)}>
+					<Repeat count={5}>
 						{(_) => (
 							<Rating.Item class={style["rating-item"]}>
 								<Rating.ItemControl>
@@ -74,7 +74,7 @@ export function HalfRatingsExample() {
 	return (
 		<Rating class={style.rating} allowHalf>
 			<Rating.Control class={style.rating__control}>
-				<Repeat each={Array(5)}>
+				<Repeat count={5}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
 							<Rating.ItemControl>
@@ -93,7 +93,7 @@ export function DescriptionExample() {
 		<Rating class={style.rating}>
 			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
 			<Rating.Control class={style.rating__control}>
-				<Repeat each={Array(5)}>
+				<Repeat count={5}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
 							<Rating.ItemControl>
@@ -122,7 +122,7 @@ export function ErrorMessageExample() {
 		>
 			<Rating.Label class={style.rating__label}>Rate Us:</Rating.Label>
 			<Rating.Control class={style.rating__control}>
-				<Repeat each={Array(5)}>
+				<Repeat count={5}>
 					{(_) => (
 						<Rating.Item class={style["rating-item"]}>
 							<Rating.ItemControl>
@@ -164,7 +164,7 @@ export function HTMLFormExample() {
 		>
 			<Rating class={style.rating} name="rate">
 				<Rating.Control class={style.rating__control}>
-					<Repeat each={Array(5)}>
+					<Repeat count={5}>
 						{(_) => (
 							<Rating.Item class={style["rating-item"]}>
 								<Rating.ItemControl>

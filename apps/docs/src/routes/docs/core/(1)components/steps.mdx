@@ -140,7 +140,7 @@ function ControlledExample() {
 
 ---
 
-```tsx {0}
+```tsx
 <Steps count={4}>
 	<div class="steps__progress-track">
 		<Steps.Progress class="steps__progress-fill" />
@@ -208,7 +208,7 @@ Provide `isStepSkippable` to bypass certain steps when navigating with `Steps.Ne
 
 ---
 
-```tsx {0}
+```tsx
 <Steps count={4} isStepSkippable={index => index === 2}>
 	{/* ...list, content... */}
 </Steps>
