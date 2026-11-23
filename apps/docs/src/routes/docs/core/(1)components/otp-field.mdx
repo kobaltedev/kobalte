@@ -160,7 +160,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 	<DefaultValueExample />
 </Preview>
 
-```tsx {0}
+```tsx
 <OTPField maxLength={6} defaultValue="123">
 	<OTPField.Input />
 	<For each={makeSlots(6)}>{i => <OtpSlot index={i} />}</For>

@@ -12,7 +12,7 @@ export function BasicExample() {
 						<span>Is it accessible?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -29,7 +29,7 @@ export function BasicExample() {
 						<span>Is it unstyled?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -47,7 +47,7 @@ export function BasicExample() {
 						<span>Can it be animated?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -70,7 +70,7 @@ export function DefaultValueExample() {
 						<span>Is it accessible?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -87,7 +87,7 @@ export function DefaultValueExample() {
 						<span>Is it unstyled?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -105,7 +105,7 @@ export function DefaultValueExample() {
 						<span>Can it be animated?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -135,7 +135,7 @@ export function ControlledExample() {
 							<span>Is it accessible?</span>
 							<ChevronDownIcon
 								class={style["accordion__item-trigger-icon"]}
-								aria-hidden
+								aria-hidden="true"
 							/>
 						</Accordion.Trigger>
 					</Accordion.Header>
@@ -152,7 +152,7 @@ export function ControlledExample() {
 							<span>Is it unstyled?</span>
 							<ChevronDownIcon
 								class={style["accordion__item-trigger-icon"]}
-								aria-hidden
+								aria-hidden="true"
 							/>
 						</Accordion.Trigger>
 					</Accordion.Header>
@@ -170,7 +170,7 @@ export function ControlledExample() {
 							<span>Can it be animated?</span>
 							<ChevronDownIcon
 								class={style["accordion__item-trigger-icon"]}
-								aria-hidden
+								aria-hidden="true"
 							/>
 						</Accordion.Trigger>
 					</Accordion.Header>
@@ -199,7 +199,7 @@ export function CollapsibleExample() {
 						<span>Is it accessible?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -216,7 +216,7 @@ export function CollapsibleExample() {
 						<span>Is it unstyled?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -234,7 +234,7 @@ export function CollapsibleExample() {
 						<span>Can it be animated?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -257,7 +257,7 @@ export function AllowMultipleExample() {
 						<span>Is it accessible?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -274,7 +274,7 @@ export function AllowMultipleExample() {
 						<span>Is it unstyled?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>
@@ -292,7 +292,7 @@ export function AllowMultipleExample() {
 						<span>Can it be animated?</span>
 						<ChevronDownIcon
 							class={style["accordion__item-trigger-icon"]}
-							aria-hidden
+							aria-hidden="true"
 						/>
 					</Accordion.Trigger>
 				</Accordion.Header>

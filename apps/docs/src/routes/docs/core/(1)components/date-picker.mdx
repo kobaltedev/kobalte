@@ -108,7 +108,7 @@ The `selectionMode` prop controls what kind of value is picked, and the shape of
 
 ---
 
-```tsx {0}
+```tsx
 <DatePicker selectionMode="multiple">
 	<DatePicker.Label>Event dates</DatePicker.Label>
 	{/* ...trigger, portal, content, calendar... */}
@@ -123,7 +123,7 @@ The `selectionMode` prop controls what kind of value is picked, and the shape of
 
 ---
 
-```tsx {0}
+```tsx
 <DatePicker selectionMode="range">
 	<DatePicker.Label>Trip dates</DatePicker.Label>
 	{/* ...trigger, portal, content, calendar... */}
@@ -210,7 +210,7 @@ The `DatePicker.Description` component can be used to associate additional help 
 
 ---
 
-```tsx {0}
+```tsx
 <DatePicker selectionMode="single">
 	<DatePicker.Label>Date</DatePicker.Label>
 	{/* ...trigger, portal, content, calendar... */}
@@ -263,7 +263,7 @@ function ErrorMessageExample() {
 
 ---
 
-```tsx {0}
+```tsx
 <DatePicker selectionMode="single" disabled>
 	<DatePicker.Label>Date</DatePicker.Label>
 	{/* ...trigger, portal, content, calendar... */}
@@ -276,7 +276,7 @@ function ErrorMessageExample() {
 
 The `name` prop, paired with a hidden native `<input>` rendered automatically by the root, can be used for integration with HTML forms. Since there's no segmented text input, the value is serialized as an ISO date string (`"single"`), a comma-joined list (`"multiple"`), or `"start/end"` (`"range"`).
 
-```tsx {0}
+```tsx
 <form onSubmit={handleSubmit}>
 	<DatePicker selectionMode="single" name="event-date">
 		...

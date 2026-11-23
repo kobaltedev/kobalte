@@ -1,5 +1,6 @@
 import { ToggleGroup } from "@kobalte/core/toggle-group";
-import { createSignal, type JSXElement } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createSignal } from "solid-js";
 import style from "./toggle-group.module.css";
 
 export function BasicExample() {
@@ -151,7 +152,7 @@ export function DefaultValueExample() {
 export function ControlledExample() {
 	const [value, setValue] = createSignal("bold");
 
-	const list: Record<string, JSXElement> = {
+	const list: Record<string, JSX.Element> = {
 		bold: <strong>{value()}</strong>,
 		italic: <i>{value()}</i>,
 		underline: <u>{value()}</u>,

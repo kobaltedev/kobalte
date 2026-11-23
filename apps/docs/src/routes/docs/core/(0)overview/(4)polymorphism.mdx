@@ -172,8 +172,8 @@ Use `PolymorphicProps<T, ComponentProps>` when you’re building a wrapper compo
 ```tsx
 import { Tabs, TabsTriggerProps } from "@kobalte/core/tabs";
 import { PolymorphicProps } from "@kobalte/core/polymorphic";
-import type { ValidComponent } from "@kobalte/utils";
-import { splitProps } from "solid-js";
+import type { ValidComponent } from "@solidjs/web";
+import { omit } from "solid-js";
 
 interface CustomProps<T extends ValidComponent = "button"> extends TabsTriggerProps<T> {
 	variant: "default" | "outline";
@@ -182,20 +182,20 @@ interface CustomProps<T extends ValidComponent = "button"> extends TabsTriggerPr
 function CustomTabsTrigger<T extends ValidComponent = "button">(
 	props: PolymorphicProps<T, CustomProps<T>>,
 ) {
-	const [local, others] = splitProps(props as CustomProps, ["variant"]);
+	const customProps = props as CustomProps<T>;
 
 	return (
 		<Tabs.Trigger
 			as="button"
-			class={local.variant === "default" ? "default-trigger" : "outline-trigger"}
-			{...others}
+			class={customProps.variant === "default" ? "default-trigger" : "outline-trigger"}
+			{...omit(customProps, "variant")}
 		/>
 	);
 }
 ```
 
 :::info
-When using generics, TypeScript can lose some precision; splitting local props and spreading the
+When using generics, TypeScript can lose some precision; omitting local props and spreading the
 remaining props helps preserve usability.
 :::
 
@@ -214,7 +214,7 @@ For example, use `OverrideComponentProps<"button", CustomProps>` where `"button"
 If you want to expose a strongly-typed surface area (eg. for downstream libraries), you can re-export and extend the underlying component types:
 
 ```tsx
-import type { ValidComponent } from "@kobalte/utils";
+import type { ValidComponent } from "@solidjs/web";
 import type {
 	TabsTriggerOptions,
 	TabsTriggerCommonProps,
