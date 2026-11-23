@@ -1,48 +1,5 @@
 [build]
-  publish = "apps/docs/dist/client/"
+  publish = "apps/docs/dist/"
 
-# Static prerendering writes redirect pages as empty index.html files, so handle
-# the known directory redirects at the host as well. Existing files still win
-# for every other URL.
-[[redirects]]
-  from = "/"
-  to = "/docs/core/overview/introduction"
-  status = 302
-
-[[redirects]]
-  from = "/docs/core"
-  to = "/docs/core/overview/introduction"
-  status = 302
-
-[[redirects]]
-  from = "/docs/core/"
-  to = "/docs/core/overview/introduction"
-  status = 302
-
-[[redirects]]
-  from = "/docs/core/overview"
-  to = "/docs/core/overview/introduction"
-  status = 302
-
-[[redirects]]
-  from = "/docs/core/overview/"
-  to = "/docs/core/overview/introduction"
-  status = 302
-
-[[redirects]]
-  from = "/docs/changelog"
-  to = "/docs/changelog/2-0-x"
-  status = 302
-
-[[redirects]]
-  from = "/docs/changelog/"
-  to = "/docs/changelog/2-0-x"
-  status = 302
-
-# SolidBase prerenders a complete static site into dist/client. Existing files
-# still win; missing docs URLs fall back to the prerendered 404 page so they
-# hydrate with the default layout.
-[[redirects]]
-  from = "/docs/*"
-  to = "/404.html"
-  status = 404
+[functions]
+  directory = "apps/docs/.netlify/functions-internal/"

@@ -4,6 +4,7 @@ import {
 	default as defaultTheme,
 } from "@kobalte/solidbase/default-theme";
 import solid from "@solidjs/vite-plugin";
+import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 import { version as KBVersion } from "../../packages/core/package.json";
 
@@ -108,9 +109,13 @@ export default defineConfig({
 				},
 			},
 		}),
-		// @solidjs/vite-plugin start mode (SSR) replaces SolidStart + Nitro.
-		// SolidBase prerenders the site into dist/client after the build.
+		// @solidjs/vite-plugin start mode provides SSR; Nitro restores the Netlify
+		// server/functions output used for SSR routes.
 		solid(solidBase.startConfig()),
+		nitro({
+			preset: "netlify",
+			prerender: { crawlLinks: true },
+		}),
 	],
 	ssr: {
 		noExternal: ["@docsearch/css"],
