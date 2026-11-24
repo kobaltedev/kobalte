@@ -40,7 +40,11 @@ import {
 import { createSelectableItem } from "../selection";
 import { type MenuDataSet, useMenuContext } from "./menu-context";
 import { useMenuRootContext } from "./menu-root-context";
-import { type Side, getPointerGraceArea } from "./utils";
+import {
+	type Side,
+	getPointerGraceArea,
+	hasFocusedTextEntryInMenu,
+} from "./utils";
 
 export interface MenuSubTriggerOptions {
 	/**
@@ -222,6 +226,8 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 
 		parentMenuContext?.onItemEnter(e);
 
+		// The submenu open-timeout above must still run on hover even when an editable
+		// inside the menu holds focus; only the DOM focus call below is guarded.
 		if (!e.defaultPrevented) {
 			// Remove visual focus from sub menu content.
 			if (context.listState().selectionManager().isFocused()) {
@@ -230,7 +236,11 @@ export function MenuSubTrigger<T extends ValidComponent = "div">(
 			}
 
 			// Restore visual focus to parent menu content.
-			focusWithoutScrolling(e.currentTarget);
+			// Skip only the DOM focus: a focused in-menu search field must keep it (the selection manager still updates).
+			if (!hasFocusedTextEntryInMenu(e.currentTarget)) {
+				focusWithoutScrolling(e.currentTarget);
+			}
+
 			parentMenuContext?.listState().selectionManager().setFocused(true);
 			parentMenuContext?.listState().selectionManager().setFocusedKey(key());
 		}

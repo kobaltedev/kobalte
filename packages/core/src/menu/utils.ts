@@ -71,3 +71,9 @@ export function isPointerInGraceArea(event: PointerEvent, area?: Polygon) {
 
 	return isPointInPolygon([event.clientX, event.clientY], area);
 }
+
+// Shared with the selection layer: createSelectableItem's focused-key effect guards its focus call too.
+export {
+	isTextEntryTarget,
+	hasFocusedTextEntryInMenu,
+} from "../selection/utils";

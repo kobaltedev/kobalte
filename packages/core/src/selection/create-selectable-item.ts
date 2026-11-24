@@ -20,7 +20,11 @@ import {
 } from "solid-js";
 
 import type { MultipleSelectionManager } from "./types";
-import { isCtrlKeyPressed, isNonContiguousSelectionModifier } from "./utils";
+import {
+	hasFocusedTextEntryInMenu,
+	isCtrlKeyPressed,
+	isNonContiguousSelectionModifier,
+} from "./utils";
 
 export interface CreateSelectableItemProps {
 	/** An interface for reading and updating multiple selection state. */
@@ -224,10 +228,13 @@ export function createSelectableItem<T extends HTMLElement>(
 					!shouldUseVirtualFocus &&
 					document.activeElement !== refEl
 				) {
-					if (props.focus) {
-						props.focus();
-					} else {
-						focusWithoutScrolling(refEl);
+					// Skip only the DOM focus: a focused in-menu search field must keep it (the selection manager still updates).
+					if (!hasFocusedTextEntryInMenu(refEl)) {
+						if (props.focus) {
+							props.focus();
+						} else {
+							focusWithoutScrolling(refEl);
+						}
 					}
 				}
 			},
