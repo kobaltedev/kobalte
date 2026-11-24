@@ -41,6 +41,7 @@ describe("Combobox", () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	it("renders correctly", () => {

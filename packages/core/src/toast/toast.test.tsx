@@ -17,6 +17,7 @@ describe("Toast", () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	const showToast = (
