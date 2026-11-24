@@ -26,7 +26,6 @@ import {
 	createMemo,
 	createSignal,
 	omit,
-	onSettled,
 	type Ref,
 	untrack,
 } from "solid-js";
@@ -199,38 +198,36 @@ export function DismissableLayer<T extends ValidComponent = "div">(
 		{ preventDefault: false },
 	);
 
-	onSettled(() => {
-		if (!ref()) {
+	// Register the layer once its element exists. Under a `Portal` the ref is
+	// only set after the first settle, so registering in `onSettled` missed it
+	// and the layer was never added: Escape and outside interactions could not
+	// dismiss it.
+	createEffect(ref, (node) => {
+		if (!node) {
 			return;
 		}
 
 		layerStack.addLayer({
-			node: ref()!,
+			node,
 			isPointerBlocking: isPointerBlocking(),
 			dismiss: props.onDismiss,
 		});
 
-		const unregisterFromParentLayer = parentContext?.registerNestedLayer(
-			ref()!,
-		);
+		const unregisterFromParentLayer = parentContext?.registerNestedLayer(node);
 
 		layerStack.assignPointerEventToLayers();
 
-		layerStack.disableBodyPointerEvents(ref()!);
+		layerStack.disableBodyPointerEvents(node);
 
 		return () => {
-			if (!ref()) {
-				return;
-			}
-
-			layerStack.removeLayer(ref()!);
+			layerStack.removeLayer(node);
 
 			unregisterFromParentLayer?.();
 
 			// Re-assign pointer event to remaining layers.
 			layerStack.assignPointerEventToLayers();
 
-			layerStack.restoreBodyPointerEvents(ref()!);
+			layerStack.restoreBodyPointerEvents(node);
 		};
 	});
 
