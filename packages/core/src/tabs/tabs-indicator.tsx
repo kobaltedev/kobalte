@@ -11,12 +11,13 @@ import {
 	createEffect,
 	createSignal,
 	on,
+	onCleanup,
 	splitProps,
 } from "solid-js";
 
 import type { Orientation } from "@kobalte/utils";
 import { combineStyle } from "@solid-primitives/props";
-import { createResizeObserver } from "@solid-primitives/resize-observer";
+import { makeResizeObserver } from "@solid-primitives/resize-observer";
 import { useLocale } from "../i18n";
 import {
 	type ElementOf,
@@ -110,25 +111,42 @@ export function TabsIndicator<T extends ValidComponent = "div">(
 	const [resizing, setResizing] = createSignal(false);
 
 	let timeout: NodeJS.Timeout | null = null;
-	let prevTarget: any = null;
-	createResizeObserver(context.selectedTab, (_, t) => {
-		if (prevTarget !== t) {
-			prevTarget = t;
+	const { observe, unobserve } = makeResizeObserver(
+		() => {
+			if (!style()) {
+				computeStyle();
+				return;
+			}
+
+			setResizing(true);
+
+			if (timeout) clearTimeout(timeout);
+
+			// gives the browser a chance to skip any animations that are disabled while resizing
+			timeout = setTimeout(() => {
+				timeout = null;
+				setResizing(false);
+			}, 1);
+
 			computeStyle();
-			return;
-		}
+		},
+		{ box: "border-box" },
+	);
 
-		setResizing(true);
+	createEffect(
+		on(context.items, (items) => {
+			for (const item of items) {
+				const tab = item.ref();
+				if (tab) {
+					observe(tab);
+					onCleanup(() => unobserve(tab));
+				}
+			}
+		}),
+	);
 
+	onCleanup(() => {
 		if (timeout) clearTimeout(timeout);
-
-		// gives the browser a chance to skip any animations that are disabled while resizing
-		timeout = setTimeout(() => {
-			timeout = null;
-			setResizing(false);
-		}, 1);
-
-		computeStyle();
 	});
 
 	return (
