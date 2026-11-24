@@ -128,6 +128,13 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 		() => ref,
 	);
 
+	// Kept out of the JSX attribute: a conditional there compiles to a memo
+	// owned by the spread render effect, which leaves aria-selected and
+	// data-selected one value behind when the selection changes in a
+	// transition that stays pending while the trigger is focused.
+	const ariaControls = () =>
+		selectableItem.isSelected() ? contentId() : undefined;
+
 	const onClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (e) => {
 		// Force focusing the trigger on click on safari.
 		if (isWebKit()) {
@@ -151,7 +158,7 @@ export function TabsTrigger<T extends ValidComponent = "button">(
 			disabled={isDisabled()}
 			aria-selected={selectableItem.isSelected()}
 			aria-disabled={isDisabled() || undefined}
-			aria-controls={selectableItem.isSelected() ? contentId() : undefined}
+			aria-controls={ariaControls()}
 			data-key={selectableItem.dataKey()}
 			data-orientation={context.orientation()}
 			data-selected={selectableItem.isSelected() ? "" : undefined}
