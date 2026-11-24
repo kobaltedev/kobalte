@@ -22,6 +22,39 @@ function setupGlobalEvents() {
 		return;
 	}
 
+	const flushCallbacksIfIdle = () => {
+		if (transitionsByElement.size !== 0) {
+			return;
+		}
+
+		removalObserver.disconnect();
+		const callbacks = Array.from(transitionCallbacks);
+		transitionCallbacks.clear();
+		for (const callback of callbacks) {
+			callback();
+		}
+	};
+
+	const removalObserver = new MutationObserver((records) => {
+		if (!records.some((record) => record.removedNodes.length > 0)) {
+			return;
+		}
+
+		// An end event may not reach the body, and already completed transitions do
+		// not emit cancellation when their target is subsequently removed.
+		for (const target of transitionsByElement.keys()) {
+			if ("isConnected" in target && !target.isConnected) {
+				target.removeEventListener(
+					"transitioncancel",
+					onTransitionEnd as EventListener,
+				);
+				transitionsByElement.delete(target);
+			}
+		}
+
+		flushCallbacksIfIdle();
+	});
+
 	const onTransitionStart = (e: TransitionEvent) => {
 		if (!e.target) {
 			return;
@@ -30,6 +63,14 @@ function setupGlobalEvents() {
 		// Add the transitioning property to the list for this element.
 		let transitions = transitionsByElement.get(e.target);
 		if (!transitions) {
+			// Observe child removals only while there are tracked transitions.
+			if (transitionsByElement.size === 0) {
+				removalObserver.observe(document.body, {
+					childList: true,
+					subtree: true,
+				});
+			}
+
 			transitions = new Set();
 			transitionsByElement.set(e.target, transitions);
 
@@ -67,14 +108,7 @@ function setupGlobalEvents() {
 			transitionsByElement.delete(e.target);
 		}
 
-		// If no transitioning elements, call all the queued callbacks.
-		if (transitionsByElement.size === 0) {
-			for (const cb of transitionCallbacks) {
-				cb();
-			}
-
-			transitionCallbacks.clear();
-		}
+		flushCallbacksIfIdle();
 	};
 
 	document.body.addEventListener("transitionrun", onTransitionStart);
@@ -89,6 +123,12 @@ if (typeof document !== "undefined") {
 	}
 }
 
+/**
+ * ### runAfterTransition
+ *
+ * Runs after tracked transitions finish or their targets leave the document.
+ * Waits one animation frame before checking for transitions started on mount.
+ */
 export function runAfterTransition(fn: () => void) {
 	// Wait one frame to see if an animation starts, e.g. a transition on mount.
 	requestAnimationFrame(() => {
