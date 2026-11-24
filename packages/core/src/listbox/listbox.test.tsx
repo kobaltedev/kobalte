@@ -8,6 +8,7 @@
 
 import { createPointerEvent } from "@kobalte/tests";
 import { fireEvent, render } from "@solidjs/testing-library";
+import { createSignal } from "solid-js";
 import { vi } from "vitest";
 
 import * as Listbox from ".";
@@ -226,6 +227,67 @@ describe("Listbox", () => {
 			expect(items[2]).toHaveTextContent("Three");
 			expect(items[2]).toHaveAttribute("data-key", "Three");
 			expect(items[2]).not.toHaveAttribute("data-disabled");
+		});
+
+		it("keeps every section when the option groups change", async () => {
+			const fruits = {
+				name: "Fruits",
+				items: [
+					{ id: "apple", name: "Apple" },
+					{ id: "banana", name: "Banana" },
+				],
+			};
+			const vegetables = {
+				name: "Vegetables",
+				items: [
+					{ id: "carrot", name: "Carrot" },
+					{ id: "potato", name: "Potato" },
+				],
+			};
+
+			const allGroups = [fruits, vegetables];
+			const [options, setOptions] = createSignal<any[]>(allGroups);
+
+			const { container, getAllByRole } = render(() => (
+				<Listbox.Root<any, any>
+					options={options()}
+					optionValue="id"
+					optionTextValue="name"
+					optionGroupChildren="items"
+					renderItem={(item) => (
+						<Listbox.Item item={item}>{item.rawValue.name}</Listbox.Item>
+					)}
+					renderSection={(section) => (
+						<Listbox.Section>{section.rawValue.name}</Listbox.Section>
+					)}
+				/>
+			));
+
+			const sectionNames = () =>
+				[...container.querySelectorAll("li[role='presentation']")].map(
+					(el) => el.textContent,
+				);
+
+			expect(sectionNames()).toEqual(["Fruits", "Vegetables"]);
+
+			// Filter down to a single group, like a combobox does while typing.
+			setOptions([{ ...fruits, items: [fruits.items[1]] }]);
+
+			expect(sectionNames()).toEqual(["Fruits"]);
+			expect(getAllByRole("option").map((el) => el.textContent)).toEqual([
+				"Banana",
+			]);
+
+			// Restore all groups, like a combobox does once the input is cleared.
+			setOptions(allGroups);
+
+			expect(sectionNames()).toEqual(["Fruits", "Vegetables"]);
+			expect(getAllByRole("option").map((el) => el.textContent)).toEqual([
+				"Apple",
+				"Banana",
+				"Carrot",
+				"Potato",
+			]);
 		});
 	});
 
