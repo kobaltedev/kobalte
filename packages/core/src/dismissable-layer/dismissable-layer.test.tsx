@@ -13,6 +13,7 @@ describe("DismissableLayer", () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	describe("Shadow DOM", () => {
