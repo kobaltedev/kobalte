@@ -24,7 +24,13 @@ import { type Accessor, createEffect, onCleanup } from "solid-js";
 import { isServer } from "solid-js/web";
 
 import { DATA_TOP_LAYER_ATTR } from "../../dismissable-layer/layer-stack";
-import { closestComposed, containsComposed, getEventTarget } from "./utils";
+import {
+	type EventOrigin,
+	closestComposed,
+	containsComposed,
+	getEventOrigin,
+	retargetChain,
+} from "./utils";
 
 type EventDetails<T> = {
 	originalEvent: T;
@@ -82,40 +88,71 @@ export function createInteractOutside<T extends Element>(
 	const onInteractOutside = (e: InteractOutsideEvent) =>
 		props.onInteractOutside?.(e);
 
-	const isEventOutside = (e: Event) => {
+	/**
+	 * The element to report an outside interaction on, or `null` when the
+	 * interaction is not outside (or `shouldExcludeElement` exempts it).
+	 */
+	const getOutsideTarget = (origin: EventOrigin | null): Element | null => {
+		const container = ref();
+
+		if (!container || !origin) {
+			return null;
+		}
+
 		// The element the interaction started on, not `e.target` — these listeners
 		// are on the document, so an interaction inside a shadow tree reports that
 		// tree's host instead. The distinction decides this function: a layer
 		// rendered inside a shadow root sees each of its own clicks as the host,
 		// which is outside itself, and dismisses on pointerdown.
-		const target = getEventTarget(e);
-
-		if (!target) {
-			return false;
-		}
+		const { target, path } = origin;
 
 		// If the target is within a top layer element (e.g. toasts), ignore.
 		if (closestComposed(target, `[${DATA_TOP_LAYER_ATTR}]`)) {
-			return false;
+			return null;
 		}
 
 		if (!containsComposed(ownerDocument(), target)) {
-			return false;
+			return null;
 		}
 
-		if (containsComposed(ref(), target)) {
-			return false;
+		// The composed path also covers content slotted into the layer, which a
+		// tree walk can't reach.
+		if (path.includes(container) || containsComposed(container, target)) {
+			return null;
 		}
 
-		return !props.shouldExcludeElement?.(target);
+		// Report the target as the layer's own tree sees it (`chain[0]`). A sibling
+		// in the layer's shadow root is itself, but an interaction inside a
+		// *foreign* web component (e.g. a trigger with its own shadow root) stays
+		// that component's host — the element consumers received before
+		// shadow-aware resolution.
+		const chain = retargetChain(target, container);
+
+		// Exclusion is asked of every element the interaction belongs to, from that
+		// outermost host down to `target` itself, so a plain `contains(excluded,
+		// element)` check answers for the composed tree: it matches a web-component
+		// trigger through its host, and a trigger in a *different* shadow root than
+		// the layer (an app root vs. a portal root) through `target` itself — where
+		// the layer's view of it is only that root's host.
+		const shouldExclude = props.shouldExcludeElement;
+
+		if (shouldExclude && chain.some((element) => shouldExclude(element))) {
+			return null;
+		}
+
+		return chain[0];
 	};
 
 	const onPointerDown = (e: PointerEvent) => {
-		function handler() {
-			const container = ref();
-			const target = getEventTarget(e);
+		// Resolved now, not in `handler`: on touch, `handler` runs on the following
+		// `click`, by which time this event has finished dispatching and its
+		// `composedPath()` is empty — leaving only the retargeted shadow host.
+		const origin = getEventOrigin(e);
 
-			if (!container || !target || !isEventOutside(e)) {
+		function handler() {
+			const target = getOutsideTarget(origin);
+
+			if (!target) {
 				return;
 			}
 
@@ -165,10 +202,9 @@ export function createInteractOutside<T extends Element>(
 	};
 
 	const onFocusIn = (e: FocusEvent) => {
-		const container = ref();
-		const target = getEventTarget(e);
+		const target = getOutsideTarget(getEventOrigin(e));
 
-		if (!container || !target || !isEventOutside(e)) {
+		if (!target) {
 			return;
 		}
 
