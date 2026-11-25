@@ -11,9 +11,9 @@
 import type { MaybeAccessor } from "@solid-primitives/utils";
 import {
 	createComponent,
-	createEffect,
 	createSignal,
 	type FlowComponent,
+	latest,
 	untrack,
 } from "solid-js";
 
@@ -48,14 +48,8 @@ export function createDomCollection<
 
 	createSortBasedOnDOMPosition(items, setItems);
 
-	// Notify external listeners after items settle (defer skips the initial [] state).
-	createEffect(
-		() => items(),
-		(currentItems) => {
-			props.onItemsChange?.(currentItems);
-		},
-		{ defer: true },
-	);
+	const notifyExternalListeners = () =>
+		untrack(() => props.onItemsChange?.(latest(items)));
 
 	const registerItem = (item: T) => {
 		setItems((prevItems) => {
@@ -65,7 +59,7 @@ export function createDomCollection<
 				? [...prevItems.slice(0, index), item, ...prevItems.slice(index)]
 				: [...prevItems, item];
 		});
-
+		notifyExternalListeners();
 		return () => {
 			setItems((prevItems) => {
 				const nextItems = prevItems.filter(
@@ -80,6 +74,7 @@ export function createDomCollection<
 
 				return nextItems;
 			});
+			notifyExternalListeners();
 		};
 	};
 
