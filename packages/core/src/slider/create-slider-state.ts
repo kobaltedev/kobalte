@@ -108,11 +108,19 @@ export function createSliderState(props: StateOpts): SliderState {
 		return mergedProps.defaultValue() ?? [mergedProps.minValue!()];
 	});
 
-	const [values, setValues] = createControllableArraySignal<number>({
+	const [unclampedValues, setValues] = createControllableArraySignal<number>({
 		value: () => mergedProps.value(),
 		defaultValue,
 		onChange: (values) => mergedProps.onChange?.(values),
 	});
+
+	// Bounds can change while a thumb is dragging. Use current bounds for
+	// rendering, subsequent updates, and the final onChangeEnd callback.
+	const values = createMemo(() =>
+		unclampedValues().map((value) =>
+			clamp(value, mergedProps.minValue!(), mergedProps.maxValue!()),
+		),
+	);
 
 	const [isDragging, setIsDragging] = createSignal(
 		new Array(values().length).fill(false),
@@ -178,7 +186,7 @@ export function createSliderState(props: StateOpts): SliderState {
 			return;
 		}
 
-		setValues((prev) => [...replaceIndex(prev, index, snappedValue)]);
+		setValues([...replaceIndex(values(), index, snappedValue)]);
 	};
 
 	const updateDragging = (index: number, dragging: boolean) => {
