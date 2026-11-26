@@ -6,7 +6,10 @@ export default defineConfig({
 	test: {
 		environment: "jsdom",
 		globals: true,
-		setupFiles: ["../../node_modules/@testing-library/jest-dom/vitest"],
+		setupFiles: [
+			"../../node_modules/@testing-library/jest-dom/vitest",
+			"./test-setup.ts",
+		],
 		isolate: false,
 	},
 	resolve: {
