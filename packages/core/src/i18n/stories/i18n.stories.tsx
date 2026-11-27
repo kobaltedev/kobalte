@@ -4,7 +4,7 @@ import {
 	scopedTranslator,
 	translator,
 } from "@solid-primitives/i18n";
-import { createMemo, createSignal, For } from "solid-js";
+import { createMemo, createSignal, For, Show } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import {
 	createCollator,
@@ -284,10 +284,13 @@ export const FilterStory = meta.story({
 			options: LOCALES.map((l) => l.code),
 		},
 	},
+	// The Solid renderer fills `args` after the first render pass, so wait for it.
 	render: (args) => (
-		<I18nProvider locale={args.locale}>
-			<FilterDisplay mode={args.mode} />
-		</I18nProvider>
+		<Show when={args.mode}>
+			<I18nProvider locale={args.locale}>
+				<FilterDisplay mode={args.mode} />
+			</I18nProvider>
+		</Show>
 	),
 });
 

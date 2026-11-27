@@ -1,4 +1,4 @@
-import { createSignal, type ValidComponent } from "solid-js";
+import { createSignal, Show, type ValidComponent } from "solid-js";
 import preview from "../../../../../.storybook/preview.js";
 import { Button } from "../../button/index.tsx";
 import { Polymorphic, type PolymorphicProps } from "../polymorphic.tsx";
@@ -28,14 +28,17 @@ export const NativeElement = meta.story({
 		},
 		label: { control: "text" },
 	},
+	// The Solid renderer fills `args` after the first render pass, so wait for it.
 	render: (args) => (
-		<Polymorphic
-			as={args.tag as unknown as ValidComponent}
-			class={style.element}
-		>
-			{args.label}
-			<code class={style.codeBadge}>&lt;{args.tag}&gt;</code>
-		</Polymorphic>
+		<Show when={args.tag}>
+			<Polymorphic
+				as={args.tag as unknown as ValidComponent}
+				class={style.element}
+			>
+				{args.label}
+				<code class={style.codeBadge}>&lt;{args.tag}&gt;</code>
+			</Polymorphic>
+		</Show>
 	),
 });
 
@@ -201,16 +204,18 @@ export const ButtonAsElement = meta.story({
 		as: { control: "select", options: ["button", "a", "div"] },
 	},
 	render: (args) => (
-		<Button
-			as={args.as as unknown as ValidComponent}
-			href={args.as === "a" ? "https://kobalte.dev" : undefined}
-			target={args.as === "a" ? "_blank" : undefined}
-			rel={args.as === "a" ? "noopener noreferrer" : undefined}
-			class={style.button}
-		>
-			as=&quot;{args.as}&quot;
-			<code class={style.codeBadgeSlate}>{args.as}</code>
-		</Button>
+		<Show when={args.as}>
+			<Button
+				as={args.as as unknown as ValidComponent}
+				href={args.as === "a" ? "https://kobalte.dev" : undefined}
+				target={args.as === "a" ? "_blank" : undefined}
+				rel={args.as === "a" ? "noopener noreferrer" : undefined}
+				class={style.button}
+			>
+				as=&quot;{args.as}&quot;
+				<code class={style.codeBadgeSlate}>{args.as}</code>
+			</Button>
+		</Show>
 	),
 });
 
