@@ -55,9 +55,9 @@ export interface ComboboxInputRenderProps
 	"aria-readonly": "true" | undefined;
 	type: "text";
 	role: "combobox";
-	autoComplete: "off";
+	autocomplete: "off";
 	autoCorrect: "off";
-	spellCheck: "false";
+	spellcheck: "false";
 	"aria-haspopup": "listbox";
 	"aria-autocomplete": "list";
 	"aria-expanded": "true" | "false";
@@ -318,9 +318,9 @@ export function ComboboxInput<T extends ValidComponent = "input">(
 			placeholder={context.placeholder()}
 			type="text"
 			role="combobox"
-			autoComplete="off"
+			autocomplete="off"
 			autoCorrect="off"
-			spellCheck="false"
+			spellcheck="false"
 			aria-haspopup="listbox"
 			aria-autocomplete="list"
 			aria-expanded={context.isOpen() ? "true" : "false"}

@@ -6,12 +6,27 @@ import { PopoverDemo } from "../../../../examples/getting-started";
 
 # {frontmatter.title}
 
+## Requirements
+
+Kobalte 2 requires Solid 2.0. Install `solid-js` and `@solidjs/web` at version `^2.0.0` and point your JSX import source at `@solidjs/web`:
+
+```json title="tsconfig.json"
+{
+	"compilerOptions": {
+		"jsx": "preserve",
+		"jsxImportSource": "@solidjs/web"
+	}
+}
+```
+
+Using Solid 1.x? Stay on Kobalte `0.13.x`. Upgrading from Kobalte 0.13? See the [v2.0.x changelog](/docs/changelog/2-0-x).
+
 ## Installation
 
 Install Kobalte by running:
 
 ```package-install
-@kobalte/core
+@kobalte/core solid-js @solidjs/web
 ```
 
 ## Using the components

@@ -66,7 +66,7 @@ The rating item consists of:
             <Rating.ItemLabel />
             <Rating.ItemDescription />
         </Rating.Item>
-    <Rating.Control>
+    </Rating.Control>
 	<Rating.HiddenInput />
 	<Rating.Description />
 	<Rating.ErrorMessage />
@@ -106,7 +106,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 ```tsx {1}
 <Rating defaultValue={3}>
 	<Rating.Control>
-		<Index each={Array(5)}>
+		<Repeat count={5}>
 			{_ => (
 				<Rating.Item>
 					<Rating.ItemControl>
@@ -114,7 +114,7 @@ An initial, uncontrolled value can be provided using the `defaultValue` prop.
 					</Rating.ItemControl>
 				</Rating.Item>
 			)}
-		</Index>
+		</Repeat>
 	</Rating.Control>
 </Rating>
 ```
@@ -132,7 +132,7 @@ The `value` prop can be used to make the value controlled. The `onChange` event 
 ---
 
 ```tsx {4,8}
-import { createSignal } from "solid-js";
+import { createSignal, Repeat } from "solid-js";
 
 function ControlledExample() {
 	const [value, setValue] = createSignal(0);
@@ -141,7 +141,7 @@ function ControlledExample() {
 		<>
 			<Rating value={value()} onChange={setValue}>
 				<Rating.Control>
-					<Index each={Array(5)}>
+					<Repeat count={5}>
 						{_ => (
 							<Rating.Item>
 								<Rating.ItemControl>
@@ -149,7 +149,7 @@ function ControlledExample() {
 								</Rating.ItemControl>
 							</Rating.Item>
 						)}
-					</Index>
+					</Repeat>
 				</Rating.Control>
 			</Rating>
 			<p>Your rating is: {value()}/5</p>
@@ -173,7 +173,7 @@ Allow 0.5 value steps by setting the `allowHalf` prop to true.
 ```tsx {1}
 <Rating allowHalf>
 	<Rating.Control>
-		<Index each={Array(5)}>
+		<Repeat count={5}>
 			{_ => (
 				<Rating.Item>
 					<Rating.ItemControl>
@@ -181,7 +181,7 @@ Allow 0.5 value steps by setting the `allowHalf` prop to true.
 					</Rating.ItemControl>
 				</Rating.Item>
 			)}
-		</Index>
+		</Repeat>
 	</Rating.Control>
 </Rating>
 ```
@@ -202,7 +202,7 @@ The `Rating.Description` component can be used to associate additional help text
 <Rating>
 	<Rating.Label>Rate Us:</Rating.Label>
 	<Rating.Control>
-		<Index each={Array(5)}>
+		<Repeat count={5}>
 			{_ => (
 				<Rating.Item>
 					<Rating.ItemControl>
@@ -210,7 +210,7 @@ The `Rating.Description` component can be used to associate additional help text
 					</Rating.ItemControl>
 				</Rating.Item>
 			)}
-		</Index>
+		</Repeat>
 	</Rating.Control>
 	<Rating.Description>Rate your experience with us.</Rating.Description>
 </Rating>
@@ -231,7 +231,7 @@ By default, it will render only when the `validationState` prop is set to `inval
 ---
 
 ```tsx {10,24-26}
-import { createSignal } from "solid-js";
+import { createSignal, Repeat } from "solid-js";
 
 function ErrorMessageExample() {
 	const [value, setValue] = createSignal(0);
@@ -244,7 +244,7 @@ function ErrorMessageExample() {
 		>
 			<Rating.Label>Rate Us:</Rating.Label>
 			<Rating.Control>
-				<Index each={Array(5)}>
+				<Repeat count={5}>
 					{_ => (
 						<Rating.Item>
 							<Rating.ItemControl>
@@ -252,7 +252,7 @@ function ErrorMessageExample() {
 							</Rating.ItemControl>
 						</Rating.Item>
 					)}
-				</Index>
+				</Repeat>
 			</Rating.Control>
 			<Rating.ErrorMessage>Please select a rating between 1 and 5.</Rating.ErrorMessage>
 		</Rating>
@@ -282,7 +282,7 @@ function HTMLFormExample() {
 		<form onSubmit={onSubmit}>
 			<Rating name="rate">
 				<Rating.Control>
-					<Index each={Array(5)}>
+					<Repeat count={5}>
 						{_ => (
 							<Rating.Item>
 								<Rating.ItemControl>
@@ -290,7 +290,7 @@ function HTMLFormExample() {
 								</Rating.ItemControl>
 							</Rating.Item>
 						)}
-					</Index>
+					</Repeat>
 				</Rating.Control>
 				<Rating.HiddenInput />
 			</Rating>

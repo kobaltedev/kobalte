@@ -28,8 +28,6 @@ import {
 	NextTrigger,
 	PrevTrigger,
 } from "@kobalte/core/steps";
-// or (deprecated)
-import { Steps } from "@kobalte/core";
 ```
 
 ## Features
@@ -81,7 +79,7 @@ The steps component consists of:
 
 ## Example
 
-Like the tag list in [Tags Input](/docs/core/components/tags-input), the list of steps isn't a fixed anatomy part — render one `Steps.Item` (and one `Steps.Content`) per step yourself, since `count` is just a number and Kobalte doesn't know what each step should contain.
+The list of steps isn't a fixed anatomy part — render one `Steps.Item` (and one `Steps.Content`) per step yourself, since `count` is just a number and Kobalte doesn't know what each step should contain.
 
 :::preview
 
@@ -220,7 +218,7 @@ Provide `isStepSkippable` to bypass certain steps when navigating with `Steps.Ne
 
 ### Steps
 
-`Steps` is equivalent to the `Root` import from `@kobalte/core/steps` (and deprecated `Steps.Root`).
+`Steps` is equivalent to the `Root` import from `@kobalte/core/steps`.
 
 | Prop            | Description                                                                                                                                                          |
 | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

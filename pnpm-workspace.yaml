@@ -2,10 +2,11 @@ packages:
   - apps/*
   - packages/*
 catalog:
-  # Solid 2.0 core — keep these three in lockstep on the same rc number
-  solid-js: 2.0.3
-  "@solidjs/web": 2.0.3
-  "@solidjs/signals": 2.0.3
+  # Solid 2.0 core — keep these three in lockstep on the same version
+  solid-js: 2.0.4
+  "@solidjs/web": 2.0.4
+  "@solidjs/signals": 2.0.4
+  # Only release compatible with Solid 2.x (`latest` still targets Solid 1); intentionally a prerelease
   "@solidjs/testing-library": 1.0.0-rc.2
   # Build tooling shared across root + published packages
   typescript: 7.0.2
@@ -17,9 +18,9 @@ catalog:
   "@solid-primitives/controlled-signal": 1.0.0
   "@solid-primitives/event-listener": 3.0.0
   "@solid-primitives/focus": 1.0.0
-  "@solid-primitives/form": 1.0.0
-  "@solid-primitives/i18n": 3.0.0
-  "@solid-primitives/interaction": 1.0.0
+  "@solid-primitives/form": 1.0.1
+  "@solid-primitives/i18n": 3.0.1
+  "@solid-primitives/interaction": 1.0.1
   "@solid-primitives/keyboard": 2.0.0
   "@solid-primitives/keyed": 3.0.0
   "@solid-primitives/map": 1.0.0
@@ -31,21 +32,20 @@ catalog:
   "@solid-primitives/resize-observer": 4.0.0
   "@solid-primitives/scroll": 3.0.0
   "@solid-primitives/upload": 1.0.0
-  "@solid-primitives/utils": 7.0.0
+  "@solid-primitives/utils": 7.0.1
 overrides:
-  # solid-js@2.0.0-rc.x declares a caret range on signals, which would otherwise
-  # resolve to the newest rc; keep it in lockstep with the catalog (overrides can't use catalog:)
-  "@solidjs/signals": "2.0.3"
+  # Keep signals in lockstep with the catalog (overrides can't use catalog:)
+  "@solidjs/signals": "2.0.4"
   "@solidjs/testing-library": "1.0.0-rc.2"
-  "@solidjs/compiler": "2.0.2"
-  "@solidjs/babel-plugin": "2.0.2"
+  "@solidjs/compiler": "2.0.3"
+  "@solidjs/babel-plugin": "2.0.3"
   "@solid-primitives/a11y": "1.0.0"
   "@solid-primitives/controlled-signal": "1.0.0"
   "@solid-primitives/event-listener": "3.0.0"
   "@solid-primitives/focus": "1.0.0"
-  "@solid-primitives/form": "1.0.0"
-  "@solid-primitives/i18n": "3.0.0"
-  "@solid-primitives/interaction": "1.0.0"
+  "@solid-primitives/form": "1.0.1"
+  "@solid-primitives/i18n": "3.0.1"
+  "@solid-primitives/interaction": "1.0.1"
   "@solid-primitives/keyboard": "2.0.0"
   "@solid-primitives/keyed": "3.0.0"
   "@solid-primitives/map": "1.0.0"
@@ -60,23 +60,20 @@ overrides:
   "@solid-primitives/static-store": "1.0.0"
   "@solid-primitives/trigger": "3.0.0"
   "@solid-primitives/upload": "1.0.0"
-  "@solid-primitives/utils": "7.0.0"
+  "@solid-primitives/utils": "7.0.1"
   "@storybook/builder-vite": "10.5.0"
 allowBuilds:
   "@biomejs/biome": false
   "@parcel/watcher": false
   esbuild: false
 minimumReleaseAgeExclude:
-  - "@kobalte/solidbase@0.6.4 || 0.6.7 || 0.6.8 || 0.6.9-next.0 || 0.6.9-next.1 || 0.6.9 || 0.6.10 || 0.6.11"
-  - "@solidjs/router@0.16.2"
-  - "@solidjs/start@2.2.3"
   - "@solid-primitives/a11y@1.0.0"
   - "@solid-primitives/controlled-signal@1.0.0"
   - "@solid-primitives/event-listener@3.0.0"
   - "@solid-primitives/focus@1.0.0"
-  - "@solid-primitives/form@1.0.0"
-  - "@solid-primitives/i18n@3.0.0"
-  - "@solid-primitives/interaction@1.0.0"
+  - "@solid-primitives/form@1.0.1"
+  - "@solid-primitives/i18n@3.0.1"
+  - "@solid-primitives/interaction@1.0.1"
   - "@solid-primitives/keyboard@2.0.0"
   - "@solid-primitives/keyed@3.0.0"
   - "@solid-primitives/map@1.0.0"
@@ -91,20 +88,12 @@ minimumReleaseAgeExclude:
   - "@solid-primitives/static-store@1.0.0"
   - "@solid-primitives/trigger@3.0.0"
   - "@solid-primitives/upload@1.0.0"
-  - "@solid-primitives/utils@7.0.0"
+  - "@solid-primitives/utils@7.0.1"
   - rolldown-plugin-dts@0.27.8
   - tsdown@0.23.0
-  - "@dom-expressions/babel-plugin-jsx@0.50.0-next.21"
-  - "@solidjs/signals@2.0.3"
-  - "@solidjs/web@2.0.3"
-  - "@solidjs/babel-plugin@2.0.0-rc.16"
-  - "@solidjs/compiler@2.0.0-rc.16"
-  - "@solidjs/vite-plugin@3.0.0-next.50"
-  - solid-js@2.0.3
-  - "@solidjs/compiler-darwin-arm64@2.0.0-rc.16"
-  - "@solidjs/compiler-darwin-x64@2.0.0-rc.16"
-  - "@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.16"
-  - "@solidjs/compiler-linux-x64-gnu@2.0.0-rc.16"
-  - "@solidjs/compiler-wasm32-wasi@2.0.0-rc.16"
-  - "@solidjs/compiler-win32-x64-msvc@2.0.0-rc.16"
+  - "@solidjs/babel-plugin@2.0.3"
+  - "@solidjs/compiler@2.0.3"
+  - "@solidjs/signals@2.0.4"
+  - "@solidjs/web@2.0.4"
+  - solid-js@2.0.4
 dedupePeerDependents: true

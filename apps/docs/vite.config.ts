@@ -42,9 +42,9 @@ export default defineConfig({
 			routes: {
 				path: "/{version}/",
 				version: {
-					default: "v1",
+					default: "v2",
 					values: {
-						v1: { path: "", label: `v${KBVersion}` },
+						v2: { path: "", label: `v${KBVersion}` },
 					},
 				},
 			},

@@ -36,8 +36,8 @@
 	"dependencies": {
 		"@kobalte/core": "workspace:*",
 		"@kobalte/solidbase": "3.0.0",
-		"@solidjs/meta": "1.0.0-next.2",
-		"@solidjs/router": "2.0.0-next.37",
+		"@solidjs/meta": "2.0.0",
+		"@solidjs/router": "2.0.1",
 		"@solidjs/vite-plugin": "3.0.1",
 		"@solidjs/web": "catalog:",
 		"minisearch": "7.2.0",

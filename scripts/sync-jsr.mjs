@@ -1,7 +1,7 @@
 // Keeps each JSR package's deno.jsonc "version" in sync with its package.json
 // "version" (the source of truth, bumped by Changesets), and regenerates
 // @kobalte/core's deno.jsonc "exports" map from its src/ layout so JSR always
-// sees the same public subpaths as the tsup build (packages/core/tsup.config.ts
+// sees the same public subpaths as the tsdown build (packages/core/tsdown.config.ts
 // entry glob: src/index.tsx, src/*/index.tsx, src/primitives/*/index.ts).
 //
 // Usage:

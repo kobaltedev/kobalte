@@ -2,5 +2,4 @@
 "@kobalte/core": patch
 ---
 
-Update Solid RC
-STRICT_READ_UNTRACKED Fixes
+Fix `STRICT_READ_UNTRACKED` warnings on Solid 2.

@@ -42,14 +42,17 @@ The date picker consists of:
 - **DatePicker.Value:** Displays the formatted selected value, falling back to its children as placeholder when nothing is selected.
 - **DatePicker.Description:** The description that gives the user more information on the date picker.
 - **DatePicker.ErrorMessage:** The error message that gives the user information about how to fix a validation error.
+- **DatePicker.Anchor:** An optional element to position the `DatePicker.Content` against, instead of the trigger.
 - **DatePicker.Portal:** Portals its children into the `body` when the date picker is open.
 - **DatePicker.Content:** Contains the content to be rendered when the date picker is open.
 - **DatePicker.Arrow:** An optional arrow element to render alongside the content.
+- **DatePicker.CloseButton:** An optional button that closes the date picker.
 - **DatePicker.Calendar:** Wraps the [Calendar](/docs/core/components/calendar) used to pick the date(s), and closes the popover on selection according to `closeOnSelect`.
 
 ```tsx
 <DatePicker>
 	<DatePicker.Label />
+	<DatePicker.Anchor />
 	<DatePicker.Trigger>
 		<DatePicker.Value />
 	</DatePicker.Trigger>
@@ -58,6 +61,7 @@ The date picker consists of:
 	<DatePicker.Portal>
 		<DatePicker.Content>
 			<DatePicker.Arrow />
+			<DatePicker.CloseButton />
 			<DatePicker.Calendar>
 				{/* same anatomy as the standalone Calendar component */}
 			</DatePicker.Calendar>
@@ -401,6 +405,10 @@ Displays the formatted selected value; renders its `children` as placeholder con
 | :--------------------- | :------------------------------------------------------------------------- |
 | data-placeholder-shown | Present when the date picker's placeholder is visible (no value selected). |
 
+### DatePicker.Anchor
+
+An optional element to position `DatePicker.Content` against when you do not want to use the trigger as the anchor. Consists of [Popover.Anchor](/docs/core/components/popover).
+
 ### DatePicker.Portal
 
 Portals `DatePicker.Content` into the `body` when the date picker is open. Consists of [Popover.Portal](/docs/core/components/popover).
@@ -431,6 +439,10 @@ Consists of [Popover.Arrow](/docs/core/components/popover).
 | :--- | :------------------------------------ |
 | size | `number` <br/> The size of the arrow. |
 
+### DatePicker.CloseButton
+
+An optional button that closes the date picker when pressed. Consists of [Popover.CloseButton](/docs/core/components/popover), itself built on [Button](/docs/core/components/button).
+
 ### DatePicker.Calendar
 
 Wraps the standalone [Calendar](/docs/core/components/calendar) component with the date picker's selection state, and closes the popover on selection according to `closeOnSelect`. Rendered inside `DatePicker.Content`.
@@ -447,9 +459,11 @@ All `DatePicker.Calendar*` sub-parts (`DatePicker.CalendarHeader`, `DatePicker.C
 | `DatePicker.ErrorMessage`           | `div`                                                                       |
 | `DatePicker.Trigger`                | `button`                                                                    |
 | `DatePicker.Value`                  | `span`                                                                      |
+| `DatePicker.Anchor`                 | `div`                                                                       |
 | `DatePicker.Portal`                 | `Portal`                                                                    |
 | `DatePicker.Content`                | `div`                                                                       |
 | `DatePicker.Arrow`                  | `div`                                                                       |
+| `DatePicker.CloseButton`            | `button`                                                                    |
 | `DatePicker.Calendar` and sub-parts | same as the equivalent [Calendar](/docs/core/components/calendar) component |
 
 ## Accessibility

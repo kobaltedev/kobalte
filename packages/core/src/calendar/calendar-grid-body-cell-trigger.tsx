@@ -59,7 +59,7 @@ export interface CalendarGridBodyCellTriggerCommonProps<
 export interface CalendarGridBodyCellTriggerRenderProps
 	extends CalendarGridBodyCellTriggerCommonProps {
 	role: "button";
-	tabIndex: number | undefined;
+	tabindex: number | undefined;
 	children: JSX.Element;
 	disabled: boolean | undefined;
 	"aria-disabled": "true" | undefined;
@@ -289,7 +289,7 @@ export function CalendarGridBodyCellTrigger<T extends ValidComponent = "div">(
 			as="div"
 			ref={[setRef, p.ref]}
 			role="button"
-			tabIndex={tabIndex()}
+			tabindex={tabIndex()}
 			aria-disabled={!context.isSelectable() ? "true" : undefined}
 			aria-invalid={context.isInvalid() ? "true" : undefined}
 			aria-label={ariaLabel()}

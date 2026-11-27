@@ -57,8 +57,8 @@ export interface TimeFieldSegmentRenderProps
 	extends TimeFieldSegmentCommonProps,
 		SpinButton.SpinButtonRootRenderProps {
 	tabindex: string | number | false | undefined;
-	contentEditable: boolean | undefined;
-	inputMode: string | false | undefined;
+	contenteditable: boolean | undefined;
+	inputmode: string | false | undefined;
 	autocorrect: string | false | undefined;
 	autoCapitalize: string | false | undefined;
 	spellcheck: boolean | "" | "false" | "true" | undefined;
@@ -533,9 +533,9 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				validationState={formControlContext.validationState()}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
-				readOnly={formControlContext.isReadOnly()}
-				contentEditable={!formControlContext.isReadOnly()}
-				inputMode={inputMode()}
+				readonly={formControlContext.isReadOnly()}
+				contenteditable={!formControlContext.isReadOnly()}
+				inputmode={inputMode()}
 				autocorrect={!formControlContext.isReadOnly() ? "off" : undefined}
 				autoCapitalize={!formControlContext.isReadOnly() ? "off" : undefined}
 				spellcheck={!formControlContext.isReadOnly() ? false : undefined}

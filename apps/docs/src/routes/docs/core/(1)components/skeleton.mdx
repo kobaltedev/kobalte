@@ -25,8 +25,6 @@ Visually indicates content loading
 import { Skeleton } from "@kobalte/core/skeleton";
 // or
 import { Root } from "@kobalte/core/skeleton";
-// or (deprecated)
-import { Skeleton } from "@kobalte/core";
 ```
 
 ## Features
@@ -171,6 +169,7 @@ function App() {
 ```tsx title="index.tsx" tab
 import { Skeleton } from "@kobalte/core/skeleton";
 import { ToggleButton } from "@kobalte/core/toggle-button";
+import { createSignal } from "solid-js";
 import "./style.css";
 
 function App() {
@@ -268,7 +267,7 @@ function App() {
 
 ### Skeleton
 
-`Skeleton` is equivalent to the `Root` import from `@kobalte/core/skeleton` (and deprecated `Skeleton.Root`).
+`Skeleton` is equivalent to the `Root` import from `@kobalte/core/skeleton`.
 
 | Prop     | Description                                                                                          |
 | :------- | :--------------------------------------------------------------------------------------------------- |
