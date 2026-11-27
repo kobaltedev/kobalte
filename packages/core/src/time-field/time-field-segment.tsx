@@ -8,7 +8,6 @@
 
 import { NumberParser } from "@internationalized/number";
 import { callHandler } from "@kobalte/utils";
-import { createFocusSignal } from "@solid-primitives/focus";
 import { isIOS, isMac } from "@solid-primitives/platform";
 import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -478,9 +477,8 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		() => context.focusManager(),
 		(focusManager) => {
 			const element = untrack(ref);
-			const isFocused = createFocusSignal(() => element as Element);
 			return () => {
-				if (untrack(isFocused)) {
+				if (element && element.ownerDocument.activeElement === element) {
 					const prev = focusManager.focusPrevious();
 					if (!prev) {
 						focusManager.focusNext();

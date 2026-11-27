@@ -69,7 +69,9 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 
 	createEffect(
 		() => others["aria-label"],
-		(label) => timeFieldContext.setFieldAriaLabel(label),
+		(label) => {
+			timeFieldContext.setFieldAriaLabel(label);
+		},
 	);
 
 	createEffect(
@@ -79,7 +81,9 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 				others["aria-label"],
 				mergedProps["aria-labelledby"],
 			),
-		(labelledBy) => timeFieldContext.setFieldAriaLabelledBy(labelledBy),
+		(labelledBy) => {
+			timeFieldContext.setFieldAriaLabelledBy(labelledBy);
+		},
 	);
 
 	createEffect(
@@ -87,7 +91,9 @@ export function TimeFieldInput<T extends ValidComponent = "div">(
 			[mergedProps["aria-describedby"], timeFieldContext.ariaDescribedBy()]
 				.filter(Boolean)
 				.join(" "),
-		(describedBy) => timeFieldContext.setFieldAriaDescribedBy(describedBy),
+		(describedBy) => {
+			timeFieldContext.setFieldAriaDescribedBy(describedBy);
+		},
 	);
 
 	const { direction } = useLocale();
