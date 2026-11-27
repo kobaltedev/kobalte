@@ -26,7 +26,7 @@ export default defineConfig({
 			title: "Kobalte",
 			titleTemplate: ":title – Kobalte",
 			description:
-				"Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
+				"Unstyled components and primitives for building accessible web apps and design systems with SolidJS 2.0.",
 			siteUrl: "https://kobalte.dev",
 			logo: "/kobalte.svg",
 			llms: true,
