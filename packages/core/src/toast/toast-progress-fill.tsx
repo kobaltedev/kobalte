@@ -52,7 +52,7 @@ export function ToastProgressFill<T extends ValidComponent = "div">(
 				const life = Math.trunc(
 					100 - (elapsedTime / untrack(context.duration)) * 100,
 				);
-				setLifeTime(life < 0 ? 0 : life);
+				setLifeTime(Math.max(0, life));
 			});
 
 			return () => {
