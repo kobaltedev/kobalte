@@ -6,7 +6,11 @@ import {
 import solid from "@solidjs/vite-plugin";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
-import { version as KBVersion } from "../../packages/core/package.json";
+import { version as KBPackageVersion } from "../../packages/core/package.json";
+
+// Show the release version (2.0.0) even while package.json still carries a
+// prerelease suffix (2.0.0-alpha.5) before `changeset version` runs.
+const KBVersion = KBPackageVersion.split("-")[0];
 
 const theme = defineTheme({
 	componentsPath: await import.meta.resolve("./src/solidbase-theme"),
