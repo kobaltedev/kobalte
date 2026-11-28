@@ -37,7 +37,6 @@ import { Root, Label, ... } from "@kobalte/core/time-field";
 
 ## Features
 
-- Times can optionally include a time zone. All modifications follow time zone rules such as daylight saving time.
 - Support for locale-specific formatting, number systems, hour cycles, and right-to-left layout.
 - Each time unit is displayed as an individually focusable and editable segment, which allows users an easy way to edit times using the keyboard, in any format and locale.
 - Time segments are editable using an easy to use numeric keypad, and all interactions are accessible using touch-based screen readers.
@@ -132,7 +131,7 @@ function ControlledValueExample() {
 			<p>
 				Selected time:{" "}
 				<Show when={value()} fallback={"--"}>
-					{value()}
+					{JSON.stringify(value())}
 				</Show>
 			</p>
 		</>

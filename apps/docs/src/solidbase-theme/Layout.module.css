@@ -24,3 +24,8 @@ footer:has(.footer) {
 		}
 	}
 }
+
+/* The default logo has dark text; swap in the white-text variant in dark mode. */
+html[data-theme*="dark"] a > img[src="/kobalte.svg"] {
+	content: url("/kobalte-dark.svg");
+}

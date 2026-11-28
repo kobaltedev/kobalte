@@ -172,17 +172,29 @@ function HTMLFormExample() {
 | `onFileAccept`     | `(files: File[]) => void` <br /> Callback function that is called when file(s) is(are) accepted.            |
 | `onFileReject`     | `(files: FileRejection[]) => void` <br /> Callback function that is called when a file(s) is(are) rejected. |
 | `onFileChange`     | `(details: Details) => void` <br /> Callback function that is called when the list of files changes.        |
-| `validateFile`     | `(file: File) => FileError[] \| null ` <br /> Custom validation function for files.                         |
+| `validate`         | `(file: File) => FileError[] \| null` <br /> Custom validation function for files.                          |
+| `translations`     | `FileFieldIntlTranslations` <br /> Localization strings.                                                    |
+| `id`               | `string` <br /> A unique identifier for the component.                                                      |
+| `name`             | `string` <br /> The name of the file field. Submitted with its owning form as part of a name/value pair.    |
+| `validationState`  | `'valid' \| 'invalid'` <br /> Whether the file field should display its "valid" or "invalid" visual styling. |
+| `required`         | `boolean` <br /> Whether the user must select a file before the owning form can be submitted.               |
+| `readOnly`         | `boolean` <br /> Whether the file field is read only.                                                       |
 
 | Data attribute | Description                                                                        |
 | :------------- | :--------------------------------------------------------------------------------- |
-| data-valid     | Present when the slider is valid according to the validation rules.                |
-| data-invalid   | Present when the slider is invalid according to the validation rules.              |
-| data-required  | Present when the user must slider an item before the owning form can be submitted. |
-| data-disabled  | Present when the slider is disabled.                                               |
-| data-readonly  | Present when the slider is read only.                                              |
+| data-valid     | Present when the file field is valid according to the validation rules.            |
+| data-invalid   | Present when the file field is invalid according to the validation rules.          |
+| data-required  | Present when a file must be selected before the owning form can be submitted.      |
+| data-disabled  | Present when the file field is disabled.                                           |
+| data-readonly  | Present when the file field is read only.                                          |
 
-`Slider.Trigger` shares the same data-attributes.
+`FileField.Trigger` shares the same data-attributes.
+
+### FileField.Dropzone
+
+| Data attribute | Description                                         |
+| :------------- | :-------------------------------------------------- |
+| data-dragging  | Present when files are being dragged over the dropzone. |
 
 ### FileField.Item
 

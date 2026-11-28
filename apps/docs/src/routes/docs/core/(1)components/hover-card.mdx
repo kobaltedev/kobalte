@@ -21,8 +21,6 @@ Allows sighted users to preview content available behind a link.
 import { HoverCard } from "@kobalte/core/hover-card";
 // or
 import { Root, Trigger, ... } from "@kobalte/core/hover-card";
-// or (deprecated)
-import { HoverCard } from "@kobalte/core";
 ```
 
 ## Features
@@ -142,7 +140,7 @@ We expose a CSS custom property `--kb-hovercard-content-transform-origin` which 
 
 ### HoverCard
 
-`HoverCard` is equivalent to the `Root` import from `@kobalte/core/hover-card` (and deprecated `HoverCard.Root`).
+`HoverCard` is equivalent to the `Root` import from `@kobalte/core/hover-card`.
 
 | Prop           | Description                                                                                                                                                                   |
 | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -180,6 +178,10 @@ The popper positioner will copy the same `z-index` as the `HoverCard.Content`.
 ### HoverCard.Trigger
 
 `HoverCard.Trigger` consists of [Link](/docs/core/components/link).
+
+| Prop     | Description                                                       |
+| :------- | :---------------------------------------------------------------- |
+| disabled | `boolean` <br/> Whether the trigger is disabled and should not open the hovercard. |
 
 | Data attribute | Description                          |
 | :------------- | :----------------------------------- |

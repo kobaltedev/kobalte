@@ -92,12 +92,11 @@ If you are looking for place to start, consider the following options:
 
 ## Developing
 
-Kobalte is a monorepo built with [pnpm](https://pnpm.io) and [turborepo](https://turbo.build/repo).
+Kobalte is a monorepo built with [pnpm](https://pnpm.io).
 
 ### Git branches
 
-- **main** - current version.
-- **develop** - contains next version, most likely you would want to create a PR to this branch.
+- **main** - current version, create PRs against this branch.
 
 ### Commit convention
 

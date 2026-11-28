@@ -21,8 +21,6 @@ A succinct message that is displayed temporarily.
 import { Toast, toaster } from "@kobalte/core/toast";
 // or
 import { Root, toaster, ... } from "@kobalte/core/toast";
-// or (deprecated)
-import { Toast, toaster } from "@kobalte/core";
 ```
 
 ## Features
@@ -192,10 +190,11 @@ We expose a CSS custom property `--kb-toast-progress-fill-width` which correspon
 
 We expose the CSS custom properties `--kb-toast-swipe-move-[x|y]` and `--kb-toast-swipe-end-[x|y]` which can be used with `data-swipe="[start|move|cancel|end]"` attributes to animate a swipe to close gesture.
 
-```tsx {19}
+```tsx {20}
 // index.tsx
 
 import { Toast, toaster } from "@kobalte/core/toast";
+import { Portal } from "@solidjs/web";
 import "./style.css";
 
 function App() {
@@ -255,7 +254,7 @@ It's common in toast libraries to have method for displaying different type of t
 
 import { Toast, toaster } from "@kobalte/core/toast";
 import type { JSX } from "@solidjs/web";
-import { Switch, Match } from "@solidjs/web";
+import { Switch, Match } from "solid-js";
 
 function show(message: string) {
 	return toaster.show(props => (
@@ -328,10 +327,11 @@ export const toast = {
 
 Then inside your application, use your own toast API:
 
-```tsx {3,7}
+```tsx {3,8}
 // App.tsx
 
 import { toast } from "./toast";
+import { Portal } from "@solidjs/web";
 
 function App() {
 	const showToast = () => {
@@ -363,7 +363,9 @@ toaster.show(props => <Toast toastId={props.toastId}>...</Toast>, {
 
 Inside your application, use add your custom region:
 
-```tsx {3,6}
+```tsx {5,8}
+import { Portal } from "@solidjs/web";
+
 <Portal>
 	{/* Default region */}
 	<Toast.Region>
@@ -410,7 +412,7 @@ Inside your application, use add your custom region:
 
 ### Toast
 
-`Toast` is equivalent to the `Root` import from `@kobalte/core/toast` (and deprecated `Toast.Root`).
+`Toast` is equivalent to the `Root` import from `@kobalte/core/toast`.
 
 | Prop            | Description                                                                                                                                                                                                                                 |
 | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

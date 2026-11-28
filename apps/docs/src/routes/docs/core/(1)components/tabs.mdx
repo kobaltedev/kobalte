@@ -34,8 +34,6 @@ A set of layered sections of content, known as tab panels, that display one pane
 import { Tabs } from "@kobalte/core/tabs";
 // or
 import { Root, List, ... } from "@kobalte/core/tabs";
-// or (deprecated)
-import { Tabs } from "@kobalte/core";
 ```
 
 ## Features
@@ -157,9 +155,9 @@ function ControlledExample() {
 
 ### Focusable content
 
-When the tab content doesn't contain any focusable content, the entire content is given a `tabIndex=0` so that the content can be navigated to with the keyboard.
+When the tab content doesn't contain any focusable content, the entire content is given a `tabindex="0"` so that the content can be navigated to with the keyboard.
 
-When the tab content contains focusable content, such as an `<input>`, then the `tabIndex` is omitted because the content itself can receive focus.
+When the tab content contains focusable content, such as an `<input>`, then the `tabindex` is omitted because the content itself can receive focus.
 
 This example uses the same Tabs components from above. Try navigating from the tabs to each content using the keyboard.
 
@@ -365,7 +363,7 @@ Individual tab can be disabled using the `disabled` prop on the tab itself.
 
 ### Tabs
 
-`Tabs` is equivalent to the `Root` import from `@kobalte/core/tabs` (and deprecated `Tabs.Root`).
+`Tabs` is equivalent to the `Root` import from `@kobalte/core/tabs`.
 
 | Prop           | Description                                                                                                                          |
 | :------------- | :----------------------------------------------------------------------------------------------------------------------------------- |

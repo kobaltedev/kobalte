@@ -20,8 +20,6 @@ An accessible one-time password input built from a hidden native `<input>` and f
 import { OTPField } from "@kobalte/core/otp-field";
 // or
 import { Root, Input, Label, Description, ErrorMessage } from "@kobalte/core/otp-field";
-// or (deprecated)
-import { OTPField } from "@kobalte/core";
 ```
 
 ## Features
@@ -336,7 +334,7 @@ Add a `name` prop to `OTPField.Input` to include the value in form submissions. 
 
 ### OTPField
 
-`OTPField` is equivalent to the `Root` import from `@kobalte/core/otp-field` (and deprecated `OTPField.Root`).
+`OTPField` is equivalent to the `Root` import from `@kobalte/core/otp-field`.
 
 | Prop            | Description                                                                                                                               |
 | :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
@@ -347,7 +345,6 @@ Add a `name` prop to `OTPField.Input` to include the value in form submissions. 
 | onComplete      | `(value: string) => void` <br/> Event handler called once when all slots are filled.                                                      |
 | shiftPWManagers | `boolean` <br/> Whether to shift password manager icons to the right to avoid overlapping slots. Defaults to `true`.                      |
 | id              | `string` <br/> A unique identifier. Used to generate ids for nested Label, Description, and ErrorMessage. Auto-generated if not provided. |
-| name            | `string` <br/> The name used when submitting an HTML form.                                                                                |
 | validationState | `'valid' \| 'invalid'` <br/> Whether the OTP field should display its "valid" or "invalid" visual styling.                                |
 | required        | `boolean` <br/> Whether the user must fill the OTP field before the form can be submitted.                                                |
 | disabled        | `boolean` <br/> Whether the OTP field is disabled.                                                                                        |

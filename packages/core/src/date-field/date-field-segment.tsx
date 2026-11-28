@@ -57,8 +57,8 @@ export interface DateFieldSegmentRenderProps
 	extends DateFieldSegmentCommonProps,
 		SpinButton.SpinButtonRootRenderProps {
 	tabindex: string | number | false | undefined;
-	contentEditable: boolean | undefined;
-	inputMode: string | false | undefined;
+	contenteditable: boolean | undefined;
+	inputmode: string | false | undefined;
 	autocorrect: string | false | undefined;
 	autoCapitalize: string | false | undefined;
 	spellcheck: boolean | "" | "false" | "true" | undefined;
@@ -556,11 +556,11 @@ export function DateFieldSegment<T extends ValidComponent = "div">(
 				validationState={formControlContext.validationState()}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
-				readOnly={
+				readonly={
 					formControlContext.isReadOnly() || !mergedProps.segment.isEditable
 				}
-				contentEditable={isEditable()}
-				inputMode={inputMode()}
+				contenteditable={isEditable()}
+				inputmode={inputMode()}
 				autocorrect={isEditable() ? "off" : undefined}
 				autoCapitalize={isEditable() ? "off" : undefined}
 				spellcheck={isEditable() ? false : undefined}

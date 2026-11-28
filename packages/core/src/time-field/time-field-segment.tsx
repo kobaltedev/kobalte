@@ -8,7 +8,6 @@
 
 import { NumberParser } from "@internationalized/number";
 import { callHandler } from "@kobalte/utils";
-import { createFocusSignal } from "@solid-primitives/focus";
 import { isIOS, isMac } from "@solid-primitives/platform";
 import type { ComponentProps, JSX, ValidComponent } from "@solidjs/web";
 import {
@@ -57,8 +56,8 @@ export interface TimeFieldSegmentRenderProps
 	extends TimeFieldSegmentCommonProps,
 		SpinButton.SpinButtonRootRenderProps {
 	tabindex: string | number | false | undefined;
-	contentEditable: boolean | undefined;
-	inputMode: string | false | undefined;
+	contenteditable: boolean | undefined;
+	inputmode: string | false | undefined;
 	autocorrect: string | false | undefined;
 	autoCapitalize: string | false | undefined;
 	spellcheck: boolean | "" | "false" | "true" | undefined;
@@ -478,9 +477,8 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 		() => context.focusManager(),
 		(focusManager) => {
 			const element = untrack(ref);
-			const isFocused = createFocusSignal(() => element as Element);
 			return () => {
-				if (untrack(isFocused)) {
+				if (element && element.ownerDocument.activeElement === element) {
 					const prev = focusManager.focusPrevious();
 					if (!prev) {
 						focusManager.focusNext();
@@ -533,9 +531,9 @@ export function TimeFieldSegment<T extends ValidComponent = "div">(
 				validationState={formControlContext.validationState()}
 				required={formControlContext.isRequired()}
 				disabled={formControlContext.isDisabled()}
-				readOnly={formControlContext.isReadOnly()}
-				contentEditable={!formControlContext.isReadOnly()}
-				inputMode={inputMode()}
+				readonly={formControlContext.isReadOnly()}
+				contenteditable={!formControlContext.isReadOnly()}
+				inputmode={inputMode()}
 				autocorrect={!formControlContext.isReadOnly() ? "off" : undefined}
 				autoCapitalize={!formControlContext.isReadOnly() ? "off" : undefined}
 				spellcheck={!formControlContext.isReadOnly() ? false : undefined}

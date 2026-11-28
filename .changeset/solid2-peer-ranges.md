@@ -3,4 +3,4 @@
 "@kobalte/utils": patch
 ---
 
-Allow Solid 2 release candidates from rc.16 onward in the Solid peer dependencies instead of requiring exactly rc.16.
+Solid peer dependencies are `solid-js@^2.0.0` and `@solidjs/web@^2.0.0`.

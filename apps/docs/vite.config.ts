@@ -6,7 +6,11 @@ import {
 import solid from "@solidjs/vite-plugin";
 import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
-import { version as KBVersion } from "../../packages/core/package.json";
+import { version as KBPackageVersion } from "../../packages/core/package.json";
+
+// Show the release version (2.0.0) even while package.json still carries a
+// prerelease suffix (2.0.0-alpha.5) before `changeset version` runs.
+const KBVersion = KBPackageVersion.split("-")[0];
 
 const theme = defineTheme({
 	componentsPath: await import.meta.resolve("./src/solidbase-theme"),
@@ -26,7 +30,7 @@ export default defineConfig({
 			title: "Kobalte",
 			titleTemplate: ":title – Kobalte",
 			description:
-				"Unstyled components and primitives for building accessible web apps and design systems with SolidJS.",
+				"Unstyled components and primitives for building accessible web apps and design systems with SolidJS 2.0.",
 			siteUrl: "https://kobalte.dev",
 			logo: "/kobalte.svg",
 			llms: true,
@@ -42,9 +46,9 @@ export default defineConfig({
 			routes: {
 				path: "/{version}/",
 				version: {
-					default: "v1",
+					default: "v2",
 					values: {
-						v1: { path: "", label: `v${KBVersion}` },
+						v2: { path: "", label: `v${KBVersion}` },
 					},
 				},
 			},

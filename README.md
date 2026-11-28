@@ -18,7 +18,7 @@ A UI toolkit for building accessible web apps and design systems with [SolidJS](
 | :------------------------------ | :--------------------------------------------------------: | :-------------------------------------------------------------------------------------- |
 | [@kobalte/core](/packages/core) | [![core-npm]](https://www.npmjs.com/package/@kobalte/core) | Unstyled components and primitives for building accessible web apps and design systems. |
 
-[core-npm]: https://img.shields.io/npm/v/@kobalte/core/alpha
+[core-npm]: https://img.shields.io/npm/v/@kobalte/core
 
 ## Documentation
 
@@ -41,8 +41,7 @@ Support us on [Open Collective](https://opencollective.com/kobalte).
 
 `1.0.0` releases will be skipped to avoid confusion for Solid v2.
 
-v2 is currently in alpha (`2.0.0-alpha.x`), components have not been fully tested, more will as the alpha progresses.
-`2.0.0` is expected to be released when Solid reaches `2.0.0` (currently `2.0.0-rc.x`).
+`2.0.0` is the stable release for Solid 2 (`solid-js@^2.0.0` and `@solidjs/web@^2.0.0`).
 
 Minimal breaking changes between `0.13.x` and `2.0.0`, only differences from Solid itself, same API.
 

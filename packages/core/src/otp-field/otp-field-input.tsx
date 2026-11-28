@@ -61,7 +61,7 @@ export interface OTPFieldInputRenderProps
 	extends OTPFieldInputCommonProps<HTMLInputElement> {
 	pattern: string | undefined;
 	"data-kb-otp-field-input": "";
-	inputMode: "numeric";
+	inputmode: "numeric";
 	autocomplete: string;
 	spellcheck: false;
 	disabled: boolean | undefined;
@@ -155,9 +155,8 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 
 	// Keep the input element's value in sync with context.
 	createRenderEffect(
-		() => context.value(),
-		(value) => {
-			const el = inputRef();
+		() => ({ el: inputRef(), value: context.value() }),
+		({ el, value }) => {
 			if (!el) return;
 			el.value = value;
 		},
@@ -491,7 +490,7 @@ export function OTPFieldInput<T extends ValidComponent = "input">(
 				onMouseLeave={onMouseLeave}
 				onKeyDown={onKeyDown}
 				onKeyUp={onKeyUp}
-				inputMode="numeric"
+				inputmode="numeric"
 				autocomplete="one-time-code"
 				spellcheck={false}
 				style={resolvedStyle()}
