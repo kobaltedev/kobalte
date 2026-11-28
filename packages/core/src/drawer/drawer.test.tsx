@@ -5,12 +5,35 @@ import { vi } from "vitest";
 
 import * as Drawer from ".";
 
+let originalResizeObserverDescriptor: PropertyDescriptor | undefined;
+
 beforeAll(() => {
-	global.ResizeObserver = class ResizeObserver {
-		observe() {}
-		unobserve() {}
-		disconnect() {}
-	};
+	originalResizeObserverDescriptor = Object.getOwnPropertyDescriptor(
+		globalThis,
+		"ResizeObserver",
+	);
+	Object.defineProperty(globalThis, "ResizeObserver", {
+		configurable: true,
+		enumerable: true,
+		writable: true,
+		value: class ResizeObserver {
+			observe() {}
+			unobserve() {}
+			disconnect() {}
+		},
+	});
+});
+
+afterAll(() => {
+	if (originalResizeObserverDescriptor) {
+		Object.defineProperty(
+			globalThis,
+			"ResizeObserver",
+			originalResizeObserverDescriptor,
+		);
+	} else {
+		Reflect.deleteProperty(globalThis, "ResizeObserver");
+	}
 });
 
 const DrawerExample = (props: ComponentProps<typeof Drawer.Root>) => (

@@ -31,6 +31,7 @@ describe("Listbox", () => {
 		// @ts-expect-error
 		window.requestAnimationFrame.mockRestore();
 		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	it("renders properly", () => {

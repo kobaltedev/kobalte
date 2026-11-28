@@ -44,6 +44,7 @@ describe("Select", () => {
 		window.requestAnimationFrame.mockRestore();
 		vi.clearAllMocks();
 		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	it("renders correctly", () => {

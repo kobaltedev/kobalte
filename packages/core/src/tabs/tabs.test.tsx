@@ -28,6 +28,7 @@ describe("Tabs", () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 		vi.clearAllTimers();
+		vi.useRealTimers();
 	});
 
 	afterAll(() => {
